@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../localization/app_localizations.dart';
+import '../l10n/translations/app_localizations.dart';
 
 extension ContextExtension on BuildContext {
   double get height => MediaQuery.sizeOf(this).height;
@@ -11,7 +11,7 @@ extension ThemeX on BuildContext {
   ThemeData get theme => Theme.of(this);
   TextTheme get textTheme => theme.textTheme;
   ColorScheme get colorScheme => theme.colorScheme;
-  AppLocalizations get localization => AppLocalizations.of(this);
+  AppLocalizations get localization => AppLocalizations.of(this)!;
 }
 
 extension NavigationX on BuildContext {

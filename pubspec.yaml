@@ -42,6 +42,7 @@ dependencies:
   local_auth: ^2.3.0
   pretty_dio_logger: ^1.4.0
   shared_preferences: ^2.5.5
+  pinput: ^6.0.2
 
 dev_dependencies:
   flutter_test:
@@ -60,13 +61,15 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  generate: true
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
   assets:
-    - assets/images/fake/
+    - assets/images/auth/
 
   fonts:
     - family: Alexandria

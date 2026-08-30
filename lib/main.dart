@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'config/routing/app_routes.dart';
 import 'config/routing/routing_generator.dart';
 import 'config/theme/app_theme.dart';
-import 'core/localization/app_localizations.dart';
+import 'core/l10n/translations/app_localizations.dart';
 import 'core/services/app_locale_notifier.dart';
 
 void main() {
@@ -24,18 +23,13 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           locale: locale,
           supportedLocales: AppLocalizations.supportedLocales,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
           builder: (context, child) {
-            final localizations = AppLocalizations.of(context);
-
             return Directionality(
-              textDirection: localizations.textDirection,
+              textDirection: locale.languageCode == 'ar'
+                  ? TextDirection.rtl
+                  : TextDirection.ltr,
               child: child ?? const SizedBox.shrink(),
             );
           },

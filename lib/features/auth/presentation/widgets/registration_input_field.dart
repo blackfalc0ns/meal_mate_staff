@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+
+import '../../../../config/theme/font_manager.dart';
+import '../../../../config/theme/spacing.dart';
+import '../../../../config/theme/styles_manager.dart';
+import '../../../../core/extensions/extensions.dart';
+
+class RegistrationInputField extends StatelessWidget {
+  const RegistrationInputField({
+    super.key,
+    required this.label,
+    required this.hint,
+    this.prefix,
+    this.isPicker = false,
+  });
+
+  final String label;
+  final String hint;
+  final String? prefix;
+  final bool isPicker;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
+    return SizedBox(
+      height: Spacing.registrationFieldHeight,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            label,
+            style: getBoldStyle(
+              color: color.onSurface,
+              fontSize: FontSize.size11,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(height: Spacing.md),
+          Row(
+            children: [
+              if (prefix != null) ...[
+                SizedBox(
+                  width: Spacing.xxxl * 2,
+                  height: Spacing.registrationFieldInputHeight,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: color.surface,
+                      border: Border.all(color: color.outline),
+                      borderRadius: BorderRadius.circular(
+                        Spacing.registrationRadius,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        prefix!,
+                        style: getBoldStyle(
+                          color: color.onSurface,
+                          fontSize: FontSize.size13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: Spacing.md),
+              ],
+              Expanded(
+                child: SizedBox(
+                  height: Spacing.registrationFieldInputHeight,
+                  child: TextFormField(
+                    readOnly: isPicker,
+                    textAlign: TextAlign.start,
+                    style: getRegularStyle(
+                      color: color.onSurface,
+                      fontSize: FontSize.size11,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: hint,
+                      hintStyle: getRegularStyle(
+                        color: color.onSurfaceVariant,
+                        fontSize: FontSize.size11,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.md,
+                        vertical: Spacing.sm,
+                      ),
+                      suffixIcon: isPicker
+                          ? Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              color: color.onSurfaceVariant,
+                              size: Spacing.iconMd,
+                            )
+                          : null,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -42,4 +42,24 @@ class Spacing {
 
   static const double border = 1;
   static const double hairline = 0.5;
+
+  static const double registrationScreenWidth = 390;
+  static const double registrationScreenHorizontal = 17;
+  static const double registrationTitleTop = 99;
+  static const double registrationStepsTop = 152;
+  static const double registrationStepsHeight = 59;
+  static const double registrationFieldHeight = 64;
+  static const double registrationFieldInputHeight = 40;
+  static const double registrationFieldGap = 18;
+  static const double registrationButtonHeight = 42;
+  static const double registrationSmallButtonHeight = 35;
+  static const double registrationStepCircle = 32;
+  static const double registrationRoleCardHeight = 144;
+  static const double registrationRoleImageSize = 120;
+  static const double registrationRoleSheetTop = 414;
+  static const double registrationDocumentCardHeight = 84;
+  static const double registrationDocumentImageWidth = 117;
+  static const double registrationDocumentImageHeight = 71;
+  static const double registrationReviewCardRadius = 7;
+  static const double registrationRadius = 8;
 }

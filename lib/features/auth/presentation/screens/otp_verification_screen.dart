@@ -8,9 +8,9 @@ import '../../domain/auth_verification_target.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/auth_divider.dart';
 import '../widgets/auth_header_logo.dart';
-import '../widgets/auth_help_card.dart';
 import '../widgets/auth_primary_button.dart';
 import '../widgets/otp_code_field.dart';
+import '../widgets/otp_help_card.dart';
 import '../widgets/otp_timer_chip.dart';
 
 enum OtpVerificationKind { phone, email }
@@ -45,7 +45,7 @@ class OtpVerificationScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: Spacing.lg),
-                const AuthHeaderLogo(),
+                const AuthHeaderLogo.compact(),
                 const SizedBox(height: Spacing.md),
                 Image.asset(
                   target.imageAsset,
@@ -110,7 +110,7 @@ class OtpVerificationScreen extends StatelessWidget {
                 const SizedBox(height: Spacing.lg),
                 AuthDivider(text: locale.or),
                 const SizedBox(height: Spacing.lg),
-                AuthHelpCard(
+                OtpHelpCard(
                   title: locale.getHelp,
                   subtitle: locale.helpSubtitle,
                   icon: Icons.headset_mic_outlined,

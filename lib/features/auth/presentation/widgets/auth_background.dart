@@ -16,7 +16,7 @@ class AuthBackground extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         ColoredBox(color: color.surface),
-        Image.asset(AssetsFake.authLoginBackground, fit: BoxFit.cover),
+        Image.asset(AppAssets.authLoginBackground, fit: BoxFit.cover),
         child,
       ],
     );

@@ -123,8 +123,8 @@ class AuthInputField extends StatelessWidget {
                         fontSize: FontSize.size12,
                       ),
                     ),
-                 
-                //    const _KuwaitFlag(),
+                    const SizedBox(width: Spacing.xs),
+                    const _KuwaitFlag(),
                     const SizedBox(width: Spacing.base),
                     Icon(
                       Icons.keyboard_arrow_down_rounded,
@@ -160,13 +160,6 @@ class _KuwaitFlag extends StatelessWidget {
         height: 11,
         child: Row(
           children: [
-            ClipPath(
-              clipper: _FlagHoistClipper(),
-              child: const ColoredBox(
-                color: Colors.black,
-                child: SizedBox(width: 6, height: 11),
-              ),
-            ),
             Expanded(
               child: Column(
                 children: const [
@@ -180,21 +173,5 @@ class _KuwaitFlag extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _FlagHoistClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    return Path()
-      ..lineTo(size.width, size.height * 0.25)
-      ..lineTo(size.width, size.height * 0.75)
-      ..lineTo(0, size.height)
-      ..close();
-  }
-
-  @override
-  bool shouldReclip(_FlagHoistClipper oldClipper) {
-    return false;
   }
 }

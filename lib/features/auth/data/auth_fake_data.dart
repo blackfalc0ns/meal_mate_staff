@@ -6,11 +6,11 @@ class AuthFakeData {
 
   static const phoneVerificationTarget = AuthVerificationTarget(
     value: '+966 50 123 4567',
-    imageAsset: AssetsFake.authPhoneOtp,
+    imageAsset: AppAssets.authPhoneOtp,
   );
 
   static const emailVerificationTarget = AuthVerificationTarget(
     value: 'IbrahimYasser@gmail.com',
-    imageAsset: AssetsFake.authEmailOtp,
+    imageAsset: AppAssets.authEmailOtp,
   );
 }

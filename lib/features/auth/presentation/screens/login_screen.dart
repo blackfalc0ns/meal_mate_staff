@@ -107,7 +107,7 @@ class LoginScreen extends StatelessWidget {
                 AuthHelpCard(
                   title: locale.needHelp,
                   subtitle: locale.helpSubtitle,
-                  icon: Icons.support_agent,
+                  icon: Icons.headset_mic_outlined,
                 ),
               ],
             ),
