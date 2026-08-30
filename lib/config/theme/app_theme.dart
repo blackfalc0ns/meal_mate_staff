@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'font_manager.dart';
 import 'spacing.dart';
-import 'text_styles.dart';
+import 'styles_manager.dart';
 
 class AppTheme {
   const AppTheme._();
@@ -90,7 +90,11 @@ class AppTheme {
         elevation: 0,
         foregroundColor: colorScheme.onSurface,
         iconTheme: IconThemeData(color: colorScheme.onSurface),
-        titleTextStyle: AppTextStyles.h4.copyWith(color: colorScheme.onSurface),
+        titleTextStyle: getSemiBoldStyle(
+          color: colorScheme.onSurface,
+          fontSize: FontSize.size18,
+          height: 1.4,
+        ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -103,7 +107,10 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Spacing.buttonRadius),
           ),
-          textStyle: AppTextStyles.button,
+          textStyle: getSemiBoldStyle(
+            color: AppColors.textOnPrimary,
+            fontSize: FontSize.size16,
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -114,14 +121,18 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Spacing.buttonRadius),
           ),
-          textStyle: AppTextStyles.button.copyWith(color: colorScheme.primary),
+          textStyle: getSemiBoldStyle(
+            color: colorScheme.primary,
+            fontSize: FontSize.size16,
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: colorScheme.primary,
-          textStyle: AppTextStyles.labelLarge.copyWith(
+          textStyle: getSemiBoldStyle(
             color: colorScheme.primary,
+            fontSize: FontSize.size16,
           ),
         ),
       ),
@@ -133,13 +144,22 @@ class AppTheme {
         ),
         enabledBorder: _inputBorder(colorScheme.outline),
         errorBorder: _inputBorder(colorScheme.error),
-        errorStyle: AppTextStyles.inputError,
+        errorStyle: getRegularStyle(
+          color: AppColors.error,
+          fontSize: FontSize.size12,
+        ),
         filled: true,
         fillColor: isDark ? AppColors.cardDark : AppColors.surface,
         focusedBorder: _inputBorder(colorScheme.primary, width: 1.5),
         focusedErrorBorder: _inputBorder(colorScheme.error, width: 1.5),
-        hintStyle: AppTextStyles.inputHint,
-        labelStyle: AppTextStyles.labelMedium,
+        hintStyle: getRegularStyle(
+          color: AppColors.textHint,
+          fontSize: FontSize.size13,
+        ),
+        labelStyle: getMediumStyle(
+          color: AppColors.textPrimary,
+          fontSize: FontSize.size14,
+        ),
       ),
       cardTheme: CardThemeData(
         color: isDark ? AppColors.cardDark : AppColors.card,

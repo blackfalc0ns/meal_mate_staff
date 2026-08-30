@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../config/theme/colors.dart';
+import '../../config/theme/font_manager.dart';
 import '../../config/theme/spacing.dart';
-import '../../config/theme/text_styles.dart';
+import '../../config/theme/styles_manager.dart';
 
 class CustomWarningWidget extends StatelessWidget {
   const CustomWarningWidget({
@@ -36,8 +37,21 @@ class CustomWarningWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (title != null)
-                    Text(title!, style: AppTextStyles.labelLarge),
-                  Text(message, style: AppTextStyles.bodySmall),
+                    Text(
+                      title!,
+                      style: getSemiBoldStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: FontSize.size16,
+                      ),
+                    ),
+                  Text(
+                    message,
+                    style: getRegularStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: FontSize.size12,
+                      height: 1.5,
+                    ),
+                  ),
                 ],
               ),
             ),

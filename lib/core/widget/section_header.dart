@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../config/theme/text_styles.dart';
+import '../../config/theme/colors.dart';
+import '../../config/theme/font_manager.dart';
+import '../../config/theme/styles_manager.dart';
 
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
@@ -23,9 +25,23 @@ class SectionHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: AppTextStyles.h4),
+              Text(
+                title,
+                style: getSemiBoldStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: FontSize.size18,
+                  height: 1.4,
+                ),
+              ),
               if (subtitle != null)
-                Text(subtitle!, style: AppTextStyles.bodySmall),
+                Text(
+                  subtitle!,
+                  style: getRegularStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: FontSize.size12,
+                    height: 1.5,
+                  ),
+                ),
             ],
           ),
         ),

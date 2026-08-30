@@ -20,6 +20,7 @@ class AppButton extends StatelessWidget {
     this.borderRadius,
     this.color,
     this.textColor,
+    this.textStyle,
   });
 
   final String text;
@@ -32,6 +33,7 @@ class AppButton extends StatelessWidget {
   final double? borderRadius;
   final Color? color;
   final Color? textColor;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,7 @@ class AppButton extends StatelessWidget {
                 (variant == AppButtonVariant.filled
                     ? AppColors.textOnPrimary
                     : effectiveColor),
+            textStyle: textStyle,
           );
 
     final button = switch (variant) {
@@ -91,19 +94,27 @@ class AppButton extends StatelessWidget {
 }
 
 class _ButtonContent extends StatelessWidget {
-  const _ButtonContent({required this.text, required this.color, this.icon});
+  const _ButtonContent({
+    required this.text,
+    required this.color,
+    this.icon,
+    this.textStyle,
+  });
 
   final String text;
   final Color color;
   final IconData? icon;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
-    final style = getSemiBoldStyle(
-      fontSize: FontSize.size16,
-      fontFamily: FontConstant.alexandria,
-      color: color,
-    );
+    final style =
+        textStyle ??
+        getSemiBoldStyle(
+          fontSize: FontSize.size16,
+          fontFamily: FontConstant.alexandria,
+          color: color,
+        );
 
     if (icon == null) {
       return Text(text, style: style, textAlign: TextAlign.center);

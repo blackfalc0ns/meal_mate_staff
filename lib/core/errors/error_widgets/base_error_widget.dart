@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../config/theme/font_manager.dart';
 import '../../../config/theme/spacing.dart';
-import '../../../config/theme/text_styles.dart';
+import '../../../config/theme/styles_manager.dart';
 import '../../widget/app_button.dart';
 
 class BaseErrorWidget extends StatelessWidget {
@@ -50,14 +51,20 @@ class BaseErrorWidget extends StatelessWidget {
             const SizedBox(height: Spacing.xl),
             Text(
               title,
-              style: AppTextStyles.h3.copyWith(color: colorScheme.onSurface),
+              style: getSemiBoldStyle(
+                color: colorScheme.onSurface,
+                fontSize: FontSize.size20,
+                height: 1.3,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Spacing.md),
             Text(
               description,
-              style: AppTextStyles.bodyMedium.copyWith(
+              style: getRegularStyle(
                 color: colorScheme.onSurfaceVariant,
+                fontSize: FontSize.size14,
+                height: 1.5,
               ),
               textAlign: TextAlign.center,
             ),

@@ -4,6 +4,7 @@ class FontConstant {
   const FontConstant._();
 
   static const String alexandria = 'Alexandria';
+  static const String ibmPlexSansArabic = 'IBMPlexSansArabic';
 }
 
 class FontWeightManager {
