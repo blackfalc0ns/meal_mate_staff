@@ -26,45 +26,44 @@ class RegistrationNoteCard extends StatelessWidget {
         color: color.primaryContainer,
         borderRadius: BorderRadius.circular(Spacing.registrationRadius),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(Spacing.md),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, color: color.primary, size: Spacing.iconMd),
-              const SizedBox(width: Spacing.sm),
-            ],
-            Flexible(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  if (title != null) ...[
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 44),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              if (icon != null) ...[
+                Icon(icon, color: color.primary, size: Spacing.lg),
+                const SizedBox(width: Spacing.sm),
+              ],
+              Flexible(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (title != null) ...[
+                      Text(
+                        title!,
+                        style: getBoldStyle(
+                          color: color.primary,
+                          fontSize: FontSize.size10,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                    ],
                     Text(
-                      title!,
-                      style: getSemiBoldStyle(
+                      text,
+                      style: getMediumStyle(
                         color: color.primary,
                         fontSize: FontSize.size10,
-                        height: 1.2,
+                        height: 1.4,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: Spacing.xs),
                   ],
-                  Text(
-                    text,
-                    style: getLightStyle(
-                      color: color.primary,
-                      fontSize: FontSize.size10,
-                      height: 1.3,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

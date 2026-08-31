@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
+import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
+import 'package:meal_mate_delivery/core/widget/app_button.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/features/auth/presentation/widgets/registration_step_progress.dart';
 import 'package:meal_mate_delivery/features/register/presentation/screens/register_screen.dart';
 
 void main() {
@@ -18,6 +21,7 @@ void main() {
         ),
       );
 
+      expect(find.byType(CustomAppBar), findsOneWidget);
       expect(find.text('Personal data'), findsWidgets);
       expect(find.text('Enter first name'), findsOneWidget);
       expect(find.text('Enter last name'), findsOneWidget);
@@ -55,6 +59,126 @@ void main() {
     expect(find.text('Enter plate number'), findsOneWidget);
     expect(find.text('Do you own the vehicle?'), findsOneWidget);
     expect(find.text('Uploaded documents'), findsNothing);
+  });
+
+  testWidgets('uses app buttons for registration actions', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        theme: AppTheme.lightTheme,
+        home: const RegisterScreen(),
+      ),
+    );
+
+    expect(find.widgetWithText(AppButton, 'Continue'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
+    await tester.pumpAndSettle();
+
+    expect(find.widgetWithText(AppButton, 'Continue'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.widgetWithText(AppButton, 'Submit acceptance request'),
+      findsOneWidget,
+    );
+
+    await tester.ensureVisible(find.text('Submit acceptance request'));
+    await tester.tap(find.text('Submit acceptance request'));
+    await tester.pumpAndSettle();
+
+    expect(find.widgetWithText(AppButton, 'Edit'), findsNWidgets(3));
+    expect(
+      find.widgetWithText(AppButton, 'Submit acceptance request'),
+      findsOneWidget,
+    );
+    expect(find.widgetWithText(AppButton, 'Back to edit'), findsOneWidget);
+  });
+
+  testWidgets('keeps registration progress outside the scrollable content', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        theme: AppTheme.lightTheme,
+        home: const RegisterScreen(),
+      ),
+    );
+
+    expect(
+      find.ancestor(
+        of: find.byType(RegistrationStepProgress),
+        matching: find.byType(SingleChildScrollView),
+      ),
+      findsNothing,
+    );
+  });
+
+  testWidgets('app bar back button returns to the previous registration step', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        theme: AppTheme.lightTheme,
+        home: const RegisterScreen(),
+      ),
+    );
+
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Personal data'), findsWidgets);
+    expect(find.text('Enter first name'), findsOneWidget);
+    expect(find.text('Choose vehicle type'), findsNothing);
+  });
+
+  testWidgets('app bar back button returns from review to documents', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        theme: AppTheme.lightTheme,
+        home: const RegisterScreen(),
+      ),
+    );
+
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Submit acceptance request'));
+    await tester.tap(find.text('Submit acceptance request'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Documents'), findsWidgets);
+    expect(find.text('Civil card'), findsOneWidget);
+    expect(find.text('Back to edit'), findsNothing);
   });
 
   testWidgets('shows upload documents as the third registration step', (

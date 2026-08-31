@@ -321,4 +321,97 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get registrationPurple => 'بنفسجي';
+
+  @override
+  String get accountStatusTitle => 'حالة الحساب';
+
+  @override
+  String get accountStatusSubtitle => 'نتحقق من بياناتك ومستنداتك';
+
+  @override
+  String get accountStatusAcceptedTitle => 'تم قبول حسابك!';
+
+  @override
+  String get accountStatusAcceptedBody =>
+      'تم تفعيل حسابك بنجاح\nيمكنك الآن البدء في العمل';
+
+  @override
+  String get accountStatusRejectedTitle => 'تم رفض الطلب';
+
+  @override
+  String get accountStatusRejectedBody =>
+      'عذراً، لم يتم قبول طلبك الحالي\nيرجى مراجعة سبب الرفض أدناه\nيمكنك تعديل البيانات وإعادة التقديم';
+
+  @override
+  String get accountStatusMoreInfoTitle => 'مطلوب تعديل البيانات';
+
+  @override
+  String get accountStatusMoreInfoBody =>
+      'يرجى تعديل البيانات التالية\nوإعادة إرسال الطلب';
+
+  @override
+  String get accountStatusUnderReviewTitle => 'حسابك قيد المراجعة';
+
+  @override
+  String get accountStatusUnderReviewBody =>
+      'جاري التحقق من مستنداتك ومعلوماتك للتأكد من استيفائها\nلمتطلبات العمل';
+
+  @override
+  String get accountStatusNotifyWhenApproved =>
+      'سنقوم بإشعارك فور اعتماد حسابك والبدء في استقبال الطلبات';
+
+  @override
+  String get accountStatusNeedHelp => 'تحتاج مساعدة؟';
+
+  @override
+  String get accountStatusHelpSubtitle =>
+      'فريق الدعم متاح للإجابة على استفساراتك';
+
+  @override
+  String get accountStatusGetHelp => 'الحصول على مساعدة';
+
+  @override
+  String get accountStatusTrustNote =>
+      'نحن نقدر صبرك، ونعدك بتجربة توصيل ناجحة وآمنة\nمع MealMate';
+
+  @override
+  String get accountStatusStartWork => 'إبدأ العمل';
+
+  @override
+  String get accountStatusBackToLogin => 'العودة إلى تسجيل الدخول';
+
+  @override
+  String get accountStatusResubmit => 'إعادة التقديم';
+
+  @override
+  String get accountStatusEditAndResend => 'تعديل وإعادة الإرسال';
+
+  @override
+  String get accountStatusRejectionReason => 'سبب الرفض';
+
+  @override
+  String get accountStatusChangeReason => 'سبب طلب التعديل';
+
+  @override
+  String get accountStatusReasonCivilIdMismatch =>
+      'الرقم المدني غير مطابق للبيانات';
+
+  @override
+  String get accountStatusReasonDrivingLicenseExpired =>
+      'تاريخ صلاحية رخصة القيادة منتهي';
+
+  @override
+  String get accountStatusReasonVehicleRegistrationUnclear =>
+      'صورة استمارة المركبة غير واضحة';
+
+  @override
+  String get accountStatusReasonDrivingLicenseUnclear =>
+      'رخصة القيادة غير واضحة';
+
+  @override
+  String get accountStatusReasonVehicleRegistrationExpired =>
+      'استمارة المركبة منتهية';
+
+  @override
+  String get accountStatusPendingChip => 'قيد المراجعة';
 }

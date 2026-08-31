@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../../../config/theme/spacing.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/widget/app_button.dart';
 import '../../../auth/presentation/widgets/registration_input_field.dart';
 import '../../../auth/presentation/widgets/registration_scaffold.dart';
 
 class RegisterPersonalDataScreen extends StatelessWidget {
-  const RegisterPersonalDataScreen({super.key, required this.onContinue});
+  const RegisterPersonalDataScreen({
+    super.key,
+    required this.onContinue,
+    this.onBackPressed,
+  });
 
   final VoidCallback onContinue;
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +23,7 @@ class RegisterPersonalDataScreen extends StatelessWidget {
     return RegistrationScaffold(
       title: locale.registrationPersonalData,
       currentStep: 1,
+      onBackPressed: onBackPressed,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -58,12 +65,11 @@ class RegisterPersonalDataScreen extends StatelessWidget {
             hint: locale.registrationCivilIdHint,
           ),
           const SizedBox(height: Spacing.xl),
-          SizedBox(
+          AppButton(
+            text: locale.registrationContinue,
+            onPressed: onContinue,
             height: Spacing.registrationButtonHeight,
-            child: ElevatedButton(
-              onPressed: onContinue,
-              child: Text(locale.registrationContinue),
-            ),
+            borderRadius: Spacing.registrationRadius,
           ),
           const SizedBox(height: Spacing.screenV),
         ],

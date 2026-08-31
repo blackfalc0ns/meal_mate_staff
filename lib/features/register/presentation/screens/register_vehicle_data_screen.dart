@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../config/theme/spacing.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/widget/app_button.dart';
 import '../../../auth/presentation/widgets/registration_choice_group.dart';
 import '../../../auth/presentation/widgets/registration_input_field.dart';
 import '../../../auth/presentation/widgets/registration_scaffold.dart';
@@ -16,6 +17,7 @@ class RegisterVehicleDataScreen extends StatelessWidget {
     required this.onColorSelected,
     required this.onOwnsVehicleChanged,
     required this.onContinue,
+    this.onBackPressed,
   });
 
   final Color selectedVehicleColor;
@@ -23,6 +25,7 @@ class RegisterVehicleDataScreen extends StatelessWidget {
   final ValueChanged<Color> onColorSelected;
   final ValueChanged<bool> onOwnsVehicleChanged;
   final VoidCallback onContinue;
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class RegisterVehicleDataScreen extends StatelessWidget {
     return RegistrationScaffold(
       title: locale.registrationVehicleData,
       currentStep: 2,
+      onBackPressed: onBackPressed,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -69,12 +73,11 @@ class RegisterVehicleDataScreen extends StatelessWidget {
             onSecondTap: () => onOwnsVehicleChanged(false),
           ),
           const SizedBox(height: Spacing.lg),
-          SizedBox(
+          AppButton(
+            text: locale.registrationContinue,
+            onPressed: onContinue,
             height: Spacing.registrationButtonHeight,
-            child: ElevatedButton(
-              onPressed: onContinue,
-              child: Text(locale.registrationContinue),
-            ),
+            borderRadius: Spacing.registrationRadius,
           ),
           const SizedBox(height: Spacing.screenV),
         ],

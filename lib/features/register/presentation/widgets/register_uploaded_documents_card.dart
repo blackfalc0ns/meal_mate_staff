@@ -4,6 +4,7 @@ import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/widget/app_button.dart';
 import '../../domain/register_document.dart';
 import 'register_uploaded_document_row.dart';
 
@@ -25,6 +26,7 @@ class RegisterUploadedDocumentsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final borderSide = BorderSide(color: color.outline);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -35,7 +37,10 @@ class RegisterUploadedDocumentsCard extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(Spacing.md),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.md,
+          vertical: Spacing.sm,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -47,26 +52,63 @@ class RegisterUploadedDocumentsCard extends StatelessWidget {
                     style: getBoldStyle(
                       color: color.onSurface,
                       fontSize: FontSize.size11,
-                      height: 1.2,
+                      height: 1.5,
                     ),
                     textAlign: TextAlign.start,
                   ),
                 ),
-                Icon(
-                  Icons.edit_outlined,
-                  color: color.primary,
-                  size: Spacing.iconSm,
+                SizedBox(
+                  width: Spacing.xxxl + Spacing.xl,
+                  height: Spacing.xxl,
+                  child: AppButton(
+                    text: locale.registrationEdit,
+                    onPressed: documents.isEmpty
+                        ? null
+                        : () => onDocumentTap(documents.first),
+                    variant: AppButtonVariant.outlined,
+                    icon: Icons.edit_outlined,
+                    height: Spacing.xxl,
+                    borderRadius: Spacing.registrationRadius,
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+                    iconSize: Spacing.iconSm,
+                    iconGap: Spacing.xs,
+                    color: color.primary,
+                    textColor: color.primary,
+                    textStyle: getRegularStyle(
+                      color: color.primary,
+                      fontSize: FontSize.size9,
+                      height: 1.2,
+                    ),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.sm),
-            ...documents.map(
-              (document) => RegisterUploadedDocumentRow(
-                document: document,
-                title: documentTitles[document.id] ?? locale.registrationOther,
-                selectedImagePath: selectedImagePaths[document.id],
-                onTap: () => onDocumentTap(document),
+            const SizedBox(height: Spacing.xs),
+            Table(
+              key: const Key('register-uploaded-documents-table'),
+              textDirection: Directionality.of(context),
+              border: TableBorder(
+                top: borderSide,
+                bottom: borderSide,
+                horizontalInside: borderSide,
               ),
+              children: documents.map((document) {
+                return TableRow(
+                  children: [
+                    TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: RegisterUploadedDocumentRow(
+                        document: document,
+                        title:
+                            documentTitles[document.id] ??
+                            locale.registrationOther,
+                        selectedImagePath: selectedImagePaths[document.id],
+                        onTap: () => onDocumentTap(document),
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ],
         ),

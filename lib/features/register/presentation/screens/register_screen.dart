@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../config/routing/app_routes.dart';
+import '../../../../core/extensions/extensions.dart';
+import '../../../account_status/domain/account_status_kind.dart';
 import '../../domain/register_document.dart';
 import '../widgets/register_source_sheet.dart';
 import 'register_personal_data_screen.dart';
@@ -51,10 +54,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  void _handleBack() {
+    if (_currentStep == 1) {
+      Navigator.of(context).maybePop();
+      return;
+    }
+
+    _goToStep(_currentStep - 1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return switch (_currentStep) {
-      1 => RegisterPersonalDataScreen(onContinue: () => _goToStep(2)),
+      1 => RegisterPersonalDataScreen(
+        onContinue: () => _goToStep(2),
+        onBackPressed: _handleBack,
+      ),
       2 => RegisterVehicleDataScreen(
         selectedVehicleColor: _selectedVehicleColor,
         ownsVehicle: _ownsVehicle,
@@ -69,17 +84,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
           });
         },
         onContinue: () => _goToStep(3),
+        onBackPressed: _handleBack,
       ),
       3 => RegisterUploadDocumentsScreen(
         selectedImagePaths: _selectedImagePaths,
         onDocumentTap: _pickDocumentImage,
         onSubmit: () => _goToStep(4),
+        onBackPressed: _handleBack,
       ),
       _ => RegisterReviewScreen(
         selectedImagePaths: _selectedImagePaths,
         onDocumentTap: _pickDocumentImage,
-        onSubmit: () {},
-        onBackToEdit: () => Navigator.of(context).maybePop(),
+        onSubmit: () {
+          context.pushReplacementNamed(
+            AppRoutes.accountStatus,
+            arguments: AccountStatusKind.underReview,
+          );
+        },
+        onBackToEdit: () => _goToStep(3),
+        onBackPressed: _handleBack,
       ),
     };
   }

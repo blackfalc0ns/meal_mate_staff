@@ -44,31 +44,6 @@ class RegistrationInputField extends StatelessWidget {
           const SizedBox(height: Spacing.sm),
           Row(
             children: [
-              if (prefix != null) ...[
-                SizedBox(
-                  width: Spacing.xxxl * 2,
-                  height: Spacing.registrationFieldInputHeight,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: color.surface,
-                      border: Border.all(color: color.outline),
-                      borderRadius: BorderRadius.circular(
-                        Spacing.registrationRadius,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        prefix!,
-                        style: getBoldStyle(
-                          color: color.onSurface,
-                          fontSize: FontSize.size13,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: Spacing.md),
-              ],
               Expanded(
                 child: SizedBox(
                   height: Spacing.registrationFieldInputHeight,
@@ -113,6 +88,31 @@ class RegistrationInputField extends StatelessWidget {
                   ),
                 ),
               ),
+              if (prefix != null) ...[
+                const SizedBox(width: Spacing.md),
+                SizedBox(
+                  width: Spacing.xxxl * 2,
+                  height: Spacing.registrationFieldInputHeight,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: color.surface,
+                      border: Border.all(color: color.outline),
+                      borderRadius: BorderRadius.circular(
+                        Spacing.registrationRadius,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        prefix!,
+                        style: getBoldStyle(
+                          color: color.onSurface,
+                          fontSize: FontSize.size13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ],

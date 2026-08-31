@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../config/theme/spacing.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/widget/app_button.dart';
 import '../../../auth/presentation/widgets/registration_note_card.dart';
 import '../../../auth/presentation/widgets/registration_scaffold.dart';
 import '../../data/register_fake_data.dart';
@@ -14,11 +15,13 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
     required this.selectedImagePaths,
     required this.onDocumentTap,
     required this.onSubmit,
+    this.onBackPressed,
   });
 
   final Map<String, String> selectedImagePaths;
   final ValueChanged<RegisterDocument> onDocumentTap;
   final VoidCallback onSubmit;
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,7 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
     return RegistrationScaffold(
       title: locale.registrationDocuments,
       currentStep: 3,
+      onBackPressed: onBackPressed,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -67,12 +71,11 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
             icon: Icons.info_rounded,
           ),
           const SizedBox(height: Spacing.md),
-          SizedBox(
+          AppButton(
+            text: locale.registrationSubmitRequest,
+            onPressed: onSubmit,
             height: Spacing.registrationSmallButtonHeight,
-            child: ElevatedButton(
-              onPressed: onSubmit,
-              child: Text(locale.registrationSubmitRequest),
-            ),
+            borderRadius: Spacing.registrationRadius,
           ),
           const SizedBox(height: Spacing.screenV),
         ],

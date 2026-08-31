@@ -21,12 +21,14 @@ class RegisterReviewScreen extends StatelessWidget {
     required this.onDocumentTap,
     required this.onSubmit,
     required this.onBackToEdit,
+    this.onBackPressed,
   });
 
   final Map<String, String> selectedImagePaths;
   final ValueChanged<RegisterDocument> onDocumentTap;
   final VoidCallback onSubmit;
   final VoidCallback onBackToEdit;
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -37,33 +39,34 @@ class RegisterReviewScreen extends StatelessWidget {
       title: locale.registrationReviewOrder,
       subtitle: locale.registrationReviewSubtitle,
       currentStep: 4,
+      onBackPressed: onBackPressed,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           RegisterReviewCard(
             title: locale.registrationPersonalData,
             onEdit: onBackToEdit,
-            children: _personalFields(locale, review.personal),
+            rows: _personalFields(locale, review.personal),
           ),
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.xs),
           RegisterReviewCard(
             title: locale.registrationVehicleData,
             onEdit: onBackToEdit,
-            children: _vehicleFields(locale, review.vehicle),
+            rows: _vehicleFields(locale, review.vehicle),
           ),
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.xs),
           RegisterUploadedDocumentsCard(
             documents: review.documents,
             documentTitles: _documentTitles(locale),
             selectedImagePaths: selectedImagePaths,
             onDocumentTap: onDocumentTap,
           ),
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.sm),
           RegistrationNoteCard(
             text: locale.registrationReviewNote,
             icon: Icons.info_rounded,
           ),
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.sm),
           RegisterActionButtons(onSubmit: onSubmit, onBackToEdit: onBackToEdit),
           const SizedBox(height: Spacing.screenV),
         ],
@@ -71,129 +74,93 @@ class RegisterReviewScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _personalFields(
+  List<List<RegisterReviewField>> _personalFields(
     AppLocalizations locale,
     RegisterPersonalData personal,
   ) {
     return [
-      Row(
-        children: [
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationFirstName,
-              value: personal.firstName,
-            ),
-          ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationLastName,
-              value: personal.lastName,
-            ),
-          ),
-        ],
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationPhone,
-              value: personal.phone,
-            ),
-          ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationEmail,
-              value: personal.email,
-            ),
-          ),
-        ],
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationBirthDate,
-              value: personal.birthDate,
-            ),
-          ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationNationality,
-              value: personal.nationality,
-            ),
-          ),
-        ],
-      ),
-      RegisterReviewField(
-        label: locale.registrationCivilId,
-        value: personal.civilId,
-      ),
+      [
+        RegisterReviewField(
+          label: locale.registrationFirstName,
+          value: personal.firstName,
+        ),
+        RegisterReviewField(
+          label: locale.registrationLastName,
+          value: personal.lastName,
+        ),
+      ],
+      [
+        RegisterReviewField(
+          label: locale.registrationPhone,
+          value: personal.phone,
+        ),
+        RegisterReviewField(
+          label: locale.registrationEmail,
+          value: personal.email,
+        ),
+      ],
+      [
+        RegisterReviewField(
+          label: locale.registrationBirthDate,
+          value: personal.birthDate,
+        ),
+        RegisterReviewField(
+          label: locale.registrationNationality,
+          value: personal.nationality,
+        ),
+      ],
+      [
+        RegisterReviewField(
+          label: locale.registrationCivilId,
+          value: personal.civilId,
+        ),
+      ],
     ];
   }
 
-  List<Widget> _vehicleFields(
+  List<List<RegisterReviewField>> _vehicleFields(
     AppLocalizations locale,
     RegisterVehicleData vehicle,
   ) {
     return [
-      Row(
-        children: [
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationVehicleType,
-              value: locale.registrationCar,
-            ),
-          ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationVehicleModel,
-              value: vehicle.model,
-            ),
-          ),
-        ],
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationManufactureYear,
-              value: vehicle.manufactureYear,
-            ),
-          ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationPlateNumber,
-              value: vehicle.plateNumber,
-            ),
-          ),
-        ],
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationCountry,
-              value: locale.registrationKuwait,
-            ),
-          ),
-          const SizedBox(width: Spacing.md),
-          Expanded(
-            child: RegisterReviewField(
-              label: locale.registrationVehicleColor,
-              value: locale.registrationPurple,
-            ),
-          ),
-        ],
-      ),
-      RegisterReviewField(
-        label: locale.registrationOwnVehicle,
-        value: vehicle.isOwned ? locale.registrationYes : locale.registrationNo,
-      ),
+      [
+        RegisterReviewField(
+          label: locale.registrationVehicleType,
+          value: locale.registrationCar,
+        ),
+        RegisterReviewField(
+          label: locale.registrationVehicleModel,
+          value: vehicle.model,
+        ),
+      ],
+      [
+        RegisterReviewField(
+          label: locale.registrationManufactureYear,
+          value: vehicle.manufactureYear,
+        ),
+        RegisterReviewField(
+          label: locale.registrationPlateNumber,
+          value: vehicle.plateNumber,
+        ),
+      ],
+      [
+        RegisterReviewField(
+          label: locale.registrationCountry,
+          value: locale.registrationKuwait,
+        ),
+        RegisterReviewField(
+          label: locale.registrationVehicleColor,
+          value: locale.registrationPurple,
+        ),
+      ],
+      [
+        RegisterReviewField(
+          label: locale.registrationOwnVehicle,
+          value: vehicle.isOwned
+              ? locale.registrationYes
+              : locale.registrationNo,
+        ),
+      ],
     ];
   }
 

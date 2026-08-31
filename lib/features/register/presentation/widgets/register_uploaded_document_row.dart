@@ -31,13 +31,13 @@ class RegisterUploadedDocumentRow extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(Spacing.registrationRadius),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(Spacing.radiusXs),
               child: SizedBox.square(
-                dimension: Spacing.iconLg,
+                dimension: Spacing.iconMd,
                 child: selectedImagePath == null
                     ? Image.asset(document.imageAsset, fit: BoxFit.cover)
                     : Image.file(File(selectedImagePath!), fit: BoxFit.cover),
@@ -63,8 +63,8 @@ class RegisterUploadedDocumentRow extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.sm,
-                  vertical: Spacing.xs,
+                  horizontal: Spacing.xs,
+                  vertical: 2,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -72,14 +72,14 @@ class RegisterUploadedDocumentRow extends StatelessWidget {
                     Icon(
                       Icons.check_circle,
                       color: color.tertiary,
-                      size: FontSize.size10,
+                      size: FontSize.size9,
                     ),
-                    const SizedBox(width: Spacing.xs),
+                    const SizedBox(width: 2),
                     Text(
                       document.isUploaded
                           ? locale.registrationUploaded
                           : locale.registrationTapToUpload,
-                      style: getRegularStyle(
+                      style: getSemiBoldStyle(
                         color: color.tertiary,
                         fontSize: FontSize.size10,
                         height: 1.2,

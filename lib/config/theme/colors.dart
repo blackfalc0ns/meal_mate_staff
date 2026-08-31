@@ -11,7 +11,7 @@ class AppColors {
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceSoft = Color(0xFFF9F8FA);
   static const Color card = Color(0xFFFFFFFF);
-  static const Color border = Color(0xFFF1F0F5);
+  static const Color border = Color(0xFFDCDCDE);
   static const Color divider = Color(0xFFD9D1EA);
 
   static const Color textPrimary = Color(0xFF17151C);
@@ -36,9 +36,38 @@ class AppColors {
   static const Color scrim = Color(0x99000000);
   static const Color disabled = Color(0xFFE4E4E5);
 
+  static const Color accountStatusMutedText = Color(0xFF877FA5);
+  static const Color accountStatusBodyText = Color(0xFF626262);
+  static const Color accountStatusReviewSurface = Color(0xFFF9F5FB);
+  static const Color accountStatusReviewBorder = Color(0xFFE8E2F2);
+  static const Color accountStatusReviewAccent = Color(0xFFF2EBFA);
+  static const Color accountStatusHelpBorder = Color(0xFFE9E8EF);
+  static const Color accountStatusTrustSurface = Color(0xFFF6F0FB);
+  static const Color accountStatusTrustBorder = Color(0xFFF0E9F9);
+  static const Color accountStatusWarningSurface = Color(0xFFFFF6E7);
+  static const Color accountStatusWarning = Color(0xFFFCA30B);
+  static const Color accountStatusErrorSurface = Color(0xFFFFF1F1);
+  static const Color accountStatusError = Color(0xFFDE0D14);
+
   static const Color backgroundDark = Color(0xFF17151C);
   static const Color surfaceDark = Color(0xFF1B1540);
   static const Color cardDark = Color(0xFF231D4A);
   static const Color textPrimaryDark = Color(0xFFFFFFFF);
   static const Color textSecondaryDark = Color(0xFFD9D1EA);
+}
+
+extension AccountStatusColorScheme on ColorScheme {
+  Color get accountStatusMutedText => AppColors.accountStatusMutedText;
+  Color get accountStatusBodyText => AppColors.accountStatusBodyText;
+  Color get accountStatusReviewSurface => AppColors.accountStatusReviewSurface;
+  Color get accountStatusReviewBorder => AppColors.accountStatusReviewBorder;
+  Color get accountStatusReviewAccent => AppColors.accountStatusReviewAccent;
+  Color get accountStatusHelpBorder => AppColors.accountStatusHelpBorder;
+  Color get accountStatusTrustSurface => AppColors.accountStatusTrustSurface;
+  Color get accountStatusTrustBorder => AppColors.accountStatusTrustBorder;
+  Color get accountStatusWarningSurface =>
+      AppColors.accountStatusWarningSurface;
+  Color get accountStatusWarning => AppColors.accountStatusWarning;
+  Color get accountStatusErrorSurface => AppColors.accountStatusErrorSurface;
+  Color get accountStatusError => AppColors.accountStatusError;
 }

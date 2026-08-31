@@ -323,4 +323,97 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registrationPurple => 'Purple';
+
+  @override
+  String get accountStatusTitle => 'Account status';
+
+  @override
+  String get accountStatusSubtitle => 'We are checking your data and documents';
+
+  @override
+  String get accountStatusAcceptedTitle => 'Your account has been accepted!';
+
+  @override
+  String get accountStatusAcceptedBody =>
+      'Your account was activated successfully\nYou can start working now';
+
+  @override
+  String get accountStatusRejectedTitle => 'Application rejected';
+
+  @override
+  String get accountStatusRejectedBody =>
+      'Sorry, your current request was not accepted\nPlease review the rejection reason below\nYou can edit the data and resubmit';
+
+  @override
+  String get accountStatusMoreInfoTitle => 'Data changes required';
+
+  @override
+  String get accountStatusMoreInfoBody =>
+      'Please update the following data\nand resend the request';
+
+  @override
+  String get accountStatusUnderReviewTitle => 'Your account is under review';
+
+  @override
+  String get accountStatusUnderReviewBody =>
+      'We are verifying your documents and information to make sure they meet\nwork requirements';
+
+  @override
+  String get accountStatusNotifyWhenApproved =>
+      'We will notify you as soon as your account is approved and you can start receiving orders';
+
+  @override
+  String get accountStatusNeedHelp => 'Need help?';
+
+  @override
+  String get accountStatusHelpSubtitle =>
+      'Support is available to answer your questions';
+
+  @override
+  String get accountStatusGetHelp => 'Get help';
+
+  @override
+  String get accountStatusTrustNote =>
+      'We appreciate your patience, and promise you a successful and safe delivery experience\nwith MealMate';
+
+  @override
+  String get accountStatusStartWork => 'Start work';
+
+  @override
+  String get accountStatusBackToLogin => 'Back to login';
+
+  @override
+  String get accountStatusResubmit => 'Resubmit';
+
+  @override
+  String get accountStatusEditAndResend => 'Edit and resend';
+
+  @override
+  String get accountStatusRejectionReason => 'Rejection reason';
+
+  @override
+  String get accountStatusChangeReason => 'Reason for requested changes';
+
+  @override
+  String get accountStatusReasonCivilIdMismatch =>
+      'Civil ID does not match the submitted data';
+
+  @override
+  String get accountStatusReasonDrivingLicenseExpired =>
+      'Driving license validity date has expired';
+
+  @override
+  String get accountStatusReasonVehicleRegistrationUnclear =>
+      'Vehicle registration photo is unclear';
+
+  @override
+  String get accountStatusReasonDrivingLicenseUnclear =>
+      'Driving license is unclear';
+
+  @override
+  String get accountStatusReasonVehicleRegistrationExpired =>
+      'Vehicle registration is expired';
+
+  @override
+  String get accountStatusPendingChip => 'Pending review';
 }

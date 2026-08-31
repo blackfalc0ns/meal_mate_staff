@@ -18,6 +18,9 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.height,
     this.borderRadius,
+    this.padding,
+    this.iconSize,
+    this.iconGap,
     this.color,
     this.textColor,
     this.textStyle,
@@ -31,6 +34,9 @@ class AppButton extends StatelessWidget {
   final IconData? icon;
   final double? height;
   final double? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final double? iconSize;
+  final double? iconGap;
   final Color? color;
   final Color? textColor;
   final TextStyle? textStyle;
@@ -54,6 +60,8 @@ class AppButton extends StatelessWidget {
                     ? AppColors.textOnPrimary
                     : effectiveColor),
             textStyle: textStyle,
+            iconSize: iconSize,
+            iconGap: iconGap,
           );
 
     final button = switch (variant) {
@@ -62,6 +70,8 @@ class AppButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: effectiveColor,
           foregroundColor: AppColors.textOnPrimary,
+          minimumSize: Size(isExpanded ? double.infinity : 0, buttonHeight),
+          padding: padding,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
           ),
@@ -72,6 +82,8 @@ class AppButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: effectiveColor,
+          minimumSize: Size(isExpanded ? double.infinity : 0, buttonHeight),
+          padding: padding,
           side: BorderSide(color: effectiveColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
@@ -81,6 +93,10 @@ class AppButton extends StatelessWidget {
       ),
       AppButtonVariant.text => TextButton(
         onPressed: isLoading ? null : onPressed,
+        style: TextButton.styleFrom(
+          minimumSize: Size(isExpanded ? double.infinity : 0, buttonHeight),
+          padding: padding,
+        ),
         child: child,
       ),
     };
@@ -99,12 +115,16 @@ class _ButtonContent extends StatelessWidget {
     required this.color,
     this.icon,
     this.textStyle,
+    this.iconSize,
+    this.iconGap,
   });
 
   final String text;
   final Color color;
   final IconData? icon;
   final TextStyle? textStyle;
+  final double? iconSize;
+  final double? iconGap;
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +144,8 @@ class _ButtonContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, size: Spacing.iconMd, color: color),
-        const SizedBox(width: Spacing.sm),
+        Icon(icon, size: iconSize ?? Spacing.iconMd, color: color),
+        SizedBox(width: iconGap ?? Spacing.sm),
         Flexible(
           child: Text(text, style: style, textAlign: TextAlign.center),
         ),

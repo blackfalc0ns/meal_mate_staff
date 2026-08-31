@@ -4,6 +4,7 @@ import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/widget/app_button.dart';
 
 class RegisterActionButtons extends StatelessWidget {
   const RegisterActionButtons({
@@ -23,41 +24,30 @@ class RegisterActionButtons extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(
-          height: Spacing.registrationButtonHeight,
-          child: ElevatedButton(
-            onPressed: onSubmit,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color.primary,
-              foregroundColor: color.onPrimary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Spacing.registrationRadius),
-              ),
-              textStyle: getBoldStyle(
-                color: color.onPrimary,
-                fontSize: FontSize.size13,
-              ),
-            ),
-            child: Text(locale.registrationSubmitRequest),
+        AppButton(
+          text: locale.registrationSubmitRequest,
+          onPressed: onSubmit,
+          height: Spacing.xxl,
+          borderRadius: Spacing.registrationRadius,
+          color: color.primary,
+          textColor: color.onPrimary,
+          textStyle: getBoldStyle(
+            color: color.onPrimary,
+            fontSize: FontSize.size10,
           ),
         ),
         const SizedBox(height: Spacing.sm),
-        SizedBox(
-          height: Spacing.registrationButtonHeight,
-          child: OutlinedButton(
-            onPressed: onBackToEdit,
-            style: OutlinedButton.styleFrom(
-              foregroundColor: color.primary,
-              side: BorderSide(color: color.primary),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Spacing.registrationRadius),
-              ),
-              textStyle: getBoldStyle(
-                color: color.primary,
-                fontSize: FontSize.size13,
-              ),
-            ),
-            child: Text(locale.registrationBackToEdit),
+        AppButton(
+          text: locale.registrationBackToEdit,
+          onPressed: onBackToEdit,
+          variant: AppButtonVariant.outlined,
+          height: Spacing.xxl,
+          borderRadius: Spacing.registrationRadius,
+          color: color.primary,
+          textColor: color.primary,
+          textStyle: getBoldStyle(
+            color: color.primary,
+            fontSize: FontSize.size10,
           ),
         ),
       ],

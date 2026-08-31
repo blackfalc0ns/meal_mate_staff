@@ -88,6 +88,9 @@ class AppTheme {
         backgroundColor: AppColors.transparent,
         centerTitle: true,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        shadowColor: AppColors.transparent,
+        surfaceTintColor: AppColors.transparent,
         foregroundColor: colorScheme.onSurface,
         iconTheme: IconThemeData(color: colorScheme.onSurface),
         titleTextStyle: getSemiBoldStyle(

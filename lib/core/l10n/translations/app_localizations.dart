@@ -709,6 +709,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Purple'**
   String get registrationPurple;
+
+  /// No description provided for @accountStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account status'**
+  String get accountStatusTitle;
+
+  /// No description provided for @accountStatusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We are checking your data and documents'**
+  String get accountStatusSubtitle;
+
+  /// No description provided for @accountStatusAcceptedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been accepted!'**
+  String get accountStatusAcceptedTitle;
+
+  /// No description provided for @accountStatusAcceptedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was activated successfully\nYou can start working now'**
+  String get accountStatusAcceptedBody;
+
+  /// No description provided for @accountStatusRejectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Application rejected'**
+  String get accountStatusRejectedTitle;
+
+  /// No description provided for @accountStatusRejectedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, your current request was not accepted\nPlease review the rejection reason below\nYou can edit the data and resubmit'**
+  String get accountStatusRejectedBody;
+
+  /// No description provided for @accountStatusMoreInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data changes required'**
+  String get accountStatusMoreInfoTitle;
+
+  /// No description provided for @accountStatusMoreInfoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please update the following data\nand resend the request'**
+  String get accountStatusMoreInfoBody;
+
+  /// No description provided for @accountStatusUnderReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is under review'**
+  String get accountStatusUnderReviewTitle;
+
+  /// No description provided for @accountStatusUnderReviewBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We are verifying your documents and information to make sure they meet\nwork requirements'**
+  String get accountStatusUnderReviewBody;
+
+  /// No description provided for @accountStatusNotifyWhenApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'We will notify you as soon as your account is approved and you can start receiving orders'**
+  String get accountStatusNotifyWhenApproved;
+
+  /// No description provided for @accountStatusNeedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Need help?'**
+  String get accountStatusNeedHelp;
+
+  /// No description provided for @accountStatusHelpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support is available to answer your questions'**
+  String get accountStatusHelpSubtitle;
+
+  /// No description provided for @accountStatusGetHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Get help'**
+  String get accountStatusGetHelp;
+
+  /// No description provided for @accountStatusTrustNote.
+  ///
+  /// In en, this message translates to:
+  /// **'We appreciate your patience, and promise you a successful and safe delivery experience\nwith MealMate'**
+  String get accountStatusTrustNote;
+
+  /// No description provided for @accountStatusStartWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Start work'**
+  String get accountStatusStartWork;
+
+  /// No description provided for @accountStatusBackToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to login'**
+  String get accountStatusBackToLogin;
+
+  /// No description provided for @accountStatusResubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Resubmit'**
+  String get accountStatusResubmit;
+
+  /// No description provided for @accountStatusEditAndResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit and resend'**
+  String get accountStatusEditAndResend;
+
+  /// No description provided for @accountStatusRejectionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejection reason'**
+  String get accountStatusRejectionReason;
+
+  /// No description provided for @accountStatusChangeReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for requested changes'**
+  String get accountStatusChangeReason;
+
+  /// No description provided for @accountStatusReasonCivilIdMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Civil ID does not match the submitted data'**
+  String get accountStatusReasonCivilIdMismatch;
+
+  /// No description provided for @accountStatusReasonDrivingLicenseExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving license validity date has expired'**
+  String get accountStatusReasonDrivingLicenseExpired;
+
+  /// No description provided for @accountStatusReasonVehicleRegistrationUnclear.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle registration photo is unclear'**
+  String get accountStatusReasonVehicleRegistrationUnclear;
+
+  /// No description provided for @accountStatusReasonDrivingLicenseUnclear.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving license is unclear'**
+  String get accountStatusReasonDrivingLicenseUnclear;
+
+  /// No description provided for @accountStatusReasonVehicleRegistrationExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle registration is expired'**
+  String get accountStatusReasonVehicleRegistrationExpired;
+
+  /// No description provided for @accountStatusPendingChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending review'**
+  String get accountStatusPendingChip;
 }
 
 class _AppLocalizationsDelegate

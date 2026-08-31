@@ -1,0 +1,1 @@
+enum AccountStatusReasonTone { warning, error }

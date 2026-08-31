@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../config/theme/font_manager.dart';
-import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/extensions/extensions.dart';
 
@@ -21,17 +20,18 @@ class RegisterReviewField extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           label,
-          style: getRegularStyle(
+          style: getMediumStyle(
             color: color.onSurfaceVariant,
             fontSize: FontSize.size10,
             height: 1.4,
           ),
           textAlign: TextAlign.start,
         ),
-        const SizedBox(height: Spacing.xs),
+        const SizedBox(height: 4),
         Text(
           value,
           style: getSemiBoldStyle(

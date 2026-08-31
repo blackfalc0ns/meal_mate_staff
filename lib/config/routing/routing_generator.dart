@@ -4,6 +4,9 @@ import '../../features/auth/data/auth_fake_data.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/account_status/domain/account_status_kind.dart';
+import '../../features/account_status/presentation/screens/account_status_preview_screen.dart';
+import '../../features/account_status/presentation/screens/account_status_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -21,6 +24,13 @@ class RouteGenerator {
         target: AuthFakeData.emailVerificationTarget,
       ),
       AppRoutes.register => (_) => const RegisterScreen(),
+      AppRoutes.accountStatus => (_) => AccountStatusScreen(
+        kind: settings.arguments is AccountStatusKind
+            ? settings.arguments! as AccountStatusKind
+            : AccountStatusKind.underReview,
+      ),
+      AppRoutes.accountStatusPreview =>
+        (_) => const AccountStatusPreviewScreen(),
       _ => (_) => const SplashScreen(),
     };
 

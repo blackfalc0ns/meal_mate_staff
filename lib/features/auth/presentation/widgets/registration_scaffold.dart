@@ -4,6 +4,7 @@ import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/widget/custom_app_bar.dart';
 import 'registration_step_progress.dart';
 
 class RegistrationScaffold extends StatelessWidget {
@@ -13,11 +14,13 @@ class RegistrationScaffold extends StatelessWidget {
     required this.child,
     this.subtitle,
     this.currentStep,
+    this.onBackPressed,
   });
 
   final String title;
   final String? subtitle;
   final int? currentStep;
+  final VoidCallback? onBackPressed;
   final Widget child;
 
   @override
@@ -25,27 +28,16 @@ class RegistrationScaffold extends StatelessWidget {
     final color = context.colorScheme;
 
     return Scaffold(
+      appBar: CustomAppBar(title: title, onBackPressed: onBackPressed),
       backgroundColor: color.surface,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: subtitle == null ? Spacing.xxl : Spacing.md),
-              Text(
-                title,
-                style: getBoldStyle(
-                  color: color.onSurface,
-                  fontSize: subtitle == null
-                      ? FontSize.size18
-                      : FontSize.size14,
-                  height: 1.2,
-                ),
-                textAlign: TextAlign.center,
-              ),
               if (subtitle != null) ...[
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: Spacing.md),
                 Text(
                   subtitle!,
                   style: getRegularStyle(
@@ -57,11 +49,11 @@ class RegistrationScaffold extends StatelessWidget {
                 ),
               ],
               if (currentStep != null) ...[
-                const SizedBox(height: Spacing.xxl),
+                SizedBox(height: subtitle == null ? Spacing.xxl : Spacing.md),
                 RegistrationStepProgress(currentStep: currentStep!),
               ],
               const SizedBox(height: Spacing.base),
-              child,
+              Expanded(child: SingleChildScrollView(child: child)),
             ],
           ),
         ),

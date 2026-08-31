@@ -27,4 +27,12 @@ class AppAssets {
       '$_authImages/registration_license_sample.png';
   static const String registrationVehicleSample =
       '$_authImages/registration_vehicle_sample.png';
+  static const String accountStatusAccepted =
+      '$_authImages/account_status_accepted.png';
+  static const String accountStatusRejected =
+      '$_authImages/account_status_rejected.png';
+  static const String accountStatusMoreInfo =
+      '$_authImages/account_status_more_info.png';
+  static const String accountStatusUnderReview =
+      '$_authImages/account_status_under_review.png';
 }

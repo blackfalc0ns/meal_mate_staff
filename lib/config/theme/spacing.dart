@@ -69,4 +69,28 @@ class Spacing {
   static const double registrationDocumentUploadIcon = 28;
   static const double registrationReviewCardRadius = 7;
   static const double registrationRadius = 8;
+
+  static const double accountStatusLogoTop = 38;
+  static const double accountStatusResultImageTop = 58;
+  static const double accountStatusResultImageWidth = 351;
+  static const double accountStatusResultImageHeight = 235;
+  static const double accountStatusAcceptedContentTop = 53;
+  static const double accountStatusContentTop = 31;
+  static const double accountStatusReasonTop = 30;
+  static const double accountStatusReasonPanelRadius = 14.7;
+  static const double accountStatusReasonPanelPaddingTop = 24;
+  static const double accountStatusReasonPanelPaddingHorizontal = 21;
+  static const double accountStatusReasonBullet = 6;
+  static const double accountStatusButtonTop = 23;
+  static const double accountStatusButtonGap = 16;
+  static const double accountStatusButtonHeight = 40;
+  static const double accountStatusButtonRadius = 12;
+  static const double accountStatusUnderReviewCardRadius = 25;
+  static const double accountStatusUnderReviewCardHeight = 317;
+  static const double accountStatusUnderReviewImageWidth = 320;
+  static const double accountStatusUnderReviewImageHeight = 166;
+  static const double accountStatusHelpCardHeight = 94;
+  static const double accountStatusHelpButtonHeight = 28;
+  static const double accountStatusHelpIconSize = 39;
+  static const double accountStatusTrustNoteHeight = 39;
 }
