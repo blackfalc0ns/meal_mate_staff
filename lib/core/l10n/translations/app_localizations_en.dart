@@ -54,6 +54,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginWithOtp => 'Sign in with verification code';
 
   @override
+  String get createAccount => 'Create account';
+
+  @override
   String get needHelp => 'Need help?';
 
   @override
@@ -201,6 +204,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registrationKuwait => 'Kuwait';
 
   @override
+  String get registrationCountry => 'Country';
+
+  @override
   String get registrationVehicleColor => 'Vehicle color';
 
   @override
@@ -267,6 +273,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registrationUploaded => 'Uploaded';
 
   @override
+  String get registrationRequired => 'Required';
+
+  @override
   String get registrationReviewNote =>
       'Our team will review your request\nOnce accepted, your account will be activated and you will be notified.';
 
@@ -293,4 +302,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registrationSampleCivilId => '287041812345';
+
+  @override
+  String get registrationUploadedDocuments => 'Uploaded documents';
+
+  @override
+  String get registrationCamera => 'Camera';
+
+  @override
+  String get registrationGallery => 'Gallery';
+
+  @override
+  String get registrationTapToUpload => 'Tap to upload';
+
+  @override
+  String get registrationUploadFormats => 'JPG, PNG, PDF';
+
+  @override
+  String get registrationCar => 'Car';
+
+  @override
+  String get registrationPurple => 'Purple';
 }

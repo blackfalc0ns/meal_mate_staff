@@ -15,7 +15,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get splashHeadline => 'رفيقك في كل توصيل';
 
   @override
-  String get splashSubtitle => 'نقدم الأفضل، معا كل يوم';
+  String get splashSubtitle => 'نقدم الأفضل، معًا كل يوم';
 
   @override
   String get loading => 'جاري التحميل...';
@@ -52,6 +52,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loginWithOtp => 'تسجيل الدخول برمز التحقق';
+
+  @override
+  String get createAccount => 'إنشاء الحساب';
 
   @override
   String get needHelp => 'تحتاج مساعدة؟';
@@ -126,158 +129,162 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registrationDefaultRole => 'افتراضي';
 
   @override
-  String get registrationReviewSubtitle => 'Review your data before submitting';
+  String get registrationReviewSubtitle => 'راجع بياناتك قبل الإرسال';
 
   @override
-  String get registrationFirstName => 'First name';
+  String get registrationFirstName => 'الاسم الأول';
 
   @override
-  String get registrationFirstNameHint => 'Enter first name';
+  String get registrationFirstNameHint => 'أدخل الاسم الأول';
 
   @override
-  String get registrationLastName => 'Last name';
+  String get registrationLastName => 'اسم العائلة';
 
   @override
-  String get registrationLastNameHint => 'Enter last name';
+  String get registrationLastNameHint => 'أدخل اسم العائلة';
 
   @override
-  String get registrationPhone => 'Phone number';
+  String get registrationPhone => 'رقم الهاتف';
 
   @override
-  String get registrationPhoneHint => 'Enter phone number';
+  String get registrationPhoneHint => 'أدخل رقم الهاتف';
 
   @override
-  String get registrationEmail => 'Email';
+  String get registrationEmail => 'البريد الإلكتروني';
 
   @override
-  String get registrationEmailHint => 'Enter email';
+  String get registrationEmailHint => 'أدخل البريد الإلكتروني';
 
   @override
-  String get registrationBirthDate => 'Birth date';
+  String get registrationBirthDate => 'تاريخ الميلاد';
 
   @override
-  String get registrationBirthDateHint => 'Choose birth date';
+  String get registrationBirthDateHint => 'اختر تاريخ الميلاد';
 
   @override
-  String get registrationNationality => 'Nationality';
+  String get registrationNationality => 'الجنسية';
 
   @override
-  String get registrationNationalityHint => 'Choose nationality';
+  String get registrationNationalityHint => 'اختر الجنسية';
 
   @override
-  String get registrationCivilId => 'Civil ID';
+  String get registrationCivilId => 'الرقم المدني';
 
   @override
-  String get registrationCivilIdHint => 'Enter civil ID';
+  String get registrationCivilIdHint => 'أدخل الرقم المدني';
 
   @override
-  String get registrationContinue => 'Continue';
+  String get registrationContinue => 'متابعة';
 
   @override
-  String get registrationVehicleType => 'Vehicle type';
+  String get registrationVehicleType => 'نوع المركبة';
 
   @override
-  String get registrationVehicleTypeHint => 'Choose vehicle type';
+  String get registrationVehicleTypeHint => 'اختر نوع المركبة';
 
   @override
-  String get registrationVehicleModel => 'Company / model';
+  String get registrationVehicleModel => 'الشركة/الموديل';
 
   @override
-  String get registrationVehicleModelHint => 'Choose company / model';
+  String get registrationVehicleModelHint => 'اختر الشركة/الموديل';
 
   @override
-  String get registrationManufactureYear => 'Manufacture year';
+  String get registrationManufactureYear => 'سنة الصنع';
 
   @override
-  String get registrationManufactureYearHint => 'Choose manufacture year';
+  String get registrationManufactureYearHint => 'اختر سنة الصنع';
 
   @override
-  String get registrationPlateNumber => 'Plate number';
+  String get registrationPlateNumber => 'رقم اللوحة';
 
   @override
-  String get registrationPlateNumberHint => 'Enter plate number';
+  String get registrationPlateNumberHint => 'أدخل رقم اللوحة';
 
   @override
-  String get registrationKuwait => 'Kuwait';
+  String get registrationKuwait => 'الكويت';
 
   @override
-  String get registrationVehicleColor => 'Vehicle color';
+  String get registrationCountry => 'الدولة';
 
   @override
-  String get registrationOther => 'Other';
+  String get registrationVehicleColor => 'لون المركبة';
 
   @override
-  String get registrationOwnVehicle => 'Do you own the vehicle?';
+  String get registrationOther => 'أخرى';
 
   @override
-  String get registrationYes => 'Yes';
+  String get registrationOwnVehicle => 'المركبة ملكك؟';
 
   @override
-  String get registrationNo => 'No';
+  String get registrationYes => 'نعم';
 
   @override
-  String get registrationCivilCard => 'Civil card';
+  String get registrationNo => 'لا';
+
+  @override
+  String get registrationCivilCard => 'البطاقة المدنية';
 
   @override
   String get registrationCivilCardSubtitle =>
-      'Clear photo of a valid civil card';
+      'صورة واضحة للبطاقة المدنية السارية';
 
   @override
-  String get registrationDrivingLicense => 'Driving license';
+  String get registrationDrivingLicense => 'رخصة القيادة';
 
   @override
   String get registrationDrivingLicenseSubtitle =>
-      'Clear photo of a valid driving license';
+      'صورة واضحة لرخصة القيادة السارية';
 
   @override
-  String get registrationCarRegistration => 'Car registration';
+  String get registrationCarRegistration => 'استمارة السيارة';
 
   @override
   String get registrationCarRegistrationSubtitle =>
-      'Front side of the car registration';
+      'الوجه الأمامي لاستمارة السيارة';
 
   @override
-  String get registrationVehiclePhoto => 'Vehicle photo';
+  String get registrationVehiclePhoto => 'صورة المركبة';
 
   @override
-  String get registrationVehiclePhotoSubtitle =>
-      'Clear exterior photo of the vehicle';
+  String get registrationVehiclePhotoSubtitle => 'صورة خارجية واضحة للمركبة';
 
   @override
-  String get registrationPersonalPhoto => 'Personal photo';
+  String get registrationPersonalPhoto => 'صورة شخصية';
 
   @override
-  String get registrationPersonalPhotoSubtitle =>
-      'Personal photo with clear background';
+  String get registrationPersonalPhotoSubtitle => 'صورة شخصية بخلفية واضحة';
 
   @override
-  String get registrationImportantNote => 'Important note';
+  String get registrationImportantNote => 'ملاحظة مهمة';
 
   @override
   String get registrationUploadNote =>
-      'Our team will review and verify your documents\nYou will be notified within 24-48 business hours.';
+      'سيقوم فريقنا بمراجعة مستنداتك والتحقق منها\nسيتم إشعارك خلال 24-48 ساعة عمل.';
 
   @override
-  String get registrationSubmitRequest => 'Submit acceptance request';
+  String get registrationSubmitRequest => 'إرسال طلب القبول';
 
   @override
-  String get registrationEdit => 'Edit';
+  String get registrationEdit => 'تعديل';
 
   @override
-  String get registrationUploaded => 'Uploaded';
+  String get registrationUploaded => 'تم الرفع';
+
+  @override
+  String get registrationRequired => 'مطلوب';
 
   @override
   String get registrationReviewNote =>
-      'Our team will review your request\nOnce accepted, your account will be activated and you will be notified.';
+      'سيتم مراجعة طلبك من فريقنا\nوعند القبول سيتم تفعيل الحساب وإشعارك فوراً';
 
   @override
-  String get registrationBackToEdit => 'Back to edit';
+  String get registrationBackToEdit => 'الرجوع للتعديل';
 
   @override
-  String get registrationSampleFirstName => 'Ahmad';
+  String get registrationSampleFirstName => 'أحمد';
 
   @override
-  String get registrationSampleLastName => 'Al Sayed';
+  String get registrationSampleLastName => 'السيد';
 
   @override
   String get registrationSampleEmail => 'ahmad.driver@mail.com';
@@ -289,8 +296,29 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registrationSampleBirthDate => '1996/04/18';
 
   @override
-  String get registrationSampleNationality => 'Kuwaiti';
+  String get registrationSampleNationality => 'كويتي';
 
   @override
   String get registrationSampleCivilId => '287041812345';
+
+  @override
+  String get registrationUploadedDocuments => 'المستندات المرفوعة';
+
+  @override
+  String get registrationCamera => 'الكاميرا';
+
+  @override
+  String get registrationGallery => 'المعرض';
+
+  @override
+  String get registrationTapToUpload => 'اضغط للرفع';
+
+  @override
+  String get registrationUploadFormats => 'JPG, PNG, PDF';
+
+  @override
+  String get registrationCar => 'سيارة';
+
+  @override
+  String get registrationPurple => 'بنفسجي';
 }

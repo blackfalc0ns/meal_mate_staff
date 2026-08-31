@@ -14,6 +14,7 @@
   "login": "Sign in",
   "or": "or",
   "loginWithOtp": "Sign in with verification code",
+  "createAccount": "Create account",
   "needHelp": "Need help?",
   "getHelp": "Get help",
   "helpSubtitle": "Support is available around the clock",
@@ -62,6 +63,7 @@
   "registrationPlateNumber": "Plate number",
   "registrationPlateNumberHint": "Enter plate number",
   "registrationKuwait": "Kuwait",
+  "registrationCountry": "Country",
   "registrationVehicleColor": "Vehicle color",
   "registrationOther": "Other",
   "registrationOwnVehicle": "Do you own the vehicle?",
@@ -82,6 +84,7 @@
   "registrationSubmitRequest": "Submit acceptance request",
   "registrationEdit": "Edit",
   "registrationUploaded": "Uploaded",
+  "registrationRequired": "Required",
   "registrationReviewNote": "Our team will review your request\nOnce accepted, your account will be activated and you will be notified.",
   "registrationBackToEdit": "Back to edit",
   "registrationSampleFirstName": "Ahmad",
@@ -90,5 +93,12 @@
   "registrationSamplePhone": "+962 7 9123 4567",
   "registrationSampleBirthDate": "1996/04/18",
   "registrationSampleNationality": "Kuwaiti",
-  "registrationSampleCivilId": "287041812345"
+  "registrationSampleCivilId": "287041812345",
+  "registrationUploadedDocuments": "Uploaded documents",
+  "registrationCamera": "Camera",
+  "registrationGallery": "Gallery",
+  "registrationTapToUpload": "Tap to upload",
+  "registrationUploadFormats": "JPG, PNG, PDF",
+  "registrationCar": "Car",
+  "registrationPurple": "Purple"
 }

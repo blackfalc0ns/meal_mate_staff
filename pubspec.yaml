@@ -43,6 +43,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   shared_preferences: ^2.5.5
   pinput: ^6.0.2
+  image_picker: ^1.2.3
 
 dev_dependencies:
   flutter_test:

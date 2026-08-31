@@ -188,6 +188,12 @@ abstract class AppLocalizations {
   /// **'Sign in with verification code'**
   String get loginWithOtp;
 
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get createAccount;
+
   /// No description provided for @needHelp.
   ///
   /// In en, this message translates to:
@@ -476,6 +482,12 @@ abstract class AppLocalizations {
   /// **'Kuwait'**
   String get registrationKuwait;
 
+  /// No description provided for @registrationCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get registrationCountry;
+
   /// No description provided for @registrationVehicleColor.
   ///
   /// In en, this message translates to:
@@ -596,6 +608,12 @@ abstract class AppLocalizations {
   /// **'Uploaded'**
   String get registrationUploaded;
 
+  /// No description provided for @registrationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get registrationRequired;
+
   /// No description provided for @registrationReviewNote.
   ///
   /// In en, this message translates to:
@@ -649,6 +667,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'287041812345'**
   String get registrationSampleCivilId;
+
+  /// No description provided for @registrationUploadedDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded documents'**
+  String get registrationUploadedDocuments;
+
+  /// No description provided for @registrationCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get registrationCamera;
+
+  /// No description provided for @registrationGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get registrationGallery;
+
+  /// No description provided for @registrationTapToUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to upload'**
+  String get registrationTapToUpload;
+
+  /// No description provided for @registrationUploadFormats.
+  ///
+  /// In en, this message translates to:
+  /// **'JPG, PNG, PDF'**
+  String get registrationUploadFormats;
+
+  /// No description provided for @registrationCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get registrationCar;
+
+  /// No description provided for @registrationPurple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get registrationPurple;
 }
 
 class _AppLocalizationsDelegate

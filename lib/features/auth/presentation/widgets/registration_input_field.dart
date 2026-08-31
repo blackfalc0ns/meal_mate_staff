@@ -11,12 +11,16 @@ class RegistrationInputField extends StatelessWidget {
     required this.label,
     required this.hint,
     this.prefix,
+    this.prefixIcon,
+    this.suffixIcon,
     this.isPicker = false,
   });
 
   final String label;
   final String hint;
   final String? prefix;
+  final IconData? prefixIcon;
+  final IconData? suffixIcon;
   final bool isPicker;
 
   @override
@@ -32,12 +36,12 @@ class RegistrationInputField extends StatelessWidget {
             label,
             style: getBoldStyle(
               color: color.onSurface,
-              fontSize: FontSize.size11,
+              fontSize: FontSize.size12,
               height: 1.2,
             ),
             textAlign: TextAlign.start,
           ),
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.sm),
           Row(
             children: [
               if (prefix != null) ...[
@@ -71,21 +75,34 @@ class RegistrationInputField extends StatelessWidget {
                   child: TextFormField(
                     readOnly: isPicker,
                     textAlign: TextAlign.start,
-                    style: getRegularStyle(
+                    style: getMediumStyle(
                       color: color.onSurface,
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size12,
                     ),
                     decoration: InputDecoration(
                       hintText: hint,
-                      hintStyle: getRegularStyle(
+                      hintStyle: getMediumStyle(
                         color: color.onSurfaceVariant,
-                        fontSize: FontSize.size11,
+                        fontSize: FontSize.size12,
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: Spacing.md,
                         vertical: Spacing.sm,
                       ),
-                      suffixIcon: isPicker
+                      prefixIcon: prefixIcon == null
+                          ? null
+                          : Icon(
+                              prefixIcon,
+                              color: color.onSurfaceVariant,
+                              size: Spacing.iconMd,
+                            ),
+                      suffixIcon: suffixIcon != null
+                          ? Icon(
+                              suffixIcon,
+                              color: color.onSurfaceVariant,
+                              size: Spacing.iconMd,
+                            )
+                          : isPicker
                           ? Icon(
                               Icons.keyboard_arrow_down_rounded,
                               color: color.onSurfaceVariant,

@@ -60,6 +60,13 @@ class Spacing {
   static const double registrationDocumentCardHeight = 84;
   static const double registrationDocumentImageWidth = 117;
   static const double registrationDocumentImageHeight = 71;
+  static const double registrationDocumentCardGap = 6;
+  static const double registrationDocumentCardRadius = 10;
+  static const double registrationDocumentCardHorizontal = 9;
+  static const double registrationDocumentBadgeHeight = 17;
+  static const double registrationDocumentUploadRadius = 9;
+  static const double registrationDocumentUploadDash = 3;
+  static const double registrationDocumentUploadIcon = 28;
   static const double registrationReviewCardRadius = 7;
   static const double registrationRadius = 8;
 }

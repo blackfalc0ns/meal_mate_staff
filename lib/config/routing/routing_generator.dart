@@ -4,6 +4,7 @@ import '../../features/auth/data/auth_fake_data.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
 class RouteGenerator {
@@ -19,6 +20,7 @@ class RouteGenerator {
       AppRoutes.verifyEmailOtp => (_) => const OtpVerificationScreen.email(
         target: AuthFakeData.emailVerificationTarget,
       ),
+      AppRoutes.register => (_) => const RegisterScreen(),
       _ => (_) => const SplashScreen(),
     };
 

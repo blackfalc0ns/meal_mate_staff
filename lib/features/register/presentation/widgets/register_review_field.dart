@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+
+import '../../../../config/theme/font_manager.dart';
+import '../../../../config/theme/spacing.dart';
+import '../../../../config/theme/styles_manager.dart';
+import '../../../../core/extensions/extensions.dart';
+
+class RegisterReviewField extends StatelessWidget {
+  const RegisterReviewField({
+    super.key,
+    required this.label,
+    required this.value,
+  });
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: getRegularStyle(
+            color: color.onSurfaceVariant,
+            fontSize: FontSize.size10,
+            height: 1.4,
+          ),
+          textAlign: TextAlign.start,
+        ),
+        const SizedBox(height: Spacing.xs),
+        Text(
+          value,
+          style: getSemiBoldStyle(
+            color: color.onSurface,
+            fontSize: FontSize.size10,
+            height: 1.3,
+          ),
+          textAlign: TextAlign.start,
+        ),
+      ],
+    );
+  }
+}

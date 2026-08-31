@@ -104,6 +104,14 @@ class LoginScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: Spacing.sm),
+                AuthSecondaryButton(
+                  text: locale.createAccount,
+                  leadingIcon: Icons.person_add_alt_1_outlined,
+                  onPressed: () {
+                    context.pushNamed(AppRoutes.register);
+                  },
+                ),
+                const SizedBox(height: Spacing.sm),
                 AuthHelpCard(
                   title: locale.needHelp,
                   subtitle: locale.helpSubtitle,
