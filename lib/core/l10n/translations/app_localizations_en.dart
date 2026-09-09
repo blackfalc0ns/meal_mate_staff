@@ -762,4 +762,85 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get supportInfoBannerText =>
       'You can contact the driver directly from the issue details to resolve it quickly';
+
+  @override
+  String get issueDetailsTitle => 'Problem Details';
+
+  @override
+  String get issueDetailsUrgent => 'Urgent';
+
+  @override
+  String issueDetailsReportedMinutesAgo(int minutes) {
+    return 'Reported $minutes minutes ago';
+  }
+
+  @override
+  String get issueDetailsTaskNumber => 'Task Number';
+
+  @override
+  String get issueDetailsArea => 'Area';
+
+  @override
+  String get issueDetailsAffectedBoxes => 'Affected Boxes';
+
+  @override
+  String issueDetailsBoxesCount(int count) {
+    return '$count Boxes';
+  }
+
+  @override
+  String get issueDetailsPriority => 'Issue Priority';
+
+  @override
+  String get issueDetailsPriorityHigh => 'High';
+
+  @override
+  String get issueDetailsDriverData => 'Driver Info';
+
+  @override
+  String get issueDetailsStatusNow => 'Current Status';
+
+  @override
+  String get issueDetailsStatusOnline => 'Online';
+
+  @override
+  String get issueDetailsOnMission => 'On Mission';
+
+  @override
+  String get issueDetailsDescriptionTitle => 'Problem Description';
+
+  @override
+  String get issueDetailsAttachmentsTitle => 'Attachments / Uploaded Image';
+
+  @override
+  String get issueDetailsTripInfoTitle => 'Trip / Order Information';
+
+  @override
+  String get issueDetailsClient => 'Client';
+
+  @override
+  String get issueDetailsMealsCount => 'Meals Count';
+
+  @override
+  String issueDetailsMealsCountValue(int count) {
+    return '$count Meals';
+  }
+
+  @override
+  String get issueDetailsExpectedDeliveryTime => 'Estimated Delivery Time';
+
+  @override
+  String get issueDetailsPickupLocation => 'Pickup Location';
+
+  @override
+  String get issueDetailsDropoffLocation => 'Delivery Location';
+
+  @override
+  String get issueDetailsQuickActions => 'Quick Actions';
+
+  @override
+  String get issueDetailsAssignReplacementDriver => 'Assign Replacement Driver';
+
+  @override
+  String get issueDetailsContactDriver => 'Contact Driver';
 }

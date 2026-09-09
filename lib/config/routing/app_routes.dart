@@ -13,6 +13,8 @@ class AppRoutes {
   static const String assignBox = '/assign-box';
   static const String dispatcherMap = '/dispatcher-map';
   static const String dispatcherSupport = '/dispatcher-support';
+  static const String dispatcherSupportIssueDetails =
+      '/dispatcher-support-issue-details';
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
 }

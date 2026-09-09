@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_support_issue_entity.dart';
@@ -138,9 +139,27 @@ class _DispatcherSupportScreenState extends State<DispatcherSupportScreen> {
             ...issues.map(
               (issue) => DispatcherSupportIssueCard(
                 issue: issue,
-                onViewDetails: () => widget.onViewDetails?.call(issue),
-                onAssignAlternativeDriver: () =>
-                    widget.onAssignAlternativeDriver?.call(issue),
+                onTap: () {
+                  if (widget.onViewDetails != null) {
+                    widget.onViewDetails!(issue);
+                  } else {
+                    context.pushNamed(AppRoutes.dispatcherSupportIssueDetails);
+                  }
+                },
+                onViewDetails: () {
+                  if (widget.onViewDetails != null) {
+                    widget.onViewDetails!(issue);
+                  } else {
+                    context.pushNamed(AppRoutes.dispatcherSupportIssueDetails);
+                  }
+                },
+                onAssignAlternativeDriver: () {
+                  if (widget.onAssignAlternativeDriver != null) {
+                    widget.onAssignAlternativeDriver!(issue);
+                  } else {
+                    context.pushNamed(AppRoutes.assignBox);
+                  }
+                },
               ),
             ),
             const SizedBox(height: Spacing.xs),

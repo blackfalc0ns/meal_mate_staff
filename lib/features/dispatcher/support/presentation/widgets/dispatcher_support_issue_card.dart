@@ -80,7 +80,7 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.chevron_right_rounded,
+                            Icons.chevron_left_rounded,
                             size: Spacing.iconSm,
                             color: color.onSurface,
                           ),
@@ -200,17 +200,17 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Spacer(flex: 1),
+                    const Spacer(),
                     // Left-side in RTL: Issue badges & time & box code pill
                     Expanded(
                       flex: 10,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           _buildIssueBadge(context),
-                          const SizedBox(height: Spacing.border * 2),
+                          const SizedBox(height: Spacing.border),
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Row(
@@ -221,7 +221,7 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                                   size: Spacing.iconSm,
                                   color: color.onSurfaceVariant,
                                 ),
-                                const SizedBox(width: Spacing.sm),
+                                const SizedBox(width: Spacing.xs),
                                 Text(
                                   locale.supportTimeMinutesAgo(
                                     issue.minutesAgo,
@@ -424,7 +424,7 @@ class DispatcherSupportIssueCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.xs,
+        // horizontal: Spacing.xs,
         vertical: Spacing.border,
       ),
       decoration: BoxDecoration(

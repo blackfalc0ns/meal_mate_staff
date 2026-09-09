@@ -1,0 +1,208 @@
+=== ROOT NODE: 10.12 - Problem Details (2259:7077) ===
+10.12 - Problem Details (FRAME, 390.0x907.0) [fills: #ffffff(1.00)]
+  Status bar (INSTANCE, 389.0x62.0) [pad(T:21.0,R:24.0,B:19.0,L:24.0) gap:154.0]
+    Time (FRAME, 93.5x22.0) [pad(T:1.5,R:0,B:0,L:0) gap:10.0]
+      Time (TEXT, 37.0x22.0) -> "9:41" [fills: #000000(1.00)]
+    Levels (FRAME, 93.5x22.0) [pad(T:1.0,R:1.0,B:0,L:0) gap:7.0]
+      Cellular Connection (VECTOR, 19.2x12.2) [fills: #000000(1.00)]
+      Wifi (VECTOR, 17.1x12.3) [fills: #000000(1.00)]
+      Frame (FRAME, 27.3x13.0)
+        Border (RECTANGLE, 25.0x13.0) [strokes: #000000] [radius: 4.300000190734863]
+        Cap (VECTOR, 1.3x4.1) [fills: #000000(1.00)]
+        Capacity (RECTANGLE, 21.0x9.0) [fills: #000000(1.00)] [radius: 2.5]
+  Group 20550 (GROUP, 360.0x30.8)
+    Group 10 (GROUP, 30.8x29.9)
+      Rectangle 4 (RECTANGLE, 30.8x29.9) [fills: #ffffff(1.00)] [strokes: #e4e4e4] [radius: 7.04156494140625]
+      vuesax/bold/notification (FRAME, 21.1x21.1) [fills: #ffffff(1.00)]
+        vuesax/bold/notification (GROUP, 21.1x21.1)
+          notification (GROUP, 21.1x21.1)
+            Vector (VECTOR, 13.5x15.0) [fills: #24252c(1.00)]
+            Vector (VECTOR, 5.0x1.8) [fills: #24252c(1.00)]
+            Vector (VECTOR, 21.1x21.1)
+        Group 1 (GROUP, 7.0x7.0)
+          Ellipse 28 (ELLIPSE, 7.0x7.0) [fills: #5d35c0(1.00)]
+    Group 20549 (GROUP, 30.8x30.8) [radius: 7.701712131500244]
+      Frame (FRAME, 30.8x30.8) [fills: #ffffff(1.00)] [strokes: #e4e4e4] [radius: 7.701712131500244]
+        Frame (FRAME, 23.1x23.1) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 6.7x13.5) [strokes: #111111]
+    تفاصيل المشكلة (TEXT, 104.0x19.0) -> "تفاصيل المشكلة" [fills: #000000(1.00)]
+  Group 20548 (GROUP, 360.0x134.5)
+    Rectangle 6049 (RECTANGLE, 360.0x134.5) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 8.089887619018555]
+    Group 20547 (GROUP, 360.0x117.4)
+      Line 170 (LINE, 360.0x0.0) [strokes: #efeff1]
+      Group 20404 (GROUP, 332.7x35.4)
+        Group 20396 (GROUP, 62.7x31.2)
+          رقم المهمة (TEXT, 35.0x10.0) -> "رقم المهمة" [fills: #757881(1.00)]
+          Group 20395 (GROUP, 62.7x14.0)
+            #BX-1258 (TEXT, 45.0x14.0) -> "#BX-1258" [fills: #000000(1.00)]
+            bxs:copy (FRAME, 13.1x13.1) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 7.7x7.7) [fills: #6744c2(1.00)]
+              Vector (VECTOR, 7.7x7.7) [fills: #6744c2(1.00)]
+        Group 20398 (GROUP, 42.5x32.2)
+          السالمية (TEXT, 30.0x10.0) -> "السالمية" [fills: #000000(1.00)]
+          Group 20397 (GROUP, 42.5x12.1)
+            المنطقة (TEXT, 26.0x10.0) -> "المنطقة" [fills: #757881(1.00)]
+            flowbite:map-pin-alt-solid (FRAME, 12.1x12.1) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 8.1x10.1) [fills: #6744c2(1.00)]
+        Group 20400 (GROUP, 80.0x32.7)
+          3 بوكسات (TEXT, 36.0x11.0) -> "3 بوكسات" [fills: #000000(1.00)]
+          Group 20399 (GROUP, 80.0x12.1)
+            عدد البوكسات المتأثرة (TEXT, 64.0x10.0) -> "عدد البوكسات المتأثرة" [fills: #757881(1.00)]
+            fluent:box-32-filled (FRAME, 12.1x12.1) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 10.6x10.4) [fills: #6744c2(1.00)]
+        Group 20403 (GROUP, 62.7x35.4)
+          Group 20402 (GROUP, 43.5x18.2) [radius: 7.078623294830322]
+            Rectangle 6050 (RECTANGLE, 43.5x18.2) [fills: #fce8e7(1.00)] [radius: 7.078623294830322]
+            عالية (TEXT, 18.0x11.0) -> "عالية" [fills: #dd0c14(1.00)]
+          Group 20401 (GROUP, 62.7x12.1)
+            أولوية المشكلة (TEXT, 44.0x10.0) -> "أولوية المشكلة" [fills: #757881(1.00)]
+            boxicons:flag-alt-filled (FRAME, 12.1x12.1) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 9.1x10.1) [fills: #6744c2(1.00)]
+        Line 171 (LINE, 0.0x30.3) [strokes: #efeff1]
+        Line 172 (LINE, 0.0x30.3) [strokes: #efeff1]
+        Line 173 (LINE, 0.0x30.3) [strokes: #efeff1]
+      Group 20546 (GROUP, 346.9x58.6)
+        Group 20394 (GROUP, 41.5x41.5)
+          Ellipse 1353 (ELLIPSE, 41.5x41.5) [fills: #ffe3e3(1.00)]
+          Group 20393 (GROUP, 26.3x30.8)
+            Vector (VECTOR, 8.1x8.7) [fills: #dd0c14(1.00)]
+            material-symbols:delivery-truck-speed-rounded (FRAME, 24.3x24.3) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 22.4x16.2) [fills: #dd0c14(1.00)]
+        Group 20545 (GROUP, 148.7x58.6)
+          تعطل الدراجة أثناء التوصيل (TEXT, 136.0x16.0) -> "تعطل الدراجة أثناء التوصيل" [fills: #000000(1.00)]
+          تم الأبلاغ منذ 12 دقيقة (TEXT, 81.0x12.0) -> "تم الأبلاغ منذ 12 دقيقة" [fills: #000000(1.00)]
+          Group 20544 (GROUP, 51.1x17.0)
+            Rectangle 6091 (RECTANGLE, 51.1x17.0) [fills: #ffe3e3(1.00)] [radius: 5.013927459716797]
+            Group 20411 (GROUP, 37.7x14.2)
+              عاجلة (TEXT, 20.0x11.0) -> "عاجلة" [fills: #dd0c14(1.00)]
+              material-symbols:info-rounded (FRAME, 14.2x14.2) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 11.8x11.8) [fills: #dd0c14(1.00)]
+  Group 20591 (GROUP, 360.0x99.2)
+    Rectangle 6092 (RECTANGLE, 360.0x99.2) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 7.278872013092041]
+    Group 20590 (GROUP, 332.7x80.3)
+      بيانات السائق (TEXT, 62.0x15.0) -> "بيانات السائق" [fills: #000000(1.00)]
+      Group 20551 (GROUP, 57.7x57.7)
+        Ellipse 1311 (ELLIPSE, 57.7x57.7) [fills: IMAGE]
+        Ellipse 1355 (ELLIPSE, 14.1x14.1) [fills: #29be63(1.00)]
+      Group 20554 (GROUP, 52.0x34.5)
+        أحمد السيد (TEXT, 52.0x15.0) -> "أحمد السيد" [fills: #000000(1.00)]
+        DR-2011 (TEXT, 40.0x16.0) -> "DR-2011" [fills: #6744c2(1.00)]
+      Group 20589 (GROUP, 76.0x58.5)
+        Line 182 (LINE, 0.0x52.0) [strokes: #efeff1]
+        Group 20588 (GROUP, 55.0x58.5)
+          الحالة الآن (TEXT, 37.0x13.0) -> "الحالة الآن" [fills: #757881(1.00)]
+          على المهمة (TEXT, 46.0x13.0) -> "على المهمة" [fills: #757881(1.00)]
+          Group 20587 (GROUP, 55.0x19.0)
+            Rectangle 6101 (RECTANGLE, 55.0x19.0) [fills: #dbf6e7(1.00)] [radius: 7.0]
+            Group 20586 (GROUP, 37.0x12.0)
+              متصل (TEXT, 24.0x12.0) -> "متصل" [fills: #29be63(1.00)]
+              Ellipse 1365 (ELLIPSE, 8.0x8.0) [fills: #29be63(1.00)]
+  Group 20594 (GROUP, 360.0x76.0)
+    Rectangle 6102 (RECTANGLE, 360.0x76.0) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 6.66766881942749]
+    Group 20593 (GROUP, 301.0x55.9)
+      وصف المشكلة (TEXT, 61.0x13.0) -> "وصف المشكلة" [fills: #000000(1.00)]
+      Group 20592 (GROUP, 35.7x35.7)
+        Rectangle 6103 (RECTANGLE, 35.7x35.7) [fills: #f2eff7(1.00)] [radius: 6.412213325500488]
+        solar:document-bold (FRAME, 23.8x23.8) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 17.9x19.8) [fills: #6744c2(1.00)]
+      أبلغ السائق عن عطل مفاجئ في الدراجة اثناء طريقة في تسليم الطلب، ولم يمكنه استكمال المهمة الحالية حتي وصول دعم أو سائق آخر (TEXT, 235.0x35.0) -> "أبلغ السائق عن عطل مفاجئ في الدراجة اثناء طريقة في تسليم الطلب،
+ولم يمكنه استكمال المهمة الحالية حتي وصول دعم أو سائق آخر" [fills: #757881(1.00)]
+  Group 20601 (GROUP, 360.0x113.0)
+    Rectangle 6104 (RECTANGLE, 360.0x113.0) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 6.684678554534912]
+    Group 20600 (GROUP, 259.9x97.8)
+      Group 20596 (GROUP, 126.7x81.7)
+        Rectangle 6105 (RECTANGLE, 121.2x75.3) [fills: IMAGE] [radius: 11.020408630371094]
+        Group 20595 (GROUP, 20.2x22.0)
+          Ellipse 1366 (ELLIPSE, 20.2x20.2) [fills: #6744c2(1.00)] [strokes: #ffffff]
+          1 (TEXT, 4.0x22.0) -> "1" [fills: #ffffff(1.00)]
+      Group 20597 (GROUP, 126.7x81.7)
+        Rectangle 6105 (RECTANGLE, 121.2x75.3) [fills: IMAGE] [radius: 11.020408630371094]
+        Group 20595 (GROUP, 20.2x22.0)
+          Ellipse 1366 (ELLIPSE, 20.2x20.2) [fills: #6744c2(1.00)] [strokes: #ffffff]
+          2 (TEXT, 6.0x22.0) -> "2" [fills: #ffffff(1.00)]
+      مرفقات / صورة مرفوعة (TEXT, 91.0x19.0) -> "مرفقات / صورة مرفوعة" [fills: #000000(1.00)]
+  Group 20610 (GROUP, 360.0x111.8)
+    Rectangle 6107 (RECTANGLE, 360.0x111.8) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 6.66766881942749]
+    Group 20609 (GROUP, 338.0x103.6)
+      معلومات الرحلة / الطلب (TEXT, 97.0x19.0) -> "معلومات الرحلة / الطلب" [fills: #000000(1.00)]
+      Group 20608 (GROUP, 321.6x33.0)
+        Group 20604 (GROUP, 79.1x29.9)
+          Group 20723 (GROUP, 56.0x29.9)
+            محمد الشمري (TEXT, 56.0x18.0) -> "محمد الشمري" [fills: #000000(1.00)]
+            العميل (TEXT, 26.0x19.0) -> "العميل" [fills: #757881(1.00)]
+          boxicons:user-filled (FRAME, 17.0x17.0) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 12.8x14.2) [fills: #6744c2(1.00)]
+        Group 20603 (GROUP, 70.0x32.0)
+          Group 20722 (GROUP, 44.1x32.0)
+            3 وجبات (TEXT, 35.0x21.0) -> "3 وجبات" [fills: #000000(1.00)]
+            عدد الوجبات (TEXT, 44.0x19.0) -> "عدد الوجبات" [fills: #757881(1.00)]
+          solar:bag-bold (FRAME, 19.1x19.1) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 14.7x16.5) [fills: #6744c2(1.00)]
+        Group 20602 (GROUP, 103.0x33.0)
+          Group 20721 (GROUP, 80.0x33.0)
+            12:15 م (TEXT, 29.0x21.0) -> "12:15 م" [fills: #000000(1.00)]
+            وقت التوصيل المتوقع (TEXT, 80.0x19.0) -> "وقت التوصيل المتوقع" [fills: #757881(1.00)]
+          tabler:clock-filled (FRAME, 16.4x16.4) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 13.7x13.7) [fills: #6744c2(1.00)]
+        Line 183 (LINE, 0.0x30.2) [strokes: #efeff1]
+        Line 184 (LINE, 0.0x30.2) [strokes: #efeff1]
+      Group 20607 (GROUP, 331.6x32.7)
+        Group 20605 (GROUP, 130.1x32.7)
+          مطعم MealMate - السالمية (TEXT, 106.0x18.0) -> "مطعم MealMate - السالمية" [fills: #000000(1.00)]
+          موقع الاستلام (TEXT, 42.0x15.0) -> "موقع الاستلام" [fills: #757881(1.00)]
+          famicons:storefront-sharp (FRAME, 17.4x17.4) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 16.3x15.2) [fills: #6744c2(1.00)]
+        Group 20606 (GROUP, 156.6x31.7)
+          شارع الخليج العربي ، قطعة 5 ، منزل 12 (TEXT, 138.0x18.0) -> "شارع الخليج العربي ، قطعة 5 ، منزل 12" [fills: #000000(1.00)]
+          موقع التسليم (TEXT, 40.0x15.0) -> "موقع التسليم" [fills: #757881(1.00)]
+          rivet-icons:map-pin-solid (FRAME, 13.7x13.7) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 11.2x13.5) [fills: #6744c2(1.00)]
+        Line 186 (LINE, 0.0x30.2) [strokes: #efeff1]
+      Line 185 (LINE, 338.0x0.0) [strokes: #efeff1]
+  Group 20616 (GROUP, 360.0x100.0)
+    Rectangle 6108 (RECTANGLE, 360.0x100.0) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 6.624218463897705]
+    Group 20615 (GROUP, 339.1x91.0)
+      إجراءات سريعة (TEXT, 57.0x19.0) -> "إجراءات سريعة" [fills: #000000(1.00)]
+      Frame 20615 (FRAME, 338.5x67.3) [ gap:7.280488967895508]
+        Group 20612 (GROUP, 338.5x30.0)
+          Rectangle 6109 (RECTANGLE, 338.5x30.0) [fills: #6744c2(1.00)] [radius: 3.640244483947754]
+          Group 20611 (GROUP, 87.4x20.5)
+            tdesign:user-add-filled (FRAME, 14.6x14.6) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 12.7x12.7) [fills: #ffffff(1.00)]
+            تعيين سائق بديل (TEXT, 65.0x20.5) -> "تعيين سائق بديل" [fills: #ffffff(1.00)]
+        Group 20613 (GROUP, 339.0x30.0)
+          Rectangle 6109 (RECTANGLE, 339.0x30.0) [fills: #ffffff(1.00)] [strokes: #6744c2] [radius: 3.640244483947754]
+          Group 20611 (GROUP, 96.5x18.0)
+            streamline-plump:customer-support-3-solid (FRAME, 13.7x13.7) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 12.2x12.8) [fills: #6744c2(1.00)]
+            التواصل مع السائق (TEXT, 74.0x18.0) -> "التواصل مع السائق" [fills: #6744c2(1.00)]
+  mainContainer (FRAME, 363.0x66.6) [ gap:16.406782150268555]
+    tabPills (FRAME, 363.0x66.6) [fills: #ffffff(0.60)] [radius: 10253.2119140625] [pad(T:4.101695537567139,R:4.101695537567139,B:4.101695537567139,L:4.101695537567139) gap:-10.25423812866211]
+      Tab2 (FRAME, 79.2x57.0) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        iconamoon:profile-fill (FRAME, 23.6x23.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 17.7x17.7) [fills: #191c1d(1.00)]
+        Account Tab Label (TEXT, 62.8x14.0) -> "الحساب" [fills: #191c1d(1.00)]
+      Tab2 (FRAME, 79.2x56.0) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        bx:support (FRAME, 22.6x22.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 18.8x18.8) [fills: #191c1d(1.00)]
+        Support Tab Label (TEXT, 62.8x14.0) -> "الدعم" [fills: #191c1d(1.00)]
+      Tab4 (FRAME, 79.2x58.4) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        gis:poi-map (FRAME, 25.0x25.0) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 21.3x7.5) [fills: #000000(1.00)]
+          Vector (VECTOR, 14.8x20.7) [fills: #000000(1.00)]
+        الخريطة (TEXT, 43.0x14.0) -> "الخريطة" [fills: #191c1d(1.00)]
+      Tab2 (FRAME, 79.2x58.0) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        lets-icons:order-fill (FRAME, 24.6x24.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 14.4x17.4) [fills: #191c1d(1.00)]
+        solar:fire-bold (INSTANCE, 24.6x24.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 17.4x19.9) [fills: #000000(1.00)]
+        Orders Tab Label (TEXT, 62.8x14.0) -> "الطلبات" [fills: #191c1d(1.00)]
+      Tab1 (FRAME, 79.2x53.9) [fills: #5835b4(1.00)] [radius: 102.54238891601562] [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        Asset 10 1 (FRAME, 20.7x20.5) [fills: #ffffff(1.00)]
+          Layer 1 (GROUP, 20.7x20.5)
+            Group (GROUP, 20.7x20.5)
+              Vector (VECTOR, 20.7x11.3) [fills: #ffffff(1.00)]
+              Group (GROUP, 20.2x8.2)
+                Vector (VECTOR, 15.6x7.5) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 5.4x7.1)
+        Home Tab Label (TEXT, 62.8x14.0) -> "الرئيسية" [fills: #ffffff(1.00)]

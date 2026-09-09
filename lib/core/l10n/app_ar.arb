@@ -327,5 +327,51 @@
   },
   "supportViewDetails": "عرض التفاصيل",
   "supportAssignAlternativeDriver": "تعيين سائق بديل",
-  "supportInfoBannerText": "يمكنك التواصل مع السائق مباشرة من تفاصيل المشكلة لحلها بسرعة"
+  "supportInfoBannerText": "يمكنك التواصل مع السائق مباشرة من تفاصيل المشكلة لحلها بسرعة",
+  "issueDetailsTitle": "تفاصيل المشكلة",
+  "issueDetailsUrgent": "عاجلة",
+  "issueDetailsReportedMinutesAgo": "تم الإبلاغ منذ {minutes} دقيقة",
+  "@issueDetailsReportedMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "issueDetailsTaskNumber": "رقم المهمة",
+  "issueDetailsArea": "المنطقة",
+  "issueDetailsAffectedBoxes": "عدد البوكسات المتأثرة",
+  "issueDetailsBoxesCount": "{count} بوكسات",
+  "@issueDetailsBoxesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issueDetailsPriority": "أولوية المشكلة",
+  "issueDetailsPriorityHigh": "عالية",
+  "issueDetailsDriverData": "بيانات السائق",
+  "issueDetailsStatusNow": "الحالة الآن",
+  "issueDetailsStatusOnline": "متصل",
+  "issueDetailsOnMission": "على المهمة",
+  "issueDetailsDescriptionTitle": "وصف المشكلة",
+  "issueDetailsAttachmentsTitle": "مرفقات / صورة مرفوعة",
+  "issueDetailsTripInfoTitle": "معلومات الرحلة / الطلب",
+  "issueDetailsClient": "العميل",
+  "issueDetailsMealsCount": "عدد الوجبات",
+  "issueDetailsMealsCountValue": "{count} وجبات",
+  "@issueDetailsMealsCountValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issueDetailsExpectedDeliveryTime": "وقت التوصيل المتوقع",
+  "issueDetailsPickupLocation": "موقع الاستلام",
+  "issueDetailsDropoffLocation": "موقع التسليم",
+  "issueDetailsQuickActions": "إجراءات سريعة",
+  "issueDetailsAssignReplacementDriver": "تعيين سائق بديل",
+  "issueDetailsContactDriver": "التواصل مع السائق"
 }

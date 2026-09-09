@@ -1507,6 +1507,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can contact the driver directly from the issue details to resolve it quickly'**
   String get supportInfoBannerText;
+
+  /// No description provided for @issueDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem Details'**
+  String get issueDetailsTitle;
+
+  /// No description provided for @issueDetailsUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get issueDetailsUrgent;
+
+  /// No description provided for @issueDetailsReportedMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported {minutes} minutes ago'**
+  String issueDetailsReportedMinutesAgo(int minutes);
+
+  /// No description provided for @issueDetailsTaskNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Task Number'**
+  String get issueDetailsTaskNumber;
+
+  /// No description provided for @issueDetailsArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get issueDetailsArea;
+
+  /// No description provided for @issueDetailsAffectedBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Affected Boxes'**
+  String get issueDetailsAffectedBoxes;
+
+  /// No description provided for @issueDetailsBoxesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Boxes'**
+  String issueDetailsBoxesCount(int count);
+
+  /// No description provided for @issueDetailsPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Priority'**
+  String get issueDetailsPriority;
+
+  /// No description provided for @issueDetailsPriorityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get issueDetailsPriorityHigh;
+
+  /// No description provided for @issueDetailsDriverData.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Info'**
+  String get issueDetailsDriverData;
+
+  /// No description provided for @issueDetailsStatusNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Status'**
+  String get issueDetailsStatusNow;
+
+  /// No description provided for @issueDetailsStatusOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get issueDetailsStatusOnline;
+
+  /// No description provided for @issueDetailsOnMission.
+  ///
+  /// In en, this message translates to:
+  /// **'On Mission'**
+  String get issueDetailsOnMission;
+
+  /// No description provided for @issueDetailsDescriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem Description'**
+  String get issueDetailsDescriptionTitle;
+
+  /// No description provided for @issueDetailsAttachmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments / Uploaded Image'**
+  String get issueDetailsAttachmentsTitle;
+
+  /// No description provided for @issueDetailsTripInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip / Order Information'**
+  String get issueDetailsTripInfoTitle;
+
+  /// No description provided for @issueDetailsClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Client'**
+  String get issueDetailsClient;
+
+  /// No description provided for @issueDetailsMealsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals Count'**
+  String get issueDetailsMealsCount;
+
+  /// No description provided for @issueDetailsMealsCountValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Meals'**
+  String issueDetailsMealsCountValue(int count);
+
+  /// No description provided for @issueDetailsExpectedDeliveryTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Delivery Time'**
+  String get issueDetailsExpectedDeliveryTime;
+
+  /// No description provided for @issueDetailsPickupLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Location'**
+  String get issueDetailsPickupLocation;
+
+  /// No description provided for @issueDetailsDropoffLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Location'**
+  String get issueDetailsDropoffLocation;
+
+  /// No description provided for @issueDetailsQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get issueDetailsQuickActions;
+
+  /// No description provided for @issueDetailsAssignReplacementDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Replacement Driver'**
+  String get issueDetailsAssignReplacementDriver;
+
+  /// No description provided for @issueDetailsContactDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Driver'**
+  String get issueDetailsContactDriver;
 }
 
 class _AppLocalizationsDelegate

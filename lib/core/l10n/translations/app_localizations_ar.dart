@@ -760,4 +760,85 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get supportInfoBannerText =>
       'يمكنك التواصل مع السائق مباشرة من تفاصيل المشكلة لحلها بسرعة';
+
+  @override
+  String get issueDetailsTitle => 'تفاصيل المشكلة';
+
+  @override
+  String get issueDetailsUrgent => 'عاجلة';
+
+  @override
+  String issueDetailsReportedMinutesAgo(int minutes) {
+    return 'تم الإبلاغ منذ $minutes دقيقة';
+  }
+
+  @override
+  String get issueDetailsTaskNumber => 'رقم المهمة';
+
+  @override
+  String get issueDetailsArea => 'المنطقة';
+
+  @override
+  String get issueDetailsAffectedBoxes => 'عدد البوكسات المتأثرة';
+
+  @override
+  String issueDetailsBoxesCount(int count) {
+    return '$count بوكسات';
+  }
+
+  @override
+  String get issueDetailsPriority => 'أولوية المشكلة';
+
+  @override
+  String get issueDetailsPriorityHigh => 'عالية';
+
+  @override
+  String get issueDetailsDriverData => 'بيانات السائق';
+
+  @override
+  String get issueDetailsStatusNow => 'الحالة الآن';
+
+  @override
+  String get issueDetailsStatusOnline => 'متصل';
+
+  @override
+  String get issueDetailsOnMission => 'على المهمة';
+
+  @override
+  String get issueDetailsDescriptionTitle => 'وصف المشكلة';
+
+  @override
+  String get issueDetailsAttachmentsTitle => 'مرفقات / صورة مرفوعة';
+
+  @override
+  String get issueDetailsTripInfoTitle => 'معلومات الرحلة / الطلب';
+
+  @override
+  String get issueDetailsClient => 'العميل';
+
+  @override
+  String get issueDetailsMealsCount => 'عدد الوجبات';
+
+  @override
+  String issueDetailsMealsCountValue(int count) {
+    return '$count وجبات';
+  }
+
+  @override
+  String get issueDetailsExpectedDeliveryTime => 'وقت التوصيل المتوقع';
+
+  @override
+  String get issueDetailsPickupLocation => 'موقع الاستلام';
+
+  @override
+  String get issueDetailsDropoffLocation => 'موقع التسليم';
+
+  @override
+  String get issueDetailsQuickActions => 'إجراءات سريعة';
+
+  @override
+  String get issueDetailsAssignReplacementDriver => 'تعيين سائق بديل';
+
+  @override
+  String get issueDetailsContactDriver => 'التواصل مع السائق';
 }

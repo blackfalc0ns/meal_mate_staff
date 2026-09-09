@@ -327,5 +327,51 @@
   },
   "supportViewDetails": "View Details",
   "supportAssignAlternativeDriver": "Assign Alternative Driver",
-  "supportInfoBannerText": "You can contact the driver directly from the issue details to resolve it quickly"
+  "supportInfoBannerText": "You can contact the driver directly from the issue details to resolve it quickly",
+  "issueDetailsTitle": "Problem Details",
+  "issueDetailsUrgent": "Urgent",
+  "issueDetailsReportedMinutesAgo": "Reported {minutes} minutes ago",
+  "@issueDetailsReportedMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "issueDetailsTaskNumber": "Task Number",
+  "issueDetailsArea": "Area",
+  "issueDetailsAffectedBoxes": "Affected Boxes",
+  "issueDetailsBoxesCount": "{count} Boxes",
+  "@issueDetailsBoxesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issueDetailsPriority": "Issue Priority",
+  "issueDetailsPriorityHigh": "High",
+  "issueDetailsDriverData": "Driver Info",
+  "issueDetailsStatusNow": "Current Status",
+  "issueDetailsStatusOnline": "Online",
+  "issueDetailsOnMission": "On Mission",
+  "issueDetailsDescriptionTitle": "Problem Description",
+  "issueDetailsAttachmentsTitle": "Attachments / Uploaded Image",
+  "issueDetailsTripInfoTitle": "Trip / Order Information",
+  "issueDetailsClient": "Client",
+  "issueDetailsMealsCount": "Meals Count",
+  "issueDetailsMealsCountValue": "{count} Meals",
+  "@issueDetailsMealsCountValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issueDetailsExpectedDeliveryTime": "Estimated Delivery Time",
+  "issueDetailsPickupLocation": "Pickup Location",
+  "issueDetailsDropoffLocation": "Delivery Location",
+  "issueDetailsQuickActions": "Quick Actions",
+  "issueDetailsAssignReplacementDriver": "Assign Replacement Driver",
+  "issueDetailsContactDriver": "Contact Driver"
 }

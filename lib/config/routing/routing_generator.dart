@@ -13,6 +13,8 @@ import '../../features/dispatcher/assign_box/presentation/screens/assign_box_scr
 import '../../features/dispatcher/drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import '../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
 import '../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
+import '../../features/dispatcher/support/domain/entities/dispatcher_issue_detail_entity.dart';
+import '../../features/dispatcher/support/presentation/screens/dispatcher_issue_details_screen.dart';
 import '../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
@@ -93,6 +95,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DispatcherSupportScreen(),
+        );
+
+      case AppRoutes.dispatcherSupportIssueDetails:
+        final issue = settings.arguments is DispatcherIssueDetailEntity
+            ? settings.arguments! as DispatcherIssueDetailEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DispatcherIssueDetailsScreen(issue: issue),
         );
 
       case AppRoutes.assignBox:
