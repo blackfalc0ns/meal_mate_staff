@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../config/theme/spacing.dart';
+import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_driver_entity.dart';
 import 'dispatcher_drivers_card_metric_item.dart';
@@ -14,32 +16,35 @@ class DispatcherDriversCardMetricsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
+
+    final currentOrdersAsset = driver.currentOrdersCount > 0
+        ? AppAssets.dispatcherMetricBoxActive
+        : AppAssets.dispatcherMetricBoxInactive;
 
     return Row(
       children: [
         Expanded(
           child: DispatcherDriversCardMetricItem(
-            icon: Icons.inventory_2_outlined,
-            iconColor: color.onSurfaceVariant,
+            assetPath: currentOrdersAsset,
             value: driver.currentOrdersCount.toString(),
             label: locale.driversCurrentOrders,
           ),
         ),
+        const SizedBox(width: Spacing.xs),
         Expanded(
           child: DispatcherDriversCardMetricItem(
-            icon: Icons.inventory_2_rounded,
-            iconColor: color.primary,
+            assetPath: AppAssets.dispatcherMetricBoxActive,
             value: driver.completedOrdersTodayCount.toString(),
             label: locale.driversCompletedToday,
           ),
         ),
+        const SizedBox(width: Spacing.xs),
         Expanded(
           child: DispatcherDriversCardMetricItem(
-            icon: Icons.directions_car_outlined,
-            iconColor: color.onSurfaceVariant,
-            value: locale.driversDistanceKm(driver.distanceKm.toStringAsFixed(0)),
+            assetPath: AppAssets.dispatcherMetricCar,
+            value:
+                locale.driversDistanceKm(driver.distanceKm.toStringAsFixed(0)),
             label: locale.driversDistanceFromYou,
           ),
         ),

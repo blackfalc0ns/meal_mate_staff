@@ -32,28 +32,26 @@ class DispatcherDriversContentList extends StatelessWidget {
     return PageTransitionSwitcher(
       duration: const Duration(milliseconds: 300),
       reverse: isTransitionReversed,
-      transitionBuilder: (
-        Widget child,
-        Animation<double> primaryAnimation,
-        Animation<double> secondaryAnimation,
-      ) {
-        return SharedAxisTransition(
-          animation: primaryAnimation,
-          secondaryAnimation: secondaryAnimation,
-          transitionType: SharedAxisTransitionType.horizontal,
-          fillColor: color.surface,
-          child: child,
-        );
-      },
+      transitionBuilder:
+          (
+            Widget child,
+            Animation<double> primaryAnimation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return SharedAxisTransition(
+              animation: primaryAnimation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              fillColor: color.surface,
+              child: child,
+            );
+          },
       child: Column(
         key: ValueKey(transitionKey),
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          DispatcherDriversSectionHeader(
-            title: sectionTitle,
-            onSort: onSort,
-          ),
+          DispatcherDriversSectionHeader(title: sectionTitle, onSort: onSort),
           const SizedBox(height: Spacing.xs),
           ...drivers.map(
             (driver) => DispatcherDriversCard(

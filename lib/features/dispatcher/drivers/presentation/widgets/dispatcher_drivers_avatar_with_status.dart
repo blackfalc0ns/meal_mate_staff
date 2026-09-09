@@ -28,35 +28,71 @@ class DispatcherDriversAvatarWithStatus extends StatelessWidget {
         statusColor = color.outline;
     }
 
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        CircleAvatar(
-          radius: Spacing.lg,
-          backgroundColor: color.primaryContainer,
-          child: Icon(
-            Icons.person_rounded,
-            size: Spacing.iconMd - Spacing.border - Spacing.border,
-            color: color.primary,
-          ),
-        ),
-        PositionedDirectional(
-          bottom: Spacing.zero,
-          end: Spacing.zero,
-          child: Container(
-            width: Spacing.sm + Spacing.border + Spacing.border,
-            height: Spacing.sm + Spacing.border + Spacing.border,
+    final hasAvatar = avatarUrl != null && avatarUrl!.isNotEmpty;
+
+    return SizedBox(
+      width: Spacing.dispatcherDriverAvatarSize,
+      height: Spacing.dispatcherDriverAvatarSize,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            width: Spacing.dispatcherDriverAvatarSize,
+            height: Spacing.dispatcherDriverAvatarSize,
             decoration: BoxDecoration(
-              color: statusColor,
               shape: BoxShape.circle,
-              border: Border.all(
-                color: color.surface,
-                width: Spacing.border + Spacing.hairline,
+              color: color.primaryContainer,
+            ),
+            child: ClipOval(
+              child: hasAvatar
+                  ? (avatarUrl!.startsWith('http')
+                      ? Image.network(
+                          avatarUrl!,
+                          fit: BoxFit.cover,
+                          width: Spacing.dispatcherDriverAvatarSize,
+                          height: Spacing.dispatcherDriverAvatarSize,
+                          errorBuilder: (_, _, _) => Icon(
+                            Icons.person_rounded,
+                            size: Spacing.iconMd,
+                            color: color.primary,
+                          ),
+                        )
+                      : Image.asset(
+                          avatarUrl!,
+                          fit: BoxFit.cover,
+                          width: Spacing.dispatcherDriverAvatarSize,
+                          height: Spacing.dispatcherDriverAvatarSize,
+                          errorBuilder: (_, _, _) => Icon(
+                            Icons.person_rounded,
+                            size: Spacing.iconMd,
+                            color: color.primary,
+                          ),
+                        ))
+                  : Icon(
+                      Icons.person_rounded,
+                      size: Spacing.iconMd,
+                      color: color.primary,
+                    ),
+            ),
+          ),
+          PositionedDirectional(
+            bottom: Spacing.zero,
+            end: Spacing.zero,
+            child: Container(
+              width: Spacing.sm + Spacing.border + Spacing.border,
+              height: Spacing.sm + Spacing.border + Spacing.border,
+              decoration: BoxDecoration(
+                color: statusColor,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: color.surface,
+                  width: Spacing.border + Spacing.hairline,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

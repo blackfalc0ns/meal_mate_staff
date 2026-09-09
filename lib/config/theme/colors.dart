@@ -37,6 +37,7 @@ class AppColors {
   static const Color dispatcherBadgeNormal = Color(0xFF878685);
   static const Color dispatcherBadgeNormalSurface = Color(0xFFF3F4F6);
   static const Color dispatcherSuggestionSurface = Color(0xFFF6F4FB);
+  static const Color dispatcherMetricBoxSurface = Color(0xFFF7F6FC);
 
   static const Color darkCallBackground = Color(0xFF1B1540);
   static const Color black = Color(0xFF000000);
@@ -99,6 +100,7 @@ extension DispatcherColorScheme on ColorScheme {
       AppColors.dispatcherBadgeNormalSurface;
   Color get dispatcherSuggestionSurface =>
       AppColors.dispatcherSuggestionSurface;
+  Color get dispatcherMetricBoxSurface => AppColors.dispatcherMetricBoxSurface;
   Color get primaryBorder => AppColors.primaryBorder;
   Color get transparent => AppColors.transparent;
 }

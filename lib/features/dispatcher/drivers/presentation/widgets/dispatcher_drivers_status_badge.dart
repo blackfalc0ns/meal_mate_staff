@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/colors.dart';
+
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
@@ -40,22 +41,38 @@ class DispatcherDriversStatusBadge extends StatelessWidget {
     }
 
     return Container(
+      height: Spacing.dispatcherDriverBadgeHeight,
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.dispatcherBadgeHorizontal,
-        vertical: Spacing.border,
       ),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+        borderRadius: BorderRadius.circular(Spacing.registrationReviewCardRadius),
       ),
-      child: Text(
-        label,
-        style: getMediumStyle(
-          fontSize: FontSize.size10,
-          color: textColor,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: Spacing.accountStatusReasonBullet,
+              height: Spacing.accountStatusReasonBullet,
+              decoration: BoxDecoration(
+                color: textColor,
+                shape: BoxShape.circle,
+              ),
+            ),
+            const SizedBox(width: Spacing.xs),
+            Text(
+              label,
+              style: getBoldStyle(
+                fontSize: FontSize.size10,
+                color: textColor,
+              ),
+              maxLines: 1,
+            ),
+          ],
         ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
       ),
     );
   }

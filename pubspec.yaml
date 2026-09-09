@@ -72,6 +72,7 @@ flutter:
 
   assets:
     - assets/images/auth/
+    - assets/images/dispatcher/
 
   fonts:
     - family: Alexandria

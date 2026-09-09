@@ -105,4 +105,10 @@ class Spacing {
   static const double dispatcherBadgeHorizontal = 6;
   static const double dispatcherMapButtonHeight = 38;
   static const double dispatcherCardRadius = 14;
+  static const double dispatcherDriverAvatarSize = 41;
+  static const double dispatcherMetricBoxHeight = 34;
+  static const double dispatcherCardDividerHeight = 68;
+  static const double dispatcherDriverActionBtnHeight = 25;
+  static const double dispatcherDriverBadgeHeight = 19;
+  static const double dispatcherMetricIconSize = 12;
 }

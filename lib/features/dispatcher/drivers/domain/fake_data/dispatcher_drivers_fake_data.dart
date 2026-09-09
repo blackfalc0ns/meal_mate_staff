@@ -1,3 +1,4 @@
+import '../../../../../core/constants/assets.dart';
 import '../entities/dispatcher_driver_entity.dart';
 import '../entities/dispatcher_driver_status.dart';
 import '../entities/dispatcher_drivers_kpi_entity.dart';
@@ -30,6 +31,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 1,
       completedOrdersTodayCount: 12,
       distanceKm: 9.0,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1044',
@@ -40,6 +42,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 0,
       completedOrdersTodayCount: 8,
       distanceKm: 9.0,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1045',
@@ -50,6 +53,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 2,
       completedOrdersTodayCount: 9,
       distanceKm: 11.5,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1046',
@@ -60,6 +64,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 0,
       completedOrdersTodayCount: 10,
       distanceKm: 14.0,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1047',
@@ -70,6 +75,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 1,
       completedOrdersTodayCount: 14,
       distanceKm: 7.2,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1048',
@@ -80,6 +86,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 0,
       completedOrdersTodayCount: 7,
       distanceKm: 8.5,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1049',
@@ -90,6 +97,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 1,
       completedOrdersTodayCount: 11,
       distanceKm: 10.0,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1050',
@@ -100,6 +108,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 3,
       completedOrdersTodayCount: 6,
       distanceKm: 12.8,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
 
     // Hawally
@@ -112,6 +121,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 0,
       completedOrdersTodayCount: 9,
       distanceKm: 5.4,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
     DispatcherDriverEntity(
       id: 'D-1052',
@@ -122,6 +132,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 2,
       completedOrdersTodayCount: 13,
       distanceKm: 6.8,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
 
     // Hateen
@@ -134,6 +145,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 1,
       completedOrdersTodayCount: 15,
       distanceKm: 8.0,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
 
     // Farwaniya
@@ -146,6 +158,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 0,
       completedOrdersTodayCount: 5,
       distanceKm: 16.0,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
 
     // Capital
@@ -158,6 +171,7 @@ class DispatcherDriversFakeData {
       currentOrdersCount: 0,
       completedOrdersTodayCount: 10,
       distanceKm: 4.2,
+      avatarUrl: AppAssets.registrationDriverRole,
     ),
   ];
 }

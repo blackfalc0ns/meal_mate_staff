@@ -35,4 +35,12 @@ class AppAssets {
       '$_authImages/account_status_more_info.png';
   static const String accountStatusUnderReview =
       '$_authImages/account_status_under_review.png';
+
+  static const String _dispatcherImages = '$_images/dispatcher';
+  static const String dispatcherMetricCar =
+      '$_dispatcherImages/driver_metric_car.png';
+  static const String dispatcherMetricBoxActive =
+      '$_dispatcherImages/driver_metric_box_active.png';
+  static const String dispatcherMetricBoxInactive =
+      '$_dispatcherImages/driver_metric_box_inactive.png';
 }

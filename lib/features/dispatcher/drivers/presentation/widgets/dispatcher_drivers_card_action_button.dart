@@ -23,67 +23,69 @@ class DispatcherDriversCardActionButton extends StatelessWidget {
     if (isAvailable) {
       return InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+        borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.sm,
-            vertical: Spacing.xs,
-          ),
+          height: Spacing.dispatcherDriverActionBtnHeight,
+          padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
           decoration: BoxDecoration(
             color: color.primary,
-            borderRadius: BorderRadius.circular(Spacing.radiusPill),
+            borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.add_rounded,
-                size: Spacing.iconXs,
-                color: color.onPrimary,
-              ),
-              const SizedBox(width: Spacing.border + Spacing.border),
-              Text(
-                locale.driversSelect,
-                style: getSemiBoldStyle(
-                  fontSize: FontSize.size11,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.add_rounded,
+                  size: Spacing.iconXs - Spacing.border - Spacing.border,
                   color: color.onPrimary,
                 ),
-              ),
-            ],
+                const SizedBox(width: Spacing.xs),
+                Text(
+                  locale.driversSelect,
+                  style: getBoldStyle(
+                    fontSize: FontSize.size11,
+                    color: color.onPrimary,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
     }
 
     return Container(
+      height: Spacing.dispatcherDriverActionBtnHeight,
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.dispatcherBadgeHorizontal,
-        vertical: Spacing.xs,
       ),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-        border: Border.all(
-          color: color.outlineVariant.withValues(alpha: Spacing.hairline + Spacing.border / 10),
-        ),
+        borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.block_rounded,
-            size: Spacing.iconSm - Spacing.xs - Spacing.border,
-            color: color.onSurfaceVariant,
-          ),
-          const SizedBox(width: Spacing.border + Spacing.border),
-          Text(
-            locale.driversUnavailable,
-            style: getRegularStyle(
-              fontSize: FontSize.size10,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.block_rounded,
+              size: Spacing.iconXs - Spacing.border - Spacing.border,
               color: color.onSurfaceVariant,
             ),
-          ),
-        ],
+            const SizedBox(width: Spacing.xs),
+            Text(
+              locale.driversUnavailable,
+              style: getRegularStyle(
+                fontSize: FontSize.size10,
+                color: color.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

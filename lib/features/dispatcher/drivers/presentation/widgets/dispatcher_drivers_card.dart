@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_driver_entity.dart';
+import 'dispatcher_drivers_avatar_with_status.dart';
 import 'dispatcher_drivers_card_metrics_row.dart';
 import 'dispatcher_drivers_card_top_row.dart';
 
@@ -28,32 +29,39 @@ class DispatcherDriversCard extends StatelessWidget {
       padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        borderRadius: BorderRadius.circular(Spacing.dispatcherCardRadius),
         border: Border.all(
-          color: color.outlineVariant.withValues(alpha: Spacing.hairline + Spacing.border / 10),
+          color: color.outlineVariant.withValues(alpha: 0.6),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: color.shadow.withValues(alpha: Spacing.hairline / 10),
-            blurRadius: Spacing.xs,
-            offset: const Offset(Spacing.zero, Spacing.border),
-          ),
-        ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          DispatcherDriversCardTopRow(
-            driver: driver,
-            onSelect: onSelect,
+          DispatcherDriversAvatarWithStatus(
+            status: driver.status,
+            avatarUrl: driver.avatarUrl,
           ),
-          const SizedBox(height: Spacing.xs),
-          Divider(
-            height: Spacing.border,
-            color: color.outlineVariant.withValues(alpha: Spacing.hairline - Spacing.border / 10),
+          const SizedBox(width: Spacing.sm),
+          Container(
+            width: Spacing.border,
+            height: Spacing.dispatcherCardDividerHeight,
+            color: color.outlineVariant.withValues(alpha: 0.6),
           ),
-          const SizedBox(height: Spacing.xs),
-          DispatcherDriversCardMetricsRow(driver: driver),
+          const SizedBox(width: Spacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DispatcherDriversCardTopRow(
+                  driver: driver,
+                  onSelect: onSelect,
+                ),
+                const SizedBox(height: Spacing.sm),
+                DispatcherDriversCardMetricsRow(driver: driver),
+              ],
+            ),
+          ),
         ],
       ),
     );
