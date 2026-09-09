@@ -188,5 +188,26 @@
   "navOrders": "الطلبات",
   "navDelivery": "التوصيل",
   "navSupport": "الدعم",
-  "navAccount": "الحساب"
+  "navAccount": "الحساب",
+  "assignBoxTitle": "إسناد البوكس {boxCode}",
+  "@assignBoxTitle": {
+    "placeholders": {
+      "boxCode": {
+        "type": "String"
+      }
+    }
+  },
+  "assignBoxWorkArea": "منطقة العميل",
+  "assignBoxDistanceRestaurant": "المسافة من مطعمك",
+  "assignBoxRequiredTime": "الوقت المطلوب",
+  "assignBoxPriority": "الأولوية",
+  "assignBoxMealsCount": "عدد الوجبات",
+  "assignBoxBestSuggestion": "أفضل اقتراح",
+  "assignBoxCurrentLoad": "الحمولة الحالية",
+  "assignBoxDistanceLabel": "المسافة",
+  "assignBoxExpectedCompletion": "الإنهاء المتوقع",
+  "assignBoxSelectDriver": "اختر سائقاً للإسناد",
+  "assignBoxViewAll": "عرض الكل",
+  "assignBoxConfirmAssignment": "تأكيد الإسناد",
+  "assignBoxViewBox": "عرض البوكس"
 }

@@ -521,4 +521,48 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get navAccount => 'الحساب';
+
+  @override
+  String assignBoxTitle(String boxCode) {
+    return 'إسناد البوكس $boxCode';
+  }
+
+  @override
+  String get assignBoxWorkArea => 'منطقة العميل';
+
+  @override
+  String get assignBoxDistanceRestaurant => 'المسافة من مطعمك';
+
+  @override
+  String get assignBoxRequiredTime => 'الوقت المطلوب';
+
+  @override
+  String get assignBoxPriority => 'الأولوية';
+
+  @override
+  String get assignBoxMealsCount => 'عدد الوجبات';
+
+  @override
+  String get assignBoxBestSuggestion => 'أفضل اقتراح';
+
+  @override
+  String get assignBoxCurrentLoad => 'الحمولة الحالية';
+
+  @override
+  String get assignBoxDistanceLabel => 'المسافة';
+
+  @override
+  String get assignBoxExpectedCompletion => 'الإنهاء المتوقع';
+
+  @override
+  String get assignBoxSelectDriver => 'اختر سائقاً للإسناد';
+
+  @override
+  String get assignBoxViewAll => 'عرض الكل';
+
+  @override
+  String get assignBoxConfirmAssignment => 'تأكيد الإسناد';
+
+  @override
+  String get assignBoxViewBox => 'عرض البوكس';
 }

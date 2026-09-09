@@ -9,6 +9,7 @@ class AppRoutes {
   static const String accountStatus = '/account-status';
   static const String accountStatusPreview = '/account-status-preview';
   static const String dispatcherOrders = '/dispatcher-orders';
+  static const String assignBox = '/assign-box';
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
 }

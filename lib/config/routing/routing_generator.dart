@@ -8,6 +8,8 @@ import '../../features/auth/data/auth_fake_data.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/dispatcher/assign_box/domain/entities/assign_box_order_entity.dart';
+import '../../features/dispatcher/assign_box/presentation/screens/assign_box_screen.dart';
 import '../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
@@ -16,28 +18,103 @@ class RouteGenerator {
   const RouteGenerator._();
 
   static Route<dynamic> getRoute(RouteSettings settings) {
-    final builder = switch (settings.name) {
-      AppRoutes.splash => (_) => const SplashScreen(),
-      AppRoutes.appShell || AppRoutes.home => (_) => const AppShellScreen(),
-      AppRoutes.login => (_) => const LoginScreen(),
-      AppRoutes.verifyPhoneOtp => (_) => const OtpVerificationScreen.phone(
-        target: AuthFakeData.phoneVerificationTarget,
-      ),
-      AppRoutes.verifyEmailOtp => (_) => const OtpVerificationScreen.email(
-        target: AuthFakeData.emailVerificationTarget,
-      ),
-      AppRoutes.register => (_) => const RegisterScreen(),
-      AppRoutes.accountStatus => (_) => AccountStatusScreen(
-        kind: settings.arguments is AccountStatusKind
-            ? settings.arguments! as AccountStatusKind
-            : AccountStatusKind.underReview,
-      ),
-      AppRoutes.accountStatusPreview =>
-        (_) => const AccountStatusPreviewScreen(),
-      AppRoutes.dispatcherOrders => (_) => const DispatcherOrdersScreen(),
-      _ => (_) => const SplashScreen(),
-    };
+    switch (settings.name) {
+      case AppRoutes.splash:
+        return _buildRoute(settings: settings, page: const SplashScreen());
 
-    return MaterialPageRoute<void>(settings: settings, builder: builder);
+      case AppRoutes.appShell || AppRoutes.home:
+        final initialIndex = settings.arguments is int
+            ? settings.arguments! as int
+            : 0;
+        return _buildRoute(
+          settings: settings,
+          page: AppShellScreen(initialIndex: initialIndex),
+        );
+
+      case AppRoutes.login:
+        return _buildRoute(settings: settings, page: const LoginScreen());
+
+      case AppRoutes.verifyPhoneOtp:
+        return _buildRoute(
+          settings: settings,
+          page: const OtpVerificationScreen.phone(
+            target: AuthFakeData.phoneVerificationTarget,
+          ),
+        );
+
+      case AppRoutes.verifyEmailOtp:
+        return _buildRoute(
+          settings: settings,
+          page: const OtpVerificationScreen.email(
+            target: AuthFakeData.emailVerificationTarget,
+          ),
+        );
+
+      case AppRoutes.register:
+        return _buildRoute(settings: settings, page: const RegisterScreen());
+
+      case AppRoutes.accountStatus:
+        final kind = settings.arguments is AccountStatusKind
+            ? settings.arguments! as AccountStatusKind
+            : AccountStatusKind.underReview;
+        return _buildRoute(
+          settings: settings,
+          page: AccountStatusScreen(kind: kind),
+        );
+
+      case AppRoutes.accountStatusPreview:
+        return _buildRoute(
+          settings: settings,
+          page: const AccountStatusPreviewScreen(),
+        );
+
+      case AppRoutes.dispatcherOrders:
+        return _buildRoute(
+          settings: settings,
+          page: const DispatcherOrdersScreen(),
+        );
+
+      case AppRoutes.assignBox:
+        final order = settings.arguments is AssignBoxOrderEntity
+            ? settings.arguments! as AssignBoxOrderEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: AssignBoxScreen(order: order),
+        );
+
+      default:
+        return _buildRoute(settings: settings, page: const SplashScreen());
+    }
+  }
+
+  static PageRouteBuilder<dynamic> _buildRoute({
+    required RouteSettings settings,
+    required Widget page,
+  }) {
+    return PageRouteBuilder(
+      settings: settings,
+      transitionDuration: const Duration(milliseconds: 360),
+      reverseTransitionDuration: const Duration(milliseconds: 260),
+      pageBuilder: (_, _, _) => page,
+      transitionsBuilder: (_, animation, _, child) {
+        final curvedAnimation = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+          reverseCurve: Curves.easeInCubic,
+        );
+
+        return FadeTransition(
+          opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.08, 0),
+              end: Offset.zero,
+            ).animate(curvedAnimation),
+            child: child,
+          ),
+        );
+      },
+    );
   }
 }

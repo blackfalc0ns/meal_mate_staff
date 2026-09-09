@@ -523,4 +523,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navAccount => 'Account';
+
+  @override
+  String assignBoxTitle(String boxCode) {
+    return 'Assign Box $boxCode';
+  }
+
+  @override
+  String get assignBoxWorkArea => 'Customer Area';
+
+  @override
+  String get assignBoxDistanceRestaurant => 'Distance from Restaurant';
+
+  @override
+  String get assignBoxRequiredTime => 'Required Time';
+
+  @override
+  String get assignBoxPriority => 'Priority';
+
+  @override
+  String get assignBoxMealsCount => 'Meals Count';
+
+  @override
+  String get assignBoxBestSuggestion => 'Best Suggestion';
+
+  @override
+  String get assignBoxCurrentLoad => 'Current Load';
+
+  @override
+  String get assignBoxDistanceLabel => 'Distance';
+
+  @override
+  String get assignBoxExpectedCompletion => 'Expected Completion';
+
+  @override
+  String get assignBoxSelectDriver => 'Select Driver to Assign';
+
+  @override
+  String get assignBoxViewAll => 'View All';
+
+  @override
+  String get assignBoxConfirmAssignment => 'Confirm Assignment';
+
+  @override
+  String get assignBoxViewBox => 'View Box';
 }

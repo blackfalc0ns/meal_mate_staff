@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_filter_type.dart';
@@ -76,7 +77,9 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
               const SizedBox(height: Spacing.xs),
               DispatcherOrdersList(
                 orders: _filteredOrders,
-                onAssignOrder: widget.onAssignOrder,
+                onAssignOrder:
+                    widget.onAssignOrder ??
+                    (_) => context.pushNamed(AppRoutes.assignBox),
                 onOrderDetails: widget.onOrderDetails,
               ),
               const SizedBox(height: Spacing.base),

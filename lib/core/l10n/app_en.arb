@@ -188,5 +188,26 @@
   "navOrders": "Orders",
   "navDelivery": "Delivery",
   "navSupport": "Support",
-  "navAccount": "Account"
+  "navAccount": "Account",
+  "assignBoxTitle": "Assign Box {boxCode}",
+  "@assignBoxTitle": {
+    "placeholders": {
+      "boxCode": {
+        "type": "String"
+      }
+    }
+  },
+  "assignBoxWorkArea": "Customer Area",
+  "assignBoxDistanceRestaurant": "Distance from Restaurant",
+  "assignBoxRequiredTime": "Required Time",
+  "assignBoxPriority": "Priority",
+  "assignBoxMealsCount": "Meals Count",
+  "assignBoxBestSuggestion": "Best Suggestion",
+  "assignBoxCurrentLoad": "Current Load",
+  "assignBoxDistanceLabel": "Distance",
+  "assignBoxExpectedCompletion": "Expected Completion",
+  "assignBoxSelectDriver": "Select Driver to Assign",
+  "assignBoxViewAll": "View All",
+  "assignBoxConfirmAssignment": "Confirm Assignment",
+  "assignBoxViewBox": "View Box"
 }

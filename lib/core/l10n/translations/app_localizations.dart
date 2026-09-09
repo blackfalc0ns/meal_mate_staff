@@ -1069,6 +1069,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account'**
   String get navAccount;
+
+  /// No description provided for @assignBoxTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Box {boxCode}'**
+  String assignBoxTitle(String boxCode);
+
+  /// No description provided for @assignBoxWorkArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Area'**
+  String get assignBoxWorkArea;
+
+  /// No description provided for @assignBoxDistanceRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance from Restaurant'**
+  String get assignBoxDistanceRestaurant;
+
+  /// No description provided for @assignBoxRequiredTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Required Time'**
+  String get assignBoxRequiredTime;
+
+  /// No description provided for @assignBoxPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get assignBoxPriority;
+
+  /// No description provided for @assignBoxMealsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals Count'**
+  String get assignBoxMealsCount;
+
+  /// No description provided for @assignBoxBestSuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Suggestion'**
+  String get assignBoxBestSuggestion;
+
+  /// No description provided for @assignBoxCurrentLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Load'**
+  String get assignBoxCurrentLoad;
+
+  /// No description provided for @assignBoxDistanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get assignBoxDistanceLabel;
+
+  /// No description provided for @assignBoxExpectedCompletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected Completion'**
+  String get assignBoxExpectedCompletion;
+
+  /// No description provided for @assignBoxSelectDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Driver to Assign'**
+  String get assignBoxSelectDriver;
+
+  /// No description provided for @assignBoxViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get assignBoxViewAll;
+
+  /// No description provided for @assignBoxConfirmAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Assignment'**
+  String get assignBoxConfirmAssignment;
+
+  /// No description provided for @assignBoxViewBox.
+  ///
+  /// In en, this message translates to:
+  /// **'View Box'**
+  String get assignBoxViewBox;
 }
 
 class _AppLocalizationsDelegate

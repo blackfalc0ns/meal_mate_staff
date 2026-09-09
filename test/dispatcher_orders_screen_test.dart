@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_mate_delivery/config/routing/app_routes.dart';
+import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
@@ -80,5 +82,38 @@ void main() {
     expect(find.text('Pending Assignment'), findsWidgets);
     expect(find.text('Assign'), findsWidgets);
     expect(find.text('Details'), findsWidgets);
+  });
+
+  testWidgets('tapping assign button opens AssignBoxScreen via route generator', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.5;
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('ar'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        theme: AppTheme.lightTheme,
+        initialRoute: AppRoutes.dispatcherOrders,
+        onGenerateRoute: RouteGenerator.getRoute,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Tap first assign button
+    final assignButtons = find.widgetWithText(ElevatedButton, 'إسناد');
+    expect(assignButtons, findsWidgets);
+
+    await tester.tap(assignButtons.first);
+    await tester.pumpAndSettle();
+
+    // Should navigate to AssignBoxScreen
+    expect(find.text('إسناد البوكس #BX-1256'), findsOneWidget);
+    expect(find.text('أفضل اقتراح'), findsOneWidget);
+    expect(find.text('اختر سائقاً للإسناد'), findsOneWidget);
+    expect(find.text('تأكيد الإسناد'), findsOneWidget);
   });
 }
