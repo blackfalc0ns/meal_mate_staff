@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:meal_mate_delivery/config/routing/routing_extensions.dart';
 
+import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/custom_app_bar.dart';
 import '../../../../../core/widget/notification_button.dart';
+import '../../domain/entities/assign_box_candidate_driver_entity.dart';
+import '../../domain/entities/assign_box_driver_status_type.dart';
 import '../../domain/entities/assign_box_order_entity.dart';
 import '../../domain/fake_data/assign_box_fake_data.dart';
+import '../../../drivers/domain/entities/dispatcher_driver_entity.dart';
 import '../widgets/assign_box_bottom_actions.dart';
 import '../widgets/assign_box_driver_card.dart';
 import '../widgets/assign_box_drivers_header.dart';
@@ -25,12 +28,14 @@ class AssignBoxScreen extends StatefulWidget {
 class _AssignBoxScreenState extends State<AssignBoxScreen> {
   late final AssignBoxOrderEntity _order;
   late String _selectedDriverId;
+  late List<AssignBoxCandidateDriverEntity> _candidates;
 
   @override
   void initState() {
     super.initState();
     _order = widget.order ?? AssignBoxFakeData.sampleOrder;
     _selectedDriverId = _order.recommendedDriver.id;
+    _candidates = List.of(_order.candidates);
   }
 
   void _onDriverSelected(String driverId) {
@@ -38,6 +43,34 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
     setState(() {
       _selectedDriverId = driverId;
     });
+  }
+
+  Future<void> _onViewAllDrivers() async {
+    final selected = await context.pushNamed<dynamic>(
+      AppRoutes.dispatcherDrivers,
+    );
+    if (selected is DispatcherDriverEntity && mounted) {
+      final existingIndex = _candidates.indexWhere((c) => c.id == selected.id);
+      if (existingIndex == -1 && selected.id != _order.recommendedDriver.id) {
+        final newCandidate = AssignBoxCandidateDriverEntity(
+          id: selected.id,
+          name: selected.name,
+          statusText: selected.isAvailable ? 'متاح' : 'مشغول',
+          statusType: selected.isAvailable
+              ? AssignBoxDriverStatusType.available
+              : AssignBoxDriverStatusType.busy,
+          tagText: 'تم اختياره',
+          distanceText: '${selected.distanceKm.toStringAsFixed(1)} كم',
+          currentLoadText: '${selected.currentOrdersCount} بوكسات',
+        );
+        setState(() {
+          _candidates.insert(0, newCandidate);
+          _selectedDriverId = selected.id;
+        });
+      } else {
+        _onDriverSelected(selected.id);
+      }
+    }
   }
 
   @override
@@ -69,9 +102,9 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
               onSelected: () => _onDriverSelected(_order.recommendedDriver.id),
             ),
             const SizedBox(height: Spacing.lg),
-            AssignBoxDriversHeader(onViewAllPressed: () {}),
+            AssignBoxDriversHeader(onViewAllPressed: _onViewAllDrivers),
             const SizedBox(height: Spacing.sm),
-            ..._order.candidates.map(
+            ..._candidates.map(
               (candidate) => Padding(
                 padding: const EdgeInsets.only(bottom: Spacing.sm),
                 child: AssignBoxDriverCard(

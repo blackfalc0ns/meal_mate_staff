@@ -37,6 +37,10 @@ extension NavigationX on BuildContext {
   Future<bool> maybePopRoute<T extends Object?>([T? result]) {
     return Navigator.of(this).maybePop<T>(result);
   }
+
+  void pop<T extends Object?>([T? result]) {
+    Navigator.of(this).pop<T>(result);
+  }
 }
 
 extension NumFormattingExtension on num {

@@ -1153,6 +1153,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View Box'**
   String get assignBoxViewBox;
+
+  /// No description provided for @driversTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drivers List'**
+  String get driversTitle;
+
+  /// No description provided for @driversSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the suitable driver for order dispatch'**
+  String get driversSubtitle;
+
+  /// No description provided for @driversByArea.
+  ///
+  /// In en, this message translates to:
+  /// **'By Area'**
+  String get driversByArea;
+
+  /// No description provided for @driversAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All Drivers'**
+  String get driversAll;
+
+  /// No description provided for @driversTotalCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Drivers'**
+  String get driversTotalCount;
+
+  /// No description provided for @driversAvailableCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Drivers'**
+  String get driversAvailableCount;
+
+  /// No description provided for @driversBusyCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy Now'**
+  String get driversBusyCount;
+
+  /// No description provided for @driversSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drivers in {area} ({count})'**
+  String driversSectionTitle(String area, int count);
+
+  /// No description provided for @driversAllSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All Drivers ({count})'**
+  String driversAllSectionTitle(int count);
+
+  /// No description provided for @driversSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get driversSort;
+
+  /// No description provided for @driversStatusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get driversStatusAvailable;
+
+  /// No description provided for @driversStatusOnTheWay.
+  ///
+  /// In en, this message translates to:
+  /// **'On the way'**
+  String get driversStatusOnTheWay;
+
+  /// No description provided for @driversStatusOnBreak.
+  ///
+  /// In en, this message translates to:
+  /// **'On break'**
+  String get driversStatusOnBreak;
+
+  /// No description provided for @driversCurrentOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Orders'**
+  String get driversCurrentOrders;
+
+  /// No description provided for @driversCompletedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed Today'**
+  String get driversCompletedToday;
+
+  /// No description provided for @driversDistanceFromYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance from you'**
+  String get driversDistanceFromYou;
+
+  /// No description provided for @driversSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get driversSelect;
+
+  /// No description provided for @driversUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get driversUnavailable;
+
+  /// No description provided for @driversViewOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View Drivers on Map'**
+  String get driversViewOnMap;
+
+  /// No description provided for @driversDistanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} Km'**
+  String driversDistanceKm(String distance);
+
+  /// No description provided for @areaSalmiya.
+  ///
+  /// In en, this message translates to:
+  /// **'Salmiya'**
+  String get areaSalmiya;
+
+  /// No description provided for @areaHawally.
+  ///
+  /// In en, this message translates to:
+  /// **'Hawally'**
+  String get areaHawally;
+
+  /// No description provided for @areaHateen.
+  ///
+  /// In en, this message translates to:
+  /// **'Hateen'**
+  String get areaHateen;
+
+  /// No description provided for @areaFarwaniya.
+  ///
+  /// In en, this message translates to:
+  /// **'Farwaniya'**
+  String get areaFarwaniya;
+
+  /// No description provided for @areaCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital'**
+  String get areaCapital;
 }
 
 class _AppLocalizationsDelegate

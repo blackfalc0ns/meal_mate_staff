@@ -567,4 +567,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assignBoxViewBox => 'View Box';
+
+  @override
+  String get driversTitle => 'Drivers List';
+
+  @override
+  String get driversSubtitle => 'Choose the suitable driver for order dispatch';
+
+  @override
+  String get driversByArea => 'By Area';
+
+  @override
+  String get driversAll => 'All Drivers';
+
+  @override
+  String get driversTotalCount => 'Total Drivers';
+
+  @override
+  String get driversAvailableCount => 'Available Drivers';
+
+  @override
+  String get driversBusyCount => 'Busy Now';
+
+  @override
+  String driversSectionTitle(String area, int count) {
+    return 'Drivers in $area ($count)';
+  }
+
+  @override
+  String driversAllSectionTitle(int count) {
+    return 'All Drivers ($count)';
+  }
+
+  @override
+  String get driversSort => 'Sort';
+
+  @override
+  String get driversStatusAvailable => 'Available';
+
+  @override
+  String get driversStatusOnTheWay => 'On the way';
+
+  @override
+  String get driversStatusOnBreak => 'On break';
+
+  @override
+  String get driversCurrentOrders => 'Current Orders';
+
+  @override
+  String get driversCompletedToday => 'Completed Today';
+
+  @override
+  String get driversDistanceFromYou => 'Distance from you';
+
+  @override
+  String get driversSelect => 'Select';
+
+  @override
+  String get driversUnavailable => 'Unavailable';
+
+  @override
+  String get driversViewOnMap => 'View Drivers on Map';
+
+  @override
+  String driversDistanceKm(String distance) {
+    return '$distance Km';
+  }
+
+  @override
+  String get areaSalmiya => 'Salmiya';
+
+  @override
+  String get areaHawally => 'Hawally';
+
+  @override
+  String get areaHateen => 'Hateen';
+
+  @override
+  String get areaFarwaniya => 'Farwaniya';
+
+  @override
+  String get areaCapital => 'Capital';
 }

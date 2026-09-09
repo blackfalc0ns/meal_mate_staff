@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/widget/app_button.dart';
@@ -117,5 +118,30 @@ void main() {
     expect(find.text('سالم الحربي'), findsOneWidget);
     expect(find.text('أحمد إبراهيم'), findsOneWidget);
     expect(find.text('محمد السعيد'), findsOneWidget);
+  });
+
+  testWidgets('tapping view all navigates to dispatcher drivers screen', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.5;
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('ar'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        theme: AppTheme.lightTheme,
+        onGenerateRoute: RouteGenerator.getRoute,
+        home: const AssignBoxScreen(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('عرض الكل'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('قائمة السائقين'), findsOneWidget);
   });
 }

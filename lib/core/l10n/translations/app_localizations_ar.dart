@@ -565,4 +565,85 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get assignBoxViewBox => 'عرض البوكس';
+
+  @override
+  String get driversTitle => 'قائمة السائقين';
+
+  @override
+  String get driversSubtitle => 'اختر السائق المناسب لتوزيع الطلبات';
+
+  @override
+  String get driversByArea => 'حسب المحافظة';
+
+  @override
+  String get driversAll => 'كل السائقين';
+
+  @override
+  String get driversTotalCount => 'إجمالي السائقين';
+
+  @override
+  String get driversAvailableCount => 'السائقين المتاحين';
+
+  @override
+  String get driversBusyCount => 'مشغول الآن';
+
+  @override
+  String driversSectionTitle(String area, int count) {
+    return 'السائقين في $area ($count)';
+  }
+
+  @override
+  String driversAllSectionTitle(int count) {
+    return 'جميع السائقين ($count)';
+  }
+
+  @override
+  String get driversSort => 'ترتيب';
+
+  @override
+  String get driversStatusAvailable => 'متاح';
+
+  @override
+  String get driversStatusOnTheWay => 'في طريقه';
+
+  @override
+  String get driversStatusOnBreak => 'في استراحة';
+
+  @override
+  String get driversCurrentOrders => 'الطلبات الحالية';
+
+  @override
+  String get driversCompletedToday => 'طلبات مكتملة اليوم';
+
+  @override
+  String get driversDistanceFromYou => 'الـمـسـافـة مـنـك';
+
+  @override
+  String get driversSelect => 'اختيار';
+
+  @override
+  String get driversUnavailable => 'غير متاح';
+
+  @override
+  String get driversViewOnMap => 'عرض السائقين على الخريطة';
+
+  @override
+  String driversDistanceKm(String distance) {
+    return '$distance كم';
+  }
+
+  @override
+  String get areaSalmiya => 'السالمية';
+
+  @override
+  String get areaHawally => 'حولي';
+
+  @override
+  String get areaHateen => 'حطين';
+
+  @override
+  String get areaFarwaniya => 'الفروانية';
+
+  @override
+  String get areaCapital => 'العاصمة';
 }

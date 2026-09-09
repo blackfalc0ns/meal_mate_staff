@@ -1,0 +1,4 @@
+enum DispatcherDriverViewMode {
+  byArea,
+  allDrivers,
+}

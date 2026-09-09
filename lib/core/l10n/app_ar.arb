@@ -209,5 +209,54 @@
   "assignBoxSelectDriver": "اختر سائقاً للإسناد",
   "assignBoxViewAll": "عرض الكل",
   "assignBoxConfirmAssignment": "تأكيد الإسناد",
-  "assignBoxViewBox": "عرض البوكس"
+  "assignBoxViewBox": "عرض البوكس",
+  "driversTitle": "قائمة السائقين",
+  "driversSubtitle": "اختر السائق المناسب لتوزيع الطلبات",
+  "driversByArea": "حسب المحافظة",
+  "driversAll": "كل السائقين",
+  "driversTotalCount": "إجمالي السائقين",
+  "driversAvailableCount": "السائقين المتاحين",
+  "driversBusyCount": "مشغول الآن",
+  "driversSectionTitle": "السائقين في {area} ({count})",
+  "@driversSectionTitle": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driversAllSectionTitle": "جميع السائقين ({count})",
+  "@driversAllSectionTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driversSort": "ترتيب",
+  "driversStatusAvailable": "متاح",
+  "driversStatusOnTheWay": "في طريقه",
+  "driversStatusOnBreak": "في استراحة",
+  "driversCurrentOrders": "الطلبات الحالية",
+  "driversCompletedToday": "طلبات مكتملة اليوم",
+  "driversDistanceFromYou": "الـمـسـافـة مـنـك",
+  "driversSelect": "اختيار",
+  "driversUnavailable": "غير متاح",
+  "driversViewOnMap": "عرض السائقين على الخريطة",
+  "driversDistanceKm": "{distance} كم",
+  "@driversDistanceKm": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "areaSalmiya": "السالمية",
+  "areaHawally": "حولي",
+  "areaHateen": "حطين",
+  "areaFarwaniya": "الفروانية",
+  "areaCapital": "العاصمة"
 }

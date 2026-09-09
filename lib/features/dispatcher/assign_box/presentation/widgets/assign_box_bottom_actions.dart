@@ -39,7 +39,7 @@ class AssignBoxBottomActions extends StatelessWidget {
               child: AppButton(
                 textStyle: getRegularStyle(),
                 text: locale.assignBoxConfirmAssignment,
-                icon: Icons.send_rounded,
+                icon: Icons.near_me_rounded,
                 variant: AppButtonVariant.filled,
                 onPressed: onConfirmPressed,
               ),

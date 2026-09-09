@@ -10,6 +10,7 @@ import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/dispatcher/assign_box/domain/entities/assign_box_order_entity.dart';
 import '../../features/dispatcher/assign_box/presentation/screens/assign_box_screen.dart';
+import '../../features/dispatcher/drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import '../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
@@ -72,6 +73,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DispatcherOrdersScreen(),
+        );
+
+      case AppRoutes.dispatcherDrivers:
+        return _buildRoute(
+          settings: settings,
+          page: const DispatcherDriversScreen(),
         );
 
       case AppRoutes.assignBox:

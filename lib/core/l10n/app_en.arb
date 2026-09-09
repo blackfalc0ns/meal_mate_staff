@@ -209,5 +209,54 @@
   "assignBoxSelectDriver": "Select Driver to Assign",
   "assignBoxViewAll": "View All",
   "assignBoxConfirmAssignment": "Confirm Assignment",
-  "assignBoxViewBox": "View Box"
+  "assignBoxViewBox": "View Box",
+  "driversTitle": "Drivers List",
+  "driversSubtitle": "Choose the suitable driver for order dispatch",
+  "driversByArea": "By Area",
+  "driversAll": "All Drivers",
+  "driversTotalCount": "Total Drivers",
+  "driversAvailableCount": "Available Drivers",
+  "driversBusyCount": "Busy Now",
+  "driversSectionTitle": "Drivers in {area} ({count})",
+  "@driversSectionTitle": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driversAllSectionTitle": "All Drivers ({count})",
+  "@driversAllSectionTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driversSort": "Sort",
+  "driversStatusAvailable": "Available",
+  "driversStatusOnTheWay": "On the way",
+  "driversStatusOnBreak": "On break",
+  "driversCurrentOrders": "Current Orders",
+  "driversCompletedToday": "Completed Today",
+  "driversDistanceFromYou": "Distance from you",
+  "driversSelect": "Select",
+  "driversUnavailable": "Unavailable",
+  "driversViewOnMap": "View Drivers on Map",
+  "driversDistanceKm": "{distance} Km",
+  "@driversDistanceKm": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "areaSalmiya": "Salmiya",
+  "areaHawally": "Hawally",
+  "areaHateen": "Hateen",
+  "areaFarwaniya": "Farwaniya",
+  "areaCapital": "Capital"
 }

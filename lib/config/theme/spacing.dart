@@ -29,6 +29,7 @@ class Spacing {
   static const double appBarHeight = 56;
   static const double bottomNavHeight = 72;
 
+  static const double iconXs = 14;
   static const double iconSm = 16;
   static const double iconMd = 24;
   static const double iconLg = 32;
@@ -101,5 +102,7 @@ class Spacing {
   static const double dispatcherFilterChipHeight = 32;
   static const double dispatcherHeaderRoleHeight = 28;
   static const double dispatcherBadgeHeight = 24;
+  static const double dispatcherBadgeHorizontal = 6;
+  static const double dispatcherMapButtonHeight = 38;
   static const double dispatcherCardRadius = 14;
 }
