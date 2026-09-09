@@ -1303,6 +1303,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Capital'**
   String get areaCapital;
+
+  /// No description provided for @mapDriverTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Tracking'**
+  String get mapDriverTrackingTitle;
+
+  /// No description provided for @mapDriverTrackingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time driver monitoring'**
+  String get mapDriverTrackingSubtitle;
+
+  /// No description provided for @mapKpiActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Driver'**
+  String get mapKpiActive;
+
+  /// No description provided for @mapKpiInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get mapKpiInDelivery;
+
+  /// No description provided for @mapKpiPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get mapKpiPaused;
+
+  /// No description provided for @mapKpiIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Attention'**
+  String get mapKpiIssues;
+
+  /// No description provided for @mapStatusInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get mapStatusInDelivery;
+
+  /// No description provided for @mapStatusOnTheWayToLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Heading to Pick Up'**
+  String get mapStatusOnTheWayToLoad;
+
+  /// No description provided for @mapStatusPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get mapStatusPaused;
+
+  /// No description provided for @mapLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get mapLocation;
+
+  /// No description provided for @mapRemainingDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Distance'**
+  String get mapRemainingDistance;
+
+  /// No description provided for @mapRemainingDistanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} Km'**
+  String mapRemainingDistanceKm(String distance);
+
+  /// No description provided for @mapNoDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get mapNoDistance;
 }
 
 class _AppLocalizationsDelegate

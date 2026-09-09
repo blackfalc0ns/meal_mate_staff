@@ -86,6 +86,10 @@ extension AccountStatusColorScheme on ColorScheme {
 }
 
 extension DispatcherColorScheme on ColorScheme {
+  Color get success => AppColors.success;
+  Color get successSurface => AppColors.successSurface;
+  Color get warning => AppColors.warning;
+  Color get warningSurface => AppColors.warningSurface;
   Color get info => AppColors.info;
   Color get infoSurface => AppColors.infoSurface;
   Color get dispatcherBadgeNew => AppColors.dispatcherBadgeNew;

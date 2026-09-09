@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_driver_entity.dart';
@@ -132,7 +133,12 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
                 onSelectDriver: _handleDriverSelected,
               ),
               const SizedBox(height: Spacing.xs),
-              DispatcherDriversMapButton(onTap: widget.onViewOnMap),
+              DispatcherDriversMapButton(
+                onTap: widget.onViewOnMap ??
+                    () => Navigator.of(context).pushNamed(
+                          AppRoutes.dispatcherMap,
+                        ),
+              ),
               const SizedBox(height: Spacing.base),
             ],
           ),

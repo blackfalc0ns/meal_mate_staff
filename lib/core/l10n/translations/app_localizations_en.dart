@@ -648,4 +648,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get areaCapital => 'Capital';
+
+  @override
+  String get mapDriverTrackingTitle => 'Driver Tracking';
+
+  @override
+  String get mapDriverTrackingSubtitle => 'Real-time driver monitoring';
+
+  @override
+  String get mapKpiActive => 'Active Driver';
+
+  @override
+  String get mapKpiInDelivery => 'In Delivery';
+
+  @override
+  String get mapKpiPaused => 'Paused';
+
+  @override
+  String get mapKpiIssues => 'Needs Attention';
+
+  @override
+  String get mapStatusInDelivery => 'In Delivery';
+
+  @override
+  String get mapStatusOnTheWayToLoad => 'Heading to Pick Up';
+
+  @override
+  String get mapStatusPaused => 'Paused';
+
+  @override
+  String get mapLocation => 'Location';
+
+  @override
+  String get mapRemainingDistance => 'Remaining Distance';
+
+  @override
+  String mapRemainingDistanceKm(String distance) {
+    return '$distance Km';
+  }
+
+  @override
+  String get mapNoDistance => '—';
 }

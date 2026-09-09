@@ -43,4 +43,6 @@ class AppAssets {
       '$_dispatcherImages/driver_metric_box_active.png';
   static const String dispatcherMetricBoxInactive =
       '$_dispatcherImages/driver_metric_box_inactive.png';
+  static const String dispatcherMapStaticBackground =
+      '$_dispatcherImages/map_static_background.png';
 }

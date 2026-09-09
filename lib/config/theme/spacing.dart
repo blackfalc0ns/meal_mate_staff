@@ -111,4 +111,13 @@ class Spacing {
   static const double dispatcherDriverActionBtnHeight = 25;
   static const double dispatcherDriverBadgeHeight = 19;
   static const double dispatcherMetricIconSize = 12;
+  static const double dispatcherMapKpiCardHeight = 74;
+  static const double dispatcherMapControlBtnSize = 34;
+  static const double dispatcherMapZoomWidth = 31;
+  static const double dispatcherMapZoomHeight = 58;
+  static const double dispatcherMapMarkerAvatarSize = 49;
+  static const double dispatcherMapMarkerBadgeSize = 23;
+  static const double dispatcherMapBottomCardWidth = 98;
+  static const double dispatcherMapBottomCardHeight = 180;
+  static const double dispatcherMapBottomCarouselHeight = 180;
 }

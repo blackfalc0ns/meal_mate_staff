@@ -258,5 +258,25 @@
   "areaHawally": "حولي",
   "areaHateen": "حطين",
   "areaFarwaniya": "الفروانية",
-  "areaCapital": "العاصمة"
+  "areaCapital": "العاصمة",
+  "mapDriverTrackingTitle": "متابعة السائقين",
+  "mapDriverTrackingSubtitle": "مراقبة السائقين في الوقت الفعلي",
+  "mapKpiActive": "سائق نشط",
+  "mapKpiInDelivery": "في التوصيل",
+  "mapKpiPaused": "متوقف مؤقتاً",
+  "mapKpiIssues": "مشكلة تتطلب انتباه",
+  "mapStatusInDelivery": "في التوصيل",
+  "mapStatusOnTheWayToLoad": "في الطريق للتحميل",
+  "mapStatusPaused": "متوقف",
+  "mapLocation": "الموقع",
+  "mapRemainingDistance": "المسافة المتبقية",
+  "mapRemainingDistanceKm": "{distance} كم",
+  "@mapRemainingDistanceKm": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "mapNoDistance": "ـــــــ"
 }

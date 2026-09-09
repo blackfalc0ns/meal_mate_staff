@@ -11,6 +11,7 @@ class AppRoutes {
   static const String dispatcherOrders = '/dispatcher-orders';
   static const String dispatcherDrivers = '/dispatcher-drivers';
   static const String assignBox = '/assign-box';
+  static const String dispatcherMap = '/dispatcher-map';
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
 }

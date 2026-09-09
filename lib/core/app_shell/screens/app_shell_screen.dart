@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../features/account_status/presentation/screens/account_status_preview_screen.dart';
-import '../../../features/dispatcher/drivers/presentation/screens/dispatcher_drivers_screen.dart';
+import '../../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
 import '../../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
 import '../../extensions/extensions.dart';
 import '../widgets/app_bottom_nav_bar.dart';
@@ -62,7 +62,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         label: locale.navHome,
       ),
       const DispatcherOrdersScreen(showBottomNavBar: false),
-      const DispatcherDriversScreen(showBottomNavBar: false),
+      const DispatcherMapScreen(showBottomNavBar: false),
       AppShellTabPlaceholder(
         icon: Icons.headset_mic_outlined,
         label: locale.navSupport,

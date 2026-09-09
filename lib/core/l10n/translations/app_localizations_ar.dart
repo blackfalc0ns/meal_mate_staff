@@ -646,4 +646,45 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get areaCapital => 'العاصمة';
+
+  @override
+  String get mapDriverTrackingTitle => 'متابعة السائقين';
+
+  @override
+  String get mapDriverTrackingSubtitle => 'مراقبة السائقين في الوقت الفعلي';
+
+  @override
+  String get mapKpiActive => 'سائق نشط';
+
+  @override
+  String get mapKpiInDelivery => 'في التوصيل';
+
+  @override
+  String get mapKpiPaused => 'متوقف مؤقتاً';
+
+  @override
+  String get mapKpiIssues => 'مشكلة تتطلب انتباه';
+
+  @override
+  String get mapStatusInDelivery => 'في التوصيل';
+
+  @override
+  String get mapStatusOnTheWayToLoad => 'في الطريق للتحميل';
+
+  @override
+  String get mapStatusPaused => 'متوقف';
+
+  @override
+  String get mapLocation => 'الموقع';
+
+  @override
+  String get mapRemainingDistance => 'المسافة المتبقية';
+
+  @override
+  String mapRemainingDistanceKm(String distance) {
+    return '$distance كم';
+  }
+
+  @override
+  String get mapNoDistance => 'ـــــــ';
 }

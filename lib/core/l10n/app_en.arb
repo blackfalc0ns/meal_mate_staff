@@ -258,5 +258,25 @@
   "areaHawally": "Hawally",
   "areaHateen": "Hateen",
   "areaFarwaniya": "Farwaniya",
-  "areaCapital": "Capital"
+  "areaCapital": "Capital",
+  "mapDriverTrackingTitle": "Driver Tracking",
+  "mapDriverTrackingSubtitle": "Real-time driver monitoring",
+  "mapKpiActive": "Active Driver",
+  "mapKpiInDelivery": "In Delivery",
+  "mapKpiPaused": "Paused",
+  "mapKpiIssues": "Needs Attention",
+  "mapStatusInDelivery": "In Delivery",
+  "mapStatusOnTheWayToLoad": "Heading to Pick Up",
+  "mapStatusPaused": "Paused",
+  "mapLocation": "Location",
+  "mapRemainingDistance": "Remaining Distance",
+  "mapRemainingDistanceKm": "{distance} Km",
+  "@mapRemainingDistanceKm": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "mapNoDistance": "—"
 }
