@@ -689,4 +689,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapNoDistance => '—';
+
+  @override
+  String get supportTitle => 'Support & Issues';
+
+  @override
+  String get supportSubtitle => 'Monitor and resolve exceptional issues';
+
+  @override
+  String get supportCurrentArea => 'Current Area';
+
+  @override
+  String get supportMissingIssues => 'Missing';
+
+  @override
+  String get supportResolvingIssues => 'Resolving';
+
+  @override
+  String get supportResolvedIssues => 'Resolved';
+
+  @override
+  String get supportIssuesCountLabel => 'Issues';
+
+  @override
+  String supportTabOpen(int count) {
+    return 'Open ($count)';
+  }
+
+  @override
+  String supportTabResolved(int count) {
+    return 'Resolved ($count)';
+  }
+
+  @override
+  String supportTabResolving(int count) {
+    return 'In Progress ($count)';
+  }
+
+  @override
+  String get supportSearchHint =>
+      'Search by box number, driver name, or issue type';
+
+  @override
+  String get supportFilterAll => 'All Areas';
+
+  @override
+  String get supportFilterLast7Days => 'Last 7 Days';
+
+  @override
+  String get supportIssueLate => 'Severe Delay';
+
+  @override
+  String get supportIssueDamagedBox => 'Damaged Box';
+
+  @override
+  String get supportIssueCustomerUnavailable => 'Customer Unavailable';
+
+  @override
+  String get supportIssueAddressProblem => 'Address Problem';
+
+  @override
+  String supportTimeMinutesAgo(int minutes) {
+    return '$minutes minutes ago';
+  }
+
+  @override
+  String get supportViewDetails => 'View Details';
+
+  @override
+  String get supportAssignAlternativeDriver => 'Assign Alternative Driver';
+
+  @override
+  String get supportInfoBannerText =>
+      'You can contact the driver directly from the issue details to resolve it quickly';
 }

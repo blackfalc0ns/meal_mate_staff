@@ -687,4 +687,77 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mapNoDistance => 'ـــــــ';
+
+  @override
+  String get supportTitle => 'الدعم والمشاكل';
+
+  @override
+  String get supportSubtitle => 'متابعة وحل المشاكل الاستثنائية';
+
+  @override
+  String get supportCurrentArea => 'المنطقة الحالية';
+
+  @override
+  String get supportMissingIssues => 'مفقودة';
+
+  @override
+  String get supportResolvingIssues => 'جاري الحل';
+
+  @override
+  String get supportResolvedIssues => 'تم الحل';
+
+  @override
+  String get supportIssuesCountLabel => 'مشاكل';
+
+  @override
+  String supportTabOpen(int count) {
+    return 'مفتوحة ($count)';
+  }
+
+  @override
+  String supportTabResolved(int count) {
+    return 'تم الحل ($count)';
+  }
+
+  @override
+  String supportTabResolving(int count) {
+    return 'جاري الحل ($count)';
+  }
+
+  @override
+  String get supportSearchHint =>
+      'ابحث برقم البوكس أو اسم السائق أو نوع المشكلة';
+
+  @override
+  String get supportFilterAll => 'كل المناطق';
+
+  @override
+  String get supportFilterLast7Days => 'آخر 7 أيام';
+
+  @override
+  String get supportIssueLate => 'تأخير شديد';
+
+  @override
+  String get supportIssueDamagedBox => 'بوكس تالف';
+
+  @override
+  String get supportIssueCustomerUnavailable => 'العميل غير متاح';
+
+  @override
+  String get supportIssueAddressProblem => 'مشكلة في العنوان';
+
+  @override
+  String supportTimeMinutesAgo(int minutes) {
+    return 'منذ $minutes دقيقة';
+  }
+
+  @override
+  String get supportViewDetails => 'عرض التفاصيل';
+
+  @override
+  String get supportAssignAlternativeDriver => 'تعيين سائق بديل';
+
+  @override
+  String get supportInfoBannerText =>
+      'يمكنك التواصل مع السائق مباشرة من تفاصيل المشكلة لحلها بسرعة';
 }

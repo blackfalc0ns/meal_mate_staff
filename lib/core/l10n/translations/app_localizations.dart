@@ -1381,6 +1381,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'—'**
   String get mapNoDistance;
+
+  /// No description provided for @supportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support & Issues'**
+  String get supportTitle;
+
+  /// No description provided for @supportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor and resolve exceptional issues'**
+  String get supportSubtitle;
+
+  /// No description provided for @supportCurrentArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Area'**
+  String get supportCurrentArea;
+
+  /// No description provided for @supportMissingIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get supportMissingIssues;
+
+  /// No description provided for @supportResolvingIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolving'**
+  String get supportResolvingIssues;
+
+  /// No description provided for @supportResolvedIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get supportResolvedIssues;
+
+  /// No description provided for @supportIssuesCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Issues'**
+  String get supportIssuesCountLabel;
+
+  /// No description provided for @supportTabOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open ({count})'**
+  String supportTabOpen(int count);
+
+  /// No description provided for @supportTabResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved ({count})'**
+  String supportTabResolved(int count);
+
+  /// No description provided for @supportTabResolving.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress ({count})'**
+  String supportTabResolving(int count);
+
+  /// No description provided for @supportSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by box number, driver name, or issue type'**
+  String get supportSearchHint;
+
+  /// No description provided for @supportFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All Areas'**
+  String get supportFilterAll;
+
+  /// No description provided for @supportFilterLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get supportFilterLast7Days;
+
+  /// No description provided for @supportIssueLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Severe Delay'**
+  String get supportIssueLate;
+
+  /// No description provided for @supportIssueDamagedBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Damaged Box'**
+  String get supportIssueDamagedBox;
+
+  /// No description provided for @supportIssueCustomerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Unavailable'**
+  String get supportIssueCustomerUnavailable;
+
+  /// No description provided for @supportIssueAddressProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Address Problem'**
+  String get supportIssueAddressProblem;
+
+  /// No description provided for @supportTimeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes ago'**
+  String supportTimeMinutesAgo(int minutes);
+
+  /// No description provided for @supportViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get supportViewDetails;
+
+  /// No description provided for @supportAssignAlternativeDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Alternative Driver'**
+  String get supportAssignAlternativeDriver;
+
+  /// No description provided for @supportInfoBannerText.
+  ///
+  /// In en, this message translates to:
+  /// **'You can contact the driver directly from the issue details to resolve it quickly'**
+  String get supportInfoBannerText;
 }
 
 class _AppLocalizationsDelegate

@@ -120,4 +120,10 @@ class Spacing {
   static const double dispatcherMapBottomCardWidth = 98;
   static const double dispatcherMapBottomCardHeight = 180;
   static const double dispatcherMapBottomCarouselHeight = 180;
+  static const double dispatcherSupportKpiCardHeight = 66;
+  static const double dispatcherSupportTabHeight = 30;
+  static const double dispatcherSupportSearchHeight = 36;
+  static const double dispatcherSupportFilterChipHeight = 26;
+  static const double dispatcherSupportCardActionBtnHeight = 32;
+  static const double dispatcherSupportCardIndicatorWidth = 4;
 }

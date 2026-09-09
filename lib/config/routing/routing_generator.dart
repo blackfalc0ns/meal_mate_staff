@@ -13,6 +13,7 @@ import '../../features/dispatcher/assign_box/presentation/screens/assign_box_scr
 import '../../features/dispatcher/drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import '../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
 import '../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
+import '../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -86,6 +87,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DispatcherMapScreen(),
+        );
+
+      case AppRoutes.dispatcherSupport:
+        return _buildRoute(
+          settings: settings,
+          page: const DispatcherSupportScreen(),
         );
 
       case AppRoutes.assignBox:

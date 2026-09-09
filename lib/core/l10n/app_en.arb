@@ -278,5 +278,54 @@
       }
     }
   },
-  "mapNoDistance": "—"
+  "mapNoDistance": "—",
+  "supportTitle": "Support & Issues",
+  "supportSubtitle": "Monitor and resolve exceptional issues",
+  "supportCurrentArea": "Current Area",
+  "supportMissingIssues": "Missing",
+  "supportResolvingIssues": "Resolving",
+  "supportResolvedIssues": "Resolved",
+  "supportIssuesCountLabel": "Issues",
+  "supportTabOpen": "Open ({count})",
+  "@supportTabOpen": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTabResolved": "Resolved ({count})",
+  "@supportTabResolved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTabResolving": "In Progress ({count})",
+  "@supportTabResolving": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportSearchHint": "Search by box number, driver name, or issue type",
+  "supportFilterAll": "All Areas",
+  "supportFilterLast7Days": "Last 7 Days",
+  "supportIssueLate": "Severe Delay",
+  "supportIssueDamagedBox": "Damaged Box",
+  "supportIssueCustomerUnavailable": "Customer Unavailable",
+  "supportIssueAddressProblem": "Address Problem",
+  "supportTimeMinutesAgo": "{minutes} minutes ago",
+  "@supportTimeMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "supportViewDetails": "View Details",
+  "supportAssignAlternativeDriver": "Assign Alternative Driver",
+  "supportInfoBannerText": "You can contact the driver directly from the issue details to resolve it quickly"
 }

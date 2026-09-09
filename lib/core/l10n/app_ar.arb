@@ -278,5 +278,54 @@
       }
     }
   },
-  "mapNoDistance": "ـــــــ"
+  "mapNoDistance": "ـــــــ",
+  "supportTitle": "الدعم والمشاكل",
+  "supportSubtitle": "متابعة وحل المشاكل الاستثنائية",
+  "supportCurrentArea": "المنطقة الحالية",
+  "supportMissingIssues": "مفقودة",
+  "supportResolvingIssues": "جاري الحل",
+  "supportResolvedIssues": "تم الحل",
+  "supportIssuesCountLabel": "مشاكل",
+  "supportTabOpen": "مفتوحة ({count})",
+  "@supportTabOpen": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTabResolved": "تم الحل ({count})",
+  "@supportTabResolved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTabResolving": "جاري الحل ({count})",
+  "@supportTabResolving": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportSearchHint": "ابحث برقم البوكس أو اسم السائق أو نوع المشكلة",
+  "supportFilterAll": "كل المناطق",
+  "supportFilterLast7Days": "آخر 7 أيام",
+  "supportIssueLate": "تأخير شديد",
+  "supportIssueDamagedBox": "بوكس تالف",
+  "supportIssueCustomerUnavailable": "العميل غير متاح",
+  "supportIssueAddressProblem": "مشكلة في العنوان",
+  "supportTimeMinutesAgo": "منذ {minutes} دقيقة",
+  "@supportTimeMinutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "supportViewDetails": "عرض التفاصيل",
+  "supportAssignAlternativeDriver": "تعيين سائق بديل",
+  "supportInfoBannerText": "يمكنك التواصل مع السائق مباشرة من تفاصيل المشكلة لحلها بسرعة"
 }
