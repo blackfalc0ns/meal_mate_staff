@@ -1016,6 +1016,18 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get dispatcherNavAccount;
 
+  /// No description provided for @dispatcherSuggestionPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested :'**
+  String get dispatcherSuggestionPrefix;
+
+  /// No description provided for @dispatcherLeastBusyPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Least busy :'**
+  String get dispatcherLeastBusyPrefix;
+
   /// No description provided for @dispatcherSuggestionNearest.
   ///
   /// In en, this message translates to:

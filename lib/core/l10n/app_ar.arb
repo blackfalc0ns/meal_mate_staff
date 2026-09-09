@@ -166,6 +166,8 @@
   "dispatcherNavDelivery": "التوصيل",
   "dispatcherNavSupport": "الدعم",
   "dispatcherNavAccount": "الحساب",
+  "dispatcherSuggestionPrefix": "اقتراح :",
+  "dispatcherLeastBusyPrefix": "الأقل ضغطاً :",
   "dispatcherSuggestionNearest": "اقتراح : {name} الأقرب",
   "@dispatcherSuggestionNearest": {
     "placeholders": {

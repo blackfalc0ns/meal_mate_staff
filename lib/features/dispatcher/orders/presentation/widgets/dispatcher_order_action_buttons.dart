@@ -36,8 +36,8 @@ class DispatcherOrderActionButtons extends StatelessWidget {
             height: Spacing.dispatcherActionBtnHeight,
             borderRadius: Spacing.buttonSmallRadius,
             padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
-            iconSize: Spacing.iconSm - Spacing.xs / 2,
-            iconGap: Spacing.xs / 2,
+            iconSize: Spacing.iconSm,
+            iconGap: Spacing.xs,
             textStyle: getBoldStyle(
               color: color.onPrimary,
               fontSize: FontSize.size11,

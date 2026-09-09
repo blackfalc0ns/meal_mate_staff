@@ -166,6 +166,8 @@
   "dispatcherNavDelivery": "Delivery",
   "dispatcherNavSupport": "Support",
   "dispatcherNavAccount": "Account",
+  "dispatcherSuggestionPrefix": "Suggested :",
+  "dispatcherLeastBusyPrefix": "Least busy :",
   "dispatcherSuggestionNearest": "Suggested: {name} (Nearest)",
   "@dispatcherSuggestionNearest": {
     "placeholders": {

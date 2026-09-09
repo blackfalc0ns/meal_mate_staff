@@ -48,7 +48,7 @@ class DispatcherPriorityBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.sm,
-        vertical: Spacing.xs / 2,
+        vertical: Spacing.xs,
       ),
       decoration: BoxDecoration(
         color: surfaceColor,
@@ -58,8 +58,8 @@ class DispatcherPriorityBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: Spacing.iconSm - Spacing.xs / 2, color: textColor),
-            const SizedBox(width: Spacing.xs / 2),
+            Icon(icon, size: Spacing.iconSm, color: textColor),
+            const SizedBox(width: Spacing.xs),
           ],
           Text(
             text,

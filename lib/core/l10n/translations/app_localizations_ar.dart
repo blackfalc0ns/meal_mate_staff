@@ -492,6 +492,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dispatcherNavAccount => 'الحساب';
 
   @override
+  String get dispatcherSuggestionPrefix => 'اقتراح :';
+
+  @override
+  String get dispatcherLeastBusyPrefix => 'الأقل ضغطاً :';
+
+  @override
   String dispatcherSuggestionNearest(String name) {
     return 'اقتراح : $name الأقرب';
   }

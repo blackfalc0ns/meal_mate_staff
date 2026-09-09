@@ -40,10 +40,10 @@ class DispatcherOrderInfoSection extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.access_time_rounded,
-                    size: Spacing.iconSm - Spacing.xs / 2,
+                    size: Spacing.iconSm,
                     color: color.primary,
                   ),
-                  const SizedBox(width: Spacing.xs / 2),
+                  const SizedBox(width: Spacing.xs),
                   Flexible(
                     child: Text(
                       order.deliveryTimeWindow,
@@ -75,7 +75,7 @@ class DispatcherOrderInfoSection extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: Spacing.xs),
+              const SizedBox(height: Spacing.xs),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -84,7 +84,7 @@ class DispatcherOrderInfoSection extends StatelessWidget {
                     size: Spacing.iconSm,
                     color: color.primary,
                   ),
-                  const SizedBox(width: 2),
+                  const SizedBox(width: Spacing.xs),
                   Flexible(
                     child: Text(
                       locale.dispatcherMealsCount(order.mealsCount),
@@ -108,16 +108,16 @@ class DispatcherOrderInfoSection extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: Spacing.xs),
+              const SizedBox(height: Spacing.xs),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.location_on_outlined,
-                    size: Spacing.iconSm - Spacing.xs / 2,
+                    size: Spacing.iconSm,
                     color: color.primary,
                   ),
-                  const SizedBox(width: Spacing.xs / 2),
+                  const SizedBox(width: Spacing.xs),
                   Flexible(
                     child: Text(
                       locale.dispatcherDistanceKm(order.distanceKm),

@@ -17,38 +17,65 @@ class DispatcherDriverSuggestionTile extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final suggestionText = order.isLeastLoaded
-        ? locale.dispatcherSuggestionLeastLoaded(order.suggestedDriverName)
-        : locale.dispatcherSuggestionNearest(order.suggestedDriverName);
+    final prefix = order.isLeastLoaded
+        ? locale.dispatcherLeastBusyPrefix
+        : locale.dispatcherSuggestionPrefix;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.sm,
-        vertical: Spacing.xs,
+      padding: const EdgeInsetsDirectional.only(
+        start: Spacing.xs,
+        end: Spacing.md,
+        top: Spacing.xs,
+        bottom: Spacing.xs,
       ),
       decoration: BoxDecoration(
         color: color.dispatcherSuggestionSurface,
-        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        borderRadius: BorderRadius.circular(Spacing.radiusPill),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(
-            radius: Spacing.sm,
-            backgroundColor: color.primaryBorder,
-            child: Icon(
-              Icons.person,
-              size: Spacing.iconSm - Spacing.xs,
-              color: color.primary,
+          Container(
+            width: Spacing.iconMd,
+            height: Spacing.iconMd,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: color.surface,
+              border: Border.all(color: color.primary, width: Spacing.border),
+            ),
+            padding: const EdgeInsets.all(Spacing.border),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: color.outline.withValues(alpha: 0.25),
+              ),
+              child: Icon(
+                Icons.person,
+                size: Spacing.iconSm,
+                color: color.onSurfaceVariant,
+              ),
             ),
           ),
           const SizedBox(width: Spacing.xs),
           Flexible(
-            child: Text(
-              suggestionText,
-              style: getMediumStyle(
-                color: color.primary,
-                fontSize: FontSize.size11,
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '$prefix ',
+                    style: getBoldStyle(
+                      color: color.primary,
+                      fontSize: FontSize.size11,
+                    ),
+                  ),
+                  TextSpan(
+                    text: order.suggestedDriverName,
+                    style: getBoldStyle(
+                      color: color.onSurface,
+                      fontSize: FontSize.size11,
+                    ),
+                  ),
+                ],
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

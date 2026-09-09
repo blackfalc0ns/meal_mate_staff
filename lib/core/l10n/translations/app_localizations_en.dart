@@ -494,6 +494,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dispatcherNavAccount => 'Account';
 
   @override
+  String get dispatcherSuggestionPrefix => 'Suggested :';
+
+  @override
+  String get dispatcherLeastBusyPrefix => 'Least busy :';
+
+  @override
   String dispatcherSuggestionNearest(String name) {
     return 'Suggested: $name (Nearest)';
   }
