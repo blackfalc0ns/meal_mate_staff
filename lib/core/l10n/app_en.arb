@@ -127,5 +127,64 @@
   "accountStatusReasonVehicleRegistrationUnclear": "Vehicle registration photo is unclear",
   "accountStatusReasonDrivingLicenseUnclear": "Driving license is unclear",
   "accountStatusReasonVehicleRegistrationExpired": "Vehicle registration is expired",
-  "accountStatusPendingChip": "Pending review"
+  "accountStatusPendingChip": "Pending review",
+  "dispatcherRestaurantName": "MealMate Restaurant Kuwait",
+  "dispatcherRoleBadge": "Dispatcher",
+  "dispatcherOrdersTitle": "Orders",
+  "dispatcherOrdersSubtitle": "Box queue awaiting assignment",
+  "dispatcherStatusPendingAssignment": "Pending Assignment",
+  "dispatcherStatusAssigned": "Assigned",
+  "dispatcherStatusInDelivery": "In Delivery",
+  "dispatcherStatusProblems": "Issues",
+  "dispatcherFilterAll": "All",
+  "dispatcherPriorityNew": "New",
+  "dispatcherPriorityUrgent": "Urgent",
+  "dispatcherPriorityHigh": "High Priority",
+  "dispatcherPriorityNormal": "Normal",
+  "dispatcherMealsCount": "{count} Meals",
+  "@dispatcherMealsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dispatcherTodaysMeals": "Today's Meals",
+  "dispatcherDistance": "Distance",
+  "dispatcherDistanceKm": "{distance} km",
+  "@dispatcherDistanceKm": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "dispatcherAssign": "Assign",
+  "dispatcherDetails": "Details",
+  "dispatcherNavHome": "Home",
+  "dispatcherNavOrders": "Orders",
+  "dispatcherNavDelivery": "Delivery",
+  "dispatcherNavSupport": "Support",
+  "dispatcherNavAccount": "Account",
+  "dispatcherSuggestionNearest": "Suggested: {name} (Nearest)",
+  "@dispatcherSuggestionNearest": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dispatcherSuggestionLeastLoaded": "Least busy: {name}",
+  "@dispatcherSuggestionLeastLoaded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "navHome": "Home",
+  "navOrders": "Orders",
+  "navDelivery": "Delivery",
+  "navSupport": "Support",
+  "navAccount": "Account"
 }

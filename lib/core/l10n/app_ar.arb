@@ -127,5 +127,64 @@
   "accountStatusReasonVehicleRegistrationUnclear": "صورة استمارة المركبة غير واضحة",
   "accountStatusReasonDrivingLicenseUnclear": "رخصة القيادة غير واضحة",
   "accountStatusReasonVehicleRegistrationExpired": "استمارة المركبة منتهية",
-  "accountStatusPendingChip": "قيد المراجعة"
+  "accountStatusPendingChip": "قيد المراجعة",
+  "dispatcherRestaurantName": "مطعم MealMate الكويت",
+  "dispatcherRoleBadge": "Dispatcher",
+  "dispatcherOrdersTitle": "الطلبات",
+  "dispatcherOrdersSubtitle": "طابور البوكسات في انتظار الإسناد",
+  "dispatcherStatusPendingAssignment": "بانتظار الإسناد",
+  "dispatcherStatusAssigned": "تم الإسناد",
+  "dispatcherStatusInDelivery": "قيد التوصيل",
+  "dispatcherStatusProblems": "مشاكل",
+  "dispatcherFilterAll": "الكل",
+  "dispatcherPriorityNew": "جديد",
+  "dispatcherPriorityUrgent": "عاجل",
+  "dispatcherPriorityHigh": "أولوية عالية",
+  "dispatcherPriorityNormal": "عادي",
+  "dispatcherMealsCount": "{count} وجبات",
+  "@dispatcherMealsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dispatcherTodaysMeals": "وجبات اليوم",
+  "dispatcherDistance": "المسافة",
+  "dispatcherDistanceKm": "{distance} كم",
+  "@dispatcherDistanceKm": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "dispatcherAssign": "إسناد",
+  "dispatcherDetails": "التفاصيل",
+  "dispatcherNavHome": "الرئيسية",
+  "dispatcherNavOrders": "الطلبات",
+  "dispatcherNavDelivery": "التوصيل",
+  "dispatcherNavSupport": "الدعم",
+  "dispatcherNavAccount": "الحساب",
+  "dispatcherSuggestionNearest": "اقتراح : {name} الأقرب",
+  "@dispatcherSuggestionNearest": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dispatcherSuggestionLeastLoaded": "الأقل ضغطاً : {name}",
+  "@dispatcherSuggestionLeastLoaded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "navHome": "الرئيسية",
+  "navOrders": "الطلبات",
+  "navDelivery": "التوصيل",
+  "navSupport": "الدعم",
+  "navAccount": "الحساب"
 }

@@ -416,4 +416,105 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountStatusPendingChip => 'Pending review';
+
+  @override
+  String get dispatcherRestaurantName => 'MealMate Restaurant Kuwait';
+
+  @override
+  String get dispatcherRoleBadge => 'Dispatcher';
+
+  @override
+  String get dispatcherOrdersTitle => 'Orders';
+
+  @override
+  String get dispatcherOrdersSubtitle => 'Box queue awaiting assignment';
+
+  @override
+  String get dispatcherStatusPendingAssignment => 'Pending Assignment';
+
+  @override
+  String get dispatcherStatusAssigned => 'Assigned';
+
+  @override
+  String get dispatcherStatusInDelivery => 'In Delivery';
+
+  @override
+  String get dispatcherStatusProblems => 'Issues';
+
+  @override
+  String get dispatcherFilterAll => 'All';
+
+  @override
+  String get dispatcherPriorityNew => 'New';
+
+  @override
+  String get dispatcherPriorityUrgent => 'Urgent';
+
+  @override
+  String get dispatcherPriorityHigh => 'High Priority';
+
+  @override
+  String get dispatcherPriorityNormal => 'Normal';
+
+  @override
+  String dispatcherMealsCount(int count) {
+    return '$count Meals';
+  }
+
+  @override
+  String get dispatcherTodaysMeals => 'Today\'s Meals';
+
+  @override
+  String get dispatcherDistance => 'Distance';
+
+  @override
+  String dispatcherDistanceKm(String distance) {
+    return '$distance km';
+  }
+
+  @override
+  String get dispatcherAssign => 'Assign';
+
+  @override
+  String get dispatcherDetails => 'Details';
+
+  @override
+  String get dispatcherNavHome => 'Home';
+
+  @override
+  String get dispatcherNavOrders => 'Orders';
+
+  @override
+  String get dispatcherNavDelivery => 'Delivery';
+
+  @override
+  String get dispatcherNavSupport => 'Support';
+
+  @override
+  String get dispatcherNavAccount => 'Account';
+
+  @override
+  String dispatcherSuggestionNearest(String name) {
+    return 'Suggested: $name (Nearest)';
+  }
+
+  @override
+  String dispatcherSuggestionLeastLoaded(String name) {
+    return 'Least busy: $name';
+  }
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navOrders => 'Orders';
+
+  @override
+  String get navDelivery => 'Delivery';
+
+  @override
+  String get navSupport => 'Support';
+
+  @override
+  String get navAccount => 'Account';
 }

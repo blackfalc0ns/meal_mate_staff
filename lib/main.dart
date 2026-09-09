@@ -11,7 +11,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.initialRoute = AppRoutes.appShell});
+
+  final String initialRoute;
 
   // This widget is the root of your application.
   @override
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
           },
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          initialRoute: AppRoutes.splash,
+          initialRoute: initialRoute,
           onGenerateRoute: RouteGenerator.getRoute,
         );
       },

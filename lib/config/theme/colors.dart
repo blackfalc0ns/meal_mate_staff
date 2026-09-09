@@ -25,6 +25,18 @@ class AppColors {
   static const Color errorSurface = Color(0xFFFFEBEE);
   static const Color success = Color(0xFF1BC74E);
   static const Color successSurface = Color(0xFFE7F9ED);
+  static const Color info = Color(0xFF2563EB);
+  static const Color infoSurface = Color(0xFFEFF6FF);
+
+  static const Color dispatcherBadgeNew = Color(0xFF1BC74E);
+  static const Color dispatcherBadgeNewSurface = Color(0xFFE7F9ED);
+  static const Color dispatcherBadgeUrgent = Color(0xFFE53935);
+  static const Color dispatcherBadgeUrgentSurface = Color(0xFFFFEBEE);
+  static const Color dispatcherBadgeHigh = Color(0xFFFD8020);
+  static const Color dispatcherBadgeHighSurface = Color(0xFFFFF6E7);
+  static const Color dispatcherBadgeNormal = Color(0xFF878685);
+  static const Color dispatcherBadgeNormalSurface = Color(0xFFF3F4F6);
+  static const Color dispatcherSuggestionSurface = Color(0xFFF6F4FB);
 
   static const Color darkCallBackground = Color(0xFF1B1540);
   static const Color black = Color(0xFF000000);
@@ -70,4 +82,23 @@ extension AccountStatusColorScheme on ColorScheme {
   Color get accountStatusWarning => AppColors.accountStatusWarning;
   Color get accountStatusErrorSurface => AppColors.accountStatusErrorSurface;
   Color get accountStatusError => AppColors.accountStatusError;
+}
+
+extension DispatcherColorScheme on ColorScheme {
+  Color get info => AppColors.info;
+  Color get infoSurface => AppColors.infoSurface;
+  Color get dispatcherBadgeNew => AppColors.dispatcherBadgeNew;
+  Color get dispatcherBadgeNewSurface => AppColors.dispatcherBadgeNewSurface;
+  Color get dispatcherBadgeUrgent => AppColors.dispatcherBadgeUrgent;
+  Color get dispatcherBadgeUrgentSurface =>
+      AppColors.dispatcherBadgeUrgentSurface;
+  Color get dispatcherBadgeHigh => AppColors.dispatcherBadgeHigh;
+  Color get dispatcherBadgeHighSurface => AppColors.dispatcherBadgeHighSurface;
+  Color get dispatcherBadgeNormal => AppColors.dispatcherBadgeNormal;
+  Color get dispatcherBadgeNormalSurface =>
+      AppColors.dispatcherBadgeNormalSurface;
+  Color get dispatcherSuggestionSurface =>
+      AppColors.dispatcherSuggestionSurface;
+  Color get primaryBorder => AppColors.primaryBorder;
+  Color get transparent => AppColors.transparent;
 }

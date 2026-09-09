@@ -414,4 +414,105 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accountStatusPendingChip => 'قيد المراجعة';
+
+  @override
+  String get dispatcherRestaurantName => 'مطعم MealMate الكويت';
+
+  @override
+  String get dispatcherRoleBadge => 'Dispatcher';
+
+  @override
+  String get dispatcherOrdersTitle => 'الطلبات';
+
+  @override
+  String get dispatcherOrdersSubtitle => 'طابور البوكسات في انتظار الإسناد';
+
+  @override
+  String get dispatcherStatusPendingAssignment => 'بانتظار الإسناد';
+
+  @override
+  String get dispatcherStatusAssigned => 'تم الإسناد';
+
+  @override
+  String get dispatcherStatusInDelivery => 'قيد التوصيل';
+
+  @override
+  String get dispatcherStatusProblems => 'مشاكل';
+
+  @override
+  String get dispatcherFilterAll => 'الكل';
+
+  @override
+  String get dispatcherPriorityNew => 'جديد';
+
+  @override
+  String get dispatcherPriorityUrgent => 'عاجل';
+
+  @override
+  String get dispatcherPriorityHigh => 'أولوية عالية';
+
+  @override
+  String get dispatcherPriorityNormal => 'عادي';
+
+  @override
+  String dispatcherMealsCount(int count) {
+    return '$count وجبات';
+  }
+
+  @override
+  String get dispatcherTodaysMeals => 'وجبات اليوم';
+
+  @override
+  String get dispatcherDistance => 'المسافة';
+
+  @override
+  String dispatcherDistanceKm(String distance) {
+    return '$distance كم';
+  }
+
+  @override
+  String get dispatcherAssign => 'إسناد';
+
+  @override
+  String get dispatcherDetails => 'التفاصيل';
+
+  @override
+  String get dispatcherNavHome => 'الرئيسية';
+
+  @override
+  String get dispatcherNavOrders => 'الطلبات';
+
+  @override
+  String get dispatcherNavDelivery => 'التوصيل';
+
+  @override
+  String get dispatcherNavSupport => 'الدعم';
+
+  @override
+  String get dispatcherNavAccount => 'الحساب';
+
+  @override
+  String dispatcherSuggestionNearest(String name) {
+    return 'اقتراح : $name الأقرب';
+  }
+
+  @override
+  String dispatcherSuggestionLeastLoaded(String name) {
+    return 'الأقل ضغطاً : $name';
+  }
+
+  @override
+  String get navHome => 'الرئيسية';
+
+  @override
+  String get navOrders => 'الطلبات';
+
+  @override
+  String get navDelivery => 'التوصيل';
+
+  @override
+  String get navSupport => 'الدعم';
+
+  @override
+  String get navAccount => 'الحساب';
 }

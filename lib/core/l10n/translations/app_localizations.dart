@@ -871,6 +871,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pending review'**
   String get accountStatusPendingChip;
+
+  /// No description provided for @dispatcherRestaurantName.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate Restaurant Kuwait'**
+  String get dispatcherRestaurantName;
+
+  /// No description provided for @dispatcherRoleBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatcher'**
+  String get dispatcherRoleBadge;
+
+  /// No description provided for @dispatcherOrdersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get dispatcherOrdersTitle;
+
+  /// No description provided for @dispatcherOrdersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Box queue awaiting assignment'**
+  String get dispatcherOrdersSubtitle;
+
+  /// No description provided for @dispatcherStatusPendingAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Assignment'**
+  String get dispatcherStatusPendingAssignment;
+
+  /// No description provided for @dispatcherStatusAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned'**
+  String get dispatcherStatusAssigned;
+
+  /// No description provided for @dispatcherStatusInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get dispatcherStatusInDelivery;
+
+  /// No description provided for @dispatcherStatusProblems.
+  ///
+  /// In en, this message translates to:
+  /// **'Issues'**
+  String get dispatcherStatusProblems;
+
+  /// No description provided for @dispatcherFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get dispatcherFilterAll;
+
+  /// No description provided for @dispatcherPriorityNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get dispatcherPriorityNew;
+
+  /// No description provided for @dispatcherPriorityUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get dispatcherPriorityUrgent;
+
+  /// No description provided for @dispatcherPriorityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High Priority'**
+  String get dispatcherPriorityHigh;
+
+  /// No description provided for @dispatcherPriorityNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get dispatcherPriorityNormal;
+
+  /// No description provided for @dispatcherMealsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Meals'**
+  String dispatcherMealsCount(int count);
+
+  /// No description provided for @dispatcherTodaysMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Meals'**
+  String get dispatcherTodaysMeals;
+
+  /// No description provided for @dispatcherDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get dispatcherDistance;
+
+  /// No description provided for @dispatcherDistanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} km'**
+  String dispatcherDistanceKm(String distance);
+
+  /// No description provided for @dispatcherAssign.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign'**
+  String get dispatcherAssign;
+
+  /// No description provided for @dispatcherDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get dispatcherDetails;
+
+  /// No description provided for @dispatcherNavHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get dispatcherNavHome;
+
+  /// No description provided for @dispatcherNavOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get dispatcherNavOrders;
+
+  /// No description provided for @dispatcherNavDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get dispatcherNavDelivery;
+
+  /// No description provided for @dispatcherNavSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get dispatcherNavSupport;
+
+  /// No description provided for @dispatcherNavAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get dispatcherNavAccount;
+
+  /// No description provided for @dispatcherSuggestionNearest.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested: {name} (Nearest)'**
+  String dispatcherSuggestionNearest(String name);
+
+  /// No description provided for @dispatcherSuggestionLeastLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Least busy: {name}'**
+  String dispatcherSuggestionLeastLoaded(String name);
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get navOrders;
+
+  /// No description provided for @navDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get navDelivery;
+
+  /// No description provided for @navSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get navSupport;
+
+  /// No description provided for @navAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get navAccount;
 }
 
 class _AppLocalizationsDelegate

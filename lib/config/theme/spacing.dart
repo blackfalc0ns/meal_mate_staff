@@ -93,4 +93,13 @@ class Spacing {
   static const double accountStatusHelpButtonHeight = 28;
   static const double accountStatusHelpIconSize = 39;
   static const double accountStatusTrustNoteHeight = 39;
+
+  static const double dispatcherActionBtnWidth = 84;
+  static const double dispatcherActionBtnHeight = 36;
+  static const double dispatcherActionBtnSmallHeight = 32;
+  static const double dispatcherMetricCardHeight = 84;
+  static const double dispatcherFilterChipHeight = 32;
+  static const double dispatcherHeaderRoleHeight = 28;
+  static const double dispatcherBadgeHeight = 24;
+  static const double dispatcherCardRadius = 14;
 }

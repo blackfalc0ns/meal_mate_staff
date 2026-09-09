@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
+import 'package:meal_mate_delivery/core/app_shell/screens/app_shell_screen.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/login_screen.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/splash_screen.dart';
@@ -24,8 +25,17 @@ void main() {
     return AppLocalizations.of(context)!;
   }
 
-  testWidgets('app starts at splash screen', (tester) async {
+  testWidgets('app starts at app shell by default', (tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pump();
+
+    expect(find.byType(AppShellScreen), findsOneWidget);
+  });
+
+  testWidgets('app starts at splash screen when splash route is used', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const MyApp(initialRoute: AppRoutes.splash));
     await tester.pump();
 
     expect(find.byType(SplashScreen), findsOneWidget);
