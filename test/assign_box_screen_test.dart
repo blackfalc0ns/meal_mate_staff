@@ -102,4 +102,20 @@ void main() {
     expect(find.text('View Box'), findsOneWidget);
     expect(find.text('Confirm Assignment'), findsOneWidget);
   });
+
+  testWidgets('renders AssignBoxScreen on narrow 360px device without overflow', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 780);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    await tester.pumpWidget(buildSubject());
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('سالم الحربي'), findsOneWidget);
+    expect(find.text('أحمد إبراهيم'), findsOneWidget);
+    expect(find.text('محمد السعيد'), findsOneWidget);
+  });
 }

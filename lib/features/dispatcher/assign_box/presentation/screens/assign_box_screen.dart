@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_mate_delivery/config/routing/routing_extensions.dart';
 
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
@@ -50,12 +51,7 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
         title: locale.assignBoxTitle(_order.boxCode),
         showBackButton: true,
         onBackPressed: () => Navigator.of(context).maybePop(),
-        actions: [
-          NotificationButton(
-            hasUnread: true,
-            onPressed: () {},
-          ),
-        ],
+        actions: [NotificationButton(hasUnread: true, onPressed: () {})],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
@@ -73,9 +69,7 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
               onSelected: () => _onDriverSelected(_order.recommendedDriver.id),
             ),
             const SizedBox(height: Spacing.lg),
-            AssignBoxDriversHeader(
-              onViewAllPressed: () {},
-            ),
+            AssignBoxDriversHeader(onViewAllPressed: () {}),
             const SizedBox(height: Spacing.sm),
             ..._order.candidates.map(
               (candidate) => Padding(
@@ -94,7 +88,7 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
       bottomNavigationBar: AssignBoxBottomActions(
         onViewBoxPressed: () {},
         onConfirmPressed: () {
-          Navigator.of(context).maybePop();
+          context.pop();
         },
       ),
     );

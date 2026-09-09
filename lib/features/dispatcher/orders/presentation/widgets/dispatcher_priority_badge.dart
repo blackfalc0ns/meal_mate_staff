@@ -46,6 +46,7 @@ class DispatcherPriorityBadge extends StatelessWidget {
     }
 
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: Spacing.md),
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.sm,
         vertical: Spacing.xs,

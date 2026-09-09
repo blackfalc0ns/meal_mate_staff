@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
 
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
@@ -27,10 +28,7 @@ class AssignBoxBottomActions extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         border: Border(
-          top: BorderSide(
-            color: color.outlineVariant,
-            width: Spacing.border,
-          ),
+          top: BorderSide(color: color.outlineVariant, width: Spacing.border),
         ),
       ),
       child: SafeArea(
@@ -39,17 +37,23 @@ class AssignBoxBottomActions extends StatelessWidget {
           children: [
             Expanded(
               child: AppButton(
-                text: locale.assignBoxViewBox,
-                variant: AppButtonVariant.outlined,
-                onPressed: onViewBoxPressed,
-              ),
-            ),
-            const SizedBox(width: Spacing.md),
-            Expanded(
-              child: AppButton(
+                textStyle: getRegularStyle(),
                 text: locale.assignBoxConfirmAssignment,
+                icon: Icons.send_rounded,
                 variant: AppButtonVariant.filled,
                 onPressed: onConfirmPressed,
+              ),
+            ),
+
+            const SizedBox(width: Spacing.md),
+
+            Expanded(
+              child: AppButton(
+                textStyle: getRegularStyle(),
+                text: locale.assignBoxViewBox,
+                icon: Icons.visibility_outlined,
+                variant: AppButtonVariant.outlined,
+                onPressed: onViewBoxPressed,
               ),
             ),
           ],

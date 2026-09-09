@@ -28,7 +28,7 @@ class AssignBoxFakeData {
       AssignBoxCandidateDriverEntity(
         id: 'cand_1',
         name: 'أحمد إبراهيم',
-        badgeNumber: '#1',
+        badgeNumber: '1',
         statusText: 'متاح',
         statusType: AssignBoxDriverStatusType.available,
         tagText: 'الأقل ضغطاً',
@@ -39,7 +39,7 @@ class AssignBoxFakeData {
       AssignBoxCandidateDriverEntity(
         id: 'cand_2',
         name: 'محمد السعيد',
-        badgeNumber: '#2',
+        badgeNumber: '2',
         statusText: 'مشغول',
         statusType: AssignBoxDriverStatusType.busy,
         tagText: 'مشغول بتسليم',
@@ -50,7 +50,7 @@ class AssignBoxFakeData {
       AssignBoxCandidateDriverEntity(
         id: 'cand_3',
         name: 'يوسف العتيبي',
-        badgeNumber: '#3',
+        badgeNumber: '3',
         statusText: 'خرج للتوصيل',
         statusType: AssignBoxDriverStatusType.inDelivery,
         tagText: 'قريب من العميل',
@@ -61,11 +61,13 @@ class AssignBoxFakeData {
       AssignBoxCandidateDriverEntity(
         id: 'cand_4',
         name: 'سالم الدوسري',
-        badgeNumber: '#4',
+        badgeNumber: '4',
         statusText: 'راجع للمطعم',
         statusType: AssignBoxDriverStatusType.returning,
-        tagText: 'قريب من المطعم',
+        tagText: 'قريب من العميل',
         distanceText: '6.2 كم',
+        currentLoadText: '0 بوكسات',
+        expectedCompletionText: '10:20 ص',
       ),
     ],
   );

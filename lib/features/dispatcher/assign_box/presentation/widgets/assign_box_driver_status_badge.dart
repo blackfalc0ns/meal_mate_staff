@@ -35,24 +35,24 @@ class AssignBoxDriverStatusBadge extends StatelessWidget {
         surfaceColor = color.infoSurface;
         textColor = color.info;
       case AssignBoxDriverStatusType.returning:
-        surfaceColor = color.dispatcherBadgeNormalSurface;
-        textColor = color.dispatcherBadgeNormal;
+        surfaceColor = color.dispatcherSuggestionSurface;
+        textColor = color.primary;
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.sm,
-        vertical: Spacing.xs,
+        horizontal: Spacing.sm - Spacing.border,
+        vertical: Spacing.xs / 2,
       ),
       decoration: BoxDecoration(
         color: surfaceColor,
-        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+        borderRadius: BorderRadius.circular(Spacing.radiusPill),
       ),
       child: Text(
         statusText,
         style: getSemiBoldStyle(
           color: textColor,
-          fontSize: FontSize.size10,
+          fontSize: FontSize.size9,
         ),
       ),
     );

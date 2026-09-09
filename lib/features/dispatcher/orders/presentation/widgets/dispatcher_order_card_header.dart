@@ -27,7 +27,7 @@ class DispatcherOrderCardHeader extends StatelessWidget {
               size: Spacing.iconSm + Spacing.xs / 2,
               color: color.primary,
             ),
-            const SizedBox(width: Spacing.xs),
+            const SizedBox(width: Spacing.sm),
             Text(
               order.boxCode,
               style: getBoldStyle(

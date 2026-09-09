@@ -20,27 +20,45 @@ class AssignBoxDriverTagBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    final surfaceColor = isPrimary
-        ? color.dispatcherSuggestionSurface
-        : color.dispatcherBadgeNormalSurface;
-    final textColor = isPrimary
-        ? color.primary
-        : color.dispatcherBadgeNormal;
+    final Color surfaceColor;
+    final Color textColor;
+
+    switch (tagText) {
+      case 'الأقل ضغطاً':
+        surfaceColor = color.dispatcherBadgeNewSurface;
+        textColor = color.dispatcherBadgeNew;
+      case 'مشغول بتسليم':
+        surfaceColor = color.dispatcherBadgeHighSurface;
+        textColor = color.dispatcherBadgeHigh;
+      case 'قريب من العميل':
+        surfaceColor = color.infoSurface;
+        textColor = color.info;
+      default:
+        surfaceColor = isPrimary
+            ? color.dispatcherSuggestionSurface
+            : color.dispatcherBadgeNormalSurface;
+        textColor = isPrimary
+            ? color.primary
+            : color.dispatcherBadgeNormal;
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.sm,
-        vertical: Spacing.xs,
+        horizontal: Spacing.sm - Spacing.border,
+        vertical: Spacing.xs / 2,
       ),
       decoration: BoxDecoration(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(Spacing.radiusPill),
       ),
-      child: Text(
-        tagText,
-        style: getMediumStyle(
-          color: textColor,
-          fontSize: FontSize.size10,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          tagText,
+          style: getMediumStyle(
+            color: textColor,
+            fontSize: FontSize.size9,
+          ),
         ),
       ),
     );
