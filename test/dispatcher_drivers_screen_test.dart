@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
@@ -182,6 +183,31 @@ void main() {
       expect(find.text('عمر القحطاني'), findsOneWidget);
       expect(find.text('أحمد محمد'), findsNothing);
     });
+
+    testWidgets(
+      'uses animations package PageTransitionSwitcher when area changes',
+      (tester) async {
+        tester.view.physicalSize = const Size(1080, 2400);
+        tester.view.devicePixelRatio = 2.5;
+        addTearDown(() => tester.view.resetPhysicalSize());
+
+        await tester.pumpWidget(buildSubject());
+        await tester.pumpAndSettle();
+
+        expect(find.byType(PageTransitionSwitcher), findsOneWidget);
+
+        // Tap Hawally chip
+        await tester.tap(find.text('حولي'));
+        // Advance animation partially
+        await tester.pump(const Duration(milliseconds: 150));
+
+        expect(find.byType(PageTransitionSwitcher), findsOneWidget);
+        expect(find.byType(SharedAxisTransition), findsWidgets);
+
+        await tester.pumpAndSettle();
+        expect(find.text('السائقين في حولي (2)'), findsOneWidget);
+      },
+    );
 
     testWidgets('invokes onSelectDriver when driver select button is tapped', (
       tester,

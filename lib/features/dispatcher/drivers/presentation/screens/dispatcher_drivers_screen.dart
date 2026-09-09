@@ -6,11 +6,10 @@ import '../../domain/entities/dispatcher_driver_entity.dart';
 import '../../domain/entities/dispatcher_driver_view_mode.dart';
 import '../../domain/fake_data/dispatcher_drivers_fake_data.dart';
 import '../widgets/dispatcher_drivers_area_chips.dart';
-import '../widgets/dispatcher_drivers_card.dart';
+import '../widgets/dispatcher_drivers_content_list.dart';
 import '../widgets/dispatcher_drivers_header.dart';
 import '../widgets/dispatcher_drivers_kpi_card.dart';
 import '../widgets/dispatcher_drivers_map_button.dart';
-import '../widgets/dispatcher_drivers_section_header.dart';
 import '../widgets/dispatcher_drivers_view_switcher.dart';
 
 class DispatcherDriversScreen extends StatefulWidget {
@@ -36,6 +35,7 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
   DispatcherDriverViewMode _viewMode = DispatcherDriverViewMode.byArea;
   String _selectedArea = DispatcherDriversFakeData.areas.first;
   bool _sortByDistance = false;
+  bool _isTransitionReversed = false;
 
   List<DispatcherDriverEntity> get _filteredDrivers {
     List<DispatcherDriverEntity> list;
@@ -56,6 +56,24 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
   void _toggleSort() {
     setState(() {
       _sortByDistance = !_sortByDistance;
+    });
+  }
+
+  void _handleAreaSelected(String area) {
+    if (area == _selectedArea) return;
+    final oldIndex = DispatcherDriversFakeData.areas.indexOf(_selectedArea);
+    final newIndex = DispatcherDriversFakeData.areas.indexOf(area);
+    setState(() {
+      _isTransitionReversed = newIndex < oldIndex;
+      _selectedArea = area;
+    });
+  }
+
+  void _handleViewModeChanged(DispatcherDriverViewMode mode) {
+    if (mode == _viewMode) return;
+    setState(() {
+      _isTransitionReversed = mode == DispatcherDriverViewMode.byArea;
+      _viewMode = mode;
     });
   }
 
@@ -90,22 +108,14 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
               const SizedBox(height: Spacing.xs),
               DispatcherDriversViewSwitcher(
                 selectedViewMode: _viewMode,
-                onViewModeChanged: (mode) {
-                  setState(() {
-                    _viewMode = mode;
-                  });
-                },
+                onViewModeChanged: _handleViewModeChanged,
               ),
               if (_viewMode == DispatcherDriverViewMode.byArea) ...[
                 const SizedBox(height: Spacing.xs),
                 DispatcherDriversAreaChips(
                   areas: DispatcherDriversFakeData.areas,
                   selectedArea: _selectedArea,
-                  onAreaSelected: (area) {
-                    setState(() {
-                      _selectedArea = area;
-                    });
-                  },
+                  onAreaSelected: _handleAreaSelected,
                 ),
               ],
               const SizedBox(height: Spacing.xs),
@@ -113,17 +123,13 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
                 kpi: DispatcherDriversFakeData.kpi,
               ),
               const SizedBox(height: Spacing.sm),
-              DispatcherDriversSectionHeader(
-                title: sectionTitle,
+              DispatcherDriversContentList(
+                transitionKey: '$_viewMode-$_selectedArea',
+                isTransitionReversed: _isTransitionReversed,
+                sectionTitle: sectionTitle,
+                drivers: drivers,
                 onSort: _toggleSort,
-              ),
-              const SizedBox(height: Spacing.xs),
-              ...drivers.map(
-                (driver) => DispatcherDriversCard(
-                  key: ValueKey(driver.id),
-                  driver: driver,
-                  onSelect: _handleDriverSelected,
-                ),
+                onSelectDriver: _handleDriverSelected,
               ),
               const SizedBox(height: Spacing.xs),
               DispatcherDriversMapButton(onTap: widget.onViewOnMap),
