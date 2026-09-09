@@ -31,16 +31,9 @@ class DispatcherDriversKpiSegment extends StatelessWidget {
         Container(
           width: Spacing.xxl,
           height: Spacing.xxl,
-          decoration: BoxDecoration(
-            color: iconBgColor,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: iconBgColor, shape: BoxShape.circle),
           alignment: Alignment.center,
-          child: Icon(
-            icon,
-            size: Spacing.iconSm,
-            color: iconColor,
-          ),
+          child: Icon(icon, size: Spacing.iconSm, color: iconColor),
         ),
         const SizedBox(width: Spacing.sm),
         Flexible(
@@ -48,6 +41,16 @@ class DispatcherDriversKpiSegment extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text(
+                label,
+                style: getSemiBoldStyle(
+                  fontSize: FontSize.size10,
+                  color: color.onSurfaceVariant,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: Spacing.border + Spacing.border),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
@@ -57,16 +60,6 @@ class DispatcherDriversKpiSegment extends StatelessWidget {
                     color: color.onSurface,
                   ),
                 ),
-              ),
-              const SizedBox(height: Spacing.border + Spacing.border),
-              Text(
-                label,
-                style: getRegularStyle(
-                  fontSize: FontSize.size10,
-                  color: color.onSurfaceVariant,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

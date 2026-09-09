@@ -26,7 +26,10 @@ class DispatcherDriversViewSwitcher extends StatelessWidget {
         vertical: Spacing.xs,
       ),
       child: Container(
-        height: Spacing.registrationSmallButtonHeight + Spacing.border + Spacing.border,
+        height:
+            Spacing.registrationSmallButtonHeight +
+            Spacing.border +
+            Spacing.border,
         decoration: BoxDecoration(
           color: color.primaryContainer,
           borderRadius: BorderRadius.circular(Spacing.radiusPill),
@@ -36,18 +39,21 @@ class DispatcherDriversViewSwitcher extends StatelessWidget {
           children: [
             Expanded(
               child: DispatcherDriversSegmentItem(
+                title: locale.driversAll,
+                icon: Icons.people_alt_rounded,
+                isSelected:
+                    selectedViewMode == DispatcherDriverViewMode.allDrivers,
+                onTap: () =>
+                    onViewModeChanged(DispatcherDriverViewMode.allDrivers),
+              ),
+            ),
+
+            Expanded(
+              child: DispatcherDriversSegmentItem(
                 title: locale.driversByArea,
                 icon: Icons.apartment_rounded,
                 isSelected: selectedViewMode == DispatcherDriverViewMode.byArea,
                 onTap: () => onViewModeChanged(DispatcherDriverViewMode.byArea),
-              ),
-            ),
-            Expanded(
-              child: DispatcherDriversSegmentItem(
-                title: locale.driversAll,
-                icon: Icons.people_alt_rounded,
-                isSelected: selectedViewMode == DispatcherDriverViewMode.allDrivers,
-                onTap: () => onViewModeChanged(DispatcherDriverViewMode.allDrivers),
               ),
             ),
           ],
