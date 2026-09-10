@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/app_shell/screens/app_shell_screen.dart';
@@ -58,6 +59,7 @@ void main() {
       expect(find.byType(AppBottomNavBar), findsOneWidget);
       expect(find.byType(AppBottomNavItem), findsNWidgets(5));
       expect(find.byType(MealMateNavLogo), findsOneWidget);
+      expect(find.byType(SvgPicture), findsNWidgets(5));
 
       expect(find.text('الرئيسية'), findsOneWidget);
       expect(find.text('الطلبات'), findsOneWidget);

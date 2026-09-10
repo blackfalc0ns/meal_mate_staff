@@ -29,8 +29,8 @@ class AppBottomNavItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(Spacing.radiusPill),
         child: Container(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.sm,
-            vertical: Spacing.xs,
+            horizontal: Spacing.xs,
+            vertical: Spacing.sm,
           ),
           decoration: BoxDecoration(
             color: color.primary,
@@ -64,7 +64,7 @@ class AppBottomNavItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.xs,
-          vertical: Spacing.xs,
+          vertical: Spacing.sm,
         ),
         child: FittedBox(
           fit: BoxFit.scaleDown,
@@ -76,8 +76,8 @@ class AppBottomNavItem extends StatelessWidget {
               const SizedBox(height: Spacing.xs / 2),
               Text(
                 label,
-                style: getMediumStyle(
-                  color: color.onSurfaceVariant,
+                style: getSemiBoldStyle(
+                  color: color.onSurface,
                   fontSize: FontSize.size11,
                 ),
               ),

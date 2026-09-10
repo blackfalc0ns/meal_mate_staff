@@ -8,6 +8,11 @@ class AppAssets {
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';
   static const String mealMateLogo = '$_svg/meal_mate_logo.svg';
+  static const String navHome = '$_svg/nav_home.svg';
+  static const String navOrders = '$_svg/nav_orders.svg';
+  static const String navDelivery = '$_svg/nav_delivery.svg';
+  static const String navSupport = '$_svg/nav_support.svg';
+  static const String navProfile = '$_svg/nav_profile.svg';
 
   static const String authSplashBackground =
       '$_authImages/splash_background.png';

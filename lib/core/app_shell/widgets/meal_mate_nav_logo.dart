@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../config/theme/spacing.dart';
+import '../../constants/assets.dart';
 import '../../extensions/extensions.dart';
-import 'meal_mate_logo_painter.dart';
 
 class MealMateNavLogo extends StatelessWidget {
   const MealMateNavLogo({
     super.key,
     required this.isSelected,
-    this.size = 21,
+    this.size = Spacing.iconMd,
   });
 
   final bool isSelected;
@@ -17,12 +19,16 @@ class MealMateNavLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return CustomPaint(
-      size: Size(size, size),
-      painter: MealMateLogoPainter(
-        archColor: isSelected ? color.onPrimary : color.onSurfaceVariant,
-        smileColor: color.secondary,
-      ),
+    return SvgPicture.asset(
+      AppAssets.navHome,
+      width: size,
+      height: size,
+      colorFilter: isSelected
+          ? null
+          : ColorFilter.mode(
+              color.onSurface,
+              BlendMode.srcIn,
+            ),
     );
   }
 }

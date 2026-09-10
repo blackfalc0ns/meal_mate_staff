@@ -45,6 +45,7 @@ dependencies:
   pinput: ^6.0.2
   image_picker: ^1.2.3
   animations: 3.0.0
+  flutter_svg: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ flutter:
   assets:
     - assets/images/auth/
     - assets/images/dispatcher/
+    - assets/images/svg/
 
   fonts:
     - family: Alexandria
