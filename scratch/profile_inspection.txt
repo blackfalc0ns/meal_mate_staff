@@ -1,0 +1,195 @@
+=== ROOT NODE: 10.18 - Profile & Settings (2259:6683) ===
+10.18 - Profile & Settings (FRAME, 390.0x870.0) [fills: #ffffff(1.00)]
+  Status bar (INSTANCE, 389.0x62.0) [pad(T:21.0,R:24.0,B:19.0,L:24.0) gap:154.0]
+    Time (FRAME, 93.5x22.0) [pad(T:1.5,R:0,B:0,L:0) gap:10.0]
+      Time (TEXT, 37.0x22.0) -> "9:41" [fills: #000000(1.00)]
+    Levels (FRAME, 93.5x22.0) [pad(T:1.0,R:1.0,B:0,L:0) gap:7.0]
+      Cellular Connection (VECTOR, 19.2x12.2) [fills: #000000(1.00)]
+      Wifi (VECTOR, 17.1x12.3) [fills: #000000(1.00)]
+      Frame (FRAME, 27.3x13.0)
+        Border (RECTANGLE, 25.0x13.0) [strokes: #000000] [radius: 4.300000190734863]
+        Cap (VECTOR, 1.3x4.1) [fills: #000000(1.00)]
+        Capacity (RECTANGLE, 21.0x9.0) [fills: #000000(1.00)] [radius: 2.5]
+  Group 20550 (GROUP, 360.0x30.8)
+    Group 10 (GROUP, 30.8x29.9)
+      Rectangle 4 (RECTANGLE, 30.8x29.9) [fills: #ffffff(1.00)] [strokes: #e4e4e4] [radius: 7.04156494140625]
+      vuesax/bold/notification (FRAME, 21.1x21.1) [fills: #ffffff(1.00)]
+        vuesax/bold/notification (GROUP, 21.1x21.1)
+          notification (GROUP, 21.1x21.1)
+            Vector (VECTOR, 13.5x15.0) [fills: #24252c(1.00)]
+            Vector (VECTOR, 5.0x1.8) [fills: #24252c(1.00)]
+            Vector (VECTOR, 21.1x21.1)
+        Group 1 (GROUP, 7.0x7.0)
+          Ellipse 28 (ELLIPSE, 7.0x7.0) [fills: #5d35c0(1.00)]
+    Group 20549 (GROUP, 30.8x30.8) [radius: 7.701712131500244]
+      Frame (FRAME, 30.8x30.8) [fills: #ffffff(1.00)] [strokes: #e4e4e4] [radius: 7.701712131500244]
+        Frame (FRAME, 23.1x23.1) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 6.7x13.5) [strokes: #111111]
+    البروفايل والإعدادات (TEXT, 120.0x19.0) -> "البروفايل والإعدادات" [fills: #000000(1.00)]
+  mainContainer (FRAME, 363.0x66.6) [ gap:16.406782150268555]
+    tabPills (FRAME, 363.0x66.6) [fills: #ffffff(0.60)] [radius: 10253.2119140625] [pad(T:4.101695537567139,R:4.101695537567139,B:4.101695537567139,L:4.101695537567139) gap:-10.25423812866211]
+      Tab2 (FRAME, 79.2x57.0) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        iconamoon:profile-fill (FRAME, 23.6x23.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 17.7x17.7) [fills: #191c1d(1.00)]
+        Account Tab Label (TEXT, 62.8x14.0) -> "الحساب" [fills: #191c1d(1.00)]
+      Tab2 (FRAME, 79.2x56.0) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        bx:support (FRAME, 22.6x22.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 18.8x18.8) [fills: #191c1d(1.00)]
+        Support Tab Label (TEXT, 62.8x14.0) -> "الدعم" [fills: #191c1d(1.00)]
+      Tab4 (FRAME, 79.2x58.4) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        gis:poi-map (FRAME, 25.0x25.0) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 21.3x7.5) [fills: #000000(1.00)]
+          Vector (VECTOR, 14.8x20.7) [fills: #000000(1.00)]
+        الخريطة (TEXT, 43.0x14.0) -> "الخريطة" [fills: #191c1d(1.00)]
+      Tab2 (FRAME, 79.2x58.0) [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        lets-icons:order-fill (FRAME, 24.6x24.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 14.4x17.4) [fills: #191c1d(1.00)]
+        solar:fire-bold (INSTANCE, 24.6x24.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 17.4x19.9) [fills: #000000(1.00)]
+        Orders Tab Label (TEXT, 62.8x14.0) -> "الطلبات" [fills: #191c1d(1.00)]
+      Tab1 (FRAME, 79.2x53.9) [fills: #5835b4(1.00)] [radius: 102.54238891601562] [pad(T:8.203391075134277,R:8.203391075134277,B:8.203391075134277,L:8.203391075134277) gap:3.0]
+        Asset 10 1 (FRAME, 20.7x20.5) [fills: #ffffff(1.00)]
+          Layer 1 (GROUP, 20.7x20.5)
+            Group (GROUP, 20.7x20.5)
+              Vector (VECTOR, 20.7x11.3) [fills: #ffffff(1.00)]
+              Group (GROUP, 20.2x8.2)
+                Vector (VECTOR, 15.6x7.5) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 5.4x7.1)
+        Home Tab Label (TEXT, 62.8x14.0) -> "الرئيسية" [fills: #ffffff(1.00)]
+  Group 20696 (GROUP, 360.0x245.1)
+    Rectangle 6130 (RECTANGLE, 360.0x245.1) [fills: #ffffff(1.00)] [strokes: #f5f4f9] [radius: 13.56787395477295]
+    Group 20695 (GROUP, 338.3x231.9)
+      Group 20691 (GROUP, 338.3x109.4)
+        Group 20690 (GROUP, 114.0x104.0)
+          محمد العازمي (TEXT, 71.0x16.0) -> "محمد العازمي" [fills: #000000(1.00)]
+          مسؤول التوصيل (TEXT, 58.0x18.0) -> "مسؤول التوصيل" [fills: #757881(1.00)]
+          Group 20689 (GROUP, 114.0x18.1)
+            معلومات المسؤول (TEXT, 87.0x14.0) -> "معلومات المسؤول" [fills: #000000(1.00)]
+            boxicons:user-filled (FRAME, 18.1x18.1) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 13.6x15.1) [fills: #6744c2(1.00)]
+          Group 20683 (GROUP, 45.2x14.0) [radius: 4.522624492645264]
+            Rectangle 6131 (RECTANGLE, 45.2x13.6) [fills: #efecfd(1.00)] [radius: 4.522624492645264]
+            DR-2011 (TEXT, 38.0x14.0) -> "DR-2011" [fills: #603bc1(1.00)]
+          Group 20685 (GROUP, 47.9x13.6)
+            Rectangle 6131 (RECTANGLE, 47.9x13.6) [fills: #e7f5eb(1.00)] [radius: 4.522624492645264]
+            Group 20684 (GROUP, 36.2x10.0)
+              متاح الآن (TEXT, 27.0x10.0) -> "متاح الآن" [fills: #29be63(1.00)]
+              Ellipse 1371 (ELLIPSE, 6.3x6.3) [fills: #29be63(1.00)]
+        Group 20687 (GROUP, 76.9x81.4)
+          Ellipse 1311 (ELLIPSE, 75.1x75.1) [fills: IMAGE]
+          Group 20686 (GROUP, 27.1x27.1)
+            Ellipse 1372 (ELLIPSE, 27.1x27.1) [fills: #ffffff(1.00)] [strokes: #eeeef0]
+            solar:camera-bold (FRAME, 15.4x15.4) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 12.8x11.5) [fills: #6744c2(1.00)]
+      Line 193 (LINE, 338.3x0.0) [strokes: #f6f6f8]
+      Line 194 (LINE, 338.3x0.0) [strokes: #f6f6f8]
+      Line 195 (LINE, 338.3x0.0) [strokes: #f6f6f8]
+      Group 20692 (GROUP, 329.2x21.0)
+        +966 55 123 4567 (TEXT, 87.0x16.0) -> "+966 55 123 4567" [fills: #000000(1.00)]
+        رقم الهاتف (TEXT, 44.0x21.0) -> "رقم الهاتف" [fills: #757881(1.00)]
+        Arrow 42 (VECTOR, 0.9x0.0) [strokes: #000000]
+        fluent:call-12-filled (FRAME, 14.5x14.5) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 9.6x12.1) [fills: #603bc1(1.00)]
+      Group 20693 (GROUP, 329.2x30.6)
+        m.alazmi@mealmate.com (TEXT, 118.0x14.0) -> "m.alazmi@mealmate.com" [fills: #000000(1.00)]
+        البريد الإلكتروني (TEXT, 65.0x22.0) -> "البريد الإلكتروني" [fills: #757881(1.00)]
+        ( غير قابل للتعديل ) (TEXT, 64.0x17.0) -> "( غير قابل للتعديل )" [fills: #757881(1.00)]
+        Arrow 43 (VECTOR, 0.9x0.0) [strokes: #000000]
+        wpf:message (FRAME, 14.5x14.5) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 14.5x10.0) [fills: #603bc1(1.00)]
+      Group 20694 (GROUP, 329.2x22.0)
+        كلمة امرور (TEXT, 46.0x22.0) -> "كلمة امرور" [fills: #757881(1.00)]
+        Group 20688 (GROUP, 39.8x3.6)
+          Ellipse 1373 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1374 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1375 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1376 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1377 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1378 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1379 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1380 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+          Ellipse 1381 (ELLIPSE, 3.6x3.6) [fills: #000000(1.00)]
+        Arrow 44 (VECTOR, 0.9x0.0) [strokes: #000000]
+        boxicons:lock-filled (FRAME, 14.5x14.5) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 9.6x12.1) [fills: #603bc1(1.00)]
+  Group 20707 (GROUP, 360.0x214.5)
+    Rectangle 6132 (RECTANGLE, 360.0x214.5) [fills: #ffffff(1.00)] [strokes: #f5f4f9] [radius: 13.63636302947998]
+    Group 20706 (GROUP, 338.2x202.1)
+      Group 20701 (GROUP, 108.2x22.0)
+        إعدادات الإشعارات (TEXT, 82.0x22.0) -> "إعدادات الإشعارات" [fills: #000000(1.00)]
+        mynaui:bell-solid (FRAME, 17.3x17.3) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 12.6x14.0) [fills: #6744c2(1.00)]
+      Group 20702 (GROUP, 338.2x36.2)
+        بوكس جديد جاهز للاستلام (TEXT, 110.0x20.0) -> "بوكس جديد جاهز للاستلام" [fills: #000000(1.00)]
+        إشعار عند وجود بوكسات جديدة جاهزة للاستلام من المطعم (TEXT, 199.0x18.0) -> "إشعار عند وجود بوكسات جديدة جاهزة للاستلام من المطعم" [fills: #757881(1.00)]
+        Group 20697 (GROUP, 30.9x30.0)
+          Rectangle 6133 (RECTANGLE, 30.9x30.0) [fills: #f0eefc(1.00)] [radius: 6.363636016845703]
+          fluent:box-32-filled (FRAME, 16.4x16.4) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 14.3x14.0) [fills: #6744c2(1.00)]
+        bi:toggle-on (FRAME, 30.9x30.9) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 30.9x19.3) [fills: #603bc1(1.00)]
+      Group 20703 (GROUP, 338.2x35.3)
+        مشكلة في البوكس (TEXT, 82.0x20.0) -> "مشكلة في البوكس" [fills: #000000(1.00)]
+        إشعار عند الإبلاغ عن تلف أو مشكلة في أي بوكس (TEXT, 164.0x18.0) -> "إشعار عند الإبلاغ عن تلف أو مشكلة في أي بوكس" [fills: #757881(1.00)]
+        Group 20698 (GROUP, 30.9x30.0)
+          Rectangle 6134 (RECTANGLE, 30.9x30.0) [fills: #f0eefc(1.00)] [radius: 6.363636016845703]
+          basil:info-triangle-solid (FRAME, 16.4x16.4) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 13.6x12.6) [fills: #6744c2(1.00)]
+        bi:toggle-on (FRAME, 30.9x30.9) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 30.9x19.3) [fills: #603bc1(1.00)]
+      Group 20704 (GROUP, 338.2x38.0)
+        السائق أكمل كل بوكساته (TEXT, 107.0x20.0) -> "السائق أكمل كل بوكساته" [fills: #000000(1.00)]
+        إشعار عند استلام السائق جميع البوكسات بنجاح (TEXT, 156.0x18.0) -> "إشعار عند استلام السائق جميع البوكسات بنجاح" [fills: #757881(1.00)]
+        Group 20699 (GROUP, 30.9x30.0)
+          Rectangle 6135 (RECTANGLE, 30.9x30.0) [fills: #f0eefc(1.00)] [radius: 6.363636016845703]
+          boxicons:user-filled (FRAME, 16.4x16.4) [fills: #ffffff(1.00)]
+            Vector (VECTOR, 12.3x13.6) [fills: #6744c2(1.00)]
+        bi:toggle-on (FRAME, 30.9x30.9) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 30.9x19.3) [fills: #603bc1(1.00)]
+      Group 20705 (GROUP, 338.2x38.0)
+        تحديثات الأداء (TEXT, 59.0x20.0) -> "تحديثات الأداء" [fills: #000000(1.00)]
+        ملخص الأداء اليومي وتنبيهات الأهداف (TEXT, 130.0x18.0) -> "ملخص الأداء اليومي وتنبيهات الأهداف" [fills: #757881(1.00)]
+        Group 20700 (GROUP, 30.9x30.0)
+          Rectangle 6136 (RECTANGLE, 30.9x30.0) [fills: #f0eefc(1.00)] [radius: 6.363636016845703]
+          iconamoon:trend-up-bold (FRAME, 16.4x16.4) [fills: #ffffff(1.00)]
+            Group (GROUP, 12.3x6.8)
+              Vector (VECTOR, 12.3x6.8) [strokes: #6744c2]
+              Vector (VECTOR, 2.7x2.7) [strokes: #6744c2]
+        bi:toggle-on (FRAME, 30.9x30.9) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 30.9x19.3) [fills: #ced1da(1.00)]
+      Line 196 (LINE, 338.2x0.0) [strokes: #f7f7f9]
+      Line 197 (LINE, 338.2x0.0) [strokes: #f7f7f9]
+      Line 198 (LINE, 338.2x0.0) [strokes: #f7f7f9]
+  Group 20713 (GROUP, 360.0x130.9)
+    Rectangle 6137 (RECTANGLE, 360.0x130.9) [fills: #ffffff(1.00)] [strokes: #f5f4f9] [radius: 13.636363983154297]
+    Group 20712 (GROUP, 337.3x117.4)
+      Group 20708 (GROUP, 101.8x20.0)
+        معلومات التطبيق (TEXT, 78.0x20.0) -> "معلومات التطبيق" [fills: #000000(1.00)]
+        material-symbols:info-rounded (FRAME, 17.3x17.3) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 14.4x14.4) [fills: #603bc1(1.00)]
+      Group 20709 (GROUP, 333.6x24.0)
+        إصدار التطبيق (TEXT, 55.0x21.0) -> "إصدار التطبيق" [fills: #757881(1.00)]
+        V 1.2.0 (TEXT, 32.0x24.0) -> "V 1.2.0" [fills: #757881(1.00)]
+        lets-icons:message-alt-fill (FRAME, 17.3x17.3) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 13.0x10.1) [fills: #603bc1(1.00)]
+        Arrow 45 (VECTOR, 0.9x0.0) [strokes: #000000]
+      Group 20710 (GROUP, 333.6x21.0)
+        الشروط والأحكام (TEXT, 63.0x21.0) -> "الشروط والأحكام" [fills: #757881(1.00)]
+        solar:document-bold (FRAME, 17.3x17.3) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 13.0x14.4) [fills: #603bc1(1.00)]
+        Arrow 46 (VECTOR, 0.9x0.0) [strokes: #000000]
+      Group 20711 (GROUP, 333.6x21.0)
+        سياسة الخصوصية (TEXT, 72.0x21.0) -> "سياسة الخصوصية" [fills: #757881(1.00)]
+        mdi:shield-check (FRAME, 17.3x17.3) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 13.0x15.8) [fills: #603bc1(1.00)]
+        Arrow 47 (VECTOR, 0.9x0.0) [strokes: #000000]
+      Line 199 (LINE, 337.3x0.0) [strokes: #f7f7f9]
+      Line 200 (LINE, 337.3x0.0) [strokes: #f7f7f9]
+  Group 20715 (GROUP, 360.0x36.9)
+    Rectangle 6138 (RECTANGLE, 360.0x36.9) [fills: #fef0f0(1.00)] [strokes: #f3cac9] [radius: 10.80000114440918]
+    Group 20714 (GROUP, 86.5x16.4)
+      تسجيل الخروج (TEXT, 65.0x15.0) -> "تسجيل الخروج" [fills: #dd0c14(1.00)]
+      mi:log-out (FRAME, 16.4x16.4) [fills: #ffffff(1.00)]
+        Group (GROUP, 13.2x12.2)
+          Vector (VECTOR, 5.6x12.2) [fills: #dd0c14(1.00)]
+          Vector (VECTOR, 9.7x6.8) [fills: #dd0c14(1.00)]

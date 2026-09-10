@@ -15,10 +15,7 @@ import '../widgets/dispatcher_issue_details_header_card.dart';
 import '../widgets/dispatcher_issue_details_trip_card.dart';
 
 class DispatcherIssueDetailsScreen extends StatelessWidget {
-  const DispatcherIssueDetailsScreen({
-    super.key,
-    this.issue,
-  });
+  const DispatcherIssueDetailsScreen({super.key, this.issue});
 
   final DispatcherIssueDetailEntity? issue;
 
@@ -39,19 +36,15 @@ class DispatcherIssueDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final currentIssue = issue ?? DispatcherIssueDetailFakeData.sampleIssueDetail;
+    final currentIssue =
+        issue ?? DispatcherIssueDetailFakeData.sampleIssueDetail;
 
     return Scaffold(
       backgroundColor: color.surfaceContainerLowest,
       appBar: CustomAppBar(
         title: locale.issueDetailsTitle,
         centerTitle: true,
-        actions: [
-          NotificationButton(
-            hasUnread: true,
-            onPressed: () {},
-          ),
-        ],
+        actions: [NotificationButton(hasUnread: true, onPressed: () {})],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -78,10 +71,8 @@ class DispatcherIssueDetailsScreen extends StatelessWidget {
               const SizedBox(height: Spacing.sm),
               DispatcherIssueDetailsActionButtons(
                 onAssignReplacementTap: () => _onAssignReplacement(context),
-                onContactDriverTap: () => _onContactDriver(
-                  context,
-                  currentIssue.driverName,
-                ),
+                onContactDriverTap: () =>
+                    _onContactDriver(context, currentIssue.driverName),
               ),
               const SizedBox(height: Spacing.lg),
             ],

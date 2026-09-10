@@ -841,4 +841,80 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get issueDetailsContactDriver => 'التواصل مع السائق';
+
+  @override
+  String get profileSettingsTitle => 'البروفايل والإعدادات';
+
+  @override
+  String get profileAdminInfo => 'معلومات المسؤول';
+
+  @override
+  String get profileDeliveryOfficer => 'مسؤول التوصيل';
+
+  @override
+  String get profileAvailableNow => 'متاح الآن';
+
+  @override
+  String get profilePhoneNumber => 'رقم الهاتف';
+
+  @override
+  String get profileEmail => 'البريد الإلكتروني';
+
+  @override
+  String get profileNonEditable => 'غير قابل للتعديل';
+
+  @override
+  String get profilePassword => 'كلمة المرور';
+
+  @override
+  String get profileNotificationSettings => 'إعدادات الإشعارات';
+
+  @override
+  String get profileNotifyNewBoxTitle => 'بوكس جديد جاهز للاستلام';
+
+  @override
+  String get profileNotifyNewBoxSubtitle =>
+      'إشعار عند وجود بوكسات جديدة جاهزة للاستلام من المطعم';
+
+  @override
+  String get profileNotifyBoxProblemTitle => 'مشكلة في البوكس';
+
+  @override
+  String get profileNotifyBoxProblemSubtitle =>
+      'إشعار عند الإبلاغ عن تلف أو مشكلة في أي بوكس';
+
+  @override
+  String get profileNotifyDriverFinishedTitle => 'السائق أكمل كل بوكساته';
+
+  @override
+  String get profileNotifyDriverFinishedSubtitle =>
+      'إشعار عند استلام السائق جميع البوكسات بنجاح';
+
+  @override
+  String get profileNotifyPerformanceTitle => 'تحديثات الأداء';
+
+  @override
+  String get profileNotifyPerformanceSubtitle =>
+      'ملخص الأداء اليومي وتنبيهات الأهداف';
+
+  @override
+  String get profileAppInfo => 'معلومات التطبيق';
+
+  @override
+  String get profileAppVersion => 'إصدار التطبيق';
+
+  @override
+  String get profileTermsConditions => 'الشروط والأحكام';
+
+  @override
+  String get profilePrivacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get profileLogout => 'تسجيل الخروج';
+
+  @override
+  String get profileLogoutConfirm => 'هل أنت متأكد من تسجيل الخروج؟';
+
+  @override
+  String get profileCancel => 'إلغاء';
 }

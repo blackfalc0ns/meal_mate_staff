@@ -13,6 +13,8 @@ import '../../features/dispatcher/assign_box/presentation/screens/assign_box_scr
 import '../../features/dispatcher/drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import '../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
 import '../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
+import '../../features/dispatcher/profile/domain/entities/dispatcher_profile_entity.dart';
+import '../../features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
 import '../../features/dispatcher/support/domain/entities/dispatcher_issue_detail_entity.dart';
 import '../../features/dispatcher/support/presentation/screens/dispatcher_issue_details_screen.dart';
 import '../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
@@ -104,6 +106,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DispatcherIssueDetailsScreen(issue: issue),
+        );
+
+      case AppRoutes.dispatcherProfile:
+        final profile = settings.arguments is DispatcherProfileEntity
+            ? settings.arguments! as DispatcherProfileEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DispatcherProfileScreen(profile: profile),
         );
 
       case AppRoutes.assignBox:

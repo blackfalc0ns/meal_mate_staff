@@ -90,9 +90,7 @@ class _DispatcherSupportScreenState extends State<DispatcherSupportScreen> {
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
           children: [
-            const DispatcherSupportKpiBar(
-              kpi: DispatcherSupportFakeData.kpi,
-            ),
+            const DispatcherSupportKpiBar(kpi: DispatcherSupportFakeData.kpi),
             const SizedBox(height: Spacing.sm),
             DispatcherSupportStatusTabs(
               selectedStatus: _selectedStatus,

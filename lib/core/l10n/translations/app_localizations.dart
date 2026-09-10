@@ -1657,6 +1657,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contact Driver'**
   String get issueDetailsContactDriver;
+
+  /// No description provided for @profileSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile & Settings'**
+  String get profileSettingsTitle;
+
+  /// No description provided for @profileAdminInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Officer Information'**
+  String get profileAdminInfo;
+
+  /// No description provided for @profileDeliveryOfficer.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Officer'**
+  String get profileDeliveryOfficer;
+
+  /// No description provided for @profileAvailableNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Now'**
+  String get profileAvailableNow;
+
+  /// No description provided for @profilePhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get profilePhoneNumber;
+
+  /// No description provided for @profileEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get profileEmail;
+
+  /// No description provided for @profileNonEditable.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-editable'**
+  String get profileNonEditable;
+
+  /// No description provided for @profilePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get profilePassword;
+
+  /// No description provided for @profileNotificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get profileNotificationSettings;
+
+  /// No description provided for @profileNotifyNewBoxTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Box Ready for Pickup'**
+  String get profileNotifyNewBoxTitle;
+
+  /// No description provided for @profileNotifyNewBoxSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification when new boxes are ready for pickup from restaurant'**
+  String get profileNotifyNewBoxSubtitle;
+
+  /// No description provided for @profileNotifyBoxProblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Issue'**
+  String get profileNotifyBoxProblemTitle;
+
+  /// No description provided for @profileNotifyBoxProblemSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification when damage or issue is reported with any box'**
+  String get profileNotifyBoxProblemSubtitle;
+
+  /// No description provided for @profileNotifyDriverFinishedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Completed All Boxes'**
+  String get profileNotifyDriverFinishedTitle;
+
+  /// No description provided for @profileNotifyDriverFinishedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification when driver successfully completes all boxes'**
+  String get profileNotifyDriverFinishedSubtitle;
+
+  /// No description provided for @profileNotifyPerformanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance Updates'**
+  String get profileNotifyPerformanceTitle;
+
+  /// No description provided for @profileNotifyPerformanceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily performance summary and goal alerts'**
+  String get profileNotifyPerformanceSubtitle;
+
+  /// No description provided for @profileAppInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Info'**
+  String get profileAppInfo;
+
+  /// No description provided for @profileAppVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'App Version'**
+  String get profileAppVersion;
+
+  /// No description provided for @profileTermsConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get profileTermsConditions;
+
+  /// No description provided for @profilePrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get profilePrivacyPolicy;
+
+  /// No description provided for @profileLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get profileLogout;
+
+  /// No description provided for @profileLogoutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get profileLogoutConfirm;
+
+  /// No description provided for @profileCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get profileCancel;
 }
 
 class _AppLocalizationsDelegate

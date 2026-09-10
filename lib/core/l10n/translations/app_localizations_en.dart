@@ -843,4 +843,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get issueDetailsContactDriver => 'Contact Driver';
+
+  @override
+  String get profileSettingsTitle => 'Profile & Settings';
+
+  @override
+  String get profileAdminInfo => 'Officer Information';
+
+  @override
+  String get profileDeliveryOfficer => 'Delivery Officer';
+
+  @override
+  String get profileAvailableNow => 'Available Now';
+
+  @override
+  String get profilePhoneNumber => 'Phone Number';
+
+  @override
+  String get profileEmail => 'Email';
+
+  @override
+  String get profileNonEditable => 'Non-editable';
+
+  @override
+  String get profilePassword => 'Password';
+
+  @override
+  String get profileNotificationSettings => 'Notification Settings';
+
+  @override
+  String get profileNotifyNewBoxTitle => 'New Box Ready for Pickup';
+
+  @override
+  String get profileNotifyNewBoxSubtitle =>
+      'Notification when new boxes are ready for pickup from restaurant';
+
+  @override
+  String get profileNotifyBoxProblemTitle => 'Box Issue';
+
+  @override
+  String get profileNotifyBoxProblemSubtitle =>
+      'Notification when damage or issue is reported with any box';
+
+  @override
+  String get profileNotifyDriverFinishedTitle => 'Driver Completed All Boxes';
+
+  @override
+  String get profileNotifyDriverFinishedSubtitle =>
+      'Notification when driver successfully completes all boxes';
+
+  @override
+  String get profileNotifyPerformanceTitle => 'Performance Updates';
+
+  @override
+  String get profileNotifyPerformanceSubtitle =>
+      'Daily performance summary and goal alerts';
+
+  @override
+  String get profileAppInfo => 'Application Info';
+
+  @override
+  String get profileAppVersion => 'App Version';
+
+  @override
+  String get profileTermsConditions => 'Terms & Conditions';
+
+  @override
+  String get profilePrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get profileLogout => 'Logout';
+
+  @override
+  String get profileLogoutConfirm => 'Are you sure you want to log out?';
+
+  @override
+  String get profileCancel => 'Cancel';
 }

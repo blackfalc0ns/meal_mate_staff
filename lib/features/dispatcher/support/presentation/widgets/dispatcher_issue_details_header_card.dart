@@ -8,10 +8,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_issue_detail_entity.dart';
 
 class DispatcherIssueDetailsHeaderCard extends StatelessWidget {
-  const DispatcherIssueDetailsHeaderCard({
-    super.key,
-    required this.issue,
-  });
+  const DispatcherIssueDetailsHeaderCard({super.key, required this.issue});
 
   final DispatcherIssueDetailEntity issue;
 
@@ -196,7 +193,9 @@ class DispatcherIssueDetailsHeaderCard extends StatelessWidget {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          locale.issueDetailsBoxesCount(issue.affectedBoxesCount),
+                          locale.issueDetailsBoxesCount(
+                            issue.affectedBoxesCount,
+                          ),
                           style: getBoldStyle(
                             fontSize: FontSize.size11,
                             color: color.onSurface,

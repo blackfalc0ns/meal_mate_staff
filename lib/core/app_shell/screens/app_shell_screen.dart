@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../features/account_status/presentation/screens/account_status_preview_screen.dart';
 import '../../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
 import '../../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
+import '../../../features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
 import '../../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
 import '../../extensions/extensions.dart';
 import '../widgets/app_bottom_nav_bar.dart';
@@ -65,7 +65,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
       const DispatcherOrdersScreen(showBottomNavBar: false),
       const DispatcherMapScreen(showBottomNavBar: false),
       const DispatcherSupportScreen(showBottomNavBar: false),
-      const AccountStatusPreviewScreen(),
+      const DispatcherProfileScreen(
+        showBackButton: false,
+        showBottomNavBar: false,
+      ),
     ];
   }
 
