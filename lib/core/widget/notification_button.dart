@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../config/routing/app_routes.dart';
+import '../extensions/extensions.dart';
+
 class NotificationButton extends StatelessWidget {
   const NotificationButton({super.key, this.onPressed, this.hasUnread = false});
 
@@ -12,19 +15,22 @@ class NotificationButton extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         IconButton(
-          onPressed: onPressed,
+          onPressed: onPressed ??
+              () => context.pushNamed(AppRoutes.dispatcherNotifications),
           icon: const Icon(Icons.notifications_none_rounded),
         ),
         if (hasUnread)
           Positioned(
             right: 10,
             top: 10,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.error,
-                shape: BoxShape.circle,
+            child: IgnorePointer(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.error,
+                  shape: BoxShape.circle,
+                ),
+                child: const SizedBox.square(dimension: 8),
               ),
-              child: const SizedBox.square(dimension: 8),
             ),
           ),
       ],

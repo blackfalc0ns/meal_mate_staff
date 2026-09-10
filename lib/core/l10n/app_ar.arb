@@ -397,5 +397,11 @@
   "profilePrivacyPolicy": "سياسة الخصوصية",
   "profileLogout": "تسجيل الخروج",
   "profileLogoutConfirm": "هل أنت متأكد من تسجيل الخروج؟",
-  "profileCancel": "إلغاء"
+  "profileCancel": "إلغاء",
+  "notificationsTitle": "الإشعارات",
+  "notificationsTabAll": "الكل",
+  "notificationsTabUnread": "غير مقروءة",
+  "notificationsTabArchive": "أرشيف",
+  "notificationsSectionRecent": "أحدث الإشعارات",
+  "notificationsMarkAllAsRead": "تحديد الكل كمقروءة"
 }

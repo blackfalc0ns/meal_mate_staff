@@ -397,5 +397,11 @@
   "profilePrivacyPolicy": "Privacy Policy",
   "profileLogout": "Logout",
   "profileLogoutConfirm": "Are you sure you want to log out?",
-  "profileCancel": "Cancel"
+  "profileCancel": "Cancel",
+  "notificationsTitle": "Notifications",
+  "notificationsTabAll": "All",
+  "notificationsTabUnread": "Unread",
+  "notificationsTabArchive": "Archive",
+  "notificationsSectionRecent": "Recent Notifications",
+  "notificationsMarkAllAsRead": "Mark all as read"
 }

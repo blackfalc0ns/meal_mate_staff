@@ -919,4 +919,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileCancel => 'Cancel';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsTabAll => 'All';
+
+  @override
+  String get notificationsTabUnread => 'Unread';
+
+  @override
+  String get notificationsTabArchive => 'Archive';
+
+  @override
+  String get notificationsSectionRecent => 'Recent Notifications';
+
+  @override
+  String get notificationsMarkAllAsRead => 'Mark all as read';
 }

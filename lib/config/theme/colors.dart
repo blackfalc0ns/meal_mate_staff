@@ -67,6 +67,19 @@ class AppColors {
   static const Color cardDark = Color(0xFF231D4A);
   static const Color textPrimaryDark = Color(0xFFFFFFFF);
   static const Color textSecondaryDark = Color(0xFFD9D1EA);
+  static const Color notificationCardUnreadSurface = Color(0xFFFAF9FE);
+  static const Color notificationCardBorder = Color(0xFFF2F1F7);
+  static const Color notificationPillsBackground = Color(0xFFFBFBFB);
+  static const Color notificationPillsBorder = Color(0xFFF1F1F3);
+  static const Color notificationUnreadDot = Color(0xFF6744C2);
+  static const Color notificationIconPurpleSurface = Color(0xFFEFEDFA);
+  static const Color notificationIconRedSurface = Color(0xFFFBEBEC);
+  static const Color notificationIconGreenSurface = Color(0xFFE6F6EB);
+  static const Color notificationIconOrangeSurface = Color(0xFFFEF2E4);
+  static const Color notificationIconRed = Color(0xFFDD0C14);
+  static const Color notificationIconGreen = Color(0xFF29BE63);
+  static const Color notificationIconOrange = Color(0xFFF99D1C);
+  static const Color notificationHeaderBorder = Color(0xFFE4E4E4);
 }
 
 extension AccountStatusColorScheme on ColorScheme {
@@ -107,4 +120,26 @@ extension DispatcherColorScheme on ColorScheme {
   Color get dispatcherMetricBoxSurface => AppColors.dispatcherMetricBoxSurface;
   Color get primaryBorder => AppColors.primaryBorder;
   Color get transparent => AppColors.transparent;
+}
+
+extension DispatcherNotificationsColorScheme on ColorScheme {
+  Color get notificationCardUnreadSurface =>
+      AppColors.notificationCardUnreadSurface;
+  Color get notificationCardBorder => AppColors.notificationCardBorder;
+  Color get notificationPillsBackground =>
+      AppColors.notificationPillsBackground;
+  Color get notificationPillsBorder => AppColors.notificationPillsBorder;
+  Color get notificationUnreadDot => AppColors.notificationUnreadDot;
+  Color get notificationIconPurpleSurface =>
+      AppColors.notificationIconPurpleSurface;
+  Color get notificationIconRedSurface =>
+      AppColors.notificationIconRedSurface;
+  Color get notificationIconGreenSurface =>
+      AppColors.notificationIconGreenSurface;
+  Color get notificationIconOrangeSurface =>
+      AppColors.notificationIconOrangeSurface;
+  Color get notificationIconRed => AppColors.notificationIconRed;
+  Color get notificationIconGreen => AppColors.notificationIconGreen;
+  Color get notificationIconOrange => AppColors.notificationIconOrange;
+  Color get notificationHeaderBorder => AppColors.notificationHeaderBorder;
 }

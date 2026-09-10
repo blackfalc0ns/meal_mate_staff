@@ -49,4 +49,22 @@ class AppAssets {
       '$_dispatcherImages/issue_attachment_1.png';
   static const String dispatcherIssueAttachment2 =
       '$_dispatcherImages/issue_attachment_2.png';
+  static const String notificationIconBox =
+      '$_dispatcherImages/notification_icon_box.png';
+  static const String notificationIconBoxDismiss =
+      '$_dispatcherImages/notification_icon_box_dismiss.png';
+  static const String notificationIconUser =
+      '$_dispatcherImages/notification_icon_user.png';
+  static const String notificationIconBoxCheck =
+      '$_dispatcherImages/notification_icon_box_check.png';
+  static const String notificationIconHierarchy =
+      '$_dispatcherImages/notification_icon_hierarchy.png';
+  static const String notificationIconMapMarker =
+      '$_dispatcherImages/notification_icon_map_marker.png';
+  static const String notificationIconClock =
+      '$_dispatcherImages/notification_icon_clock.png';
+  static const String notificationFilterSlider =
+      '$_dispatcherImages/notification_filter_slider.png';
+  static const String notificationCheckCircle =
+      '$_dispatcherImages/notification_check_circle.png';
 }

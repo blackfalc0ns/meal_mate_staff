@@ -1801,6 +1801,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get profileCancel;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsTabAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get notificationsTabAll;
+
+  /// No description provided for @notificationsTabUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get notificationsTabUnread;
+
+  /// No description provided for @notificationsTabArchive.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get notificationsTabArchive;
+
+  /// No description provided for @notificationsSectionRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Notifications'**
+  String get notificationsSectionRecent;
+
+  /// No description provided for @notificationsMarkAllAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get notificationsMarkAllAsRead;
 }
 
 class _AppLocalizationsDelegate

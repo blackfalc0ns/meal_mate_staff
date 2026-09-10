@@ -26,7 +26,8 @@ class DispatcherProfileScreen extends StatefulWidget {
   final bool showBottomNavBar;
 
   @override
-  State<DispatcherProfileScreen> createState() => _DispatcherProfileScreenState();
+  State<DispatcherProfileScreen> createState() =>
+      _DispatcherProfileScreenState();
 }
 
 class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
@@ -91,11 +92,12 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
       appBar: CustomAppBar(
         title: locale.profileSettingsTitle,
         centerTitle: true,
-        showBackButton: widget.showBackButton,
+        showBackButton: false,
         actions: [
           NotificationButton(
             hasUnread: true,
-            onPressed: () {},
+            onPressed: () =>
+                context.pushNamed(AppRoutes.dispatcherNotifications),
           ),
         ],
       ),

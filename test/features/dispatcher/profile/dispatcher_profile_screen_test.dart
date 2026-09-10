@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
+import 'package:meal_mate_delivery/features/dispatcher/notifications/presentation/screens/dispatcher_notifications_screen.dart';
+import 'package:meal_mate_delivery/core/widget/notification_button.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/domain/fake_data/dispatcher_profile_fake_data.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_admin_card.dart';
@@ -20,6 +23,7 @@ Widget _buildTestableWidget({
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6744C2)),
     ),
+    onGenerateRoute: RouteGenerator.getRoute,
     home: child,
   );
 }
@@ -138,5 +142,27 @@ void main() {
 
       expect(find.byType(AlertDialog), findsOneWidget);
     });
+
+    testWidgets(
+      'tapping notification button navigates to DispatcherNotificationsScreen',
+      (tester) async {
+        tester.view.physicalSize = const Size(390 * 2, 870 * 2);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
+
+        await tester.pumpWidget(
+          _buildTestableWidget(child: const DispatcherProfileScreen()),
+        );
+        await tester.pumpAndSettle();
+
+        final notificationBtn = find.byType(NotificationButton);
+        expect(notificationBtn, findsOneWidget);
+
+        await tester.tap(notificationBtn);
+        await tester.pumpAndSettle();
+
+        expect(find.byType(DispatcherNotificationsScreen), findsOneWidget);
+      },
+    );
   });
 }

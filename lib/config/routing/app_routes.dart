@@ -17,6 +17,7 @@ class AppRoutes {
       '/dispatcher-support-issue-details';
   static const String dispatcherProfile = '/dispatcher-profile';
   static const String profile = '/dispatcher-profile';
+  static const String dispatcherNotifications = '/dispatcher-notifications';
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
 }

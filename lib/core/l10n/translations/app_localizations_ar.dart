@@ -917,4 +917,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileCancel => 'إلغاء';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get notificationsTabAll => 'الكل';
+
+  @override
+  String get notificationsTabUnread => 'غير مقروءة';
+
+  @override
+  String get notificationsTabArchive => 'أرشيف';
+
+  @override
+  String get notificationsSectionRecent => 'أحدث الإشعارات';
+
+  @override
+  String get notificationsMarkAllAsRead => 'تحديد الكل كمقروءة';
 }
