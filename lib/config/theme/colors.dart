@@ -80,6 +80,36 @@ class AppColors {
   static const Color notificationIconGreen = Color(0xFF29BE63);
   static const Color notificationIconOrange = Color(0xFFF99D1C);
   static const Color notificationHeaderBorder = Color(0xFFE4E4E4);
+
+  // Dispatcher Home Colors
+  static const Color homeMutedText = Color(0xFF877FA5);
+  static const Color homeBadgeBg = Color(0xFFF1EEF7);
+  static const Color homeBadgeText = Color(0xFF603BC1);
+  static const Color homeActionAssignBg = Color(0xFFF6F3FE);
+  static const Color homeActionSolveBg = Color(0xFFFFF8F2);
+  static const Color homeActionMapBg = Color(0xFFF2FBF6);
+  static const Color homeActionAllBg = Color(0xFFF6F5FA);
+  static const Color homeTagDeliveryBg = Color(0xFF29BE63);
+  static const Color homeTagLoadingBg = Color(0xFFFD9105);
+  static const Color homeTagPausedBg = Color(0xFFD8DADD);
+  static const Color homeTagPausedText = Color(0xFF000000);
+  static const Color homeTagPausedDot = Color(0xFF717680);
+  static const Color homeActionIconPurple = Color(0xFF6744C2);
+  static const Color homeActionIconOrange = Color(0xFFF6961D);
+  static const Color homeActionIconGreen = Color(0xFF29BE63);
+  static const Color homeActionIconDark = Color(0xFF000000);
+  static const Color homeCardBg = Color(0xFFFFFFFF);
+  static const Color homeSoftPurpleBg = Color(0xFFF3F1FE);
+  static const Color homeGaugeTrack = Color(0xFFE9EBF8);
+  static const Color homeGaugeProgress = Color(0xFF29BE63);
+  static const Color homeDriverItemBg = Color(0xFFF8F8FA);
+  static const Color homeStar = Color(0xFFF99D1C);
+  static const Color homeAreaSalmiyaBg = Color(0xFFFEF4F5);
+  static const Color homeAreaHawallyBg = Color(0xFFFFF6F1);
+  static const Color homeAreaJahraBg = Color(0xFFEFFCF3);
+  static const Color homeAreaCapitalBg = Color(0xFFF7F3FF);
+  static const Color homeAlertBannerBg = Color(0xFFFCF0F0);
+  static const Color homeAlertBannerText = Color(0xFFDD0C14);
 }
 
 extension AccountStatusColorScheme on ColorScheme {
@@ -142,4 +172,35 @@ extension DispatcherNotificationsColorScheme on ColorScheme {
   Color get notificationIconGreen => AppColors.notificationIconGreen;
   Color get notificationIconOrange => AppColors.notificationIconOrange;
   Color get notificationHeaderBorder => AppColors.notificationHeaderBorder;
+}
+
+extension DispatcherHomeColorScheme on ColorScheme {
+  Color get homeMutedText => AppColors.homeMutedText;
+  Color get homeBadgeBg => AppColors.homeBadgeBg;
+  Color get homeBadgeText => AppColors.homeBadgeText;
+  Color get homeActionAssignBg => AppColors.homeActionAssignBg;
+  Color get homeActionSolveBg => AppColors.homeActionSolveBg;
+  Color get homeActionMapBg => AppColors.homeActionMapBg;
+  Color get homeActionAllBg => AppColors.homeActionAllBg;
+  Color get homeTagDeliveryBg => AppColors.homeTagDeliveryBg;
+  Color get homeTagLoadingBg => AppColors.homeTagLoadingBg;
+  Color get homeTagPausedBg => AppColors.homeTagPausedBg;
+  Color get homeTagPausedText => AppColors.homeTagPausedText;
+  Color get homeTagPausedDot => AppColors.homeTagPausedDot;
+  Color get homeActionIconPurple => AppColors.homeActionIconPurple;
+  Color get homeActionIconOrange => AppColors.homeActionIconOrange;
+  Color get homeActionIconGreen => AppColors.homeActionIconGreen;
+  Color get homeActionIconDark => AppColors.homeActionIconDark;
+  Color get homeCardBg => AppColors.homeCardBg;
+  Color get homeSoftPurpleBg => AppColors.homeSoftPurpleBg;
+  Color get homeGaugeTrack => AppColors.homeGaugeTrack;
+  Color get homeGaugeProgress => AppColors.homeGaugeProgress;
+  Color get homeDriverItemBg => AppColors.homeDriverItemBg;
+  Color get homeStar => AppColors.homeStar;
+  Color get homeAreaSalmiyaBg => AppColors.homeAreaSalmiyaBg;
+  Color get homeAreaHawallyBg => AppColors.homeAreaHawallyBg;
+  Color get homeAreaJahraBg => AppColors.homeAreaJahraBg;
+  Color get homeAreaCapitalBg => AppColors.homeAreaCapitalBg;
+  Color get homeAlertBannerBg => AppColors.homeAlertBannerBg;
+  Color get homeAlertBannerText => AppColors.homeAlertBannerText;
 }

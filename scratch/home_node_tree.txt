@@ -1,0 +1,348 @@
+=== TREE INSPECTION ===
+iphone 13 & 20 (FRAME, 390.0x1018.0) #FFFFFF(1.00)
+  Status bar (INSTANCE, 389.0x62.0)
+    Time (FRAME, 93.5x22.0)
+      Time (TEXT, 37.0x22.0) #000000(1.00) [Font: SF Pro 590 17.0px] TEXT: "9:41"
+    Levels (FRAME, 93.5x22.0)
+      Cellular Connection (VECTOR, 19.2x12.2) #000000(1.00)
+      Wifi (VECTOR, 17.1x12.3) #000000(1.00)
+      Frame (FRAME, 27.3x13.0)
+        Border (RECTANGLE, 25.0x13.0)
+        Cap (VECTOR, 1.3x4.1) #000000(1.00)
+        Capacity (RECTANGLE, 21.0x9.0) #000000(1.00)
+  mainContainer (FRAME, 363.0x66.2)
+    tabPills (FRAME, 363.0x66.2) #FFFFFF(0.60)
+      Tab2 (FRAME, 79.2x57.0)
+        iconamoon:profile-fill (FRAME, 23.6x23.6)
+          Vector (VECTOR, 17.7x17.7) #191C1D(1.00)
+        الحساب (TEXT, 62.8x14.0) #191C1D(1.00) [Font: Alexandria 600 11.305084228515625px] TEXT: "الحساب"
+      Tab2 (FRAME, 79.2x56.0)
+        bx:support (FRAME, 22.6x22.6)
+          Vector (VECTOR, 18.8x18.8) #191C1D(1.00)
+        الدعم (TEXT, 62.8x14.0) #191C1D(1.00) [Font: Alexandria 600 11.305084228515625px] TEXT: "الدعم"
+      Tab4 (FRAME, 79.2x58.0)
+        material-symbols:delivery-truck-speed-rounded (FRAME, 24.6x24.6)
+          Vector (VECTOR, 22.7x16.4) #000000(1.00)
+        التوصيل (TEXT, 46.0x14.0) #191C1D(1.00) [Font: Alexandria 600 11.305084228515625px] TEXT: "التوصيل"
+      Tab2 (FRAME, 79.2x58.0)
+        lets-icons:order-fill (FRAME, 24.6x24.6)
+          Vector (VECTOR, 14.4x17.4) #191C1D(1.00)
+        solar:fire-bold (INSTANCE, 24.6x24.6)
+          Vector (VECTOR, 17.4x19.9) #000000(1.00)
+        الطلبات (TEXT, 62.8x14.0) #191C1D(1.00) [Font: Alexandria 600 11.305084228515625px] TEXT: "الطلبات"
+      Tab1 (FRAME, 79.2x53.9) #5835B4(1.00)
+        Asset 10 1 (FRAME, 20.7x20.5)
+          Layer 1 (GROUP, 20.7x20.5)
+            Group (GROUP, 20.7x20.5)
+              Vector (VECTOR, 20.7x11.3) #FFFFFF(1.00)
+              Group (GROUP, 20.2x8.2)
+                Vector (VECTOR, 15.6x7.5) #FFFFFF(1.00)
+                Vector (VECTOR, 5.4x7.1)
+        الرئيسية (TEXT, 62.8x14.0) #FFFFFF(1.00) [Font: Alexandria 600 11.305084228515625px] TEXT: "الرئيسية"
+  Group 21238 (GROUP, 368.0x32.8)
+    Group 19887 (GROUP, 176.0x19.1)
+      Group 19884 (GROUP, 102.8x12.2)
+        مطعم MealMate الكويت (TEXT, 88.0x9.0) #000000(1.00) [Font: Alexandria 600 7.369467258453369px] TEXT: "مطعم MealMate الكويت"
+        ion:storefront (FRAME, 11.7x11.7)
+          Vector (VECTOR, 10.9x10.2) #000000(1.00)
+      Group 19886 (GROUP, 63.6x19.1)
+        Rectangle 5942 (RECTANGLE, 63.6x19.1) #F1EEF7(1.00)
+        Group 19885 (GROUP, 52.9x9.6)
+          Dispatcher (TEXT, 40.0x9.0) #603BC1(1.00) [Font: Alexandria 600 7.077851295471191px] TEXT: "Dispatcher"
+          boxicons:user-filled (FRAME, 9.6x9.6)
+            Vector (VECTOR, 7.2x8.0) #603BC1(1.00)
+    Group 10 (GROUP, 33.8x32.8)
+      Rectangle 4 (RECTANGLE, 33.8x32.8) #FFFFFF(1.00)
+      vuesax/bold/notification (FRAME, 23.1x23.1)
+        vuesax/bold/notification (GROUP, 23.1x23.1)
+          notification (GROUP, 23.1x23.1)
+            Vector (VECTOR, 14.8x16.4) #24252C(1.00)
+            Vector (VECTOR, 5.4x1.9) #24252C(1.00)
+            Vector (VECTOR, 23.1x23.1)
+        Group 1 (GROUP, 7.7x7.7)
+          Ellipse 28 (ELLIPSE, 7.7x7.7) #5D35C0(1.00)
+  Group 21239 (GROUP, 114.0x31.0)
+    مرحبًا (TEXT, 34.0x16.0) #000000(1.00) [Font: Alexandria 600 13.429383277893066px] TEXT: "مرحبًا"
+    كل شيء تحت السيطرة اليوم 👋 (TEXT, 114.0x10.0) #877FA5(1.00) [Font: Alexandria 400 8.171046257019043px] TEXT: "كل شيء تحت السيطرة اليوم 👋"
+  Frame 21190 (FRAME, 368.0x85.7)
+    Group 21189 (GROUP, 85.7x85.7)
+      Rectangle 6108 (RECTANGLE, 85.7x85.7) #FFFFFF(1.00)
+      Group 21185 (GROUP, 54.0x61.3)
+        مشاكل حالية (TEXT, 54.0x13.0) #877FA5(1.00) [Font: Alexandria 400 9.321081161499023px] TEXT: "مشاكل حالية"
+        2 (TEXT, 11.0x21.0) #000000(1.00) [Font: Alexandria 700 16.900863647460938px] TEXT: "2"
+        material-symbols:info-rounded (FRAME, 21.7x21.7)
+          Vector (VECTOR, 18.1x18.1) #DD0C14(1.00)
+    Group 21188 (GROUP, 85.7x85.7)
+      Rectangle 6108 (RECTANGLE, 85.7x85.7) #FFFFFF(1.00)
+      Group 21185 (GROUP, 58.0x61.3)
+        بانتظار الإسناد (TEXT, 58.0x13.0) #877FA5(1.00) [Font: Alexandria 400 9.321081161499023px] TEXT: "بانتظار الإسناد"
+        23 (TEXT, 21.0x21.0) #000000(1.00) [Font: Alexandria 700 16.900863647460938px] TEXT: "23"
+        tabler:clock-filled (FRAME, 21.7x21.7)
+          Vector (VECTOR, 18.1x18.1) #F99D1C(1.00)
+    Group 21187 (GROUP, 85.7x85.7)
+      Rectangle 6108 (RECTANGLE, 85.7x85.7) #FFFFFF(1.00)
+      Group 21185 (GROUP, 52.0x61.3)
+        في التوصيل (TEXT, 52.0x13.0) #877FA5(1.00) [Font: Alexandria 400 9.321081161499023px] TEXT: "في التوصيل"
+        58 (TEXT, 22.0x21.0) #000000(1.00) [Font: Alexandria 700 16.900863647460938px] TEXT: "58"
+        eva:car-fill (FRAME, 21.7x21.7)
+          Vector (VECTOR, 18.1x16.3) #314CFF(1.00)
+    Group 21186 (GROUP, 85.7x85.7)
+      Rectangle 6108 (RECTANGLE, 85.7x85.7) #FFFFFF(1.00)
+      Group 21185 (GROUP, 62.0x73.3)
+        إجمال الطلبات اليوم (TEXT, 62.0x25.0) #877FA5(1.00) [Font: Alexandria 400 9.321081161499023px] TEXT: "إجمال الطلبات 
+اليوم"
+        128 (TEXT, 28.0x21.0) #000000(1.00) [Font: Alexandria 700 16.900863647460938px] TEXT: "128"
+        fluent:box-32-filled (FRAME, 21.7x21.7)
+          Vector (VECTOR, 19.0x18.6) #6744C2(1.00)
+  Group 21197 (GROUP, 368.0x86.2)
+    Frame 21197 (FRAME, 368.0x61.9)
+      Group 21194 (GROUP, 87.4x61.9)
+        Rectangle 6109 (RECTANGLE, 87.4x61.9) #F6F5FA(1.00)
+        Group 21190 (GROUP, 48.0x38.8)
+          كل السائقين (TEXT, 48.0x9.0) #000000(1.00) [Font: Alexandria 700 7.696094036102295px] TEXT: "كل السائقين"
+          bi:people-fill (FRAME, 19.4x19.4)
+            Vector (VECTOR, 19.4x14.6) #000000(1.00)
+      Group 21193 (GROUP, 87.4x61.9)
+        Rectangle 6109 (RECTANGLE, 87.4x61.9) #F2FBF6(1.00)
+        Group 21190 (GROUP, 62.0x38.8)
+          خريطة السائقين (TEXT, 62.0x9.0) #000000(1.00) [Font: Alexandria 700 7.696094036102295px] TEXT: "خريطة السائقين"
+          rivet-icons:map-pin-solid (FRAME, 19.4x19.4)
+            Vector (VECTOR, 15.8x19.0) #29BE63(1.00)
+      Group 21192 (GROUP, 87.4x61.9)
+        Rectangle 6109 (RECTANGLE, 87.4x61.9) #FFF8F2(1.00)
+        Group 21190 (GROUP, 53.0x38.8)
+          حل المشكلات (TEXT, 53.0x9.0) #000000(1.00) [Font: Alexandria 700 7.696094036102295px] TEXT: "حل المشكلات"
+          bxs:error-alt (FRAME, 19.4x19.4)
+            Vector (VECTOR, 16.2x16.2) #F6961D(1.00)
+      Group 21191 (GROUP, 87.4x61.9)
+        Rectangle 6109 (RECTANGLE, 87.4x61.9) #F6F3FE(1.00)
+        Group 21190 (GROUP, 46.0x38.8)
+          تعيين سائق (TEXT, 46.0x9.0) #6744C2(1.00) [Font: Alexandria 700 7.696094036102295px] TEXT: "تعيين سائق"
+          tdesign:user-add-filled (FRAME, 19.4x19.4)
+            Vector (VECTOR, 17.0x17.0) #6744C2(1.00)
+    Group 21196 (GROUP, 82.0x15.0)
+      إجراءات سريعة (TEXT, 82.0x15.0) #000000(1.00) [Font: Alexandria 600 11.925792694091797px] TEXT: "إجراءات سريعة"
+  Group 21242 (GROUP, 368.0x222.7)
+    Group 21241 (GROUP, 368.0x29.2)
+      Group 21240 (GROUP, 136.8x29.2)
+        مواقع السائقين (TEXT, 74.0x12.0) #000000(1.00) [Font: Alexandria 600 9.722097396850586px] TEXT: "مواقع السائقين"
+        Group 21198 (GROUP, 26.6x24.2)
+          Rectangle 6110 (RECTANGLE, 26.6x24.2) #F3F1FE(1.00)
+          at-icons:map (FRAME, 14.5x14.5)
+            Vector (VECTOR, 12.7x10.7) #6744C2(1.00)
+        مراقبة السائقين في الوقت الفعلي (TEXT, 105.0x8.0) #877FA5(1.00) [Font: Alexandria 400 6.751181602478027px] TEXT: "مراقبة السائقين في الوقت الفعلي"
+      Group 21200 (GROUP, 112.6x26.6)
+        Rectangle 6111 (RECTANGLE, 112.6x26.6) #F3F1FE(1.00)
+        Group 21199 (GROUP, 93.2x13.3)
+          عرض الخريطة الكاملة (TEXT, 75.0x9.0) #6744C2(1.00) [Font: Alexandria 600 7.343391418457031px] TEXT: "عرض الخريطة الكاملة"
+          at-icons:map (FRAME, 13.3x13.3)
+            Vector (VECTOR, 11.7x9.8) #603BC1(1.00)
+    Group 21201 (GROUP, 366.8x182.8)
+      Rectangle 6112 (RECTANGLE, 366.8x182.8)
+      Group 20932 (GROUP, 266.3x136.0)
+        Group 20928 (GROUP, 47.9x58.9)
+          Group 20914 (GROUP, 45.7x36.1)
+            Ellipse 1403 (ELLIPSE, 36.1x36.1)
+            Group 20913 (GROUP, 16.9x16.9)
+              Ellipse 1404 (ELLIPSE, 16.9x16.9) #603BC1(1.00)
+              iconamoon:delivery-fast-fill (FRAME, 9.6x9.6)
+                Vector (VECTOR, 8.8x8.0) #FFFFFF(1.00)
+          Group 20915 (GROUP, 39.8x11.0)
+            Rectangle 6176 (RECTANGLE, 39.8x11.0) #FFFFFF(1.00)
+            BX-458622 (TEXT, 28.0x8.0) #000000(1.00) [Font: Alexandria 700 5.046938896179199px] TEXT: "BX-458622"
+          Group 20916 (GROUP, 33.9x10.3)
+            Rectangle 6177 (RECTANGLE, 33.9x10.3) #29BE63(1.00)
+            في التوصيل (TEXT, 24.0x6.0) #FFFFFF(1.00) [Font: Alexandria 700 3.8452863693237305px] TEXT: "في التوصيل"
+        Group 20929 (GROUP, 48.6x60.4)
+          Group 20921 (GROUP, 45.7x36.1)
+            Ellipse 1403 (ELLIPSE, 36.1x36.1)
+            Group 20913 (GROUP, 16.9x16.9)
+              Ellipse 1404 (ELLIPSE, 16.9x16.9) #603BC1(1.00)
+              iconamoon:delivery-fast-fill (FRAME, 9.6x9.6)
+                Vector (VECTOR, 8.8x8.0) #FFFFFF(1.00)
+          Group 20922 (GROUP, 39.8x11.0)
+            Rectangle 6176 (RECTANGLE, 39.8x11.0) #FFFFFF(1.00)
+            BX-458622 (TEXT, 28.0x8.0) #000000(1.00) [Font: Alexandria 700 5.046938896179199px] TEXT: "BX-458622"
+          Group 20923 (GROUP, 33.9x10.3)
+            Rectangle 6177 (RECTANGLE, 33.9x10.3) #29BE63(1.00)
+            في التوصيل (TEXT, 24.0x6.0) #FFFFFF(1.00) [Font: Alexandria 700 3.8452863693237305px] TEXT: "في التوصيل"
+        Group 20931 (GROUP, 49.3x58.9)
+          Group 20917 (GROUP, 45.7x36.1)
+            Ellipse 1403 (ELLIPSE, 36.1x36.1)
+            Group 20913 (GROUP, 16.9x16.9)
+              Ellipse 1404 (ELLIPSE, 16.9x16.9) #DD0C14(1.00)
+              iconamoon:delivery-fast-fill (FRAME, 9.6x9.6)
+                Vector (VECTOR, 8.8x8.0) #FFFFFF(1.00)
+          Group 20918 (GROUP, 39.8x11.0)
+            Rectangle 6176 (RECTANGLE, 39.8x11.0) #FFFFFF(1.00)
+            BX-458622 (TEXT, 28.0x8.0) #000000(1.00) [Font: Alexandria 700 5.046938896179199px] TEXT: "BX-458622"
+          Group 20920 (GROUP, 43.5x10.3)
+            Rectangle 6177 (RECTANGLE, 43.5x10.3) #FD9105(1.00)
+            في الطريق للتحميل (TEXT, 38.0x6.0) #FFFFFF(1.00) [Font: Alexandria 700 3.8452863693237305px] TEXT: "في الطريق للتحميل"
+        Group 20930 (GROUP, 49.3x58.9)
+          Group 20924 (GROUP, 45.7x36.1)
+            Ellipse 1403 (ELLIPSE, 36.1x36.1)
+            Group 20913 (GROUP, 16.9x16.9)
+              Ellipse 1404 (ELLIPSE, 16.9x16.9) #848791(1.00)
+              iconamoon:delivery-fast-fill (FRAME, 9.6x9.6)
+                Vector (VECTOR, 8.8x8.0) #FFFFFF(1.00)
+          Group 20925 (GROUP, 39.8x11.0)
+            Rectangle 6176 (RECTANGLE, 39.8x11.0) #FFFFFF(1.00)
+            BX-458622 (TEXT, 28.0x8.0) #000000(1.00) [Font: Alexandria 700 5.046938896179199px] TEXT: "BX-458622"
+          Group 20927 (GROUP, 30.2x10.3)
+            Group 20926 (GROUP, 30.2x10.3)
+              Rectangle 6177 (RECTANGLE, 30.2x10.3) #D8DADD(1.00)
+              متوقف (TEXT, 15.0x6.0) #000000(1.00) [Font: Alexandria 700 3.8452863693237305px] TEXT: "متوقف"
+            Ellipse 1405 (ELLIPSE, 3.7x3.7) #717680(1.00)
+      Group 20216 (GROUP, 31.5x31.5)
+        Ellipse 1326 (ELLIPSE, 31.5x31.5) #FFFFFF(1.00)
+        fa7-solid:location (FRAME, 21.0x21.0)
+          Vector (VECTOR, 17.8x17.8) #6744C2(1.00)
+  Group 21226 (GROUP, 368.0x223.5)
+    Group 21217 (GROUP, 165.2x223.5)
+      Rectangle 6178 (RECTANGLE, 165.2x223.5) #FFFFFF(1.00)
+      Group 21216 (GROUP, 148.2x207.7)
+        Group 21215 (GROUP, 89.9x24.3)
+          حالة العمليات (TEXT, 59.0x11.0) #000000(1.00) [Font: Alexandria 600 9.018011093139648px] TEXT: "حالة العمليات"
+          Group 21202 (GROUP, 24.3x24.3)
+            Rectangle 6179 (RECTANGLE, 24.3x24.3) #F3F1FC(1.00)
+            cuida:heart-rate-outline (FRAME, 17.0x17.0)
+              Vector (VECTOR, 14.2x11.3) #6744C2(1.00)
+        Group 21205 (GROUP, 72.9x72.9)
+          Group 21204 (GROUP, 38.0x27.4)
+            87% (TEXT, 28.0x15.0) #000000(1.00) [Font: Alexandria 700 12.200838088989258px] TEXT: "87%"
+            معدل الإنجاز (TEXT, 38.0x8.0) #877FA5(1.00) [Font: Alexandria 400 6.773457050323486px] TEXT: "معدل الإنجاز"
+          Group 21203 (GROUP, 72.9x72.9)
+            Ellipse 1406 (ELLIPSE, 72.9x72.9)
+            Ellipse 1407 (VECTOR, 67.2x67.2)
+        Group 21210 (GROUP, 138.5x66.3)
+          Group 21209 (GROUP, 137.2x11.0)
+            تم التوصيل (TEXT, 39.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.707726955413818px] TEXT: "تم التوصيل"
+            Ellipse 1408 (ELLIPSE, 10.9x10.9) #29BE63(1.00)
+            112 (TEXT, 14.0x11.0) #000000(1.00) [Font: Alexandria 700 9.420555114746094px] TEXT: "112"
+          Group 21208 (GROUP, 137.2x11.0)
+            في التوصيل (TEXT, 43.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.707726955413818px] TEXT: "في التوصيل"
+            Ellipse 1409 (ELLIPSE, 10.9x10.9) #314CFF(1.00)
+            58 (TEXT, 12.0x11.0) #000000(1.00) [Font: Alexandria 700 9.420555114746094px] TEXT: "58"
+          Group 21207 (GROUP, 138.5x11.0)
+            بانتظار الإسناد (TEXT, 48.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.707726955413818px] TEXT: "بانتظار الإسناد"
+            Ellipse 1410 (ELLIPSE, 10.9x10.9) #F99D1C(1.00)
+            23 (TEXT, 12.0x11.0) #000000(1.00) [Font: Alexandria 700 9.420555114746094px] TEXT: "23"
+          Group 21206 (GROUP, 138.5x11.0)
+            تم الإلغاء (TEXT, 33.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.707726955413818px] TEXT: "تم الإلغاء"
+            Ellipse 1411 (ELLIPSE, 10.9x10.9) #DD0C14(1.00)
+            7 (TEXT, 6.0x11.0) #000000(1.00) [Font: Alexandria 700 9.420555114746094px] TEXT: "7"
+        Group 21212 (GROUP, 147.0x26.7)
+          Rectangle 6180 (RECTANGLE, 147.0x26.7) #F4F2FD(1.00)
+          Group 21211 (GROUP, 59.5x9.7)
+            عرض التقارير (TEXT, 43.0x8.0) #6744C2(1.00) [Font: Alexandria 700 6.936954021453857px] TEXT: "عرض التقارير"
+            bi:bar-chart-fill (FRAME, 9.7x9.7)
+              Vector (VECTOR, 8.5x8.5) #603BC1(1.00)
+    Group 21225 (GROUP, 196.8x223.5)
+      Rectangle 6179 (RECTANGLE, 196.8x223.5) #FFFFFF(1.00)
+      Group 21224 (GROUP, 181.0x206.5)
+        Group 21218 (GROUP, 116.4x24.3)
+          استعراض السائقين (TEXT, 85.0x11.0) #000000(1.00) [Font: Alexandria 600 9.28720474243164px] TEXT: "استعراض السائقين"
+          Group 21214 (GROUP, 24.3x24.3)
+            Rectangle 6179 (RECTANGLE, 24.3x24.3) #F3F1FC(1.00)
+            bi:bar-chart-fill (FRAME, 17.0x17.0)
+              Vector (VECTOR, 14.9x14.9) #6744C2(1.00)
+        Group 21213 (GROUP, 178.5x26.7)
+          Rectangle 6180 (RECTANGLE, 178.5x26.7) #F4F2FD(1.00)
+          Group 21211 (GROUP, 78.9x9.7)
+            عرض كل السائقين (TEXT, 64.0x8.0) #6744C2(1.00) [Font: Alexandria 700 6.936954021453857px] TEXT: "عرض كل السائقين"
+            tdesign:user-add-filled (FRAME, 9.7x9.7)
+              Vector (VECTOR, 8.5x8.5) #603BC1(1.00)
+        Frame 21224 (FRAME, 178.5x137.2)
+          Group 21221 (GROUP, 178.5x42.5)
+            Rectangle 6181 (RECTANGLE, 178.5x42.5) #F8F8FA(1.00)
+            Group 21220 (GROUP, 166.4x30.4)
+              أعلى تقييم (TEXT, 33.0x8.0) #877FA5(1.00) [Font: Alexandria 400 6.773457050323486px] TEXT: "أعلى تقييم"
+              أحمد السعيد (TEXT, 50.0x10.0) #000000(1.00) [Font: Alexandria 700 7.9346208572387695px] TEXT: "أحمد السعيد"
+              Ellipse 1403 (ELLIPSE, 30.4x30.4)
+              Group 21219 (GROUP, 31.2x12.1)
+                4.9 (TEXT, 13.0x11.0) #000000(1.00) [Font: Alexandria 700 8.728082656860352px] TEXT: "4.9"
+                ic:round-star (FRAME, 12.1x12.1)
+                  Vector (VECTOR, 8.7x8.3) #F99D1C(1.00)
+          Group 21222 (GROUP, 178.5x42.5)
+            Rectangle 6181 (RECTANGLE, 178.5x42.5) #F8F8FA(1.00)
+            Group 21219 (GROUP, 31.2x12.1)
+              4.1 (TEXT, 11.0x11.0) #000000(1.00) [Font: Alexandria 700 8.728082656860352px] TEXT: "4.1"
+              ic:round-star (FRAME, 12.1x12.1)
+                Vector (VECTOR, 8.7x8.3) #F99D1C(1.00)
+            Group 21220 (GROUP, 92.3x30.4)
+              تقييم ممتاز (TEXT, 36.0x8.0) #877FA5(1.00) [Font: Alexandria 400 6.773457050323486px] TEXT: "تقييم ممتاز"
+              محمد العنزي (TEXT, 51.0x10.0) #000000(1.00) [Font: Alexandria 700 7.9346208572387695px] TEXT: "محمد العنزي"
+              Ellipse 1403 (ELLIPSE, 30.4x30.4)
+          Group 21223 (GROUP, 178.5x42.5)
+            Rectangle 6181 (RECTANGLE, 178.5x42.5) #F8F8FA(1.00)
+            Group 21219 (GROUP, 31.2x12.1)
+              3.2 (TEXT, 13.0x11.0) #000000(1.00) [Font: Alexandria 700 8.728082656860352px] TEXT: "3.2"
+              ic:round-star (FRAME, 12.1x12.1)
+                Vector (VECTOR, 8.7x8.3) #F99D1C(1.00)
+            Group 21220 (GROUP, 85.0x30.4)
+              تقييم جيد جداً (TEXT, 42.0x8.0) #877FA5(1.00) [Font: Alexandria 400 6.773457050323486px] TEXT: "تقييم جيد جداً"
+              يوسف خالد (TEXT, 44.0x10.0) #000000(1.00) [Font: Alexandria 700 7.9346208572387695px] TEXT: "يوسف خالد"
+              Ellipse 1403 (ELLIPSE, 30.4x30.4)
+  Group 21234 (GROUP, 368.0x69.5)
+    Group 21228 (GROUP, 365.6x14.6)
+      Group 21227 (GROUP, 95.0x14.6)
+        ملخص المناطق (TEXT, 76.0x12.0) #000000(1.00) [Font: Alexandria 600 9.786482810974121px] TEXT: "ملخص المناطق"
+        bi:bar-chart-fill (FRAME, 14.6x14.6)
+          Vector (VECTOR, 12.8x12.8) #603BC1(1.00)
+      Group 21195 (GROUP, 51.4x9.0)
+        عرض الكل (TEXT, 38.0x9.0) #6744C2(1.00) [Font: Alexandria 600 7.727578163146973px] TEXT: "عرض الكل"
+        Arrow 39 (VECTOR, 1.2x0.0)
+    Frame 21234 (FRAME, 368.0x46.3)
+      Group 21233 (GROUP, 86.5x46.3)
+        Rectangle 6182 (RECTANGLE, 86.5x46.3) #F7F3FF(1.00)
+        akar-icons:arrow-up (FRAME, 18.0x18.0)
+          Vector (VECTOR, 10.5x12.0)
+        Group 21229 (GROUP, 33.0x26.4)
+          Group 21232 (GROUP, 33.0x26.4)
+            Group 21250 (GROUP, 33.0x26.4)
+              العاصمة (TEXT, 32.0x9.0) #000000(1.00) [Font: Alexandria 700 7.122190952301025px] TEXT: "العاصمة"
+              Group 21249 (GROUP, 33.0x13.0)
+                16 (TEXT, 11.0x13.0) #000000(1.00) [Font: Alexandria 600 10.683286666870117px] TEXT: "16"
+                طلب (TEXT, 17.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.7332563400268555px] TEXT: "طلب"
+      Group 21232 (GROUP, 86.5x46.3)
+        Rectangle 6182 (RECTANGLE, 86.5x46.3) #EFFCF3(1.00)
+        akar-icons:arrow-up (FRAME, 18.0x18.0)
+          Vector (VECTOR, 10.5x12.0)
+        Group 21229 (GROUP, 33.0x26.4)
+          Group 21232 (GROUP, 33.0x26.4)
+            Group 21248 (GROUP, 33.0x26.4)
+              الجهراء (TEXT, 25.0x9.0) #000000(1.00) [Font: Alexandria 700 7.122190952301025px] TEXT: "الجهراء"
+              Group 21247 (GROUP, 33.0x13.0)
+                18 (TEXT, 11.0x13.0) #000000(1.00) [Font: Alexandria 600 10.683286666870117px] TEXT: "18"
+                طلب (TEXT, 17.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.7332563400268555px] TEXT: "طلب"
+      Group 21231 (GROUP, 86.5x46.3)
+        Rectangle 6182 (RECTANGLE, 86.5x46.3) #FFF6F1(1.00)
+        akar-icons:arrow-up (FRAME, 18.0x18.0)
+          Vector (VECTOR, 10.5x12.0)
+        Group 21229 (GROUP, 35.0x26.4)
+          Group 21232 (GROUP, 35.0x26.4)
+            Group 21246 (GROUP, 35.0x26.4)
+              حولي (TEXT, 19.0x9.0) #000000(1.00) [Font: Alexandria 700 7.122190952301025px] TEXT: "حولي"
+              Group 21245 (GROUP, 34.9x13.0)
+                32 (TEXT, 13.0x13.0) #000000(1.00) [Font: Alexandria 600 10.683286666870117px] TEXT: "32"
+                طلب (TEXT, 17.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.7332563400268555px] TEXT: "طلب"
+      Group 21230 (GROUP, 86.5x46.3)
+        Rectangle 6182 (RECTANGLE, 86.5x46.3) #FEF4F5(1.00)
+        akar-icons:arrow-up (FRAME, 18.0x18.0)
+          Vector (VECTOR, 10.5x12.0)
+        Group 21229 (GROUP, 34.0x26.4)
+          Group 21244 (GROUP, 34.0x26.4)
+            السالمية (TEXT, 32.0x9.0) #000000(1.00) [Font: Alexandria 700 7.122190952301025px] TEXT: "السالمية"
+            Group 21243 (GROUP, 34.0x13.0)
+              38 (TEXT, 14.0x13.0) #000000(1.00) [Font: Alexandria 600 10.683286666870117px] TEXT: "38"
+              طلب (TEXT, 17.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.7332563400268555px] TEXT: "طلب"
+  Group 21237 (GROUP, 368.0x50.8)
+    Rectangle 6183 (RECTANGLE, 368.0x50.8) #FCF0F0(1.00)
+    Group 21236 (GROUP, 341.4x23.5)
+      Group 21235 (GROUP, 198.5x23.5)
+        هناك 2 مشكلة تحتاج إلى انتباهك (TEXT, 143.0x11.0) #DD0C14(1.00) [Font: Alexandria 600 9.20833969116211px] TEXT: "هناك 2 مشكلة تحتاج إلى انتباهك"
+        تأخير في التوصيل . سائق متوقف منذ فترة طويلة (TEXT, 168.0x9.0) #877FA5(1.00) [Font: Alexandria 400 7.682379245758057px] TEXT: "تأخير في التوصيل . سائق متوقف منذ فترة طويلة"
+        material-symbols:info-rounded (FRAME, 20.6x20.6)
+          Vector (VECTOR, 17.1x17.1) #DD0C14(1.00)
+      Arrow 40 (VECTOR, 1.2x0.0)

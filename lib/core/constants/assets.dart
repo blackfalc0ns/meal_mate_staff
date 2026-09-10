@@ -67,4 +67,32 @@ class AppAssets {
       '$_dispatcherImages/notification_filter_slider.png';
   static const String notificationCheckCircle =
       '$_dispatcherImages/notification_check_circle.png';
+
+  // Dispatcher Home Assets
+  static const String dispatcherHomeMapBg =
+      '$_dispatcherImages/dispatcher_home_map_bg.png';
+  static const String dispatcherHomeKpiBox =
+      '$_dispatcherImages/home_kpi_box.png';
+  static const String dispatcherHomeKpiTruck =
+      '$_dispatcherImages/home_kpi_truck.png';
+  static const String dispatcherHomeKpiClock =
+      '$_dispatcherImages/home_kpi_clock.png';
+  static const String dispatcherHomeKpiInfo =
+      '$_dispatcherImages/home_kpi_info.png';
+  static const String dispatcherHomeActionAssignDriver =
+      '$_dispatcherImages/home_action_assign_driver.png';
+  static const String dispatcherHomeActionSolveIssues =
+      '$_dispatcherImages/home_action_solve_issues.png';
+  static const String dispatcherHomeActionDriversMap =
+      '$_dispatcherImages/home_action_drivers_map.png';
+  static const String dispatcherHomeActionAllDrivers =
+      '$_dispatcherImages/home_action_all_drivers.png';
+  static const String dispatcherHomeOperationsHeart =
+      '$_dispatcherImages/home_operations_heart.png';
+  static const String dispatcherHomeChartIcon =
+      '$_dispatcherImages/home_chart_icon.png';
+  static const String dispatcherHomeMapTarget =
+      '$_dispatcherImages/home_map_target.png';
+  static const String dispatcherHomeMapIcon =
+      '$_dispatcherImages/home_map_icon.png';
 }

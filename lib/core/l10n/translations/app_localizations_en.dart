@@ -937,4 +937,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsMarkAllAsRead => 'Mark all as read';
+
+  @override
+  String get homeStoreName => 'MealMate Restaurant Kuwait';
+
+  @override
+  String get homeRoleDispatcher => 'Dispatcher';
+
+  @override
+  String get homeGreeting => 'Welcome';
+
+  @override
+  String get homeGreetingSubtitle => 'Everything is under control today 👋';
+
+  @override
+  String get homeSectionQuickActions => 'Quick Actions';
+
+  @override
+  String get homeActionAssignDriver => 'Assign Driver';
+
+  @override
+  String get homeActionSolveIssues => 'Solve Issues';
+
+  @override
+  String get homeActionDriversMap => 'Drivers Map';
+
+  @override
+  String get homeActionAllDrivers => 'All Drivers';
+
+  @override
+  String get homeDriversMapTitle => 'Drivers Locations';
+
+  @override
+  String get homeDriversMapSubtitle => 'Real-time driver monitoring';
+
+  @override
+  String get homeViewFullMap => 'View Full Map';
+
+  @override
+  String get homeOperationsStatusTitle => 'Operations Status';
+
+  @override
+  String get homeCompletionRate => 'Completion Rate';
+
+  @override
+  String get homeViewReports => 'View Reports';
+
+  @override
+  String get homeDriversReviewTitle => 'Drivers Review';
+
+  @override
+  String get homeViewAllDrivers => 'View All Drivers';
+
+  @override
+  String get homeAreaSummaryTitle => 'Area Summary';
+
+  @override
+  String get homeViewAll => 'View All';
+
+  @override
+  String get homeUnitOrder => 'Orders';
 }

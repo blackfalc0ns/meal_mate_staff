@@ -935,4 +935,64 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notificationsMarkAllAsRead => 'تحديد الكل كمقروءة';
+
+  @override
+  String get homeStoreName => 'مطعم MealMate الكويت';
+
+  @override
+  String get homeRoleDispatcher => 'Dispatcher';
+
+  @override
+  String get homeGreeting => 'مرحبًا';
+
+  @override
+  String get homeGreetingSubtitle => 'كل شيء تحت السيطرة اليوم 👋';
+
+  @override
+  String get homeSectionQuickActions => 'إجراءات سريعة';
+
+  @override
+  String get homeActionAssignDriver => 'تعيين سائق';
+
+  @override
+  String get homeActionSolveIssues => 'حل المشكلات';
+
+  @override
+  String get homeActionDriversMap => 'خريطة السائقين';
+
+  @override
+  String get homeActionAllDrivers => 'كل السائقين';
+
+  @override
+  String get homeDriversMapTitle => 'مواقع السائقين';
+
+  @override
+  String get homeDriversMapSubtitle => 'مراقبة السائقين في الوقت الفعلي';
+
+  @override
+  String get homeViewFullMap => 'عرض الخريطة الكاملة';
+
+  @override
+  String get homeOperationsStatusTitle => 'حالة العمليات';
+
+  @override
+  String get homeCompletionRate => 'معدل الإنجاز';
+
+  @override
+  String get homeViewReports => 'عرض التقارير';
+
+  @override
+  String get homeDriversReviewTitle => 'استعراض السائقين';
+
+  @override
+  String get homeViewAllDrivers => 'عرض كل السائقين';
+
+  @override
+  String get homeAreaSummaryTitle => 'ملخص المناطق';
+
+  @override
+  String get homeViewAll => 'عرض الكل';
+
+  @override
+  String get homeUnitOrder => 'طلب';
 }

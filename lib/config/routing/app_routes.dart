@@ -18,6 +18,8 @@ class AppRoutes {
   static const String dispatcherProfile = '/dispatcher-profile';
   static const String profile = '/dispatcher-profile';
   static const String dispatcherNotifications = '/dispatcher-notifications';
+  static const String notifications = '/dispatcher-notifications';
+  static const String dispatcherHome = '/dispatcher-home';
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
 }

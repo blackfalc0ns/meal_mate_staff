@@ -1837,6 +1837,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark all as read'**
   String get notificationsMarkAllAsRead;
+
+  /// No description provided for @homeStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate Restaurant Kuwait'**
+  String get homeStoreName;
+
+  /// No description provided for @homeRoleDispatcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatcher'**
+  String get homeRoleDispatcher;
+
+  /// No description provided for @homeGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get homeGreeting;
+
+  /// No description provided for @homeGreetingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is under control today 👋'**
+  String get homeGreetingSubtitle;
+
+  /// No description provided for @homeSectionQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get homeSectionQuickActions;
+
+  /// No description provided for @homeActionAssignDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Driver'**
+  String get homeActionAssignDriver;
+
+  /// No description provided for @homeActionSolveIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Solve Issues'**
+  String get homeActionSolveIssues;
+
+  /// No description provided for @homeActionDriversMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Drivers Map'**
+  String get homeActionDriversMap;
+
+  /// No description provided for @homeActionAllDrivers.
+  ///
+  /// In en, this message translates to:
+  /// **'All Drivers'**
+  String get homeActionAllDrivers;
+
+  /// No description provided for @homeDriversMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drivers Locations'**
+  String get homeDriversMapTitle;
+
+  /// No description provided for @homeDriversMapSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time driver monitoring'**
+  String get homeDriversMapSubtitle;
+
+  /// No description provided for @homeViewFullMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View Full Map'**
+  String get homeViewFullMap;
+
+  /// No description provided for @homeOperationsStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations Status'**
+  String get homeOperationsStatusTitle;
+
+  /// No description provided for @homeCompletionRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion Rate'**
+  String get homeCompletionRate;
+
+  /// No description provided for @homeViewReports.
+  ///
+  /// In en, this message translates to:
+  /// **'View Reports'**
+  String get homeViewReports;
+
+  /// No description provided for @homeDriversReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drivers Review'**
+  String get homeDriversReviewTitle;
+
+  /// No description provided for @homeViewAllDrivers.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Drivers'**
+  String get homeViewAllDrivers;
+
+  /// No description provided for @homeAreaSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Area Summary'**
+  String get homeAreaSummaryTitle;
+
+  /// No description provided for @homeViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get homeViewAll;
+
+  /// No description provided for @homeUnitOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get homeUnitOrder;
 }
 
 class _AppLocalizationsDelegate
