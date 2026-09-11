@@ -24,11 +24,10 @@ class RegistrationStepProgress extends StatelessWidget {
         ? 0.0
         : (currentStep - 1).clamp(0, labels.length - 1) / (labels.length - 1);
 
-    return SizedBox(
-      height: Spacing.registrationStepsHeight,
-      child: Column(
-        children: [
-          SizedBox(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
             height: Spacing.registrationStepCircle,
             child: Stack(
               alignment: Alignment.center,
@@ -79,6 +78,7 @@ class RegistrationStepProgress extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.sm),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: labels
                 .map(
                   (label) => Expanded(
@@ -98,8 +98,7 @@ class RegistrationStepProgress extends StatelessWidget {
                 .toList(),
           ),
         ],
-      ),
-    );
+      );
   }
 }
 

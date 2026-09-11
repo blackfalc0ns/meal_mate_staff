@@ -95,14 +95,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 AuthDivider(text: locale.or),
-                const SizedBox(height: 15),
-                AuthSecondaryButton(
-                  text: locale.loginWithOtp,
-                  leadingIcon: Icons.chat_bubble_outline,
-                  onPressed: () {
-                    context.pushNamed(AppRoutes.verifyPhoneOtp);
-                  },
-                ),
+
                 const SizedBox(height: Spacing.sm),
                 AuthSecondaryButton(
                   text: locale.createAccount,

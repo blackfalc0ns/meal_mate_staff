@@ -125,7 +125,7 @@ class AuthInputField extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.xs),
                     const _KuwaitFlag(),
-                    const SizedBox(width: Spacing.base),
+                    //  const SizedBox(width: Spacing.base),
                     Icon(
                       Icons.keyboard_arrow_down_rounded,
                       color: color.onSurfaceVariant,

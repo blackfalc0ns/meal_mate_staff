@@ -7,7 +7,7 @@ import 'core/l10n/translations/app_localizations.dart';
 import 'core/services/app_locale_notifier.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp(initialRoute: AppRoutes.splash));
 }
 
 class MyApp extends StatelessWidget {
