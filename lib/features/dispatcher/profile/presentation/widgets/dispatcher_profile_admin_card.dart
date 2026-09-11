@@ -81,7 +81,9 @@ class DispatcherProfileAdminCard extends StatelessWidget {
                           end: 0,
                           child: InkWell(
                             onTap: onChangePhotoTap,
-                            borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusPill,
+                            ),
                             child: Container(
                               width: Spacing.iconLg * 0.85,
                               height: Spacing.iconLg * 0.85,
@@ -89,7 +91,9 @@ class DispatcherProfileAdminCard extends StatelessWidget {
                                 color: color.surface,
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: color.outlineVariant.withValues(alpha: 0.6),
+                                  color: color.outlineVariant.withValues(
+                                    alpha: 0.6,
+                                  ),
                                   width: Spacing.border,
                                 ),
                               ),
@@ -129,7 +133,9 @@ class DispatcherProfileAdminCard extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: color.primary.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(Spacing.radiusXs),
+                                  borderRadius: BorderRadius.circular(
+                                    Spacing.radiusXs,
+                                  ),
                                 ),
                                 child: Text(
                                   profile.roleCode,
@@ -146,8 +152,12 @@ class DispatcherProfileAdminCard extends StatelessWidget {
                                     vertical: Spacing.xs / 2,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: color.secondaryContainer.withValues(alpha: 0.5),
-                                    borderRadius: BorderRadius.circular(Spacing.radiusXs),
+                                    color: color.secondaryContainer.withValues(
+                                      alpha: 0.5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      Spacing.radiusXs,
+                                    ),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -230,7 +240,7 @@ class DispatcherProfileAdminCard extends StatelessWidget {
                   ),
                   const SizedBox(width: Spacing.xs),
                   Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     size: Spacing.iconSm,
                     color: color.onSurfaceVariant,
                   ),
@@ -294,7 +304,7 @@ class DispatcherProfileAdminCard extends StatelessWidget {
                   ),
                   const SizedBox(width: Spacing.xs),
                   Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     size: Spacing.iconSm,
                     color: color.onSurfaceVariant,
                   ),
@@ -342,7 +352,7 @@ class DispatcherProfileAdminCard extends StatelessWidget {
                   ),
                   const SizedBox(width: Spacing.xs),
                   Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     size: Spacing.iconSm,
                     color: color.onSurfaceVariant,
                   ),

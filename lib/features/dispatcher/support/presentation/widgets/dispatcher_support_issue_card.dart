@@ -204,75 +204,78 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                     // Left-side in RTL: Issue badges & time & box code pill
                     Expanded(
                       flex: 10,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildIssueBadge(context),
-                          const SizedBox(height: Spacing.border),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.access_time_rounded,
-                                  size: Spacing.iconSm,
-                                  color: color.onSurfaceVariant,
-                                ),
-                                const SizedBox(width: Spacing.xs),
-                                Text(
-                                  locale.supportTimeMinutesAgo(
-                                    issue.minutesAgo,
-                                  ),
-                                  style: getRegularStyle(
-                                    fontSize: FontSize.size9,
-                                    color: color.onSurfaceVariant,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: Spacing.sm),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Spacing.xs,
-                              vertical: Spacing.border,
-                            ),
-                            decoration: BoxDecoration(
-                              color: color.surface,
-                              borderRadius: BorderRadius.circular(
-                                Spacing.buttonSmallRadius,
-                              ),
-                              border: Border.all(
-                                color: color.primary,
-                                width: Spacing.border,
-                              ),
-                            ),
-                            child: FittedBox(
+                      child: Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildIssueBadge(context),
+                            const SizedBox(height: Spacing.border),
+                            FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
-                                    Icons.inventory_2_rounded,
-                                    size: Spacing.iconXs - Spacing.border,
-                                    color: color.primary,
+                                    Icons.access_time_rounded,
+                                    size: Spacing.iconSm,
+                                    color: color.onSurfaceVariant,
                                   ),
-                                  const SizedBox(width: Spacing.border),
+                                  const SizedBox(width: Spacing.xs),
                                   Text(
-                                    '#${issue.boxCode}',
-                                    style: getBoldStyle(
-                                      fontSize: FontSize.size10,
-                                      color: color.primary,
+                                    locale.supportTimeMinutesAgo(
+                                      issue.minutesAgo,
+                                    ),
+                                    style: getRegularStyle(
+                                      fontSize: FontSize.size9,
+                                      color: color.onSurfaceVariant,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: Spacing.sm),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Spacing.xs,
+                                vertical: Spacing.border,
+                              ),
+                              decoration: BoxDecoration(
+                                color: color.surface,
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.buttonSmallRadius,
+                                ),
+                                border: Border.all(
+                                  color: color.primary,
+                                  width: Spacing.border,
+                                ),
+                              ),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.inventory_2_rounded,
+                                      size: Spacing.iconXs - Spacing.border,
+                                      color: color.primary,
+                                    ),
+                                    const SizedBox(width: Spacing.border),
+                                    Text(
+                                      '#${issue.boxCode}',
+                                      style: getBoldStyle(
+                                        fontSize: FontSize.size10,
+                                        color: color.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
