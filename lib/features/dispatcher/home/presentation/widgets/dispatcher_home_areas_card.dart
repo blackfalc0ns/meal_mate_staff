@@ -84,14 +84,14 @@ class DispatcherHomeAreasCard extends StatelessWidget {
                     locale.homeViewAll,
                     style: getSemiBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size8,
+                      fontSize: FontSize.size10,
                       color: color.homeActionIconPurple,
                     ),
                   ),
                   const SizedBox(width: 2),
                   Icon(
-                    Icons.chevron_left_rounded,
-                    size: 14,
+                    Icons.arrow_forward_ios,
+                    size: 10,
                     color: color.homeActionIconPurple,
                   ),
                 ],
@@ -139,7 +139,7 @@ class DispatcherHomeAreasCard extends StatelessWidget {
                                   area.name,
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.alexandria,
-                                    fontSize: FontSize.size7,
+                                    fontSize: FontSize.size10,
                                     color: color.onSurface,
                                   ),
                                   maxLines: 1,
@@ -158,7 +158,7 @@ class DispatcherHomeAreasCard extends StatelessWidget {
                                         text: locale.homeUnitOrder,
                                         style: getRegularStyle(
                                           fontFamily: FontConstant.alexandria,
-                                          fontSize: FontSize.size7 - 1,
+                                          fontSize: FontSize.size9 - 1,
                                           color: color.homeMutedText,
                                         ),
                                       ),

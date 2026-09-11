@@ -111,7 +111,7 @@ class DispatcherHomeOperationsCard extends StatelessWidget {
                         locale.homeCompletionRate,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size7 - 1,
+                          fontSize: FontSize.size9 - 1,
                           color: color.homeMutedText,
                         ),
                       ),
@@ -208,7 +208,7 @@ class DispatcherHomeOperationsCard extends StatelessWidget {
             label,
             style: getRegularStyle(
               fontFamily: FontConstant.alexandria,
-              fontSize: FontSize.size7,
+              fontSize: FontSize.size9,
               color: color.homeMutedText,
             ),
             maxLines: 1,

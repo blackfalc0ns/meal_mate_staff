@@ -41,7 +41,7 @@ class DispatcherHomeHeader extends StatelessWidget {
                       locale.homeStoreName,
                       style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
+                        fontSize: FontSize.size10,
                         color: color.onSurface,
                       ),
                       maxLines: 1,

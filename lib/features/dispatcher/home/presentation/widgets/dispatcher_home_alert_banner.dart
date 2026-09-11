@@ -77,9 +77,10 @@ class DispatcherHomeAlertBanner extends StatelessWidget {
                 ),
               ),
               Icon(
-                Icons.chevron_left_rounded,
-                size: Spacing.iconMd,
+                Icons.arrow_forward_ios,
+                size: Spacing.iconXs,
                 color: color.homeAlertBannerText,
+                
               ),
             ],
           ),

@@ -149,7 +149,7 @@ class DispatcherHomeMapCard extends StatelessWidget {
                       locale.homeViewFullMap,
                       style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size7,
+                        fontSize: FontSize.size9,
                         color: color.homeActionIconPurple,
                       ),
                     ),

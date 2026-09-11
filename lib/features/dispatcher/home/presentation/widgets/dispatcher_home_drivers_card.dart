@@ -121,7 +121,7 @@ class DispatcherHomeDriversCard extends StatelessWidget {
                                 driver.badgeText,
                                 style: getRegularStyle(
                                   fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size7 - 1,
+                                  fontSize: FontSize.size9 - 1,
                                   color: color.homeMutedText,
                                 ),
                                 maxLines: 1,

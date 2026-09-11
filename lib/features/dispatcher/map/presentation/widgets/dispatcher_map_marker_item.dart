@@ -66,18 +66,21 @@ class DispatcherMapMarkerItem extends StatelessWidget {
                     width: isSelected ? Spacing.border * 2 : Spacing.border,
                   ),
                   boxShadow: [
-                    BoxShadow(
-                      color: color.shadow.withValues(alpha: 0.2),
-                      blurRadius: Spacing.xs,
-                      offset: const Offset(0, 2),
-                    ),
+                    isSelected
+                        ? BoxShadow(
+                            color: color.shadow.withValues(alpha: 0.6),
+                            blurRadius: Spacing.sm,
+                            offset: const Offset(0, 2),
+                          )
+                        : BoxShadow(
+                            color: color.shadow.withValues(alpha: 0.2),
+                            blurRadius: Spacing.xs,
+                            offset: const Offset(0, 1),
+                          ),
                   ],
                 ),
                 child: ClipOval(
-                  child: Image.asset(
-                    driver.avatarUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.asset(driver.avatarUrl, fit: BoxFit.cover),
                 ),
               ),
               PositionedDirectional(

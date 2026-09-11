@@ -91,6 +91,7 @@ class DispatcherProfileNotificationSettingsCard extends StatelessWidget {
             color: color.outlineVariant.withValues(alpha: 0.4),
           ),
           ListView.separated(
+            padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: settings.length,
