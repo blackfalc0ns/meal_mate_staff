@@ -39,4 +39,47 @@ void main() {
       expect(fillWidth, closeTo(trackWidth, 0.1));
     },
   );
+
+  testWidgets(
+    'track starts at the center of the first circle and ends at the center of the last circle',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('en'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          theme: AppTheme.lightTheme,
+          home: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: Scaffold(
+              body: Center(
+                child: SizedBox(
+                  width: 400,
+                  child: RegistrationStepProgress(currentStep: 1),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final trackRect = tester
+          .getRect(find.byKey(const Key('registration-step-progress-track')));
+      final checkOrNumFinders = find.byType(DecoratedBox);
+      // The circles are decorated boxes with circle shape
+      final circleRects = tester
+          .widgetList<DecoratedBox>(checkOrNumFinders)
+          .where((w) => (w.decoration as BoxDecoration?)?.shape == BoxShape.circle)
+          .map((w) => tester.getRect(find.byWidget(w)))
+          .toList();
+
+      expect(circleRects.length, 4);
+
+      final firstCircleCenter = circleRects.first.center.dx;
+      final lastCircleCenter = circleRects.last.center.dx;
+
+      expect(trackRect.left, closeTo(firstCircleCenter, 0.5));
+      expect(trackRect.right, closeTo(lastCircleCenter, 0.5));
+    },
+  );
 }

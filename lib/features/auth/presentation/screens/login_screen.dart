@@ -90,7 +90,7 @@ class LoginScreen extends StatelessWidget {
                 AuthPrimaryButton(
                   text: locale.login,
                   onPressed: () {
-                    context.pushNamed(AppRoutes.verifyPhoneOtp);
+                    context.pushNamed(AppRoutes.appShell);
                   },
                 ),
                 const SizedBox(height: 15),

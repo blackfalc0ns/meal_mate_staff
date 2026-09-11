@@ -98,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         onSubmit: () {
           context.pushReplacementNamed(
             AppRoutes.accountStatus,
-            arguments: AccountStatusKind.underReview,
+            arguments: AccountStatusKind.accepted,
           );
         },
         onBackToEdit: () => _goToStep(3),

@@ -34,6 +34,18 @@ extension NavigationX on BuildContext {
     );
   }
 
+  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+    String newRouteName,
+    bool Function(Route<dynamic>) predicate, {
+    Object? arguments,
+  }) {
+    return Navigator.of(this).pushNamedAndRemoveUntil<T>(
+      newRouteName,
+      predicate,
+      arguments: arguments,
+    );
+  }
+
   Future<bool> maybePopRoute<T extends Object?>([T? result]) {
     return Navigator.of(this).maybePop<T>(result);
   }

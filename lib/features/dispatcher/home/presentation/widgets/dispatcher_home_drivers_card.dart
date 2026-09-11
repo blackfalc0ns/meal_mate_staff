@@ -156,7 +156,7 @@ class DispatcherHomeDriversCard extends StatelessWidget {
               ),
             );
           }),
-          const SizedBox(height: Spacing.xs / 2),
+          Spacer(),
           Material(
             color: color.homeSoftPurpleBg,
             borderRadius: BorderRadius.circular(Spacing.radiusSm),

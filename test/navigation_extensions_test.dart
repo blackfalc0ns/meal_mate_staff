@@ -52,4 +52,33 @@ void main() {
 
     expect(find.text('Open'), findsOneWidget);
   });
+
+  testWidgets('BuildContext pushNamedAndRemoveUntil removes previous routes', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) {
+            return TextButton(
+              onPressed: () => context.pushNamedAndRemoveUntil(
+                '/root',
+                (route) => false,
+              ),
+              child: const Text('Reset'),
+            );
+          },
+        ),
+        routes: {
+          '/root': (context) => const Scaffold(body: Text('RootPage')),
+        },
+      ),
+    );
+
+    await tester.tap(find.text('Reset'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('RootPage'), findsOneWidget);
+    expect(find.text('Reset'), findsNothing);
+  });
 }

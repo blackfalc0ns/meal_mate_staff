@@ -114,6 +114,8 @@ class _RegisterPersonalDataScreenState
             label: locale.registrationBirthDate,
             hint: locale.registrationBirthDateHint,
             isPicker: true,
+            prefixIcon: Icons.calendar_month_rounded,
+            showPickerArrow: false,
             controller: _birthDateController,
             onTap: _pickBirthDate,
           ),

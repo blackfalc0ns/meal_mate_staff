@@ -72,20 +72,24 @@ class _RegisterVehicleDataScreenState
   }
 
   Future<void> _pickManufactureYear() async {
-    final selected = await AppWoltPickerSheet.show(
+    final now = DateTime.now();
+    final currentYear = int.tryParse(_manufactureYearController.text);
+    final initialDate = currentYear != null
+        ? DateTime(currentYear, 1, 1)
+        : DateTime(now.year - 2, 1, 1);
+
+    final selected = await AppWoltPickerSheet.showDatePicker(
       context: context,
       title: context.localization.registrationManufactureYear,
-      items: RegistrationFakeData.manufactureYears,
-      selectedItem: _manufactureYearController.text.isNotEmpty
-          ? _manufactureYearController.text
-          : null,
-      itemLeadingIcon: Icons.calendar_month_rounded,
-      searchHint: 'ابحث عن سنة الصنع...',
+      initialDate: initialDate,
+      firstDate: DateTime(1990),
+      lastDate: DateTime(now.year + 1),
+      initialCalendarViewMode: CalendarDatePicker2Mode.year,
     );
 
     if (selected != null && mounted) {
       setState(() {
-        _manufactureYearController.text = selected;
+        _manufactureYearController.text = selected.year.toString();
       });
     }
   }
@@ -108,6 +112,7 @@ class _RegisterVehicleDataScreenState
             controller: _vehicleTypeController,
             onTap: _pickVehicleType,
             prefixIcon: Icons.directions_car_rounded,
+            showPickerArrow: true,
           ),
           const SizedBox(height: Spacing.registrationFieldGap),
           RegistrationInputField(
@@ -119,9 +124,10 @@ class _RegisterVehicleDataScreenState
             label: locale.registrationManufactureYear,
             hint: locale.registrationManufactureYearHint,
             isPicker: true,
+            prefixIcon: Icons.calendar_month_rounded,
+            showPickerArrow: false,
             controller: _manufactureYearController,
             onTap: _pickManufactureYear,
-            suffixIcon: Icons.calendar_month_rounded,
           ),
           const SizedBox(height: Spacing.registrationFieldGap),
           RegisterPlateNumberField(locale: locale),

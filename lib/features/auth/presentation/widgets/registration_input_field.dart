@@ -14,6 +14,7 @@ class RegistrationInputField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.isPicker = false,
+    this.showPickerArrow,
     this.onTap,
     this.controller,
     this.initialValue,
@@ -26,6 +27,7 @@ class RegistrationInputField extends StatelessWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final bool isPicker;
+  final bool? showPickerArrow;
   final VoidCallback? onTap;
   final TextEditingController? controller;
   final String? initialValue;
@@ -65,44 +67,50 @@ class RegistrationInputField extends StatelessWidget {
                       onTap: onTap,
                       onChanged: onChanged,
                       textAlign: TextAlign.start,
-                    style: getMediumStyle(
-                      color: color.onSurface,
-                      fontSize: FontSize.size12,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: hint,
-                      hintStyle: getMediumStyle(
-                        color: color.onSurfaceVariant,
+                      style: getMediumStyle(
+                        color: color.onSurface,
                         fontSize: FontSize.size12,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.md,
-                        vertical: Spacing.sm,
+                      decoration: InputDecoration(
+                        hintText: hint,
+                        hintStyle: getMediumStyle(
+                          color: color.onSurfaceVariant,
+                          fontSize: FontSize.size12,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.md,
+                          vertical: Spacing.sm,
+                        ),
+                        prefixIconConstraints: prefixIcon != null
+                            ? const BoxConstraints(
+                                minWidth: 38,
+                                minHeight: 38,
+                              )
+                            : null,
+                        prefixIcon: prefixIcon == null
+                            ? null
+                            : Icon(
+                                prefixIcon,
+                                color: color.onSurface,
+                                size: 20,
+                              ),
+                        suffixIcon: suffixIcon != null
+                            ? Icon(
+                                suffixIcon,
+                                color: color.onSurfaceVariant,
+                                size: Spacing.iconMd,
+                              )
+                            : (isPicker && (showPickerArrow ?? (prefixIcon == null)))
+                            ? Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color: color.onSurfaceVariant,
+                                size: Spacing.iconMd,
+                              )
+                            : null,
                       ),
-                      prefixIcon: prefixIcon == null
-                          ? null
-                          : Icon(
-                              prefixIcon,
-                              color: color.onSurfaceVariant,
-                              size: Spacing.iconMd,
-                            ),
-                      suffixIcon: suffixIcon != null
-                          ? Icon(
-                              suffixIcon,
-                              color: color.onSurfaceVariant,
-                              size: Spacing.iconMd,
-                            )
-                          : isPicker
-                          ? Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              color: color.onSurfaceVariant,
-                              size: Spacing.iconMd,
-                            )
-                          : null,
                     ),
                   ),
                 ),
-              ),
               ),
               if (prefix != null) ...[
                 const SizedBox(width: Spacing.md),

@@ -49,7 +49,7 @@ class RegistrationScaffold extends StatelessWidget {
                 ),
               ],
               if (currentStep != null) ...[
-                SizedBox(height: subtitle == null ? Spacing.xxl : Spacing.md),
+                SizedBox(height: subtitle == null ? Spacing.sm : Spacing.md),
                 RegistrationStepProgress(currentStep: currentStep!),
               ],
               const SizedBox(height: Spacing.base),

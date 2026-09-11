@@ -2,6 +2,9 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
+export 'package:calendar_date_picker2/calendar_date_picker2.dart'
+    show CalendarDatePicker2Mode;
+
 import '../../config/theme/font_manager.dart';
 import '../../config/theme/spacing.dart';
 import '../../config/theme/styles_manager.dart';
@@ -130,6 +133,7 @@ class AppWoltPickerSheet {
     DateTime? initialDate,
     DateTime? firstDate,
     DateTime? lastDate,
+    CalendarDatePicker2Mode? initialCalendarViewMode,
   }) {
     return WoltModalSheet.show<DateTime>(
       context: context,
@@ -155,6 +159,7 @@ class AppWoltPickerSheet {
               initialDate: initialDate ?? DateTime(2000, 1, 1),
               firstDate: firstDate ?? DateTime(1950),
               lastDate: lastDate ?? DateTime.now(),
+              initialCalendarViewMode: initialCalendarViewMode,
               onDateSelected: (date) {
                 Navigator.of(modalContext).pop(date);
               },
@@ -172,24 +177,28 @@ class _DatePickerContent extends StatefulWidget {
     required this.firstDate,
     required this.lastDate,
     required this.onDateSelected,
+    this.initialCalendarViewMode,
   });
 
   final DateTime initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
   final ValueChanged<DateTime> onDateSelected;
+  final CalendarDatePicker2Mode? initialCalendarViewMode;
 
   @override
   State<_DatePickerContent> createState() => _DatePickerContentState();
 }
 
 class _DatePickerContentState extends State<_DatePickerContent> {
-  late List<DateTime?> _selectedDates;
+  late List<DateTime> _selectedDates;
+  DateTime? _lastDisplayedDate;
 
   @override
   void initState() {
     super.initState();
     _selectedDates = [widget.initialDate];
+    _lastDisplayedDate = widget.initialDate;
   }
 
   @override
@@ -207,6 +216,8 @@ class _DatePickerContentState extends State<_DatePickerContent> {
           CalendarDatePicker2(
             config: CalendarDatePicker2Config(
               calendarType: CalendarDatePicker2Type.single,
+              calendarViewMode:
+                  widget.initialCalendarViewMode ?? CalendarDatePicker2Mode.day,
               selectedDayHighlightColor: color.primary,
               firstDate: widget.firstDate,
               lastDate: widget.lastDate,
@@ -237,9 +248,21 @@ class _DatePickerContentState extends State<_DatePickerContent> {
               ),
             ),
             value: _selectedDates,
+            onDisplayedMonthChanged: (date) {
+              _lastDisplayedDate = date;
+              if (widget.initialCalendarViewMode ==
+                  CalendarDatePicker2Mode.year) {
+                setState(() {
+                  _selectedDates = [date];
+                });
+              }
+            },
             onValueChanged: (dates) {
               setState(() {
                 _selectedDates = dates;
+                if (dates.isNotEmpty) {
+                  _lastDisplayedDate = dates.first;
+                }
               });
             },
           ),
@@ -249,11 +272,10 @@ class _DatePickerContentState extends State<_DatePickerContent> {
             height: Spacing.registrationButtonHeight,
             borderRadius: Spacing.registrationRadius,
             onPressed: () {
-              if (_selectedDates.isNotEmpty && _selectedDates.first != null) {
-                widget.onDateSelected(_selectedDates.first!);
-              } else {
-                Navigator.of(context).pop();
-              }
+              final dateToReturn = _selectedDates.isNotEmpty
+                  ? _selectedDates.first
+                  : (_lastDisplayedDate ?? widget.initialDate);
+              widget.onDateSelected(dateToReturn);
             },
           ),
           const SizedBox(height: Spacing.md),

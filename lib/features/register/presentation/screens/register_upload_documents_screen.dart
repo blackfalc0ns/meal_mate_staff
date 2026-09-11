@@ -72,9 +72,9 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.md),
           AppButton(
-            text: locale.registrationSubmitRequest,
+            text: locale.registrationContinue,
             onPressed: onSubmit,
-            height: Spacing.registrationSmallButtonHeight,
+            height: Spacing.registrationButtonHeight,
             borderRadius: Spacing.registrationRadius,
           ),
           const SizedBox(height: Spacing.screenV),

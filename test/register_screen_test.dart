@@ -85,12 +85,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.widgetWithText(AppButton, 'Submit acceptance request'),
+      find.widgetWithText(AppButton, 'Continue'),
       findsOneWidget,
     );
 
-    await tester.ensureVisible(find.text('Submit acceptance request'));
-    await tester.tap(find.text('Submit acceptance request'));
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(AppButton, 'Edit'), findsNWidgets(3));
@@ -169,8 +169,8 @@ void main() {
     await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Submit acceptance request'));
-    await tester.tap(find.text('Submit acceptance request'));
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
@@ -214,7 +214,7 @@ void main() {
     expect(find.text('Personal photo'), findsOneWidget);
     expect(find.text('Personal photo with clear background'), findsOneWidget);
     expect(find.text('Important note'), findsOneWidget);
-    expect(find.text('Submit acceptance request'), findsOneWidget);
+    expect(find.text('Continue'), findsOneWidget);
     expect(find.text('Uploaded documents'), findsNothing);
   });
 
@@ -239,8 +239,8 @@ void main() {
     await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Submit acceptance request'));
-    await tester.tap(find.text('Submit acceptance request'));
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
     expect(find.text('Review order'), findsWidgets);
@@ -301,8 +301,8 @@ void main() {
     await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Submit acceptance request'));
-    await tester.tap(find.text('Submit acceptance request'));
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
     await tester.ensureVisible(find.text('Personal photo'));

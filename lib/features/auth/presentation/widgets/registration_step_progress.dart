@@ -24,81 +24,88 @@ class RegistrationStepProgress extends StatelessWidget {
         ? 0.0
         : (currentStep - 1).clamp(0, labels.length - 1) / (labels.length - 1);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-            height: Spacing.registrationStepCircle,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.registrationStepCircle / 2,
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        key: const Key('registration-step-progress-track'),
-                        height: Spacing.border,
-                        color: color.outline,
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: FractionallySizedBox(
-                          widthFactor: progressFactor,
-                          child: Container(
-                            key: const Key('registration-step-progress-fill'),
-                            height: Spacing.border,
-                            color: color.primary,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stepWidth = constraints.maxWidth / labels.length;
+        final horizontalPadding = stepWidth / 2;
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: Spacing.registrationStepCircle,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          key: const Key('registration-step-progress-track'),
+                          height: Spacing.border,
+                          color: color.outline,
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: FractionallySizedBox(
+                            widthFactor: progressFactor,
+                            child: Container(
+                              key: const Key('registration-step-progress-fill'),
+                              height: Spacing.border,
+                              color: color.primary,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  children: List.generate(labels.length, (index) {
-                    final step = index + 1;
-                    final isActive = step == currentStep;
-                    final isComplete = step < currentStep;
-
-                    return Expanded(
-                      child: _RegistrationStepCircle(
-                        step: step,
-                        isActive: isActive,
-                        isComplete: isComplete,
-                      ),
-                    );
-                  }),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: Spacing.sm),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: labels
-                .map(
-                  (label) => Expanded(
-                    child: Text(
-                      label,
-                      style: getSemiBoldStyle(
-                        color: labels.indexOf(label) + 1 == currentStep
-                            ? color.onSurface
-                            : color.onSurfaceVariant,
-                        fontSize: FontSize.size10,
-                        height: 1.3,
-                      ),
-                      textAlign: TextAlign.center,
+                      ],
                     ),
                   ),
-                )
-                .toList(),
-          ),
-        ],
-      );
+                  Row(
+                    children: List.generate(labels.length, (index) {
+                      final step = index + 1;
+                      final isActive = step == currentStep;
+                      final isComplete = step < currentStep;
+
+                      return Expanded(
+                        child: _RegistrationStepCircle(
+                          step: step,
+                          isActive: isActive,
+                          isComplete: isComplete,
+                        ),
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: Spacing.sm),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: labels
+                  .map(
+                    (label) => Expanded(
+                      child: Text(
+                        label,
+                        style: getSemiBoldStyle(
+                          color: labels.indexOf(label) + 1 == currentStep
+                              ? color.onSurface
+                              : color.onSurfaceVariant,
+                          fontSize: FontSize.size10,
+                          height: 1.3,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
