@@ -89,6 +89,7 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
 
     return Scaffold(
       backgroundColor: color.surfaceContainerLowest,
+      extendBody: true,
       appBar: CustomAppBar(
         title: locale.profileSettingsTitle,
         centerTitle: true,
@@ -102,6 +103,7 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
         ],
       ),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.base,
@@ -122,7 +124,7 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
               ),
               const SizedBox(height: Spacing.lg),
               DispatcherProfileLogoutButton(onTap: _onLogoutTap),
-              const SizedBox(height: Spacing.xl),
+              const SizedBox(height: Spacing.bottomNavHeight + Spacing.xl),
             ],
           ),
         ),

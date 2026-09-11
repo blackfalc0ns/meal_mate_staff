@@ -519,6 +519,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navDelivery => 'Delivery';
 
   @override
+  String get navMap => 'Map';
+
+  @override
   String get navSupport => 'Support';
 
   @override

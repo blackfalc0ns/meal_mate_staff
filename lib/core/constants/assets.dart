@@ -11,6 +11,7 @@ class AppAssets {
   static const String navHome = '$_svg/nav_home.svg';
   static const String navOrders = '$_svg/nav_orders.svg';
   static const String navDelivery = '$_svg/nav_delivery.svg';
+  static const String navMap = '$_svg/nav_map.svg';
   static const String navSupport = '$_svg/nav_support.svg';
   static const String navProfile = '$_svg/nav_profile.svg';
   static const String driverKpiBox = '$_svg/driver_kpi_box.svg';

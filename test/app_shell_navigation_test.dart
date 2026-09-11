@@ -63,7 +63,7 @@ void main() {
 
       expect(find.text('الرئيسية'), findsOneWidget);
       expect(find.text('الطلبات'), findsOneWidget);
-      expect(find.text('التوصيل'), findsOneWidget);
+      expect(find.text('الخريطة'), findsOneWidget);
       expect(find.text('الدعم'), findsOneWidget);
       expect(find.text('الحساب'), findsOneWidget);
     });
@@ -74,7 +74,7 @@ void main() {
 
       expect(find.text('Home'), findsOneWidget);
       expect(find.text('Orders'), findsOneWidget);
-      expect(find.text('Delivery'), findsOneWidget);
+      expect(find.text('Map'), findsOneWidget);
       expect(find.text('Support'), findsOneWidget);
       expect(find.text('Account'), findsOneWidget);
     });
@@ -89,7 +89,7 @@ void main() {
       await tester.tap(find.text('الطلبات'));
       expect(selected, 1);
 
-      await tester.tap(find.text('التوصيل'));
+      await tester.tap(find.text('الخريطة'));
       expect(selected, 2);
 
       await tester.tap(find.text('الدعم'));
@@ -115,7 +115,7 @@ void main() {
 
       expect(find.text('Page Orders'), findsOneWidget);
 
-      await tester.tap(find.text('التوصيل'));
+      await tester.tap(find.text('الخريطة'));
       await tester.pumpAndSettle();
 
       expect(find.text('Page Delivery'), findsOneWidget);

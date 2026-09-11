@@ -1,0 +1,329 @@
+{
+  "name": "MealMate-Mobile APP",
+  "lastModified": "2026-09-10T15:01:00Z",
+  "thumbnailUrl": "https://s3-alpha.figma.com/thumbnails/dd168f26-b28c-4ffe-a0cc-e5baae0d1cfa?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQ4GOSFWC737PW4NF%2F20260910%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260910T000000Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=741e732e1b4be2190bf2f30ef227fc6e17b1a91e7b9817beee5d00b89efd34cf",
+  "version": "2397617621299961351",
+  "role": "viewer",
+  "editorType": "figma",
+  "linkAccess": "view",
+  "nodes": {
+    "2279:15269": {
+      "document": {
+        "id": "2279:15269",
+        "name": "Tab4",
+        "type": "FRAME",
+        "scrollBehavior": "SCROLLS",
+        "children": [
+          {
+            "id": "2279:15270",
+            "name": "gis:poi-map",
+            "type": "FRAME",
+            "scrollBehavior": "SCROLLS",
+            "children": [
+              {
+                "id": "2279:15271",
+                "name": "Vector",
+                "type": "VECTOR",
+                "scrollBehavior": "SCROLLS",
+                "blendMode": "PASS_THROUGH",
+                "fills": [
+                  {
+                    "blendMode": "NORMAL",
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.0,
+                      "g": 0.0,
+                      "b": 0.0,
+                      "a": 1.0
+                    }
+                  }
+                ],
+                "strokes": [],
+                "strokeWeight": 0.30000001192092896,
+                "strokeAlign": "INSIDE",
+                "absoluteBoundingBox": {
+                  "x": 797.8750610351562,
+                  "y": 7222.060546875,
+                  "width": 21.250001907348633,
+                  "height": 7.5
+                },
+                "absoluteRenderBounds": {
+                  "x": 797.8750610351562,
+                  "y": 7222.060546875,
+                  "width": 21.25,
+                  "height": 7.5
+                },
+                "constraints": {
+                  "vertical": "SCALE",
+                  "horizontal": "SCALE"
+                },
+                "effects": [],
+                "interactions": [],
+                "complexStrokeProperties": {
+                  "strokeType": "BASIC"
+                }
+              },
+              {
+                "id": "2279:15272",
+                "name": "Vector",
+                "type": "VECTOR",
+                "scrollBehavior": "SCROLLS",
+                "blendMode": "PASS_THROUGH",
+                "fills": [
+                  {
+                    "blendMode": "NORMAL",
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.0,
+                      "g": 0.0,
+                      "b": 0.0,
+                      "a": 1.0
+                    }
+                  }
+                ],
+                "strokes": [],
+                "strokeWeight": 0.30000001192092896,
+                "strokeAlign": "INSIDE",
+                "absoluteBoundingBox": {
+                  "x": 801.08203125,
+                  "y": 7204.560546875,
+                  "width": 14.835999488830566,
+                  "height": 20.749774932861328
+                },
+                "absoluteRenderBounds": {
+                  "x": 801.08203125,
+                  "y": 7204.560546875,
+                  "width": 14.83599853515625,
+                  "height": 20.75
+                },
+                "constraints": {
+                  "vertical": "SCALE",
+                  "horizontal": "SCALE"
+                },
+                "effects": [],
+                "interactions": [],
+                "complexStrokeProperties": {
+                  "strokeType": "BASIC"
+                }
+              }
+            ],
+            "blendMode": "PASS_THROUGH",
+            "clipsContent": true,
+            "background": [
+              {
+                "blendMode": "NORMAL",
+                "visible": false,
+                "type": "SOLID",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0,
+                  "a": 1.0
+                }
+              }
+            ],
+            "fills": [
+              {
+                "blendMode": "NORMAL",
+                "visible": false,
+                "type": "SOLID",
+                "color": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0,
+                  "a": 1.0
+                }
+              }
+            ],
+            "strokes": [],
+            "strokeWeight": 1.0254238843917847,
+            "strokeAlign": "INSIDE",
+            "backgroundColor": {
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "a": 0.0
+            },
+            "absoluteBoundingBox": {
+              "x": 796.0000610351562,
+              "y": 7204.560546875,
+              "width": 25.0,
+              "height": 25.0
+            },
+            "absoluteRenderBounds": {
+              "x": 796.0000610351562,
+              "y": 7204.560546875,
+              "width": 25.0,
+              "height": 25.0
+            },
+            "targetAspectRatio": {
+              "x": 30.0,
+              "y": 30.0
+            },
+            "constraints": {
+              "vertical": "TOP",
+              "horizontal": "LEFT"
+            },
+            "layoutAlign": "INHERIT",
+            "layoutGrow": 0.0,
+            "layoutSizingHorizontal": "FIXED",
+            "layoutSizingVertical": "FIXED",
+            "effects": [],
+            "interactions": [],
+            "complexStrokeProperties": {
+              "strokeType": "BASIC"
+            }
+          },
+          {
+            "id": "2279:15273",
+            "name": "الخريطة",
+            "type": "TEXT",
+            "scrollBehavior": "SCROLLS",
+            "blendMode": "PASS_THROUGH",
+            "fills": [
+              {
+                "blendMode": "NORMAL",
+                "type": "SOLID",
+                "color": {
+                  "r": 0.09803921729326248,
+                  "g": 0.10980392247438431,
+                  "b": 0.11372549086809158,
+                  "a": 1.0
+                }
+              }
+            ],
+            "strokes": [],
+            "strokeWeight": 1.0254238843917847,
+            "strokeAlign": "OUTSIDE",
+            "absoluteBoundingBox": {
+              "x": 787.0000610351562,
+              "y": 7232.560546875,
+              "width": 43.0,
+              "height": 14.0
+            },
+            "absoluteRenderBounds": {
+              "x": 787.8766479492188,
+              "y": 7233.96240234375,
+              "width": 40.83831787109375,
+              "height": 12.71826171875
+            },
+            "constraints": {
+              "vertical": "TOP",
+              "horizontal": "LEFT"
+            },
+            "layoutAlign": "INHERIT",
+            "layoutGrow": 0.0,
+            "layoutSizingHorizontal": "HUG",
+            "layoutSizingVertical": "HUG",
+            "characters": "الخريطة",
+            "characterStyleOverrides": [],
+            "styleOverrideTable": {},
+            "lineTypes": [
+              "NONE"
+            ],
+            "lineIndentations": [
+              0
+            ],
+            "style": {
+              "fontFamily": "Alexandria",
+              "fontPostScriptName": "Alexandria-SemiBold",
+              "fontStyle": "SemiBold",
+              "fontWeight": 600,
+              "textAutoResize": "WIDTH_AND_HEIGHT",
+              "textTruncation": "ENDING",
+              "maxLines": 1,
+              "fontSize": 11.305084228515625,
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "TOP",
+              "letterSpacing": 0.0,
+              "lineHeightPx": 13.78089714050293,
+              "lineHeightPercent": 100.0,
+              "lineHeightUnit": "INTRINSIC_%"
+            },
+            "layoutVersion": 5,
+            "effects": [],
+            "interactions": [],
+            "complexStrokeProperties": {
+              "strokeType": "BASIC"
+            }
+          }
+        ],
+        "blendMode": "PASS_THROUGH",
+        "clipsContent": true,
+        "background": [],
+        "fills": [],
+        "strokes": [],
+        "strokeWeight": 1.0254238843917847,
+        "strokeAlign": "INSIDE",
+        "backgroundColor": {
+          "r": 0.0,
+          "g": 0.0,
+          "b": 0.0,
+          "a": 0.0
+        },
+        "layoutMode": "VERTICAL",
+        "counterAxisSizingMode": "FIXED",
+        "counterAxisAlignItems": "CENTER",
+        "primaryAxisAlignItems": "CENTER",
+        "paddingLeft": 8.203391075134277,
+        "paddingRight": 8.203391075134277,
+        "paddingTop": 8.203391075134277,
+        "paddingBottom": 8.203391075134277,
+        "itemSpacing": 3.0,
+        "layoutWrap": "NO_WRAP",
+        "absoluteBoundingBox": {
+          "x": 768.918701171875,
+          "y": 7196.35693359375,
+          "width": 79.16270446777344,
+          "height": 58.40678405761719
+        },
+        "absoluteRenderBounds": {
+          "x": 768.918701171875,
+          "y": 7196.35693359375,
+          "width": 79.1627197265625,
+          "height": 58.40678405761719
+        },
+        "constraints": {
+          "vertical": "TOP",
+          "horizontal": "LEFT"
+        },
+        "layoutAlign": "INHERIT",
+        "layoutGrow": 1.0,
+        "maxWidth": 266.6101379394531,
+        "layoutSizingHorizontal": "FILL",
+        "layoutSizingVertical": "HUG",
+        "effects": [],
+        "interactions": [
+          {
+            "trigger": {
+              "type": "ON_CLICK"
+            },
+            "actions": [
+              {
+                "type": "NODE",
+                "destinationId": null,
+                "navigation": "NAVIGATE",
+                "transition": {
+                  "type": "MOVE_IN",
+                  "direction": "LEFT",
+                  "matchLayers": false,
+                  "easing": {
+                    "type": "EASE_OUT"
+                  },
+                  "duration": 0.0010000000474974513
+                }
+              }
+            ]
+          }
+        ],
+        "complexStrokeProperties": {
+          "strokeType": "BASIC"
+        }
+      },
+      "components": {},
+      "componentSets": {},
+      "schemaVersion": 0,
+      "styles": {}
+    }
+  }
+}

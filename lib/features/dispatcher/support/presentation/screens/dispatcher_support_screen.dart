@@ -84,9 +84,11 @@ class _DispatcherSupportScreenState extends State<DispatcherSupportScreen> {
 
     return Scaffold(
       backgroundColor: color.surface,
+      extendBody: true,
       appBar: const DispatcherSupportHeader(),
       body: SafeArea(
         top: false,
+        bottom: false,
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
           children: [
@@ -162,7 +164,7 @@ class _DispatcherSupportScreenState extends State<DispatcherSupportScreen> {
             ),
             const SizedBox(height: Spacing.xs),
             const DispatcherSupportInfoBanner(),
-            const SizedBox(height: Spacing.base),
+            const SizedBox(height: Spacing.bottomNavHeight + Spacing.xl),
           ],
         ),
       ),

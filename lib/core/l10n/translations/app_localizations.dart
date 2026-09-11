@@ -1058,6 +1058,12 @@ abstract class AppLocalizations {
   /// **'Delivery'**
   String get navDelivery;
 
+  /// No description provided for @navMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get navMap;
+
   /// No description provided for @navSupport.
   ///
   /// In en, this message translates to:

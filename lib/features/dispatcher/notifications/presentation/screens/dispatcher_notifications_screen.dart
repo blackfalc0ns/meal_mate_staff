@@ -96,10 +96,12 @@ class _DispatcherNotificationsScreenState
 
     return Scaffold(
       backgroundColor: color.surface,
+      extendBody: widget.showBottomNavBar,
       appBar: DispatcherNotificationsAppBar(
         onFilterPressed: widget.onFilterTap,
       ),
       body: SafeArea(
+        bottom: !widget.showBottomNavBar,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,7 +124,11 @@ class _DispatcherNotificationsScreenState
                 notifications: _filteredNotifications,
                 onNotificationTap: _handleNotificationTap,
               ),
-              const SizedBox(height: Spacing.base),
+              SizedBox(
+                height: widget.showBottomNavBar
+                    ? Spacing.bottomNavHeight + Spacing.xl
+                    : Spacing.base,
+              ),
             ],
           ),
         ),

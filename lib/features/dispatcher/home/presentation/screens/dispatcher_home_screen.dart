@@ -58,7 +58,9 @@ class DispatcherHomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: color.surface,
+      extendBody: true,
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.base,
@@ -119,7 +121,7 @@ class DispatcherHomeScreen extends StatelessWidget {
                 alert: alert,
                 onTap: () => context.pushNamed(AppRoutes.dispatcherSupport),
               ),
-              const SizedBox(height: Spacing.xl),
+              const SizedBox(height: Spacing.bottomNavHeight + Spacing.xl),
             ],
           ),
         ),

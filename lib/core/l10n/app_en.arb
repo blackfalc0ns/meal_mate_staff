@@ -187,6 +187,7 @@
   "navHome": "Home",
   "navOrders": "Orders",
   "navDelivery": "Delivery",
+  "navMap": "Map",
   "navSupport": "Support",
   "navAccount": "Account",
   "assignBoxTitle": "Assign Box {boxCode}",

@@ -517,6 +517,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get navDelivery => 'التوصيل';
 
   @override
+  String get navMap => 'الخريطة';
+
+  @override
   String get navSupport => 'الدعم';
 
   @override

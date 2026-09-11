@@ -82,6 +82,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
     return Scaffold(
       backgroundColor: color.surface,
+      extendBody: true,
       body: content,
       bottomNavigationBar: AppBottomNavBar(
         selectedIndex: activeIndex,

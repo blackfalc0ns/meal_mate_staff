@@ -1,0 +1,5 @@
+Tab4 (FRAME, 79.2x58.4)
+  gis:poi-map (FRAME, 25.0x25.0)
+    Vector (VECTOR, 21.3x7.5)
+    Vector (VECTOR, 14.8x20.7)
+  الخريطة (TEXT, 43.0x14.0) TEXT: "الخريطة"
