@@ -14,6 +14,10 @@ class RegistrationInputField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.isPicker = false,
+    this.onTap,
+    this.controller,
+    this.initialValue,
+    this.onChanged,
   });
 
   final String label;
@@ -22,6 +26,10 @@ class RegistrationInputField extends StatelessWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final bool isPicker;
+  final VoidCallback? onTap;
+  final TextEditingController? controller;
+  final String? initialValue;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +53,18 @@ class RegistrationInputField extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: SizedBox(
-                  height: Spacing.registrationFieldInputHeight,
-                  child: TextFormField(
-                    readOnly: isPicker,
-                    textAlign: TextAlign.start,
+                child: GestureDetector(
+                  onTap: isPicker ? onTap : null,
+                  behavior: HitTestBehavior.opaque,
+                  child: SizedBox(
+                    height: Spacing.registrationFieldInputHeight,
+                    child: TextFormField(
+                      controller: controller,
+                      initialValue: controller == null ? initialValue : null,
+                      readOnly: isPicker,
+                      onTap: onTap,
+                      onChanged: onChanged,
+                      textAlign: TextAlign.start,
                     style: getMediumStyle(
                       color: color.onSurface,
                       fontSize: FontSize.size12,
@@ -87,6 +102,7 @@ class RegistrationInputField extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
               ),
               if (prefix != null) ...[
                 const SizedBox(width: Spacing.md),
