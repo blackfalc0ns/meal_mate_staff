@@ -89,7 +89,7 @@ class DispatcherProfileAppInfoCard extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.xs),
                 Icon(
-                  Icons.chevron_left_rounded,
+                  Icons.chevron_right_rounded,
                   size: Spacing.iconSm,
                   color: color.onSurfaceVariant,
                 ),
@@ -125,7 +125,7 @@ class DispatcherProfileAppInfoCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     size: Spacing.iconSm,
                     color: color.onSurfaceVariant,
                   ),
@@ -162,7 +162,7 @@ class DispatcherProfileAppInfoCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Icon(
-                    Icons.chevron_left_rounded,
+                    Icons.chevron_right_rounded,
                     size: Spacing.iconSm,
                     color: color.onSurfaceVariant,
                   ),
