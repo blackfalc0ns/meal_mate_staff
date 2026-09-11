@@ -83,14 +83,11 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
       widget.onSelectDriver!(driver);
       return;
     }
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop(driver);
-    }
+    Navigator.of(context).pushNamed(AppRoutes.dispatcherDriverDetails);
   }
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
     final drivers = _filteredDrivers;
@@ -98,49 +95,50 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
         ? locale.driversSectionTitle(_selectedArea, drivers.length)
         : locale.driversAllSectionTitle(drivers.length);
 
-    return Scaffold(
-      backgroundColor: color.surface,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DispatcherDriversHeader(onBack: widget.onBack),
-              const SizedBox(height: Spacing.xs),
-              DispatcherDriversViewSwitcher(
-                selectedViewMode: _viewMode,
-                onViewModeChanged: _handleViewModeChanged,
-              ),
-              if (_viewMode == DispatcherDriverViewMode.byArea) ...[
-                const SizedBox(height: Spacing.xs),
-                DispatcherDriversAreaChips(
-                  areas: DispatcherDriversFakeData.areas,
-                  selectedArea: _selectedArea,
-                  onAreaSelected: _handleAreaSelected,
+    return SafeArea(
+      child: Scaffold(
+        appBar: DispatcherDriversHeader(),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DispatcherDriversViewSwitcher(
+                  selectedViewMode: _viewMode,
+                  onViewModeChanged: _handleViewModeChanged,
                 ),
+                if (_viewMode == DispatcherDriverViewMode.byArea) ...[
+                  const SizedBox(height: Spacing.xs),
+                  DispatcherDriversAreaChips(
+                    areas: DispatcherDriversFakeData.areas,
+                    selectedArea: _selectedArea,
+                    onAreaSelected: _handleAreaSelected,
+                  ),
+                ],
+                const SizedBox(height: Spacing.xs),
+                const DispatcherDriversKpiCard(
+                  kpi: DispatcherDriversFakeData.kpi,
+                ),
+                const SizedBox(height: Spacing.sm),
+                DispatcherDriversContentList(
+                  transitionKey: '$_viewMode-$_selectedArea',
+                  isTransitionReversed: _isTransitionReversed,
+                  sectionTitle: sectionTitle,
+                  drivers: drivers,
+                  onSort: _toggleSort,
+                  onSelectDriver: _handleDriverSelected,
+                ),
+                const SizedBox(height: Spacing.xs),
+                DispatcherDriversMapButton(
+                  onTap:
+                      widget.onViewOnMap ??
+                      () => Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.dispatcherMap),
+                ),
+                const SizedBox(height: Spacing.base),
               ],
-              const SizedBox(height: Spacing.xs),
-              const DispatcherDriversKpiCard(
-                kpi: DispatcherDriversFakeData.kpi,
-              ),
-              const SizedBox(height: Spacing.sm),
-              DispatcherDriversContentList(
-                transitionKey: '$_viewMode-$_selectedArea',
-                isTransitionReversed: _isTransitionReversed,
-                sectionTitle: sectionTitle,
-                drivers: drivers,
-                onSort: _toggleSort,
-                onSelectDriver: _handleDriverSelected,
-              ),
-              const SizedBox(height: Spacing.xs),
-              DispatcherDriversMapButton(
-                onTap: widget.onViewOnMap ??
-                    () => Navigator.of(context).pushNamed(
-                          AppRoutes.dispatcherMap,
-                        ),
-              ),
-              const SizedBox(height: Spacing.base),
-            ],
+            ),
           ),
         ),
       ),

@@ -10,6 +10,9 @@ import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/dispatcher/assign_box/domain/entities/assign_box_order_entity.dart';
 import '../../features/dispatcher/assign_box/presentation/screens/assign_box_screen.dart';
+import '../../features/dispatcher/driver_details/domain/entities/driver_details_entity.dart';
+import '../../features/dispatcher/driver_details/domain/fake_data/driver_details_fake_data.dart';
+import '../../features/dispatcher/driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
 import '../../features/dispatcher/drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import '../../features/dispatcher/home/presentation/screens/dispatcher_home_screen.dart';
 import '../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
@@ -138,6 +141,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DispatcherHomeScreen(),
+        );
+
+      case AppRoutes.dispatcherDriverDetails:
+        final driver = settings.arguments is DriverDetailsEntity
+            ? settings.arguments! as DriverDetailsEntity
+            : DriverDetailsFakeData.defaultDriver;
+        return _buildRoute(
+          settings: settings,
+          page: DispatcherDriverDetailsScreen(driver: driver),
         );
 
       default:

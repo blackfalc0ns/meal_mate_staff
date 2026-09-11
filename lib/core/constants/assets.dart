@@ -13,6 +13,22 @@ class AppAssets {
   static const String navDelivery = '$_svg/nav_delivery.svg';
   static const String navSupport = '$_svg/nav_support.svg';
   static const String navProfile = '$_svg/nav_profile.svg';
+  static const String driverKpiBox = '$_svg/driver_kpi_box.svg';
+  static const String driverKpiCheck = '$_svg/driver_kpi_check.svg';
+  static const String driverKpiClock = '$_svg/driver_kpi_clock.svg';
+  static const String driverKpiStar = '$_svg/driver_kpi_star.svg';
+  static const String driverPerfPins = '$_svg/driver_perf_pins.svg';
+  static const String driverPerfClock = '$_svg/driver_perf_clock.svg';
+  static const String driverPerfNo = '$_svg/driver_perf_no.svg';
+  static const String driverPerfCheck = '$_svg/driver_perf_check.svg';
+  static const String driverActionCall = '$_svg/driver_action_call.svg';
+  static const String driverActionMsg = '$_svg/driver_action_msg.svg';
+  static const String driverOpenMap = '$_svg/driver_open_map.svg';
+  static const String driverLiveSignal = '$_svg/driver_live_signal.svg';
+  static const String driverLocationPin = '$_svg/driver_location_pin.svg';
+  static const String driverMapPreview =
+      '$_dispatcherImages/driver_map_preview.png';
+  static const String driverBox3d = '$_dispatcherImages/driver_box_3d.png';
 
   static const String authSplashBackground =
       '$_authImages/splash_background.png';

@@ -234,6 +234,28 @@ void main() {
       expect(selected!.name, 'أحمد محمد');
     });
 
+    testWidgets('invokes onSelectDriver when driver card is tapped anywhere', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.5;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      DispatcherDriverEntity? selected;
+      await tester.pumpWidget(
+        buildSubject(onSelectDriver: (d) => selected = d),
+      );
+      await tester.pumpAndSettle();
+
+      // Tap driver name directly
+      await tester.tap(find.text('أحمد محمد'));
+      await tester.pumpAndSettle();
+
+      expect(selected, isNotNull);
+      expect(selected!.id, 'D-1025');
+      expect(selected!.name, 'أحمد محمد');
+    });
+
     testWidgets('invokes onViewOnMap when map button is tapped', (
       tester,
     ) async {

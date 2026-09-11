@@ -26,7 +26,6 @@ class DispatcherDriversCard extends StatelessWidget {
         horizontal: Spacing.base,
         vertical: Spacing.xs,
       ),
-      padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.dispatcherCardRadius),
@@ -34,35 +33,45 @@ class DispatcherDriversCard extends StatelessWidget {
           color: color.outlineVariant.withValues(alpha: 0.6),
         ),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          DispatcherDriversAvatarWithStatus(
-            status: driver.status,
-            avatarUrl: driver.avatarUrl,
-          ),
-          const SizedBox(width: Spacing.sm),
-          Container(
-            width: Spacing.border,
-            height: Spacing.dispatcherCardDividerHeight,
-            color: color.outlineVariant.withValues(alpha: 0.6),
-          ),
-          const SizedBox(width: Spacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(Spacing.dispatcherCardRadius),
+          onTap: () => onSelect?.call(driver),
+          child: Padding(
+            padding: const EdgeInsets.all(Spacing.sm),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                DispatcherDriversCardTopRow(
-                  driver: driver,
-                  onSelect: onSelect,
+                DispatcherDriversAvatarWithStatus(
+                  status: driver.status,
+                  avatarUrl: driver.avatarUrl,
                 ),
-                const SizedBox(height: Spacing.sm),
-                DispatcherDriversCardMetricsRow(driver: driver),
+                const SizedBox(width: Spacing.sm),
+                Container(
+                  width: Spacing.border,
+                  height: Spacing.dispatcherCardDividerHeight,
+                  color: color.outlineVariant.withValues(alpha: 0.6),
+                ),
+                const SizedBox(width: Spacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      DispatcherDriversCardTopRow(
+                        driver: driver,
+                        onSelect: onSelect,
+                      ),
+                      const SizedBox(height: Spacing.sm),
+                      DispatcherDriversCardMetricsRow(driver: driver),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

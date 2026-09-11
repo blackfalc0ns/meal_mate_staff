@@ -29,13 +29,13 @@ class DispatcherDriversKpiCard extends StatelessWidget {
           border: Border.all(
             color: color.outlineVariant.withValues(alpha: Spacing.hairline),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: color.shadow.withValues(alpha: Spacing.hairline / 10),
-              blurRadius: Spacing.sm - Spacing.border - Spacing.border,
-              offset: const Offset(Spacing.zero, Spacing.border + Spacing.border),
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: color.shadow.withValues(alpha: Spacing.hairline / 10),
+          //     blurRadius: Spacing.sm - Spacing.border - Spacing.border,
+          //     offset: const Offset(Spacing.zero, Spacing.border + Spacing.border),
+          //   ),
+          // ],
         ),
         child: Row(
           children: [

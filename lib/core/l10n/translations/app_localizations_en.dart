@@ -997,4 +997,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeUnitOrder => 'Orders';
+
+  @override
+  String get driverDetailsTitle => 'Driver Details';
+
+  @override
+  String get driverDetailsStatusAvailable => 'Available';
+
+  @override
+  String get driverDetailsLastUpdatedNow => 'Last updated now';
+
+  @override
+  String get driverDetailsKpiCurrentBoxes => 'Current Boxes';
+
+  @override
+  String get driverDetailsKpiDeliveredToday => 'Delivered Today';
+
+  @override
+  String get driverDetailsKpiAvgDelay => 'Avg Delay (m)';
+
+  @override
+  String get driverDetailsKpiRating => 'Performance Rating';
+
+  @override
+  String get driverDetailsLocationTitle => 'Current Location';
+
+  @override
+  String get driverDetailsStatusOutForDelivery => 'Out for Delivery';
+
+  @override
+  String get driverDetailsStatusReceived => 'Received';
+
+  @override
+  String driverDetailsTimeAgo(int minutes) {
+    return '$minutes min ago';
+  }
+
+  @override
+  String get driverDetailsOpenOnMap => 'Open on Map';
+
+  @override
+  String driverDetailsActiveBoxesTitle(int count) {
+    return 'Current Boxes ($count)';
+  }
+
+  @override
+  String get driverDetailsAppointment => 'Schedule';
+
+  @override
+  String driverDetailsClient(String name) {
+    return 'Client: $name';
+  }
+
+  @override
+  String get driverDetailsDailyPerformanceTitle => 'Daily Performance Summary';
+
+  @override
+  String get driverDetailsApproxKm => 'Approx Km';
+
+  @override
+  String get driverDetailsAvgDelayMin => 'Avg Delay';
+
+  @override
+  String get driverDetailsDeliveryFailed => 'Delivery Failed';
+
+  @override
+  String get driverDetailsDelivered => 'Delivered';
+
+  @override
+  String get driverDetailsSendMessage => 'Send Message';
+
+  @override
+  String get driverDetailsCall => 'Call';
 }

@@ -995,4 +995,76 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeUnitOrder => 'طلب';
+
+  @override
+  String get driverDetailsTitle => 'تفاصيل السائق';
+
+  @override
+  String get driverDetailsStatusAvailable => 'متاح';
+
+  @override
+  String get driverDetailsLastUpdatedNow => 'آخر تحديث الآن';
+
+  @override
+  String get driverDetailsKpiCurrentBoxes => 'البوكسات الحالية';
+
+  @override
+  String get driverDetailsKpiDeliveredToday => 'تم التوصيل اليوم';
+
+  @override
+  String get driverDetailsKpiAvgDelay => 'متوسط التأخير (د)';
+
+  @override
+  String get driverDetailsKpiRating => 'تقييم الأداء';
+
+  @override
+  String get driverDetailsLocationTitle => 'الموقع الحالي';
+
+  @override
+  String get driverDetailsStatusOutForDelivery => 'خارج للتوصيل';
+
+  @override
+  String get driverDetailsStatusReceived => 'تم الاستلام';
+
+  @override
+  String driverDetailsTimeAgo(int minutes) {
+    return 'منذ $minutes دقيقة';
+  }
+
+  @override
+  String get driverDetailsOpenOnMap => 'فتح على الخريطة';
+
+  @override
+  String driverDetailsActiveBoxesTitle(int count) {
+    return 'البوكسات الحالية ($count)';
+  }
+
+  @override
+  String get driverDetailsAppointment => 'الموعد';
+
+  @override
+  String driverDetailsClient(String name) {
+    return 'عميل: $name';
+  }
+
+  @override
+  String get driverDetailsDailyPerformanceTitle => 'ملخص الأداء اليومي';
+
+  @override
+  String get driverDetailsApproxKm => 'كم تقريباً';
+
+  @override
+  String get driverDetailsAvgDelayMin => 'متوسط التأخير';
+
+  @override
+  String get driverDetailsDeliveryFailed => 'فشل تسليم';
+
+  @override
+  String get driverDetailsDelivered => 'تم التوصيل';
+
+  @override
+  String get driverDetailsSendMessage => 'إرسال رسالة';
+
+  @override
+  String get driverDetailsCall => 'اتصال';
 }

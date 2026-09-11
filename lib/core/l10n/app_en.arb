@@ -423,5 +423,48 @@
   "homeViewAllDrivers": "View All Drivers",
   "homeAreaSummaryTitle": "Area Summary",
   "homeViewAll": "View All",
-  "homeUnitOrder": "Orders"
+  "homeUnitOrder": "Orders",
+  "driverDetailsTitle": "Driver Details",
+  "driverDetailsStatusAvailable": "Available",
+  "driverDetailsLastUpdatedNow": "Last updated now",
+  "driverDetailsKpiCurrentBoxes": "Current Boxes",
+  "driverDetailsKpiDeliveredToday": "Delivered Today",
+  "driverDetailsKpiAvgDelay": "Avg Delay (m)",
+  "driverDetailsKpiRating": "Performance Rating",
+  "driverDetailsLocationTitle": "Current Location",
+  "driverDetailsStatusOutForDelivery": "Out for Delivery",
+  "driverDetailsStatusReceived": "Received",
+  "driverDetailsTimeAgo": "{minutes} min ago",
+  "@driverDetailsTimeAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsOpenOnMap": "Open on Map",
+  "driverDetailsActiveBoxesTitle": "Current Boxes ({count})",
+  "@driverDetailsActiveBoxesTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsAppointment": "Schedule",
+  "driverDetailsClient": "Client: {name}",
+  "@driverDetailsClient": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "driverDetailsDailyPerformanceTitle": "Daily Performance Summary",
+  "driverDetailsApproxKm": "Approx Km",
+  "driverDetailsAvgDelayMin": "Avg Delay",
+  "driverDetailsDeliveryFailed": "Delivery Failed",
+  "driverDetailsDelivered": "Delivered",
+  "driverDetailsSendMessage": "Send Message",
+  "driverDetailsCall": "Call"
 }

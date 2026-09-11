@@ -423,5 +423,48 @@
   "homeViewAllDrivers": "عرض كل السائقين",
   "homeAreaSummaryTitle": "ملخص المناطق",
   "homeViewAll": "عرض الكل",
-  "homeUnitOrder": "طلب"
+  "homeUnitOrder": "طلب",
+  "driverDetailsTitle": "تفاصيل السائق",
+  "driverDetailsStatusAvailable": "متاح",
+  "driverDetailsLastUpdatedNow": "آخر تحديث الآن",
+  "driverDetailsKpiCurrentBoxes": "البوكسات الحالية",
+  "driverDetailsKpiDeliveredToday": "تم التوصيل اليوم",
+  "driverDetailsKpiAvgDelay": "متوسط التأخير (د)",
+  "driverDetailsKpiRating": "تقييم الأداء",
+  "driverDetailsLocationTitle": "الموقع الحالي",
+  "driverDetailsStatusOutForDelivery": "خارج للتوصيل",
+  "driverDetailsStatusReceived": "تم الاستلام",
+  "driverDetailsTimeAgo": "منذ {minutes} دقيقة",
+  "@driverDetailsTimeAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsOpenOnMap": "فتح على الخريطة",
+  "driverDetailsActiveBoxesTitle": "البوكسات الحالية ({count})",
+  "@driverDetailsActiveBoxesTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsAppointment": "الموعد",
+  "driverDetailsClient": "عميل: {name}",
+  "@driverDetailsClient": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "driverDetailsDailyPerformanceTitle": "ملخص الأداء اليومي",
+  "driverDetailsApproxKm": "كم تقريباً",
+  "driverDetailsAvgDelayMin": "متوسط التأخير",
+  "driverDetailsDeliveryFailed": "فشل تسليم",
+  "driverDetailsDelivered": "تم التوصيل",
+  "driverDetailsSendMessage": "إرسال رسالة",
+  "driverDetailsCall": "اتصال"
 }

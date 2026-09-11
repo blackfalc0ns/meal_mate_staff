@@ -1957,6 +1957,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Orders'**
   String get homeUnitOrder;
+
+  /// No description provided for @driverDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Details'**
+  String get driverDetailsTitle;
+
+  /// No description provided for @driverDetailsStatusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get driverDetailsStatusAvailable;
+
+  /// No description provided for @driverDetailsLastUpdatedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated now'**
+  String get driverDetailsLastUpdatedNow;
+
+  /// No description provided for @driverDetailsKpiCurrentBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Boxes'**
+  String get driverDetailsKpiCurrentBoxes;
+
+  /// No description provided for @driverDetailsKpiDeliveredToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered Today'**
+  String get driverDetailsKpiDeliveredToday;
+
+  /// No description provided for @driverDetailsKpiAvgDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Delay (m)'**
+  String get driverDetailsKpiAvgDelay;
+
+  /// No description provided for @driverDetailsKpiRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance Rating'**
+  String get driverDetailsKpiRating;
+
+  /// No description provided for @driverDetailsLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Location'**
+  String get driverDetailsLocationTitle;
+
+  /// No description provided for @driverDetailsStatusOutForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Out for Delivery'**
+  String get driverDetailsStatusOutForDelivery;
+
+  /// No description provided for @driverDetailsStatusReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get driverDetailsStatusReceived;
+
+  /// No description provided for @driverDetailsTimeAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String driverDetailsTimeAgo(int minutes);
+
+  /// No description provided for @driverDetailsOpenOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Open on Map'**
+  String get driverDetailsOpenOnMap;
+
+  /// No description provided for @driverDetailsActiveBoxesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Boxes ({count})'**
+  String driverDetailsActiveBoxesTitle(int count);
+
+  /// No description provided for @driverDetailsAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get driverDetailsAppointment;
+
+  /// No description provided for @driverDetailsClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Client: {name}'**
+  String driverDetailsClient(String name);
+
+  /// No description provided for @driverDetailsDailyPerformanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Performance Summary'**
+  String get driverDetailsDailyPerformanceTitle;
+
+  /// No description provided for @driverDetailsApproxKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Approx Km'**
+  String get driverDetailsApproxKm;
+
+  /// No description provided for @driverDetailsAvgDelayMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Delay'**
+  String get driverDetailsAvgDelayMin;
+
+  /// No description provided for @driverDetailsDeliveryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Failed'**
+  String get driverDetailsDeliveryFailed;
+
+  /// No description provided for @driverDetailsDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get driverDetailsDelivered;
+
+  /// No description provided for @driverDetailsSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get driverDetailsSendMessage;
+
+  /// No description provided for @driverDetailsCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get driverDetailsCall;
 }
 
 class _AppLocalizationsDelegate

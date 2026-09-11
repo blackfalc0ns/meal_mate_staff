@@ -16,6 +16,7 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.isExpanded = true,
     this.icon,
+    this.iconWidget,
     this.height,
     this.borderRadius,
     this.padding,
@@ -32,6 +33,7 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final bool isExpanded;
   final IconData? icon;
+  final Widget? iconWidget;
   final double? height;
   final double? borderRadius;
   final EdgeInsetsGeometry? padding;
@@ -54,6 +56,7 @@ class AppButton extends StatelessWidget {
         : _ButtonContent(
             text: text,
             icon: icon,
+            iconWidget: iconWidget,
             color:
                 textColor ??
                 (variant == AppButtonVariant.filled
@@ -114,6 +117,7 @@ class _ButtonContent extends StatelessWidget {
     required this.text,
     required this.color,
     this.icon,
+    this.iconWidget,
     this.textStyle,
     this.iconSize,
     this.iconGap,
@@ -122,6 +126,7 @@ class _ButtonContent extends StatelessWidget {
   final String text;
   final Color color;
   final IconData? icon;
+  final Widget? iconWidget;
   final TextStyle? textStyle;
   final double? iconSize;
   final double? iconGap;
@@ -136,20 +141,26 @@ class _ButtonContent extends StatelessWidget {
           color: color,
         );
 
-    if (icon == null) {
+    final effectiveIcon = iconWidget ??
+        (icon != null
+            ? Icon(icon, size: iconSize ?? Spacing.iconMd, color: color)
+            : null);
+
+    if (effectiveIcon == null) {
       return Text(text, style: style, textAlign: TextAlign.center);
     }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, size: iconSize ?? Spacing.iconMd, color: color),
-        SizedBox(width: iconGap ?? Spacing.sm),
-        Flexible(
-          child: Text(text, style: style, textAlign: TextAlign.center),
-        ),
-      ],
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          effectiveIcon,
+          SizedBox(width: iconGap ?? Spacing.sm),
+          Text(text, style: style, textAlign: TextAlign.center),
+        ],
+      ),
     );
   }
 }
