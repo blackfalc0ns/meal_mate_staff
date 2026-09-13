@@ -21,6 +21,7 @@ class AppRoutes {
   static const String notifications = '/dispatcher-notifications';
   static const String dispatcherHome = '/dispatcher-home';
   static const String dispatcherDriverDetails = '/dispatcher-driver-details';
+  static const String boxTracking = '/box-tracking';
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
 }

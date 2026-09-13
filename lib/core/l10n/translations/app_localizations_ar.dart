@@ -1070,4 +1070,54 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverDetailsCall => 'اتصال';
+
+  @override
+  String get boxTrackingTitle => 'متابعة البوكس';
+
+  @override
+  String boxTrackingCustomerLabel(String name) {
+    return 'عميل: $name';
+  }
+
+  @override
+  String get boxTrackingStatusOnTheWay => 'في الطريق';
+
+  @override
+  String get boxTrackingStatusReady => 'جاهز في المطعم';
+
+  @override
+  String get boxTrackingStatusPickedUp => 'استلمه السائق';
+
+  @override
+  String get boxTrackingStatusDelivered => 'تم التسليم';
+
+  @override
+  String get boxTrackingTimelineTitle => 'حالة البوكس';
+
+  @override
+  String get boxTrackingLiveTrack => 'تتبع مباشر';
+
+  @override
+  String get boxTrackingSendMessage => 'رسالة';
+
+  @override
+  String get boxTrackingCall => 'اتصال';
+
+  @override
+  String get boxTrackingDetailsTitle => 'تفاصيل البوكس';
+
+  @override
+  String get boxTrackingPlanType => 'نوع البرنامج';
+
+  @override
+  String get boxTrackingOrderDate => 'تاريخ الطلب';
+
+  @override
+  String get boxTrackingMealCount => 'عدد الوجبات';
+
+  @override
+  String get boxTrackingCustomerNotes => 'ملاحظات العميل';
+
+  @override
+  String get boxTrackingReportIssue => 'الإبلاغ عن مشكلة في البوكس';
 }

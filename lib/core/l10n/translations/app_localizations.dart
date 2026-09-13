@@ -2095,6 +2095,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Call'**
   String get driverDetailsCall;
+
+  /// No description provided for @boxTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Tracking'**
+  String get boxTrackingTitle;
+
+  /// No description provided for @boxTrackingCustomerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer: {name}'**
+  String boxTrackingCustomerLabel(String name);
+
+  /// No description provided for @boxTrackingStatusOnTheWay.
+  ///
+  /// In en, this message translates to:
+  /// **'On the way'**
+  String get boxTrackingStatusOnTheWay;
+
+  /// No description provided for @boxTrackingStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready at restaurant'**
+  String get boxTrackingStatusReady;
+
+  /// No description provided for @boxTrackingStatusPickedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up by driver'**
+  String get boxTrackingStatusPickedUp;
+
+  /// No description provided for @boxTrackingStatusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get boxTrackingStatusDelivered;
+
+  /// No description provided for @boxTrackingTimelineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Status'**
+  String get boxTrackingTimelineTitle;
+
+  /// No description provided for @boxTrackingLiveTrack.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Tracking'**
+  String get boxTrackingLiveTrack;
+
+  /// No description provided for @boxTrackingSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get boxTrackingSendMessage;
+
+  /// No description provided for @boxTrackingCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get boxTrackingCall;
+
+  /// No description provided for @boxTrackingDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Details'**
+  String get boxTrackingDetailsTitle;
+
+  /// No description provided for @boxTrackingPlanType.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Type'**
+  String get boxTrackingPlanType;
+
+  /// No description provided for @boxTrackingOrderDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Date'**
+  String get boxTrackingOrderDate;
+
+  /// No description provided for @boxTrackingMealCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal Count'**
+  String get boxTrackingMealCount;
+
+  /// No description provided for @boxTrackingCustomerNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Notes'**
+  String get boxTrackingCustomerNotes;
+
+  /// No description provided for @boxTrackingReportIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Report an issue with the box'**
+  String get boxTrackingReportIssue;
 }
 
 class _AppLocalizationsDelegate

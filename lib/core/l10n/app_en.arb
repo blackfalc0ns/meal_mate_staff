@@ -467,5 +467,28 @@
   "driverDetailsDeliveryFailed": "Delivery Failed",
   "driverDetailsDelivered": "Delivered",
   "driverDetailsSendMessage": "Send Message",
-  "driverDetailsCall": "Call"
+  "driverDetailsCall": "Call",
+  "boxTrackingTitle": "Box Tracking",
+  "boxTrackingCustomerLabel": "Customer: {name}",
+  "@boxTrackingCustomerLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "boxTrackingStatusOnTheWay": "On the way",
+  "boxTrackingStatusReady": "Ready at restaurant",
+  "boxTrackingStatusPickedUp": "Picked up by driver",
+  "boxTrackingStatusDelivered": "Delivered",
+  "boxTrackingTimelineTitle": "Box Status",
+  "boxTrackingLiveTrack": "Live Tracking",
+  "boxTrackingSendMessage": "Message",
+  "boxTrackingCall": "Call",
+  "boxTrackingDetailsTitle": "Box Details",
+  "boxTrackingPlanType": "Plan Type",
+  "boxTrackingOrderDate": "Order Date",
+  "boxTrackingMealCount": "Meal Count",
+  "boxTrackingCustomerNotes": "Customer Notes",
+  "boxTrackingReportIssue": "Report an issue with the box"
 }

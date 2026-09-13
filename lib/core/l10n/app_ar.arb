@@ -467,5 +467,28 @@
   "driverDetailsDeliveryFailed": "فشل تسليم",
   "driverDetailsDelivered": "تم التوصيل",
   "driverDetailsSendMessage": "إرسال رسالة",
-  "driverDetailsCall": "اتصال"
+  "driverDetailsCall": "اتصال",
+  "boxTrackingTitle": "متابعة البوكس",
+  "boxTrackingCustomerLabel": "عميل: {name}",
+  "@boxTrackingCustomerLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "boxTrackingStatusOnTheWay": "في الطريق",
+  "boxTrackingStatusReady": "جاهز في المطعم",
+  "boxTrackingStatusPickedUp": "استلمه السائق",
+  "boxTrackingStatusDelivered": "تم التسليم",
+  "boxTrackingTimelineTitle": "حالة البوكس",
+  "boxTrackingLiveTrack": "تتبع مباشر",
+  "boxTrackingSendMessage": "رسالة",
+  "boxTrackingCall": "اتصال",
+  "boxTrackingDetailsTitle": "تفاصيل البوكس",
+  "boxTrackingPlanType": "نوع البرنامج",
+  "boxTrackingOrderDate": "تاريخ الطلب",
+  "boxTrackingMealCount": "عدد الوجبات",
+  "boxTrackingCustomerNotes": "ملاحظات العميل",
+  "boxTrackingReportIssue": "الإبلاغ عن مشكلة في البوكس"
 }

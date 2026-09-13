@@ -1072,4 +1072,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverDetailsCall => 'Call';
+
+  @override
+  String get boxTrackingTitle => 'Box Tracking';
+
+  @override
+  String boxTrackingCustomerLabel(String name) {
+    return 'Customer: $name';
+  }
+
+  @override
+  String get boxTrackingStatusOnTheWay => 'On the way';
+
+  @override
+  String get boxTrackingStatusReady => 'Ready at restaurant';
+
+  @override
+  String get boxTrackingStatusPickedUp => 'Picked up by driver';
+
+  @override
+  String get boxTrackingStatusDelivered => 'Delivered';
+
+  @override
+  String get boxTrackingTimelineTitle => 'Box Status';
+
+  @override
+  String get boxTrackingLiveTrack => 'Live Tracking';
+
+  @override
+  String get boxTrackingSendMessage => 'Message';
+
+  @override
+  String get boxTrackingCall => 'Call';
+
+  @override
+  String get boxTrackingDetailsTitle => 'Box Details';
+
+  @override
+  String get boxTrackingPlanType => 'Plan Type';
+
+  @override
+  String get boxTrackingOrderDate => 'Order Date';
+
+  @override
+  String get boxTrackingMealCount => 'Meal Count';
+
+  @override
+  String get boxTrackingCustomerNotes => 'Customer Notes';
+
+  @override
+  String get boxTrackingReportIssue => 'Report an issue with the box';
 }
