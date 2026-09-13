@@ -48,10 +48,7 @@ class DriverDetailsActionButtons extends StatelessWidget {
                 AppAssets.driverActionMsg,
                 width: Spacing.iconXs,
                 height: Spacing.iconXs,
-                colorFilter: ColorFilter.mode(
-                  color.onPrimary,
-                  BlendMode.srcIn,
-                ),
+                colorFilter: ColorFilter.mode(color.onPrimary, BlendMode.srcIn),
               ),
               iconGap: Spacing.xs,
               textStyle: getSemiBoldStyle(
@@ -61,7 +58,6 @@ class DriverDetailsActionButtons extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.sm),
-          // 2. Call button (Left in RTL)
           Expanded(
             child: AppButton(
               text: locale.driverDetailsCall,
@@ -79,10 +75,7 @@ class DriverDetailsActionButtons extends StatelessWidget {
                 AppAssets.driverActionCall,
                 width: Spacing.iconXs,
                 height: Spacing.iconXs,
-                colorFilter: ColorFilter.mode(
-                  color.primary,
-                  BlendMode.srcIn,
-                ),
+                colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
               ),
               iconGap: Spacing.xs,
               textStyle: getSemiBoldStyle(

@@ -6,6 +6,7 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_button.dart';
 import '../../domain/entities/driver_details_entity.dart';
 
 class DriverDetailsLocationCard extends StatelessWidget {
@@ -33,7 +34,7 @@ class DriverDetailsLocationCard extends StatelessWidget {
         children: [
           // 1. Right side in RTL (Location info)
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -103,49 +104,32 @@ class DriverDetailsLocationCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: Spacing.xs),
-                OutlinedButton(
+                AppButton(
+                  text: locale.driverDetailsOpenOnMap,
                   onPressed: onOpenMap,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: color.primary,
-                    side: BorderSide(
-                      color: color.primary,
-                      width: Spacing.border,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Spacing.buttonSmallRadius,
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.xs,
-                      vertical: Spacing.xs / 2,
-                    ),
-                    minimumSize: const Size(Spacing.zero, Spacing.xxl),
+                  variant: AppButtonVariant.outlined,
+                  isExpanded: false,
+                  height: Spacing.xxl,
+                  borderRadius: Spacing.buttonSmallRadius,
+                  color: color.primary,
+                  textColor: color.primary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.xs,
+                    vertical: Spacing.xs / 2,
                   ),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          locale.driverDetailsOpenOnMap,
-                          style: getSemiBoldStyle(
-                            color: color.primary,
-                            fontSize: FontSize.size11,
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.xs / 2),
-                        SvgPicture.asset(
-                          AppAssets.driverOpenMap,
-                          width: Spacing.iconXs,
-                          height: Spacing.iconXs,
-                          colorFilter: ColorFilter.mode(
-                            color.primary,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ],
+                  iconWidget: SvgPicture.asset(
+                    AppAssets.driverOpenMap,
+                    width: Spacing.iconXs,
+                    height: Spacing.iconXs,
+                    colorFilter: ColorFilter.mode(
+                      color.primary,
+                      BlendMode.srcIn,
                     ),
+                  ),
+                  iconGap: Spacing.xs / 2,
+                  textStyle: getSemiBoldStyle(
+                    color: color.primary,
+                    fontSize: FontSize.size11,
                   ),
                 ),
               ],
