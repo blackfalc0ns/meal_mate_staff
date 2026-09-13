@@ -10,6 +10,7 @@ import 'package:meal_mate_delivery/features/dispatcher/driver_details/presentati
 import 'package:meal_mate_delivery/features/dispatcher/driver_details/presentation/widgets/driver_details_kpi_row.dart';
 import 'package:meal_mate_delivery/features/dispatcher/driver_details/presentation/widgets/driver_details_location_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/driver_details/presentation/widgets/driver_details_performance_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/driver_details/domain/entities/driver_active_box_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/driver_details/presentation/widgets/driver_details_profile_card.dart';
 
 void main() {
@@ -20,6 +21,7 @@ void main() {
     VoidCallback? onOpenMap,
     VoidCallback? onSendMessage,
     VoidCallback? onCall,
+    ValueChanged<DriverActiveBoxEntity>? onSelectBox,
   }) {
     return MaterialApp(
       locale: locale,
@@ -33,6 +35,7 @@ void main() {
         onOpenMap: onOpenMap,
         onSendMessage: onSendMessage,
         onCall: onCall,
+        onSelectBox: onSelectBox,
       ),
     );
   }
@@ -88,6 +91,7 @@ void main() {
       bool callCalled = false;
       bool msgCalled = false;
       bool mapCalled = false;
+      DriverActiveBoxEntity? selectedBox;
 
       await tester.pumpWidget(
         buildSubject(
@@ -95,6 +99,7 @@ void main() {
           onCall: () => callCalled = true,
           onSendMessage: () => msgCalled = true,
           onOpenMap: () => mapCalled = true,
+          onSelectBox: (b) => selectedBox = b,
         ),
       );
       await tester.pumpAndSettle();
@@ -119,6 +124,12 @@ void main() {
       await tester.ensureVisible(find.text('إرسال رسالة'));
       await tester.tap(find.text('إرسال رسالة'));
       expect(msgCalled, isTrue);
+
+      // Tap on a box item
+      await tester.ensureVisible(find.text('#BX-10256').first);
+      await tester.tap(find.text('#BX-10256').first);
+      expect(selectedBox, isNotNull);
+      expect(selectedBox!.boxId, '#BX-10256');
     });
 
     testWidgets('renders without overflow on narrow viewport (360x720)',

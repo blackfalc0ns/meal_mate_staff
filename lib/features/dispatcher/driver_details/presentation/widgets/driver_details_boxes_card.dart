@@ -30,7 +30,6 @@ class DriverDetailsBoxesCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(Spacing.sm),
         decoration: BoxDecoration(
-          color: color.surface,
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
           border: Border.all(
             color: color.outlineVariant,
