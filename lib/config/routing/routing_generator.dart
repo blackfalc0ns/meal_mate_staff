@@ -10,6 +10,9 @@ import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/dispatcher/assign_box/domain/entities/assign_box_order_entity.dart';
 import '../../features/dispatcher/assign_box/presentation/screens/assign_box_screen.dart';
+import '../../features/dispatcher/box_tracking/domain/entities/box_tracking_entity.dart';
+import '../../features/dispatcher/box_tracking/domain/fake_data/box_tracking_fake_data.dart';
+import '../../features/dispatcher/box_tracking/presentation/screens/dispatcher_box_tracking_screen.dart';
 import '../../features/dispatcher/driver_details/domain/entities/driver_details_entity.dart';
 import '../../features/dispatcher/driver_details/domain/fake_data/driver_details_fake_data.dart';
 import '../../features/dispatcher/driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
@@ -150,6 +153,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DispatcherDriverDetailsScreen(driver: driver),
+        );
+
+      case AppRoutes.boxTracking:
+        final box = settings.arguments is BoxTrackingEntity
+            ? settings.arguments! as BoxTrackingEntity
+            : BoxTrackingFakeData.defaultBox;
+        return _buildRoute(
+          settings: settings,
+          page: DispatcherBoxTrackingScreen(box: box),
         );
 
       default:

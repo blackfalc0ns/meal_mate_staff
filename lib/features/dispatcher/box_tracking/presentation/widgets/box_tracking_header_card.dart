@@ -36,8 +36,10 @@ class BoxTrackingHeaderCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+                Wrap(
+                  spacing: Spacing.sm,
+                  runSpacing: Spacing.xs,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
                       '#${box.boxId}',
@@ -46,7 +48,6 @@ class BoxTrackingHeaderCard extends StatelessWidget {
                         fontSize: FontSize.size16,
                       ),
                     ),
-                    const SizedBox(width: Spacing.sm),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.sm,
