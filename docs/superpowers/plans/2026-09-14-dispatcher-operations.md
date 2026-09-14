@@ -33,11 +33,11 @@
 **Interfaces:**
 - Produces: Localization keys on `AppLocalizations` (`operationsTitle`, `operationsSearchPlaceholder`, `operationsLast7Days`, `operationsFilter`, `operationsTabAll`, `operationsTabCompleted`, `operationsTabCancelled`, `operationsTabFailed`, `operationsTabReassigned`, `operationsCustomerPrefix`, `operationsCancelledByRestaurant`, `operationsPrevPage`, `operationsNextPage`, `profileOperationsSubtitle`) and route `AppRoutes.dispatcherOperations`.
 
-- [ ] **Step 1: Add localization keys to `lib/core/l10n/app_ar.arb` and `lib/core/l10n/app_en.arb`**
-- [ ] **Step 2: Generate localizations using `flutter gen-l10n`**
-- [ ] **Step 3: Add `dispatcherOperations` route to `lib/config/routing/app_routes.dart` and `routing_generator.dart`**
-- [ ] **Step 4: Verify `flutter analyze` passes**
-- [ ] **Step 5: Commit changes**
+- [x] **Step 1: Add localization keys to `lib/core/l10n/app_ar.arb` and `lib/core/l10n/app_en.arb`**
+- [x] **Step 2: Generate localizations using `flutter gen-l10n`**
+- [x] **Step 3: Add `dispatcherOperations` route to `lib/config/routing/app_routes.dart` and `routing_generator.dart`**
+- [x] **Step 4: Verify `flutter analyze` passes**
+- [x] **Step 5: Commit changes**
 
 ---
 
@@ -52,12 +52,12 @@
 **Interfaces:**
 - Produces: `OperationStatus` enum (`completed`, `cancelled`, `failed`, `reassigned`), `OperationItemEntity`, `OperationsFilterEntity`, `OperationsFakeData.sampleOperations`.
 
-- [ ] **Step 1: Create `operation_status.dart`**
-- [ ] **Step 2: Create `operation_item_entity.dart`**
-- [ ] **Step 3: Create `operations_filter_entity.dart`**
-- [ ] **Step 4: Create `operations_fake_data.dart` with samples from Figma Node 1825:9909**
-- [ ] **Step 5: Verify `flutter analyze`**
-- [ ] **Step 6: Commit changes**
+- [x] **Step 1: Create `operation_status.dart`**
+- [x] **Step 2: Create `operation_item_entity.dart`**
+- [x] **Step 3: Create `operations_filter_entity.dart`**
+- [x] **Step 4: Create `operations_fake_data.dart` with samples from Figma Node 1825:9909**
+- [x] **Step 5: Verify `flutter analyze`**
+- [x] **Step 6: Commit changes**
 
 ---
 
@@ -79,14 +79,14 @@
 **Interfaces:**
 - Produces: High-fidelity, modular Flutter widgets respecting `rules/ui_rules.md`.
 
-- [ ] **Step 1: Implement `operations_app_bar.dart` (Back button, title, filter button)**
-- [ ] **Step 2: Implement `operations_search_filter_bar.dart` (Search box & date filter)**
-- [ ] **Step 3: Implement `operations_status_tab_item.dart` and `operations_status_tabs.dart`**
-- [ ] **Step 4: Implement card sub-widgets (`operations_driver_info.dart`, `operations_reassigned_info.dart`, `operations_cancelled_info.dart`, `operations_customer_info.dart`, `operations_status_badge.dart`)**
-- [ ] **Step 5: Implement `operations_card.dart` combining the sub-widgets**
-- [ ] **Step 6: Implement `operations_pagination_bar.dart`**
-- [ ] **Step 7: Verify `flutter analyze`**
-- [ ] **Step 8: Commit changes**
+- [x] **Step 1: Implement `operations_app_bar.dart` (Back button, title, filter button)**
+- [x] **Step 2: Implement `operations_search_filter_bar.dart` (Search box & date filter)**
+- [x] **Step 3: Implement `operations_status_tab_item.dart` and `operations_status_tabs.dart`**
+- [x] **Step 4: Implement card sub-widgets (`operations_driver_info.dart`, `operations_reassigned_info.dart`, `operations_cancelled_info.dart`, `operations_customer_info.dart`, `operations_status_badge.dart`)**
+- [x] **Step 5: Implement `operations_card.dart` combining the sub-widgets**
+- [x] **Step 6: Implement `operations_pagination_bar.dart`**
+- [x] **Step 7: Verify `flutter analyze`**
+- [x] **Step 8: Commit changes**
 
 ---
 
@@ -98,12 +98,12 @@
 - Modify: `lib/features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart`
 - Modify: `lib/config/routing/routing_generator.dart` (connect screen to route)
 
-- [ ] **Step 1: Implement `DispatcherOperationsScreen` composing the presentation widgets**
-- [ ] **Step 2: Implement `DispatcherProfileOperationsCard` with icon, title, subtitle, chevron**
-- [ ] **Step 3: Add `DispatcherProfileOperationsCard` into `DispatcherProfileScreen`**
-- [ ] **Step 4: Link `RoutingGenerator` to `DispatcherOperationsScreen`**
-- [ ] **Step 5: Verify `flutter analyze`**
-- [ ] **Step 6: Commit changes**
+- [x] **Step 1: Implement `DispatcherOperationsScreen` composing the presentation widgets**
+- [x] **Step 2: Implement `DispatcherProfileOperationsCard` with icon, title, subtitle, chevron**
+- [x] **Step 3: Add `DispatcherProfileOperationsCard` into `DispatcherProfileScreen`**
+- [x] **Step 4: Link `RoutingGenerator` to `DispatcherOperationsScreen`**
+- [x] **Step 5: Verify `flutter analyze`**
+- [x] **Step 6: Commit changes**
 
 ---
 
@@ -112,7 +112,7 @@
 **Files:**
 - Create: `test/features/dispatcher/operations/dispatcher_operations_screen_test.dart`
 
-- [ ] **Step 1: Write widget test verifying screen rendering, search, status tabs, and card list**
-- [ ] **Step 2: Run all tests with `flutter test`**
-- [ ] **Step 3: Run `flutter analyze`**
-- [ ] **Step 4: Commit changes**
+- [x] **Step 1: Write widget test verifying screen rendering, search, status tabs, and card list**
+- [x] **Step 2: Run all tests with `flutter test`**
+- [x] **Step 3: Run `flutter analyze`**
+- [x] **Step 4: Commit changes**
