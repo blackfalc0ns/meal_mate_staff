@@ -93,7 +93,8 @@ class DispatcherHomeScreen extends StatelessWidget {
                       flex: 9,
                       child: DispatcherHomeOperationsCard(
                         operations: operationsStatus,
-                        onViewReports: () {},
+                        onViewReports: () =>
+                            context.pushNamed(AppRoutes.dispatcherOperations),
                       ),
                     ),
                     const SizedBox(width: Spacing.sm),
