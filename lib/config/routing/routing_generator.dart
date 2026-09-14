@@ -20,6 +20,7 @@ import '../../features/dispatcher/drivers/presentation/screens/dispatcher_driver
 import '../../features/dispatcher/home/presentation/screens/dispatcher_home_screen.dart';
 import '../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
 import '../../features/dispatcher/notifications/presentation/screens/dispatcher_notifications_screen.dart';
+import '../../features/dispatcher/operations/presentation/screens/dispatcher_operations_screen.dart';
 import '../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
 import '../../features/dispatcher/profile/domain/entities/dispatcher_profile_entity.dart';
 import '../../features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
@@ -88,6 +89,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DispatcherOrdersScreen(),
+        );
+
+      case AppRoutes.dispatcherOperations:
+        return _buildRoute(
+          settings: settings,
+          page: const DispatcherOperationsScreen(),
         );
 
       case AppRoutes.dispatcherDrivers:

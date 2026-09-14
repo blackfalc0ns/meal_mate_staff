@@ -12,6 +12,7 @@ import '../widgets/dispatcher_profile_admin_card.dart';
 import '../widgets/dispatcher_profile_app_info_card.dart';
 import '../widgets/dispatcher_profile_logout_button.dart';
 import '../widgets/dispatcher_profile_notification_settings_card.dart';
+import '../widgets/dispatcher_profile_operations_card.dart';
 
 class DispatcherProfileScreen extends StatefulWidget {
   const DispatcherProfileScreen({
@@ -113,6 +114,11 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DispatcherProfileAdminCard(profile: _profile),
+              const SizedBox(height: Spacing.md),
+              DispatcherProfileOperationsCard(
+                onTap: () =>
+                    context.pushNamed(AppRoutes.dispatcherOperations),
+              ),
               const SizedBox(height: Spacing.md),
               DispatcherProfileNotificationSettingsCard(
                 settings: _settings,
