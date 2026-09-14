@@ -1,0 +1,83 @@
+Group 20773 (GROUP): x=1695.5, y=16325.3, w=356.0, h=79.8, cr=None
+  Group 20760 (GROUP): x=1695.5, y=16325.3, w=356.0, h=79.8, cr=None
+    Rectangle 6147 (RECTANGLE): x=1695.5, y=16325.3, w=356.0, h=79.8, cr=12.643391609191895
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+      strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.929411768913269, 'g': 0.929411768913269, 'b': 0.9372549057006836, 'a': 1.0}}], weight=0.9725685715675354
+    Rectangle 6148 (RECTANGLE): x=1695.5, y=16325.3, w=356.0, h=37.0, cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.9803921580314636, 'g': 0.9764705896377563, 'b': 0.9960784316062927, 'a': 1.0}}]
+      strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.929411768913269, 'g': 0.929411768913269, 'b': 0.9372549057006836, 'a': 1.0}}], weight=0.9725685715675354
+  Group 20761 (GROUP): x=1961.0, y=16337.5, w=75.9, h=14.0, cr=None
+    حسب المناطق (TEXT): x=1961.0, y=16337.5, w=53.0, h=14.0, cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.0, 'g': 0.0, 'b': 0.0, 'a': 1.0}}]
+      TEXT: "حسب المناطق" style={'fontFamily': 'Alexandria', 'fontPostScriptName': 'Alexandria-Bold', 'fontStyle': 'Bold', 'fontWeight': 700, 'textAutoResize': 'WIDTH_AND_HEIGHT', 'fontSize': 7.30440616607666, 'textAlignHorizontal': 'RIGHT', 'textAlignVertical': 'CENTER', 'letterSpacing': 0.0, 'lineHeightPx': 13.712958335876465, 'lineHeightPercent': 154.00775146484375, 'lineHeightPercentFontSize': 187.7354278564453, 'lineHeightUnit': 'PIXELS'}
+    rivet-icons:map-pin-solid (FRAME): x=2024.3, y=16338.0, w=12.6, h=12.6, cr=None
+      fills: [{'blendMode': 'NORMAL', 'visible': False, 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+      Vector (VECTOR): x=2025.4, y=16338.0, w=10.3, h=12.4, cr=None
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.40392157435417175, 'g': 0.2666666805744171, 'b': 0.7607843279838562, 'a': 1.0}}]
+  Frame 20773 (FRAME): x=1705.3, y=16371.0, w=338.5, h=22.4, cr=None
+    Group 20772 (GROUP): x=1705.3, y=16371.0, w=55.4, h=22.4, cr=None
+      Rectangle 6154 (RECTANGLE): x=1705.3, y=16371.0, w=55.4, h=22.4, cr=11.184538841247559
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+        strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.929411768913269, 'g': 0.929411768913269, 'b': 0.9372549057006836, 'a': 1.0}}], weight=0.9725685715675354
+      Group 20766 (GROUP): x=1713.0, y=16375.9, w=40.8, h=13.0, cr=None
+        rivet-icons:map-pin-solid (FRAME): x=1744.2, y=16377.4, w=9.7, h=9.7, cr=None
+          fills: [{'blendMode': 'NORMAL', 'visible': False, 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+          Vector (VECTOR): x=1745.1, y=16377.4, w=7.9, h=9.5, cr=None
+            fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+        العاصمة (TEXT): x=1713.0, y=16375.9, w=28.0, h=13.0, cr=None
+          fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+          TEXT: "العاصمة" style={'fontFamily': 'Alexandria', 'fontPostScriptName': 'Alexandria-Regular', 'fontStyle': 'Regular', 'fontWeight': 400, 'textAutoResize': 'WIDTH_AND_HEIGHT', 'fontSize': 6.817445755004883, 'textAlignHorizontal': 'RIGHT', 'textAlignVertical': 'CENTER', 'letterSpacing': 0.0, 'lineHeightPx': 12.798761367797852, 'lineHeightPercent': 154.00775146484375, 'lineHeightPercentFontSize': 187.7354278564453, 'lineHeightUnit': 'PIXELS'}
+    Group 20771 (GROUP): x=1764.6, y=16371.0, w=55.4, h=22.4, cr=None
+      Rectangle 6153 (RECTANGLE): x=1764.6, y=16371.0, w=55.4, h=22.4, cr=11.184538841247559
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+        strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.929411768913269, 'g': 0.929411768913269, 'b': 0.9372549057006836, 'a': 1.0}}], weight=0.9725685715675354
+      Group 20765 (GROUP): x=1772.4, y=16375.9, w=39.9, h=13.0, cr=None
+        rivet-icons:map-pin-solid (FRAME): x=1802.5, y=16377.4, w=9.7, h=9.7, cr=None
+          fills: [{'blendMode': 'NORMAL', 'visible': False, 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+          Vector (VECTOR): x=1803.4, y=16377.4, w=7.9, h=9.5, cr=None
+            fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+        الفروانية (TEXT): x=1772.4, y=16375.9, w=26.0, h=13.0, cr=None
+          fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+          TEXT: "الفروانية" style={'fontFamily': 'Alexandria', 'fontPostScriptName': 'Alexandria-Regular', 'fontStyle': 'Regular', 'fontWeight': 400, 'textAutoResize': 'WIDTH_AND_HEIGHT', 'fontSize': 6.817445755004883, 'textAlignHorizontal': 'RIGHT', 'textAlignVertical': 'CENTER', 'letterSpacing': 0.0, 'lineHeightPx': 12.798761367797852, 'lineHeightPercent': 154.00775146484375, 'lineHeightPercentFontSize': 187.7354278564453, 'lineHeightUnit': 'PIXELS'}
+    Group 20770 (GROUP): x=1823.9, y=16371.0, w=48.6, h=22.4, cr=None
+      Rectangle 6152 (RECTANGLE): x=1823.9, y=16371.0, w=48.6, h=22.4, cr=11.184538841247559
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+        strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.929411768913269, 'g': 0.929411768913269, 'b': 0.9372549057006836, 'a': 1.0}}], weight=0.9725685715675354
+      Group 20764 (GROUP): x=1832.7, y=16375.9, w=32.1, h=13.0, cr=None
+        rivet-icons:map-pin-solid (FRAME): x=1855.0, y=16377.4, w=9.7, h=9.7, cr=None
+          fills: [{'blendMode': 'NORMAL', 'visible': False, 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+          Vector (VECTOR): x=1855.9, y=16377.4, w=7.9, h=9.5, cr=None
+            fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+        حطين (TEXT): x=1832.7, y=16375.9, w=19.0, h=13.0, cr=None
+          fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+          TEXT: "حطين" style={'fontFamily': 'Alexandria', 'fontPostScriptName': 'Alexandria-Regular', 'fontStyle': 'Regular', 'fontWeight': 400, 'textAutoResize': 'WIDTH_AND_HEIGHT', 'fontSize': 6.817445755004883, 'textAlignHorizontal': 'RIGHT', 'textAlignVertical': 'CENTER', 'letterSpacing': 0.0, 'lineHeightPx': 12.798761367797852, 'lineHeightPercent': 154.00775146484375, 'lineHeightPercentFontSize': 187.7354278564453, 'lineHeightUnit': 'PIXELS'}
+    Group 20769 (GROUP): x=1876.4, y=16371.0, w=46.7, h=22.4, cr=None
+      Rectangle 6151 (RECTANGLE): x=1876.4, y=16371.0, w=46.7, h=22.4, cr=11.184538841247559
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+        strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.929411768913269, 'g': 0.929411768913269, 'b': 0.9372549057006836, 'a': 1.0}}], weight=0.9725685715675354
+      Group 20763 (GROUP): x=1885.2, y=16375.9, w=30.1, h=13.0, cr=None
+        rivet-icons:map-pin-solid (FRAME): x=1905.6, y=16377.4, w=9.7, h=9.7, cr=None
+          fills: [{'blendMode': 'NORMAL', 'visible': False, 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+          Vector (VECTOR): x=1906.5, y=16377.4, w=7.9, h=9.5, cr=None
+            fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+        حولي (TEXT): x=1885.2, y=16375.9, w=17.0, h=13.0, cr=None
+          fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+          TEXT: "حولي" style={'fontFamily': 'Alexandria', 'fontPostScriptName': 'Alexandria-Regular', 'fontStyle': 'Regular', 'fontWeight': 400, 'textAutoResize': 'WIDTH_AND_HEIGHT', 'fontSize': 6.817445755004883, 'textAlignHorizontal': 'RIGHT', 'textAlignVertical': 'CENTER', 'letterSpacing': 0.0, 'lineHeightPx': 12.798761367797852, 'lineHeightPercent': 154.00775146484375, 'lineHeightPercentFontSize': 187.7354278564453, 'lineHeightUnit': 'PIXELS'}
+    Group 20768 (GROUP): x=1927.0, y=16371.0, w=56.4, h=22.4, cr=None
+      Rectangle 6150 (RECTANGLE): x=1927.0, y=16371.0, w=56.4, h=22.4, cr=11.184538841247559
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+        strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.929411768913269, 'g': 0.929411768913269, 'b': 0.9372549057006836, 'a': 1.0}}], weight=0.9725685715675354
+      Group 20762 (GROUP): x=1935.8, y=16375.9, w=39.9, h=13.0, cr=None
+        rivet-icons:map-pin-solid (FRAME): x=1965.9, y=16377.4, w=9.7, h=9.7, cr=None
+          fills: [{'blendMode': 'NORMAL', 'visible': False, 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+          Vector (VECTOR): x=1966.8, y=16377.4, w=7.9, h=9.5, cr=None
+            fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+        السلامية (TEXT): x=1935.8, y=16375.9, w=27.0, h=13.0, cr=None
+          fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.4588235318660736, 'g': 0.47058823704719543, 'b': 0.5058823823928833, 'a': 1.0}}]
+          TEXT: "السلامية" style={'fontFamily': 'Alexandria', 'fontPostScriptName': 'Alexandria-Regular', 'fontStyle': 'Regular', 'fontWeight': 400, 'textAutoResize': 'WIDTH_AND_HEIGHT', 'fontSize': 6.817445755004883, 'textAlignHorizontal': 'RIGHT', 'textAlignVertical': 'CENTER', 'letterSpacing': 0.0, 'lineHeightPx': 12.798761367797852, 'lineHeightPercent': 154.00775146484375, 'lineHeightPercentFontSize': 187.7354278564453, 'lineHeightUnit': 'PIXELS'}
+    Group 20767 (GROUP): x=1987.3, y=16371.0, w=56.4, h=22.4, cr=11.184538841247559
+      Rectangle 6149 (RECTANGLE): x=1987.3, y=16371.0, w=56.4, h=22.4, cr=11.184538841247559
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.3764705955982208, 'g': 0.23137255012989044, 'b': 0.7568627595901489, 'a': 1.0}}]
+      كل المناطق (TEXT): x=1997.0, y=16375.9, w=38.0, h=12.0, cr=None
+        fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+        TEXT: "كل المناطق" style={'fontFamily': 'Alexandria', 'fontPostScriptName': 'Alexandria-Bold', 'fontStyle': 'Bold', 'fontWeight': 700, 'textAutoResize': 'WIDTH_AND_HEIGHT', 'fontSize': 6.3304853439331055, 'textAlignHorizontal': 'RIGHT', 'textAlignVertical': 'CENTER', 'letterSpacing': 0.0, 'lineHeightPx': 11.884563446044922, 'lineHeightPercent': 154.0077362060547, 'lineHeightPercentFontSize': 187.73541259765625, 'lineHeightUnit': 'PIXELS'}

@@ -2299,6 +2299,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replacement driver assigned successfully'**
   String get reassignDriverSuccess;
+
+  /// No description provided for @driverFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Drivers'**
+  String get driverFilterTitle;
+
+  /// No description provided for @driverFilterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select suitable filters to display results'**
+  String get driverFilterSubtitle;
+
+  /// No description provided for @driverFilterReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get driverFilterReset;
+
+  /// No description provided for @driverFilterClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get driverFilterClose;
+
+  /// No description provided for @driverFilterByArea.
+  ///
+  /// In en, this message translates to:
+  /// **'By Area'**
+  String get driverFilterByArea;
+
+  /// No description provided for @driverFilterAllAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'All Areas'**
+  String get driverFilterAllAreas;
+
+  /// No description provided for @driverFilterSalmiya.
+  ///
+  /// In en, this message translates to:
+  /// **'Salmiya'**
+  String get driverFilterSalmiya;
+
+  /// No description provided for @driverFilterHawalli.
+  ///
+  /// In en, this message translates to:
+  /// **'Hawalli'**
+  String get driverFilterHawalli;
+
+  /// No description provided for @driverFilterHiteen.
+  ///
+  /// In en, this message translates to:
+  /// **'Hiteen'**
+  String get driverFilterHiteen;
+
+  /// No description provided for @driverFilterFarwaniya.
+  ///
+  /// In en, this message translates to:
+  /// **'Farwaniya'**
+  String get driverFilterFarwaniya;
+
+  /// No description provided for @driverFilterCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital'**
+  String get driverFilterCapital;
+
+  /// No description provided for @driverFilterByStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'By Status'**
+  String get driverFilterByStatus;
+
+  /// No description provided for @driverFilterAllStatuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get driverFilterAllStatuses;
+
+  /// No description provided for @driverFilterStatusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get driverFilterStatusAvailable;
+
+  /// No description provided for @driverFilterStatusBusyNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy Now'**
+  String get driverFilterStatusBusyNow;
+
+  /// No description provided for @driverFilterStatusOnWay.
+  ///
+  /// In en, this message translates to:
+  /// **'On the Way'**
+  String get driverFilterStatusOnWay;
+
+  /// No description provided for @driverFilterStatusUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get driverFilterStatusUnavailable;
+
+  /// No description provided for @driverFilterByRating.
+  ///
+  /// In en, this message translates to:
+  /// **'By Rating'**
+  String get driverFilterByRating;
+
+  /// No description provided for @driverFilterAllRatings.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get driverFilterAllRatings;
+
+  /// No description provided for @driverFilterRating4Point5Plus.
+  ///
+  /// In en, this message translates to:
+  /// **'4.5 & up'**
+  String get driverFilterRating4Point5Plus;
+
+  /// No description provided for @driverFilterRating4Plus.
+  ///
+  /// In en, this message translates to:
+  /// **'4 & up'**
+  String get driverFilterRating4Plus;
+
+  /// No description provided for @driverFilterRating3Plus.
+  ///
+  /// In en, this message translates to:
+  /// **'3 & up'**
+  String get driverFilterRating3Plus;
+
+  /// No description provided for @driverFilterRating2Plus.
+  ///
+  /// In en, this message translates to:
+  /// **'2 & up'**
+  String get driverFilterRating2Plus;
+
+  /// No description provided for @driverFilterRating1Plus.
+  ///
+  /// In en, this message translates to:
+  /// **'1 & up'**
+  String get driverFilterRating1Plus;
+
+  /// No description provided for @driverFilterByDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'By Distance'**
+  String get driverFilterByDistance;
+
+  /// No description provided for @driverFilterDistance0Km.
+  ///
+  /// In en, this message translates to:
+  /// **'0 km'**
+  String get driverFilterDistance0Km;
+
+  /// No description provided for @driverFilterDistance50PlusKm.
+  ///
+  /// In en, this message translates to:
+  /// **'+50 km'**
+  String get driverFilterDistance50PlusKm;
+
+  /// No description provided for @driverFilterDistanceRange5.
+  ///
+  /// In en, this message translates to:
+  /// **'0-5 km'**
+  String get driverFilterDistanceRange5;
+
+  /// No description provided for @driverFilterDistanceRange10.
+  ///
+  /// In en, this message translates to:
+  /// **'5-10 km'**
+  String get driverFilterDistanceRange10;
+
+  /// No description provided for @driverFilterDistanceRange20.
+  ///
+  /// In en, this message translates to:
+  /// **'10-20 km'**
+  String get driverFilterDistanceRange20;
+
+  /// No description provided for @driverFilterDistanceRange50.
+  ///
+  /// In en, this message translates to:
+  /// **'20-50 km'**
+  String get driverFilterDistanceRange50;
+
+  /// No description provided for @driverFilterByCompletedOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'By Completed Orders'**
+  String get driverFilterByCompletedOrders;
+
+  /// No description provided for @driverFilterOrders0.
+  ///
+  /// In en, this message translates to:
+  /// **'0 orders'**
+  String get driverFilterOrders0;
+
+  /// No description provided for @driverFilterOrders1000Plus.
+  ///
+  /// In en, this message translates to:
+  /// **'+1000 orders'**
+  String get driverFilterOrders1000Plus;
+
+  /// No description provided for @driverFilterOrdersRange20.
+  ///
+  /// In en, this message translates to:
+  /// **'0-20'**
+  String get driverFilterOrdersRange20;
+
+  /// No description provided for @driverFilterOrdersRange50.
+  ///
+  /// In en, this message translates to:
+  /// **'20-50'**
+  String get driverFilterOrdersRange50;
+
+  /// No description provided for @driverFilterOrdersRange100.
+  ///
+  /// In en, this message translates to:
+  /// **'50-100'**
+  String get driverFilterOrdersRange100;
+
+  /// No description provided for @driverFilterOrdersRange500.
+  ///
+  /// In en, this message translates to:
+  /// **'100-500'**
+  String get driverFilterOrdersRange500;
+
+  /// No description provided for @driverFilterOrdersRange500Plus.
+  ///
+  /// In en, this message translates to:
+  /// **'+500'**
+  String get driverFilterOrdersRange500Plus;
+
+  /// No description provided for @driverFilterSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by Driver Name or ID'**
+  String get driverFilterSearchTitle;
+
+  /// No description provided for @driverFilterSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type driver name or ID...'**
+  String get driverFilterSearchHint;
+
+  /// No description provided for @driverFilterResetAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Filters'**
+  String get driverFilterResetAll;
+
+  /// No description provided for @driverFilterShowResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Results'**
+  String get driverFilterShowResults;
+
+  /// No description provided for @driverFilterShowAllDrivers.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all drivers'**
+  String get driverFilterShowAllDrivers;
 }
 
 class _AppLocalizationsDelegate

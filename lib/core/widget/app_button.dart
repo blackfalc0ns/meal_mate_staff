@@ -10,7 +10,8 @@ enum AppButtonVariant { filled, outlined, text }
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
-    required this.text,
+    this.text = '',
+    this.child,
     this.onPressed,
     this.variant = AppButtonVariant.filled,
     this.isLoading = false,
@@ -28,6 +29,7 @@ class AppButton extends StatelessWidget {
   });
 
   final String text;
+  final Widget? child;
   final VoidCallback? onPressed;
   final AppButtonVariant variant;
   final bool isLoading;
@@ -48,24 +50,25 @@ class AppButton extends StatelessWidget {
     final effectiveColor = color ?? AppColors.primary;
     final buttonHeight = height ?? Spacing.buttonHeight;
     final radius = borderRadius ?? Spacing.buttonRadius;
-    final child = isLoading
+    final effectiveContent = isLoading
         ? const SizedBox.square(
             dimension: 22,
             child: CircularProgressIndicator(strokeWidth: 2.5),
           )
-        : _ButtonContent(
-            text: text,
-            icon: icon,
-            iconWidget: iconWidget,
-            color:
-                textColor ??
-                (variant == AppButtonVariant.filled
-                    ? AppColors.textOnPrimary
-                    : effectiveColor),
-            textStyle: textStyle,
-            iconSize: iconSize,
-            iconGap: iconGap,
-          );
+        : child ??
+              _ButtonContent(
+                text: text,
+                icon: icon,
+                iconWidget: iconWidget,
+                color:
+                    textColor ??
+                    (variant == AppButtonVariant.filled
+                        ? AppColors.textOnPrimary
+                        : effectiveColor),
+                textStyle: textStyle,
+                iconSize: iconSize,
+                iconGap: iconGap,
+              );
 
     final button = switch (variant) {
       AppButtonVariant.filled => ElevatedButton(
@@ -79,7 +82,7 @@ class AppButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(radius),
           ),
         ),
-        child: child,
+        child: effectiveContent,
       ),
       AppButtonVariant.outlined => OutlinedButton(
         onPressed: isLoading ? null : onPressed,
@@ -92,7 +95,7 @@ class AppButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(radius),
           ),
         ),
-        child: child,
+        child: effectiveContent,
       ),
       AppButtonVariant.text => TextButton(
         onPressed: isLoading ? null : onPressed,
@@ -100,7 +103,7 @@ class AppButton extends StatelessWidget {
           minimumSize: Size(isExpanded ? double.infinity : 0, buttonHeight),
           padding: padding,
         ),
-        child: child,
+        child: effectiveContent,
       ),
     };
 
@@ -141,7 +144,8 @@ class _ButtonContent extends StatelessWidget {
           color: color,
         );
 
-    final effectiveIcon = iconWidget ??
+    final effectiveIcon =
+        iconWidget ??
         (icon != null
             ? Icon(icon, size: iconSize ?? Spacing.iconMd, color: color)
             : null);

@@ -1178,4 +1178,136 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reassignDriverSuccess => 'تم تعيين السائق البديل بنجاح';
+
+  @override
+  String get driverFilterTitle => 'تصفية السائقين';
+
+  @override
+  String get driverFilterSubtitle => 'حدد الفلاتر المناسبة لعرض النتائج';
+
+  @override
+  String get driverFilterReset => 'إعادة تعيين';
+
+  @override
+  String get driverFilterClose => 'إغلاق';
+
+  @override
+  String get driverFilterByArea => 'حسب المناطق';
+
+  @override
+  String get driverFilterAllAreas => 'كل المناطق';
+
+  @override
+  String get driverFilterSalmiya => 'السالمية';
+
+  @override
+  String get driverFilterHawalli => 'حولي';
+
+  @override
+  String get driverFilterHiteen => 'حطين';
+
+  @override
+  String get driverFilterFarwaniya => 'الفروانية';
+
+  @override
+  String get driverFilterCapital => 'العاصمة';
+
+  @override
+  String get driverFilterByStatus => 'حسب الحالة';
+
+  @override
+  String get driverFilterAllStatuses => 'الكل';
+
+  @override
+  String get driverFilterStatusAvailable => 'متاح';
+
+  @override
+  String get driverFilterStatusBusyNow => 'مشغول الآن';
+
+  @override
+  String get driverFilterStatusOnWay => 'في طريقه';
+
+  @override
+  String get driverFilterStatusUnavailable => 'غير متاح';
+
+  @override
+  String get driverFilterByRating => 'حسب التقييم';
+
+  @override
+  String get driverFilterAllRatings => 'الكل';
+
+  @override
+  String get driverFilterRating4Point5Plus => '4.5 فأكثر';
+
+  @override
+  String get driverFilterRating4Plus => '4 فأكثر';
+
+  @override
+  String get driverFilterRating3Plus => '3 فأكثر';
+
+  @override
+  String get driverFilterRating2Plus => '2 فأكثر';
+
+  @override
+  String get driverFilterRating1Plus => '1 فأكثر';
+
+  @override
+  String get driverFilterByDistance => 'حسب المسافة';
+
+  @override
+  String get driverFilterDistance0Km => '0 كم';
+
+  @override
+  String get driverFilterDistance50PlusKm => '+50 كم';
+
+  @override
+  String get driverFilterDistanceRange5 => '0-5 كم';
+
+  @override
+  String get driverFilterDistanceRange10 => '5-10 كم';
+
+  @override
+  String get driverFilterDistanceRange20 => '10-20 كم';
+
+  @override
+  String get driverFilterDistanceRange50 => '20-50 كم';
+
+  @override
+  String get driverFilterByCompletedOrders => 'حسب عدد الطلبات المكتملة';
+
+  @override
+  String get driverFilterOrders0 => '0 طلب';
+
+  @override
+  String get driverFilterOrders1000Plus => '+1000 طلب';
+
+  @override
+  String get driverFilterOrdersRange20 => '0-20';
+
+  @override
+  String get driverFilterOrdersRange50 => '20-50';
+
+  @override
+  String get driverFilterOrdersRange100 => '50-100';
+
+  @override
+  String get driverFilterOrdersRange500 => '100-500';
+
+  @override
+  String get driverFilterOrdersRange500Plus => '+500';
+
+  @override
+  String get driverFilterSearchTitle => 'بحث باسم السائق أو ID';
+
+  @override
+  String get driverFilterSearchHint => 'اكتب اسم السائق أو ID...';
+
+  @override
+  String get driverFilterResetAll => 'إعادة تعيين الفلاتر';
+
+  @override
+  String get driverFilterShowResults => 'عرض النتائج';
+
+  @override
+  String get driverFilterShowAllDrivers => 'عرض كل السائقين';
 }

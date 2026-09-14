@@ -6,6 +6,7 @@ import '../../domain/entities/dispatcher_issue_detail_entity.dart';
 import '../../domain/entities/reassign_driver_candidate_entity.dart';
 import '../../domain/fake_data/dispatcher_issue_detail_fake_data.dart';
 import '../../domain/fake_data/dispatcher_reassign_driver_fake_data.dart';
+import '../../../driver_filter/presentation/widgets/driver_filter_bottom_sheet.dart';
 import '../widgets/reassign_driver/reassign_driver_app_bar.dart';
 import '../widgets/reassign_driver/reassign_driver_bottom_button.dart';
 import '../widgets/reassign_driver/reassign_driver_card.dart';
@@ -91,7 +92,11 @@ class _DispatcherReassignDriverScreenState
             children: [
               ReassignDriverIssueSummaryCard(issue: _issue),
               const SizedBox(height: Spacing.base),
-              const ReassignDriverListHeader(),
+              ReassignDriverListHeader(
+                onFilterTap: () {
+                  DriverFilterBottomSheet.show(context: context);
+                },
+              ),
               const SizedBox(height: Spacing.sm),
               ..._candidates.map(
                 (candidate) => Padding(

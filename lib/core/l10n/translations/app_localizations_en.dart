@@ -1181,4 +1181,137 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reassignDriverSuccess =>
       'Replacement driver assigned successfully';
+
+  @override
+  String get driverFilterTitle => 'Filter Drivers';
+
+  @override
+  String get driverFilterSubtitle =>
+      'Select suitable filters to display results';
+
+  @override
+  String get driverFilterReset => 'Reset';
+
+  @override
+  String get driverFilterClose => 'Close';
+
+  @override
+  String get driverFilterByArea => 'By Area';
+
+  @override
+  String get driverFilterAllAreas => 'All Areas';
+
+  @override
+  String get driverFilterSalmiya => 'Salmiya';
+
+  @override
+  String get driverFilterHawalli => 'Hawalli';
+
+  @override
+  String get driverFilterHiteen => 'Hiteen';
+
+  @override
+  String get driverFilterFarwaniya => 'Farwaniya';
+
+  @override
+  String get driverFilterCapital => 'Capital';
+
+  @override
+  String get driverFilterByStatus => 'By Status';
+
+  @override
+  String get driverFilterAllStatuses => 'All';
+
+  @override
+  String get driverFilterStatusAvailable => 'Available';
+
+  @override
+  String get driverFilterStatusBusyNow => 'Busy Now';
+
+  @override
+  String get driverFilterStatusOnWay => 'On the Way';
+
+  @override
+  String get driverFilterStatusUnavailable => 'Unavailable';
+
+  @override
+  String get driverFilterByRating => 'By Rating';
+
+  @override
+  String get driverFilterAllRatings => 'All';
+
+  @override
+  String get driverFilterRating4Point5Plus => '4.5 & up';
+
+  @override
+  String get driverFilterRating4Plus => '4 & up';
+
+  @override
+  String get driverFilterRating3Plus => '3 & up';
+
+  @override
+  String get driverFilterRating2Plus => '2 & up';
+
+  @override
+  String get driverFilterRating1Plus => '1 & up';
+
+  @override
+  String get driverFilterByDistance => 'By Distance';
+
+  @override
+  String get driverFilterDistance0Km => '0 km';
+
+  @override
+  String get driverFilterDistance50PlusKm => '+50 km';
+
+  @override
+  String get driverFilterDistanceRange5 => '0-5 km';
+
+  @override
+  String get driverFilterDistanceRange10 => '5-10 km';
+
+  @override
+  String get driverFilterDistanceRange20 => '10-20 km';
+
+  @override
+  String get driverFilterDistanceRange50 => '20-50 km';
+
+  @override
+  String get driverFilterByCompletedOrders => 'By Completed Orders';
+
+  @override
+  String get driverFilterOrders0 => '0 orders';
+
+  @override
+  String get driverFilterOrders1000Plus => '+1000 orders';
+
+  @override
+  String get driverFilterOrdersRange20 => '0-20';
+
+  @override
+  String get driverFilterOrdersRange50 => '20-50';
+
+  @override
+  String get driverFilterOrdersRange100 => '50-100';
+
+  @override
+  String get driverFilterOrdersRange500 => '100-500';
+
+  @override
+  String get driverFilterOrdersRange500Plus => '+500';
+
+  @override
+  String get driverFilterSearchTitle => 'Search by Driver Name or ID';
+
+  @override
+  String get driverFilterSearchHint => 'Type driver name or ID...';
+
+  @override
+  String get driverFilterResetAll => 'Reset Filters';
+
+  @override
+  String get driverFilterShowResults => 'Show Results';
+
+  @override
+  String get driverFilterShowAllDrivers => 'Show all drivers';
 }
