@@ -31,7 +31,7 @@ class OperationsSearchFilterBar extends StatelessWidget {
           // Search input
           Expanded(
             child: Container(
-              height: 36,
+              height: 34,
               decoration: BoxDecoration(
                 color: color.surface,
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
@@ -40,7 +40,7 @@ class OperationsSearchFilterBar extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsetsDirectional.only(
-                start: Spacing.xs,
+                start: Spacing.xs + 2,
                 end: Spacing.xs,
               ),
               child: Row(
@@ -85,10 +85,8 @@ class OperationsSearchFilterBar extends StatelessWidget {
             onTap: onDateFilterTap,
             borderRadius: BorderRadius.circular(Spacing.radiusSm),
             child: Container(
-              height: 36,
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.xs,
-              ),
+              height: 34,
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.xs + 2),
               decoration: BoxDecoration(
                 color: color.surface,
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
@@ -102,22 +100,22 @@ class OperationsSearchFilterBar extends StatelessWidget {
                   Icon(
                     Icons.calendar_today_outlined,
                     size: 14,
-                    color: color.onSurfaceVariant,
+                    color: color.primary,
                   ),
                   const SizedBox(width: Spacing.xs / 2),
                   Text(
                     dateLabel ?? locale.operationsLast7Days,
-                    style: getRegularStyle(
+                    style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size10,
-                      color: color.onSurface,
+                      fontSize: FontSize.size11,
+                      color: color.primary,
                     ),
                   ),
                   const SizedBox(width: Spacing.xs / 2),
                   Icon(
                     Icons.keyboard_arrow_down_rounded,
-                    size: 14,
-                    color: color.onSurfaceVariant,
+                    size: 16,
+                    color: color.primary,
                   ),
                 ],
               ),

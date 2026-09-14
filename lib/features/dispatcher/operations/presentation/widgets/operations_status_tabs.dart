@@ -18,48 +18,68 @@ class OperationsStatusTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
     final locale = context.localization;
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
-      child: Row(
-        children: [
-          OperationsStatusTabItem(
-            label: locale.operationsTabAll,
-            count: filter.totalCount,
-            isSelected: filter.selectedStatus == null,
-            onTap: () => onStatusSelected(null),
-          ),
-          const SizedBox(width: Spacing.xs),
-          OperationsStatusTabItem(
-            label: locale.operationsTabCompleted,
-            count: filter.completedCount,
-            isSelected: filter.selectedStatus == OperationStatus.completed,
-            onTap: () => onStatusSelected(OperationStatus.completed),
-          ),
-          const SizedBox(width: Spacing.xs),
-          OperationsStatusTabItem(
-            label: locale.operationsTabCancelled,
-            count: filter.cancelledCount,
-            isSelected: filter.selectedStatus == OperationStatus.cancelled,
-            onTap: () => onStatusSelected(OperationStatus.cancelled),
-          ),
-          const SizedBox(width: Spacing.xs),
-          OperationsStatusTabItem(
-            label: locale.operationsTabFailed,
-            count: filter.failedCount,
-            isSelected: filter.selectedStatus == OperationStatus.failed,
-            onTap: () => onStatusSelected(OperationStatus.failed),
-          ),
-          const SizedBox(width: Spacing.xs),
-          OperationsStatusTabItem(
-            label: locale.operationsTabReassigned,
-            count: filter.reassignedCount,
-            isSelected: filter.selectedStatus == OperationStatus.reassigned,
-            onTap: () => onStatusSelected(OperationStatus.reassigned),
-          ),
-        ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        clipBehavior: Clip.none,
+        padding: const EdgeInsets.only(
+          top: 6,
+          bottom: Spacing.xs,
+          right: Spacing.base,
+          left: Spacing.base,
+        ),
+        child: Row(
+          children: [
+            OperationsStatusTabItem(
+              label: locale.operationsTabAll,
+              count: filter.totalCount,
+              isSelected: filter.selectedStatus == null,
+              badgeColor: color.outlineVariant.withValues(alpha: 0.85),
+              badgeTextColor: color.onPrimary,
+              onTap: () => onStatusSelected(null),
+            ),
+            const SizedBox(width: Spacing.xs),
+            OperationsStatusTabItem(
+              label: locale.operationsTabCompleted,
+              count: filter.completedCount,
+              isSelected: filter.selectedStatus == OperationStatus.completed,
+              badgeColor: color.tertiary,
+              badgeTextColor: color.onTertiary,
+              onTap: () => onStatusSelected(OperationStatus.completed),
+            ),
+            const SizedBox(width: Spacing.xs),
+            OperationsStatusTabItem(
+              label: locale.operationsTabCancelled,
+              count: filter.cancelledCount,
+              isSelected: filter.selectedStatus == OperationStatus.cancelled,
+              badgeColor: color.error,
+              badgeTextColor: color.onError,
+              onTap: () => onStatusSelected(OperationStatus.cancelled),
+            ),
+            const SizedBox(width: Spacing.xs),
+            OperationsStatusTabItem(
+              label: locale.operationsTabFailed,
+              count: filter.failedCount,
+              isSelected: filter.selectedStatus == OperationStatus.failed,
+              badgeColor: color.error,
+              badgeTextColor: color.onError,
+              onTap: () => onStatusSelected(OperationStatus.failed),
+            ),
+            const SizedBox(width: Spacing.xs),
+            OperationsStatusTabItem(
+              label: locale.operationsTabReassigned,
+              count: filter.reassignedCount,
+              isSelected: filter.selectedStatus == OperationStatus.reassigned,
+              badgeColor: color.secondaryContainer,
+              badgeTextColor: color.onSecondaryContainer,
+              onTap: () => onStatusSelected(OperationStatus.reassigned),
+            ),
+          ],
+        ),
       ),
     );
   }

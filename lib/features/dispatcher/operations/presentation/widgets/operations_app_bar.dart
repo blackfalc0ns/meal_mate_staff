@@ -44,19 +44,19 @@ class OperationsAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.tune_rounded,
-                      size: Spacing.base,
-                      color: color.primary,
-                    ),
-                    const SizedBox(width: Spacing.xs / 2),
                     Text(
                       locale.operationsFilter,
-                      style: getMediumStyle(
+                      style: getBoldStyle(
                         fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size12,
+                        fontSize: FontSize.size13,
                         color: color.primary,
                       ),
+                    ),
+                    const SizedBox(width: Spacing.xs / 2),
+                    Icon(
+                      Icons.filter_alt_outlined,
+                      size: 18,
+                      color: color.primary,
                     ),
                   ],
                 ),

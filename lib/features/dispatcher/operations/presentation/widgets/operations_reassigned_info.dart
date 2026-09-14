@@ -28,7 +28,7 @@ class OperationsReassignedInfo extends StatelessWidget {
       children: [
         // From driver avatar
         CircleAvatar(
-          radius: 14,
+          radius: 13,
           backgroundColor: color.surfaceContainerHigh,
           backgroundImage: fromAvatarUrl != null
               ? AssetImage(fromAvatarUrl!)
@@ -36,14 +36,14 @@ class OperationsReassignedInfo extends StatelessWidget {
           child: fromAvatarUrl == null
               ? Icon(
                   Icons.person_outline_rounded,
-                  size: 14,
+                  size: 13,
                   color: color.onSurfaceVariant,
                 )
               : null,
         ),
         const SizedBox(width: Spacing.xs / 2),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 48),
+          constraints: const BoxConstraints(maxWidth: 38),
           child: Text(
             fromDriverName,
             maxLines: 1,
@@ -58,27 +58,27 @@ class OperationsReassignedInfo extends StatelessWidget {
         const SizedBox(width: Spacing.xs / 2),
         Icon(
           Icons.arrow_forward_rounded,
-          size: 12,
+          size: 11,
           color: color.primary,
         ),
         const SizedBox(width: Spacing.xs / 2),
         // To driver avatar
         CircleAvatar(
-          radius: 14,
+          radius: 13,
           backgroundColor: color.surfaceContainerHigh,
           backgroundImage:
               toAvatarUrl != null ? AssetImage(toAvatarUrl!) : null,
           child: toAvatarUrl == null
               ? Icon(
                   Icons.person_rounded,
-                  size: 14,
+                  size: 13,
                   color: color.onSurfaceVariant,
                 )
               : null,
         ),
         const SizedBox(width: Spacing.xs / 2),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 48),
+          constraints: const BoxConstraints(maxWidth: 38),
           child: Text(
             toDriverName,
             maxLines: 1,

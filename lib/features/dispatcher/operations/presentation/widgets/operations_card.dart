@@ -10,11 +10,7 @@ import 'operations_reassigned_info.dart';
 import 'operations_status_badge.dart';
 
 class OperationsCard extends StatelessWidget {
-  const OperationsCard({
-    super.key,
-    required this.item,
-    this.onTap,
-  });
+  const OperationsCard({super.key, required this.item, this.onTap});
 
   final OperationItemEntity item;
   final VoidCallback? onTap;
@@ -56,9 +52,7 @@ class OperationsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusSm),
-        border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.5),
-        ),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.5)),
       ),
       child: Material(
         color: Colors.transparent,
@@ -68,14 +62,14 @@ class OperationsCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(Spacing.radiusSm),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.sm,
+              horizontal: Spacing.xs + 2,
               vertical: Spacing.xs,
             ),
             child: Row(
               children: [
                 // 1. Driver / Assignment / Cancel info
                 buildLeadingInfo(),
-                const SizedBox(width: Spacing.xs),
+                const SizedBox(width: Spacing.xs / 2),
 
                 // Divider
                 Container(
@@ -83,7 +77,7 @@ class OperationsCard extends StatelessWidget {
                   height: 38,
                   color: color.outlineVariant.withValues(alpha: 0.5),
                 ),
-                const SizedBox(width: Spacing.xs),
+                const SizedBox(width: Spacing.xs / 2),
 
                 // 2. Customer & Area info
                 Expanded(
@@ -92,7 +86,7 @@ class OperationsCard extends StatelessWidget {
                     area: item.area,
                   ),
                 ),
-                const SizedBox(width: Spacing.xs),
+                const SizedBox(width: Spacing.xs / 2),
 
                 // Divider
                 Container(
@@ -100,7 +94,7 @@ class OperationsCard extends StatelessWidget {
                   height: 38,
                   color: color.outlineVariant.withValues(alpha: 0.5),
                 ),
-                const SizedBox(width: Spacing.xs),
+                const SizedBox(width: Spacing.xs / 2),
 
                 // 3. Status badge & Timestamp
                 OperationsStatusBadge(
@@ -111,7 +105,7 @@ class OperationsCard extends StatelessWidget {
 
                 // 4. Details Chevron
                 Icon(
-                  Icons.arrow_back_ios_new_rounded,
+                  Icons.arrow_forward_ios_rounded,
                   size: 12,
                   color: color.onSurfaceVariant.withValues(alpha: 0.6),
                 ),

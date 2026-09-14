@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherProfileOperationsCard extends StatelessWidget {
-  const DispatcherProfileOperationsCard({
-    super.key,
-    required this.onTap,
-  });
+  const DispatcherProfileOperationsCard({super.key, required this.onTap});
 
   final VoidCallback onTap;
 
@@ -76,7 +73,7 @@ class DispatcherProfileOperationsCard extends StatelessWidget {
                   ),
                 ),
                 Icon(
-                  Icons.arrow_back_ios_new_rounded,
+                  Icons.arrow_forward_ios_rounded,
                   size: 14,
                   color: color.onSurfaceVariant,
                 ),
