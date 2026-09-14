@@ -5,11 +5,13 @@ import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/features/dispatcher/notifications/presentation/screens/dispatcher_notifications_screen.dart';
 import 'package:meal_mate_delivery/core/widget/notification_button.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/domain/fake_data/dispatcher_profile_fake_data.dart';
+import 'package:meal_mate_delivery/features/dispatcher/operations/presentation/screens/dispatcher_operations_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_admin_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_app_info_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_logout_button.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_notification_settings_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_operations_card.dart';
 
 Widget _buildTestableWidget({
   required Widget child,
@@ -162,6 +164,28 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(DispatcherNotificationsScreen), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'tapping operations card navigates to DispatcherOperationsScreen',
+      (tester) async {
+        tester.view.physicalSize = const Size(390 * 2, 870 * 2);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
+
+        await tester.pumpWidget(
+          _buildTestableWidget(child: const DispatcherProfileScreen()),
+        );
+        await tester.pumpAndSettle();
+
+        final operationsCard = find.byType(DispatcherProfileOperationsCard);
+        expect(operationsCard, findsOneWidget);
+
+        await tester.tap(operationsCard);
+        await tester.pumpAndSettle();
+
+        expect(find.byType(DispatcherOperationsScreen), findsOneWidget);
       },
     );
   });
