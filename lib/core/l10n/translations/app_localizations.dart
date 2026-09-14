@@ -2197,6 +2197,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Driver'**
   String get boxTrackingDriverRole;
+
+  /// No description provided for @reassignDriverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Replacement Driver'**
+  String get reassignDriverTitle;
+
+  /// No description provided for @reassignDriverProblemSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem Summary'**
+  String get reassignDriverProblemSummary;
+
+  /// No description provided for @reassignDriverTaskNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Task Number'**
+  String get reassignDriverTaskNumber;
+
+  /// No description provided for @reassignDriverArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get reassignDriverArea;
+
+  /// No description provided for @reassignDriverAffectedBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Affected Boxes'**
+  String get reassignDriverAffectedBoxes;
+
+  /// No description provided for @reassignDriverPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem Priority'**
+  String get reassignDriverPriority;
+
+  /// No description provided for @reassignDriverCurrentDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Driver'**
+  String get reassignDriverCurrentDriver;
+
+  /// No description provided for @reassignDriverUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get reassignDriverUnavailable;
+
+  /// No description provided for @reassignDriverVehicleFailureReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver is unable to complete the order due to vehicle breakdown'**
+  String get reassignDriverVehicleFailureReason;
+
+  /// No description provided for @reassignDriverSelectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Replacement Driver'**
+  String get reassignDriverSelectTitle;
+
+  /// No description provided for @reassignDriverSelectSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Available drivers in the same area are shown first'**
+  String get reassignDriverSelectSubtitle;
+
+  /// No description provided for @reassignDriverFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get reassignDriverFilter;
+
+  /// No description provided for @reassignDriverAvailableNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Now'**
+  String get reassignDriverAvailableNow;
+
+  /// No description provided for @reassignDriverOrdersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders'**
+  String reassignDriverOrdersCount(int count);
+
+  /// No description provided for @reassignDriverFromYourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'From your location'**
+  String get reassignDriverFromYourLocation;
+
+  /// No description provided for @reassignDriverConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Driver Selection'**
+  String get reassignDriverConfirm;
+
+  /// No description provided for @reassignDriverSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Replacement driver assigned successfully'**
+  String get reassignDriverSuccess;
 }
 
 class _AppLocalizationsDelegate

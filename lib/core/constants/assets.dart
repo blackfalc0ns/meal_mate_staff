@@ -27,6 +27,7 @@ class AppAssets {
   static const String driverOpenMap = '$_svg/driver_open_map.svg';
   static const String driverLiveSignal = '$_svg/driver_live_signal.svg';
   static const String driverLocationPin = '$_svg/driver_location_pin.svg';
+  static const String deliveryTruckSpeed = '$_svg/delivery_truck_speed.svg';
   static const String driverMapPreview =
       '$_dispatcherImages/driver_map_preview.png';
   static const String driverBox3d = '$_dispatcherImages/driver_box_3d.png';

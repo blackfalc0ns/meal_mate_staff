@@ -491,5 +491,29 @@
   "boxTrackingMealCount": "Meal Count",
   "boxTrackingCustomerNotes": "Customer Notes",
   "boxTrackingReportIssue": "Report an issue with the box",
-  "boxTrackingDriverRole": "Driver"
+  "boxTrackingDriverRole": "Driver",
+  "reassignDriverTitle": "Assign Replacement Driver",
+  "reassignDriverProblemSummary": "Problem Summary",
+  "reassignDriverTaskNumber": "Task Number",
+  "reassignDriverArea": "Area",
+  "reassignDriverAffectedBoxes": "Affected Boxes",
+  "reassignDriverPriority": "Problem Priority",
+  "reassignDriverCurrentDriver": "Current Driver",
+  "reassignDriverUnavailable": "Unavailable",
+  "reassignDriverVehicleFailureReason": "Driver is unable to complete the order due to vehicle breakdown",
+  "reassignDriverSelectTitle": "Select Replacement Driver",
+  "reassignDriverSelectSubtitle": "Available drivers in the same area are shown first",
+  "reassignDriverFilter": "Filter",
+  "reassignDriverAvailableNow": "Available Now",
+  "reassignDriverOrdersCount": "{count} orders",
+  "@reassignDriverOrdersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reassignDriverFromYourLocation": "From your location",
+  "reassignDriverConfirm": "Confirm Driver Selection",
+  "reassignDriverSuccess": "Replacement driver assigned successfully"
 }

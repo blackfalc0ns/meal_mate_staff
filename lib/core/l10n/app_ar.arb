@@ -491,5 +491,29 @@
   "boxTrackingMealCount": "عدد الوجبات",
   "boxTrackingCustomerNotes": "ملاحظات العميل",
   "boxTrackingReportIssue": "الإبلاغ عن مشكلة في البوكس",
-  "boxTrackingDriverRole": "السائق"
+  "boxTrackingDriverRole": "السائق",
+  "reassignDriverTitle": "تعيين سائق بديل",
+  "reassignDriverProblemSummary": "ملخص المشكلة",
+  "reassignDriverTaskNumber": "رقم المهمة",
+  "reassignDriverArea": "المنطقة",
+  "reassignDriverAffectedBoxes": "عدد البوكسات المتأثرة",
+  "reassignDriverPriority": "أولوية المشكلة",
+  "reassignDriverCurrentDriver": "السائق الحالي",
+  "reassignDriverUnavailable": "غير متاح",
+  "reassignDriverVehicleFailureReason": "السائق غير قادر علي إكمال الطلب بسبب تعطل المركبة",
+  "reassignDriverSelectTitle": "اختر سائق بديل",
+  "reassignDriverSelectSubtitle": "يتم عرض السائقين المتاحين في نفس المنطقة أولاً",
+  "reassignDriverFilter": "تصفية",
+  "reassignDriverAvailableNow": "متاح الأن",
+  "reassignDriverOrdersCount": "{count} طلب",
+  "@reassignDriverOrdersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reassignDriverFromYourLocation": "من موقعك",
+  "reassignDriverConfirm": "تأكيد اختيار السائق",
+  "reassignDriverSuccess": "تم تعيين السائق البديل بنجاح"
 }

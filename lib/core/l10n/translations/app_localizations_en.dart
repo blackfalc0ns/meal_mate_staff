@@ -1125,4 +1125,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get boxTrackingDriverRole => 'Driver';
+
+  @override
+  String get reassignDriverTitle => 'Assign Replacement Driver';
+
+  @override
+  String get reassignDriverProblemSummary => 'Problem Summary';
+
+  @override
+  String get reassignDriverTaskNumber => 'Task Number';
+
+  @override
+  String get reassignDriverArea => 'Area';
+
+  @override
+  String get reassignDriverAffectedBoxes => 'Affected Boxes';
+
+  @override
+  String get reassignDriverPriority => 'Problem Priority';
+
+  @override
+  String get reassignDriverCurrentDriver => 'Current Driver';
+
+  @override
+  String get reassignDriverUnavailable => 'Unavailable';
+
+  @override
+  String get reassignDriverVehicleFailureReason =>
+      'Driver is unable to complete the order due to vehicle breakdown';
+
+  @override
+  String get reassignDriverSelectTitle => 'Select Replacement Driver';
+
+  @override
+  String get reassignDriverSelectSubtitle =>
+      'Available drivers in the same area are shown first';
+
+  @override
+  String get reassignDriverFilter => 'Filter';
+
+  @override
+  String get reassignDriverAvailableNow => 'Available Now';
+
+  @override
+  String reassignDriverOrdersCount(int count) {
+    return '$count orders';
+  }
+
+  @override
+  String get reassignDriverFromYourLocation => 'From your location';
+
+  @override
+  String get reassignDriverConfirm => 'Confirm Driver Selection';
+
+  @override
+  String get reassignDriverSuccess =>
+      'Replacement driver assigned successfully';
 }

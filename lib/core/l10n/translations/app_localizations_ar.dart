@@ -1123,4 +1123,59 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get boxTrackingDriverRole => 'السائق';
+
+  @override
+  String get reassignDriverTitle => 'تعيين سائق بديل';
+
+  @override
+  String get reassignDriverProblemSummary => 'ملخص المشكلة';
+
+  @override
+  String get reassignDriverTaskNumber => 'رقم المهمة';
+
+  @override
+  String get reassignDriverArea => 'المنطقة';
+
+  @override
+  String get reassignDriverAffectedBoxes => 'عدد البوكسات المتأثرة';
+
+  @override
+  String get reassignDriverPriority => 'أولوية المشكلة';
+
+  @override
+  String get reassignDriverCurrentDriver => 'السائق الحالي';
+
+  @override
+  String get reassignDriverUnavailable => 'غير متاح';
+
+  @override
+  String get reassignDriverVehicleFailureReason =>
+      'السائق غير قادر علي إكمال الطلب بسبب تعطل المركبة';
+
+  @override
+  String get reassignDriverSelectTitle => 'اختر سائق بديل';
+
+  @override
+  String get reassignDriverSelectSubtitle =>
+      'يتم عرض السائقين المتاحين في نفس المنطقة أولاً';
+
+  @override
+  String get reassignDriverFilter => 'تصفية';
+
+  @override
+  String get reassignDriverAvailableNow => 'متاح الأن';
+
+  @override
+  String reassignDriverOrdersCount(int count) {
+    return '$count طلب';
+  }
+
+  @override
+  String get reassignDriverFromYourLocation => 'من موقعك';
+
+  @override
+  String get reassignDriverConfirm => 'تأكيد اختيار السائق';
+
+  @override
+  String get reassignDriverSuccess => 'تم تعيين السائق البديل بنجاح';
 }

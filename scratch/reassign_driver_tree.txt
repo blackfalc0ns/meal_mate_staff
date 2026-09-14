@@ -1,0 +1,307 @@
+=== ROOT: 10.13 - Assign Replacement Driver (2259:5608) ===
+10.13 - Assign Replacement Driver (FRAME, 390.0x882.0) [fills: #ffffff(1.00)]
+  Status bar (INSTANCE, 389.0x62.0)
+    Time (FRAME, 93.5x22.0)
+      Time (TEXT, 37.0x22.0) -> "9:41" [fills: #000000(1.00)] [Font: SF Pro 590 17.0px]
+    Levels (FRAME, 93.5x22.0)
+      Cellular Connection (VECTOR, 19.2x12.2) [fills: #000000(1.00)]
+      Wifi (VECTOR, 17.1x12.3) [fills: #000000(1.00)]
+      Frame (FRAME, 27.3x13.0)
+        Border (RECTANGLE, 25.0x13.0) [strokes: #000000] [radius: 4.300000190734863]
+        Cap (VECTOR, 1.3x4.1) [fills: #000000(1.00)]
+        Capacity (RECTANGLE, 21.0x9.0) [fills: #000000(1.00)] [radius: 2.5]
+  Group 10 (GROUP, 35.0x34.0)
+    Rectangle 4 (RECTANGLE, 35.0x34.0) [fills: #ffffff(1.00)] [strokes: #e4e4e4] [radius: 8.0]
+    vuesax/bold/notification (FRAME, 24.0x24.0) [fills: #ffffff(1.00)]
+      vuesax/bold/notification (GROUP, 24.0x24.0)
+        notification (GROUP, 24.0x24.0)
+          Vector (VECTOR, 15.4x17.0) [fills: #24252c(1.00)]
+          Vector (VECTOR, 5.6x2.0) [fills: #24252c(1.00)]
+          Vector (VECTOR, 24.0x24.0)
+      Group 1 (GROUP, 8.0x8.0)
+        Ellipse 28 (ELLIPSE, 8.0x8.0) [fills: #5d35c0(1.00)]
+  تعيين سائق بديل (TEXT, 101.0x19.0) -> "تعيين سائق بديل" [fills: #000000(1.00)] [Font: Alexandria 700 11.976707458496094px]
+  Frame (FRAME, 35.0x35.0) [fills: #ffffff(1.00)] [strokes: #e4e4e4] [radius: 8.75]
+    Frame (FRAME, 26.2x26.2) [fills: #ffffff(1.00)]
+      Vector (VECTOR, 7.7x15.3) [strokes: #111111]
+  Frame 20618 (FRAME, 360.0x649.5)
+    Group 20441 (GROUP, 359.0x220.0)
+      Rectangle 6049 (RECTANGLE, 359.0x220.0) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 8.067416191101074]
+      Line 170 (LINE, 359.0x0.0) [strokes: #efeff1]
+      Line 172 (LINE, 0.0x53.0) [strokes: #efeff1]
+      Group 20410 (GROUP, 54.8x54.8)
+        Ellipse 1311 (ELLIPSE, 54.8x54.8) [fills: IMAGE]
+        Ellipse 1354 (ELLIPSE, 13.2x13.2) [fills: #dd0c14(1.00)]
+      Group 20720 (GROUP, 122.0x51.0)
+        Group 20718 (GROUP, 122.0x28.0)
+          السائق غير قادر علي إكمال الطلب بسبب تعطل المركبة (TEXT, 122.0x28.0) -> "السائق غير قادر علي إكمال الطلب
+بسبب تعطل المركبة" [fills: #757881(1.00)] [Font: Alexandria 400 8.239583969116211px]
+        Group 20719 (GROUP, 61.0x18.0)
+          Group 20717 (GROUP, 61.0x18.0)
+            Group 20402 (GROUP, 61.0x18.0)
+              Rectangle 6050 (RECTANGLE, 61.0x18.0) [fills: #fce8e7(1.00)] [radius: 7.058960914611816]
+              Group 20716 (GROUP, 41.0x11.0)
+                Ellipse 1354 (ELLIPSE, 7.0x7.0) [fills: #dd0c14(1.00)]
+                غير متاح (TEXT, 29.0x11.0) -> "غير متاح" [fills: #dd0c14(1.00)] [Font: Alexandria 700 7.239584445953369px]
+      Frame 20619 (FRAME, 66.0x59.0)
+        السائق الحالي (TEXT, 66.0x13.0) -> "السائق الحالي" [fills: #6744c2(1.00)] [Font: Alexandria 700 8.351789474487305px]
+        أحمد السيد (TEXT, 66.0x15.0) -> "أحمد السيد" [fills: #000000(1.00)] [Font: Alexandria 700 11.622714042663574px]
+        DR-1025 (TEXT, 66.0x15.0) -> "DR-1025" [fills: #603bc1(1.00)] [Font: Alexandria 700 10.863282203674316px]
+      Group 20414 (GROUP, 359.0x116.5)
+        Group 20413 (GROUP, 340.8x58.4)
+          Group 20412 (GROUP, 143.2x58.4)
+            تعطل الدراجة أثناء التوصيل (TEXT, 136.0x16.0) -> "تعطل الدراجة أثناء التوصيل" [fills: #000000(1.00)] [Font: Alexandria 700 10.117238998413086px]
+            Group 20411 (GROUP, 75.6x14.1)
+              ملخص المشكلة (TEXT, 58.0x11.0) -> "ملخص المشكلة" [fills: #dd0c14(1.00)] [Font: Alexandria 700 7.097167491912842px]
+              material-symbols:info-rounded (FRAME, 14.1x14.1) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 11.8x11.8) [fills: #dd0c14(1.00)]
+            تم الأبلاغ منذ 12 دقيقة (TEXT, 81.0x12.0) -> "تم الأبلاغ منذ 12 دقيقة" [fills: #000000(1.00)] [Font: Alexandria 400 7.782491683959961px]
+          Group 20394 (GROUP, 41.3x41.3)
+            Ellipse 1353 (ELLIPSE, 41.3x41.3) [fills: #ffe3e3(1.00)]
+            Group 20393 (GROUP, 25.9x27.9)
+              Vector (VECTOR, 8.1x8.4) [fills: #dd0c14(1.00)]
+              material-symbols:delivery-truck-speed-rounded (FRAME, 24.2x24.2) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 22.3x16.1) [fills: #dd0c14(1.00)]
+        Line 170 (LINE, 359.0x0.0) [strokes: #efeff1]
+        Group 20404 (GROUP, 331.9x34.8)
+          Group 20396 (GROUP, 62.5x31.1)
+            رقم المهمة (TEXT, 35.0x10.0) -> "رقم المهمة" [fills: #757881(1.00)] [Font: Alexandria 400 6.485409736633301px]
+            Group 20395 (GROUP, 62.5x14.0)
+              #BX-1258 (TEXT, 45.0x14.0) -> "#BX-1258" [fills: #000000(1.00)] [Font: Alexandria 700 9.129759788513184px]
+              bxs:copy (FRAME, 13.1x13.1) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 7.6x7.6) [fills: #6744c2(1.00)]
+                Vector (VECTOR, 7.6x7.6) [fills: #6744c2(1.00)]
+          Group 20398 (GROUP, 42.4x32.2)
+            السالمية (TEXT, 30.0x10.0) -> "السالمية" [fills: #000000(1.00)] [Font: Alexandria 700 6.619075775146484px]
+            Group 20397 (GROUP, 42.4x12.1)
+              المنطقة (TEXT, 26.0x10.0) -> "المنطقة" [fills: #757881(1.00)] [Font: Alexandria 400 6.485410690307617px]
+              flowbite:map-pin-alt-solid (FRAME, 12.1x12.1) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 8.1x10.1) [fills: #6744c2(1.00)]
+          Group 20400 (GROUP, 79.7x32.7)
+            3 بوكسات (TEXT, 36.0x11.0) -> "3 بوكسات" [fills: #000000(1.00)] [Font: Alexandria 700 7.239614009857178px]
+            Group 20399 (GROUP, 79.7x12.1)
+              عدد البوكسات المتأثرة (TEXT, 64.0x10.0) -> "عدد البوكسات المتأثرة" [fills: #757881(1.00)] [Font: Alexandria 400 6.485410690307617px]
+              fluent:box-32-filled (FRAME, 12.1x12.1) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 10.6x10.4) [fills: #6744c2(1.00)]
+          Group 20403 (GROUP, 62.6x34.8)
+            Group 20402 (GROUP, 61.0x18.0) [radius: 7.058960914611816]
+              Rectangle 6050 (RECTANGLE, 61.0x18.0) [fills: #fce8e7(1.00)] [radius: 7.058960914611816]
+              عالية (TEXT, 18.0x11.0) -> "عالية" [fills: #dd0c14(1.00)] [Font: Alexandria 700 7.239584445953369px]
+            Group 20401 (GROUP, 62.5x12.1)
+              أولوية المشكلة (TEXT, 44.0x10.0) -> "أولوية المشكلة" [fills: #757881(1.00)] [Font: Alexandria 400 6.485383987426758px]
+              boxicons:flag-alt-filled (FRAME, 12.1x12.1) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 9.1x10.1) [fills: #6744c2(1.00)]
+          Line 171 (LINE, 0.0x30.3) [strokes: #efeff1]
+          Line 172 (LINE, 0.0x30.3) [strokes: #efeff1]
+          Line 173 (LINE, 0.0x30.3) [strokes: #efeff1]
+    Group 20439 (GROUP, 359.0x373.0)
+      Group 20438 (GROUP, 357.6x31.1)
+        Group 20437 (GROUP, 187.6x31.1)
+          اختر سائق بديل (TEXT, 73.0x15.0) -> "اختر سائق بديل" [fills: #000000(1.00)] [Font: Alexandria 700 9.911164283752441px]
+          يتم عرض السائقين المتاحين في نفس المنطقة أولاً (TEXT, 187.0x13.0) -> "يتم عرض السائقين المتاحين في نفس المنطقة أولاً" [fills: #757881(1.00)] [Font: Alexandria 400 8.266711235046387px]
+        Group 20472 (GROUP, 61.0x27.0)
+          Rectangle 6064 (RECTANGLE, 61.0x27.0) [fills: #f1effa(1.00)] [radius: 7.019553184509277]
+          Group 20471 (GROUP, 43.8x14.0)
+            تصفية (TEXT, 28.0x14.0) -> "تصفية" [fills: #5e606f(1.00)] [Font: Alexandria 400 8.992764472961426px]
+            basil:filter-solid (FRAME, 11.3x11.3) [fills: #ffffff(1.00)]
+              Vector (VECTOR, 7.3x8.4) [fills: #5e606f(1.00)]
+      Frame 20439 (FRAME, 359.0x329.8)
+        Group 20432 (GROUP, 359.0x60.3)
+          Rectangle 6053 (RECTANGLE, 359.0x60.3) [fills: #ffffff(1.00)] [strokes: #6744c2] [radius: 8.044817924499512]
+          Group 20431 (GROUP, 336.9x49.3)
+            Group 20420 (GROUP, 49.3x49.3)
+              Ellipse 1311 (ELLIPSE, 49.3x49.3) [fills: IMAGE]
+              Ellipse 1355 (ELLIPSE, 12.1x12.1) [fills: #29be63(1.00)]
+            Group 20428 (GROUP, 57.3x45.8)
+              محمد العازمي (TEXT, 56.0x12.0) -> "محمد العازمي" [fills: #000000(1.00)] [Font: Alexandria 700 7.976651191711426px]
+              DR-2011 (TEXT, 33.0x13.0) -> "DR-2011" [fills: #6744c2(1.00)] [Font: Alexandria 700 8.225921630859375px]
+              Group 20422 (GROUP, 45.3x13.1)
+                Rectangle 6054 (RECTANGLE, 45.3x13.1) [fills: #e8f4ea(1.00)] [radius: 4.022408962249756]
+                Group 20421 (GROUP, 34.2x8.0)
+                  متاح الأن (TEXT, 23.0x8.0) -> "متاح الأن" [fills: #29be63(1.00)] [Font: Alexandria 700 5.113410949707031px]
+                  Ellipse 1356 (ELLIPSE, 6.0x6.0) [fills: #29be63(1.00)]
+            Line 174 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Line 175 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Group 20429 (GROUP, 39.2x31.1)
+              Group 20423 (GROUP, 28.1x14.0)
+                4.8 (TEXT, 14.0x14.0) -> "4.8" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+                ant-design:star-filled (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 8.3x7.9) [fills: #ffb441(1.00)]
+              Group 20425 (GROUP, 39.2x12.0)
+                18 طلب (TEXT, 26.0x12.0) -> "18 طلب" [fills: #757881(1.00)] [Font: Alexandria 400 7.505168914794922px]
+                solar:bag-bold (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 7.8x8.7) [fills: #6744c2(1.00)]
+            Group 20430 (GROUP, 49.3x30.2)
+              1.2 كم (TEXT, 26.0x14.0) -> "1.2 كم" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+              Group 20426 (GROUP, 49.3x10.3)
+                من موقعك (TEXT, 36.0x10.0) -> "من موقعك" [fills: #757881(1.00)] [Font: Alexandria 400 6.589903831481934px]
+                flowbite:map-pin-alt-solid (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 6.7x8.4) [fills: #6744c2(1.00)]
+            Group 20427 (GROUP, 19.1x19.1)
+              Ellipse 1357 (ELLIPSE, 19.1x19.1) [fills: #6744c2(1.00)]
+              Ellipse 1358 (ELLIPSE, 11.1x11.1) [fills: #6744c2(1.00)] [strokes: #ffffff]
+        Group 20433 (GROUP, 359.0x60.3)
+          Rectangle 6053 (RECTANGLE, 359.0x60.3) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 8.044817924499512]
+          Group 20431 (GROUP, 336.9x49.3)
+            Group 20420 (GROUP, 49.3x49.3)
+              Ellipse 1311 (ELLIPSE, 49.3x49.3) [fills: IMAGE]
+              Ellipse 1355 (ELLIPSE, 12.1x12.1) [fills: #29be63(1.00)]
+            Group 20428 (GROUP, 63.4x45.8)
+              يوسف المطيري (TEXT, 61.0x12.0) -> "يوسف المطيري" [fills: #000000(1.00)] [Font: Alexandria 700 7.976651191711426px]
+              DR-2054 (TEXT, 37.0x13.0) -> "DR-2054" [fills: #6744c2(1.00)] [Font: Alexandria 700 8.225921630859375px]
+              Group 20422 (GROUP, 45.3x13.1)
+                Rectangle 6054 (RECTANGLE, 45.3x13.1) [fills: #e8f4ea(1.00)] [radius: 4.022408962249756]
+                Group 20421 (GROUP, 34.2x8.0)
+                  متاح الأن (TEXT, 23.0x8.0) -> "متاح الأن" [fills: #29be63(1.00)] [Font: Alexandria 700 5.113410949707031px]
+                  Ellipse 1356 (ELLIPSE, 6.0x6.0) [fills: #29be63(1.00)]
+            Line 174 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Line 175 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Group 20429 (GROUP, 39.2x31.1)
+              Group 20423 (GROUP, 28.1x14.0)
+                4.7 (TEXT, 13.0x14.0) -> "4.7" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+                ant-design:star-filled (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 8.3x7.9) [fills: #ffb441(1.00)]
+              Group 20425 (GROUP, 39.2x12.0)
+                12 طلب (TEXT, 26.0x12.0) -> "12 طلب" [fills: #757881(1.00)] [Font: Alexandria 400 7.505168914794922px]
+                solar:bag-bold (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 7.8x8.7) [fills: #6744c2(1.00)]
+            Group 20430 (GROUP, 49.3x30.2)
+              1.6 كم (TEXT, 27.0x14.0) -> "1.6 كم" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+              Group 20426 (GROUP, 49.3x10.3)
+                من موقعك (TEXT, 36.0x10.0) -> "من موقعك" [fills: #757881(1.00)] [Font: Alexandria 400 6.589903831481934px]
+                flowbite:map-pin-alt-solid (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 6.7x8.4) [fills: #6744c2(1.00)]
+            Group 20427 (GROUP, 19.1x19.1)
+              Ellipse 1357 (ELLIPSE, 19.1x19.1) [strokes: #666972]
+        Group 20434 (GROUP, 359.0x60.3)
+          Rectangle 6053 (RECTANGLE, 359.0x60.3) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 8.044817924499512]
+          Group 20431 (GROUP, 336.9x49.3)
+            Group 20420 (GROUP, 49.3x49.3)
+              Ellipse 1311 (ELLIPSE, 49.3x49.3) [fills: IMAGE]
+              Ellipse 1355 (ELLIPSE, 12.1x12.1) [fills: #29be63(1.00)]
+            Group 20428 (GROUP, 63.4x45.8)
+              عبدالله الشمري (TEXT, 61.0x12.0) -> "عبدالله الشمري" [fills: #000000(1.00)] [Font: Alexandria 700 7.976651191711426px]
+              DR-1988 (TEXT, 35.0x13.0) -> "DR-1988" [fills: #6744c2(1.00)] [Font: Alexandria 700 8.225921630859375px]
+              Group 20422 (GROUP, 45.3x13.1)
+                Rectangle 6054 (RECTANGLE, 45.3x13.1) [fills: #e8f4ea(1.00)] [radius: 4.022408962249756]
+                Group 20421 (GROUP, 34.2x8.0)
+                  متاح الأن (TEXT, 23.0x8.0) -> "متاح الأن" [fills: #29be63(1.00)] [Font: Alexandria 700 5.113410949707031px]
+                  Ellipse 1356 (ELLIPSE, 6.0x6.0) [fills: #29be63(1.00)]
+            Line 174 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Line 175 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Group 20429 (GROUP, 36.2x31.1)
+              Group 20423 (GROUP, 28.1x14.0)
+                4.6 (TEXT, 14.0x14.0) -> "4.6" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+                ant-design:star-filled (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 8.3x7.9) [fills: #ffb441(1.00)]
+              Group 20425 (GROUP, 36.2x12.0)
+                9 طلب (TEXT, 23.0x12.0) -> "9 طلب" [fills: #757881(1.00)] [Font: Alexandria 400 7.505168914794922px]
+                solar:bag-bold (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 7.8x8.7) [fills: #6744c2(1.00)]
+            Group 20430 (GROUP, 49.3x30.2)
+              2.1 كم (TEXT, 26.0x14.0) -> "2.1 كم" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+              Group 20426 (GROUP, 49.3x10.3)
+                من موقعك (TEXT, 36.0x10.0) -> "من موقعك" [fills: #757881(1.00)] [Font: Alexandria 400 6.589903831481934px]
+                flowbite:map-pin-alt-solid (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 6.7x8.4) [fills: #6744c2(1.00)]
+            Group 20427 (GROUP, 19.1x19.1)
+              Ellipse 1357 (ELLIPSE, 19.1x19.1) [strokes: #666972]
+        Group 20435 (GROUP, 359.0x60.3)
+          Rectangle 6053 (RECTANGLE, 359.0x60.3) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 8.044817924499512]
+          Group 20431 (GROUP, 336.9x49.3)
+            Group 20420 (GROUP, 49.3x49.3)
+              Ellipse 1311 (ELLIPSE, 49.3x49.3) [fills: IMAGE]
+              Ellipse 1355 (ELLIPSE, 12.1x12.1) [fills: #29be63(1.00)]
+            Group 20428 (GROUP, 48.3x45.8)
+              سالم الحربي (TEXT, 47.0x12.0) -> "سالم الحربي" [fills: #000000(1.00)] [Font: Alexandria 700 7.976651191711426px]
+              DR-2100 (TEXT, 36.0x13.0) -> "DR-2100" [fills: #6744c2(1.00)] [Font: Alexandria 700 8.225921630859375px]
+              Group 20422 (GROUP, 45.3x13.1)
+                Rectangle 6054 (RECTANGLE, 45.3x13.1) [fills: #e8f4ea(1.00)] [radius: 4.022408962249756]
+                Group 20421 (GROUP, 34.2x8.0)
+                  متاح الأن (TEXT, 23.0x8.0) -> "متاح الأن" [fills: #29be63(1.00)] [Font: Alexandria 700 5.113410949707031px]
+                  Ellipse 1356 (ELLIPSE, 6.0x6.0) [fills: #29be63(1.00)]
+            Line 174 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Line 175 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Group 20429 (GROUP, 39.2x31.1)
+              Group 20423 (GROUP, 28.1x14.0)
+                4.5 (TEXT, 14.0x14.0) -> "4.5" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+                ant-design:star-filled (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 8.3x7.9) [fills: #ffb441(1.00)]
+              Group 20425 (GROUP, 39.2x12.0)
+                15 طلب (TEXT, 26.0x12.0) -> "15 طلب" [fills: #757881(1.00)] [Font: Alexandria 400 7.505168914794922px]
+                solar:bag-bold (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 7.8x8.7) [fills: #6744c2(1.00)]
+            Group 20430 (GROUP, 49.3x30.2)
+              2.4 كم (TEXT, 28.0x14.0) -> "2.4 كم" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+              Group 20426 (GROUP, 49.3x10.3)
+                من موقعك (TEXT, 36.0x10.0) -> "من موقعك" [fills: #757881(1.00)] [Font: Alexandria 400 6.589903831481934px]
+                flowbite:map-pin-alt-solid (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 6.7x8.4) [fills: #6744c2(1.00)]
+            Group 20427 (GROUP, 19.1x19.1)
+              Ellipse 1357 (ELLIPSE, 19.1x19.1) [strokes: #666972]
+        Group 20436 (GROUP, 359.0x60.3)
+          Rectangle 6053 (RECTANGLE, 359.0x60.3) [fills: #ffffff(1.00)] [strokes: #efeff1] [radius: 8.044817924499512]
+          Group 20431 (GROUP, 336.9x49.3)
+            Group 20420 (GROUP, 49.3x49.3)
+              Ellipse 1311 (ELLIPSE, 49.3x49.3) [fills: IMAGE]
+              Ellipse 1355 (ELLIPSE, 12.1x12.1) [fills: #29be63(1.00)]
+            Group 20428 (GROUP, 46.3x45.8)
+              فهد العنزي (TEXT, 44.0x12.0) -> "فهد العنزي" [fills: #000000(1.00)] [Font: Alexandria 700 7.976651191711426px]
+              DR-2077 (TEXT, 36.0x13.0) -> "DR-2077" [fills: #6744c2(1.00)] [Font: Alexandria 700 8.225921630859375px]
+              Group 20422 (GROUP, 45.3x13.1)
+                Rectangle 6054 (RECTANGLE, 45.3x13.1) [fills: #e8f4ea(1.00)] [radius: 4.022408962249756]
+                Group 20421 (GROUP, 34.2x8.0)
+                  متاح الأن (TEXT, 23.0x8.0) -> "متاح الأن" [fills: #29be63(1.00)] [Font: Alexandria 700 5.113410949707031px]
+                  Ellipse 1356 (ELLIPSE, 6.0x6.0) [fills: #29be63(1.00)]
+            Line 174 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Line 175 (LINE, 0.0x27.2) [strokes: #efeff1]
+            Group 20429 (GROUP, 36.2x31.1)
+              Group 20423 (GROUP, 29.1x14.0)
+                4.4 (TEXT, 14.0x14.0) -> "4.4" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+                ant-design:star-filled (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 8.3x7.9) [fills: #ffb441(1.00)]
+              Group 20425 (GROUP, 36.2x12.0)
+                8 طلب (TEXT, 23.0x12.0) -> "8 طلب" [fills: #757881(1.00)] [Font: Alexandria 400 7.505168914794922px]
+                solar:bag-bold (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 7.8x8.7) [fills: #6744c2(1.00)]
+            Group 20430 (GROUP, 49.3x30.2)
+              2.8 كم (TEXT, 28.0x14.0) -> "2.8 كم" [fills: #000000(1.00)] [Font: Alexandria 700 8.948469161987305px]
+              Group 20426 (GROUP, 49.3x10.3)
+                من موقعك (TEXT, 36.0x10.0) -> "من موقعك" [fills: #757881(1.00)] [Font: Alexandria 400 6.589903831481934px]
+                flowbite:map-pin-alt-solid (FRAME, 10.1x10.1) [fills: #ffffff(1.00)]
+                  Vector (VECTOR, 6.7x8.4) [fills: #6744c2(1.00)]
+            Group 20427 (GROUP, 19.1x19.1)
+              Ellipse 1357 (ELLIPSE, 19.1x19.1) [strokes: #666972]
+    Group 20440 (GROUP, 360.0x40.4) [radius: 10.112360000610352]
+      Rectangle 6055 (RECTANGLE, 360.0x40.4) [fills: #6744c2(1.00)] [radius: 10.112360000610352]
+      تأكيد اختيار السائق (TEXT, 96.0x17.0) -> "تأكيد اختيار السائق" [fills: #ffffff(1.00)] [Font: Alexandria 700 10.759495735168457px]
+  mainContainer (FRAME, 363.0x66.6)
+    tabPills (FRAME, 363.0x66.6) [fills: #ffffff(0.60)] [radius: 10253.2119140625]
+      Tab2 (FRAME, 79.2x57.0)
+        iconamoon:profile-fill (FRAME, 23.6x23.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 17.7x17.7) [fills: #191c1d(1.00)]
+        Account Tab Label (TEXT, 62.8x14.0) -> "الحساب" [fills: #191c1d(1.00)] [Font: Alexandria 600 11.305084228515625px]
+      Tab2 (FRAME, 79.2x56.0)
+        bx:support (FRAME, 22.6x22.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 18.8x18.8) [fills: #191c1d(1.00)]
+        Support Tab Label (TEXT, 62.8x14.0) -> "الدعم" [fills: #191c1d(1.00)] [Font: Alexandria 600 11.305084228515625px]
+      Tab4 (FRAME, 79.2x58.4)
+        gis:poi-map (FRAME, 25.0x25.0) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 21.3x7.5) [fills: #000000(1.00)]
+          Vector (VECTOR, 14.8x20.7) [fills: #000000(1.00)]
+        الخريطة (TEXT, 43.0x14.0) -> "الخريطة" [fills: #191c1d(1.00)] [Font: Alexandria 600 11.305084228515625px]
+      Tab2 (FRAME, 79.2x58.0)
+        lets-icons:order-fill (FRAME, 24.6x24.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 14.4x17.4) [fills: #191c1d(1.00)]
+        solar:fire-bold (INSTANCE, 24.6x24.6) [fills: #ffffff(1.00)]
+          Vector (VECTOR, 17.4x19.9) [fills: #000000(1.00)]
+        Orders Tab Label (TEXT, 62.8x14.0) -> "الطلبات" [fills: #191c1d(1.00)] [Font: Alexandria 600 11.305084228515625px]
+      Tab1 (FRAME, 79.2x53.9) [fills: #5835b4(1.00)] [radius: 102.54238891601562]
+        Asset 10 1 (FRAME, 20.7x20.5) [fills: #ffffff(1.00)]
+          Layer 1 (GROUP, 20.7x20.5)
+            Group (GROUP, 20.7x20.5)
+              Vector (VECTOR, 20.7x11.3) [fills: #ffffff(1.00)]
+              Group (GROUP, 20.2x8.2)
+                Vector (VECTOR, 15.6x7.5) [fills: #ffffff(1.00)]
+                Vector (VECTOR, 5.4x7.1)
+        Home Tab Label (TEXT, 62.8x14.0) -> "الرئيسية" [fills: #ffffff(1.00)] [Font: Alexandria 600 11.305084228515625px]

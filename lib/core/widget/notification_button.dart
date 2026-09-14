@@ -15,7 +15,8 @@ class NotificationButton extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         IconButton(
-          onPressed: onPressed ??
+          onPressed:
+              onPressed ??
               () => context.pushNamed(AppRoutes.dispatcherNotifications),
           icon: const Icon(Icons.notifications_none_rounded),
         ),

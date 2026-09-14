@@ -25,6 +25,7 @@ import '../../features/dispatcher/profile/domain/entities/dispatcher_profile_ent
 import '../../features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
 import '../../features/dispatcher/support/domain/entities/dispatcher_issue_detail_entity.dart';
 import '../../features/dispatcher/support/presentation/screens/dispatcher_issue_details_screen.dart';
+import '../../features/dispatcher/support/presentation/screens/dispatcher_reassign_driver_screen.dart';
 import '../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
@@ -114,6 +115,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DispatcherIssueDetailsScreen(issue: issue),
+        );
+
+      case AppRoutes.dispatcherReassignDriver || AppRoutes.reassignDriver:
+        final issue = settings.arguments is DispatcherIssueDetailEntity
+            ? settings.arguments! as DispatcherIssueDetailEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DispatcherReassignDriverScreen(issue: issue),
         );
 
       case AppRoutes.dispatcherProfile:

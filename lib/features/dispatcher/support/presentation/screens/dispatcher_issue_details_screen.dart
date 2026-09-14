@@ -19,8 +19,14 @@ class DispatcherIssueDetailsScreen extends StatelessWidget {
 
   final DispatcherIssueDetailEntity? issue;
 
-  void _onAssignReplacement(BuildContext context) {
-    context.pushNamed(AppRoutes.assignBox);
+  void _onAssignReplacement(
+    BuildContext context,
+    DispatcherIssueDetailEntity currentIssue,
+  ) {
+    context.pushNamed(
+      AppRoutes.dispatcherReassignDriver,
+      arguments: currentIssue,
+    );
   }
 
   void _onContactDriver(BuildContext context, String driverName) {
@@ -70,7 +76,8 @@ class DispatcherIssueDetailsScreen extends StatelessWidget {
               DispatcherIssueDetailsTripCard(issue: currentIssue),
               const SizedBox(height: Spacing.sm),
               DispatcherIssueDetailsActionButtons(
-                onAssignReplacementTap: () => _onAssignReplacement(context),
+                onAssignReplacementTap: () =>
+                    _onAssignReplacement(context, currentIssue),
                 onContactDriverTap: () =>
                     _onContactDriver(context, currentIssue.driverName),
               ),
