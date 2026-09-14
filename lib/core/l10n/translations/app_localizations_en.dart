@@ -1122,4 +1122,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get boxTrackingReportIssue => 'Report an issue with the box';
+
+  @override
+  String get boxTrackingDriverRole => 'Driver';
 }

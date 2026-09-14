@@ -490,5 +490,6 @@
   "boxTrackingOrderDate": "تاريخ الطلب",
   "boxTrackingMealCount": "عدد الوجبات",
   "boxTrackingCustomerNotes": "ملاحظات العميل",
-  "boxTrackingReportIssue": "الإبلاغ عن مشكلة في البوكس"
+  "boxTrackingReportIssue": "الإبلاغ عن مشكلة في البوكس",
+  "boxTrackingDriverRole": "السائق"
 }

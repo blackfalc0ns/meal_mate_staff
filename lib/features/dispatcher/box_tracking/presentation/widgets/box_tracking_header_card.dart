@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
@@ -23,90 +24,45 @@ class BoxTrackingHeaderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 1. 3D Box image container (Start in directionality)
+          Container(
+            width: Spacing.bottomNavHeight,
+            height: Spacing.bottomNavHeight,
+            padding: const EdgeInsets.all(Spacing.xs),
+            decoration: BoxDecoration(
+              color: color.primaryContainer,
+              borderRadius: BorderRadius.circular(Spacing.radiusLg),
+            ),
+            child: Image.asset(AppAssets.driverBox3d, fit: BoxFit.contain),
+          ),
+          const SizedBox(width: Spacing.sm),
+          // 2. Info area (Details + Status & Appointment)
           Expanded(
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Wrap(
-                  spacing: Spacing.sm,
-                  runSpacing: Spacing.xs,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      '#${box.boxId}',
-                      style: getBoldStyle(
-                        color: color.primary,
-                        fontSize: FontSize.size16,
+                // Box ID, Customer, Location
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '#${box.boxId}',
+                        style: getBoldStyle(
+                          color: color.onSurface,
+                          fontSize: FontSize.size16,
+                        ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                        vertical: Spacing.xs / 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: color.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: color.primary,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: Spacing.xs),
-                          Text(
-                            locale.boxTrackingStatusOnTheWay,
-                            style: getSemiBoldStyle(
-                              color: color.primary,
-                              fontSize: FontSize.size11,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: Spacing.xs),
-                Text(
-                  locale.boxTrackingCustomerLabel(box.customerName),
-                  style: getSemiBoldStyle(
-                    color: color.onSurface,
-                    fontSize: FontSize.size14,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: Spacing.xs),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      AppAssets.driverLocationPin,
-                      width: Spacing.iconXs,
-                      height: Spacing.iconXs,
-                      colorFilter: ColorFilter.mode(
-                        color.onSurfaceVariant,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    const SizedBox(width: Spacing.xs / 2),
-                    Expanded(
-                      child: Text(
-                        box.deliveryAddress,
+                      const SizedBox(height: Spacing.xs / 2),
+                      Text(
+                        locale.boxTrackingCustomerLabel(box.customerName),
                         style: getRegularStyle(
                           color: color.onSurfaceVariant,
                           fontSize: FontSize.size12,
@@ -114,36 +70,92 @@ class BoxTrackingHeaderCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: Spacing.xs / 2),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            AppAssets.driverLocationPin,
+                            width: Spacing.iconXs,
+                            height: Spacing.iconXs,
+                            colorFilter: ColorFilter.mode(
+                              color.primary,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.xs / 2),
+                          Flexible(
+                            child: Text(
+                              box.deliveryAddress,
+                              style: getRegularStyle(
+                                color: color.onSurfaceVariant,
+                                fontSize: FontSize.size11,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: Spacing.xs / 2),
-                Row(
+                const SizedBox(width: Spacing.xs),
+                // Status badge & appointment time (End in directionality)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.access_time_rounded,
-                      size: Spacing.iconXs,
-                      color: color.onSurfaceVariant,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
+                        vertical: Spacing.xs / 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: color.infoSurface,
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: Spacing.xs + Spacing.border,
+                            height: Spacing.xs + Spacing.border,
+                            decoration: BoxDecoration(
+                              color: color.info,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.xs),
+                          Text(
+                            locale.boxTrackingStatusOnTheWay,
+                            style: getSemiBoldStyle(
+                              color: color.info,
+                              fontSize: FontSize.size11,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: Spacing.xs / 2),
+                    const SizedBox(height: Spacing.xs),
                     Text(
-                      box.deliveryTime,
+                      locale.driverDetailsAppointment,
                       style: getRegularStyle(
                         color: color.onSurfaceVariant,
-                        fontSize: FontSize.size12,
+                        fontSize: FontSize.size10,
+                      ),
+                    ),
+                    Text(
+                      box.deliveryTime,
+                      style: getBoldStyle(
+                        color: color.onSurface,
+                        fontSize: FontSize.size13,
                       ),
                     ),
                   ],
                 ),
               ],
             ),
-          ),
-          const SizedBox(width: Spacing.sm),
-          Image.asset(
-            AppAssets.driverBox3d,
-            width: 72,
-            height: 72,
-            fit: BoxFit.contain,
           ),
         ],
       ),

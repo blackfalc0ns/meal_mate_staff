@@ -39,8 +39,9 @@ void main() {
   }
 
   group('DispatcherBoxTrackingScreen Tests', () {
-    testWidgets('renders all major components and cards in RTL Arabic',
-        (tester) async {
+    testWidgets('renders all major components and cards in RTL Arabic', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
@@ -57,9 +58,17 @@ void main() {
       expect(find.text('في الطريق'), findsOneWidget);
       expect(find.text('حالة البوكس'), findsOneWidget);
       expect(find.text('جاهز في المطعم'), findsOneWidget);
+      expect(find.text('تم تجهيز البوكس وجاهز للاستلام'), findsOneWidget);
       expect(find.text('استلمه السائق'), findsOneWidget);
+      expect(find.text('أحمد السعيد استلم البوكس'), findsOneWidget);
       expect(find.text('في الطريق للتوصيل'), findsOneWidget);
+      expect(find.text('البوكس في طريقه إلى العميل'), findsOneWidget);
       expect(find.text('تم التسليم'), findsOneWidget);
+      expect(
+        find.text('سيفتح السائق كود العميل لتأكيد التسليم'),
+        findsOneWidget,
+      );
+      expect(find.text('الموعد'), findsOneWidget);
       expect(find.text('أحمد السعيد'), findsOneWidget);
       expect(find.text('تتبع مباشر'), findsOneWidget);
       expect(find.text('رسالة'), findsOneWidget);
@@ -107,10 +116,12 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap back button
-      final backButton = find.descendant(
-        of: find.byType(BoxTrackingAppBar),
-        matching: find.byType(IconButton),
-      ).first;
+      final backButton = find
+          .descendant(
+            of: find.byType(BoxTrackingAppBar),
+            matching: find.byType(IconButton),
+          )
+          .first;
       await tester.tap(backButton);
       expect(backCalled, isTrue);
 
@@ -140,8 +151,9 @@ void main() {
       expect(reportCalled, isTrue);
     });
 
-    testWidgets('renders without overflow on narrow viewport (360x720)',
-        (tester) async {
+    testWidgets('renders without overflow on narrow viewport (360x720)', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(360, 720);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() => tester.view.resetPhysicalSize());
@@ -153,8 +165,9 @@ void main() {
       expect(find.byType(DispatcherBoxTrackingScreen), findsOneWidget);
     });
 
-    testWidgets('renders without overflow on extra small viewport (320x640)',
-        (tester) async {
+    testWidgets('renders without overflow on extra small viewport (320x640)', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(320, 640);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() => tester.view.resetPhysicalSize());

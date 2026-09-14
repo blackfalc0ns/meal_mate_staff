@@ -22,34 +22,45 @@ class BoxTrackingDetailsRow extends StatelessWidget {
     final color = context.colorScheme;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (icon != null) ...[
-          Icon(
-            icon,
-            size: Spacing.iconSm,
-            color: color.onSurfaceVariant,
+          Container(
+            width: Spacing.xxl,
+            height: Spacing.xxl,
+            decoration: BoxDecoration(
+              color: color.primaryContainer,
+              borderRadius: BorderRadius.circular(Spacing.radiusSm),
+            ),
+            child: Icon(icon, size: Spacing.iconSm, color: color.primary),
           ),
           const SizedBox(width: Spacing.xs),
         ],
-        Text(
-          label,
-          style: getRegularStyle(
-            color: color.onSurfaceVariant,
-            fontSize: FontSize.size13,
-          ),
-        ),
-        const SizedBox(width: Spacing.sm),
         Expanded(
-          child: Text(
-            value,
-            textAlign: TextAlign.end,
-            style: getSemiBoldStyle(
-              color: color.onSurface,
-              fontSize: FontSize.size13,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: getRegularStyle(
+                  color: color.onSurfaceVariant,
+                  fontSize: FontSize.size11,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: Spacing.xs),
+              Text(
+                value,
+                style: getBoldStyle(
+                  color: color.onSurface,
+                  fontSize: FontSize.size10,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
       ],

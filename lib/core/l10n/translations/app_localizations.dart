@@ -2191,6 +2191,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report an issue with the box'**
   String get boxTrackingReportIssue;
+
+  /// No description provided for @boxTrackingDriverRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get boxTrackingDriverRole;
 }
 
 class _AppLocalizationsDelegate

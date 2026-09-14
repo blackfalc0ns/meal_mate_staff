@@ -18,14 +18,11 @@ class BoxTrackingDetailsCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.cardPadding),
+      padding: const EdgeInsets.all(Spacing.sm),
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,37 +36,46 @@ class BoxTrackingDetailsCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.md),
-          BoxTrackingDetailsRow(
-            label: locale.boxTrackingPlanType,
-            value: box.planType,
-            icon: Icons.restaurant_menu_rounded,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: BoxTrackingDetailsRow(
+                  label: locale.boxTrackingPlanType,
+                  value: box.planType,
+                  icon: Icons.restaurant_rounded,
+                ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              Expanded(
+                child: BoxTrackingDetailsRow(
+                  label: locale.boxTrackingOrderDate,
+                  value: box.orderDate,
+                  icon: Icons.calendar_today_outlined,
+                ),
+              ),
+            ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: Spacing.sm),
-            child: Divider(height: Spacing.border),
-          ),
-          BoxTrackingDetailsRow(
-            label: locale.boxTrackingOrderDate,
-            value: box.orderDate,
-            icon: Icons.calendar_today_outlined,
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: Spacing.sm),
-            child: Divider(height: Spacing.border),
-          ),
-          BoxTrackingDetailsRow(
-            label: locale.boxTrackingMealCount,
-            value: box.mealCount,
-            icon: Icons.lunch_dining_outlined,
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: Spacing.sm),
-            child: Divider(height: Spacing.border),
-          ),
-          BoxTrackingDetailsRow(
-            label: locale.boxTrackingCustomerNotes,
-            value: box.customerNotes,
-            icon: Icons.chat_outlined,
+          const SizedBox(height: Spacing.md),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: BoxTrackingDetailsRow(
+                  label: locale.boxTrackingCustomerNotes,
+                  value: box.customerNotes,
+                  icon: Icons.description_outlined,
+                ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              Expanded(
+                child: BoxTrackingDetailsRow(
+                  label: locale.boxTrackingMealCount,
+                  value: box.mealCount,
+                  icon: Icons.shopping_bag_outlined,
+                ),
+              ),
+            ],
           ),
         ],
       ),

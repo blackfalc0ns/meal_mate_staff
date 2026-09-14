@@ -33,15 +33,12 @@ class DispatcherBoxTrackingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BoxTrackingAppBar(
-        onBack: onBack,
-        onMore: onMore,
-      ),
+      appBar: BoxTrackingAppBar(onBack: onBack, onMore: onMore),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.screenH,
-            vertical: Spacing.sm,
+            vertical: Spacing.screenV,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -490,5 +490,6 @@
   "boxTrackingOrderDate": "Order Date",
   "boxTrackingMealCount": "Meal Count",
   "boxTrackingCustomerNotes": "Customer Notes",
-  "boxTrackingReportIssue": "Report an issue with the box"
+  "boxTrackingReportIssue": "Report an issue with the box",
+  "boxTrackingDriverRole": "Driver"
 }

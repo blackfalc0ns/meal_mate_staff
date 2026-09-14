@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../entities/box_tracking_driver_entity.dart';
 import '../entities/box_tracking_entity.dart';
 import '../entities/box_tracking_step_entity.dart';
@@ -15,25 +17,33 @@ class BoxTrackingFakeData {
   static const List<BoxTrackingStepEntity> defaultSteps = [
     BoxTrackingStepEntity(
       title: 'جاهز في المطعم',
+      description: 'تم تجهيز البوكس وجاهز للاستلام',
       time: 'اليوم 10:15 ص',
+      icon: Icons.storefront_rounded,
       isCompleted: true,
       isActive: false,
     ),
     BoxTrackingStepEntity(
       title: 'استلمه السائق',
+      description: 'أحمد السعيد استلم البوكس',
       time: 'اليوم 10:28 ص',
+      icon: Icons.person_rounded,
       isCompleted: true,
       isActive: false,
     ),
     BoxTrackingStepEntity(
       title: 'في الطريق للتوصيل',
+      description: 'البوكس في طريقه إلى العميل',
       time: 'اليوم 10:45 ص',
+      icon: Icons.local_shipping_rounded,
       isCompleted: false,
       isActive: true,
     ),
     BoxTrackingStepEntity(
       title: 'تم التسليم',
+      description: 'سيفتح السائق كود العميل لتأكيد التسليم',
       time: null,
+      icon: Icons.assignment_turned_in_outlined,
       isCompleted: false,
       isActive: false,
     ),

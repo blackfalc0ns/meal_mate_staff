@@ -22,10 +22,7 @@ class BoxTrackingTimelineCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +43,9 @@ class BoxTrackingTimelineCard extends StatelessWidget {
             itemBuilder: (context, index) {
               return BoxTrackingTimelineStepItem(
                 step: steps[index],
+                isFirst: index == 0,
                 isLast: index == steps.length - 1,
+                prevStepCompleted: index > 0 && steps[index - 1].isCompleted,
               );
             },
           ),

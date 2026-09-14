@@ -1120,4 +1120,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get boxTrackingReportIssue => 'الإبلاغ عن مشكلة في البوكس';
+
+  @override
+  String get boxTrackingDriverRole => 'السائق';
 }

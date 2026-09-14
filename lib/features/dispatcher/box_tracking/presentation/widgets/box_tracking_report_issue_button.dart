@@ -4,7 +4,6 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
-import '../../../../../core/widget/app_button.dart';
 
 class BoxTrackingReportIssueButton extends StatelessWidget {
   const BoxTrackingReportIssueButton({super.key, this.onPressed});
@@ -16,20 +15,50 @@ class BoxTrackingReportIssueButton extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return AppButton(
-      text: locale.boxTrackingReportIssue,
-      onPressed: onPressed,
-      variant: AppButtonVariant.outlined,
-      color: color.error,
-      textColor: color.error,
-      height: Spacing.buttonHeight,
-      borderRadius: Spacing.buttonRadius,
-      icon: Icons.warning_amber_rounded,
-      iconSize: Spacing.iconSm,
-      iconGap: Spacing.xs,
-      textStyle: getSemiBoldStyle(
-        color: color.error,
-        fontSize: FontSize.size14,
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(Spacing.cardRadius),
+      child: Container(
+        height: Spacing.buttonHeight,
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
+        decoration: BoxDecoration(
+          color: color.surface,
+          borderRadius: BorderRadius.circular(Spacing.cardRadius),
+          border: Border.all(
+            color: color.outlineVariant,
+            width: Spacing.border,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: Spacing.lg,
+              height: Spacing.lg,
+              decoration: BoxDecoration(
+                color: color.error,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.info_rounded,
+                size: Spacing.iconXs,
+                color: color.onError,
+              ),
+            ),
+            const SizedBox(width: Spacing.sm),
+            Flexible(
+              child: Text(
+                locale.boxTrackingReportIssue,
+                style: getBoldStyle(
+                  color: color.error,
+                  fontSize: FontSize.size14,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
