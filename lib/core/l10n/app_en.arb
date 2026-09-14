@@ -559,5 +559,21 @@
   "driverFilterSearchHint": "Type driver name or ID...",
   "driverFilterResetAll": "Reset Filters",
   "driverFilterShowResults": "Show Results",
-  "driverFilterShowAllDrivers": "Show all drivers"
+  "driverFilterShowAllDrivers": "Show all drivers",
+  "operationsTitle": "Operations Log",
+  "operationsFilter": "Filter",
+  "operationsSearchPlaceholder": "Search by box number, driver, or customer...",
+  "operationsLast7Days": "Last 7 days",
+  "operationsTabAll": "All",
+  "operationsTabCompleted": "Completed",
+  "operationsTabCancelled": "Cancelled",
+  "operationsTabFailed": "Failed Delivery",
+  "operationsTabReassigned": "Reassigned",
+  "operationsCustomerLabel": "Customer:",
+  "operationsCancelledByRestaurant": "Cancelled by restaurant",
+  "operationsPrevPage": "Previous",
+  "operationsNextPage": "Next",
+  "operationsPageOf": "of",
+  "profileOperationsTitle": "Operations Log",
+  "profileOperationsSubtitle": "View and track past delivery orders and operations"
 }

@@ -2563,6 +2563,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show all drivers'**
   String get driverFilterShowAllDrivers;
+
+  /// No description provided for @operationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations Log'**
+  String get operationsTitle;
+
+  /// No description provided for @operationsFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get operationsFilter;
+
+  /// No description provided for @operationsSearchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by box number, driver, or customer...'**
+  String get operationsSearchPlaceholder;
+
+  /// No description provided for @operationsLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get operationsLast7Days;
+
+  /// No description provided for @operationsTabAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get operationsTabAll;
+
+  /// No description provided for @operationsTabCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get operationsTabCompleted;
+
+  /// No description provided for @operationsTabCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get operationsTabCancelled;
+
+  /// No description provided for @operationsTabFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed Delivery'**
+  String get operationsTabFailed;
+
+  /// No description provided for @operationsTabReassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Reassigned'**
+  String get operationsTabReassigned;
+
+  /// No description provided for @operationsCustomerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer:'**
+  String get operationsCustomerLabel;
+
+  /// No description provided for @operationsCancelledByRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled by restaurant'**
+  String get operationsCancelledByRestaurant;
+
+  /// No description provided for @operationsPrevPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get operationsPrevPage;
+
+  /// No description provided for @operationsNextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get operationsNextPage;
+
+  /// No description provided for @operationsPageOf.
+  ///
+  /// In en, this message translates to:
+  /// **'of'**
+  String get operationsPageOf;
+
+  /// No description provided for @profileOperationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations Log'**
+  String get profileOperationsTitle;
+
+  /// No description provided for @profileOperationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View and track past delivery orders and operations'**
+  String get profileOperationsSubtitle;
 }
 
 class _AppLocalizationsDelegate

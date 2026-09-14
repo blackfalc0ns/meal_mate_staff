@@ -1314,4 +1314,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverFilterShowAllDrivers => 'Show all drivers';
+
+  @override
+  String get operationsTitle => 'Operations Log';
+
+  @override
+  String get operationsFilter => 'Filter';
+
+  @override
+  String get operationsSearchPlaceholder =>
+      'Search by box number, driver, or customer...';
+
+  @override
+  String get operationsLast7Days => 'Last 7 days';
+
+  @override
+  String get operationsTabAll => 'All';
+
+  @override
+  String get operationsTabCompleted => 'Completed';
+
+  @override
+  String get operationsTabCancelled => 'Cancelled';
+
+  @override
+  String get operationsTabFailed => 'Failed Delivery';
+
+  @override
+  String get operationsTabReassigned => 'Reassigned';
+
+  @override
+  String get operationsCustomerLabel => 'Customer:';
+
+  @override
+  String get operationsCancelledByRestaurant => 'Cancelled by restaurant';
+
+  @override
+  String get operationsPrevPage => 'Previous';
+
+  @override
+  String get operationsNextPage => 'Next';
+
+  @override
+  String get operationsPageOf => 'of';
+
+  @override
+  String get profileOperationsTitle => 'Operations Log';
+
+  @override
+  String get profileOperationsSubtitle =>
+      'View and track past delivery orders and operations';
 }

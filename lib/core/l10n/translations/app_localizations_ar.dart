@@ -1310,4 +1310,54 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverFilterShowAllDrivers => 'عرض كل السائقين';
+
+  @override
+  String get operationsTitle => 'سجل العمليات';
+
+  @override
+  String get operationsFilter => 'تصفية';
+
+  @override
+  String get operationsSearchPlaceholder =>
+      'ابحث برقم البوكس، السائق، أو العميل...';
+
+  @override
+  String get operationsLast7Days => 'آخر 7 أيام';
+
+  @override
+  String get operationsTabAll => 'الكل';
+
+  @override
+  String get operationsTabCompleted => 'مكتملة';
+
+  @override
+  String get operationsTabCancelled => 'ملغاة';
+
+  @override
+  String get operationsTabFailed => 'فشل التسليم';
+
+  @override
+  String get operationsTabReassigned => 'معاد إسنادها';
+
+  @override
+  String get operationsCustomerLabel => 'عميل:';
+
+  @override
+  String get operationsCancelledByRestaurant => 'تم الإلغاء من قبل المطعم';
+
+  @override
+  String get operationsPrevPage => 'السابق';
+
+  @override
+  String get operationsNextPage => 'التالي';
+
+  @override
+  String get operationsPageOf => 'من';
+
+  @override
+  String get profileOperationsTitle => 'سجل العمليات';
+
+  @override
+  String get profileOperationsSubtitle =>
+      'عرض ومتابعة سجل طلبات وعمليات التوصيل السابقة';
 }

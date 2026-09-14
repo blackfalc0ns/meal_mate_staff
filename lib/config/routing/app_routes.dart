@@ -27,4 +27,5 @@ class AppRoutes {
   static const String reassignDriver = '/dispatcher-support-reassign-driver';
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
+  static const String dispatcherOperations = '/dispatcher-operations';
 }

@@ -559,5 +559,21 @@
   "driverFilterSearchHint": "اكتب اسم السائق أو ID...",
   "driverFilterResetAll": "إعادة تعيين الفلاتر",
   "driverFilterShowResults": "عرض النتائج",
-  "driverFilterShowAllDrivers": "عرض كل السائقين"
+  "driverFilterShowAllDrivers": "عرض كل السائقين",
+  "operationsTitle": "سجل العمليات",
+  "operationsFilter": "تصفية",
+  "operationsSearchPlaceholder": "ابحث برقم البوكس، السائق، أو العميل...",
+  "operationsLast7Days": "آخر 7 أيام",
+  "operationsTabAll": "الكل",
+  "operationsTabCompleted": "مكتملة",
+  "operationsTabCancelled": "ملغاة",
+  "operationsTabFailed": "فشل التسليم",
+  "operationsTabReassigned": "معاد إسنادها",
+  "operationsCustomerLabel": "عميل:",
+  "operationsCancelledByRestaurant": "تم الإلغاء من قبل المطعم",
+  "operationsPrevPage": "السابق",
+  "operationsNextPage": "التالي",
+  "operationsPageOf": "من",
+  "profileOperationsTitle": "سجل العمليات",
+  "profileOperationsSubtitle": "عرض ومتابعة سجل طلبات وعمليات التوصيل السابقة"
 }
