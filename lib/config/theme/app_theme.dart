@@ -81,9 +81,7 @@ class AppTheme {
       useMaterial3: true,
       fontFamily: FontConstant.alexandria,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: isDark
-          ? AppColors.backgroundDark
-          : AppColors.background,
+
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.transparent,
         centerTitle: true,
