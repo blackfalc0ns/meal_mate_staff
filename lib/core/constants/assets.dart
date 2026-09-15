@@ -4,6 +4,14 @@ class AppAssets {
   static const String _images = 'assets/images';
   static const String _svg = '$_images/svg';
   static const String _authImages = '$_images/auth';
+  static const String _driverImages = '$_images/driver';
+
+  static const String driverFilterIcon = '$_svg/driver_filter_icon.svg';
+  static const String driverGestureTap = '$_svg/driver_gesture_tap.svg';
+  static const String driverBoxLinear = '$_svg/driver_box_linear.svg';
+  static const String driverCheckFill = '$_svg/driver_check_fill.svg';
+  static const String driverAssignedBoxesBanner =
+      '$_driverImages/assigned_boxes_banner.png';
 
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';

@@ -76,6 +76,7 @@ flutter:
   assets:
     - assets/images/auth/
     - assets/images/dispatcher/
+    - assets/images/driver/
     - assets/images/svg/
 
   fonts:
