@@ -575,5 +575,42 @@
   "operationsNextPage": "Next",
   "operationsPageOf": "of",
   "profileOperationsTitle": "Operations Log",
-  "profileOperationsSubtitle": "View and track past delivery orders and operations"
+  "profileOperationsSubtitle": "View and track past delivery orders and operations",
+  "profileDriverPerformanceTitle": "Driver Performance",
+  "profileDriverPerformanceSubtitle": "Monitor driver metrics and delivery performance",
+  "driverPerformanceTitle": "Driver Performance",
+  "driverPerformanceLast7Days": "Last 7 days",
+  "driverPerformanceTabOverview": "Overview",
+  "driverPerformanceTabCompare": "Compare Drivers",
+  "driverPerformanceTotalBoxes": "Total Boxes",
+  "driverPerformanceDelivered": "Delivered",
+  "driverPerformanceAvgDelay": "Avg Delay",
+  "driverPerformanceOverallRating": "Overall Rating",
+  "driverPerformanceDeliveryFailed": "Failed Delivery",
+  "driverPerformanceBoxesUnit": "Boxes",
+  "driverPerformanceMinutesUnit": "min",
+  "driverPerformanceOutOfFive": "out of 5",
+  "driverPerformanceDriversSection": "Driver Performance",
+  "driverPerformanceColDriver": "Driver",
+  "driverPerformanceColDelivered": "Delivered",
+  "driverPerformanceColAvgDelay": "Avg Delay",
+  "driverPerformanceColDeliveryFailed": "Failed Delivery",
+  "driverPerformanceColRating": "Rating",
+  "driverPerformanceMinutesShort": "{minutes}m",
+  "@driverPerformanceMinutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "driverPerformanceDistributionTitle": "Performance Distribution",
+  "driverPerformanceDistributionOrderCol": "Orders",
+  "driverPerformanceDistributionPctCol": "Percentage",
+  "driverPerformanceDistributionCenterSub": "Boxes",
+  "driverPerformanceDistOnTime": "On Time",
+  "driverPerformanceDistLate": "Late",
+  "driverPerformanceDistFailed": "Failed Delivery",
+  "driverPerformanceDistCancelled": "Cancelled",
+  "driverPerformanceTopRatedTitle": "Top Rated Drivers"
 }

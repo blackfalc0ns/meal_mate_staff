@@ -1,0 +1,65 @@
+Group: Group 19787 {'x': 3136.0, 'y': 15069.0, 'width': 72.00018310546875, 'height': 32.0}
+  Sub: Filter معاد إسنادها FRAME {'x': 3136.0, 'y': 15073.0, 'width': 71.0, 'height': 28.0} cr=8.0
+    fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.9850000143051147, 'g': 0.9850000143051147, 'b': 0.9950000047683716, 'a': 1.0}}]
+    strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.8999999761581421, 'g': 0.9100000262260437, 'b': 0.9399999976158142, 'a': 1.0}}]
+    Inner: Label TEXT {'x': 3143.0, 'y': 15082.0, 'width': 56.0, 'height': 10.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.05000000074505806, 'g': 0.05000000074505806, 'b': 0.05999999865889549, 'a': 1.0}}]
+  Sub: Group 19768 GROUP {'x': 3192.84228515625, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+    fills: []
+    strokes: []
+    Inner: Ellipse ELLIPSE {'x': 3192.84228515625, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 0.7799999713897705, 'b': 0.5699999928474426, 'a': 1.0}}]
+    Inner: Count TEXT {'x': 3197.0, 'y': 15073.0, 'width': 7.0, 'height': 8.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 0.44999998807907104, 'b': 0.019999999552965164, 'a': 1.0}}]
+Group: Group 19786 {'x': 3214.000244140625, 'y': 15069.0, 'width': 85.15789794921875, 'height': 32.0}
+  Sub: Filter فشل التسليم FRAME {'x': 3214.000244140625, 'y': 15073.0, 'width': 84.0, 'height': 28.0} cr=8.0
+    fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.9850000143051147, 'g': 0.9850000143051147, 'b': 0.9950000047683716, 'a': 1.0}}]
+    strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.8999999761581421, 'g': 0.9100000262260437, 'b': 0.9399999976158142, 'a': 1.0}}]
+    Inner: Label TEXT {'x': 3228.000244140625, 'y': 15082.0, 'width': 57.0, 'height': 10.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.05000000074505806, 'g': 0.05000000074505806, 'b': 0.05999999865889549, 'a': 1.0}}]
+  Sub: Group 19769 GROUP {'x': 3284.000244140625, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+    fills: []
+    strokes: []
+    Inner: Ellipse ELLIPSE {'x': 3284.000244140625, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.8745098114013672, 'g': 0.16078431904315948, 'b': 0.1568627506494522, 'a': 1.0}}]
+    Inner: Count TEXT {'x': 3290.000244140625, 'y': 15073.0, 'width': 4.0, 'height': 8.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+Group: Group 19785 {'x': 3305.158203125, 'y': 15069.0, 'width': 59.157894134521484, 'height': 32.0}
+  Sub: Filter ملغاة FRAME {'x': 3305.158203125, 'y': 15073.0, 'width': 58.0, 'height': 28.0} cr=8.0
+    fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.9850000143051147, 'g': 0.9850000143051147, 'b': 0.9950000047683716, 'a': 1.0}}]
+    strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.8999999761581421, 'g': 0.9100000262260437, 'b': 0.9399999976158142, 'a': 1.0}}]
+    Inner: Label TEXT {'x': 3322.158203125, 'y': 15082.0, 'width': 25.0, 'height': 10.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.05000000074505806, 'g': 0.05000000074505806, 'b': 0.05999999865889549, 'a': 1.0}}]
+  Sub: Group 19770 GROUP {'x': 3349.158203125, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+    fills: []
+    strokes: []
+    Inner: Ellipse ELLIPSE {'x': 3349.158203125, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.8217977285385132, 'g': 0.0, 'b': 0.013696630485355854, 'a': 1.0}}]
+    Inner: Count TEXT {'x': 3355.158203125, 'y': 15073.0, 'width': 4.0, 'height': 8.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+Group: Group 19784 {'x': 3370.31591796875, 'y': 15069.0, 'width': 62.157894134521484, 'height': 32.0}
+  Sub: Filter مكتملة FRAME {'x': 3370.31591796875, 'y': 15073.0, 'width': 61.0, 'height': 28.0} cr=8.0
+    fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.9850000143051147, 'g': 0.9850000143051147, 'b': 0.9950000047683716, 'a': 1.0}}]
+    strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.8999999761581421, 'g': 0.9100000262260437, 'b': 0.9399999976158142, 'a': 1.0}}]
+    Inner: Label TEXT {'x': 3384.31591796875, 'y': 15082.0, 'width': 32.0, 'height': 10.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.05000000074505806, 'g': 0.05000000074505806, 'b': 0.05999999865889549, 'a': 1.0}}]
+  Sub: Group 19771 GROUP {'x': 3417.31591796875, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+    fills: []
+    strokes: []
+    Inner: Ellipse ELLIPSE {'x': 3417.31591796875, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.0, 'g': 0.6899999976158142, 'b': 0.33000001311302185, 'a': 1.0}}]
+    Inner: Count TEXT {'x': 3421.31591796875, 'y': 15073.0, 'width': 8.0, 'height': 8.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+Group: Group 19783 {'x': 3438.473876953125, 'y': 15069.0, 'width': 57.157894134521484, 'height': 32.0}
+  Sub: Filter الكل FRAME {'x': 3438.473876953125, 'y': 15073.0, 'width': 56.0, 'height': 28.0} cr=8.0
+    fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.36000001430511475, 'g': 0.1599999964237213, 'b': 0.8299999833106995, 'a': 1.0}}]
+    strokes: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.8999999761581421, 'g': 0.9100000262260437, 'b': 0.9399999976158142, 'a': 1.0}}]
+    Inner: Label TEXT {'x': 3457.473876953125, 'y': 15082.0, 'width': 19.0, 'height': 10.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]
+  Sub: Group 19772 GROUP {'x': 3480.473876953125, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+    fills: []
+    strokes: []
+    Inner: Ellipse ELLIPSE {'x': 3480.473876953125, 'y': 15069.0, 'width': 15.1578950881958, 'height': 15.1578950881958} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 0.6868197917938232, 'g': 0.6868197917938232, 'b': 0.6868197917938232, 'a': 1.0}}]
+    Inner: Count TEXT {'x': 3482.631591796875, 'y': 15073.0, 'width': 11.0, 'height': 8.0} cr=None
+      fills: [{'blendMode': 'NORMAL', 'type': 'SOLID', 'color': {'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0}}]

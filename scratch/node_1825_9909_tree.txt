@@ -1,0 +1,278 @@
+10.10 - Operations Log (FRAME, 390.0x844.0)
+  Back (FRAME, 24.0x24.0)
+    Vector (VECTOR, 7.0x14.0)
+  Title (TEXT, 150.0x28.0) -> "سجل العمليات"
+  Group 19767 (GROUP, 56.0x15.0)
+    Group 19782 (GROUP, 56.0x15.0)
+      Filter icon (FRAME, 15.0x15.0)
+        Vector (VECTOR, 11.2x10.0)
+      Filter label (TEXT, 36.0x13.0) -> "تصفية"
+  Search (FRAME, 264.0x30.0)
+    Search icon (FRAME, 22.0x22.0)
+      Vector (VECTOR, 11.9x11.9)
+      Vector (VECTOR, 4.6x4.6)
+    Search placeholder (TEXT, 210.0x20.0) -> "ابحث برقم البوكس، السائق، أو العميل..."
+  Date filter (FRAME, 82.0x30.0)
+    Calendar (FRAME, 16.0x16.0)
+      Vector (VECTOR, 11.6x10.2)
+      Vector (VECTOR, 11.6x4.4)
+    Date text (TEXT, 39.0x11.0) -> "آخر 7 أيام"
+    Date chevron (FRAME, 12.0x12.0)
+      Vector (VECTOR, 6.0x3.0)
+  Frame 21 (FRAME, 359.6x32.0)
+    Group 19787 (GROUP, 72.0x32.0)
+      Filter معاد إسنادها (FRAME, 71.0x28.0)
+        Label (TEXT, 56.0x10.0) -> "معاد إسنادها"
+      Group 19768 (GROUP, 15.2x15.2)
+        Ellipse (ELLIPSE, 15.2x15.2)
+        Count (TEXT, 7.0x8.0) -> "17"
+    Group 19786 (GROUP, 85.2x32.0)
+      Filter فشل التسليم (FRAME, 84.0x28.0)
+        Label (TEXT, 57.0x10.0) -> "فشل التسليم"
+      Group 19769 (GROUP, 15.2x15.2)
+        Ellipse (ELLIPSE, 15.2x15.2)
+        Count (TEXT, 4.0x8.0) -> "7"
+    Group 19785 (GROUP, 59.2x32.0)
+      Filter ملغاة (FRAME, 58.0x28.0)
+        Label (TEXT, 25.0x10.0) -> "ملغاة"
+      Group 19770 (GROUP, 15.2x15.2)
+        Ellipse (ELLIPSE, 15.2x15.2)
+        Count (TEXT, 4.0x8.0) -> "3"
+    Group 19784 (GROUP, 62.2x32.0)
+      Filter مكتملة (FRAME, 61.0x28.0)
+        Label (TEXT, 32.0x10.0) -> "مكتملة"
+      Group 19771 (GROUP, 15.2x15.2)
+        Ellipse (ELLIPSE, 15.2x15.2)
+        Count (TEXT, 8.0x8.0) -> "96"
+    Group 19783 (GROUP, 57.2x32.0)
+      Filter الكل (FRAME, 56.0x28.0)
+        Label (TEXT, 19.0x10.0) -> "الكل"
+      Group 19772 (GROUP, 15.2x15.2)
+        Ellipse (ELLIPSE, 15.2x15.2)
+        Count (TEXT, 11.0x8.0) -> "128"
+  Transaction #BX-10256 (FRAME, 358.0x68.0)
+    Group 19791 (GROUP, 82.0x40.0)
+      Time (TEXT, 61.0x10.0) -> "اليوم • 10:45 ص"
+      Status مكتملة (FRAME, 82.0x23.0)
+        Group 19793 (GROUP, 66.0x17.0)
+          Status icon (FRAME, 15.0x15.0)
+            Vector (VECTOR, 12.0x12.0)
+            Vector (VECTOR, 5.4x3.8)
+          Status text (TEXT, 52.0x15.0) -> "مكتملة"
+    Divider (RECTANGLE, 1.0x40.0)
+    Divider (RECTANGLE, 1.0x40.0)
+    Group 19780 (GROUP, 108.0x32.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 96.0x15.0)
+        Area (TEXT, 96.0x15.0) -> "حي الياسمين، الرياض"
+    Group 19789 (GROUP, 98.0x34.0)
+      Group 19788 (GROUP, 52.0x24.0)
+        Driver name (TEXT, 52.0x10.0) -> "أحمد السعيد"
+        Order id (TEXT, 52.0x11.0) -> "#BX-10256"
+      Group 11 (GROUP, 34.0x34.0)
+        Ellipse 1 (ELLIPSE, 34.0x34.0)
+        Ellipse 28 (ELLIPSE, 6.7x6.7)
+    weui:location-filled (FRAME, 9.0x9.0)
+      Vector (VECTOR, 6.0x7.7)
+  Transaction #BX-10255 (FRAME, 358.0x68.0)
+    Time (TEXT, 61.0x10.0) -> "اليوم • 10:28 ص"
+    Status معاد إسنادها (FRAME, 82.0x23.0)
+    Divider (RECTANGLE, 1.0x40.0)
+    Reassign arrow (FRAME, 18.0x18.0)
+      Vector (VECTOR, 11.0x8.0)
+    To name (TEXT, 62.0x13.0) -> "يوسف خالد"
+    From name (TEXT, 62.0x13.0) -> "فهد المطيري"
+    Group 19780 (GROUP, 112.0x27.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 76.0x10.0)
+        Area (TEXT, 76.0x10.0) -> "حي الياسمين، الرياض"
+      weui:location-filled (FRAME, 9.0x9.0)
+        Vector (VECTOR, 6.0x7.7)
+    Group 19794 (GROUP, 67.0x15.0)
+      Status text (TEXT, 47.0x9.0) -> "معاد إسنادها"
+      flowbite:refresh-outline (FRAME, 15.0x15.0)
+        Vector (VECTOR, 8.8x10.0)
+    Group 11 (GROUP, 34.0x34.0)
+      Ellipse 1 (ELLIPSE, 34.0x34.0)
+      Ellipse 28 (ELLIPSE, 6.7x6.7)
+    Group 19781 (GROUP, 34.0x34.0)
+      Ellipse 1 (ELLIPSE, 34.0x34.0)
+      Ellipse 28 (ELLIPSE, 6.7x6.7)
+  Transaction #BX-10248 (FRAME, 358.0x68.0)
+    Group 19790 (GROUP, 82.0x40.0)
+      Time (TEXT, 64.0x10.0) -> "اليوم • 09:50 ص"
+      Status فشل التسليم (FRAME, 82.0x23.0)
+        Group 19795 (GROUP, 64.0x15.0)
+          Status icon (FRAME, 15.0x15.0)
+            Vector (VECTOR, 12.0x12.0)
+            Vector (VECTOR, 4.5x4.5)
+          Status text (TEXT, 46.0x9.0) -> "فشل التسليم"
+    Divider (RECTANGLE, 1.0x40.0)
+    Divider (RECTANGLE, 1.0x40.0)
+    Group 19780 (GROUP, 108.0x32.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 96.0x15.0)
+        Area (TEXT, 96.0x15.0) -> "حي الياسمين، الرياض"
+    Group 19789 (GROUP, 99.0x34.0)
+      Group 19788 (GROUP, 53.0x24.0)
+        Driver name (TEXT, 53.0x10.0) -> "محمد العنزي"
+        Order id (TEXT, 52.0x11.0) -> "#BX-10256"
+      Group 11 (GROUP, 34.0x34.0)
+        Ellipse 1 (ELLIPSE, 34.0x34.0)
+        Ellipse 28 (ELLIPSE, 6.7x6.7)
+    weui:location-filled (FRAME, 9.0x9.0)
+      Vector (VECTOR, 6.0x7.7)
+  Transaction #BX-10242 (FRAME, 358.0x68.0)
+    Time (TEXT, 56.0x10.0) -> "أمس • 08:15 م"
+    Status مكتملة (FRAME, 82.0x23.0)
+      Group 19796 (GROUP, 67.0x17.0)
+        Status icon (FRAME, 15.0x15.0)
+          Vector (VECTOR, 12.0x12.0)
+          Vector (VECTOR, 5.4x3.8)
+        Status text (TEXT, 52.0x15.0) -> "مكتملة"
+    Divider (RECTANGLE, 1.0x40.0)
+    Divider (RECTANGLE, 1.0x40.0)
+    Group 19780 (GROUP, 108.0x32.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 96.0x15.0)
+        Area (TEXT, 96.0x15.0) -> "حي الياسمين، الرياض"
+    Group 19789 (GROUP, 108.0x34.0)
+      Group 19788 (GROUP, 62.0x24.0)
+        Driver name (TEXT, 62.0x10.0) -> "عبدالله الشهري"
+        Order id (TEXT, 52.0x11.0) -> "#BX-10256"
+      Group 11 (GROUP, 34.0x34.0)
+        Ellipse 1 (ELLIPSE, 34.0x34.0)
+        Ellipse 28 (ELLIPSE, 6.7x6.7)
+    weui:location-filled (FRAME, 9.0x9.0)
+      Vector (VECTOR, 6.0x7.7)
+  Transaction #BX-10241 (FRAME, 358.0x68.0)
+    Time (TEXT, 58.0x10.0) -> "أمس • 06:40 م"
+    Status ملغاة (FRAME, 82.0x23.0)
+      Group 19797 (GROUP, 52.0x15.0)
+        Status icon (FRAME, 15.0x15.0)
+          Vector (VECTOR, 12.0x12.0)
+          Vector (VECTOR, 6.0x0.0)
+        Status text (TEXT, 24.0x10.0) -> "ملغاة"
+    Divider (RECTANGLE, 1.0x40.0)
+    Store (FRAME, 38.0x38.0)
+      Vector (VECTOR, 28.5x25.3)
+      Vector (VECTOR, 28.5x2.4)
+    Cancel text (TEXT, 63.0x17.0) -> "تم الإلغاء من قبل المطعم"
+    Divider (RECTANGLE, 1.0x40.0)
+    Group 19780 (GROUP, 108.0x32.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 96.0x15.0)
+        Area (TEXT, 96.0x15.0) -> "حي الياسمين، الرياض"
+    weui:location-filled (FRAME, 9.0x9.0)
+      Vector (VECTOR, 6.0x7.7)
+  Transaction #BX-10237 (FRAME, 358.0x68.0)
+    Time (TEXT, 58.0x10.0) -> "أمس • 05:20 م"
+    Status معاد إسنادها (FRAME, 82.0x23.0)
+    Divider (RECTANGLE, 1.0x40.0)
+    Group 19798 (GROUP, 68.0x15.0)
+      Status text (TEXT, 46.0x9.0) -> "معاد إسنادها"
+      flowbite:refresh-outline (FRAME, 15.0x15.0)
+        Vector (VECTOR, 8.8x10.0)
+    Reassign arrow (FRAME, 18.0x18.0)
+      Vector (VECTOR, 11.0x8.0)
+    To name (TEXT, 62.0x13.0) -> "يوسف خالد"
+    From name (TEXT, 62.0x13.0) -> "فهد المطيري"
+    Group 19780 (GROUP, 112.0x27.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 76.0x10.0)
+        Area (TEXT, 76.0x10.0) -> "حي الياسمين، الرياض"
+      weui:location-filled (FRAME, 9.0x9.0)
+        Vector (VECTOR, 6.0x7.7)
+    Group 11 (GROUP, 34.0x34.0)
+      Ellipse 1 (ELLIPSE, 34.0x34.0)
+      Ellipse 28 (ELLIPSE, 6.7x6.7)
+    Group 19781 (GROUP, 34.0x34.0)
+      Ellipse 1 (ELLIPSE, 34.0x34.0)
+      Ellipse 28 (ELLIPSE, 6.7x6.7)
+  Transaction #BX-10230 (FRAME, 358.0x68.0)
+    Time (TEXT, 58.0x10.0) -> "أمس • 03:05 م"
+    Status مكتملة (FRAME, 82.0x23.0)
+      Group 19799 (GROUP, 70.0x18.0)
+        Status icon (FRAME, 15.0x15.0)
+          Vector (VECTOR, 12.0x12.0)
+          Vector (VECTOR, 5.4x3.8)
+        Status text (TEXT, 52.0x15.0) -> "مكتملة"
+    Divider (RECTANGLE, 1.0x40.0)
+    Divider (RECTANGLE, 1.0x40.0)
+    Group 19780 (GROUP, 108.0x32.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 96.0x15.0)
+        Area (TEXT, 96.0x15.0) -> "حي الياسمين، الرياض"
+    Group 19789 (GROUP, 98.0x34.0)
+      Group 19788 (GROUP, 52.0x24.0)
+        Driver name (TEXT, 45.0x10.0) -> "يوسف خالد"
+        Order id (TEXT, 52.0x11.0) -> "#BX-10256"
+      Group 11 (GROUP, 34.0x34.0)
+        Ellipse 1 (ELLIPSE, 34.0x34.0)
+        Ellipse 28 (ELLIPSE, 6.7x6.7)
+    weui:location-filled (FRAME, 9.0x9.0)
+      Vector (VECTOR, 6.0x7.7)
+  Transaction #BX-10228 (FRAME, 358.0x68.0)
+    Time (TEXT, 59.0x10.0) -> "6/08 • 11:30 ص"
+    Status فشل التسليم (FRAME, 82.0x23.0)
+      Group 19800 (GROUP, 65.0x15.0)
+        Status icon (FRAME, 15.0x15.0)
+          Vector (VECTOR, 12.0x12.0)
+          Vector (VECTOR, 4.5x4.5)
+        Status text (TEXT, 46.0x9.0) -> "فشل التسليم"
+    Divider (RECTANGLE, 1.0x40.0)
+    Divider (RECTANGLE, 1.0x40.0)
+    Group 19780 (GROUP, 108.0x32.0)
+      Customer (TEXT, 108.0x16.0) -> "عميل: أحمد العتيبي"
+      Group 19775 (GROUP, 96.0x15.0)
+        Area (TEXT, 96.0x15.0) -> "حي الياسمين، الرياض"
+    Group 19789 (GROUP, 98.0x34.0)
+      Group 19788 (GROUP, 52.0x24.0)
+        Driver name (TEXT, 52.0x10.0) -> "أحمد السعيد"
+        Order id (TEXT, 52.0x11.0) -> "#BX-10256"
+      Group 11 (GROUP, 34.0x34.0)
+        Ellipse 1 (ELLIPSE, 34.0x34.0)
+        Ellipse 28 (ELLIPSE, 6.7x6.7)
+    weui:location-filled (FRAME, 9.0x9.0)
+      Vector (VECTOR, 6.0x7.7)
+  Pagination (FRAME, 358.0x40.0)
+    Previous (FRAME, 86.0x28.0)
+      Prev chevron (FRAME, 18.0x18.0)
+        Vector (VECTOR, 5.0x10.0)
+      Previous text (TEXT, 54.0x15.0) -> "السابق"
+    Page (TEXT, 62.0x18.0) -> "1 من 13"
+    Next (FRAME, 74.0x28.0)
+      Next chevron (FRAME, 18.0x18.0)
+        Vector (VECTOR, 5.0x10.0)
+      Next text (TEXT, 42.0x15.0) -> "التالي"
+  Group 19773 (GROUP, 18.0x522.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+    Chevron (FRAME, 18.0x18.0)
+      Vector (VECTOR, 5.0x10.0)
+  Status bar (INSTANCE, 389.0x62.0)
+    Time (FRAME, 93.5x22.0)
+      Time (TEXT, 37.0x22.0) -> "9:41"
+    Levels (FRAME, 93.5x22.0)
+      Cellular Connection (VECTOR, 19.2x12.2)
+      Wifi (VECTOR, 17.1x12.3)
+      Frame (FRAME, 27.3x13.0)
+        Border (RECTANGLE, 25.0x13.0)
+        Cap (VECTOR, 1.3x4.1)
+        Capacity (RECTANGLE, 21.0x9.0)
+  Order id (TEXT, 40.0x9.0) -> "#BX-10256"
+  Order id (TEXT, 40.0x9.0) -> "#BX-10256"
+  Order id (TEXT, 40.0x9.0) -> "#BX-10256"
+  Order id (TEXT, 40.0x9.0) -> "#BX-10256"

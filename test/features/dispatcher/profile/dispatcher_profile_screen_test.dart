@@ -9,6 +9,7 @@ import 'package:meal_mate_delivery/features/dispatcher/operations/presentation/s
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_admin_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_app_info_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_driver_performance_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_logout_button.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_notification_settings_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/profile/presentation/widgets/dispatcher_profile_operations_card.dart';
@@ -186,6 +187,29 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(DispatcherOperationsScreen), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'tapping driver performance card navigates to DispatcherDriverPerformanceScreen',
+      (tester) async {
+        tester.view.physicalSize = const Size(390 * 2, 870 * 2);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
+
+        await tester.pumpWidget(
+          _buildTestableWidget(child: const DispatcherProfileScreen()),
+        );
+        await tester.pumpAndSettle();
+
+        final performanceCard =
+            find.byType(DispatcherProfileDriverPerformanceCard);
+        expect(performanceCard, findsOneWidget);
+
+        await tester.tap(performanceCard);
+        await tester.pumpAndSettle();
+
+        expect(find.text('أداء السائقين'), findsWidgets);
       },
     );
   });

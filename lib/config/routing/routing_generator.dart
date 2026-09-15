@@ -16,6 +16,7 @@ import '../../features/dispatcher/box_tracking/presentation/screens/dispatcher_b
 import '../../features/dispatcher/driver_details/domain/entities/driver_details_entity.dart';
 import '../../features/dispatcher/driver_details/domain/fake_data/driver_details_fake_data.dart';
 import '../../features/dispatcher/driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
+import '../../features/dispatcher/driver_performance/presentation/screens/dispatcher_driver_performance_screen.dart';
 import '../../features/dispatcher/drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import '../../features/dispatcher/home/presentation/screens/dispatcher_home_screen.dart';
 import '../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
@@ -101,6 +102,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DispatcherDriversScreen(),
+        );
+
+      case AppRoutes.dispatcherDriverPerformance:
+        return _buildRoute(
+          settings: settings,
+          page: const DispatcherDriverPerformanceScreen(),
         );
 
       case AppRoutes.dispatcherMap:

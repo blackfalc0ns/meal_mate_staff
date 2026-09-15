@@ -28,4 +28,6 @@ class AppRoutes {
   static const String appShell = '/app-shell';
   static const String home = '/app-shell';
   static const String dispatcherOperations = '/dispatcher-operations';
+  static const String dispatcherDriverPerformance =
+      '/dispatcher-driver-performance';
 }

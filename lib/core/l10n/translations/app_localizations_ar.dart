@@ -1360,4 +1360,97 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get profileOperationsSubtitle =>
       'عرض ومتابعة سجل طلبات وعمليات التوصيل السابقة';
+
+  @override
+  String get profileDriverPerformanceTitle => 'أداء السائقين';
+
+  @override
+  String get profileDriverPerformanceSubtitle =>
+      'متابعة وتقييم أداء السائقين ومؤشرات التوصيل';
+
+  @override
+  String get driverPerformanceTitle => 'أداء السائقين';
+
+  @override
+  String get driverPerformanceLast7Days => 'آخر 7 أيام';
+
+  @override
+  String get driverPerformanceTabOverview => 'نظرة عامة';
+
+  @override
+  String get driverPerformanceTabCompare => 'مقارنة السائقين';
+
+  @override
+  String get driverPerformanceTotalBoxes => 'إجمالي البوكسات';
+
+  @override
+  String get driverPerformanceDelivered => 'تم التوصيل';
+
+  @override
+  String get driverPerformanceAvgDelay => 'متوسط التأخير';
+
+  @override
+  String get driverPerformanceOverallRating => 'تقييم الأداء العام';
+
+  @override
+  String get driverPerformanceDeliveryFailed => 'فشل التسليم';
+
+  @override
+  String get driverPerformanceBoxesUnit => 'بوكس';
+
+  @override
+  String get driverPerformanceMinutesUnit => 'دقيقة';
+
+  @override
+  String get driverPerformanceOutOfFive => 'من 5';
+
+  @override
+  String get driverPerformanceDriversSection => 'أداء السائقين';
+
+  @override
+  String get driverPerformanceColDriver => 'السائق';
+
+  @override
+  String get driverPerformanceColDelivered => 'تم التوصيل';
+
+  @override
+  String get driverPerformanceColAvgDelay => 'متوسط التأخير';
+
+  @override
+  String get driverPerformanceColDeliveryFailed => 'فشل التسليم';
+
+  @override
+  String get driverPerformanceColRating => 'التقييم';
+
+  @override
+  String driverPerformanceMinutesShort(int minutes) {
+    return '$minutes د';
+  }
+
+  @override
+  String get driverPerformanceDistributionTitle => 'توزيع الأداء';
+
+  @override
+  String get driverPerformanceDistributionOrderCol => 'طلب';
+
+  @override
+  String get driverPerformanceDistributionPctCol => 'نسبة مئوية';
+
+  @override
+  String get driverPerformanceDistributionCenterSub => 'البوكسات';
+
+  @override
+  String get driverPerformanceDistOnTime => 'تم في الوقت';
+
+  @override
+  String get driverPerformanceDistLate => 'متأخر';
+
+  @override
+  String get driverPerformanceDistFailed => 'فشل التسليم';
+
+  @override
+  String get driverPerformanceDistCancelled => 'ملغي';
+
+  @override
+  String get driverPerformanceTopRatedTitle => 'أعلى السائقين تقييماً';
 }

@@ -1,0 +1,4 @@
+enum DriverPerformanceTabType {
+  overview,
+  compareDrivers,
+}

@@ -575,5 +575,42 @@
   "operationsNextPage": "التالي",
   "operationsPageOf": "من",
   "profileOperationsTitle": "سجل العمليات",
-  "profileOperationsSubtitle": "عرض ومتابعة سجل طلبات وعمليات التوصيل السابقة"
+  "profileOperationsSubtitle": "عرض ومتابعة سجل طلبات وعمليات التوصيل السابقة",
+  "profileDriverPerformanceTitle": "أداء السائقين",
+  "profileDriverPerformanceSubtitle": "متابعة وتقييم أداء السائقين ومؤشرات التوصيل",
+  "driverPerformanceTitle": "أداء السائقين",
+  "driverPerformanceLast7Days": "آخر 7 أيام",
+  "driverPerformanceTabOverview": "نظرة عامة",
+  "driverPerformanceTabCompare": "مقارنة السائقين",
+  "driverPerformanceTotalBoxes": "إجمالي البوكسات",
+  "driverPerformanceDelivered": "تم التوصيل",
+  "driverPerformanceAvgDelay": "متوسط التأخير",
+  "driverPerformanceOverallRating": "تقييم الأداء العام",
+  "driverPerformanceDeliveryFailed": "فشل التسليم",
+  "driverPerformanceBoxesUnit": "بوكس",
+  "driverPerformanceMinutesUnit": "دقيقة",
+  "driverPerformanceOutOfFive": "من 5",
+  "driverPerformanceDriversSection": "أداء السائقين",
+  "driverPerformanceColDriver": "السائق",
+  "driverPerformanceColDelivered": "تم التوصيل",
+  "driverPerformanceColAvgDelay": "متوسط التأخير",
+  "driverPerformanceColDeliveryFailed": "فشل التسليم",
+  "driverPerformanceColRating": "التقييم",
+  "driverPerformanceMinutesShort": "{minutes} د",
+  "@driverPerformanceMinutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "driverPerformanceDistributionTitle": "توزيع الأداء",
+  "driverPerformanceDistributionOrderCol": "طلب",
+  "driverPerformanceDistributionPctCol": "نسبة مئوية",
+  "driverPerformanceDistributionCenterSub": "البوكسات",
+  "driverPerformanceDistOnTime": "تم في الوقت",
+  "driverPerformanceDistLate": "متأخر",
+  "driverPerformanceDistFailed": "فشل التسليم",
+  "driverPerformanceDistCancelled": "ملغي",
+  "driverPerformanceTopRatedTitle": "أعلى السائقين تقييماً"
 }

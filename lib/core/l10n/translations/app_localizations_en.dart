@@ -1364,4 +1364,97 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profileOperationsSubtitle =>
       'View and track past delivery orders and operations';
+
+  @override
+  String get profileDriverPerformanceTitle => 'Driver Performance';
+
+  @override
+  String get profileDriverPerformanceSubtitle =>
+      'Monitor driver metrics and delivery performance';
+
+  @override
+  String get driverPerformanceTitle => 'Driver Performance';
+
+  @override
+  String get driverPerformanceLast7Days => 'Last 7 days';
+
+  @override
+  String get driverPerformanceTabOverview => 'Overview';
+
+  @override
+  String get driverPerformanceTabCompare => 'Compare Drivers';
+
+  @override
+  String get driverPerformanceTotalBoxes => 'Total Boxes';
+
+  @override
+  String get driverPerformanceDelivered => 'Delivered';
+
+  @override
+  String get driverPerformanceAvgDelay => 'Avg Delay';
+
+  @override
+  String get driverPerformanceOverallRating => 'Overall Rating';
+
+  @override
+  String get driverPerformanceDeliveryFailed => 'Failed Delivery';
+
+  @override
+  String get driverPerformanceBoxesUnit => 'Boxes';
+
+  @override
+  String get driverPerformanceMinutesUnit => 'min';
+
+  @override
+  String get driverPerformanceOutOfFive => 'out of 5';
+
+  @override
+  String get driverPerformanceDriversSection => 'Driver Performance';
+
+  @override
+  String get driverPerformanceColDriver => 'Driver';
+
+  @override
+  String get driverPerformanceColDelivered => 'Delivered';
+
+  @override
+  String get driverPerformanceColAvgDelay => 'Avg Delay';
+
+  @override
+  String get driverPerformanceColDeliveryFailed => 'Failed Delivery';
+
+  @override
+  String get driverPerformanceColRating => 'Rating';
+
+  @override
+  String driverPerformanceMinutesShort(int minutes) {
+    return '${minutes}m';
+  }
+
+  @override
+  String get driverPerformanceDistributionTitle => 'Performance Distribution';
+
+  @override
+  String get driverPerformanceDistributionOrderCol => 'Orders';
+
+  @override
+  String get driverPerformanceDistributionPctCol => 'Percentage';
+
+  @override
+  String get driverPerformanceDistributionCenterSub => 'Boxes';
+
+  @override
+  String get driverPerformanceDistOnTime => 'On Time';
+
+  @override
+  String get driverPerformanceDistLate => 'Late';
+
+  @override
+  String get driverPerformanceDistFailed => 'Failed Delivery';
+
+  @override
+  String get driverPerformanceDistCancelled => 'Cancelled';
+
+  @override
+  String get driverPerformanceTopRatedTitle => 'Top Rated Drivers';
 }

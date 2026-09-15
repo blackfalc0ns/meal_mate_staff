@@ -2659,6 +2659,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View and track past delivery orders and operations'**
   String get profileOperationsSubtitle;
+
+  /// No description provided for @profileDriverPerformanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Performance'**
+  String get profileDriverPerformanceTitle;
+
+  /// No description provided for @profileDriverPerformanceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor driver metrics and delivery performance'**
+  String get profileDriverPerformanceSubtitle;
+
+  /// No description provided for @driverPerformanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Performance'**
+  String get driverPerformanceTitle;
+
+  /// No description provided for @driverPerformanceLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get driverPerformanceLast7Days;
+
+  /// No description provided for @driverPerformanceTabOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get driverPerformanceTabOverview;
+
+  /// No description provided for @driverPerformanceTabCompare.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Drivers'**
+  String get driverPerformanceTabCompare;
+
+  /// No description provided for @driverPerformanceTotalBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Boxes'**
+  String get driverPerformanceTotalBoxes;
+
+  /// No description provided for @driverPerformanceDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get driverPerformanceDelivered;
+
+  /// No description provided for @driverPerformanceAvgDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Delay'**
+  String get driverPerformanceAvgDelay;
+
+  /// No description provided for @driverPerformanceOverallRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Rating'**
+  String get driverPerformanceOverallRating;
+
+  /// No description provided for @driverPerformanceDeliveryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed Delivery'**
+  String get driverPerformanceDeliveryFailed;
+
+  /// No description provided for @driverPerformanceBoxesUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes'**
+  String get driverPerformanceBoxesUnit;
+
+  /// No description provided for @driverPerformanceMinutesUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get driverPerformanceMinutesUnit;
+
+  /// No description provided for @driverPerformanceOutOfFive.
+  ///
+  /// In en, this message translates to:
+  /// **'out of 5'**
+  String get driverPerformanceOutOfFive;
+
+  /// No description provided for @driverPerformanceDriversSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Performance'**
+  String get driverPerformanceDriversSection;
+
+  /// No description provided for @driverPerformanceColDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get driverPerformanceColDriver;
+
+  /// No description provided for @driverPerformanceColDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get driverPerformanceColDelivered;
+
+  /// No description provided for @driverPerformanceColAvgDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Delay'**
+  String get driverPerformanceColAvgDelay;
+
+  /// No description provided for @driverPerformanceColDeliveryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed Delivery'**
+  String get driverPerformanceColDeliveryFailed;
+
+  /// No description provided for @driverPerformanceColRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get driverPerformanceColRating;
+
+  /// No description provided for @driverPerformanceMinutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m'**
+  String driverPerformanceMinutesShort(int minutes);
+
+  /// No description provided for @driverPerformanceDistributionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance Distribution'**
+  String get driverPerformanceDistributionTitle;
+
+  /// No description provided for @driverPerformanceDistributionOrderCol.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get driverPerformanceDistributionOrderCol;
+
+  /// No description provided for @driverPerformanceDistributionPctCol.
+  ///
+  /// In en, this message translates to:
+  /// **'Percentage'**
+  String get driverPerformanceDistributionPctCol;
+
+  /// No description provided for @driverPerformanceDistributionCenterSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes'**
+  String get driverPerformanceDistributionCenterSub;
+
+  /// No description provided for @driverPerformanceDistOnTime.
+  ///
+  /// In en, this message translates to:
+  /// **'On Time'**
+  String get driverPerformanceDistOnTime;
+
+  /// No description provided for @driverPerformanceDistLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get driverPerformanceDistLate;
+
+  /// No description provided for @driverPerformanceDistFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed Delivery'**
+  String get driverPerformanceDistFailed;
+
+  /// No description provided for @driverPerformanceDistCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get driverPerformanceDistCancelled;
+
+  /// No description provided for @driverPerformanceTopRatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Rated Drivers'**
+  String get driverPerformanceTopRatedTitle;
 }
 
 class _AppLocalizationsDelegate

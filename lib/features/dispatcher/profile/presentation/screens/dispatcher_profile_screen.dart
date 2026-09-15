@@ -10,6 +10,7 @@ import '../../domain/entities/dispatcher_profile_entity.dart';
 import '../../domain/fake_data/dispatcher_profile_fake_data.dart';
 import '../widgets/dispatcher_profile_admin_card.dart';
 import '../widgets/dispatcher_profile_app_info_card.dart';
+import '../widgets/dispatcher_profile_driver_performance_card.dart';
 import '../widgets/dispatcher_profile_logout_button.dart';
 import '../widgets/dispatcher_profile_notification_settings_card.dart';
 import '../widgets/dispatcher_profile_operations_card.dart';
@@ -118,6 +119,11 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
               DispatcherProfileOperationsCard(
                 onTap: () =>
                     context.pushNamed(AppRoutes.dispatcherOperations),
+              ),
+              const SizedBox(height: Spacing.md),
+              DispatcherProfileDriverPerformanceCard(
+                onTap: () =>
+                    context.pushNamed(AppRoutes.dispatcherDriverPerformance),
               ),
               const SizedBox(height: Spacing.md),
               DispatcherProfileNotificationSettingsCard(
