@@ -4,50 +4,99 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../domain/entities/driver_box_delivery_status.dart';
 
 class DriverBoxIconBadge extends StatelessWidget {
   const DriverBoxIconBadge({
     super.key,
-    required this.isLoaded,
+    this.status = DriverBoxDeliveryStatus.ready,
+    this.isLoaded,
   });
 
-  final bool isLoaded;
+  final DriverBoxDeliveryStatus status;
+  final bool? isLoaded;
 
-  static const double _width = 46;
-  static const double _height = 48;
+  static const double _size = Spacing.buttonHeight;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final effectiveStatus = status;
+
+    final Color bgColor;
+    final Color iconColor;
+    Widget? badge;
+
+    switch (effectiveStatus) {
+      case DriverBoxDeliveryStatus.notLoaded:
+      case DriverBoxDeliveryStatus.ready:
+        bgColor = color.primaryContainer;
+        iconColor = color.primary;
+        badge = null;
+        break;
+      case DriverBoxDeliveryStatus.delivered:
+        bgColor = color.tertiaryContainer;
+        iconColor = color.tertiary;
+        badge = Container(
+          width: Spacing.iconSm,
+          height: Spacing.iconSm,
+          decoration: BoxDecoration(
+            color: color.tertiary,
+            shape: BoxShape.circle,
+          ),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.check,
+            size: Spacing.iconXs - 3,
+            color: color.surface,
+          ),
+        );
+        break;
+      case DriverBoxDeliveryStatus.failed:
+        bgColor = color.errorContainer;
+        iconColor = color.error;
+        badge = Container(
+          width: Spacing.iconSm,
+          height: Spacing.iconSm,
+          decoration: BoxDecoration(
+            color: color.error,
+            shape: BoxShape.circle,
+          ),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.close,
+            size: Spacing.iconXs - 3,
+            color: color.surface,
+          ),
+        );
+        break;
+    }
 
     return Container(
-      width: _width,
-      height: _height,
+      width: _size,
+      height: _size,
       decoration: BoxDecoration(
-        color: isLoaded ? color.tertiaryContainer : color.primaryContainer,
+        color: bgColor,
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
       ),
       child: Stack(
         alignment: Alignment.center,
+        clipBehavior: Clip.none,
         children: [
           SvgPicture.asset(
             AppAssets.driverBoxLinear,
-            width: Spacing.iconMd,
-            height: Spacing.iconMd,
+            width: Spacing.registrationDocumentUploadIcon,
+            height: Spacing.registrationDocumentUploadIcon,
             colorFilter: ColorFilter.mode(
-              isLoaded ? color.tertiary : color.primary,
+              iconColor,
               BlendMode.srcIn,
             ),
           ),
-          if (isLoaded)
+          if (badge != null)
             PositionedDirectional(
-              top: Spacing.xs,
-              end: Spacing.xs,
-              child: SvgPicture.asset(
-                AppAssets.driverCheckFill,
-                width: Spacing.iconXs,
-                height: Spacing.iconXs,
-              ),
+              top: -Spacing.xs,
+              start: -Spacing.xs,
+              child: badge,
             ),
         ],
       ),

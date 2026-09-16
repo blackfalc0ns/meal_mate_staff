@@ -25,12 +25,10 @@ class DriverBoxesFilterBar extends StatelessWidget {
 
     return Row(
       children: [
-        DriverBoxesFilterActionButton(onTap: onFilterActionTap),
-        const SizedBox(width: Spacing.sm),
         Expanded(
           child: Container(
-            height: 38,
-            padding: const EdgeInsets.all(Spacing.hairline * 6),
+            height: Spacing.dispatcherMapButtonHeight,
+            padding: const EdgeInsets.all(Spacing.xs),
             decoration: BoxDecoration(
               color: color.surface,
               borderRadius: BorderRadius.circular(Spacing.radiusSm),
@@ -42,24 +40,28 @@ class DriverBoxesFilterBar extends StatelessWidget {
             child: Row(
               children: [
                 DriverBoxesFilterTabItem(
-                  title: locale.driverBoxesFilterLoaded,
-                  isSelected: selectedFilter == DriverBoxesFilterType.loaded,
-                  onTap: () => onFilterChanged(DriverBoxesFilterType.loaded),
-                ),
-                DriverBoxesFilterTabItem(
-                  title: locale.driverBoxesFilterNotLoaded,
-                  isSelected: selectedFilter == DriverBoxesFilterType.notLoaded,
-                  onTap: () => onFilterChanged(DriverBoxesFilterType.notLoaded),
-                ),
-                DriverBoxesFilterTabItem(
                   title: locale.driverBoxesFilterAll,
                   isSelected: selectedFilter == DriverBoxesFilterType.all,
                   onTap: () => onFilterChanged(DriverBoxesFilterType.all),
+                ),
+                DriverBoxesFilterTabItem(
+                  title: locale.driverBoxesFilterReadyForDelivery,
+                  isSelected:
+                      selectedFilter == DriverBoxesFilterType.readyForDelivery,
+                  onTap: () =>
+                      onFilterChanged(DriverBoxesFilterType.readyForDelivery),
+                ),
+                DriverBoxesFilterTabItem(
+                  title: locale.driverBoxesFilterDelivered,
+                  isSelected: selectedFilter == DriverBoxesFilterType.delivered,
+                  onTap: () => onFilterChanged(DriverBoxesFilterType.delivered),
                 ),
               ],
             ),
           ),
         ),
+        const SizedBox(width: Spacing.sm),
+        DriverBoxesFilterActionButton(onTap: onFilterActionTap),
       ],
     );
   }

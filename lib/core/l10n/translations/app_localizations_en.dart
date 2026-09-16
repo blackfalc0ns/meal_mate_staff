@@ -1505,4 +1505,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverBoxCopiedToClipboard => 'Box ID copied to clipboard';
+
+  @override
+  String get driverBoxesFilterReadyForDelivery => 'Ready for delivery';
+
+  @override
+  String get driverBoxesFilterDelivered => 'Delivered';
+
+  @override
+  String get driverStatusReadyForDelivery => 'Ready for delivery';
+
+  @override
+  String get driverStatusIssueOccurred => 'Problem occurred';
+
+  @override
+  String get driverActionStartDelivery => 'Start delivery';
+
+  @override
+  String get driverActionDelivered => 'Delivered';
+
+  @override
+  String get driverActionDeliveryFailed => 'Delivery failed';
 }

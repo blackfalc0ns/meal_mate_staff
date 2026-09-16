@@ -33,58 +33,9 @@ class DriverBoxesStatsBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Illustration on logical start or end (in Figma illustration is at x=634 in 609-999 RTL frame, so Logical End)
-          Image.asset(
-            AppAssets.driverAssignedBoxesBanner,
-            width: 80,
-            height: 76,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(width: Spacing.sm),
           Expanded(
             child: Row(
               children: [
-                // Total Boxes Column
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        locale.driverTotalBoxesToday,
-                        style: getRegularStyle(
-                          color: color.onPrimary.withValues(alpha: 0.8),
-                          fontSize: FontSize.size9,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        '$totalBoxes',
-                        style: getBoldStyle(
-                          color: color.onPrimary,
-                          fontSize: FontSize.size22,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        locale.driverBoxesUnit,
-                        style: getRegularStyle(
-                          color: color.onPrimary.withValues(alpha: 0.8),
-                          fontSize: FontSize.size9,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Subtle Divider
-                Container(
-                  width: Spacing.border,
-                  height: 52,
-                  color: color.onPrimary.withValues(alpha: 0.2),
-                ),
                 // Total Meals Column
                 Expanded(
                   child: Column(
@@ -120,8 +71,57 @@ class DriverBoxesStatsBanner extends StatelessWidget {
                     ],
                   ),
                 ),
+                // Subtle Divider
+                Container(
+                  width: Spacing.border,
+                  height: Spacing.buttonHeight,
+                  color: color.onPrimary.withValues(alpha: 0.2),
+                ),
+                // Total Boxes Column
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        locale.driverTotalBoxesToday,
+                        style: getRegularStyle(
+                          color: color.onPrimary.withValues(alpha: 0.8),
+                          fontSize: FontSize.size9,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        '$totalBoxes',
+                        style: getBoldStyle(
+                          color: color.onPrimary,
+                          fontSize: FontSize.size22,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        locale.driverBoxesUnit,
+                        style: getRegularStyle(
+                          color: color.onPrimary.withValues(alpha: 0.8),
+                          fontSize: FontSize.size9,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
+          ),
+          const SizedBox(width: Spacing.sm),
+          // Illustration on logical end (left in RTL)
+          Image.asset(
+            AppAssets.driverAssignedBoxesBanner,
+            width: 80,
+            height: 76,
+            fit: BoxFit.contain,
           ),
         ],
       ),

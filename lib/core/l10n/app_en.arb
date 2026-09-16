@@ -628,5 +628,12 @@
   "driverStatusNotLoaded": "Not Loaded",
   "driverStatusLoaded": "Loaded",
   "driverCompleteAction": "Complete\nAction",
-  "driverBoxCopiedToClipboard": "Box ID copied to clipboard"
+  "driverBoxCopiedToClipboard": "Box ID copied to clipboard",
+  "driverBoxesFilterReadyForDelivery": "Ready for delivery",
+  "driverBoxesFilterDelivered": "Delivered",
+  "driverStatusReadyForDelivery": "Ready for delivery",
+  "driverStatusIssueOccurred": "Problem occurred",
+  "driverActionStartDelivery": "Start delivery",
+  "driverActionDelivered": "Delivered",
+  "driverActionDeliveryFailed": "Delivery failed"
 }

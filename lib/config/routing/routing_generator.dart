@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../core/app_shell/screens/app_shell_screen.dart';
 import '../../features/account_status/domain/account_status_kind.dart';
@@ -208,9 +208,15 @@ class RouteGenerator {
         );
 
       case AppRoutes.driverAssignedBoxes:
+        final withoutShell = settings.arguments == false;
         return _buildRoute(
           settings: settings,
-          page: const DriverAssignedBoxesScreen(),
+          page: withoutShell
+              ? const DriverAssignedBoxesScreen()
+              : const AppShellScreen(
+                  role: UserRole.driver,
+                  initialIndex: 0,
+                ),
         );
 
       default:

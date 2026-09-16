@@ -63,9 +63,9 @@ class _AppShellScreenState extends State<AppShellScreen> {
       return [
         const DriverAssignedBoxesScreen(),
         const DriverAssignedBoxesScreen(),
-        const DispatcherMapScreen(),
-        const DispatcherSupportScreen(),
-        const DispatcherProfileScreen(showBackButton: false),
+        const Text("Map"),
+        const Text("Support"),
+        const Text("Profile"),
       ];
     }
     return [

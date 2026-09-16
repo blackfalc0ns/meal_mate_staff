@@ -23,23 +23,23 @@ class DriverAssignedBoxCard extends StatelessWidget {
     final color = context.colorScheme;
 
     return Container(
-      height: 82,
+      constraints: const BoxConstraints(minHeight: 90),
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.sm,
-        vertical: Spacing.xs,
+        horizontal: Spacing.sm + 2,
+        vertical: Spacing.sm,
       ),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        borderRadius: BorderRadius.circular(Spacing.radiusLg),
         border: Border.all(
-          color: color.outlineVariant,
+          color: color.outlineVariant.withValues(alpha: 0.6),
           width: Spacing.border,
         ),
         boxShadow: [
           BoxShadow(
             color: color.shadow.withValues(alpha: 0.04),
             offset: const Offset(0, 2),
-            blurRadius: 6,
+            blurRadius: 8,
           ),
         ],
       ),
@@ -47,11 +47,15 @@ class DriverAssignedBoxCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           DriverBoxActionSection(
-            isLoaded: box.isLoaded,
+            status: box.status,
             onCompleteAction: onCompleteAction,
           ),
           const SizedBox(width: Spacing.xs),
-          _buildVerticalDivider(color.outlineVariant),
+          Container(
+            width: Spacing.border,
+            height: 50,
+            color: color.outlineVariant.withValues(alpha: 0.6),
+          ),
           const SizedBox(width: Spacing.xs),
           Expanded(
             flex: 3,
@@ -60,7 +64,12 @@ class DriverAssignedBoxCard extends StatelessWidget {
               area: box.area,
             ),
           ),
-          _buildVerticalDivider(color.outlineVariant),
+          const SizedBox(width: Spacing.xs),
+          Container(
+            width: Spacing.border,
+            height: 50,
+            color: color.outlineVariant.withValues(alpha: 0.6),
+          ),
           const SizedBox(width: Spacing.xs),
           Expanded(
             flex: 3,
@@ -70,17 +79,9 @@ class DriverAssignedBoxCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.xs),
-          DriverBoxIconBadge(isLoaded: box.isLoaded),
+          DriverBoxIconBadge(status: box.status),
         ],
       ),
-    );
-  }
-
-  Widget _buildVerticalDivider(Color dividerColor) {
-    return Container(
-      width: Spacing.border,
-      height: 50,
-      color: dividerColor.withValues(alpha: 0.6),
     );
   }
 }

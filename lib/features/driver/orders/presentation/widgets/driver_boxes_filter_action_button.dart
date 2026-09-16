@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
@@ -13,14 +14,14 @@ class DriverBoxesFilterActionButton extends StatelessWidget {
 
   final VoidCallback? onTap;
 
-  static const double _buttonDimension = 38;
+  static const double _buttonDimension = Spacing.dispatcherMapButtonHeight;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
     return Material(
-      color: Colors.transparent,
+      color: color.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(Spacing.radiusSm),

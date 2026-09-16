@@ -22,48 +22,63 @@ class DriverBoxMealsAndAreaSection extends StatelessWidget {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           '$mealCount ${locale.driverMealsUnit}',
-          style: getSemiBoldStyle(
+          style: getBoldStyle(
             color: color.onSurface,
-            fontSize: FontSize.size10,
+            fontSize: FontSize.size13,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
         ),
         Text(
           locale.driverMealCountLabel,
           style: getRegularStyle(
             color: color.onSurfaceVariant,
-            fontSize: FontSize.size8,
+            fontSize: FontSize.size10,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: Spacing.hairline * 4),
+        const SizedBox(height: Spacing.xs),
         Row(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.location_on_outlined,
-              size: Spacing.iconXs - 3,
-              color: color.onSurfaceVariant,
+              size: Spacing.iconXs,
+              color: color.primary,
             ),
-            const SizedBox(width: Spacing.hairline * 2),
+
+            const SizedBox(width: Spacing.xs),
+
             Flexible(
               child: Text(
                 area,
-                style: getSemiBoldStyle(
+                style: getBoldStyle(
                   color: color.onSurface,
-                  fontSize: FontSize.size9,
+                  fontSize: FontSize.size12,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
             ),
           ],
+        ),
+        Text(
+          locale.driverAreaLabel,
+          style: getRegularStyle(
+            color: color.onSurfaceVariant,
+            fontSize: FontSize.size10,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
         ),
       ],
     );

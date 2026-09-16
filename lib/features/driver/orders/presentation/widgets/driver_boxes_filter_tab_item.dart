@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
@@ -30,7 +31,7 @@ class DriverBoxesFilterTabItem extends StatelessWidget {
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
           decoration: BoxDecoration(
-            color: isSelected ? color.primary : Colors.transparent,
+            color: isSelected ? color.primary : color.transparent,
             borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
           ),
           child: Text(

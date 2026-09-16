@@ -46,7 +46,9 @@ class CustomSnackbar {
     Color backgroundColor,
     Duration duration,
   ) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
       SnackBar(
         backgroundColor: backgroundColor,
         content: Text(mapFailureMessage(context, message)),

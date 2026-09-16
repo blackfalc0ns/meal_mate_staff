@@ -2935,6 +2935,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Box ID copied to clipboard'**
   String get driverBoxCopiedToClipboard;
+
+  /// No description provided for @driverBoxesFilterReadyForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for delivery'**
+  String get driverBoxesFilterReadyForDelivery;
+
+  /// No description provided for @driverBoxesFilterDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get driverBoxesFilterDelivered;
+
+  /// No description provided for @driverStatusReadyForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for delivery'**
+  String get driverStatusReadyForDelivery;
+
+  /// No description provided for @driverStatusIssueOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem occurred'**
+  String get driverStatusIssueOccurred;
+
+  /// No description provided for @driverActionStartDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Start delivery'**
+  String get driverActionStartDelivery;
+
+  /// No description provided for @driverActionDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get driverActionDelivered;
+
+  /// No description provided for @driverActionDeliveryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery failed'**
+  String get driverActionDeliveryFailed;
 }
 
 class _AppLocalizationsDelegate

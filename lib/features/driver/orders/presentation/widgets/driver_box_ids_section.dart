@@ -36,32 +36,36 @@ class DriverBoxIdsSection extends StatelessWidget {
       children: [
         Text(
           boxId,
-          style: getSemiBoldStyle(
+          style: getBoldStyle(
             color: color.onSurface,
-            fontSize: FontSize.size11,
+            fontSize: FontSize.size13,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: Spacing.hairline * 6),
+        const SizedBox(height: Spacing.xs),
         InkWell(
           onTap: () => _handleCopy(context),
           borderRadius: BorderRadius.circular(Spacing.radiusXs),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                orderCode,
-                style: getRegularStyle(
-                  color: color.onSurfaceVariant,
-                  fontSize: FontSize.size9,
-                ),
-              ),
-              const SizedBox(width: Spacing.hairline * 6),
               Icon(
                 Icons.copy_rounded,
-                size: Spacing.iconXs - 2,
+                size: Spacing.iconXs,
                 color: color.onSurfaceVariant,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Flexible(
+                child: Text(
+                  orderCode,
+                  style: getMediumStyle(
+                    color: color.onSurfaceVariant,
+                    fontSize: FontSize.size11,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

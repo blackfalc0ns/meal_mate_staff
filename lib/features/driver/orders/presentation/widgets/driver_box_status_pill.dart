@@ -4,36 +4,83 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../domain/entities/driver_box_delivery_status.dart';
 
 class DriverBoxStatusPill extends StatelessWidget {
   const DriverBoxStatusPill({
     super.key,
-    required this.isLoaded,
+    this.status = DriverBoxDeliveryStatus.ready,
+    this.isLoaded,
   });
 
-  final bool isLoaded;
+  final DriverBoxDeliveryStatus status;
+  final bool? isLoaded;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final effectiveStatus = status;
+
+    if (effectiveStatus == DriverBoxDeliveryStatus.notLoaded) {
+      return Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.sm,
+          vertical: Spacing.xs,
+        ),
+        decoration: BoxDecoration(
+          color: color.primaryContainer,
+          borderRadius: BorderRadius.circular(Spacing.radiusPill),
+        ),
+        child: Text(
+          locale.driverStatusNotLoaded,
+          style: getMediumStyle(
+            color: color.primary,
+            fontSize: FontSize.size10,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    final bool isIssue = effectiveStatus == DriverBoxDeliveryStatus.failed;
+    final Color bgColor = isIssue ? color.errorContainer : color.tertiaryContainer;
+    final Color contentColor = isIssue ? color.error : color.tertiary;
+    final String label = isIssue
+        ? locale.driverStatusIssueOccurred
+        : locale.driverStatusReadyForDelivery;
+
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.xs + 2,
-        vertical: Spacing.hairline * 4,
+        horizontal: Spacing.sm,
+        vertical: Spacing.xs,
       ),
       decoration: BoxDecoration(
-        color: isLoaded ? color.tertiaryContainer : color.primaryContainer,
-        borderRadius: BorderRadius.circular(Spacing.radiusXs),
+        color: bgColor,
+        borderRadius: BorderRadius.circular(Spacing.radiusPill),
       ),
-      child: Text(
-        isLoaded ? locale.driverStatusLoaded : locale.driverStatusNotLoaded,
-        style: getRegularStyle(
-          color: isLoaded ? color.tertiary : color.primary,
-          fontSize: FontSize.size8,
-        ),
-        textAlign: TextAlign.center,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: Spacing.accountStatusReasonBullet,
+            height: Spacing.accountStatusReasonBullet,
+            decoration: BoxDecoration(
+              color: contentColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: Spacing.xs),
+          Text(
+            label,
+            style: getMediumStyle(
+              color: contentColor,
+              fontSize: FontSize.size10,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

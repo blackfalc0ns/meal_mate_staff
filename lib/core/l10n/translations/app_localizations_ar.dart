@@ -1501,4 +1501,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverBoxCopiedToClipboard => 'تم نسخ رقم البوكس';
+
+  @override
+  String get driverBoxesFilterReadyForDelivery => 'جاهز للتوصيل';
+
+  @override
+  String get driverBoxesFilterDelivered => 'تم التوصيل';
+
+  @override
+  String get driverStatusReadyForDelivery => 'جاهز للتوصيل';
+
+  @override
+  String get driverStatusIssueOccurred => 'حدثت مشكلة';
+
+  @override
+  String get driverActionStartDelivery => 'ابدأ التوصيل';
+
+  @override
+  String get driverActionDelivered => 'تم التوصيل';
+
+  @override
+  String get driverActionDeliveryFailed => 'فشل التوصيل';
 }
