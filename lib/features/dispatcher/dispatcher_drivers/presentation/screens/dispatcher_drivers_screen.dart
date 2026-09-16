@@ -19,13 +19,11 @@ class DispatcherDriversScreen extends StatefulWidget {
     this.onSelectDriver,
     this.onBack,
     this.onViewOnMap,
-    this.showBottomNavBar = false,
   });
 
   final ValueChanged<DispatcherDriverEntity>? onSelectDriver;
   final VoidCallback? onBack;
   final VoidCallback? onViewOnMap;
-  final bool showBottomNavBar;
 
   @override
   State<DispatcherDriversScreen> createState() =>

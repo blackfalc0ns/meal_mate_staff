@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
-import '../../../../../core/app_shell/widgets/app_bottom_nav_bar.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_notification_entity.dart';
 import '../../domain/entities/dispatcher_notification_filter_type.dart';
@@ -14,12 +13,10 @@ import '../widgets/dispatcher_notifications_section_header.dart';
 class DispatcherNotificationsScreen extends StatefulWidget {
   const DispatcherNotificationsScreen({
     super.key,
-    this.showBottomNavBar = false,
     this.onNotificationTap,
     this.onFilterTap,
   });
 
-  final bool showBottomNavBar;
   final ValueChanged<DispatcherNotificationEntity>? onNotificationTap;
   final VoidCallback? onFilterTap;
 
@@ -33,7 +30,6 @@ class _DispatcherNotificationsScreenState
   DispatcherNotificationFilterType _selectedFilter =
       DispatcherNotificationFilterType.all;
   late List<DispatcherNotificationEntity> _notifications;
-  int _selectedBottomNavIndex = 0;
 
   @override
   void initState() {
@@ -96,12 +92,10 @@ class _DispatcherNotificationsScreenState
 
     return Scaffold(
       backgroundColor: color.surface,
-      extendBody: widget.showBottomNavBar,
       appBar: DispatcherNotificationsAppBar(
         onFilterPressed: widget.onFilterTap,
       ),
       body: SafeArea(
-        bottom: !widget.showBottomNavBar,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,27 +118,11 @@ class _DispatcherNotificationsScreenState
                 notifications: _filteredNotifications,
                 onNotificationTap: _handleNotificationTap,
               ),
-              SizedBox(
-                height: widget.showBottomNavBar
-                    ? Spacing.bottomNavHeight + Spacing.xl
-                    : Spacing.base,
-              ),
+              const SizedBox(height: Spacing.base),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: widget.showBottomNavBar
-          ? AppBottomNavBar(
-              selectedIndex: _selectedBottomNavIndex,
-              onItemSelected: (index) {
-                if (_selectedBottomNavIndex != index) {
-                  setState(() {
-                    _selectedBottomNavIndex = index;
-                  });
-                }
-              },
-            )
-          : null,
     );
   }
 }

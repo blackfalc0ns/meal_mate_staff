@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../../features/auth/domain/user_role.dart';
 import '../../../features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
@@ -61,25 +61,19 @@ class _AppShellScreenState extends State<AppShellScreen> {
   List<Widget> _defaultPages(BuildContext context) {
     if (widget.role == UserRole.driver) {
       return [
-        const DriverAssignedBoxesScreen(showBottomNavBar: false),
-        const DriverAssignedBoxesScreen(showBottomNavBar: false),
-        const DispatcherMapScreen(showBottomNavBar: false),
-        const DispatcherSupportScreen(showBottomNavBar: false),
-        const DispatcherProfileScreen(
-          showBackButton: false,
-          showBottomNavBar: false,
-        ),
+        const DriverAssignedBoxesScreen(),
+        const DriverAssignedBoxesScreen(),
+        const DispatcherMapScreen(),
+        const DispatcherSupportScreen(),
+        const DispatcherProfileScreen(showBackButton: false),
       ];
     }
     return [
       const DispatcherHomeScreen(),
-      const DispatcherOrdersScreen(showBottomNavBar: false),
-      const DispatcherMapScreen(showBottomNavBar: false),
-      const DispatcherSupportScreen(showBottomNavBar: false),
-      const DispatcherProfileScreen(
-        showBackButton: false,
-        showBottomNavBar: false,
-      ),
+      const DispatcherOrdersScreen(),
+      const DispatcherMapScreen(),
+      const DispatcherSupportScreen(),
+      const DispatcherProfileScreen(showBackButton: false),
     ];
   }
 

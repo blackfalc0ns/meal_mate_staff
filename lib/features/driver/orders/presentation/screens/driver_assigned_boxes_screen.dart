@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
-import '../../../../../core/app_shell/widgets/app_bottom_nav_bar.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_assigned_box_entity.dart';
 import '../../domain/entities/driver_boxes_filter_type.dart';
@@ -17,12 +16,10 @@ class DriverAssignedBoxesScreen extends StatefulWidget {
     super.key,
     this.initialBoxes,
     this.onCompleteAction,
-    this.showBottomNavBar = true,
   });
 
   final List<DriverAssignedBoxEntity>? initialBoxes;
   final ValueChanged<DriverAssignedBoxEntity>? onCompleteAction;
-  final bool showBottomNavBar;
 
   @override
   State<DriverAssignedBoxesScreen> createState() =>
@@ -104,9 +101,6 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: widget.showBottomNavBar
-          ? const AppBottomNavBar(selectedIndex: 1)
-          : null,
     );
   }
 }

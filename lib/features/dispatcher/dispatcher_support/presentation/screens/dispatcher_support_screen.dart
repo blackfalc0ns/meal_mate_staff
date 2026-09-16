@@ -20,13 +20,11 @@ class DispatcherSupportScreen extends StatefulWidget {
     this.onBack,
     this.onViewDetails,
     this.onAssignAlternativeDriver,
-    this.showBottomNavBar = false,
   });
 
   final VoidCallback? onBack;
   final ValueChanged<DispatcherSupportIssueEntity>? onViewDetails;
   final ValueChanged<DispatcherSupportIssueEntity>? onAssignAlternativeDriver;
-  final bool showBottomNavBar;
 
   @override
   State<DispatcherSupportScreen> createState() =>

@@ -20,12 +20,10 @@ class DispatcherProfileScreen extends StatefulWidget {
     super.key,
     this.profile,
     this.showBackButton = true,
-    this.showBottomNavBar = false,
   });
 
   final DispatcherProfileEntity? profile;
   final bool showBackButton;
-  final bool showBottomNavBar;
 
   @override
   State<DispatcherProfileScreen> createState() =>

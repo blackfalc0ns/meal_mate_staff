@@ -6,7 +6,6 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_filter_type.dart';
 import '../../domain/entities/dispatcher_order_entity.dart';
 import '../../domain/fake_data/dispatcher_fake_data.dart';
-import '../widgets/dispatcher_bottom_nav_bar.dart';
 import '../widgets/dispatcher_filter_bar.dart';
 import '../widgets/dispatcher_metrics_grid.dart';
 import '../widgets/dispatcher_orders_list.dart';
@@ -18,12 +17,10 @@ class DispatcherOrdersScreen extends StatefulWidget {
     super.key,
     this.onAssignOrder,
     this.onOrderDetails,
-    this.showBottomNavBar = true,
   });
 
   final ValueChanged<DispatcherOrderEntity>? onAssignOrder;
   final ValueChanged<DispatcherOrderEntity>? onOrderDetails;
-  final bool showBottomNavBar;
 
   @override
   State<DispatcherOrdersScreen> createState() => _DispatcherOrdersScreenState();
@@ -31,7 +28,6 @@ class DispatcherOrdersScreen extends StatefulWidget {
 
 class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
   DispatcherFilterType _selectedFilter = DispatcherFilterType.all;
-  int _selectedNavIndex = 1;
 
   List<DispatcherOrderEntity> get _filteredOrders {
     return DispatcherFakeData.orders;
@@ -41,14 +37,6 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
     if (_selectedFilter != filter) {
       setState(() {
         _selectedFilter = filter;
-      });
-    }
-  }
-
-  void _onNavItemSelected(int index) {
-    if (_selectedNavIndex != index) {
-      setState(() {
-        _selectedNavIndex = index;
       });
     }
   }
@@ -87,12 +75,6 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: widget.showBottomNavBar
-          ? DispatcherBottomNavBar(
-              selectedIndex: _selectedNavIndex,
-              onItemSelected: _onNavItemSelected,
-            )
-          : null,
     );
   }
 }

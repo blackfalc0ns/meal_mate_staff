@@ -14,11 +14,9 @@ class DispatcherMapScreen extends StatefulWidget {
   const DispatcherMapScreen({
     super.key,
     this.onBack,
-    this.showBottomNavBar = false,
   });
 
   final VoidCallback? onBack;
-  final bool showBottomNavBar;
 
   @override
   State<DispatcherMapScreen> createState() => _DispatcherMapScreenState();
