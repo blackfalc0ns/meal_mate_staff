@@ -12,6 +12,8 @@ class AppAssets {
   static const String driverCheckFill = '$_svg/driver_check_fill.svg';
   static const String driverAssignedBoxesBanner =
       '$_driverImages/assigned_boxes_banner.png';
+  static const String driverCameraBoxSample =
+      '$_driverImages/driver_camera_box_sample.png';
 
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';

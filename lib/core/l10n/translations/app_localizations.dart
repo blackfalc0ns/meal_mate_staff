@@ -2977,6 +2977,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delivery failed'**
   String get driverActionDeliveryFailed;
+
+  /// No description provided for @driverConfirmReceiptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Order Receipt'**
+  String get driverConfirmReceiptTitle;
+
+  /// No description provided for @driverStepScanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR'**
+  String get driverStepScanQr;
+
+  /// No description provided for @driverStepPhotographBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Photograph Box'**
+  String get driverStepPhotographBox;
+
+  /// No description provided for @driverStepOrderMandatoryNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Mandatory order: Scan QR first, then photograph box'**
+  String get driverStepOrderMandatoryNote;
+
+  /// No description provided for @driverQrScannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'QR Scanner'**
+  String get driverQrScannerTitle;
+
+  /// No description provided for @driverQrScannerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR code on the meal box'**
+  String get driverQrScannerSubtitle;
+
+  /// No description provided for @driverFlashToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash'**
+  String get driverFlashToggle;
+
+  /// No description provided for @driverQrViewfinderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the QR code on the box'**
+  String get driverQrViewfinderHint;
+
+  /// No description provided for @driverOrDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get driverOrDivider;
+
+  /// No description provided for @driverEnterCodeManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code manually'**
+  String get driverEnterCodeManually;
+
+  /// No description provided for @driverStep2ActivatedAfterScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Activated after successful scan'**
+  String get driverStep2ActivatedAfterScan;
+
+  /// No description provided for @driverContinueToPhotographBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Photograph Box'**
+  String get driverContinueToPhotographBox;
+
+  /// No description provided for @driverPhotographBoxTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photograph Box'**
+  String get driverPhotographBoxTitle;
+
+  /// No description provided for @driverPhotographBoxSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the full box'**
+  String get driverPhotographBoxSubtitle;
+
+  /// No description provided for @driverCameraBoxLightingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure the full box is visible and lighting is suitable'**
+  String get driverCameraBoxLightingHint;
+
+  /// No description provided for @driverConfirmDeliveryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Receipt'**
+  String get driverConfirmDeliveryAction;
+
+  /// No description provided for @driverBoxVerifiedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Box receipt confirmed successfully'**
+  String get driverBoxVerifiedSuccess;
 }
 
 class _AppLocalizationsDelegate

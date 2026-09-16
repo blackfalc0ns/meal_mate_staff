@@ -1526,4 +1526,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverActionDeliveryFailed => 'Delivery failed';
+
+  @override
+  String get driverConfirmReceiptTitle => 'Confirm Order Receipt';
+
+  @override
+  String get driverStepScanQr => 'Scan QR';
+
+  @override
+  String get driverStepPhotographBox => 'Photograph Box';
+
+  @override
+  String get driverStepOrderMandatoryNote =>
+      'Mandatory order: Scan QR first, then photograph box';
+
+  @override
+  String get driverQrScannerTitle => 'QR Scanner';
+
+  @override
+  String get driverQrScannerSubtitle => 'Scan the QR code on the meal box';
+
+  @override
+  String get driverFlashToggle => 'Flash';
+
+  @override
+  String get driverQrViewfinderHint =>
+      'Point the camera at the QR code on the box';
+
+  @override
+  String get driverOrDivider => 'or';
+
+  @override
+  String get driverEnterCodeManually => 'Enter code manually';
+
+  @override
+  String get driverStep2ActivatedAfterScan => 'Activated after successful scan';
+
+  @override
+  String get driverContinueToPhotographBox => 'Continue to Photograph Box';
+
+  @override
+  String get driverPhotographBoxTitle => 'Photograph Box';
+
+  @override
+  String get driverPhotographBoxSubtitle => 'Point the camera at the full box';
+
+  @override
+  String get driverCameraBoxLightingHint =>
+      'Make sure the full box is visible and lighting is suitable';
+
+  @override
+  String get driverConfirmDeliveryAction => 'Confirm Receipt';
+
+  @override
+  String get driverBoxVerifiedSuccess => 'Box receipt confirmed successfully';
 }

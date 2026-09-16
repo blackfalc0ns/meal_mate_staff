@@ -1522,4 +1522,58 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverActionDeliveryFailed => 'فشل التوصيل';
+
+  @override
+  String get driverConfirmReceiptTitle => 'تأكيد استلام الطلب';
+
+  @override
+  String get driverStepScanQr => 'مسح QR';
+
+  @override
+  String get driverStepPhotographBox => 'تصوير البوكس';
+
+  @override
+  String get driverStepOrderMandatoryNote =>
+      'الترتيب إلزامي: مسح QR أولاً ثم تصوير البوكس';
+
+  @override
+  String get driverQrScannerTitle => 'ماسح QR';
+
+  @override
+  String get driverQrScannerSubtitle => 'امسح رمز QR الموجود على صندوق الوجبة';
+
+  @override
+  String get driverFlashToggle => 'الفلاش';
+
+  @override
+  String get driverQrViewfinderHint =>
+      'وجه الكاميرا نحو رمز QR الظاهر على البوكس';
+
+  @override
+  String get driverOrDivider => 'أو';
+
+  @override
+  String get driverEnterCodeManually => 'إدخال الرمز يدوياً';
+
+  @override
+  String get driverStep2ActivatedAfterScan => 'تُفعل بعد نجاح المسح';
+
+  @override
+  String get driverContinueToPhotographBox => 'متابعة إلى تصوير البوكس';
+
+  @override
+  String get driverPhotographBoxTitle => 'تصوير البوكس';
+
+  @override
+  String get driverPhotographBoxSubtitle => 'وجه الكاميرا نحو البوكس بالكامل';
+
+  @override
+  String get driverCameraBoxLightingHint =>
+      'تأكد أن البوكس ظاهر بالكامل والإضاءة مناسبة';
+
+  @override
+  String get driverConfirmDeliveryAction => 'تأكيد التسليم';
+
+  @override
+  String get driverBoxVerifiedSuccess => 'تم التحقق من استلام البوكس بنجاح';
 }

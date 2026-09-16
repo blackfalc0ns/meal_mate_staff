@@ -48,6 +48,8 @@ dependencies:
   flutter_svg: ^2.3.0
   wolt_modal_sheet: 0.11.0
   calendar_date_picker2: ^3.0.0
+  mobile_scanner: ^7.4.2
+  cherry_toast: ^1.13.0
 
 dev_dependencies:
   flutter_test:

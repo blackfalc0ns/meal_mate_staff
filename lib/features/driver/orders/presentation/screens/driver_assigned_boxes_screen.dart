@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_assigned_box_entity.dart';
@@ -62,9 +63,28 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
     }
   }
 
-  void _handleBoxAction(DriverAssignedBoxEntity box) {
+  Future<void> _handleBoxAction(DriverAssignedBoxEntity box) async {
     if (widget.onCompleteAction != null) {
       widget.onCompleteAction!(box);
+      return;
+    }
+
+    if (box.status == DriverBoxDeliveryStatus.notLoaded) {
+      final result = await context.pushNamed(
+        AppRoutes.driverConfirmReceipt,
+        arguments: box,
+      );
+      if (result == true && mounted) {
+        setState(() {
+          final index = _boxes.indexWhere((b) => b.boxId == box.boxId);
+          if (index != -1) {
+            _boxes[index] = _boxes[index].copyWith(
+              status: DriverBoxDeliveryStatus.ready,
+              isLoaded: true,
+            );
+          }
+        });
+      }
       return;
     }
 
@@ -72,9 +92,7 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
       final index = _boxes.indexWhere((b) => b.boxId == box.boxId);
       if (index != -1) {
         final current = _boxes[index];
-        if (current.status == DriverBoxDeliveryStatus.notLoaded) {
-          _boxes[index] = current.copyWith(status: DriverBoxDeliveryStatus.ready);
-        } else if (current.status == DriverBoxDeliveryStatus.ready) {
+        if (current.status == DriverBoxDeliveryStatus.ready) {
           _boxes[index] = current.copyWith(status: DriverBoxDeliveryStatus.delivered);
         }
       }

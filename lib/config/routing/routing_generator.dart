@@ -30,7 +30,9 @@ import '../../features/dispatcher/dispatcher_support/domain/entities/dispatcher_
 import '../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_issue_details_screen.dart';
 import '../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_reassign_driver_screen.dart';
 import '../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
+import '../../features/driver/orders/domain/entities/driver_assigned_box_entity.dart';
 import '../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
+import '../../features/driver/orders/presentation/screens/driver_confirm_receipt_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -217,6 +219,15 @@ class RouteGenerator {
                   role: UserRole.driver,
                   initialIndex: 0,
                 ),
+        );
+
+      case AppRoutes.driverConfirmReceipt:
+        final box = settings.arguments is DriverAssignedBoxEntity
+            ? settings.arguments! as DriverAssignedBoxEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverConfirmReceiptScreen(box: box),
         );
 
       default:

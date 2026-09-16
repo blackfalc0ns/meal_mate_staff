@@ -635,5 +635,22 @@
   "driverStatusIssueOccurred": "Problem occurred",
   "driverActionStartDelivery": "Start delivery",
   "driverActionDelivered": "Delivered",
-  "driverActionDeliveryFailed": "Delivery failed"
+  "driverActionDeliveryFailed": "Delivery failed",
+  "driverConfirmReceiptTitle": "Confirm Order Receipt",
+  "driverStepScanQr": "Scan QR",
+  "driverStepPhotographBox": "Photograph Box",
+  "driverStepOrderMandatoryNote": "Mandatory order: Scan QR first, then photograph box",
+  "driverQrScannerTitle": "QR Scanner",
+  "driverQrScannerSubtitle": "Scan the QR code on the meal box",
+  "driverFlashToggle": "Flash",
+  "driverQrViewfinderHint": "Point the camera at the QR code on the box",
+  "driverOrDivider": "or",
+  "driverEnterCodeManually": "Enter code manually",
+  "driverStep2ActivatedAfterScan": "Activated after successful scan",
+  "driverContinueToPhotographBox": "Continue to Photograph Box",
+  "driverPhotographBoxTitle": "Photograph Box",
+  "driverPhotographBoxSubtitle": "Point the camera at the full box",
+  "driverCameraBoxLightingHint": "Make sure the full box is visible and lighting is suitable",
+  "driverConfirmDeliveryAction": "Confirm Receipt",
+  "driverBoxVerifiedSuccess": "Box receipt confirmed successfully"
 }

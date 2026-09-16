@@ -635,5 +635,22 @@
   "driverStatusIssueOccurred": "حدثت مشكلة",
   "driverActionStartDelivery": "ابدأ التوصيل",
   "driverActionDelivered": "تم التوصيل",
-  "driverActionDeliveryFailed": "فشل التوصيل"
+  "driverActionDeliveryFailed": "فشل التوصيل",
+  "driverConfirmReceiptTitle": "تأكيد استلام الطلب",
+  "driverStepScanQr": "مسح QR",
+  "driverStepPhotographBox": "تصوير البوكس",
+  "driverStepOrderMandatoryNote": "الترتيب إلزامي: مسح QR أولاً ثم تصوير البوكس",
+  "driverQrScannerTitle": "ماسح QR",
+  "driverQrScannerSubtitle": "امسح رمز QR الموجود على صندوق الوجبة",
+  "driverFlashToggle": "الفلاش",
+  "driverQrViewfinderHint": "وجه الكاميرا نحو رمز QR الظاهر على البوكس",
+  "driverOrDivider": "أو",
+  "driverEnterCodeManually": "إدخال الرمز يدوياً",
+  "driverStep2ActivatedAfterScan": "تُفعل بعد نجاح المسح",
+  "driverContinueToPhotographBox": "متابعة إلى تصوير البوكس",
+  "driverPhotographBoxTitle": "تصوير البوكس",
+  "driverPhotographBoxSubtitle": "وجه الكاميرا نحو البوكس بالكامل",
+  "driverCameraBoxLightingHint": "تأكد أن البوكس ظاهر بالكامل والإضاءة مناسبة",
+  "driverConfirmDeliveryAction": "تأكيد التسليم",
+  "driverBoxVerifiedSuccess": "تم التحقق من استلام البوكس بنجاح"
 }

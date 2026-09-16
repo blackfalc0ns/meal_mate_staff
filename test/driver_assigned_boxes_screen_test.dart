@@ -1,5 +1,8 @@
+import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
+import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_assigned_box_entity.dart';
@@ -12,7 +15,20 @@ import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/d
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_boxes_stats_banner.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_boxes_title_bar.dart';
 
+class _MockImagePickerPlatform extends ImagePickerPlatform {
+  @override
+  Future<XFile?> getImageFromSource({
+    required ImageSource source,
+    ImagePickerOptions options = const ImagePickerOptions(),
+  }) async {
+    return XFile('test_photo.jpg');
+  }
+}
+
 void main() {
+  setUp(() {
+    ImagePickerPlatform.instance = _MockImagePickerPlatform();
+  });
   Widget buildSubject({
     Locale locale = const Locale('ar'),
     List<DriverAssignedBoxEntity>? initialBoxes,
@@ -22,6 +38,7 @@ void main() {
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.lightTheme,
+      onGenerateRoute: RouteGenerator.getRoute,
       home: DriverAssignedBoxesScreen(initialBoxes: initialBoxes),
     );
   }
@@ -165,17 +182,32 @@ void main() {
     await tester.pumpWidget(buildSubject(initialBoxes: testBoxes));
     await tester.pumpAndSettle();
 
-    // Tap "استكمال الاجراء"
+    // Tap "استكمال الاجراء" -> Opens DriverConfirmReceiptScreen
     final completeActionButton = find.text('استكمال\nالاجراء');
     expect(completeActionButton, findsOneWidget);
     await tester.tap(completeActionButton);
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
-    // Verify CustomSnackbar appears
-    expect(find.byType(SnackBar), findsOneWidget);
-    expect(find.text('استكمال الاجراء'), findsOneWidget);
+    // Confirm receipt on DriverConfirmReceiptScreen
+    expect(find.text('تأكيد استلام الطلب'), findsOneWidget);
 
-    await tester.pumpAndSettle();
+    // Step 1: Scan / Enter Code
+    await tester.tap(find.text('إدخال الرمز يدوياً'));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // Move to Step 2
+    await tester.tap(find.text('متابعة إلى تصوير البوكس'));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // Step 2: Capture Photo
+    await tester.tap(find.byIcon(Icons.camera_alt_rounded));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // Confirm receipt and pop
+    await tester.tap(find.text('تأكيد التسليم'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
     // Box has transitioned to ready with "ابدأ التوصيل"
     final startDeliveryButton = find.text('ابدأ التوصيل');
@@ -185,10 +217,10 @@ void main() {
     await tester.tap(startDeliveryButton);
     await tester.pump(const Duration(milliseconds: 300));
 
-    // Verify CustomSnackbar appears for starting delivery
-    expect(find.byType(SnackBar), findsOneWidget);
+    // Verify CustomSnackbar (CherryToast) appears for starting delivery
+    expect(find.byType(CherryToast), findsWidgets);
 
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 4));
 
     // Box has transitioned to delivered with "تم التوصيل"
     expect(find.text('تم التوصيل'), findsWidgets);
