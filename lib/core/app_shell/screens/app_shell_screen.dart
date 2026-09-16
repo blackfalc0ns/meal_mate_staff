@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import '../../../features/auth/domain/user_role.dart';
-import '../../../features/dispatcher/home/presentation/screens/dispatcher_home_screen.dart';
-import '../../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
-import '../../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
-import '../../../features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
-import '../../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
+import '../../../features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
+import '../../../features/dispatcher/dispatcher_map/presentation/screens/dispatcher_map_screen.dart';
+import '../../../features/dispatcher/dispatcher_orders/presentation/screens/dispatcher_orders_screen.dart';
+import '../../../features/dispatcher/dispatcher_profile/presentation/screens/dispatcher_profile_screen.dart';
+import '../../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
 import '../../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import '../../extensions/extensions.dart';
 import '../widgets/app_bottom_nav_bar.dart';

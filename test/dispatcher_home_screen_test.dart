@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/screens/dispatcher_home_screen.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_alert_banner.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_areas_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_drivers_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_header.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_kpi_row.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_map_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_operations_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/widgets/dispatcher_home_quick_actions.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_alert_banner.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_areas_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_drivers_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_header.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_kpi_row.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_map_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_operations_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_quick_actions.dart';
 
 Widget _buildTestableWidget({
   required Widget child,

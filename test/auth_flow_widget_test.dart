@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
@@ -8,7 +8,7 @@ import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/login_screen.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/splash_screen.dart';
-import 'package:meal_mate_delivery/features/dispatcher/home/presentation/screens/dispatcher_home_screen.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import 'package:meal_mate_delivery/main.dart';
 

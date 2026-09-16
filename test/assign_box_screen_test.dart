@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/widget/app_button.dart';
 import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
-import 'package:meal_mate_delivery/features/dispatcher/assign_box/presentation/screens/assign_box_screen.dart';
-import 'package:meal_mate_delivery/features/dispatcher/assign_box/presentation/widgets/assign_box_bottom_actions.dart';
-import 'package:meal_mate_delivery/features/dispatcher/assign_box/presentation/widgets/assign_box_driver_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/assign_box/presentation/widgets/assign_box_recommended_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/assign_box/presentation/widgets/assign_box_summary_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_bottom_actions.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_driver_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_recommended_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_summary_card.dart';
 
 void main() {
   Widget buildSubject({Locale locale = const Locale('ar')}) {

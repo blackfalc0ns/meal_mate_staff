@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/domain/entities/dispatcher_support_issue_entity.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_area_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_filter_chips.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_header.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_info_banner.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_issue_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_kpi_bar.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_kpi_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_search_bar.dart';
-import 'package:meal_mate_delivery/features/dispatcher/support/presentation/widgets/dispatcher_support_status_tabs.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_issue_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_area_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_filter_chips.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_header.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_info_banner.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_issue_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_kpi_bar.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_kpi_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_search_bar.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_status_tabs.dart';
 
 void main() {
   Widget buildSubject({
