@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../../../features/auth/domain/user_role.dart';
 import '../../../features/dispatcher/home/presentation/screens/dispatcher_home_screen.dart';
 import '../../../features/dispatcher/map/presentation/screens/dispatcher_map_screen.dart';
 import '../../../features/dispatcher/orders/presentation/screens/dispatcher_orders_screen.dart';
 import '../../../features/dispatcher/profile/presentation/screens/dispatcher_profile_screen.dart';
 import '../../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
+import '../../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import '../../extensions/extensions.dart';
 import '../widgets/app_bottom_nav_bar.dart';
 
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({
     super.key,
+    this.role = UserRole.operations,
     this.pages = const [],
     this.body,
     this.initialIndex = 0,
@@ -18,6 +21,7 @@ class AppShellScreen extends StatefulWidget {
     this.onItemSelected,
   });
 
+  final UserRole role;
   final List<Widget> pages;
   final Widget? body;
   final int initialIndex;
@@ -55,6 +59,18 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   List<Widget> _defaultPages(BuildContext context) {
+    if (widget.role == UserRole.driver) {
+      return [
+        const DriverAssignedBoxesScreen(showBottomNavBar: false),
+        const DriverAssignedBoxesScreen(showBottomNavBar: false),
+        const DispatcherMapScreen(showBottomNavBar: false),
+        const DispatcherSupportScreen(showBottomNavBar: false),
+        const DispatcherProfileScreen(
+          showBackButton: false,
+          showBottomNavBar: false,
+        ),
+      ];
+    }
     return [
       const DispatcherHomeScreen(),
       const DispatcherOrdersScreen(showBottomNavBar: false),

@@ -5,6 +5,7 @@ import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../domain/user_role.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/auth_divider.dart';
 import '../widgets/auth_header_logo.dart';
@@ -14,7 +15,12 @@ import '../widgets/auth_primary_button.dart';
 import '../widgets/auth_secondary_button.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({
+    super.key,
+    this.role = UserRole.operations,
+  });
+
+  final UserRole role;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +96,10 @@ class LoginScreen extends StatelessWidget {
                 AuthPrimaryButton(
                   text: locale.login,
                   onPressed: () {
-                    context.pushNamed(AppRoutes.appShell);
+                    context.pushReplacementNamed(
+                      AppRoutes.appShell,
+                      arguments: role,
+                    );
                   },
                 ),
                 const SizedBox(height: 15),
@@ -101,7 +110,10 @@ class LoginScreen extends StatelessWidget {
                   text: locale.createAccount,
                   leadingIcon: Icons.person_add_alt_1_outlined,
                   onPressed: () {
-                    context.pushNamed(AppRoutes.register);
+                    context.pushNamed(
+                      AppRoutes.register,
+                      arguments: role,
+                    );
                   },
                 ),
                 const SizedBox(height: Spacing.sm),

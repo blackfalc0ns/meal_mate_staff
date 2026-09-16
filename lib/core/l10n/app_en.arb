@@ -612,5 +612,21 @@
   "driverPerformanceDistLate": "Late",
   "driverPerformanceDistFailed": "Failed Delivery",
   "driverPerformanceDistCancelled": "Cancelled",
-  "driverPerformanceTopRatedTitle": "Top Rated Drivers"
+  "driverPerformanceTopRatedTitle": "Top Rated Drivers",
+  "driverBoxesTitle": "Boxes List",
+  "driverBoxesSubtitle": "Assigned boxes before delivery",
+  "driverInDeliveryMode": "You are in delivery mode",
+  "driverTotalMeals": "Total Meals",
+  "driverMealsUnit": "meals",
+  "driverTotalBoxesToday": "Total boxes assigned today",
+  "driverBoxesUnit": "boxes",
+  "driverBoxesFilterAll": "All",
+  "driverBoxesFilterNotLoaded": "Not Loaded",
+  "driverBoxesFilterLoaded": "Loaded",
+  "driverMealCountLabel": "Meals Count",
+  "driverAreaLabel": "Area",
+  "driverStatusNotLoaded": "Not Loaded",
+  "driverStatusLoaded": "Loaded",
+  "driverCompleteAction": "Complete\nAction",
+  "driverBoxCopiedToClipboard": "Box ID copied to clipboard"
 }

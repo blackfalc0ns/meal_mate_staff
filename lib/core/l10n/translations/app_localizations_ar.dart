@@ -1453,4 +1453,52 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverPerformanceTopRatedTitle => 'أعلى السائقين تقييماً';
+
+  @override
+  String get driverBoxesTitle => 'قائمة الصناديق';
+
+  @override
+  String get driverBoxesSubtitle => 'الصناديق المخصصة قبل التوصيل';
+
+  @override
+  String get driverInDeliveryMode => 'أنت في وضع التوصيل';
+
+  @override
+  String get driverTotalMeals => 'إجمالي الوجبات';
+
+  @override
+  String get driverMealsUnit => 'وجبة';
+
+  @override
+  String get driverTotalBoxesToday => 'إجمالي الصناديق المخصصة اليوم';
+
+  @override
+  String get driverBoxesUnit => 'صناديق';
+
+  @override
+  String get driverBoxesFilterAll => 'الكل';
+
+  @override
+  String get driverBoxesFilterNotLoaded => 'لم يتم التحميل';
+
+  @override
+  String get driverBoxesFilterLoaded => 'تم التحميل';
+
+  @override
+  String get driverMealCountLabel => 'عدد الوجبات';
+
+  @override
+  String get driverAreaLabel => 'المنطقة';
+
+  @override
+  String get driverStatusNotLoaded => 'لم يتم التحميل';
+
+  @override
+  String get driverStatusLoaded => 'تم التحميل';
+
+  @override
+  String get driverCompleteAction => 'استكمال\nالاجراء';
+
+  @override
+  String get driverBoxCopiedToClipboard => 'تم نسخ رقم البوكس';
 }

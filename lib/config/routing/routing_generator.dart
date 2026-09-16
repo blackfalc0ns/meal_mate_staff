@@ -5,6 +5,7 @@ import '../../features/account_status/domain/account_status_kind.dart';
 import '../../features/account_status/presentation/screens/account_status_preview_screen.dart';
 import '../../features/account_status/presentation/screens/account_status_screen.dart';
 import '../../features/auth/data/auth_fake_data.dart';
+import '../../features/auth/domain/user_role.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
@@ -29,6 +30,7 @@ import '../../features/dispatcher/support/domain/entities/dispatcher_issue_detai
 import '../../features/dispatcher/support/presentation/screens/dispatcher_issue_details_screen.dart';
 import '../../features/dispatcher/support/presentation/screens/dispatcher_reassign_driver_screen.dart';
 import '../../features/dispatcher/support/presentation/screens/dispatcher_support_screen.dart';
+import '../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -41,16 +43,33 @@ class RouteGenerator {
         return _buildRoute(settings: settings, page: const SplashScreen());
 
       case AppRoutes.appShell || AppRoutes.home:
-        final initialIndex = settings.arguments is int
-            ? settings.arguments! as int
-            : 0;
+        int initialIndex = 0;
+        UserRole role = UserRole.operations;
+        final args = settings.arguments;
+        if (args is int) {
+          initialIndex = args;
+        } else if (args is UserRole) {
+          role = args;
+        } else if (args is Map) {
+          initialIndex = (args['index'] ?? 0) as int;
+          role = (args['role'] ?? UserRole.operations) as UserRole;
+        }
         return _buildRoute(
           settings: settings,
-          page: AppShellScreen(initialIndex: initialIndex),
+          page: AppShellScreen(
+            initialIndex: initialIndex,
+            role: role,
+          ),
         );
 
       case AppRoutes.login:
-        return _buildRoute(settings: settings, page: const LoginScreen());
+        final role = settings.arguments is UserRole
+            ? settings.arguments! as UserRole
+            : UserRole.operations;
+        return _buildRoute(
+          settings: settings,
+          page: LoginScreen(role: role),
+        );
 
       case AppRoutes.verifyPhoneOtp:
         return _buildRoute(
@@ -186,6 +205,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DispatcherBoxTrackingScreen(box: box),
+        );
+
+      case AppRoutes.driverAssignedBoxes:
+        return _buildRoute(
+          settings: settings,
+          page: const DriverAssignedBoxesScreen(),
         );
 
       default:

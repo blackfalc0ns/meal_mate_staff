@@ -612,5 +612,21 @@
   "driverPerformanceDistLate": "متأخر",
   "driverPerformanceDistFailed": "فشل التسليم",
   "driverPerformanceDistCancelled": "ملغي",
-  "driverPerformanceTopRatedTitle": "أعلى السائقين تقييماً"
+  "driverPerformanceTopRatedTitle": "أعلى السائقين تقييماً",
+  "driverBoxesTitle": "قائمة الصناديق",
+  "driverBoxesSubtitle": "الصناديق المخصصة قبل التوصيل",
+  "driverInDeliveryMode": "أنت في وضع التوصيل",
+  "driverTotalMeals": "إجمالي الوجبات",
+  "driverMealsUnit": "وجبة",
+  "driverTotalBoxesToday": "إجمالي الصناديق المخصصة اليوم",
+  "driverBoxesUnit": "صناديق",
+  "driverBoxesFilterAll": "الكل",
+  "driverBoxesFilterNotLoaded": "لم يتم التحميل",
+  "driverBoxesFilterLoaded": "تم التحميل",
+  "driverMealCountLabel": "عدد الوجبات",
+  "driverAreaLabel": "المنطقة",
+  "driverStatusNotLoaded": "لم يتم التحميل",
+  "driverStatusLoaded": "تم التحميل",
+  "driverCompleteAction": "استكمال\nالاجراء",
+  "driverBoxCopiedToClipboard": "تم نسخ رقم البوكس"
 }

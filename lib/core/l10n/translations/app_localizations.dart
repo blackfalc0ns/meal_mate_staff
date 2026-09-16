@@ -2839,6 +2839,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Top Rated Drivers'**
   String get driverPerformanceTopRatedTitle;
+
+  /// No description provided for @driverBoxesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes List'**
+  String get driverBoxesTitle;
+
+  /// No description provided for @driverBoxesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned boxes before delivery'**
+  String get driverBoxesSubtitle;
+
+  /// No description provided for @driverInDeliveryMode.
+  ///
+  /// In en, this message translates to:
+  /// **'You are in delivery mode'**
+  String get driverInDeliveryMode;
+
+  /// No description provided for @driverTotalMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Meals'**
+  String get driverTotalMeals;
+
+  /// No description provided for @driverMealsUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'meals'**
+  String get driverMealsUnit;
+
+  /// No description provided for @driverTotalBoxesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Total boxes assigned today'**
+  String get driverTotalBoxesToday;
+
+  /// No description provided for @driverBoxesUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'boxes'**
+  String get driverBoxesUnit;
+
+  /// No description provided for @driverBoxesFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get driverBoxesFilterAll;
+
+  /// No description provided for @driverBoxesFilterNotLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Loaded'**
+  String get driverBoxesFilterNotLoaded;
+
+  /// No description provided for @driverBoxesFilterLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded'**
+  String get driverBoxesFilterLoaded;
+
+  /// No description provided for @driverMealCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals Count'**
+  String get driverMealCountLabel;
+
+  /// No description provided for @driverAreaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get driverAreaLabel;
+
+  /// No description provided for @driverStatusNotLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Loaded'**
+  String get driverStatusNotLoaded;
+
+  /// No description provided for @driverStatusLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded'**
+  String get driverStatusLoaded;
+
+  /// No description provided for @driverCompleteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete\nAction'**
+  String get driverCompleteAction;
+
+  /// No description provided for @driverBoxCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Box ID copied to clipboard'**
+  String get driverBoxCopiedToClipboard;
 }
 
 class _AppLocalizationsDelegate

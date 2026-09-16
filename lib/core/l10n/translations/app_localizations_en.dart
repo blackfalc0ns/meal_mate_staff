@@ -1457,4 +1457,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverPerformanceTopRatedTitle => 'Top Rated Drivers';
+
+  @override
+  String get driverBoxesTitle => 'Boxes List';
+
+  @override
+  String get driverBoxesSubtitle => 'Assigned boxes before delivery';
+
+  @override
+  String get driverInDeliveryMode => 'You are in delivery mode';
+
+  @override
+  String get driverTotalMeals => 'Total Meals';
+
+  @override
+  String get driverMealsUnit => 'meals';
+
+  @override
+  String get driverTotalBoxesToday => 'Total boxes assigned today';
+
+  @override
+  String get driverBoxesUnit => 'boxes';
+
+  @override
+  String get driverBoxesFilterAll => 'All';
+
+  @override
+  String get driverBoxesFilterNotLoaded => 'Not Loaded';
+
+  @override
+  String get driverBoxesFilterLoaded => 'Loaded';
+
+  @override
+  String get driverMealCountLabel => 'Meals Count';
+
+  @override
+  String get driverAreaLabel => 'Area';
+
+  @override
+  String get driverStatusNotLoaded => 'Not Loaded';
+
+  @override
+  String get driverStatusLoaded => 'Loaded';
+
+  @override
+  String get driverCompleteAction => 'Complete\nAction';
+
+  @override
+  String get driverBoxCopiedToClipboard => 'Box ID copied to clipboard';
 }

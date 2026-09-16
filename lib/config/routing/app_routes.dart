@@ -30,4 +30,5 @@ class AppRoutes {
   static const String dispatcherOperations = '/dispatcher-operations';
   static const String dispatcherDriverPerformance =
       '/dispatcher-driver-performance';
+  static const String driverAssignedBoxes = '/driver-assigned-boxes';
 }
