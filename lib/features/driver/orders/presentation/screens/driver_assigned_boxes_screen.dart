@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
@@ -31,6 +32,7 @@ class DriverAssignedBoxesScreen extends StatefulWidget {
 class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
   DriverBoxesFilterType _selectedFilter = DriverBoxesFilterType.all;
   late List<DriverAssignedBoxEntity> _boxes;
+  bool _isTransitionReversed = false;
 
   @override
   void initState() {
@@ -57,7 +59,10 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
 
   void _handleFilterChanged(DriverBoxesFilterType filter) {
     if (_selectedFilter != filter) {
+      final isRtl = Directionality.of(context) == TextDirection.rtl;
+      final isMovingForward = filter.index > _selectedFilter.index;
       setState(() {
+        _isTransitionReversed = isRtl ? isMovingForward : !isMovingForward;
         _selectedFilter = filter;
       });
     }
@@ -128,17 +133,39 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
               ),
               const SizedBox(height: Spacing.sm),
               Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.only(bottom: Spacing.bottomNavHeight + Spacing.md),
-                  itemCount: currentBoxes.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: Spacing.sm),
-                  itemBuilder: (context, index) {
-                    final box = currentBoxes[index];
-                    return DriverAssignedBoxCard(
-                      box: box,
-                      onCompleteAction: () => _handleBoxAction(box),
-                    );
-                  },
+                child: PageTransitionSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  reverse: _isTransitionReversed,
+                  transitionBuilder:
+                      (
+                        Widget child,
+                        Animation<double> primaryAnimation,
+                        Animation<double> secondaryAnimation,
+                      ) {
+                        return SharedAxisTransition(
+                          animation: primaryAnimation,
+                          secondaryAnimation: secondaryAnimation,
+                          transitionType: SharedAxisTransitionType.horizontal,
+                          fillColor: color.surface,
+                          child: child,
+                        );
+                      },
+                  child: ListView.separated(
+                    key: ValueKey(_selectedFilter),
+                    padding: const EdgeInsets.only(
+                      bottom: Spacing.bottomNavHeight + Spacing.md,
+                    ),
+                    itemCount: currentBoxes.length,
+                    separatorBuilder:
+                        (_, _) => const SizedBox(height: Spacing.sm),
+                    itemBuilder: (context, index) {
+                      final box = currentBoxes[index];
+                      return DriverAssignedBoxCard(
+                        box: box,
+                        onCompleteAction: () => _handleBoxAction(box),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

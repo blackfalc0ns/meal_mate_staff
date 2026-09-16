@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
@@ -26,16 +25,13 @@ class DriverBoxesFilterTabItem extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
+        child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
-          decoration: BoxDecoration(
-            color: isSelected ? color.primary : color.transparent,
-            borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
-          ),
-          child: Text(
-            title,
+          color: Colors.transparent,
+          child: AnimatedDefaultTextStyle(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
             style: isSelected
                 ? getSemiBoldStyle(
                     color: color.onPrimary,
@@ -45,9 +41,12 @@ class DriverBoxesFilterTabItem extends StatelessWidget {
                     color: color.onSurfaceVariant,
                     fontSize: FontSize.size11,
                   ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ),

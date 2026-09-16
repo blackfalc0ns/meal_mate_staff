@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../../../../../config/theme/font_manager.dart';
-import '../../../../../../config/theme/spacing.dart';
-import '../../../../../../config/theme/styles_manager.dart';
-import '../../../../../../core/constants/assets.dart';
-import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../config/theme/font_manager.dart';
+import '../../../../../config/theme/spacing.dart';
+import '../../../../../config/theme/styles_manager.dart';
+import '../../../../../core/constants/assets.dart';
+import '../../../../../core/extensions/extensions.dart';
 
 class DriverCameraViewfinder extends StatelessWidget {
   const DriverCameraViewfinder({

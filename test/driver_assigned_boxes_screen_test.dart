@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -138,6 +139,9 @@ void main() {
     );
     await tester.tap(deliveredTab);
     await tester.pumpAndSettle();
+
+    // Verify PageTransitionSwitcher is used for animated tab switching
+    expect(find.byType(PageTransitionSwitcher), findsOneWidget);
 
     // Delivered box is present, ready box is filtered out
     expect(find.text('#BOX-TEST-2'), findsOneWidget);

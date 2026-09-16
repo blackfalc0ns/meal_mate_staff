@@ -5,13 +5,13 @@ import 'package:image_picker_platform_interface/image_picker_platform_interface.
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_assigned_box_entity.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_box_delivery_status.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/screens/driver_confirm_receipt_screen.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/confirm_receipt/driver_camera_viewfinder.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/confirm_receipt/driver_manual_code_button.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/confirm_receipt/driver_qr_header_section.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/confirm_receipt/driver_qr_viewfinder.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/confirm_receipt/driver_receipt_stepper_bar.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/confirm_receipt/driver_step2_preview_card.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/screens/driver_confirm_receipt_screen.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_camera_viewfinder.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_manual_code_button.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_qr_header_section.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_qr_viewfinder.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_receipt_stepper_bar.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_step2_preview_card.dart';
 
 class _MockImagePickerPlatform extends ImagePickerPlatform {
   @override

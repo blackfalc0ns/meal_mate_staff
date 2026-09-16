@@ -18,6 +18,17 @@ class DriverBoxesFilterBar extends StatelessWidget {
   final ValueChanged<DriverBoxesFilterType> onFilterChanged;
   final VoidCallback? onFilterActionTap;
 
+  AlignmentGeometry _getIndicatorAlignment(DriverBoxesFilterType filter) {
+    switch (filter) {
+      case DriverBoxesFilterType.all:
+        return AlignmentDirectional.centerStart;
+      case DriverBoxesFilterType.readyForDelivery:
+        return AlignmentDirectional.center;
+      case DriverBoxesFilterType.delivered:
+        return AlignmentDirectional.centerEnd;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -37,24 +48,45 @@ class DriverBoxesFilterBar extends StatelessWidget {
                 width: Spacing.border,
               ),
             ),
-            child: Row(
+            child: Stack(
               children: [
-                DriverBoxesFilterTabItem(
-                  title: locale.driverBoxesFilterAll,
-                  isSelected: selectedFilter == DriverBoxesFilterType.all,
-                  onTap: () => onFilterChanged(DriverBoxesFilterType.all),
+                AnimatedAlign(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeInOutCubic,
+                  alignment: _getIndicatorAlignment(selectedFilter),
+                  child: FractionallySizedBox(
+                    widthFactor: 1 / 3,
+                    heightFactor: 1.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: color.primary,
+                        borderRadius: BorderRadius.circular(
+                          Spacing.buttonSmallRadius,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                DriverBoxesFilterTabItem(
-                  title: locale.driverBoxesFilterReadyForDelivery,
-                  isSelected:
-                      selectedFilter == DriverBoxesFilterType.readyForDelivery,
-                  onTap: () =>
-                      onFilterChanged(DriverBoxesFilterType.readyForDelivery),
-                ),
-                DriverBoxesFilterTabItem(
-                  title: locale.driverBoxesFilterDelivered,
-                  isSelected: selectedFilter == DriverBoxesFilterType.delivered,
-                  onTap: () => onFilterChanged(DriverBoxesFilterType.delivered),
+                Row(
+                  children: [
+                    DriverBoxesFilterTabItem(
+                      title: locale.driverBoxesFilterAll,
+                      isSelected: selectedFilter == DriverBoxesFilterType.all,
+                      onTap: () => onFilterChanged(DriverBoxesFilterType.all),
+                    ),
+                    DriverBoxesFilterTabItem(
+                      title: locale.driverBoxesFilterReadyForDelivery,
+                      isSelected:
+                          selectedFilter == DriverBoxesFilterType.readyForDelivery,
+                      onTap: () =>
+                          onFilterChanged(DriverBoxesFilterType.readyForDelivery),
+                    ),
+                    DriverBoxesFilterTabItem(
+                      title: locale.driverBoxesFilterDelivered,
+                      isSelected: selectedFilter == DriverBoxesFilterType.delivered,
+                      onTap: () => onFilterChanged(DriverBoxesFilterType.delivered),
+                    ),
+                  ],
                 ),
               ],
             ),

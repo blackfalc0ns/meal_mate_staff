@@ -8,14 +8,14 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_button.dart';
 import '../../../../../core/widget/custom_snak_bar.dart';
-import '../../domain/entities/driver_assigned_box_entity.dart';
-import '../widgets/confirm_receipt/driver_camera_viewfinder.dart';
-import '../widgets/confirm_receipt/driver_manual_code_button.dart';
-import '../widgets/confirm_receipt/driver_qr_header_section.dart';
-import '../widgets/confirm_receipt/driver_qr_viewfinder.dart';
-import '../widgets/confirm_receipt/driver_receipt_stepper_bar.dart';
-import '../widgets/confirm_receipt/driver_step2_preview_card.dart';
-import '../widgets/driver_boxes_header_logo.dart';
+import '../../../orders/domain/entities/driver_assigned_box_entity.dart';
+import '../../../orders/presentation/widgets/driver_boxes_header_logo.dart';
+import '../widgets/driver_camera_viewfinder.dart';
+import '../widgets/driver_manual_code_button.dart';
+import '../widgets/driver_qr_header_section.dart';
+import '../widgets/driver_qr_viewfinder.dart';
+import '../widgets/driver_receipt_stepper_bar.dart';
+import '../widgets/driver_step2_preview_card.dart';
 
 class DriverConfirmReceiptScreen extends StatefulWidget {
   const DriverConfirmReceiptScreen({
@@ -44,20 +44,6 @@ class _DriverConfirmReceiptScreenState
   String? _capturedPhotoPath;
 
   @override
-  void initState() {
-    super.initState();
-    if (widget.scannerController != null) {
-      _scannerController = widget.scannerController!;
-      _isInternalController = false;
-    } else {
-      _scannerController = MobileScannerController(
-        detectionSpeed: DetectionSpeed.noDuplicates,
-        autoStart: true,
-      );
-      _isInternalController = true;
-    }
-  }
-
   @override
   void dispose() {
     if (_isInternalController) {
@@ -73,7 +59,8 @@ class _DriverConfirmReceiptScreenState
     final locale = context.localization;
     CustomSnackbar.showSuccess(
       context: context,
-      message: '${locale.driverStepScanQr}: ${widget.box?.boxId ?? "#BOX-1256"}',
+      message:
+          '${locale.driverStepScanQr}: ${widget.box?.boxId ?? "#BOX-1256"}',
     );
   }
 
@@ -84,7 +71,8 @@ class _DriverConfirmReceiptScreenState
     final locale = context.localization;
     CustomSnackbar.showSuccess(
       context: context,
-      message: '${locale.driverEnterCodeManually}: ${widget.box?.boxId ?? "#BOX-1256"}',
+      message:
+          '${locale.driverEnterCodeManually}: ${widget.box?.boxId ?? "#BOX-1256"}',
     );
   }
 

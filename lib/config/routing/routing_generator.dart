@@ -32,7 +32,7 @@ import '../../features/dispatcher/dispatcher_support/presentation/screens/dispat
 import '../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
 import '../../features/driver/orders/domain/entities/driver_assigned_box_entity.dart';
 import '../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
-import '../../features/driver/orders/presentation/screens/driver_confirm_receipt_screen.dart';
+import '../../features/driver/confirm_receipt/presentation/screens/driver_confirm_receipt_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
