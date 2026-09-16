@@ -1572,6 +1572,9 @@ class AppLocalizationsAr extends AppLocalizations {
       'تأكد أن البوكس ظاهر بالكامل والإضاءة مناسبة';
 
   @override
+  String get driverTakePhotoAction => 'أخذ صورة';
+
+  @override
   String get driverConfirmDeliveryAction => 'تأكيد التسليم';
 
   @override

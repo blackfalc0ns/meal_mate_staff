@@ -166,67 +166,82 @@ void main() {
     expect(find.text('Delivered'), findsWidgets);
   });
 
-  testWidgets('shows CustomSnackbar and transitions status when action button is tapped', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(1080, 2400);
-    tester.view.devicePixelRatio = 2.5;
-    addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets(
+    'shows CustomSnackbar and transitions status when action button is tapped',
+    (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.5;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
-    const testBoxes = [
-      DriverAssignedBoxEntity(
-        boxId: '#BOX-ACT-1',
-        orderCode: '#MM-ACT-1',
-        mealCount: 2,
-        area: 'حي النرجس',
-        status: DriverBoxDeliveryStatus.notLoaded,
-      ),
-    ];
+      const testBoxes = [
+        DriverAssignedBoxEntity(
+          boxId: '#BOX-ACT-1',
+          orderCode: '#MM-ACT-1',
+          mealCount: 2,
+          area: 'حي النرجس',
+          status: DriverBoxDeliveryStatus.notLoaded,
+        ),
+      ];
 
-    await tester.pumpWidget(buildSubject(initialBoxes: testBoxes));
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(buildSubject(initialBoxes: testBoxes));
+      await tester.pumpAndSettle();
 
-    // Tap "استكمال الاجراء" -> Opens DriverConfirmReceiptScreen
-    final completeActionButton = find.text('استكمال\nالاجراء');
-    expect(completeActionButton, findsOneWidget);
-    await tester.tap(completeActionButton);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+      // Tap "استكمال الاجراء" -> Opens DriverConfirmReceiptScreen
+      final completeActionButton = find.text('استكمال\nالاجراء');
+      expect(completeActionButton, findsOneWidget);
+      await tester.tap(completeActionButton);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    // Confirm receipt on DriverConfirmReceiptScreen
-    expect(find.text('تأكيد استلام الطلب'), findsOneWidget);
+      // Confirm receipt on DriverConfirmReceiptScreen
+      expect(find.text('تأكيد استلام الطلب'), findsOneWidget);
 
-    // Step 1: Scan / Enter Code
-    await tester.tap(find.text('إدخال الرمز يدوياً'));
-    await tester.pump(const Duration(milliseconds: 300));
+      // Step 1: Scan / Enter Code
+      await tester.tap(find.text('إدخال الرمز يدوياً'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    // Move to Step 2
-    await tester.tap(find.text('متابعة إلى تصوير البوكس'));
-    await tester.pump(const Duration(milliseconds: 300));
+      // Enter code in text field
+      await tester.enterText(find.byType(TextField), '#BOX-1256');
+      await tester.pump();
 
-    // Step 2: Capture Photo
-    await tester.tap(find.byIcon(Icons.camera_alt_rounded));
-    await tester.pump(const Duration(milliseconds: 300));
+      // Confirm manual code in the modal sheet
+      final confirmCodeBtn = find.text('تأكيد');
+      expect(confirmCodeBtn, findsOneWidget);
+      await tester.tap(confirmCodeBtn);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    // Confirm receipt and pop
-    await tester.tap(find.text('تأكيد التسليم'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 600));
+      // Move to Step 2
+      await tester.tap(find.text('متابعة إلى تصوير البوكس'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    // Box has transitioned to ready with "ابدأ التوصيل"
-    final startDeliveryButton = find.text('ابدأ التوصيل');
-    expect(startDeliveryButton, findsOneWidget);
+      // Step 2: Capture Photo
+      await tester.tap(find.text('أخذ صورة'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
-    // Tap "ابدأ التوصيل"
-    await tester.tap(startDeliveryButton);
-    await tester.pump(const Duration(milliseconds: 300));
+      // Confirm receipt and pop
+      await tester.tap(find.text('تأكيد التسليم'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
 
-    // Verify CustomSnackbar (CherryToast) appears for starting delivery
-    expect(find.byType(CherryToast), findsWidgets);
+      // Box has transitioned to ready with "ابدأ التوصيل"
+      final startDeliveryButton = find.text('ابدأ التوصيل');
+      expect(startDeliveryButton, findsOneWidget);
 
-    await tester.pump(const Duration(seconds: 4));
+      // Tap "ابدأ التوصيل"
+      await tester.tap(startDeliveryButton);
+      await tester.pump(const Duration(milliseconds: 300));
 
-    // Box has transitioned to delivered with "تم التوصيل"
-    expect(find.text('تم التوصيل'), findsWidgets);
-  });
+      // Verify CustomSnackbar (CherryToast) appears for starting delivery
+      expect(find.byType(CherryToast), findsWidgets);
+
+      await tester.pump(const Duration(seconds: 4));
+
+      // Box has transitioned to delivered with "تم التوصيل"
+      expect(find.text('تم التوصيل'), findsWidgets);
+    },
+  );
 }

@@ -651,6 +651,7 @@
   "driverPhotographBoxTitle": "تصوير البوكس",
   "driverPhotographBoxSubtitle": "وجه الكاميرا نحو البوكس بالكامل",
   "driverCameraBoxLightingHint": "تأكد أن البوكس ظاهر بالكامل والإضاءة مناسبة",
+  "driverTakePhotoAction": "أخذ صورة",
   "driverConfirmDeliveryAction": "تأكيد التسليم",
   "driverBoxVerifiedSuccess": "تم التحقق من استلام البوكس بنجاح"
 }

@@ -39,12 +39,10 @@ void main() {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('ar'),
-        Locale('en'),
-      ],
+      supportedLocales: const [Locale('ar'), Locale('en')],
       home: DriverConfirmReceiptScreen(
-        box: box ??
+        box:
+            box ??
             const DriverAssignedBoxEntity(
               boxId: '#BOX-1256',
               orderCode: '#MM-1256',
@@ -56,43 +54,42 @@ void main() {
     );
   }
 
-  testWidgets(
-    'renders Step 1 (QR Scanner) with all components in Arabic',
-    (tester) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 2.5;
-      addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets('renders Step 1 (QR Scanner) with all components in Arabic', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.5;
+    addTearDown(() => tester.view.resetPhysicalSize());
 
-      await tester.pumpWidget(buildSubject());
-      await tester.pump(const Duration(milliseconds: 400));
+    await tester.pumpWidget(buildSubject());
+    await tester.pump(const Duration(milliseconds: 400));
 
-      // Title and Stepper
-      expect(find.text('تأكيد استلام الطلب'), findsOneWidget);
-      expect(find.byType(DriverReceiptStepperBar), findsOneWidget);
-      expect(find.text('مسح QR'), findsOneWidget);
-      expect(find.text('تصوير البوكس'), findsWidgets);
-      expect(
-        find.text('الترتيب إلزامي: مسح QR أولاً ثم تصوير البوكس'),
-        findsOneWidget,
-      );
+    // Title and Stepper
+    expect(find.text('تأكيد استلام الطلب'), findsOneWidget);
+    expect(find.byType(DriverReceiptStepperBar), findsOneWidget);
+    expect(find.text('مسح QR'), findsOneWidget);
+    expect(find.text('تصوير البوكس'), findsWidgets);
+    expect(
+      find.text('الترتيب إلزامي: مسح QR أولاً ثم تصوير البوكس'),
+      findsOneWidget,
+    );
 
-      // QR Header and Viewfinder
-      expect(find.byType(DriverQrHeaderSection), findsOneWidget);
-      expect(find.text('ماسح QR'), findsOneWidget);
-      expect(find.text('الفلاش'), findsOneWidget);
-      expect(find.byType(DriverQrViewfinder), findsOneWidget);
-      expect(
-        find.text('وجه الكاميرا نحو رمز QR الظاهر على البوكس'),
-        findsOneWidget,
-      );
+    // QR Header and Viewfinder
+    expect(find.byType(DriverQrHeaderSection), findsOneWidget);
+    expect(find.text('ماسح QR'), findsOneWidget);
+    expect(find.text('الفلاش'), findsOneWidget);
+    expect(find.byType(DriverQrViewfinder), findsOneWidget);
+    expect(
+      find.text('وجه الكاميرا نحو رمز QR الظاهر على البوكس'),
+      findsOneWidget,
+    );
 
-      // Manual code & Step 2 preview
-      expect(find.byType(DriverManualCodeButton), findsOneWidget);
-      expect(find.text('إدخال الرمز يدوياً'), findsOneWidget);
-      expect(find.byType(DriverStep2PreviewCard), findsOneWidget);
-      expect(find.text('متابعة إلى تصوير البوكس'), findsOneWidget);
-    },
-  );
+    // Manual code & Step 2 preview
+    expect(find.byType(DriverManualCodeButton), findsOneWidget);
+    expect(find.text('إدخال الرمز يدوياً'), findsOneWidget);
+    expect(find.byType(DriverStep2PreviewCard), findsOneWidget);
+    expect(find.text('متابعة إلى تصوير البوكس'), findsOneWidget);
+  });
 
   testWidgets(
     'transitions from Step 1 to Step 2 when QR is scanned and photo is captured',
@@ -110,26 +107,42 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.byType(DriverCameraViewfinder), findsNothing);
 
-      // Tap manual code entry to trigger scan success
+      // Tap manual code entry to trigger WoltModalSheet
       final manualCodeBtn = find.text('إدخال الرمز يدوياً');
       await tester.tap(manualCodeBtn);
-      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // Enter code in text field
+      await tester.enterText(find.byType(TextField), '#BOX-1256');
+      await tester.pump();
+
+      // Confirm manual code in the modal sheet
+      final confirmCodeBtn = find.text('تأكيد');
+      expect(confirmCodeBtn, findsOneWidget);
+      await tester.tap(confirmCodeBtn);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Tap continue to Step 2 (now active)
       final continueBtn = find.text('متابعة إلى تصوير البوكس');
       await tester.tap(continueBtn);
-      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Now on Step 2: Camera
       expect(find.byType(DriverCameraViewfinder), findsOneWidget);
       expect(find.text('وجه الكاميرا نحو البوكس بالكامل'), findsWidgets);
-      expect(find.text('تأكيد التسليم'), findsOneWidget);
+      expect(find.text('أخذ صورة'), findsOneWidget);
 
       // Capture photo
-      final shutterBtn = find.byIcon(Icons.camera_alt_rounded);
-      await tester.tap(shutterBtn);
+      final takePhotoBtn = find.text('أخذ صورة');
+      await tester.tap(takePhotoBtn);
+      await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
 
+      // Now button becomes "تأكيد التسليم"
+      expect(find.text('تأكيد التسليم'), findsOneWidget);
       expect(find.byIcon(Icons.check_circle_rounded), findsWidgets);
       await tester.pump(const Duration(seconds: 4));
     },

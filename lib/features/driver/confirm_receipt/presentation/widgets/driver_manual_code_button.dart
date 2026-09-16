@@ -7,10 +7,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_button.dart';
 
 class DriverManualCodeButton extends StatelessWidget {
-  const DriverManualCodeButton({
-    super.key,
-    required this.onPressed,
-  });
+  const DriverManualCodeButton({super.key, required this.onPressed});
 
   final VoidCallback onPressed;
 

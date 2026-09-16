@@ -114,8 +114,9 @@ class DriverQrHeaderSection extends StatelessWidget {
                         : color.outlineVariant.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(Spacing.radiusPill),
                   ),
-                  alignment:
-                      isFlashOn ? Alignment.centerRight : Alignment.centerLeft,
+                  alignment: isFlashOn
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
                   child: Container(
                     width: 15,
                     height: 15,

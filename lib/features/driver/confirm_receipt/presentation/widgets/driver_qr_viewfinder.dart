@@ -124,10 +124,7 @@ class _DriverQrViewfinderState extends State<DriverQrViewfinder>
                     animation: _scanAnimation,
                     builder: (context, child) {
                       return Align(
-                        alignment: Alignment(
-                          0,
-                          (_scanAnimation.value * 2) - 1,
-                        ),
+                        alignment: Alignment(0, (_scanAnimation.value * 2) - 1),
                         child: Container(
                           height: 3,
                           margin: const EdgeInsets.symmetric(
@@ -145,9 +142,9 @@ class _DriverQrViewfinderState extends State<DriverQrViewfinder>
                                 spreadRadius: 2,
                               ),
                               BoxShadow(
-                                color: const Color(0xFFD8B4FE).withValues(
-                                  alpha: 0.7,
-                                ),
+                                color: const Color(
+                                  0xFFD8B4FE,
+                                ).withValues(alpha: 0.7),
                                 blurRadius: 6,
                                 spreadRadius: 1,
                               ),

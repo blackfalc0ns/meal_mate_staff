@@ -3068,6 +3068,12 @@ abstract class AppLocalizations {
   /// **'Make sure the full box is visible and lighting is suitable'**
   String get driverCameraBoxLightingHint;
 
+  /// No description provided for @driverTakePhotoAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Photo'**
+  String get driverTakePhotoAction;
+
   /// No description provided for @driverConfirmDeliveryAction.
   ///
   /// In en, this message translates to:

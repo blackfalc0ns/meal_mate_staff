@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverReceiptStepperBar extends StatelessWidget {
-  const DriverReceiptStepperBar({
-    super.key,
-    required this.currentStep,
-  });
+  const DriverReceiptStepperBar({super.key, required this.currentStep});
 
   /// 1 for QR Scanner, 2 for Camera Box Capture
   final int currentStep;
@@ -132,11 +129,7 @@ class DriverReceiptStepperBar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: Spacing.xs),
-            Icon(
-              icon,
-              size: Spacing.iconSm,
-              color: color.onPrimary,
-            ),
+            Icon(icon, size: Spacing.iconSm, color: color.onPrimary),
           ],
         ),
       );
@@ -181,11 +174,7 @@ class DriverReceiptStepperBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.xs),
-          Icon(
-            icon,
-            size: Spacing.iconSm,
-            color: color.onSurfaceVariant,
-          ),
+          Icon(icon, size: Spacing.iconSm, color: color.onSurfaceVariant),
         ],
       ),
     );

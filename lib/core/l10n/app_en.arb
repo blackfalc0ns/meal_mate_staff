@@ -651,6 +651,7 @@
   "driverPhotographBoxTitle": "Photograph Box",
   "driverPhotographBoxSubtitle": "Point the camera at the full box",
   "driverCameraBoxLightingHint": "Make sure the full box is visible and lighting is suitable",
+  "driverTakePhotoAction": "Take Photo",
   "driverConfirmDeliveryAction": "Confirm Receipt",
   "driverBoxVerifiedSuccess": "Box receipt confirmed successfully"
 }

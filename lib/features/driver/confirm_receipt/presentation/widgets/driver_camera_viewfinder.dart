@@ -1,30 +1,55 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 
-class DriverCameraViewfinder extends StatelessWidget {
+class DriverCameraViewfinder extends StatefulWidget {
   const DriverCameraViewfinder({
     super.key,
+    this.controller,
     required this.isPhotoCaptured,
     required this.onCapturePhoto,
     this.capturedPhotoPath,
   });
 
+  final MobileScannerController? controller;
   final bool isPhotoCaptured;
   final VoidCallback onCapturePhoto;
   final String? capturedPhotoPath;
 
   @override
+  State<DriverCameraViewfinder> createState() => _DriverCameraViewfinderState();
+}
+
+class _DriverCameraViewfinderState extends State<DriverCameraViewfinder> {
+  MobileScannerController? _internalController;
+
+  MobileScannerController get _effectiveController =>
+      widget.controller ??
+      (_internalController ??= MobileScannerController(
+        detectionSpeed: DetectionSpeed.noDuplicates,
+        autoStart: true,
+      ));
+
+  @override
+  void dispose() {
+    _internalController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-    final hasPhoto = isPhotoCaptured || (capturedPhotoPath != null && capturedPhotoPath!.isNotEmpty);
+    final hasPhoto =
+        widget.isPhotoCaptured ||
+        (widget.capturedPhotoPath != null &&
+            widget.capturedPhotoPath!.isNotEmpty);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -46,26 +71,37 @@ class DriverCameraViewfinder extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Captured Real Photo or Sample Image
-              if (capturedPhotoPath != null && capturedPhotoPath!.isNotEmpty)
-                Image.file(
-                  File(capturedPhotoPath!),
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => Image.asset(
-                    AppAssets.driverCameraBoxSample,
-                    fit: BoxFit.cover,
-                  ),
-                )
+              // Real live camera feed or captured photo
+              if (widget.capturedPhotoPath != null &&
+                  widget.capturedPhotoPath!.isNotEmpty)
+                Image.file(File(widget.capturedPhotoPath!), fit: BoxFit.cover)
               else
-                Image.asset(
-                  AppAssets.driverCameraBoxSample,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => Center(
-                    child: Icon(
-                      Icons.inventory_2_outlined,
-                      size: 64,
-                      color: color.onSurfaceVariant,
-                    ),
+                Positioned.fill(
+                  child: MobileScanner(
+                    controller: _effectiveController,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error) {
+                      return Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.videocam_off_outlined,
+                              size: Spacing.iconLg,
+                              color: color.onSurfaceVariant,
+                            ),
+                            const SizedBox(height: Spacing.xs),
+                            Text(
+                              locale.driverPhotographBoxTitle,
+                              style: getMediumStyle(
+                                color: color.onSurfaceVariant,
+                                fontSize: FontSize.size11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
 
@@ -96,10 +132,26 @@ class DriverCameraViewfinder extends StatelessWidget {
               ),
 
               // Viewfinder corners
-              _buildCorner(top: Spacing.md, left: Spacing.md, color: color.surface),
-              _buildCorner(top: Spacing.md, right: Spacing.md, color: color.surface),
-              _buildCorner(bottom: Spacing.md, left: Spacing.md, color: color.surface),
-              _buildCorner(bottom: Spacing.md, right: Spacing.md, color: color.surface),
+              _buildCorner(
+                top: Spacing.md,
+                left: Spacing.md,
+                color: color.surface,
+              ),
+              _buildCorner(
+                top: Spacing.md,
+                right: Spacing.md,
+                color: color.surface,
+              ),
+              _buildCorner(
+                bottom: Spacing.md,
+                left: Spacing.md,
+                color: color.surface,
+              ),
+              _buildCorner(
+                bottom: Spacing.md,
+                right: Spacing.md,
+                color: color.surface,
+              ),
 
               // Bottom camera capture button
               Positioned(
@@ -108,17 +160,19 @@ class DriverCameraViewfinder extends StatelessWidget {
                 right: 0,
                 child: Center(
                   child: GestureDetector(
-                    onTap: onCapturePhoto,
+                    onTap: widget.onCapturePhoto,
                     child: Container(
                       width: 52,
                       height: 52,
                       decoration: BoxDecoration(
-                        color: isPhotoCaptured
+                        color: widget.isPhotoCaptured
                             ? color.tertiaryContainer
                             : color.surface.withValues(alpha: 0.9),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: isPhotoCaptured ? color.tertiary : color.primary,
+                          color: widget.isPhotoCaptured
+                              ? color.tertiary
+                              : color.primary,
                           width: 3,
                         ),
                         boxShadow: [
@@ -130,10 +184,12 @@ class DriverCameraViewfinder extends StatelessWidget {
                         ],
                       ),
                       child: Icon(
-                        isPhotoCaptured
+                        widget.isPhotoCaptured
                             ? Icons.check_circle_rounded
                             : Icons.camera_alt_rounded,
-                        color: isPhotoCaptured ? color.tertiary : color.primary,
+                        color: widget.isPhotoCaptured
+                            ? color.tertiary
+                            : color.primary,
                         size: Spacing.iconMd,
                       ),
                     ),

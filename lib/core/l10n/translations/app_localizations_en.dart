@@ -1576,6 +1576,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Make sure the full box is visible and lighting is suitable';
 
   @override
+  String get driverTakePhotoAction => 'Take Photo';
+
+  @override
   String get driverConfirmDeliveryAction => 'Confirm Receipt';
 
   @override

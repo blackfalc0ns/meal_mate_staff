@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverStep2PreviewCard extends StatelessWidget {
-  const DriverStep2PreviewCard({
-    super.key,
-    required this.isUnlocked,
-  });
+  const DriverStep2PreviewCard({super.key, required this.isUnlocked});
 
   final bool isUnlocked;
 
