@@ -3,6 +3,9 @@ class DriverProfileEntity {
     required this.name,
     required this.driverId,
     required this.isOnline,
+    this.avatarAsset = 'assets/images/auth/registration_driver_role.png',
+    this.appVersion = '2.4.1',
+    this.language = 'العربية',
     required this.rating,
     required this.reviewsCount,
     required this.totalOrders,
@@ -21,6 +24,9 @@ class DriverProfileEntity {
   final String name;
   final String driverId;
   final bool isOnline;
+  final String avatarAsset;
+  final String appVersion;
+  final String language;
   final double rating;
   final int reviewsCount;
   final int totalOrders;

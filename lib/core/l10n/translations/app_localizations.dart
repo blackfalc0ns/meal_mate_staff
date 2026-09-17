@@ -3421,6 +3421,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All notifications marked as read'**
   String get driverNotificationsMarkedAllReadSuccess;
+
+  /// No description provided for @driverSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get driverSettingsTitle;
+
+  /// No description provided for @driverSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your preferences and app settings'**
+  String get driverSettingsSubtitle;
+
+  /// No description provided for @driverSettingsEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get driverSettingsEditProfile;
+
+  /// No description provided for @driverSettingsAccountSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Settings'**
+  String get driverSettingsAccountSection;
+
+  /// No description provided for @driverSettingsPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get driverSettingsPersonalInfo;
+
+  /// No description provided for @driverSettingsVehicleInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Information'**
+  String get driverSettingsVehicleInfo;
+
+  /// No description provided for @driverSettingsMyDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'My Documents'**
+  String get driverSettingsMyDocuments;
+
+  /// No description provided for @driverSettingsChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get driverSettingsChangePassword;
+
+  /// No description provided for @driverSettingsAppSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App Settings'**
+  String get driverSettingsAppSection;
+
+  /// No description provided for @driverSettingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get driverSettingsLanguage;
+
+  /// No description provided for @driverSettingsLanguageValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get driverSettingsLanguageValue;
+
+  /// No description provided for @driverSettingsNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get driverSettingsNotifications;
+
+  /// No description provided for @driverSettingsSounds.
+  ///
+  /// In en, this message translates to:
+  /// **'Sounds'**
+  String get driverSettingsSounds;
+
+  /// No description provided for @driverSettingsSupportSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Support & Help'**
+  String get driverSettingsSupportSection;
+
+  /// No description provided for @driverSettingsHelpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get driverSettingsHelpCenter;
+
+  /// No description provided for @driverSettingsContactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get driverSettingsContactUs;
+
+  /// No description provided for @driverSettingsAboutApp.
+  ///
+  /// In en, this message translates to:
+  /// **'About App'**
+  String get driverSettingsAboutApp;
+
+  /// No description provided for @driverSettingsPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy & Terms'**
+  String get driverSettingsPrivacyPolicy;
+
+  /// No description provided for @driverSettingsLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get driverSettingsLogout;
+
+  /// No description provided for @driverSettingsAppVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version 2.4.1'**
+  String get driverSettingsAppVersion;
 }
 
 class _AppLocalizationsDelegate

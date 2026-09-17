@@ -1753,4 +1753,64 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get driverNotificationsMarkedAllReadSuccess =>
       'تم تحديد جميع الإشعارات كمقروءة';
+
+  @override
+  String get driverSettingsTitle => 'الأعدادات';
+
+  @override
+  String get driverSettingsSubtitle => 'إدارة تفضيلاتك وإعدادات التطبيق';
+
+  @override
+  String get driverSettingsEditProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get driverSettingsAccountSection => 'إعدادات الحساب';
+
+  @override
+  String get driverSettingsPersonalInfo => 'المعلومات الشخصية';
+
+  @override
+  String get driverSettingsVehicleInfo => 'معلومات المركبة';
+
+  @override
+  String get driverSettingsMyDocuments => 'مستنداتي';
+
+  @override
+  String get driverSettingsChangePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get driverSettingsAppSection => 'إعدادات التطبيق';
+
+  @override
+  String get driverSettingsLanguage => 'اللغة';
+
+  @override
+  String get driverSettingsLanguageValue => 'العربية';
+
+  @override
+  String get driverSettingsNotifications => 'الإشعارات';
+
+  @override
+  String get driverSettingsSounds => 'الأصوات';
+
+  @override
+  String get driverSettingsSupportSection => 'الدعم والمساعدة';
+
+  @override
+  String get driverSettingsHelpCenter => 'مركز المساعدة';
+
+  @override
+  String get driverSettingsContactUs => 'تواصل معنا';
+
+  @override
+  String get driverSettingsAboutApp => 'عن التطبيق';
+
+  @override
+  String get driverSettingsPrivacyPolicy => 'سياسة الخصوصية والشروط';
+
+  @override
+  String get driverSettingsLogout => 'تسجيل الخروج';
+
+  @override
+  String get driverSettingsAppVersion => 'الإصدار 2.4.1';
 }

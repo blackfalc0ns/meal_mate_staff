@@ -1757,4 +1757,65 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get driverNotificationsMarkedAllReadSuccess =>
       'All notifications marked as read';
+
+  @override
+  String get driverSettingsTitle => 'Settings';
+
+  @override
+  String get driverSettingsSubtitle =>
+      'Manage your preferences and app settings';
+
+  @override
+  String get driverSettingsEditProfile => 'Edit Profile';
+
+  @override
+  String get driverSettingsAccountSection => 'Account Settings';
+
+  @override
+  String get driverSettingsPersonalInfo => 'Personal Information';
+
+  @override
+  String get driverSettingsVehicleInfo => 'Vehicle Information';
+
+  @override
+  String get driverSettingsMyDocuments => 'My Documents';
+
+  @override
+  String get driverSettingsChangePassword => 'Change Password';
+
+  @override
+  String get driverSettingsAppSection => 'App Settings';
+
+  @override
+  String get driverSettingsLanguage => 'Language';
+
+  @override
+  String get driverSettingsLanguageValue => 'Arabic';
+
+  @override
+  String get driverSettingsNotifications => 'Notifications';
+
+  @override
+  String get driverSettingsSounds => 'Sounds';
+
+  @override
+  String get driverSettingsSupportSection => 'Support & Help';
+
+  @override
+  String get driverSettingsHelpCenter => 'Help Center';
+
+  @override
+  String get driverSettingsContactUs => 'Contact Us';
+
+  @override
+  String get driverSettingsAboutApp => 'About App';
+
+  @override
+  String get driverSettingsPrivacyPolicy => 'Privacy Policy & Terms';
+
+  @override
+  String get driverSettingsLogout => 'Logout';
+
+  @override
+  String get driverSettingsAppVersion => 'Version 2.4.1';
 }

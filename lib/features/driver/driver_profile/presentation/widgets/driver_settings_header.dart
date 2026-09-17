@@ -7,13 +7,15 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/notification_button.dart';
 import '../../../orders/presentation/widgets/driver_boxes_header_logo.dart';
 
-class DriverProfileHeader extends StatelessWidget {
-  const DriverProfileHeader({
+class DriverSettingsHeader extends StatelessWidget {
+  const DriverSettingsHeader({
     super.key,
     this.onNotificationTap,
+    this.onMenuTap,
   });
 
   final VoidCallback? onNotificationTap;
+  final VoidCallback? onMenuTap;
 
   @override
   Widget build(BuildContext context) {
@@ -27,25 +29,32 @@ class DriverProfileHeader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(width: Spacing.iconLg + Spacing.sm),
-            const DriverBoxesHeaderLogo(),
             NotificationButton(
               onPressed: onNotificationTap,
+            ),
+            const DriverBoxesHeaderLogo(),
+            IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: color.onSurface,
+                size: Spacing.iconMd,
+              ),
+              onPressed: onMenuTap,
             ),
           ],
         ),
         const SizedBox(height: Spacing.sm),
         Text(
-          locale.driverProfileTitle,
+          locale.driverSettingsTitle,
           style: getBoldStyle(
             color: color.onSurface,
-            fontSize: FontSize.size20,
+            fontSize: FontSize.size22,
           ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: Spacing.xs),
         Text(
-          locale.driverProfileSubtitle,
+          locale.driverSettingsSubtitle,
           style: getRegularStyle(
             color: color.onSurfaceVariant,
             fontSize: FontSize.size12,
