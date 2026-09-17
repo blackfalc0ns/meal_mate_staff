@@ -1726,4 +1726,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverLogoutConfirmMessage => 'Are you sure you want to log out?';
+
+  @override
+  String get driverNotificationsTitle => 'Notifications';
+
+  @override
+  String get driverNotificationsFilterAll => 'All';
+
+  @override
+  String get driverNotificationsFilterDelivery => 'Delivery Orders';
+
+  @override
+  String get driverNotificationsFilterOffers => 'Offers';
+
+  @override
+  String get driverNotificationsFilterSystem => 'System';
+
+  @override
+  String get driverNotificationsSectionToday => 'Today';
+
+  @override
+  String get driverNotificationsSectionYesterday => 'Yesterday';
+
+  @override
+  String get driverNotificationsMarkAllRead => 'Mark All as Read';
+
+  @override
+  String get driverNotificationsEmpty => 'No notifications currently';
+
+  @override
+  String get driverNotificationsMarkedAllReadSuccess =>
+      'All notifications marked as read';
 }

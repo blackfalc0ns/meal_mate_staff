@@ -699,5 +699,15 @@
   "driverQuickActionLogoutDesc": "خروج من الحساب",
   "driverDeliveryPolicyTip": "جميع الطلبات يتم تسليمها يدوياً للعميل فقط",
   "driverLogoutConfirmTitle": "تسجيل الخروج",
-  "driverLogoutConfirmMessage": "هل أنت متأكد من رغبتك في تسجيل الخروج؟"
+  "driverLogoutConfirmMessage": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
+  "driverNotificationsTitle": "الاشعارات",
+  "driverNotificationsFilterAll": "الكل",
+  "driverNotificationsFilterDelivery": "طلبات التوصيل",
+  "driverNotificationsFilterOffers": "العروض",
+  "driverNotificationsFilterSystem": "النظام",
+  "driverNotificationsSectionToday": "اليوم",
+  "driverNotificationsSectionYesterday": "أمس",
+  "driverNotificationsMarkAllRead": "عرض الكل كمقروء",
+  "driverNotificationsEmpty": "لا توجد إشعارات حالياً",
+  "driverNotificationsMarkedAllReadSuccess": "تم تحديد جميع الإشعارات كمقروءة"
 }

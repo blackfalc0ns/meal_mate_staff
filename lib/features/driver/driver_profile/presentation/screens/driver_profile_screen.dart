@@ -72,6 +72,14 @@ class DriverProfileScreen extends StatelessWidget {
     );
   }
 
+  void _handleNotificationTap(BuildContext context) {
+    if (onNotificationTap != null) {
+      onNotificationTap!();
+      return;
+    }
+    context.pushNamed(AppRoutes.driverNotifications);
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -90,7 +98,7 @@ class DriverProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DriverProfileHeader(
-                onNotificationTap: onNotificationTap,
+                onNotificationTap: () => _handleNotificationTap(context),
               ),
               const SizedBox(height: Spacing.base),
               DriverProfileInfoCard(profile: currentProfile),

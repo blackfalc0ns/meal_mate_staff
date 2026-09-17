@@ -37,6 +37,8 @@ import '../../features/driver/confirm_receipt/presentation/screens/driver_boxes_
 import '../../features/driver/confirm_receipt/domain/entities/driver_received_box_item_entity.dart';
 import '../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
 import '../../features/driver/driver_profile/domain/entities/driver_profile_entity.dart';
+import '../../features/driver/driver_notifications/presentation/screens/driver_notifications_screen.dart';
+import '../../features/driver/driver_notifications/domain/entities/driver_notification_entity.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -250,6 +252,16 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverProfileScreen(profile: profile),
+        );
+
+      case AppRoutes.driverNotifications:
+        final notifications =
+            settings.arguments is List<DriverNotificationEntity>
+                ? settings.arguments! as List<DriverNotificationEntity>
+                : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverNotificationsScreen(initialNotifications: notifications),
         );
 
       default:

@@ -1722,4 +1722,35 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get driverLogoutConfirmMessage =>
       'هل أنت متأكد من رغبتك في تسجيل الخروج؟';
+
+  @override
+  String get driverNotificationsTitle => 'الاشعارات';
+
+  @override
+  String get driverNotificationsFilterAll => 'الكل';
+
+  @override
+  String get driverNotificationsFilterDelivery => 'طلبات التوصيل';
+
+  @override
+  String get driverNotificationsFilterOffers => 'العروض';
+
+  @override
+  String get driverNotificationsFilterSystem => 'النظام';
+
+  @override
+  String get driverNotificationsSectionToday => 'اليوم';
+
+  @override
+  String get driverNotificationsSectionYesterday => 'أمس';
+
+  @override
+  String get driverNotificationsMarkAllRead => 'عرض الكل كمقروء';
+
+  @override
+  String get driverNotificationsEmpty => 'لا توجد إشعارات حالياً';
+
+  @override
+  String get driverNotificationsMarkedAllReadSuccess =>
+      'تم تحديد جميع الإشعارات كمقروءة';
 }

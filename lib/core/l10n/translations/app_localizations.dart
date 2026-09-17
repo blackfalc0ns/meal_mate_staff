@@ -3361,6 +3361,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to log out?'**
   String get driverLogoutConfirmMessage;
+
+  /// No description provided for @driverNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get driverNotificationsTitle;
+
+  /// No description provided for @driverNotificationsFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get driverNotificationsFilterAll;
+
+  /// No description provided for @driverNotificationsFilterDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Orders'**
+  String get driverNotificationsFilterDelivery;
+
+  /// No description provided for @driverNotificationsFilterOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get driverNotificationsFilterOffers;
+
+  /// No description provided for @driverNotificationsFilterSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get driverNotificationsFilterSystem;
+
+  /// No description provided for @driverNotificationsSectionToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get driverNotificationsSectionToday;
+
+  /// No description provided for @driverNotificationsSectionYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get driverNotificationsSectionYesterday;
+
+  /// No description provided for @driverNotificationsMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark All as Read'**
+  String get driverNotificationsMarkAllRead;
+
+  /// No description provided for @driverNotificationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications currently'**
+  String get driverNotificationsEmpty;
+
+  /// No description provided for @driverNotificationsMarkedAllReadSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'All notifications marked as read'**
+  String get driverNotificationsMarkedAllReadSuccess;
 }
 
 class _AppLocalizationsDelegate

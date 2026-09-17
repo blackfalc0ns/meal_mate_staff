@@ -34,4 +34,5 @@ class AppRoutes {
   static const String driverConfirmReceipt = '/driver-confirm-receipt';
   static const String driverBoxesReceived = '/driver-boxes-received';
   static const String driverProfile = '/driver-profile';
+  static const String driverNotifications = '/driver-notifications';
 }

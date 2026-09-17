@@ -699,5 +699,15 @@
   "driverQuickActionLogoutDesc": "Sign out of account",
   "driverDeliveryPolicyTip": "All orders must be delivered manually to the client only",
   "driverLogoutConfirmTitle": "Logout",
-  "driverLogoutConfirmMessage": "Are you sure you want to log out?"
+  "driverLogoutConfirmMessage": "Are you sure you want to log out?",
+  "driverNotificationsTitle": "Notifications",
+  "driverNotificationsFilterAll": "All",
+  "driverNotificationsFilterDelivery": "Delivery Orders",
+  "driverNotificationsFilterOffers": "Offers",
+  "driverNotificationsFilterSystem": "System",
+  "driverNotificationsSectionToday": "Today",
+  "driverNotificationsSectionYesterday": "Yesterday",
+  "driverNotificationsMarkAllRead": "Mark All as Read",
+  "driverNotificationsEmpty": "No notifications currently",
+  "driverNotificationsMarkedAllReadSuccess": "All notifications marked as read"
 }
