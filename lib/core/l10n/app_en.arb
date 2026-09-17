@@ -653,5 +653,22 @@
   "driverCameraBoxLightingHint": "Make sure the full box is visible and lighting is suitable",
   "driverTakePhotoAction": "Take Photo",
   "driverConfirmDeliveryAction": "Confirm Receipt",
-  "driverBoxVerifiedSuccess": "Box receipt confirmed successfully"
+  "driverBoxVerifiedSuccess": "Box receipt confirmed successfully",
+  "driverBoxesReceivedTitle": "Boxes Received",
+  "driverBoxesReceivedSubtitle": "All boxes received successfully from assembly point",
+  "driverBoxesReceivedSuccessCount": "5 Boxes Received Successfully",
+  "driverBoxesReceivedReadySub": "Ready to start your first delivery",
+  "driverAssemblyPoint": "Assembly Point",
+  "driverAssemblyPointValue": "Meal Center - Al Narjis",
+  "driverReceiptTime": "Pickup Time",
+  "driverReceiptTimeValue": "09:06 AM",
+  "driverReadyForDeliveryRoute": "Ready for Delivery",
+  "driverReadyForDeliveryRouteValue": "Route 1",
+  "driverReceivedBoxesTitle": "Received Boxes",
+  "driverBoxesCountBadge": "5 Boxes",
+  "driverBoxConditionLabel": "Box condition:",
+  "driverBoxConditionValue": "Intact & Ready",
+  "driverBoxStatusReceived": "Received",
+  "driverBoxesDeliverySafetyTip": "Ensure boxes are well secured in your vehicle to avoid damage while driving",
+  "driverStartDeliveryButton": "Start Delivery"
 }

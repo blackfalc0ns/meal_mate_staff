@@ -653,5 +653,22 @@
   "driverCameraBoxLightingHint": "تأكد أن البوكس ظاهر بالكامل والإضاءة مناسبة",
   "driverTakePhotoAction": "أخذ صورة",
   "driverConfirmDeliveryAction": "تأكيد التسليم",
-  "driverBoxVerifiedSuccess": "تم التحقق من استلام البوكس بنجاح"
+  "driverBoxVerifiedSuccess": "تم التحقق من استلام البوكس بنجاح",
+  "driverBoxesReceivedTitle": "تم استلام الصناديق",
+  "driverBoxesReceivedSubtitle": "تم استلام جميع الصناديق بنجاح من نقطة التجميع",
+  "driverBoxesReceivedSuccessCount": "تم استلام 5 صناديق بنجاح",
+  "driverBoxesReceivedReadySub": "جاهز للانطلاق في أول توصيل",
+  "driverAssemblyPoint": "نقطة التجميع",
+  "driverAssemblyPointValue": "مركز الوجبات - النرجس",
+  "driverReceiptTime": "وقت الاستلام",
+  "driverReceiptTimeValue": "09:06 ص",
+  "driverReadyForDeliveryRoute": "جاهز للتوصيل",
+  "driverReadyForDeliveryRouteValue": "المسار الأول",
+  "driverReceivedBoxesTitle": "الصناديق المستلمة",
+  "driverBoxesCountBadge": "5 صناديق",
+  "driverBoxConditionLabel": "حالة الصندوق:",
+  "driverBoxConditionValue": "سليم وجاهز",
+  "driverBoxStatusReceived": "مستلم",
+  "driverBoxesDeliverySafetyTip": "احرص على تثبيت الصناديق جيداً في وسيلة النقل لتجنب تلفها أثناء القيادة",
+  "driverStartDeliveryButton": "بدء التوصيل"
 }

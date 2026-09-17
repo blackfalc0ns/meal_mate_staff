@@ -1583,4 +1583,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverBoxVerifiedSuccess => 'Box receipt confirmed successfully';
+
+  @override
+  String get driverBoxesReceivedTitle => 'Boxes Received';
+
+  @override
+  String get driverBoxesReceivedSubtitle =>
+      'All boxes received successfully from assembly point';
+
+  @override
+  String get driverBoxesReceivedSuccessCount => '5 Boxes Received Successfully';
+
+  @override
+  String get driverBoxesReceivedReadySub =>
+      'Ready to start your first delivery';
+
+  @override
+  String get driverAssemblyPoint => 'Assembly Point';
+
+  @override
+  String get driverAssemblyPointValue => 'Meal Center - Al Narjis';
+
+  @override
+  String get driverReceiptTime => 'Pickup Time';
+
+  @override
+  String get driverReceiptTimeValue => '09:06 AM';
+
+  @override
+  String get driverReadyForDeliveryRoute => 'Ready for Delivery';
+
+  @override
+  String get driverReadyForDeliveryRouteValue => 'Route 1';
+
+  @override
+  String get driverReceivedBoxesTitle => 'Received Boxes';
+
+  @override
+  String get driverBoxesCountBadge => '5 Boxes';
+
+  @override
+  String get driverBoxConditionLabel => 'Box condition:';
+
+  @override
+  String get driverBoxConditionValue => 'Intact & Ready';
+
+  @override
+  String get driverBoxStatusReceived => 'Received';
+
+  @override
+  String get driverBoxesDeliverySafetyTip =>
+      'Ensure boxes are well secured in your vehicle to avoid damage while driving';
+
+  @override
+  String get driverStartDeliveryButton => 'Start Delivery';
 }

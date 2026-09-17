@@ -1579,4 +1579,57 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverBoxVerifiedSuccess => 'تم التحقق من استلام البوكس بنجاح';
+
+  @override
+  String get driverBoxesReceivedTitle => 'تم استلام الصناديق';
+
+  @override
+  String get driverBoxesReceivedSubtitle =>
+      'تم استلام جميع الصناديق بنجاح من نقطة التجميع';
+
+  @override
+  String get driverBoxesReceivedSuccessCount => 'تم استلام 5 صناديق بنجاح';
+
+  @override
+  String get driverBoxesReceivedReadySub => 'جاهز للانطلاق في أول توصيل';
+
+  @override
+  String get driverAssemblyPoint => 'نقطة التجميع';
+
+  @override
+  String get driverAssemblyPointValue => 'مركز الوجبات - النرجس';
+
+  @override
+  String get driverReceiptTime => 'وقت الاستلام';
+
+  @override
+  String get driverReceiptTimeValue => '09:06 ص';
+
+  @override
+  String get driverReadyForDeliveryRoute => 'جاهز للتوصيل';
+
+  @override
+  String get driverReadyForDeliveryRouteValue => 'المسار الأول';
+
+  @override
+  String get driverReceivedBoxesTitle => 'الصناديق المستلمة';
+
+  @override
+  String get driverBoxesCountBadge => '5 صناديق';
+
+  @override
+  String get driverBoxConditionLabel => 'حالة الصندوق:';
+
+  @override
+  String get driverBoxConditionValue => 'سليم وجاهز';
+
+  @override
+  String get driverBoxStatusReceived => 'مستلم';
+
+  @override
+  String get driverBoxesDeliverySafetyTip =>
+      'احرص على تثبيت الصناديق جيداً في وسيلة النقل لتجنب تلفها أثناء القيادة';
+
+  @override
+  String get driverStartDeliveryButton => 'بدء التوصيل';
 }

@@ -3085,6 +3085,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Box receipt confirmed successfully'**
   String get driverBoxVerifiedSuccess;
+
+  /// No description provided for @driverBoxesReceivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes Received'**
+  String get driverBoxesReceivedTitle;
+
+  /// No description provided for @driverBoxesReceivedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All boxes received successfully from assembly point'**
+  String get driverBoxesReceivedSubtitle;
+
+  /// No description provided for @driverBoxesReceivedSuccessCount.
+  ///
+  /// In en, this message translates to:
+  /// **'5 Boxes Received Successfully'**
+  String get driverBoxesReceivedSuccessCount;
+
+  /// No description provided for @driverBoxesReceivedReadySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to start your first delivery'**
+  String get driverBoxesReceivedReadySub;
+
+  /// No description provided for @driverAssemblyPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Assembly Point'**
+  String get driverAssemblyPoint;
+
+  /// No description provided for @driverAssemblyPointValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal Center - Al Narjis'**
+  String get driverAssemblyPointValue;
+
+  /// No description provided for @driverReceiptTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Time'**
+  String get driverReceiptTime;
+
+  /// No description provided for @driverReceiptTimeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'09:06 AM'**
+  String get driverReceiptTimeValue;
+
+  /// No description provided for @driverReadyForDeliveryRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for Delivery'**
+  String get driverReadyForDeliveryRoute;
+
+  /// No description provided for @driverReadyForDeliveryRouteValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Route 1'**
+  String get driverReadyForDeliveryRouteValue;
+
+  /// No description provided for @driverReceivedBoxesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Received Boxes'**
+  String get driverReceivedBoxesTitle;
+
+  /// No description provided for @driverBoxesCountBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'5 Boxes'**
+  String get driverBoxesCountBadge;
+
+  /// No description provided for @driverBoxConditionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Box condition:'**
+  String get driverBoxConditionLabel;
+
+  /// No description provided for @driverBoxConditionValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Intact & Ready'**
+  String get driverBoxConditionValue;
+
+  /// No description provided for @driverBoxStatusReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get driverBoxStatusReceived;
+
+  /// No description provided for @driverBoxesDeliverySafetyTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure boxes are well secured in your vehicle to avoid damage while driving'**
+  String get driverBoxesDeliverySafetyTip;
+
+  /// No description provided for @driverStartDeliveryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Delivery'**
+  String get driverStartDeliveryButton;
 }
 
 class _AppLocalizationsDelegate
