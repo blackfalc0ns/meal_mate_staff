@@ -1632,4 +1632,94 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverStartDeliveryButton => 'بدء التوصيل';
+
+  @override
+  String get driverProfileTitle => 'الملف الشخصي والدعم';
+
+  @override
+  String get driverProfileSubtitle => 'إدارة معلوماتك والحصول على المساعدة';
+
+  @override
+  String get driverStatusOnline => 'نشط';
+
+  @override
+  String get driverIdLabel => 'رقم السائق';
+
+  @override
+  String get driverRatingReviews => 'تقييم';
+
+  @override
+  String get driverTotalOrders => 'إجمالي الطلبات';
+
+  @override
+  String get driverAcceptanceRate => 'نسبة القبول';
+
+  @override
+  String get driverRating => 'التقييم';
+
+  @override
+  String get driverMemberSince => 'عضو منذ';
+
+  @override
+  String get driverVehicleInfo => 'معلومات المركبة';
+
+  @override
+  String get driverVehicleActive => 'نشطة';
+
+  @override
+  String get driverVehicleType => 'نوع المركبة';
+
+  @override
+  String get driverVehicleModel => 'الموديل';
+
+  @override
+  String get driverPlateNumber => 'رقم اللوحة';
+
+  @override
+  String get driverSupportSectionTitle => 'الدعم والمساعدة';
+
+  @override
+  String get driverContactSupportTitle => 'تواصل مع الدعم';
+
+  @override
+  String get driverContactSupportDesc =>
+      'فريق الدعم متاح لمساعدتك على مدار الساعة';
+
+  @override
+  String get driverRecentTicketTitle => 'حالة طلب الدعم الأخير';
+
+  @override
+  String get driverViewAll => 'عرض الكل';
+
+  @override
+  String get driverTicketStatusResolved => 'تم الحل';
+
+  @override
+  String get driverQuickActionLanguage => 'اللغة';
+
+  @override
+  String get driverQuickActionLanguageValue => 'العربية';
+
+  @override
+  String get driverQuickActionSettings => 'الإعدادات';
+
+  @override
+  String get driverQuickActionSettingsDesc => 'تفضيلات التطبيق';
+
+  @override
+  String get driverQuickActionLogout => 'تسجيل الخروج';
+
+  @override
+  String get driverQuickActionLogoutDesc => 'خروج من الحساب';
+
+  @override
+  String get driverDeliveryPolicyTip =>
+      'جميع الطلبات يتم تسليمها يدوياً للعميل فقط';
+
+  @override
+  String get driverLogoutConfirmTitle => 'تسجيل الخروج';
+
+  @override
+  String get driverLogoutConfirmMessage =>
+      'هل أنت متأكد من رغبتك في تسجيل الخروج؟';
 }

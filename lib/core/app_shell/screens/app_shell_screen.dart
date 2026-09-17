@@ -7,6 +7,7 @@ import '../../../features/dispatcher/dispatcher_orders/presentation/screens/disp
 import '../../../features/dispatcher/dispatcher_profile/presentation/screens/dispatcher_profile_screen.dart';
 import '../../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
 import '../../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
+import '../../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
 import '../../extensions/extensions.dart';
 import '../widgets/app_bottom_nav_bar.dart';
 
@@ -65,7 +66,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         const DriverAssignedBoxesScreen(),
         const Text("Map"),
         const Text("Support"),
-        const Text("Profile"),
+        const DriverProfileScreen(),
       ];
     }
     return [

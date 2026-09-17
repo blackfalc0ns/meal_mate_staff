@@ -1637,4 +1637,93 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverStartDeliveryButton => 'Start Delivery';
+
+  @override
+  String get driverProfileTitle => 'Profile & Support';
+
+  @override
+  String get driverProfileSubtitle => 'Manage your info and get assistance';
+
+  @override
+  String get driverStatusOnline => 'Active';
+
+  @override
+  String get driverIdLabel => 'Driver ID';
+
+  @override
+  String get driverRatingReviews => 'reviews';
+
+  @override
+  String get driverTotalOrders => 'Total Orders';
+
+  @override
+  String get driverAcceptanceRate => 'Acceptance Rate';
+
+  @override
+  String get driverRating => 'Rating';
+
+  @override
+  String get driverMemberSince => 'Member Since';
+
+  @override
+  String get driverVehicleInfo => 'Vehicle Information';
+
+  @override
+  String get driverVehicleActive => 'Active';
+
+  @override
+  String get driverVehicleType => 'Vehicle Type';
+
+  @override
+  String get driverVehicleModel => 'Model';
+
+  @override
+  String get driverPlateNumber => 'Plate Number';
+
+  @override
+  String get driverSupportSectionTitle => 'Support & Help';
+
+  @override
+  String get driverContactSupportTitle => 'Contact Support';
+
+  @override
+  String get driverContactSupportDesc =>
+      'Support team is available 24/7 to assist you';
+
+  @override
+  String get driverRecentTicketTitle => 'Recent Support Request Status';
+
+  @override
+  String get driverViewAll => 'View All';
+
+  @override
+  String get driverTicketStatusResolved => 'Resolved';
+
+  @override
+  String get driverQuickActionLanguage => 'Language';
+
+  @override
+  String get driverQuickActionLanguageValue => 'Arabic';
+
+  @override
+  String get driverQuickActionSettings => 'Settings';
+
+  @override
+  String get driverQuickActionSettingsDesc => 'App Preferences';
+
+  @override
+  String get driverQuickActionLogout => 'Logout';
+
+  @override
+  String get driverQuickActionLogoutDesc => 'Sign out of account';
+
+  @override
+  String get driverDeliveryPolicyTip =>
+      'All orders must be delivered manually to the client only';
+
+  @override
+  String get driverLogoutConfirmTitle => 'Logout';
+
+  @override
+  String get driverLogoutConfirmMessage => 'Are you sure you want to log out?';
 }

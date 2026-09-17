@@ -35,6 +35,8 @@ import '../../features/driver/orders/presentation/screens/driver_assigned_boxes_
 import '../../features/driver/confirm_receipt/presentation/screens/driver_confirm_receipt_screen.dart';
 import '../../features/driver/confirm_receipt/presentation/screens/driver_boxes_received_screen.dart';
 import '../../features/driver/confirm_receipt/domain/entities/driver_received_box_item_entity.dart';
+import '../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
+import '../../features/driver/driver_profile/domain/entities/driver_profile_entity.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -239,6 +241,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverBoxesReceivedScreen(boxes: boxes),
+        );
+
+      case AppRoutes.driverProfile:
+        final profile = settings.arguments is DriverProfileEntity
+            ? settings.arguments! as DriverProfileEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverProfileScreen(profile: profile),
         );
 
       default:

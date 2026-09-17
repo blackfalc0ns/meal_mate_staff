@@ -3187,6 +3187,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start Delivery'**
   String get driverStartDeliveryButton;
+
+  /// No description provided for @driverProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile & Support'**
+  String get driverProfileTitle;
+
+  /// No description provided for @driverProfileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your info and get assistance'**
+  String get driverProfileSubtitle;
+
+  /// No description provided for @driverStatusOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get driverStatusOnline;
+
+  /// No description provided for @driverIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver ID'**
+  String get driverIdLabel;
+
+  /// No description provided for @driverRatingReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'reviews'**
+  String get driverRatingReviews;
+
+  /// No description provided for @driverTotalOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Orders'**
+  String get driverTotalOrders;
+
+  /// No description provided for @driverAcceptanceRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance Rate'**
+  String get driverAcceptanceRate;
+
+  /// No description provided for @driverRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get driverRating;
+
+  /// No description provided for @driverMemberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Member Since'**
+  String get driverMemberSince;
+
+  /// No description provided for @driverVehicleInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Information'**
+  String get driverVehicleInfo;
+
+  /// No description provided for @driverVehicleActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get driverVehicleActive;
+
+  /// No description provided for @driverVehicleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get driverVehicleType;
+
+  /// No description provided for @driverVehicleModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get driverVehicleModel;
+
+  /// No description provided for @driverPlateNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate Number'**
+  String get driverPlateNumber;
+
+  /// No description provided for @driverSupportSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support & Help'**
+  String get driverSupportSectionTitle;
+
+  /// No description provided for @driverContactSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get driverContactSupportTitle;
+
+  /// No description provided for @driverContactSupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Support team is available 24/7 to assist you'**
+  String get driverContactSupportDesc;
+
+  /// No description provided for @driverRecentTicketTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Support Request Status'**
+  String get driverRecentTicketTitle;
+
+  /// No description provided for @driverViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get driverViewAll;
+
+  /// No description provided for @driverTicketStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get driverTicketStatusResolved;
+
+  /// No description provided for @driverQuickActionLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get driverQuickActionLanguage;
+
+  /// No description provided for @driverQuickActionLanguageValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get driverQuickActionLanguageValue;
+
+  /// No description provided for @driverQuickActionSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get driverQuickActionSettings;
+
+  /// No description provided for @driverQuickActionSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'App Preferences'**
+  String get driverQuickActionSettingsDesc;
+
+  /// No description provided for @driverQuickActionLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get driverQuickActionLogout;
+
+  /// No description provided for @driverQuickActionLogoutDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out of account'**
+  String get driverQuickActionLogoutDesc;
+
+  /// No description provided for @driverDeliveryPolicyTip.
+  ///
+  /// In en, this message translates to:
+  /// **'All orders must be delivered manually to the client only'**
+  String get driverDeliveryPolicyTip;
+
+  /// No description provided for @driverLogoutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get driverLogoutConfirmTitle;
+
+  /// No description provided for @driverLogoutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get driverLogoutConfirmMessage;
 }
 
 class _AppLocalizationsDelegate
