@@ -1818,4 +1818,86 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverSettingsAppVersion => 'Version 2.4.1';
+
+  @override
+  String get driverVehicleDetailsTitle => 'Vehicle Details';
+
+  @override
+  String get driverVehicleDetailsSubtitle =>
+      'You can view or edit your vehicle details';
+
+  @override
+  String get driverVehicleTypeLabel => 'Vehicle Type';
+
+  @override
+  String get driverVehicleModelLabel => 'Vehicle Model';
+
+  @override
+  String get driverVehicleColorLabel => 'Color';
+
+  @override
+  String get driverEditVehicleColorLabel => 'Vehicle Color';
+
+  @override
+  String get driverVehicleYearLabel => 'Manufacture Year';
+
+  @override
+  String get driverVehicleStructureLabel => 'Body Type';
+
+  @override
+  String get driverVehicleChangePhoto => 'Change Photo';
+
+  @override
+  String get driverVehiclePlateTitle => 'Plate Number';
+
+  @override
+  String get driverVehicleKuwaitState => 'State of Kuwait';
+
+  @override
+  String get driverVehicleKuwaitEn => 'KUWAIT';
+
+  @override
+  String get driverVehicleLicenseNumberLabel => 'License Number';
+
+  @override
+  String get driverVehicleLicenseExpiryLabel => 'License Expiry Date';
+
+  @override
+  String get driverVehicleNoticeTitle => 'Note';
+
+  @override
+  String get driverVehicleNoticeBody =>
+      'Please ensure vehicle data is always up to date to guarantee work continuity and avoid account suspension.';
+
+  @override
+  String get driverVehicleEditButton => 'Edit';
+
+  @override
+  String get driverEditVehicleDetailsTitle => 'Edit Vehicle Details';
+
+  @override
+  String get driverEditVehicleDetailsSubtitle => 'Update your vehicle details';
+
+  @override
+  String get driverEditVehiclePhotoTitle => 'Vehicle Photo';
+
+  @override
+  String get driverEditVehiclePhotoSubtitle =>
+      'Add a clear photo of your vehicle';
+
+  @override
+  String get driverEditVehicleNotesLabel => 'Additional Notes (Optional)';
+
+  @override
+  String get driverEditVehicleNotesHint => 'Add any additional notes here...';
+
+  @override
+  String get driverEditVehicleCancel => 'Cancel';
+
+  @override
+  String get driverEditVehicleSaveChanges => 'Save Changes';
+
+  @override
+  String get driverEditVehicleSuccessMessage =>
+      'Vehicle details updated successfully';
 }

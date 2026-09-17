@@ -1813,4 +1813,85 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverSettingsAppVersion => 'الإصدار 2.4.1';
+
+  @override
+  String get driverVehicleDetailsTitle => 'بيانات المركبة';
+
+  @override
+  String get driverVehicleDetailsSubtitle =>
+      'يمكنك عرض أو تعديل بيانات المركبة الخاصة بك';
+
+  @override
+  String get driverVehicleTypeLabel => 'نوع المركبة';
+
+  @override
+  String get driverVehicleModelLabel => 'موديل المركبة';
+
+  @override
+  String get driverVehicleColorLabel => 'اللون';
+
+  @override
+  String get driverEditVehicleColorLabel => 'لون المركبة';
+
+  @override
+  String get driverVehicleYearLabel => 'سنة الصنع';
+
+  @override
+  String get driverVehicleStructureLabel => 'هيكل المركبة';
+
+  @override
+  String get driverVehicleChangePhoto => 'تغيير الصورة';
+
+  @override
+  String get driverVehiclePlateTitle => 'رقم اللوحة';
+
+  @override
+  String get driverVehicleKuwaitState => 'دولة الكويت';
+
+  @override
+  String get driverVehicleKuwaitEn => 'KUWAIT';
+
+  @override
+  String get driverVehicleLicenseNumberLabel => 'رقم الرخصة';
+
+  @override
+  String get driverVehicleLicenseExpiryLabel => 'تاريخ انتهاء الرخصة';
+
+  @override
+  String get driverVehicleNoticeTitle => 'ملاحظة';
+
+  @override
+  String get driverVehicleNoticeBody =>
+      'يرجى التأكد من أن بيانات المركبة محدثة دائماً لضمان استمرارية العمل وتجنب أي إيقاف للحساب.';
+
+  @override
+  String get driverVehicleEditButton => 'تعديل';
+
+  @override
+  String get driverEditVehicleDetailsTitle => 'تعديل بيانات المركبة';
+
+  @override
+  String get driverEditVehicleDetailsSubtitle =>
+      'قم بتحديث بيانات المركبة الخاصة بك';
+
+  @override
+  String get driverEditVehiclePhotoTitle => 'صورة المركبة';
+
+  @override
+  String get driverEditVehiclePhotoSubtitle => 'أضف صورة واضحة لمركبتك';
+
+  @override
+  String get driverEditVehicleNotesLabel => 'ملاحظات إضافية ( اختياري )';
+
+  @override
+  String get driverEditVehicleNotesHint => 'أضف أي ملاحظات إضافية هنا...';
+
+  @override
+  String get driverEditVehicleCancel => 'إلغاء';
+
+  @override
+  String get driverEditVehicleSaveChanges => 'حفظ التغييرات';
+
+  @override
+  String get driverEditVehicleSuccessMessage => 'تم تحديث بيانات المركبة بنجاح';
 }

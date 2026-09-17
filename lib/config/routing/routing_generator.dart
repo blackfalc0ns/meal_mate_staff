@@ -39,6 +39,9 @@ import '../../features/driver/driver_profile/presentation/screens/driver_profile
 import '../../features/driver/driver_profile/domain/entities/driver_profile_entity.dart';
 import '../../features/driver/driver_notifications/presentation/screens/driver_notifications_screen.dart';
 import '../../features/driver/driver_notifications/domain/entities/driver_notification_entity.dart';
+import '../../features/driver/driver_vehicle/domain/entities/driver_vehicle_entity.dart';
+import '../../features/driver/driver_vehicle/presentation/screens/driver_edit_vehicle_details_screen.dart';
+import '../../features/driver/driver_vehicle/presentation/screens/driver_vehicle_details_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -262,6 +265,24 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverNotificationsScreen(initialNotifications: notifications),
+        );
+
+      case AppRoutes.driverVehicleDetails:
+        final vehicle = settings.arguments is DriverVehicleEntity
+            ? settings.arguments! as DriverVehicleEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverVehicleDetailsScreen(vehicle: vehicle),
+        );
+
+      case AppRoutes.driverEditVehicleDetails:
+        final vehicle = settings.arguments is DriverVehicleEntity
+            ? settings.arguments! as DriverVehicleEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverEditVehicleDetailsScreen(vehicle: vehicle),
         );
 
       default:

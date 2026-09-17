@@ -42,6 +42,7 @@ class DriverBoxesReceivedScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: color.surface,
+      appBar: const DriverBoxesReceivedHeader(),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
@@ -51,8 +52,6 @@ class DriverBoxesReceivedScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: Spacing.sm),
-              const DriverBoxesReceivedHeader(),
               const SizedBox(height: Spacing.base),
               const DriverBoxesReceivedSuccessBanner(),
               const SizedBox(height: Spacing.sm),

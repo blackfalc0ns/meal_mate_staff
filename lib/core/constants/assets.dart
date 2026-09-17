@@ -14,6 +14,8 @@ class AppAssets {
       '$_driverImages/assigned_boxes_banner.png';
   static const String driverCameraBoxSample =
       '$_driverImages/driver_camera_box_sample.png';
+  static const String driverToyotaCorolla =
+      '$_driverImages/toyota_corolla.png';
 
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';

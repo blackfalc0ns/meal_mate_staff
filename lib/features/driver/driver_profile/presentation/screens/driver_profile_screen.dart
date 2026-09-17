@@ -72,10 +72,9 @@ class DriverProfileScreen extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  AppRoutes.login,
-                  (route) => false,
-                );
+                Navigator.of(
+                  context,
+                ).pushNamedAndRemoveUntil(AppRoutes.login, (route) => false);
               },
               child: Text(
                 locale.driverSettingsLogout,
@@ -96,6 +95,14 @@ class DriverProfileScreen extends StatelessWidget {
     context.pushNamed(AppRoutes.driverNotifications);
   }
 
+  void _handleVehicleInfoTap(BuildContext context) {
+    if (onVehicleInfoTap != null) {
+      onVehicleInfoTap!();
+      return;
+    }
+    context.pushNamed(AppRoutes.driverVehicleDetails);
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -104,6 +111,10 @@ class DriverProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: color.surface,
+      appBar: DriverSettingsHeader(
+        onNotificationTap: () => _handleNotificationTap(context),
+        onMenuTap: onMenuTap,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
@@ -113,11 +124,6 @@ class DriverProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              DriverSettingsHeader(
-                onNotificationTap: () => _handleNotificationTap(context),
-                onMenuTap: onMenuTap,
-              ),
-              const SizedBox(height: Spacing.base),
               DriverSettingsProfileCard(
                 profile: currentProfile,
                 onEditProfileTap: onEditProfileTap,
@@ -136,7 +142,7 @@ class DriverProfileScreen extends StatelessWidget {
                   DriverSettingsMenuTile(
                     icon: Icons.directions_car_outlined,
                     title: locale.driverSettingsVehicleInfo,
-                    onTap: onVehicleInfoTap,
+                    onTap: () => _handleVehicleInfoTap(context),
                   ),
                   DriverSettingsMenuTile(
                     icon: Icons.description_outlined,
@@ -166,7 +172,9 @@ class DriverProfileScreen extends StatelessWidget {
                   DriverSettingsMenuTile(
                     icon: Icons.notifications_none_rounded,
                     title: locale.driverSettingsNotifications,
-                    onTap: onNotificationsTap ?? () => _handleNotificationTap(context),
+                    onTap:
+                        onNotificationsTap ??
+                        () => _handleNotificationTap(context),
                   ),
                   DriverSettingsMenuTile(
                     icon: Icons.volume_up_outlined,

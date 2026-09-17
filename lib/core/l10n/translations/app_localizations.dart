@@ -3541,6 +3541,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version 2.4.1'**
   String get driverSettingsAppVersion;
+
+  /// No description provided for @driverVehicleDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Details'**
+  String get driverVehicleDetailsTitle;
+
+  /// No description provided for @driverVehicleDetailsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can view or edit your vehicle details'**
+  String get driverVehicleDetailsSubtitle;
+
+  /// No description provided for @driverVehicleTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get driverVehicleTypeLabel;
+
+  /// No description provided for @driverVehicleModelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Model'**
+  String get driverVehicleModelLabel;
+
+  /// No description provided for @driverVehicleColorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get driverVehicleColorLabel;
+
+  /// No description provided for @driverEditVehicleColorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Color'**
+  String get driverEditVehicleColorLabel;
+
+  /// No description provided for @driverVehicleYearLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Manufacture Year'**
+  String get driverVehicleYearLabel;
+
+  /// No description provided for @driverVehicleStructureLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Body Type'**
+  String get driverVehicleStructureLabel;
+
+  /// No description provided for @driverVehicleChangePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Photo'**
+  String get driverVehicleChangePhoto;
+
+  /// No description provided for @driverVehiclePlateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate Number'**
+  String get driverVehiclePlateTitle;
+
+  /// No description provided for @driverVehicleKuwaitState.
+  ///
+  /// In en, this message translates to:
+  /// **'State of Kuwait'**
+  String get driverVehicleKuwaitState;
+
+  /// No description provided for @driverVehicleKuwaitEn.
+  ///
+  /// In en, this message translates to:
+  /// **'KUWAIT'**
+  String get driverVehicleKuwaitEn;
+
+  /// No description provided for @driverVehicleLicenseNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'License Number'**
+  String get driverVehicleLicenseNumberLabel;
+
+  /// No description provided for @driverVehicleLicenseExpiryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'License Expiry Date'**
+  String get driverVehicleLicenseExpiryLabel;
+
+  /// No description provided for @driverVehicleNoticeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get driverVehicleNoticeTitle;
+
+  /// No description provided for @driverVehicleNoticeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please ensure vehicle data is always up to date to guarantee work continuity and avoid account suspension.'**
+  String get driverVehicleNoticeBody;
+
+  /// No description provided for @driverVehicleEditButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get driverVehicleEditButton;
+
+  /// No description provided for @driverEditVehicleDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Vehicle Details'**
+  String get driverEditVehicleDetailsTitle;
+
+  /// No description provided for @driverEditVehicleDetailsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update your vehicle details'**
+  String get driverEditVehicleDetailsSubtitle;
+
+  /// No description provided for @driverEditVehiclePhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Photo'**
+  String get driverEditVehiclePhotoTitle;
+
+  /// No description provided for @driverEditVehiclePhotoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a clear photo of your vehicle'**
+  String get driverEditVehiclePhotoSubtitle;
+
+  /// No description provided for @driverEditVehicleNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Notes (Optional)'**
+  String get driverEditVehicleNotesLabel;
+
+  /// No description provided for @driverEditVehicleNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any additional notes here...'**
+  String get driverEditVehicleNotesHint;
+
+  /// No description provided for @driverEditVehicleCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get driverEditVehicleCancel;
+
+  /// No description provided for @driverEditVehicleSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get driverEditVehicleSaveChanges;
+
+  /// No description provided for @driverEditVehicleSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle details updated successfully'**
+  String get driverEditVehicleSuccessMessage;
 }
 
 class _AppLocalizationsDelegate

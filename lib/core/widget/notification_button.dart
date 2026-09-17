@@ -12,6 +12,7 @@ class NotificationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
         IconButton(
@@ -21,8 +22,8 @@ class NotificationButton extends StatelessWidget {
           icon: const Icon(Icons.notifications_none_rounded),
         ),
         if (hasUnread)
-          Positioned(
-            right: 10,
+          PositionedDirectional(
+            end: 10,
             top: 10,
             child: IgnorePointer(
               child: DecoratedBox(
