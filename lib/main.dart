@@ -6,7 +6,11 @@ import 'config/theme/app_theme.dart';
 import 'core/l10n/translations/app_localizations.dart';
 import 'core/services/app_locale_notifier.dart';
 
-void main() {
+import 'core/di/di.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   runApp(const MyApp(initialRoute: AppRoutes.splash));
 }
 
