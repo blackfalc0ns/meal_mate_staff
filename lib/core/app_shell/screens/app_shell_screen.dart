@@ -10,6 +10,7 @@ import '../../../features/driver/orders/presentation/screens/driver_assigned_box
 import '../../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
 import '../../extensions/extensions.dart';
 import '../widgets/app_bottom_nav_bar.dart';
+import '../widgets/sidebar/app_sidebar.dart';
 
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({
@@ -94,6 +95,22 @@ class _AppShellScreenState extends State<AppShellScreen> {
     return Scaffold(
       backgroundColor: color.surface,
       extendBody: true,
+      drawer: AppSidebar(
+        role: widget.role,
+        onItemSelected: (item) {
+          Navigator.of(context).maybePop();
+          const tabMapping = {
+            'home': 0,
+            'orders': 1,
+            'map': 2,
+            'support': 3,
+            'profile': 4,
+          };
+          if (tabMapping.containsKey(item.id)) {
+            _handleItemSelected(tabMapping[item.id]!);
+          }
+        },
+      ),
       body: content,
       bottomNavigationBar: AppBottomNavBar(
         selectedIndex: activeIndex,
