@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
-import '../constants/assets.dart';
+import 'package:meal_mate_delivery/core/constants/assets.dart';
 
 class CustomProgressIndicator extends StatefulWidget {
   const CustomProgressIndicator({super.key, this.size = 100.0});
@@ -20,6 +19,7 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator>
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(vsync: this);
   }
 
@@ -40,16 +40,15 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator>
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Lottie.asset(
-            AppAssets.loadingLogo,
+            Assets.loadingLogo,
             controller: _controller,
             width: widget.size,
             height: widget.size,
             fit: BoxFit.contain,
-            onLoaded: (composition) {
+            repeat: false,
+            onLoaded: (_) {
               _controller
-                ..duration = composition.duration.inMilliseconds > 0
-                    ? composition.duration
-                    : const Duration(seconds: 2)
+                ..duration = const Duration(seconds: 2)
                 ..repeat();
             },
           ),
