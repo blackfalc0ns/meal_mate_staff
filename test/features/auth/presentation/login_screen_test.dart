@@ -6,7 +6,6 @@ import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_wi
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
-import 'package:meal_mate_delivery/core/widget/custom_progress_indecator.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/auth_user_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/forgot_password_request_entity.dart';

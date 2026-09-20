@@ -23,7 +23,6 @@ import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/login_screen.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/splash_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import 'package:meal_mate_delivery/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

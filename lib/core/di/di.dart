@@ -27,6 +27,14 @@ import '../../features/auth/domain/usecase/restore_session_usecase.dart';
 import '../../features/auth/domain/usecase/set_password_usecase.dart';
 import '../../features/auth/domain/usecase/verify_first_time_otp_usecase.dart';
 import '../../features/auth/presentation/manager/auth_view_model.dart';
+import '../../features/register/data/data_source/driver_registration_remote_data_source.dart';
+import '../../features/register/data/data_source/driver_registration_remote_data_source_impl.dart';
+import '../../features/register/data/repo/driver_registration_repository_impl.dart';
+import '../../features/register/domain/repo/driver_registration_repository.dart';
+import '../../features/register/domain/usecase/get_driver_restaurants_usecase.dart';
+import '../../features/register/domain/usecase/resubmit_driver_registration_usecase.dart';
+import '../../features/register/domain/usecase/submit_driver_registration_usecase.dart';
+import '../../features/register/domain/usecase/upload_driver_document_usecase.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -117,6 +125,27 @@ Future<void> configureDependencies() async {
       restoreSessionUseCase: getIt<RestoreSessionUseCase>(),
       logoutUseCase: getIt<LogoutUseCase>(),
     ),
+  );
+  // Driver Registration feature dependencies
+  getIt.registerLazySingleton<DriverRegistrationRemoteDataSource>(
+    () => DriverRegistrationRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverRegistrationRepository>(
+    () => DriverRegistrationRepositoryImpl(
+      getIt<DriverRegistrationRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDriverRestaurantsUseCase>(
+    () => GetDriverRestaurantsUseCase(getIt<DriverRegistrationRepository>()),
+  );
+  getIt.registerFactory<UploadDriverDocumentUseCase>(
+    () => UploadDriverDocumentUseCase(getIt<DriverRegistrationRepository>()),
+  );
+  getIt.registerFactory<SubmitDriverRegistrationUseCase>(
+    () => SubmitDriverRegistrationUseCase(getIt<DriverRegistrationRepository>()),
+  );
+  getIt.registerFactory<ResubmitDriverRegistrationUseCase>(
+    () => ResubmitDriverRegistrationUseCase(getIt<DriverRegistrationRepository>()),
   );
 }
 
