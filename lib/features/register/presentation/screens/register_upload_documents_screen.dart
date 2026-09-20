@@ -16,17 +16,19 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
     required this.onDocumentTap,
     required this.onSubmit,
     this.onBackPressed,
+    this.documents,
   });
 
   final Map<String, String> selectedImagePaths;
   final ValueChanged<RegisterDocument> onDocumentTap;
   final VoidCallback onSubmit;
   final VoidCallback? onBackPressed;
+  final List<RegisterDocument>? documents;
 
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    final documents = RegisterFakeData.review.documents;
+    final docs = documents ?? RegisterFakeData.review.documents;
     final documentTitles = {
       'civil-card': locale.registrationCivilCard,
       'driving-license': locale.registrationDrivingLicense,
@@ -49,7 +51,7 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ...documents.map(
+          ...docs.map(
             (document) => Padding(
               padding: const EdgeInsets.only(
                 bottom: Spacing.registrationDocumentCardGap,
@@ -59,7 +61,8 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
                 title: documentTitles[document.id] ?? locale.registrationOther,
                 subtitle:
                     documentSubtitles[document.id] ?? locale.registrationOther,
-                selectedImagePath: selectedImagePaths[document.id],
+                selectedImagePath: selectedImagePaths[document.id] ??
+                    document.localFilePath,
                 onTap: () => onDocumentTap(document),
               ),
             ),

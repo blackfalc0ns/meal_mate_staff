@@ -35,6 +35,7 @@ import '../../features/register/domain/usecase/get_driver_restaurants_usecase.da
 import '../../features/register/domain/usecase/resubmit_driver_registration_usecase.dart';
 import '../../features/register/domain/usecase/submit_driver_registration_usecase.dart';
 import '../../features/register/domain/usecase/upload_driver_document_usecase.dart';
+import '../../features/register/presentation/manager/driver_registration_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -146,6 +147,14 @@ Future<void> configureDependencies() async {
   );
   getIt.registerFactory<ResubmitDriverRegistrationUseCase>(
     () => ResubmitDriverRegistrationUseCase(getIt<DriverRegistrationRepository>()),
+  );
+  getIt.registerFactory<DriverRegistrationViewModel>(
+    () => DriverRegistrationViewModel(
+      getRestaurantsUseCase: getIt<GetDriverRestaurantsUseCase>(),
+      uploadDocumentUseCase: getIt<UploadDriverDocumentUseCase>(),
+      submitRegistrationUseCase: getIt<SubmitDriverRegistrationUseCase>(),
+      resubmitRegistrationUseCase: getIt<ResubmitDriverRegistrationUseCase>(),
+    ),
   );
 }
 

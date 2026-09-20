@@ -8,6 +8,7 @@ import '../../../auth/presentation/widgets/registration_scaffold.dart';
 import '../../data/register_fake_data.dart';
 import '../../domain/register_document.dart';
 import '../../domain/register_personal_data.dart';
+import '../../domain/register_review_data.dart';
 import '../../domain/register_vehicle_data.dart';
 import '../widgets/register_action_buttons.dart';
 import '../widgets/register_review_card.dart';
@@ -22,6 +23,7 @@ class RegisterReviewScreen extends StatelessWidget {
     required this.onSubmit,
     required this.onBackToEdit,
     this.onBackPressed,
+    this.reviewData,
   });
 
   final Map<String, String> selectedImagePaths;
@@ -29,11 +31,12 @@ class RegisterReviewScreen extends StatelessWidget {
   final VoidCallback onSubmit;
   final VoidCallback onBackToEdit;
   final VoidCallback? onBackPressed;
+  final RegisterReviewData? reviewData;
 
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    const review = RegisterFakeData.review;
+    final review = reviewData ?? RegisterFakeData.review;
 
     return RegistrationScaffold(
       title: locale.registrationReviewOrder,
@@ -126,7 +129,7 @@ class RegisterReviewScreen extends StatelessWidget {
       [
         RegisterReviewField(
           label: locale.registrationVehicleType,
-          value: locale.registrationCar,
+          value: vehicle.type.isNotEmpty ? vehicle.type : locale.registrationCar,
         ),
         RegisterReviewField(
           label: locale.registrationVehicleModel,
@@ -146,11 +149,15 @@ class RegisterReviewScreen extends StatelessWidget {
       [
         RegisterReviewField(
           label: locale.registrationCountry,
-          value: locale.registrationKuwait,
+          value: vehicle.country.isNotEmpty
+              ? vehicle.country
+              : locale.registrationKuwait,
         ),
         RegisterReviewField(
           label: locale.registrationVehicleColor,
-          value: locale.registrationPurple,
+          value: vehicle.color.isNotEmpty
+              ? vehicle.color
+              : locale.registrationPurple,
         ),
       ],
       [

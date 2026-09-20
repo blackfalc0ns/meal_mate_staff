@@ -7,6 +7,7 @@ import '../../../../core/widget/app_wolt_modal_sheet.dart';
 import '../../../auth/presentation/widgets/registration_choice_group.dart';
 import '../../../auth/presentation/widgets/registration_input_field.dart';
 import '../../../auth/presentation/widgets/registration_scaffold.dart';
+import '../../domain/register_vehicle_data.dart';
 import '../widgets/register_plate_number_field.dart';
 import '../widgets/register_vehicle_color_picker.dart';
 
@@ -19,6 +20,8 @@ class RegisterVehicleDataScreen extends StatefulWidget {
     required this.onOwnsVehicleChanged,
     required this.onContinue,
     this.onBackPressed,
+    this.initialData,
+    this.onVehicleDataChanged,
   });
 
   final Color selectedVehicleColor;
@@ -27,6 +30,8 @@ class RegisterVehicleDataScreen extends StatefulWidget {
   final ValueChanged<bool> onOwnsVehicleChanged;
   final VoidCallback onContinue;
   final VoidCallback? onBackPressed;
+  final RegisterVehicleData? initialData;
+  final ValueChanged<RegisterVehicleData>? onVehicleDataChanged;
 
   @override
   State<RegisterVehicleDataScreen> createState() =>
@@ -36,18 +41,23 @@ class RegisterVehicleDataScreen extends StatefulWidget {
 class _RegisterVehicleDataScreenState
     extends State<RegisterVehicleDataScreen> {
   late final TextEditingController _vehicleTypeController;
+  late final TextEditingController _modelController;
   late final TextEditingController _manufactureYearController;
 
   @override
   void initState() {
     super.initState();
-    _vehicleTypeController = TextEditingController();
-    _manufactureYearController = TextEditingController();
+    final init = widget.initialData;
+    _vehicleTypeController = TextEditingController(text: init?.type ?? '');
+    _modelController = TextEditingController(text: init?.model ?? '');
+    _manufactureYearController =
+        TextEditingController(text: init?.manufactureYear ?? '');
   }
 
   @override
   void dispose() {
     _vehicleTypeController.dispose();
+    _modelController.dispose();
     _manufactureYearController.dispose();
     super.dispose();
   }
@@ -94,6 +104,42 @@ class _RegisterVehicleDataScreenState
     }
   }
 
+  void _handleContinue() {
+    final data = RegisterVehicleData(
+      type: _vehicleTypeController.text.trim().isNotEmpty
+          ? _vehicleTypeController.text.trim()
+          : (widget.initialData?.type.isNotEmpty == true
+              ? widget.initialData!.type
+              : 'Car'),
+      model: _modelController.text.trim().isNotEmpty
+          ? _modelController.text.trim()
+          : (widget.initialData?.model ?? 'Toyota Camry'),
+      manufactureYear: _manufactureYearController.text.trim().isNotEmpty
+          ? _manufactureYearController.text.trim()
+          : (widget.initialData?.manufactureYear ?? '2023'),
+      plateNumber: widget.initialData?.plateNumber.isNotEmpty == true
+          ? widget.initialData!.plateNumber
+          : '54821',
+      country: widget.initialData?.country ?? 'Kuwait',
+      color: widget.selectedVehicleColor.toARGB32().toRadixString(16),
+      isOwned: widget.ownsVehicle,
+      licenseNumber: widget.initialData?.licenseNumber.isNotEmpty == true
+          ? widget.initialData!.licenseNumber
+          : 'DL839201',
+      licenseExpiry: widget.initialData?.licenseExpiry.isNotEmpty == true
+          ? widget.initialData!.licenseExpiry
+          : DateTime.now().add(const Duration(days: 365 * 4)).toIso8601String(),
+      vehicleLicenseExpiry:
+          widget.initialData?.vehicleLicenseExpiry.isNotEmpty == true
+              ? widget.initialData!.vehicleLicenseExpiry
+              : DateTime.now()
+                  .add(const Duration(days: 365 * 3))
+                  .toIso8601String(),
+    );
+    widget.onVehicleDataChanged?.call(data);
+    widget.onContinue();
+  }
+
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
@@ -118,6 +164,7 @@ class _RegisterVehicleDataScreenState
           RegistrationInputField(
             label: locale.registrationVehicleModel,
             hint: locale.registrationVehicleModelHint,
+            controller: _modelController,
           ),
           const SizedBox(height: Spacing.registrationFieldGap),
           RegistrationInputField(
@@ -148,7 +195,7 @@ class _RegisterVehicleDataScreenState
           const SizedBox(height: Spacing.lg),
           AppButton(
             text: locale.registrationContinue,
-            onPressed: widget.onContinue,
+            onPressed: _handleContinue,
             height: Spacing.registrationButtonHeight,
             borderRadius: Spacing.registrationRadius,
           ),
