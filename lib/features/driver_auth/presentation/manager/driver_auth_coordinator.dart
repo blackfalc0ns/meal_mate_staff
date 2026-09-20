@@ -8,6 +8,8 @@ import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:meal_mate_delivery/features/driver_auth/domain/driver_auth_destination.dart';
 import 'package:meal_mate_delivery/features/driver_auth/domain/resolve_driver_auth_destination.dart';
 
+import '../../../../config/routing/arguments/auth_route_arguments.dart';
+
 class DriverAuthCoordinator {
   const DriverAuthCoordinator();
 
@@ -17,31 +19,51 @@ class DriverAuthCoordinator {
 
   void navigate(BuildContext context, DriverAuthDestination destination) {
     switch (destination) {
-      case DriverRegistrationDestination():
+      case DriverRegistrationDestination(phone: final phone):
         context.pushNamed(
           AppRoutes.register,
-          arguments: UserRole.driver,
+          arguments: DriverRegistrationRouteArgs(
+            phone: phone,
+            role: UserRole.driver,
+          ),
         );
       case DriverFirstTimeOtpDestination(phone: final phone):
         context.pushNamed(
           AppRoutes.verifyPhoneOtp,
-          arguments: AuthVerificationTarget(
-            value: phone,
-            imageAsset: AppAssets.authPhoneOtp,
+          arguments: OtpVerificationRouteArgs(
+            target: AuthVerificationTarget(
+              value: phone,
+              imageAsset: AppAssets.authPhoneOtp,
+            ),
+            role: UserRole.driver,
           ),
         );
-      case DriverAccountStatusDestination(kind: final kind):
+      case DriverAccountStatusDestination(
+          kind: final kind,
+          registrationId: final registrationId,
+          title: final title,
+          subtitle: final subtitle,
+          canResubmit: final canResubmit,
+        ):
         context.pushNamed(
           AppRoutes.accountStatus,
-          arguments: kind,
+          arguments: AccountStatusRouteArgs(
+            kind: kind,
+            registrationId: registrationId,
+            title: title,
+            subtitle: subtitle,
+            canResubmit: canResubmit,
+          ),
         );
       case DriverPasswordLoginDestination():
-        // Stay on login screen to enter password
-        break;
+        context.pushNamed(
+          AppRoutes.login,
+          arguments: const LoginRouteArgs(role: UserRole.driver),
+        );
       case DriverHomeDestination():
         context.pushReplacementNamed(
           AppRoutes.appShell,
-          arguments: UserRole.driver,
+          arguments: const AppShellRouteArgs(role: UserRole.driver),
         );
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routing/app_routes.dart';
+import '../../../../config/routing/arguments/auth_route_arguments.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/errors/api_error_type.dart';
 import '../../../../core/errors/api_exception.dart';
@@ -9,6 +10,9 @@ import '../../../../core/errors/error_widgets/api_error_widget.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/network/api_results.dart';
 import '../../../../core/widget/custom_progress_indecator.dart';
+import '../../../../core/widget/custom_snak_bar.dart';
+import '../../../auth/domain/user_role.dart';
+import '../../../driver_auth/presentation/manager/driver_auth_coordinator.dart';
 import '../../domain/account_status_kind.dart';
 import '../../domain/entities/driver_registration_status_entity.dart';
 import '../../domain/repo/account_status_repository.dart';
@@ -107,16 +111,33 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
       return;
     }
 
+    final effectivePhone = widget.phone ?? entity?.phone;
+    final effectiveRegId = widget.registrationId ?? entity?.registrationId;
+
     switch (currentKind) {
       case AccountStatusKind.accepted:
-        context.pushNamedAndRemoveUntil(
-          AppRoutes.appShell,
-          (route) => false,
-        );
+        if (effectivePhone != null && effectivePhone.isNotEmpty) {
+          _viewModel.doIntent(
+            AccountStatusActivateApprovedEvent(effectivePhone),
+          );
+        } else {
+          context.pushReplacementNamed(
+            AppRoutes.login,
+            arguments: const LoginRouteArgs(role: UserRole.driver),
+          );
+        }
         break;
       case AccountStatusKind.rejected:
       case AccountStatusKind.moreInformationRequired:
-        context.pushReplacementNamed(AppRoutes.register);
+        context.pushReplacementNamed(
+          AppRoutes.register,
+          arguments: DriverRegistrationRouteArgs(
+            role: UserRole.driver,
+            phone: effectivePhone,
+            isResubmission: true,
+            registrationId: effectiveRegId,
+          ),
+        );
         break;
       case AccountStatusKind.underReview:
         break;
@@ -141,7 +162,29 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
 
     return BlocProvider.value(
       value: _viewModel,
-      child: BlocBuilder<AccountStatusViewModel, AccountStatusState>(
+      child: BlocConsumer<AccountStatusViewModel, AccountStatusState>(
+        listener: (context, state) {
+          if (state.status == AccountStatusStateStatus.activationSuccess) {
+            final lookup = state.lookupResult;
+            if (lookup != null) {
+              const coordinator = DriverAuthCoordinator();
+              final destination = coordinator.resolve(lookup);
+              coordinator.navigate(context, destination);
+            } else {
+              context.pushReplacementNamed(
+                AppRoutes.login,
+                arguments: const LoginRouteArgs(role: UserRole.driver),
+              );
+            }
+          } else if (state.status == AccountStatusStateStatus.error &&
+              state.errorMessage != null &&
+              state.hasEntity) {
+            CustomSnackbar.showError(
+              context: context,
+              message: state.errorMessage!,
+            );
+          }
+        },
         builder: (context, state) {
           if (state.isLoading && !state.hasEntity) {
             return Scaffold(
@@ -178,7 +221,7 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
 
           final effectiveKind = state.hasEntity ? state.kind : widget.kind;
 
-          return Scaffold(
+          final content = Scaffold(
             backgroundColor: color.surface,
             body: SafeArea(
               child: SingleChildScrollView(
@@ -196,6 +239,23 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
               ),
             ),
           );
+
+          if (state.isActivating) {
+            return Stack(
+              children: [
+                content,
+                const ModalBarrier(
+                  dismissible: false,
+                  color: Colors.black26,
+                ),
+                const Center(
+                  child: CustomProgressIndicator(),
+                ),
+              ],
+            );
+          }
+
+          return content;
         },
       ),
     );

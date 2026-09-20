@@ -19,3 +19,9 @@ class AccountStatusSetKindEvent extends AccountStatusEvent {
 
   final AccountStatusKind kind;
 }
+
+class AccountStatusActivateApprovedEvent extends AccountStatusEvent {
+  const AccountStatusActivateApprovedEvent(this.phone);
+
+  final String phone;
+}

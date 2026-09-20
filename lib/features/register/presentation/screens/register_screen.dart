@@ -37,10 +37,16 @@ class RegisterScreen extends StatefulWidget {
     super.key,
     this.imagePicker,
     this.viewModel,
+    this.phone,
+    this.isResubmission = false,
+    this.registrationId,
   });
 
   final ImagePicker? imagePicker;
   final DriverRegistrationViewModel? viewModel;
+  final String? phone;
+  final bool isResubmission;
+  final String? registrationId;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -119,6 +125,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     _viewModel.doIntent(const DriverRegistrationLoadRestaurantsEvent());
+    if (widget.phone != null && widget.phone!.isNotEmpty) {
+      _viewModel.doIntent(
+        DriverRegistrationSetDraftEvent(
+          _viewModel.state.draft.copyWith(phone: widget.phone),
+        ),
+      );
+    }
   }
 
   @override
@@ -167,7 +180,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       value: _viewModel,
       child: BlocConsumer<DriverRegistrationViewModel, DriverRegistrationState>(
         listener: (context, state) {
-          if (state.status == DriverRegistrationStatus.submissionSuccess) {
+          if (state.status == DriverRegistrationStatus.submissionSuccess ||
+              state.status == DriverRegistrationStatus.resubmissionSuccess) {
             CustomSnackbar.showSuccess(
               context: context,
               message: state.submissionResult?.message ??
@@ -260,9 +274,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 selectedImagePaths: state.selectedImagePaths,
                 onDocumentTap: _pickDocumentImage,
                 onSubmit: () {
-                  _viewModel.doIntent(
-                    const DriverRegistrationSubmitEvent(),
-                  );
+                  if (widget.isResubmission &&
+                      widget.registrationId != null &&
+                      widget.registrationId!.isNotEmpty) {
+                    _viewModel.doIntent(
+                      DriverRegistrationResubmitEvent(
+                        registrationId: widget.registrationId!,
+                        resubmitData: state.draft.toResubmitEntity(),
+                      ),
+                    );
+                  } else {
+                    _viewModel.doIntent(
+                      const DriverRegistrationSubmitEvent(),
+                    );
+                  }
                 },
                 onBackToEdit: () {
                   _viewModel.doIntent(

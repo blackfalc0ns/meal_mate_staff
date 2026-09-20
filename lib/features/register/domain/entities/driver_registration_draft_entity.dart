@@ -1,5 +1,6 @@
 import '../register_personal_data.dart';
 import '../register_vehicle_data.dart';
+import 'driver_resubmit_entity.dart';
 
 class DriverRegistrationDraftEntity {
   const DriverRegistrationDraftEntity({
@@ -125,6 +126,49 @@ class DriverRegistrationDraftEntity {
       licenseExpiry: licenseExpiry,
       vehicleLicenseExpiry: vehicleLicenseExpiry,
       contractExpiry: contractExpiry,
+    );
+  }
+
+  DriverResubmitEntity toResubmitEntity() {
+    return DriverResubmitEntity(
+      restaurantId: restaurantId.isNotEmpty ? restaurantId : null,
+      fullNameAr: fullNameAr.isNotEmpty ? fullNameAr : null,
+      fullNameEn: fullNameEn.isNotEmpty ? fullNameEn : null,
+      phone: phone.isNotEmpty ? phone : null,
+      email: email,
+      nationalId: nationalId.isNotEmpty ? nationalId : null,
+      nationalIdExpiry: nationalIdExpiry.isNotEmpty ? nationalIdExpiry : null,
+      dateOfBirth: dateOfBirth,
+      nationality: nationality.isNotEmpty ? nationality : null,
+      vehicleType: vehicleType.isNotEmpty ? vehicleType : null,
+      vehicleModel: vehicleModel.isNotEmpty ? vehicleModel : null,
+      vehiclePlate: vehiclePlate.isNotEmpty ? vehiclePlate : null,
+      vehicleYear: vehicleYear > 0 ? vehicleYear : null,
+      vehicleColor: vehicleColor,
+      isVehicleOwned: isVehicleOwned,
+      licenseNumber: licenseNumber.isNotEmpty ? licenseNumber : null,
+      licenseExpiry: licenseExpiry.isNotEmpty ? licenseExpiry : null,
+      vehicleLicenseExpiry:
+          vehicleLicenseExpiry.isNotEmpty ? vehicleLicenseExpiry : null,
+      contractExpiry: contractExpiry,
+      nationalIdFrontStorageKey: nationalIdFrontStorageKey.isNotEmpty
+          ? nationalIdFrontStorageKey
+          : null,
+      nationalIdBackStorageKey: nationalIdBackStorageKey.isNotEmpty
+          ? nationalIdBackStorageKey
+          : null,
+      drivingLicenseFrontStorageKey: drivingLicenseFrontStorageKey.isNotEmpty
+          ? drivingLicenseFrontStorageKey
+          : null,
+      drivingLicenseBackStorageKey: drivingLicenseBackStorageKey.isNotEmpty
+          ? drivingLicenseBackStorageKey
+          : null,
+      vehicleRegistrationStorageKey: vehicleRegistrationStorageKey.isNotEmpty
+          ? vehicleRegistrationStorageKey
+          : null,
+      profileImageStorageKey: profileImageStorageKey,
+      vehiclePhotoStorageKey: vehiclePhotoStorageKey,
+      contractStorageKey: contractStorageKey,
     );
   }
 

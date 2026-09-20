@@ -177,6 +177,7 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<AccountStatusViewModel>(
     () => AccountStatusViewModel(
       getAccountStatusUseCase: getIt<GetAccountStatusUseCase>(),
+      lookupPhoneUseCase: getIt<LookupPhoneUseCase>(),
     ),
   );
 }

@@ -23,6 +23,7 @@ class AccountStatusRouteArgs {
   const AccountStatusRouteArgs({
     required this.kind,
     this.registrationId,
+    this.phone,
     this.title,
     this.subtitle,
     this.canResubmit = false,
@@ -30,6 +31,7 @@ class AccountStatusRouteArgs {
 
   final AccountStatusKind kind;
   final String? registrationId;
+  final String? phone;
   final String? title;
   final String? subtitle;
   final bool canResubmit;

@@ -142,19 +142,38 @@ class RouteGenerator {
         );
 
       case AppRoutes.register:
+        final args = settings.arguments;
+        if (args is DriverRegistrationRouteArgs) {
+          return _buildRoute(
+            settings: settings,
+            page: RegisterScreen(
+              phone: args.phone,
+              isResubmission: args.isResubmission,
+              registrationId: args.registrationId,
+            ),
+          );
+        }
         return _buildRoute(settings: settings, page: const RegisterScreen());
 
       case AppRoutes.accountStatus:
         AccountStatusKind kind = AccountStatusKind.underReview;
+        String? phone;
+        String? registrationId;
         final args = settings.arguments;
         if (args is AccountStatusRouteArgs) {
           kind = args.kind;
+          registrationId = args.registrationId;
+          phone = args.phone;
         } else if (args is AccountStatusKind) {
           kind = args;
         }
         return _buildRoute(
           settings: settings,
-          page: AccountStatusScreen(kind: kind),
+          page: AccountStatusScreen(
+            kind: kind,
+            phone: phone,
+            registrationId: registrationId,
+          ),
         );
 
       case AppRoutes.accountStatusPreview:
