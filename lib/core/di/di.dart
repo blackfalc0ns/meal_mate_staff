@@ -12,6 +12,19 @@ import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
 import '../services/token_interceptor.dart';
 import '../services/token_service.dart';
+import '../../features/auth/data/data_source/auth_remote_data_source.dart';
+import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
+import '../../features/auth/data/repo/auth_repository_impl.dart';
+import '../../features/auth/domain/repo/auth_repository.dart';
+import '../../features/auth/domain/usecase/forgot_password_usecase.dart';
+import '../../features/auth/domain/usecase/login_usecase.dart';
+import '../../features/auth/domain/usecase/logout_usecase.dart';
+import '../../features/auth/domain/usecase/lookup_phone_usecase.dart';
+import '../../features/auth/domain/usecase/resend_otp_usecase.dart';
+import '../../features/auth/domain/usecase/reset_password_usecase.dart';
+import '../../features/auth/domain/usecase/restore_session_usecase.dart';
+import '../../features/auth/domain/usecase/set_password_usecase.dart';
+import '../../features/auth/domain/usecase/verify_first_time_otp_usecase.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -46,6 +59,44 @@ Future<void> configureDependencies() async {
   );
   getIt.registerLazySingleton<Dio>(_buildDio);
   getIt.registerLazySingleton<ApiServices>(() => ApiServices(getIt<Dio>()));
+
+  // Auth feature dependencies
+  getIt.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(
+      getIt<AuthRemoteDataSource>(),
+      getIt<TokenService>(),
+    ),
+  );
+  getIt.registerFactory<LookupPhoneUseCase>(
+    () => LookupPhoneUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<VerifyFirstTimeOtpUseCase>(
+    () => VerifyFirstTimeOtpUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<SetPasswordUseCase>(
+    () => SetPasswordUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<LoginUseCase>(
+    () => LoginUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<ForgotPasswordUseCase>(
+    () => ForgotPasswordUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<ResetPasswordUseCase>(
+    () => ResetPasswordUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<ResendOtpUseCase>(
+    () => ResendOtpUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<RestoreSessionUseCase>(
+    () => RestoreSessionUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<LogoutUseCase>(
+    () => LogoutUseCase(getIt<AuthRepository>()),
+  );
 }
 
 Dio _buildDio() {
