@@ -1986,4 +1986,54 @@ class AppLocalizationsAr extends AppLocalizations {
   String driverSupportAttachmentSelected(String fileName) {
     return 'تم إرفاق: $fileName';
   }
+
+  @override
+  String get sidebarStatusOnline => 'متصل';
+
+  @override
+  String get sidebarHome => 'الرئيسية';
+
+  @override
+  String get sidebarOrders => 'الطلبات';
+
+  @override
+  String get sidebarMap => 'الخريطة';
+
+  @override
+  String get sidebarAnalytics => 'الإحصائيات';
+
+  @override
+  String get sidebarOperationsLog => 'سجل العمليات';
+
+  @override
+  String get sidebarNotifications => 'الإشعارات';
+
+  @override
+  String get sidebarHelpSupport => 'المساعدة والدعم';
+
+  @override
+  String get sidebarSettings => 'الإعدادات';
+
+  @override
+  String get sidebarSafetySecurity => 'السلامة والأمان';
+
+  @override
+  String get sidebarDriverStatusTitle => 'حالة السائق';
+
+  @override
+  String get sidebarDriverOffDuty => 'خارج التوصيل';
+
+  @override
+  String get sidebarDriverOnDuty => 'في وضع التوصيل';
+
+  @override
+  String get sidebarDriverStatusSubtitle => 'متاح لتوصيل الطلبات';
+
+  @override
+  String get sidebarLogout => 'تسجيل الخروج';
+
+  @override
+  String sidebarAppVersion(String version) {
+    return 'الإصدار $version';
+  }
 }

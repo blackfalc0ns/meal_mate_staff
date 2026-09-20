@@ -790,5 +790,28 @@
         "type": "String"
       }
     }
+  },
+  "sidebarStatusOnline": "Online",
+  "sidebarHome": "Home",
+  "sidebarOrders": "Orders",
+  "sidebarMap": "Map",
+  "sidebarAnalytics": "Analytics",
+  "sidebarOperationsLog": "Operations Log",
+  "sidebarNotifications": "Notifications",
+  "sidebarHelpSupport": "Help & Support",
+  "sidebarSettings": "Settings",
+  "sidebarSafetySecurity": "Safety & Security",
+  "sidebarDriverStatusTitle": "Driver Status",
+  "sidebarDriverOffDuty": "Off Duty",
+  "sidebarDriverOnDuty": "On Duty",
+  "sidebarDriverStatusSubtitle": "Available for order delivery",
+  "sidebarLogout": "Logout",
+  "sidebarAppVersion": "Version {version}",
+  "@sidebarAppVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
   }
 }

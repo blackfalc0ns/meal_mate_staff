@@ -3865,6 +3865,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Attached: {fileName}'**
   String driverSupportAttachmentSelected(String fileName);
+
+  /// No description provided for @sidebarStatusOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get sidebarStatusOnline;
+
+  /// No description provided for @sidebarHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get sidebarHome;
+
+  /// No description provided for @sidebarOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get sidebarOrders;
+
+  /// No description provided for @sidebarMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get sidebarMap;
+
+  /// No description provided for @sidebarAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get sidebarAnalytics;
+
+  /// No description provided for @sidebarOperationsLog.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations Log'**
+  String get sidebarOperationsLog;
+
+  /// No description provided for @sidebarNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get sidebarNotifications;
+
+  /// No description provided for @sidebarHelpSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get sidebarHelpSupport;
+
+  /// No description provided for @sidebarSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get sidebarSettings;
+
+  /// No description provided for @sidebarSafetySecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety & Security'**
+  String get sidebarSafetySecurity;
+
+  /// No description provided for @sidebarDriverStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Status'**
+  String get sidebarDriverStatusTitle;
+
+  /// No description provided for @sidebarDriverOffDuty.
+  ///
+  /// In en, this message translates to:
+  /// **'Off Duty'**
+  String get sidebarDriverOffDuty;
+
+  /// No description provided for @sidebarDriverOnDuty.
+  ///
+  /// In en, this message translates to:
+  /// **'On Duty'**
+  String get sidebarDriverOnDuty;
+
+  /// No description provided for @sidebarDriverStatusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Available for order delivery'**
+  String get sidebarDriverStatusSubtitle;
+
+  /// No description provided for @sidebarLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get sidebarLogout;
+
+  /// No description provided for @sidebarAppVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String sidebarAppVersion(String version);
 }
 
 class _AppLocalizationsDelegate

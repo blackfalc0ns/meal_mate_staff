@@ -1993,4 +1993,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String driverSupportAttachmentSelected(String fileName) {
     return 'Attached: $fileName';
   }
+
+  @override
+  String get sidebarStatusOnline => 'Online';
+
+  @override
+  String get sidebarHome => 'Home';
+
+  @override
+  String get sidebarOrders => 'Orders';
+
+  @override
+  String get sidebarMap => 'Map';
+
+  @override
+  String get sidebarAnalytics => 'Analytics';
+
+  @override
+  String get sidebarOperationsLog => 'Operations Log';
+
+  @override
+  String get sidebarNotifications => 'Notifications';
+
+  @override
+  String get sidebarHelpSupport => 'Help & Support';
+
+  @override
+  String get sidebarSettings => 'Settings';
+
+  @override
+  String get sidebarSafetySecurity => 'Safety & Security';
+
+  @override
+  String get sidebarDriverStatusTitle => 'Driver Status';
+
+  @override
+  String get sidebarDriverOffDuty => 'Off Duty';
+
+  @override
+  String get sidebarDriverOnDuty => 'On Duty';
+
+  @override
+  String get sidebarDriverStatusSubtitle => 'Available for order delivery';
+
+  @override
+  String get sidebarLogout => 'Logout';
+
+  @override
+  String sidebarAppVersion(String version) {
+    return 'Version $version';
+  }
 }

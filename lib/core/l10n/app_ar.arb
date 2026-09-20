@@ -790,5 +790,28 @@
         "type": "String"
       }
     }
+  },
+  "sidebarStatusOnline": "متصل",
+  "sidebarHome": "الرئيسية",
+  "sidebarOrders": "الطلبات",
+  "sidebarMap": "الخريطة",
+  "sidebarAnalytics": "الإحصائيات",
+  "sidebarOperationsLog": "سجل العمليات",
+  "sidebarNotifications": "الإشعارات",
+  "sidebarHelpSupport": "المساعدة والدعم",
+  "sidebarSettings": "الإعدادات",
+  "sidebarSafetySecurity": "السلامة والأمان",
+  "sidebarDriverStatusTitle": "حالة السائق",
+  "sidebarDriverOffDuty": "خارج التوصيل",
+  "sidebarDriverOnDuty": "في وضع التوصيل",
+  "sidebarDriverStatusSubtitle": "متاح لتوصيل الطلبات",
+  "sidebarLogout": "تسجيل الخروج",
+  "sidebarAppVersion": "الإصدار {version}",
+  "@sidebarAppVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
   }
 }
