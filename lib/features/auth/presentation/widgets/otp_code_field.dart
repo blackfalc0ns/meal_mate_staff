@@ -7,7 +7,18 @@ import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/extensions/extensions.dart';
 
 class OtpCodeField extends StatelessWidget {
-  const OtpCodeField({super.key});
+  const OtpCodeField({
+    super.key,
+    this.controller,
+    this.onChanged,
+    this.onCompleted,
+    this.enabled = true,
+  });
+
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onCompleted;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +48,10 @@ class OtpCodeField extends StatelessWidget {
           textDirection: TextDirection.ltr,
           child: Pinput(
             length: 6,
+            controller: controller,
+            onChanged: onChanged,
+            onCompleted: onCompleted,
+            enabled: enabled,
             keyboardType: TextInputType.number,
             mainAxisAlignment: MainAxisAlignment.center,
             separatorBuilder: (_) => const SizedBox(width: Spacing.sm),

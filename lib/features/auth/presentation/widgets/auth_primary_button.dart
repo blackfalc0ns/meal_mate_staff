@@ -10,11 +10,13 @@ class AuthPrimaryButton extends StatelessWidget {
   const AuthPrimaryButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
+    this.isLoading = false,
   });
 
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class AuthPrimaryButton extends StatelessWidget {
     return AppButton(
       text: text,
       onPressed: onPressed,
+      isLoading: isLoading,
       height: 42,
       borderRadius: Spacing.radiusPill,
       color: color.primary,

@@ -16,6 +16,9 @@ class AuthInputField extends StatelessWidget {
     this.keyboardType,
     this.countryCode,
     this.showCountryPicker = false,
+    this.controller,
+    this.onChanged,
+    this.enabled = true,
   });
 
   final String hint;
@@ -26,6 +29,9 @@ class AuthInputField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? countryCode;
   final bool showCountryPicker;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +92,9 @@ class AuthInputField extends StatelessWidget {
                 end: suffixIcon == null ? 24 : 82,
               ),
               child: TextFormField(
+                controller: controller,
+                onChanged: onChanged,
+                enabled: enabled,
                 keyboardType: keyboardType,
                 obscureText: obscureText,
                 textAlign: TextAlign.start,

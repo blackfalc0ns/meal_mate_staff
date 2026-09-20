@@ -6,15 +6,12 @@ import 'token_service.dart';
 
 class AuthRefreshService {
   AuthRefreshService({
-    required TokenService tokenService,
-    required Dio dio,
-  })  : _tokenService = tokenService,
-        _dio = dio;
+    required this.tokenService,
+    required this.dio,
+  });
 
-  final TokenService _tokenService;
-  final Dio _dio;
-
-  Dio get dio => _dio;
+  final TokenService tokenService;
+  final Dio dio;
 
   Future<String?>? _ongoingRefresh;
 
@@ -29,14 +26,14 @@ class AuthRefreshService {
   }
 
   Future<String?> _performRefresh() async {
-    final currentRefreshToken = await _tokenService.getRefreshToken();
+    final currentRefreshToken = await tokenService.getRefreshToken();
     if (currentRefreshToken == null || currentRefreshToken.isEmpty) {
-      await _tokenService.clearTokens();
+      await tokenService.clearTokens();
       return null;
     }
 
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         EndPoints.refresh,
         data: {'refreshToken': currentRefreshToken},
         options: Options(
@@ -51,18 +48,18 @@ class AuthRefreshService {
         final newRefreshToken = data['refreshToken'] as String?;
 
         if (newAccessToken != null && newAccessToken.isNotEmpty) {
-          await _tokenService.saveAccessToken(newAccessToken);
+          await tokenService.saveAccessToken(newAccessToken);
           if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
-            await _tokenService.saveRefreshToken(newRefreshToken);
+            await tokenService.saveRefreshToken(newRefreshToken);
           }
           return newAccessToken;
         }
       }
 
-      await _tokenService.clearTokens();
+      await tokenService.clearTokens();
       return null;
     } catch (_) {
-      await _tokenService.clearTokens();
+      await tokenService.clearTokens();
       return null;
     }
   }

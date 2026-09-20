@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/response/phone_lookup_response_dto.dart';
-import 'package:meal_mate_delivery/features/auth/data/models/response/staff_application_status_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/response/staff_auth_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/response/staff_message_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/response/verify_first_time_otp_response_dto.dart';

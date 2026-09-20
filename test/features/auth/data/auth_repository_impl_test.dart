@@ -18,14 +18,10 @@ import 'package:meal_mate_delivery/features/auth/data/models/response/staff_mess
 import 'package:meal_mate_delivery/features/auth/data/models/response/verify_first_time_otp_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/repo/auth_repository_impl.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/auth_session_entity.dart';
-import 'package:meal_mate_delivery/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_result_entity.dart';
-import 'package:meal_mate_delivery/features/auth/domain/entities/resend_otp_request_entity.dart';
-import 'package:meal_mate_delivery/features/auth/domain/entities/reset_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/set_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/staff_login_request_entity.dart';
-import 'package:meal_mate_delivery/features/auth/domain/entities/verify_first_time_otp_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

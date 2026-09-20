@@ -26,6 +26,7 @@ import '../../features/auth/domain/usecase/reset_password_usecase.dart';
 import '../../features/auth/domain/usecase/restore_session_usecase.dart';
 import '../../features/auth/domain/usecase/set_password_usecase.dart';
 import '../../features/auth/domain/usecase/verify_first_time_otp_usecase.dart';
+import '../../features/auth/presentation/manager/auth_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -103,6 +104,19 @@ Future<void> configureDependencies() async {
   );
   getIt.registerFactory<LogoutUseCase>(
     () => LogoutUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerFactory<AuthViewModel>(
+    () => AuthViewModel(
+      lookupPhoneUseCase: getIt<LookupPhoneUseCase>(),
+      verifyFirstTimeOtpUseCase: getIt<VerifyFirstTimeOtpUseCase>(),
+      setPasswordUseCase: getIt<SetPasswordUseCase>(),
+      loginUseCase: getIt<LoginUseCase>(),
+      forgotPasswordUseCase: getIt<ForgotPasswordUseCase>(),
+      resetPasswordUseCase: getIt<ResetPasswordUseCase>(),
+      resendOtpUseCase: getIt<ResendOtpUseCase>(),
+      restoreSessionUseCase: getIt<RestoreSessionUseCase>(),
+      logoutUseCase: getIt<LogoutUseCase>(),
+    ),
   );
 }
 

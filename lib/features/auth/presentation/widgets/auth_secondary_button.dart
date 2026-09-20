@@ -9,12 +9,12 @@ class AuthSecondaryButton extends StatelessWidget {
   const AuthSecondaryButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     required this.leadingIcon,
   });
 
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final IconData leadingIcon;
 
   @override

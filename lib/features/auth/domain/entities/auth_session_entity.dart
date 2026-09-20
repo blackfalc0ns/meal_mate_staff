@@ -1,3 +1,4 @@
+import '../user_role.dart';
 import 'auth_user_entity.dart';
 
 class AuthSessionEntity {
@@ -14,4 +15,9 @@ class AuthSessionEntity {
   final String refreshToken;
   final DateTime? accessTokenExpiresAtUtc;
   final bool isAuthenticated;
+
+  UserRole get role => user.role;
+  String get userId => user.userId;
+  String get phoneNumber => user.phoneNumber;
+  String get fullName => user.fullName;
 }
