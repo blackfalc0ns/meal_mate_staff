@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../core/app_shell/screens/app_shell_screen.dart';
+import '../../core/constants/assets.dart';
 import '../../features/account_status/domain/account_status_kind.dart';
 import '../../features/account_status/presentation/screens/account_status_preview_screen.dart';
 import '../../features/account_status/presentation/screens/account_status_screen.dart';
-import '../../features/auth/data/auth_fake_data.dart';
+import '../../features/auth/domain/auth_verification_target.dart';
 import '../../features/auth/domain/user_role.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import 'arguments/auth_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_order_entity.dart';
 import '../../features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_entity.dart';
@@ -58,7 +60,10 @@ class RouteGenerator {
         int initialIndex = 0;
         UserRole role = UserRole.operations;
         final args = settings.arguments;
-        if (args is int) {
+        if (args is AppShellRouteArgs) {
+          initialIndex = args.initialIndex;
+          role = args.role;
+        } else if (args is int) {
           initialIndex = args;
         } else if (args is UserRole) {
           role = args;
@@ -75,27 +80,64 @@ class RouteGenerator {
         );
 
       case AppRoutes.login:
-        final role = settings.arguments is UserRole
-            ? settings.arguments! as UserRole
-            : UserRole.operations;
+        UserRole role = UserRole.operations;
+        final args = settings.arguments;
+        if (args is LoginRouteArgs) {
+          role = args.role;
+        } else if (args is UserRole) {
+          role = args;
+        }
         return _buildRoute(
           settings: settings,
           page: LoginScreen(role: role),
         );
 
       case AppRoutes.verifyPhoneOtp:
+        AuthVerificationTarget target = const AuthVerificationTarget(
+          value: '',
+          imageAsset: AppAssets.authPhoneOtp,
+        );
+        UserRole role = UserRole.driver;
+        final args = settings.arguments;
+        if (args is OtpVerificationRouteArgs) {
+          target = args.target;
+          role = args.role;
+        } else if (args is AuthVerificationTarget) {
+          target = args;
+        } else if (args is Map) {
+          final phone = args['phone'] as String? ?? '';
+          target = AuthVerificationTarget(
+            value: phone,
+            imageAsset: AppAssets.authPhoneOtp,
+          );
+          role = (args['role'] as UserRole?) ?? UserRole.driver;
+        }
         return _buildRoute(
           settings: settings,
-          page: const OtpVerificationScreen.phone(
-            target: AuthFakeData.phoneVerificationTarget,
+          page: OtpVerificationScreen.phone(
+            target: target,
+            role: role,
           ),
         );
 
       case AppRoutes.verifyEmailOtp:
+        AuthVerificationTarget target = const AuthVerificationTarget(
+          value: '',
+          imageAsset: AppAssets.authEmailOtp,
+        );
+        UserRole role = UserRole.driver;
+        final args = settings.arguments;
+        if (args is OtpVerificationRouteArgs) {
+          target = args.target;
+          role = args.role;
+        } else if (args is AuthVerificationTarget) {
+          target = args;
+        }
         return _buildRoute(
           settings: settings,
-          page: const OtpVerificationScreen.email(
-            target: AuthFakeData.emailVerificationTarget,
+          page: OtpVerificationScreen.email(
+            target: target,
+            role: role,
           ),
         );
 
@@ -103,9 +145,13 @@ class RouteGenerator {
         return _buildRoute(settings: settings, page: const RegisterScreen());
 
       case AppRoutes.accountStatus:
-        final kind = settings.arguments is AccountStatusKind
-            ? settings.arguments! as AccountStatusKind
-            : AccountStatusKind.underReview;
+        AccountStatusKind kind = AccountStatusKind.underReview;
+        final args = settings.arguments;
+        if (args is AccountStatusRouteArgs) {
+          kind = args.kind;
+        } else if (args is AccountStatusKind) {
+          kind = args;
+        }
         return _buildRoute(
           settings: settings,
           page: AccountStatusScreen(kind: kind),
