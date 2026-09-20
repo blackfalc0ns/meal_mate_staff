@@ -50,6 +50,7 @@ dependencies:
   calendar_date_picker2: ^3.0.0
   mobile_scanner: ^7.4.2
   cherry_toast: ^1.13.0
+  lottie: ^3.6.1
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,7 @@ flutter:
     - assets/images/dispatcher/
     - assets/images/driver/
     - assets/images/svg/
+    - assets/animation/
 
   fonts:
     - family: Alexandria

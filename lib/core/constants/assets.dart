@@ -14,8 +14,7 @@ class AppAssets {
       '$_driverImages/assigned_boxes_banner.png';
   static const String driverCameraBoxSample =
       '$_driverImages/driver_camera_box_sample.png';
-  static const String driverToyotaCorolla =
-      '$_driverImages/toyota_corolla.png';
+  static const String driverToyotaCorolla = '$_driverImages/toyota_corolla.png';
 
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';
@@ -130,4 +129,9 @@ class AppAssets {
       '$_dispatcherImages/home_map_target.png';
   static const String dispatcherHomeMapIcon =
       '$_dispatcherImages/home_map_icon.png';
+
+  static const String _animations = 'assets/animation';
+  static const String loadingLogo = '$_animations/logo-loading.json';
 }
+
+typedef Assets = AppAssets;
