@@ -55,6 +55,12 @@ class TokenService {
     await _secureStorage.delete(key: CoreStorageKeys.refreshToken);
   }
 
+  static const String userRoleKey = 'userRoleKey';
+  static const String userPhoneKey = 'userPhoneKey';
+  static const String userNameKey = 'userNameKey';
+  static const String userRestaurantIdKey = 'userRestaurantIdKey';
+  static const String userAccountStatusKey = 'userAccountStatusKey';
+
   Future<void> saveCurrentUserId(String userId) async {
     if (userId.trim().isEmpty) return;
     await _sharedPreferences.setString(CoreStorageKeys.userIdKey, userId);
@@ -65,10 +71,51 @@ class TokenService {
     return userId == null || userId.trim().isEmpty ? null : userId;
   }
 
+  String? getSavedRole() => _sharedPreferences.getString(userRoleKey);
+  String? getSavedPhone() => _sharedPreferences.getString(userPhoneKey);
+  String? getSavedFullName() => _sharedPreferences.getString(userNameKey);
+  String? getSavedRestaurantId() =>
+      _sharedPreferences.getString(userRestaurantIdKey);
+  String? getSavedAccountStatus() =>
+      _sharedPreferences.getString(userAccountStatusKey);
+
+  Future<void> saveSession({
+    required String accessToken,
+    required String refreshToken,
+    required String userId,
+    required String role,
+    String? phone,
+    String? fullName,
+    String? restaurantId,
+    String? accountStatus,
+  }) async {
+    await saveAccessToken(accessToken);
+    await saveRefreshToken(refreshToken);
+    await saveCurrentUserId(userId);
+    await _sharedPreferences.setString(userRoleKey, role);
+    if (phone != null && phone.isNotEmpty) {
+      await _sharedPreferences.setString(userPhoneKey, phone);
+    }
+    if (fullName != null && fullName.isNotEmpty) {
+      await _sharedPreferences.setString(userNameKey, fullName);
+    }
+    if (restaurantId != null && restaurantId.isNotEmpty) {
+      await _sharedPreferences.setString(userRestaurantIdKey, restaurantId);
+    }
+    if (accountStatus != null && accountStatus.isNotEmpty) {
+      await _sharedPreferences.setString(userAccountStatusKey, accountStatus);
+    }
+  }
+
   Future<void> clearTokens() async {
     await deleteToken();
     await deleteRefreshToken();
     await _sharedPreferences.remove(CoreStorageKeys.userIdKey);
     await _sharedPreferences.remove(StorageKeys.userData);
+    await _sharedPreferences.remove(userRoleKey);
+    await _sharedPreferences.remove(userPhoneKey);
+    await _sharedPreferences.remove(userNameKey);
+    await _sharedPreferences.remove(userRestaurantIdKey);
+    await _sharedPreferences.remove(userAccountStatusKey);
   }
 }

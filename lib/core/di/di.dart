@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../helpers/shared_pref.dart';
 import '../network/api_services.dart';
 import '../network/network_constants.dart';
+import '../services/auth_refresh_service.dart';
 import '../services/device_id_service.dart';
 import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
@@ -58,6 +59,12 @@ Future<void> configureDependencies() async {
     () => TokenInterceptor(getIt<TokenService>()),
   );
   getIt.registerLazySingleton<Dio>(_buildDio);
+  getIt.registerLazySingleton<AuthRefreshService>(
+    () => AuthRefreshService(
+      tokenService: getIt<TokenService>(),
+      dio: getIt<Dio>(),
+    ),
+  );
   getIt.registerLazySingleton<ApiServices>(() => ApiServices(getIt<Dio>()));
 
   // Auth feature dependencies
@@ -113,9 +120,17 @@ Dio _buildDio() {
     ),
   );
 
+  final tokenInterceptor = getIt<TokenInterceptor>();
   dio.interceptors.add(getIt<LanguageInterceptor>());
-  dio.interceptors.add(getIt<TokenInterceptor>());
+  dio.interceptors.add(tokenInterceptor);
   dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true));
+
+  tokenInterceptor.attachRefreshService(
+    AuthRefreshService(
+      tokenService: getIt<TokenService>(),
+      dio: dio,
+    ),
+  );
 
   return dio;
 }
