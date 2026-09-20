@@ -22,10 +22,7 @@ class DriverBoxesReceivedSafetyBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.primaryContainer,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

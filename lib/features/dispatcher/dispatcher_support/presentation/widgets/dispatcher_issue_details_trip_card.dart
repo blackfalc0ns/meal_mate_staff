@@ -7,10 +7,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_issue_detail_entity.dart';
 
 class DispatcherIssueDetailsTripCard extends StatelessWidget {
-  const DispatcherIssueDetailsTripCard({
-    super.key,
-    required this.issue,
-  });
+  const DispatcherIssueDetailsTripCard({super.key, required this.issue});
 
   final DispatcherIssueDetailEntity issue;
 
@@ -106,7 +103,9 @@ class DispatcherIssueDetailsTripCard extends StatelessWidget {
                           ),
                           const SizedBox(height: Spacing.xs / 2),
                           Text(
-                            locale.issueDetailsMealsCountValue(issue.mealsCount),
+                            locale.issueDetailsMealsCountValue(
+                              issue.mealsCount,
+                            ),
                             style: getBoldStyle(
                               fontSize: FontSize.size11,
                               color: color.onSurface,

@@ -7,10 +7,7 @@ import '../../domain/entities/dispatcher_map_kpi_entity.dart';
 import 'dispatcher_map_kpi_card.dart';
 
 class DispatcherMapKpiBar extends StatelessWidget {
-  const DispatcherMapKpiBar({
-    super.key,
-    required this.kpi,
-  });
+  const DispatcherMapKpiBar({super.key, required this.kpi});
 
   final DispatcherMapKpiEntity kpi;
 

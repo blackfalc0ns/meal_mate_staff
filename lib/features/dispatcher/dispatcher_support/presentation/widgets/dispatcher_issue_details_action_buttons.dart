@@ -50,14 +50,13 @@ class DispatcherIssueDetailsActionButtons extends StatelessWidget {
                 backgroundColor: color.primary,
                 foregroundColor: color.onPrimary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
+                  borderRadius: BorderRadius.circular(
+                    Spacing.buttonSmallRadius,
+                  ),
                 ),
                 elevation: Spacing.cardElevation,
               ),
-              icon: Icon(
-                Icons.person_add_alt_1_rounded,
-                size: Spacing.iconSm,
-              ),
+              icon: Icon(Icons.person_add_alt_1_rounded, size: Spacing.iconSm),
               label: Text(
                 locale.issueDetailsAssignReplacementDriver,
                 style: getBoldStyle(
@@ -75,12 +74,11 @@ class DispatcherIssueDetailsActionButtons extends StatelessWidget {
               onPressed: onContactDriverTap,
               style: OutlinedButton.styleFrom(
                 foregroundColor: color.primary,
-                side: BorderSide(
-                  color: color.primary,
-                  width: Spacing.border,
-                ),
+                side: BorderSide(color: color.primary, width: Spacing.border),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
+                  borderRadius: BorderRadius.circular(
+                    Spacing.buttonSmallRadius,
+                  ),
                 ),
               ),
               icon: Icon(

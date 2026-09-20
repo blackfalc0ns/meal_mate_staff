@@ -6,11 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class AssignBoxDriverMetricChip extends StatelessWidget {
-  const AssignBoxDriverMetricChip({
-    super.key,
-    required this.text,
-    this.icon,
-  });
+  const AssignBoxDriverMetricChip({super.key, required this.text, this.icon});
 
   final String text;
   final IconData? icon;
@@ -33,11 +29,7 @@ class AssignBoxDriverMetricChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(
-              icon,
-              size: Spacing.iconSm,
-              color: color.onSurfaceVariant,
-            ),
+            Icon(icon, size: Spacing.iconSm, color: color.onSurfaceVariant),
             const SizedBox(width: Spacing.xs),
           ],
           Text(

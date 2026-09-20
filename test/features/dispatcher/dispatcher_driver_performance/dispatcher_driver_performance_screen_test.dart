@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
@@ -45,9 +45,7 @@ void main() {
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(
-        _buildTestableWidget(
-          child: const DispatcherDriverPerformanceScreen(),
-        ),
+        _buildTestableWidget(child: const DispatcherDriverPerformanceScreen()),
       );
       await tester.pumpAndSettle();
 
@@ -108,9 +106,7 @@ void main() {
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(
-        _buildTestableWidget(
-          child: const DispatcherDriverPerformanceScreen(),
-        ),
+        _buildTestableWidget(child: const DispatcherDriverPerformanceScreen()),
       );
       await tester.pumpAndSettle();
 

@@ -9,9 +9,7 @@ void main() {
   ) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: Scaffold(
-          body: CustomProgressIndicator(size: 80.0),
-        ),
+        home: Scaffold(body: CustomProgressIndicator(size: 80.0)),
       ),
     );
 

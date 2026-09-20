@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherDriversMapButton extends StatelessWidget {
-  const DispatcherDriversMapButton({
-    super.key,
-    this.onTap,
-  });
+  const DispatcherDriversMapButton({super.key, this.onTap});
 
   final VoidCallback? onTap;
 

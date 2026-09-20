@@ -50,11 +50,9 @@ class _DispatcherNotificationsScreenState
     }
   }
 
-  int get _allCount =>
-      _notifications.where((item) => !item.isArchived).length;
+  int get _allCount => _notifications.where((item) => !item.isArchived).length;
 
-  int get _unreadCount =>
-      _notifications.where((item) => item.isUnread).length;
+  int get _unreadCount => _notifications.where((item) => item.isUnread).length;
 
   void _onFilterChanged(DispatcherNotificationFilterType filter) {
     if (_selectedFilter != filter) {

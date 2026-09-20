@@ -60,11 +60,7 @@ class DriverEditVehicleTextField extends StatelessWidget {
               fontSize: FontSize.size12,
             ),
             prefixIcon: icon != null
-                ? Icon(
-                    icon,
-                    size: Spacing.iconSm + 2,
-                    color: color.primary,
-                  )
+                ? Icon(icon, size: Spacing.iconSm + 2, color: color.primary)
                 : null,
             filled: true,
             fillColor: color.surfaceContainerLowest,

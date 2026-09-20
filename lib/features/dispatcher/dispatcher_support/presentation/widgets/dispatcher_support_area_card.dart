@@ -6,11 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherSupportAreaCard extends StatelessWidget {
-  const DispatcherSupportAreaCard({
-    super.key,
-    required this.area,
-    this.onTap,
-  });
+  const DispatcherSupportAreaCard({super.key, required this.area, this.onTap});
 
   final String area;
   final VoidCallback? onTap;

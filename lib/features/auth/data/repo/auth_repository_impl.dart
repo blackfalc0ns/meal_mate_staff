@@ -21,10 +21,7 @@ import '../mapper/auth_response_mapper.dart';
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  const AuthRepositoryImpl(
-    this._remoteDataSource,
-    this._tokenService,
-  );
+  const AuthRepositoryImpl(this._remoteDataSource, this._tokenService);
 
   final AuthRemoteDataSource _remoteDataSource;
   final TokenService _tokenService;
@@ -64,13 +61,21 @@ class AuthRepositoryImpl implements AuthRepository {
     return safeApiCall(() async {
       final response = await _remoteDataSource.setPassword(request.toDto());
       if (response.accessToken != null && response.accessToken!.isNotEmpty) {
-        await _tokenService.saveAccessToken(response.accessToken!);
-      }
-      if (response.refreshToken != null && response.refreshToken!.isNotEmpty) {
-        await _tokenService.saveRefreshToken(response.refreshToken!);
-      }
-      if (response.userId != null && response.userId!.isNotEmpty) {
-        await _tokenService.saveCurrentUserId(response.userId!);
+        final roleStr = (response.roles != null && response.roles!.isNotEmpty)
+            ? response.roles!.first
+            : (response.userType ??
+                  (request.role == UserRole.driver
+                      ? 'Driver'
+                      : 'DeliveryManager'));
+        await _tokenService.saveSession(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken ?? '',
+          userId: response.userId ?? '',
+          role: roleStr,
+          phone: response.phoneNumber ?? request.phone,
+          fullName: response.fullName,
+          restaurantId: response.restaurantId,
+        );
       }
       return response.toSessionEntity(
         fallbackRole: request.role,
@@ -80,19 +85,25 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<ApiResult<AuthSessionEntity>> login(
-    StaffLoginRequestEntity request,
-  ) {
+  Future<ApiResult<AuthSessionEntity>> login(StaffLoginRequestEntity request) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.login(request.toDto());
       if (response.accessToken != null && response.accessToken!.isNotEmpty) {
-        await _tokenService.saveAccessToken(response.accessToken!);
-      }
-      if (response.refreshToken != null && response.refreshToken!.isNotEmpty) {
-        await _tokenService.saveRefreshToken(response.refreshToken!);
-      }
-      if (response.userId != null && response.userId!.isNotEmpty) {
-        await _tokenService.saveCurrentUserId(response.userId!);
+        final roleStr = (response.roles != null && response.roles!.isNotEmpty)
+            ? response.roles!.first
+            : (response.userType ??
+                  (request.role == UserRole.driver
+                      ? 'Driver'
+                      : 'DeliveryManager'));
+        await _tokenService.saveSession(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken ?? '',
+          userId: response.userId ?? '',
+          role: roleStr,
+          phone: response.phoneNumber ?? request.phone,
+          fullName: response.fullName,
+          restaurantId: response.restaurantId,
+        );
       }
       return response.toSessionEntity(
         fallbackRole: request.role,
@@ -112,9 +123,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<ApiResult<String>> resetPassword(
-    ResetPasswordRequestEntity request,
-  ) {
+  Future<ApiResult<String>> resetPassword(ResetPasswordRequestEntity request) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.resetPassword(request.toDto());
       return response.message ?? 'Success';
@@ -122,9 +131,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<ApiResult<String>> resendOtp(
-    ResendOtpRequestEntity request,
-  ) {
+  Future<ApiResult<String>> resendOtp(ResendOtpRequestEntity request) {
     return safeApiCall(() async {
       final response = await _remoteDataSource.resendOtp(request.toDto());
       return response.message ?? 'Success';
@@ -140,12 +147,20 @@ class AuthRepositoryImpl implements AuthRepository {
       }
       final refreshToken = await _tokenService.getRefreshToken() ?? '';
       final userId = _tokenService.getCurrentUserId() ?? '';
+      final savedRole = _tokenService.getSavedRole();
+      final savedPhone = _tokenService.getSavedPhone() ?? '';
+      final savedName = _tokenService.getSavedFullName() ?? '';
+      final role =
+          (savedRole != null && savedRole.toLowerCase().contains('delivery'))
+          ? UserRole.operations
+          : UserRole.driver;
+
       return AuthSessionEntity(
         user: AuthUserEntity(
           userId: userId,
-          phoneNumber: '',
-          fullName: '',
-          role: UserRole.operations,
+          phoneNumber: savedPhone,
+          fullName: savedName,
+          role: role,
         ),
         accessToken: token,
         refreshToken: refreshToken,

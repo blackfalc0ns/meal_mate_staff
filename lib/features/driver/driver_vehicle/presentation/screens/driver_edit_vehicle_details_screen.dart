@@ -46,19 +46,23 @@ class _DriverEditVehicleDetailsScreenState
     super.initState();
     _currentVehicle = widget.vehicle ?? DriverVehicleFakeData.defaultVehicle;
 
-    _brandAndModelController =
-        TextEditingController(text: _currentVehicle.brandAndModel);
+    _brandAndModelController = TextEditingController(
+      text: _currentVehicle.brandAndModel,
+    );
     _modelController = TextEditingController(text: _currentVehicle.model);
-    _yearController =
-        TextEditingController(text: _currentVehicle.manufactureYear);
+    _yearController = TextEditingController(
+      text: _currentVehicle.manufactureYear,
+    );
     _plateController = TextEditingController(
       text: '${_currentVehicle.plateNumber} ${_currentVehicle.plateLetter}',
     );
     _colorController = TextEditingController(text: _currentVehicle.colorName);
-    _licenseNumberController =
-        TextEditingController(text: _currentVehicle.licenseNumber);
-    _licenseExpiryController =
-        TextEditingController(text: _currentVehicle.licenseExpiryDate);
+    _licenseNumberController = TextEditingController(
+      text: _currentVehicle.licenseNumber,
+    );
+    _licenseExpiryController = TextEditingController(
+      text: _currentVehicle.licenseExpiryDate,
+    );
     _notesController = TextEditingController(text: _currentVehicle.notes);
 
     _brandAndModelController.addListener(_onFieldChanged);

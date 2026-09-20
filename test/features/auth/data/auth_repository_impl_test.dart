@@ -37,10 +37,10 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
 
   VerifyFirstTimeOtpResponseDto verifyOtpResponse =
       const VerifyFirstTimeOtpResponseDto(
-    verified: true,
-    verificationToken: 'v-tok',
-    role: 'Driver',
-  );
+        verified: true,
+        verificationToken: 'v-tok',
+        role: 'Driver',
+      );
 
   StaffAuthResponseDto authResponse = const StaffAuthResponseDto(
     userId: 'user-1',
@@ -56,7 +56,9 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   );
 
   @override
-  Future<PhoneLookupResponseDto> lookupPhone(PhoneLookupRequestDto request) async {
+  Future<PhoneLookupResponseDto> lookupPhone(
+    PhoneLookupRequestDto request,
+  ) async {
     if (errorToThrow != null) throw errorToThrow;
     return phoneLookupResponse;
   }
@@ -70,7 +72,9 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   }
 
   @override
-  Future<StaffAuthResponseDto> setPassword(SetPasswordRequestDto request) async {
+  Future<StaffAuthResponseDto> setPassword(
+    SetPasswordRequestDto request,
+  ) async {
     if (errorToThrow != null) throw errorToThrow;
     return authResponse;
   }
@@ -104,7 +108,9 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   }
 
   @override
-  Future<StaffAuthResponseDto> refreshToken(RefreshTokenRequestDto request) async {
+  Future<StaffAuthResponseDto> refreshToken(
+    RefreshTokenRequestDto request,
+  ) async {
     if (errorToThrow != null) throw errorToThrow;
     return authResponse;
   }
@@ -168,39 +174,45 @@ void main() {
       expect(result, isA<ApiErrorResult<PhoneLookupResultEntity>>());
     });
 
-    test('login saves tokens to TokenService and returns AuthSessionEntity', () async {
-      final result = await repository.login(
-        const StaffLoginRequestEntity(
-          phone: '+966501234567',
-          role: UserRole.driver,
-          password: 'pwd',
-        ),
-      );
+    test(
+      'login saves tokens to TokenService and returns AuthSessionEntity',
+      () async {
+        final result = await repository.login(
+          const StaffLoginRequestEntity(
+            phone: '+966501234567',
+            role: UserRole.driver,
+            password: 'pwd',
+          ),
+        );
 
-      expect(result, isA<ApiSuccessResult<AuthSessionEntity>>());
-      final session = (result as ApiSuccessResult<AuthSessionEntity>).data;
-      expect(session.accessToken, 'access-1');
+        expect(result, isA<ApiSuccessResult<AuthSessionEntity>>());
+        final session = (result as ApiSuccessResult<AuthSessionEntity>).data;
+        expect(session.accessToken, 'access-1');
 
-      // Verify tokens are saved in TokenService
-      expect(await tokenService.getToken(), 'access-1');
-      expect(await tokenService.getRefreshToken(), 'refresh-1');
-      expect(tokenService.getCurrentUserId(), 'user-1');
-    });
+        // Verify tokens are saved in TokenService
+        expect(await tokenService.getToken(), 'access-1');
+        expect(await tokenService.getRefreshToken(), 'refresh-1');
+        expect(tokenService.getCurrentUserId(), 'user-1');
+      },
+    );
 
-    test('setPassword saves tokens to TokenService and returns AuthSessionEntity', () async {
-      final result = await repository.setPassword(
-        const SetPasswordRequestEntity(
-          phone: '+966501234567',
-          role: UserRole.driver,
-          verificationToken: 'v-tok',
-          newPassword: 'pwd',
-          confirmPassword: 'pwd',
-        ),
-      );
+    test(
+      'setPassword saves tokens to TokenService and returns AuthSessionEntity',
+      () async {
+        final result = await repository.setPassword(
+          const SetPasswordRequestEntity(
+            phone: '+966501234567',
+            role: UserRole.driver,
+            verificationToken: 'v-tok',
+            newPassword: 'pwd',
+            confirmPassword: 'pwd',
+          ),
+        );
 
-      expect(result, isA<ApiSuccessResult<AuthSessionEntity>>());
-      expect(await tokenService.getToken(), 'access-1');
-    });
+        expect(result, isA<ApiSuccessResult<AuthSessionEntity>>());
+        expect(await tokenService.getToken(), 'access-1');
+      },
+    );
 
     test('logout clears tokens from TokenService', () async {
       await tokenService.saveAccessToken('some-access');

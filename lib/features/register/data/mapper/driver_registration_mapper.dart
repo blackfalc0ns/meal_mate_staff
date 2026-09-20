@@ -73,7 +73,8 @@ extension DriverRegistrationDraftEntityMapper on DriverRegistrationDraftEntity {
       licenseNumber: licenseNumber,
       licenseExpiry: licenseExpiry,
       vehicleLicenseExpiry: vehicleLicenseExpiry,
-      contractExpiry: (contractExpiry != null && contractExpiry!.trim().isNotEmpty)
+      contractExpiry:
+          (contractExpiry != null && contractExpiry!.trim().isNotEmpty)
           ? contractExpiry!.trim()
           : null,
       nationalIdFrontStorageKey: nationalIdFrontStorageKey,
@@ -81,16 +82,18 @@ extension DriverRegistrationDraftEntityMapper on DriverRegistrationDraftEntity {
       drivingLicenseFrontStorageKey: drivingLicenseFrontStorageKey,
       drivingLicenseBackStorageKey: drivingLicenseBackStorageKey,
       vehicleRegistrationStorageKey: vehicleRegistrationStorageKey,
-      profileImageStorageKey: (profileImageStorageKey != null &&
+      profileImageStorageKey:
+          (profileImageStorageKey != null &&
               profileImageStorageKey!.trim().isNotEmpty)
           ? profileImageStorageKey!.trim()
           : null,
-      vehiclePhotoStorageKey: (vehiclePhotoStorageKey != null &&
+      vehiclePhotoStorageKey:
+          (vehiclePhotoStorageKey != null &&
               vehiclePhotoStorageKey!.trim().isNotEmpty)
           ? vehiclePhotoStorageKey!.trim()
           : null,
-      contractStorageKey: (contractStorageKey != null &&
-              contractStorageKey!.trim().isNotEmpty)
+      contractStorageKey:
+          (contractStorageKey != null && contractStorageKey!.trim().isNotEmpty)
           ? contractStorageKey!.trim()
           : null,
     );

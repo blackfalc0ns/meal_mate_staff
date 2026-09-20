@@ -30,12 +30,16 @@ class DispatcherDriversSegmentItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
-          color: isSelected ? color.primary : color.surface.withValues(alpha: 0),
+          color: isSelected
+              ? color.primary
+              : color.surface.withValues(alpha: 0),
           borderRadius: BorderRadius.circular(Spacing.radiusPill),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: color.primary.withValues(alpha: Spacing.hairline / 2),
+                    color: color.primary.withValues(
+                      alpha: Spacing.hairline / 2,
+                    ),
                     blurRadius: Spacing.xs,
                     offset: const Offset(Spacing.zero, Spacing.border),
                   ),

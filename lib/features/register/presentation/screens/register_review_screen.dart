@@ -129,7 +129,9 @@ class RegisterReviewScreen extends StatelessWidget {
       [
         RegisterReviewField(
           label: locale.registrationVehicleType,
-          value: vehicle.type.isNotEmpty ? vehicle.type : locale.registrationCar,
+          value: vehicle.type.isNotEmpty
+              ? vehicle.type
+              : locale.registrationCar,
         ),
         RegisterReviewField(
           label: locale.registrationVehicleModel,

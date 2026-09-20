@@ -5,10 +5,7 @@ import '../../../extensions/extensions.dart';
 
 /// Centered muted footer displaying the application version.
 class SidebarVersionFooter extends StatelessWidget {
-  const SidebarVersionFooter({
-    super.key,
-    required this.version,
-  });
+  const SidebarVersionFooter({super.key, required this.version});
 
   final String version;
 
@@ -20,10 +17,7 @@ class SidebarVersionFooter extends StatelessWidget {
     return Center(
       child: Text(
         locale.sidebarAppVersion(version),
-        style: getRegularStyle(
-          fontSize: 10,
-          color: color.onSurfaceVariant,
-        ),
+        style: getRegularStyle(fontSize: 10, color: color.onSurfaceVariant),
       ),
     );
   }

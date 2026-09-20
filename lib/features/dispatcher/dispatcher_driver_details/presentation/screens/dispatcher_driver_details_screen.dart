@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
@@ -65,10 +65,9 @@ class DispatcherDriverDetailsScreen extends StatelessWidget {
       steps: BoxTrackingFakeData.defaultSteps,
     );
 
-    Navigator.of(context).pushNamed(
-      AppRoutes.boxTracking,
-      arguments: trackingEntity,
-    );
+    Navigator.of(
+      context,
+    ).pushNamed(AppRoutes.boxTracking, arguments: trackingEntity);
   }
 
   @override

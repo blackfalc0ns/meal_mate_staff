@@ -30,50 +30,62 @@ void main() {
       expect(emptyDto.status, isNull);
     });
 
-    test('Mapper correctly maps all 4 backend statuses to AccountStatusKind', () {
-      // 1. Submitted -> underReview
-      const submittedDto = DriverRegistrationStatusResponseDto(
-        status: 'Submitted',
-        registrationId: 'r-1',
-      );
-      final submittedEntity = submittedDto.toEntity();
-      expect(submittedEntity.kind, AccountStatusKind.underReview);
-      expect(submittedEntity.registrationId, 'r-1');
+    test(
+      'Mapper correctly maps all 4 backend statuses to AccountStatusKind',
+      () {
+        // 1. Submitted -> underReview
+        const submittedDto = DriverRegistrationStatusResponseDto(
+          status: 'Submitted',
+          registrationId: 'r-1',
+        );
+        final submittedEntity = submittedDto.toEntity();
+        expect(submittedEntity.kind, AccountStatusKind.underReview);
+        expect(submittedEntity.registrationId, 'r-1');
 
-      // 2. NeedsChanges -> moreInformationRequired
-      const needsChangesDto = DriverRegistrationStatusResponseDto(
-        status: 'NeedsChanges',
-        changeRequestNotes: 'Upload new driving license',
-      );
-      final needsChangesEntity = needsChangesDto.toEntity();
-      expect(needsChangesEntity.kind, AccountStatusKind.moreInformationRequired);
-      expect(needsChangesEntity.changeRequestNotes, 'Upload new driving license');
+        // 2. NeedsChanges -> moreInformationRequired
+        const needsChangesDto = DriverRegistrationStatusResponseDto(
+          status: 'NeedsChanges',
+          changeRequestNotes: 'Upload new driving license',
+        );
+        final needsChangesEntity = needsChangesDto.toEntity();
+        expect(
+          needsChangesEntity.kind,
+          AccountStatusKind.moreInformationRequired,
+        );
+        expect(
+          needsChangesEntity.changeRequestNotes,
+          'Upload new driving license',
+        );
 
-      // 3. Rejected -> rejected
-      const rejectedDto = DriverRegistrationStatusResponseDto(
-        status: 'Rejected',
-        rejectionReason: 'Civil ID invalid',
-      );
-      final rejectedEntity = rejectedDto.toEntity();
-      expect(rejectedEntity.kind, AccountStatusKind.rejected);
-      expect(rejectedEntity.rejectionReason, 'Civil ID invalid');
+        // 3. Rejected -> rejected
+        const rejectedDto = DriverRegistrationStatusResponseDto(
+          status: 'Rejected',
+          rejectionReason: 'Civil ID invalid',
+        );
+        final rejectedEntity = rejectedDto.toEntity();
+        expect(rejectedEntity.kind, AccountStatusKind.rejected);
+        expect(rejectedEntity.rejectionReason, 'Civil ID invalid');
 
-      // 4. Approved -> accepted
-      const approvedDto = DriverRegistrationStatusResponseDto(
-        status: 'Approved',
-        isApproved: true,
-      );
-      final approvedEntity = approvedDto.toEntity();
-      expect(approvedEntity.kind, AccountStatusKind.accepted);
-      expect(approvedEntity.isApproved, isTrue);
-    });
+        // 4. Approved -> accepted
+        const approvedDto = DriverRegistrationStatusResponseDto(
+          status: 'Approved',
+          isApproved: true,
+        );
+        final approvedEntity = approvedDto.toEntity();
+        expect(approvedEntity.kind, AccountStatusKind.accepted);
+        expect(approvedEntity.isApproved, isTrue);
+      },
+    );
 
-    test('Mapper handles unexpected or null status gracefully with fallback', () {
-      const unknownDto = DriverRegistrationStatusResponseDto();
-      final entity = unknownDto.toEntity();
-      expect(entity.kind, AccountStatusKind.underReview);
-      expect(entity.registrationId, '');
-      expect(entity.canResubmit, isFalse);
-    });
+    test(
+      'Mapper handles unexpected or null status gracefully with fallback',
+      () {
+        const unknownDto = DriverRegistrationStatusResponseDto();
+        final entity = unknownDto.toEntity();
+        expect(entity.kind, AccountStatusKind.underReview);
+        expect(entity.registrationId, '');
+        expect(entity.canResubmit, isFalse);
+      },
+    );
   });
 }

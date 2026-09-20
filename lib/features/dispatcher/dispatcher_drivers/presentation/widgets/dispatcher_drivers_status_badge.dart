@@ -9,10 +9,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_driver_status.dart';
 
 class DispatcherDriversStatusBadge extends StatelessWidget {
-  const DispatcherDriversStatusBadge({
-    super.key,
-    required this.status,
-  });
+  const DispatcherDriversStatusBadge({super.key, required this.status});
 
   final DispatcherDriverStatus status;
 
@@ -47,7 +44,9 @@ class DispatcherDriversStatusBadge extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(Spacing.registrationReviewCardRadius),
+        borderRadius: BorderRadius.circular(
+          Spacing.registrationReviewCardRadius,
+        ),
       ),
       child: FittedBox(
         fit: BoxFit.scaleDown,
@@ -65,10 +64,7 @@ class DispatcherDriversStatusBadge extends StatelessWidget {
             const SizedBox(width: Spacing.xs),
             Text(
               label,
-              style: getBoldStyle(
-                fontSize: FontSize.size10,
-                color: textColor,
-              ),
+              style: getBoldStyle(fontSize: FontSize.size10, color: textColor),
               maxLines: 1,
             ),
           ],

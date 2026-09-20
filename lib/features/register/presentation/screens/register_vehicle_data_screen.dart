@@ -38,8 +38,7 @@ class RegisterVehicleDataScreen extends StatefulWidget {
       _RegisterVehicleDataScreenState();
 }
 
-class _RegisterVehicleDataScreenState
-    extends State<RegisterVehicleDataScreen> {
+class _RegisterVehicleDataScreenState extends State<RegisterVehicleDataScreen> {
   late final TextEditingController _vehicleTypeController;
   late final TextEditingController _modelController;
   late final TextEditingController _manufactureYearController;
@@ -50,8 +49,9 @@ class _RegisterVehicleDataScreenState
     final init = widget.initialData;
     _vehicleTypeController = TextEditingController(text: init?.type ?? '');
     _modelController = TextEditingController(text: init?.model ?? '');
-    _manufactureYearController =
-        TextEditingController(text: init?.manufactureYear ?? '');
+    _manufactureYearController = TextEditingController(
+      text: init?.manufactureYear ?? '',
+    );
   }
 
   @override
@@ -109,8 +109,8 @@ class _RegisterVehicleDataScreenState
       type: _vehicleTypeController.text.trim().isNotEmpty
           ? _vehicleTypeController.text.trim()
           : (widget.initialData?.type.isNotEmpty == true
-              ? widget.initialData!.type
-              : 'Car'),
+                ? widget.initialData!.type
+                : 'Car'),
       model: _modelController.text.trim().isNotEmpty
           ? _modelController.text.trim()
           : (widget.initialData?.model ?? 'Toyota Camry'),
@@ -131,10 +131,8 @@ class _RegisterVehicleDataScreenState
           : DateTime.now().add(const Duration(days: 365 * 4)).toIso8601String(),
       vehicleLicenseExpiry:
           widget.initialData?.vehicleLicenseExpiry.isNotEmpty == true
-              ? widget.initialData!.vehicleLicenseExpiry
-              : DateTime.now()
-                  .add(const Duration(days: 365 * 3))
-                  .toIso8601String(),
+          ? widget.initialData!.vehicleLicenseExpiry
+          : DateTime.now().add(const Duration(days: 365 * 3)).toIso8601String(),
     );
     widget.onVehicleDataChanged?.call(data);
     widget.onContinue();

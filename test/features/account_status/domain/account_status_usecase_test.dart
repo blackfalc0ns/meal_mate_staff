@@ -54,7 +54,8 @@ void main() {
       final result = await useCase(phone: '+966501234567');
 
       expect(result, isA<ApiSuccessResult<DriverRegistrationStatusEntity>>());
-      final data = (result as ApiSuccessResult<DriverRegistrationStatusEntity>).data;
+      final data =
+          (result as ApiSuccessResult<DriverRegistrationStatusEntity>).data;
       expect(data.registrationId, 'reg-456');
       expect(data.kind, AccountStatusKind.moreInformationRequired);
       expect(data.changeRequestNotes, 'Fix driving license');
@@ -70,32 +71,44 @@ void main() {
       repository = AccountStatusRepositoryImpl(fakeDataSource);
     });
 
-    test('getRegistrationStatus maps response DTO to entity on success', () async {
-      fakeDataSource.response = const DriverRegistrationStatusResponseDto(
-        registrationId: 'reg-99',
-        status: 'NeedsChanges',
-        changeRequestNotes: 'Unclear license',
-      );
+    test(
+      'getRegistrationStatus maps response DTO to entity on success',
+      () async {
+        fakeDataSource.response = const DriverRegistrationStatusResponseDto(
+          registrationId: 'reg-99',
+          status: 'NeedsChanges',
+          changeRequestNotes: 'Unclear license',
+        );
 
-      final result = await repository.getRegistrationStatus(phone: '+966500000000');
+        final result = await repository.getRegistrationStatus(
+          phone: '+966500000000',
+        );
 
-      expect(result, isA<ApiSuccessResult<DriverRegistrationStatusEntity>>());
-      final data = (result as ApiSuccessResult<DriverRegistrationStatusEntity>).data;
-      expect(data.registrationId, 'reg-99');
-      expect(data.kind, AccountStatusKind.moreInformationRequired);
-    });
+        expect(result, isA<ApiSuccessResult<DriverRegistrationStatusEntity>>());
+        final data =
+            (result as ApiSuccessResult<DriverRegistrationStatusEntity>).data;
+        expect(data.registrationId, 'reg-99');
+        expect(data.kind, AccountStatusKind.moreInformationRequired);
+      },
+    );
 
-    test('getRegistrationStatus wraps DioException into ApiErrorResult on failure', () async {
-      fakeDataSource.errorToThrow = DioException(
-        requestOptions: RequestOptions(path: '/status'),
-        type: DioExceptionType.connectionTimeout,
-      );
+    test(
+      'getRegistrationStatus wraps DioException into ApiErrorResult on failure',
+      () async {
+        fakeDataSource.errorToThrow = DioException(
+          requestOptions: RequestOptions(path: '/status'),
+          type: DioExceptionType.connectionTimeout,
+        );
 
-      final result = await repository.getRegistrationStatus(phone: '+966500000000');
+        final result = await repository.getRegistrationStatus(
+          phone: '+966500000000',
+        );
 
-      expect(result, isA<ApiErrorResult<DriverRegistrationStatusEntity>>());
-      final failure = (result as ApiErrorResult<DriverRegistrationStatusEntity>).failure;
-      expect(failure, isNotNull);
-    });
+        expect(result, isA<ApiErrorResult<DriverRegistrationStatusEntity>>());
+        final failure =
+            (result as ApiErrorResult<DriverRegistrationStatusEntity>).failure;
+        expect(failure, isNotNull);
+      },
+    );
   });
 }

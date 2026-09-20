@@ -8,10 +8,7 @@ import '../../domain/entities/driver_podium_entry_entity.dart';
 import 'driver_performance_podium_column.dart';
 
 class DriverPerformanceTopRatedCard extends StatelessWidget {
-  const DriverPerformanceTopRatedCard({
-    super.key,
-    required this.entries,
-  });
+  const DriverPerformanceTopRatedCard({super.key, required this.entries});
 
   final List<DriverPodiumEntryEntity> entries;
 
@@ -57,20 +54,14 @@ class DriverPerformanceTopRatedCard extends StatelessWidget {
           Row(
             children: [
               if (rank2 != null)
-                Expanded(
-                  child: DriverPerformancePodiumColumn(entry: rank2),
-                ),
+                Expanded(child: DriverPerformancePodiumColumn(entry: rank2)),
               if (rank1 != null) ...[
                 const SizedBox(width: Spacing.sm),
-                Expanded(
-                  child: DriverPerformancePodiumColumn(entry: rank1),
-                ),
+                Expanded(child: DriverPerformancePodiumColumn(entry: rank1)),
               ],
               if (rank3 != null) ...[
                 const SizedBox(width: Spacing.sm),
-                Expanded(
-                  child: DriverPerformancePodiumColumn(entry: rank3),
-                ),
+                Expanded(child: DriverPerformancePodiumColumn(entry: rank3)),
               ],
             ],
           ),

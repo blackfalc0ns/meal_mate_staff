@@ -54,7 +54,6 @@ class AccountStatusReasonPanel extends StatelessWidget {
                 color: color.onSurface,
                 fontSize: FontSize.size14,
               ),
-             
             ),
             const SizedBox(height: Spacing.lg),
             for (final reason in reasons) ...[

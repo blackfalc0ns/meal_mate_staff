@@ -1,6 +1,1 @@
-enum DriverBoxDeliveryStatus {
-  notLoaded,
-  ready,
-  delivered,
-  failed,
-}
+enum DriverBoxDeliveryStatus { notLoaded, ready, delivered, failed }

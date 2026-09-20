@@ -21,7 +21,8 @@ class DispatcherProfileFakeData {
     maskedPassword: '•••••••••',
   );
 
-  static const List<DispatcherNotificationSettingEntity> sampleNotificationSettings = [
+  static const List<DispatcherNotificationSettingEntity>
+  sampleNotificationSettings = [
     DispatcherNotificationSettingEntity(
       id: 'new_box',
       titleKey: 'new_box',

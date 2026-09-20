@@ -10,9 +10,7 @@ class ResendOtpUseCase {
 
   final AuthRepository _repository;
 
-  Future<ApiResult<String>> call(
-    ResendOtpRequestEntity request,
-  ) {
+  Future<ApiResult<String>> call(ResendOtpRequestEntity request) {
     return _repository.resendOtp(request);
   }
 }

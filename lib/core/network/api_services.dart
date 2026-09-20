@@ -46,9 +46,7 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.login)
-  Future<StaffAuthResponseDto> login(
-    @Body() StaffLoginRequestDto request,
-  );
+  Future<StaffAuthResponseDto> login(@Body() StaffLoginRequestDto request);
 
   @POST(EndPoints.forgotPassword)
   Future<StaffMessageResponseDto> forgotPassword(

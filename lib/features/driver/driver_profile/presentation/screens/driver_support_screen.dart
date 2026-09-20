@@ -52,7 +52,9 @@ class _DriverSupportScreenState extends State<DriverSupportScreen> {
   void initState() {
     super.initState();
     _messageController = TextEditingController();
-    _topics = List.of(widget.initialTopics ?? DriverSupportFakeData.defaultTopics);
+    _topics = List.of(
+      widget.initialTopics ?? DriverSupportFakeData.defaultTopics,
+    );
     _categories = List.of(
       widget.initialCategories ?? DriverSupportFakeData.defaultCategories,
     );
@@ -72,7 +74,8 @@ class _DriverSupportScreenState extends State<DriverSupportScreen> {
     final locale = context.localization;
     CustomSnackbar.showSuccess(
       context: context,
-      message: '${locale.driverSupportCallUs}: ${DriverSupportFakeData.phoneNumber}',
+      message:
+          '${locale.driverSupportCallUs}: ${DriverSupportFakeData.phoneNumber}',
     );
   }
 
@@ -94,10 +97,7 @@ class _DriverSupportScreenState extends State<DriverSupportScreen> {
       widget.onTopicTap!(topic);
       return;
     }
-    CustomSnackbar.showSuccess(
-      context: context,
-      message: topic.title,
-    );
+    CustomSnackbar.showSuccess(context: context, message: topic.title);
   }
 
   void _handleAttachment() {
@@ -147,7 +147,8 @@ class _DriverSupportScreenState extends State<DriverSupportScreen> {
       backgroundColor: color.surface,
       appBar: DriverSupportHeader(
         onBack: widget.onBack,
-        onNotificationTap: widget.onNotificationTap ??
+        onNotificationTap:
+            widget.onNotificationTap ??
             () => context.pushNamed(AppRoutes.driverNotifications),
       ),
       body: SafeArea(

@@ -47,9 +47,7 @@ class AppBottomNavItem extends StatelessWidget {
               height: 58,
               padding: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? effectiveActiveBg
-                    : Colors.transparent,
+                color: isSelected ? effectiveActiveBg : Colors.transparent,
                 borderRadius: BorderRadius.circular(100),
                 boxShadow: isSelected
                     ? [
@@ -67,10 +65,7 @@ class AppBottomNavItem extends StatelessWidget {
                   SizedBox(
                     height: 34,
                     child: Center(
-                      child: SizedBox.square(
-                        dimension: 24,
-                        child: icon,
-                      ),
+                      child: SizedBox.square(dimension: 24, child: icon),
                     ),
                   ),
                   const SizedBox(height: 1),

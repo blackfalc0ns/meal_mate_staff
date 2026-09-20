@@ -38,11 +38,9 @@ class AppSidebar extends StatelessWidget {
     final color = context.colorScheme;
 
     final resolvedUser = user ?? SidebarFakeData.getDefaultUser(role);
-    final resolvedItems = items ??
-        SidebarFakeData.getDefaultItems(
-          role: role,
-          activeId: activeItemId,
-        );
+    final resolvedItems =
+        items ??
+        SidebarFakeData.getDefaultItems(role: role, activeId: activeItemId);
 
     return Drawer(
       width: width,
@@ -56,10 +54,7 @@ class AppSidebar extends StatelessWidget {
             children: [
               SidebarUserHeader(user: resolvedUser),
               const SizedBox(height: Spacing.sm),
-              SidebarNavList(
-                items: resolvedItems,
-                onItemTap: onItemSelected,
-              ),
+              SidebarNavList(items: resolvedItems, onItemTap: onItemSelected),
               const SizedBox(height: Spacing.base),
               if (role == UserRole.driver) ...[
                 SidebarDriverStatusCard(user: resolvedUser),

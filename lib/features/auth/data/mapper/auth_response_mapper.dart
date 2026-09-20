@@ -93,7 +93,8 @@ extension StaffAuthResponseDtoMapper on StaffAuthResponseDto {
       accessToken: accessToken ?? '',
       refreshToken: refreshToken ?? '',
       accessTokenExpiresAtUtc: parsedExpiry,
-      isAuthenticated: isAuthenticated ?? (accessToken != null && accessToken!.isNotEmpty),
+      isAuthenticated:
+          isAuthenticated ?? (accessToken != null && accessToken!.isNotEmpty),
     );
   }
 }

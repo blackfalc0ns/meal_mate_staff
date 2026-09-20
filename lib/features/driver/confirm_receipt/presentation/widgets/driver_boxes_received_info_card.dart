@@ -21,10 +21,7 @@ class DriverBoxesReceivedInfoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outline,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outline, width: Spacing.border),
       ),
       child: Row(
         children: [

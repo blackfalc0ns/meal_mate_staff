@@ -9,10 +9,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/notification_button.dart';
 
 class DispatcherHomeHeader extends StatelessWidget {
-  const DispatcherHomeHeader({
-    super.key,
-    this.onNotificationTap,
-  });
+  const DispatcherHomeHeader({super.key, this.onNotificationTap});
 
   final VoidCallback? onNotificationTap;
 
@@ -93,7 +90,8 @@ class DispatcherHomeHeader extends StatelessWidget {
               ),
               child: NotificationButton(
                 hasUnread: true,
-                onPressed: onNotificationTap ??
+                onPressed:
+                    onNotificationTap ??
                     () => context.pushNamed(AppRoutes.dispatcherNotifications),
               ),
             ),

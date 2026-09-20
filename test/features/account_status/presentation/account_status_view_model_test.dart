@@ -59,41 +59,52 @@ void main() {
     });
 
     test('AccountStatusSetKindEvent updates kind in state', () {
-      viewModel.doIntent(const AccountStatusSetKindEvent(AccountStatusKind.rejected));
+      viewModel.doIntent(
+        const AccountStatusSetKindEvent(AccountStatusKind.rejected),
+      );
       expect(viewModel.state.kind, AccountStatusKind.rejected);
     });
 
-    test('AccountStatusLoadEvent emits loading then loaded with entity', () async {
-      mockRepo.result = const DriverRegistrationStatusEntity(
-        registrationId: 'reg-999',
-        kind: AccountStatusKind.moreInformationRequired,
-        changeRequestNotes: 'Fix documents',
-      );
+    test(
+      'AccountStatusLoadEvent emits loading then loaded with entity',
+      () async {
+        mockRepo.result = const DriverRegistrationStatusEntity(
+          registrationId: 'reg-999',
+          kind: AccountStatusKind.moreInformationRequired,
+          changeRequestNotes: 'Fix documents',
+        );
 
-      viewModel.doIntent(
-        const AccountStatusLoadEvent(phone: '+966501234567'),
-      );
+        viewModel.doIntent(
+          const AccountStatusLoadEvent(phone: '+966501234567'),
+        );
 
-      await Future<void>.delayed(Duration.zero);
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.status, AccountStatusStateStatus.loaded);
-      expect(viewModel.state.kind, AccountStatusKind.moreInformationRequired);
-      expect(viewModel.state.statusEntity?.registrationId, 'reg-999');
-      expect(viewModel.state.statusEntity?.changeRequestNotes, 'Fix documents');
-    });
+        expect(viewModel.state.status, AccountStatusStateStatus.loaded);
+        expect(viewModel.state.kind, AccountStatusKind.moreInformationRequired);
+        expect(viewModel.state.statusEntity?.registrationId, 'reg-999');
+        expect(
+          viewModel.state.statusEntity?.changeRequestNotes,
+          'Fix documents',
+        );
+      },
+    );
 
-    test('AccountStatusLoadEvent on failure emits error with failure', () async {
-      mockRepo.shouldFail = true;
+    test(
+      'AccountStatusLoadEvent on failure emits error with failure',
+      () async {
+        mockRepo.shouldFail = true;
 
-      viewModel.doIntent(
-        const AccountStatusLoadEvent(phone: '+966501234567'),
-      );
+        viewModel.doIntent(
+          const AccountStatusLoadEvent(phone: '+966501234567'),
+        );
 
-      await Future<void>.delayed(Duration.zero);
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.status, AccountStatusStateStatus.error);
-      expect(viewModel.state.failure, isNotNull);
-      expect(viewModel.state.errorMessage, isNotNull);
-    });
+        expect(viewModel.state.status, AccountStatusStateStatus.error);
+        expect(viewModel.state.failure, isNotNull);
+        expect(viewModel.state.errorMessage, isNotNull);
+      },
+    );
   });
 }

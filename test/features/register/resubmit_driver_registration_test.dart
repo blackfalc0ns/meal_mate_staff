@@ -42,8 +42,7 @@ class _MockRemoteDataSource implements DriverRegistrationRemoteDataSource {
   @override
   Future<DriverRegistrationResponseDto> submitRegistration(
     DriverRegistrationRequestDto request,
-  ) async =>
-      const DriverRegistrationResponseDto(registrationId: 'reg-1');
+  ) async => const DriverRegistrationResponseDto(registrationId: 'reg-1');
 
   @override
   Future<DriverRegistrationResponseDto> resubmitRegistration(
@@ -85,25 +84,23 @@ class _MockRepo implements DriverRegistrationRepository {
   @override
   Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(
     File file,
-  ) async =>
-      ApiSuccessResult(
-        data: const DriverFileUploadResultEntity(storageKey: 'key'),
-      );
+  ) async => ApiSuccessResult(
+    data: const DriverFileUploadResultEntity(storageKey: 'key'),
+  );
 
   @override
   Future<ApiResult<DriverRegistrationResultEntity>> submitRegistration(
     DriverRegistrationDraftEntity draft,
-  ) async =>
-      ApiSuccessResult(
-        data: const DriverRegistrationResultEntity(
-          registrationId: 'reg-1',
-          restaurantId: 'rest-1',
-          restaurantName: 'Balance Box',
-          phone: '+966501234567',
-          status: 'Submitted',
-          message: 'Submitted',
-        ),
-      );
+  ) async => ApiSuccessResult(
+    data: const DriverRegistrationResultEntity(
+      registrationId: 'reg-1',
+      restaurantId: 'rest-1',
+      restaurantName: 'Balance Box',
+      phone: '+966501234567',
+      status: 'Submitted',
+      message: 'Submitted',
+    ),
+  );
 
   @override
   Future<ApiResult<DriverRegistrationResultEntity>> resubmitRegistration({
@@ -138,91 +135,104 @@ class _MockRepo implements DriverRegistrationRepository {
 
 void main() {
   group('Resubmit Driver Registration Tests', () {
-    test('DriverRegistrationDraftEntity converts to DriverResubmitEntity correctly', () {
-      const draft = DriverRegistrationDraftEntity(
-        restaurantId: 'rest-42',
-        fullNameAr: 'محمد علي',
-        fullNameEn: 'Mohammed Ali',
-        phone: '+966501234567',
-        nationalId: '1020304050',
-        nationalIdExpiry: '2030-01-01',
-        nationality: 'Saudi',
-        vehicleType: 'Car',
-        vehicleModel: 'Camry',
-        vehiclePlate: '1234 ABC',
-        vehicleYear: 2022,
-        nationalIdFrontStorageKey: 'civil_front_key',
-        nationalIdBackStorageKey: 'civil_back_key',
-        drivingLicenseFrontStorageKey: 'license_front_key',
-        drivingLicenseBackStorageKey: 'license_back_key',
-        vehicleRegistrationStorageKey: 'veh_reg_key',
-      );
+    test(
+      'DriverRegistrationDraftEntity converts to DriverResubmitEntity correctly',
+      () {
+        const draft = DriverRegistrationDraftEntity(
+          restaurantId: 'rest-42',
+          fullNameAr: 'محمد علي',
+          fullNameEn: 'Mohammed Ali',
+          phone: '+966501234567',
+          nationalId: '1020304050',
+          nationalIdExpiry: '2030-01-01',
+          nationality: 'Saudi',
+          vehicleType: 'Car',
+          vehicleModel: 'Camry',
+          vehiclePlate: '1234 ABC',
+          vehicleYear: 2022,
+          nationalIdFrontStorageKey: 'civil_front_key',
+          nationalIdBackStorageKey: 'civil_back_key',
+          drivingLicenseFrontStorageKey: 'license_front_key',
+          drivingLicenseBackStorageKey: 'license_back_key',
+          vehicleRegistrationStorageKey: 'veh_reg_key',
+        );
 
-      final resubmit = draft.toResubmitEntity();
+        final resubmit = draft.toResubmitEntity();
 
-      expect(resubmit.restaurantId, 'rest-42');
-      expect(resubmit.fullNameAr, 'محمد علي');
-      expect(resubmit.fullNameEn, 'Mohammed Ali');
-      expect(resubmit.phone, '+966501234567');
-      expect(resubmit.nationalId, '1020304050');
-      expect(resubmit.nationalIdFrontStorageKey, 'civil_front_key');
-      expect(resubmit.nationalIdBackStorageKey, 'civil_back_key');
-      expect(resubmit.drivingLicenseFrontStorageKey, 'license_front_key');
-      expect(resubmit.drivingLicenseBackStorageKey, 'license_back_key');
-      expect(resubmit.vehicleRegistrationStorageKey, 'veh_reg_key');
-    });
+        expect(resubmit.restaurantId, 'rest-42');
+        expect(resubmit.fullNameAr, 'محمد علي');
+        expect(resubmit.fullNameEn, 'Mohammed Ali');
+        expect(resubmit.phone, '+966501234567');
+        expect(resubmit.nationalId, '1020304050');
+        expect(resubmit.nationalIdFrontStorageKey, 'civil_front_key');
+        expect(resubmit.nationalIdBackStorageKey, 'civil_back_key');
+        expect(resubmit.drivingLicenseFrontStorageKey, 'license_front_key');
+        expect(resubmit.drivingLicenseBackStorageKey, 'license_back_key');
+        expect(resubmit.vehicleRegistrationStorageKey, 'veh_reg_key');
+      },
+    );
 
-    test('Unchanged uploaded storage keys are retained when modifying another document', () {
-      var draft = const DriverRegistrationDraftEntity(
-        nationalIdFrontStorageKey: 'civil_front_original',
-        nationalIdBackStorageKey: 'civil_back_original',
-        drivingLicenseFrontStorageKey: 'license_front_original',
-        drivingLicenseBackStorageKey: 'license_back_original',
-        vehicleRegistrationStorageKey: 'veh_reg_original',
-      );
+    test(
+      'Unchanged uploaded storage keys are retained when modifying another document',
+      () {
+        var draft = const DriverRegistrationDraftEntity(
+          nationalIdFrontStorageKey: 'civil_front_original',
+          nationalIdBackStorageKey: 'civil_back_original',
+          drivingLicenseFrontStorageKey: 'license_front_original',
+          drivingLicenseBackStorageKey: 'license_back_original',
+          vehicleRegistrationStorageKey: 'veh_reg_original',
+        );
 
-      // Driver re-uploads driving license front only
-      draft = draft.copyWith(
-        drivingLicenseFrontStorageKey: 'license_front_updated',
-      );
+        // Driver re-uploads driving license front only
+        draft = draft.copyWith(
+          drivingLicenseFrontStorageKey: 'license_front_updated',
+        );
 
-      final resubmit = draft.toResubmitEntity();
+        final resubmit = draft.toResubmitEntity();
 
-      // Original unchanged keys are retained
-      expect(resubmit.nationalIdFrontStorageKey, 'civil_front_original');
-      expect(resubmit.nationalIdBackStorageKey, 'civil_back_original');
-      expect(resubmit.drivingLicenseBackStorageKey, 'license_back_original');
-      expect(resubmit.vehicleRegistrationStorageKey, 'veh_reg_original');
-      // Only modified key is updated
-      expect(resubmit.drivingLicenseFrontStorageKey, 'license_front_updated');
-    });
+        // Original unchanged keys are retained
+        expect(resubmit.nationalIdFrontStorageKey, 'civil_front_original');
+        expect(resubmit.nationalIdBackStorageKey, 'civil_back_original');
+        expect(resubmit.drivingLicenseBackStorageKey, 'license_back_original');
+        expect(resubmit.vehicleRegistrationStorageKey, 'veh_reg_original');
+        // Only modified key is updated
+        expect(resubmit.drivingLicenseFrontStorageKey, 'license_front_updated');
+      },
+    );
 
-    test('Repository calls remoteDataSource.resubmitRegistration and maps response', () async {
-      final mockDataSource = _MockRemoteDataSource();
-      final repository = DriverRegistrationRepositoryImpl(mockDataSource);
+    test(
+      'Repository calls remoteDataSource.resubmitRegistration and maps response',
+      () async {
+        final mockDataSource = _MockRemoteDataSource();
+        final repository = DriverRegistrationRepositoryImpl(mockDataSource);
 
-      const resubmitData = DriverResubmitEntity(
-        restaurantId: 'rest-1',
-        fullNameEn: 'John Doe',
-        phone: '+966500000000',
-        nationalIdFrontStorageKey: 'key-civil',
-      );
+        const resubmitData = DriverResubmitEntity(
+          restaurantId: 'rest-1',
+          fullNameEn: 'John Doe',
+          phone: '+966500000000',
+          nationalIdFrontStorageKey: 'key-civil',
+        );
 
-      final result = await repository.resubmitRegistration(
-        registrationId: 'reg-999',
-        resubmitData: resubmitData,
-      );
+        final result = await repository.resubmitRegistration(
+          registrationId: 'reg-999',
+          resubmitData: resubmitData,
+        );
 
-      expect(mockDataSource.lastRegistrationId, 'reg-999');
-      expect(mockDataSource.lastResubmitDto?.restaurantId, 'rest-1');
-      expect(mockDataSource.lastResubmitDto?.fullNameEn, 'John Doe');
-      expect(mockDataSource.lastResubmitDto?.nationalIdFrontStorageKey, 'key-civil');
+        expect(mockDataSource.lastRegistrationId, 'reg-999');
+        expect(mockDataSource.lastResubmitDto?.restaurantId, 'rest-1');
+        expect(mockDataSource.lastResubmitDto?.fullNameEn, 'John Doe');
+        expect(
+          mockDataSource.lastResubmitDto?.nationalIdFrontStorageKey,
+          'key-civil',
+        );
 
-      expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
-      final entity = (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
-      expect(entity.registrationId, 'reg-resubmitted-123');
-      expect(entity.status, 'Submitted');
-    });
+        expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
+        final entity =
+            (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
+        expect(entity.registrationId, 'reg-resubmitted-123');
+        expect(entity.status, 'Submitted');
+      },
+    );
 
     test('Repository returns ApiErrorResult on DioException', () async {
       final mockDataSource = _MockRemoteDataSource()..shouldFail = true;
@@ -236,59 +246,69 @@ void main() {
       expect(result, isA<ApiErrorResult<DriverRegistrationResultEntity>>());
     });
 
-    test('DriverRegistrationViewModel handles DriverRegistrationResubmitEvent success', () async {
-      final mockRepo = _MockRepo();
-      final viewModel = DriverRegistrationViewModel(
-        getRestaurantsUseCase: GetDriverRestaurantsUseCase(mockRepo),
-        uploadDocumentUseCase: UploadDriverDocumentUseCase(mockRepo),
-        submitRegistrationUseCase: SubmitDriverRegistrationUseCase(mockRepo),
-        resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(mockRepo),
-      );
+    test(
+      'DriverRegistrationViewModel handles DriverRegistrationResubmitEvent success',
+      () async {
+        final mockRepo = _MockRepo();
+        final viewModel = DriverRegistrationViewModel(
+          getRestaurantsUseCase: GetDriverRestaurantsUseCase(mockRepo),
+          uploadDocumentUseCase: UploadDriverDocumentUseCase(mockRepo),
+          submitRegistrationUseCase: SubmitDriverRegistrationUseCase(mockRepo),
+          resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(
+            mockRepo,
+          ),
+        );
 
-      const resubmitData = DriverResubmitEntity(
-        restaurantId: 'rest-1',
-        phone: '+966501234567',
-      );
+        const resubmitData = DriverResubmitEntity(
+          restaurantId: 'rest-1',
+          phone: '+966501234567',
+        );
 
-      viewModel.doIntent(
-        const DriverRegistrationResubmitEvent(
-          registrationId: 'reg-abc-123',
-          resubmitData: resubmitData,
-        ),
-      );
+        viewModel.doIntent(
+          const DriverRegistrationResubmitEvent(
+            registrationId: 'reg-abc-123',
+            resubmitData: resubmitData,
+          ),
+        );
 
-      await Future.delayed(Duration.zero);
+        await Future.delayed(Duration.zero);
 
-      expect(mockRepo.lastResubmittedId, 'reg-abc-123');
-      expect(mockRepo.lastResubmitData?.phone, '+966501234567');
-      expect(
-        viewModel.state.status,
-        DriverRegistrationStatus.resubmissionSuccess,
-      );
-      expect(viewModel.state.isSuccess, isTrue);
-      expect(viewModel.state.submissionResult?.registrationId, 'reg-abc-123');
-    });
+        expect(mockRepo.lastResubmittedId, 'reg-abc-123');
+        expect(mockRepo.lastResubmitData?.phone, '+966501234567');
+        expect(
+          viewModel.state.status,
+          DriverRegistrationStatus.resubmissionSuccess,
+        );
+        expect(viewModel.state.isSuccess, isTrue);
+        expect(viewModel.state.submissionResult?.registrationId, 'reg-abc-123');
+      },
+    );
 
-    test('DriverRegistrationViewModel handles DriverRegistrationResubmitEvent failure', () async {
-      final mockRepo = _MockRepo()..shouldFail = true;
-      final viewModel = DriverRegistrationViewModel(
-        getRestaurantsUseCase: GetDriverRestaurantsUseCase(mockRepo),
-        uploadDocumentUseCase: UploadDriverDocumentUseCase(mockRepo),
-        submitRegistrationUseCase: SubmitDriverRegistrationUseCase(mockRepo),
-        resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(mockRepo),
-      );
+    test(
+      'DriverRegistrationViewModel handles DriverRegistrationResubmitEvent failure',
+      () async {
+        final mockRepo = _MockRepo()..shouldFail = true;
+        final viewModel = DriverRegistrationViewModel(
+          getRestaurantsUseCase: GetDriverRestaurantsUseCase(mockRepo),
+          uploadDocumentUseCase: UploadDriverDocumentUseCase(mockRepo),
+          submitRegistrationUseCase: SubmitDriverRegistrationUseCase(mockRepo),
+          resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(
+            mockRepo,
+          ),
+        );
 
-      viewModel.doIntent(
-        const DriverRegistrationResubmitEvent(
-          registrationId: 'reg-fail',
-          resubmitData: DriverResubmitEntity(),
-        ),
-      );
+        viewModel.doIntent(
+          const DriverRegistrationResubmitEvent(
+            registrationId: 'reg-fail',
+            resubmitData: DriverResubmitEntity(),
+          ),
+        );
 
-      await Future.delayed(Duration.zero);
+        await Future.delayed(Duration.zero);
 
-      expect(viewModel.state.status, DriverRegistrationStatus.error);
-      expect(viewModel.state.errorMessage, 'Failed to resubmit application');
-    });
+        expect(viewModel.state.status, DriverRegistrationStatus.error);
+        expect(viewModel.state.errorMessage, 'Failed to resubmit application');
+      },
+    );
   });
 }

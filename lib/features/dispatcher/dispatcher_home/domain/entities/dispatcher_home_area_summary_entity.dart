@@ -1,9 +1,4 @@
-enum DispatcherHomeAreaColorType {
-  salmiya,
-  hawally,
-  jahra,
-  capital,
-}
+enum DispatcherHomeAreaColorType { salmiya, hawally, jahra, capital }
 
 class DispatcherHomeAreaSummaryEntity {
   const DispatcherHomeAreaSummaryEntity({

@@ -10,6 +10,7 @@ import '../../../../core/constants/assets.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/network/api_results.dart';
 import '../../../../core/widget/custom_progress_indecator.dart';
 import '../../../../core/widget/custom_snak_bar.dart';
 import '../../../account_status/domain/account_status_kind.dart';
@@ -22,9 +23,117 @@ import '../widgets/auth_background.dart';
 import '../widgets/auth_divider.dart';
 import '../widgets/auth_header_logo.dart';
 import '../widgets/auth_help_card.dart';
+import '../../domain/entities/auth_session_entity.dart';
+import '../../domain/entities/auth_user_entity.dart';
+import '../../domain/entities/forgot_password_request_entity.dart';
+import '../../domain/entities/phone_lookup_request_entity.dart';
+import '../../domain/entities/phone_lookup_result_entity.dart';
+import '../../domain/entities/resend_otp_request_entity.dart';
+import '../../domain/entities/reset_password_request_entity.dart';
+import '../../domain/entities/set_password_request_entity.dart';
+import '../../domain/entities/staff_login_request_entity.dart';
+import '../../domain/entities/verify_first_time_otp_request_entity.dart';
+import '../../domain/entities/verify_first_time_otp_result_entity.dart';
+import '../../domain/repo/auth_repository.dart';
+import '../../domain/usecase/forgot_password_usecase.dart';
+import '../../domain/usecase/login_usecase.dart';
+import '../../domain/usecase/logout_usecase.dart';
+import '../../domain/usecase/lookup_phone_usecase.dart';
+import '../../domain/usecase/resend_otp_usecase.dart';
+import '../../domain/usecase/reset_password_usecase.dart';
+import '../../domain/usecase/restore_session_usecase.dart';
+import '../../domain/usecase/set_password_usecase.dart';
+import '../../domain/usecase/verify_first_time_otp_usecase.dart';
 import '../widgets/auth_input_field.dart';
 import '../widgets/auth_primary_button.dart';
 import '../widgets/auth_secondary_button.dart';
+
+class _FakeLoginAuthRepo implements AuthRepository {
+  @override
+  Future<ApiResult<PhoneLookupResultEntity>> lookupPhone(
+    PhoneLookupRequestEntity request,
+  ) async =>
+      ApiSuccessResult(
+        data: PhoneLookupResultEntity(
+          exists: true,
+          isFirstTimeSetup: false,
+          role: request.role,
+          phone: request.phone,
+        ),
+      );
+
+  @override
+  Future<ApiResult<VerifyFirstTimeOtpResultEntity>> verifyFirstTimeOtp(
+    VerifyFirstTimeOtpRequestEntity request,
+  ) async =>
+      ApiSuccessResult(
+        data: VerifyFirstTimeOtpResultEntity(
+          verified: true,
+          verificationToken: 'token',
+          phone: request.phone,
+          role: request.role,
+        ),
+      );
+
+  @override
+  Future<ApiResult<AuthSessionEntity>> setPassword(
+    SetPasswordRequestEntity request,
+  ) async =>
+      ApiSuccessResult(
+        data: AuthSessionEntity(
+          accessToken: 'mock_token',
+          refreshToken: 'mock_refresh',
+          user: AuthUserEntity(
+            userId: 'user-1',
+            phoneNumber: request.phone,
+            fullName: 'User',
+            role: request.role,
+          ),
+          isAuthenticated: true,
+        ),
+      );
+
+  @override
+  Future<ApiResult<AuthSessionEntity>> login(
+    StaffLoginRequestEntity request,
+  ) async =>
+      ApiSuccessResult(
+        data: AuthSessionEntity(
+          accessToken: 'mock_token',
+          refreshToken: 'mock_refresh',
+          user: AuthUserEntity(
+            userId: 'user-1',
+            phoneNumber: request.phone,
+            fullName: 'User',
+            role: request.role,
+          ),
+          isAuthenticated: true,
+        ),
+      );
+
+  @override
+  Future<ApiResult<String>> forgotPassword(
+    ForgotPasswordRequestEntity request,
+  ) async =>
+      ApiSuccessResult(data: 'Success');
+
+  @override
+  Future<ApiResult<String>> resetPassword(
+    ResetPasswordRequestEntity request,
+  ) async =>
+      ApiSuccessResult(data: 'Success');
+
+  @override
+  Future<ApiResult<String>> resendOtp(ResendOtpRequestEntity request) async =>
+      ApiSuccessResult(data: 'Success');
+
+  @override
+  Future<ApiResult<AuthSessionEntity?>> restoreSession() async =>
+      ApiSuccessResult(data: null);
+
+  @override
+  Future<ApiResult<void>> logout() async => ApiSuccessResult(data: null);
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -42,6 +151,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late final AuthViewModel _viewModel;
+  late final bool _isInternalViewModel;
   late final TextEditingController _phoneController;
   late final TextEditingController _passwordController;
   bool _obscurePassword = true;
@@ -49,7 +159,28 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = widget.viewModel ?? getIt<AuthViewModel>();
+    if (widget.viewModel != null) {
+      _viewModel = widget.viewModel!;
+      _isInternalViewModel = false;
+    } else if (getIt.isRegistered<AuthViewModel>()) {
+      _viewModel = getIt<AuthViewModel>();
+      _isInternalViewModel = true;
+    } else {
+      final fakeRepo = _FakeLoginAuthRepo();
+      _viewModel = AuthViewModel(
+        lookupPhoneUseCase: LookupPhoneUseCase(fakeRepo),
+        verifyFirstTimeOtpUseCase: VerifyFirstTimeOtpUseCase(fakeRepo),
+        setPasswordUseCase: SetPasswordUseCase(fakeRepo),
+        loginUseCase: LoginUseCase(fakeRepo),
+        forgotPasswordUseCase: ForgotPasswordUseCase(fakeRepo),
+        resetPasswordUseCase: ResetPasswordUseCase(fakeRepo),
+        resendOtpUseCase: ResendOtpUseCase(fakeRepo),
+        restoreSessionUseCase: RestoreSessionUseCase(fakeRepo),
+        logoutUseCase: LogoutUseCase(fakeRepo),
+      );
+      _isInternalViewModel = true;
+    }
+
     _viewModel.doIntent(AuthRoleChangedEvent(widget.role));
     _phoneController = TextEditingController();
     _passwordController = TextEditingController();
@@ -59,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _phoneController.dispose();
     _passwordController.dispose();
-    if (widget.viewModel == null) {
+    if (_isInternalViewModel) {
       _viewModel.close();
     }
     super.dispose();
@@ -84,18 +215,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (password.isNotEmpty) {
       _viewModel.doIntent(
-        AuthLoginEvent(
-          phone: fullPhone,
-          role: widget.role,
-          password: password,
-        ),
+        AuthLoginEvent(phone: fullPhone, role: widget.role, password: password),
       );
     } else {
       _viewModel.doIntent(
-        AuthPhoneLookupEvent(
-          phone: fullPhone,
-          role: widget.role,
-        ),
+        AuthPhoneLookupEvent(phone: fullPhone, role: widget.role),
       );
     }
   }
@@ -143,10 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 3 => AccountStatusKind.rejected,
                 _ => AccountStatusKind.underReview,
               };
-              context.pushNamed(
-                AppRoutes.accountStatus,
-                arguments: kind,
-              );
+              context.pushNamed(AppRoutes.accountStatus, arguments: kind);
             } else {
               CustomSnackbar.showInfo(
                 context: context,
@@ -230,13 +351,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: state.isLoading
                                   ? null
                                   : () {
-                                      final phone =
-                                          _phoneController.text.trim();
+                                      final phone = _phoneController.text
+                                          .trim();
                                       final fullPhone = phone.startsWith('+')
                                           ? phone
                                           : (phone.isNotEmpty
-                                              ? '+965$phone'
-                                              : '');
+                                                ? '+965$phone'
+                                                : '');
                                       if (fullPhone.isNotEmpty) {
                                         _viewModel.doIntent(
                                           AuthForgotPasswordEvent(
@@ -309,9 +430,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Positioned.fill(
                   child: ColoredBox(
                     color: AppColors.scrim.withValues(alpha: 0.3),
-                    child: const Center(
-                      child: CustomProgressIndicator(),
-                    ),
+                    child: const Center(child: CustomProgressIndicator()),
                   ),
                 ),
             ],

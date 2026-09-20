@@ -3,11 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../../config/routing/app_routes.dart';
+import '../../../../config/routing/arguments/auth_route_arguments.dart';
 import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/constants/assets.dart';
+import '../../../../core/di/di.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/network/api_results.dart';
+import '../../../../core/services/token_service.dart';
+import '../../../account_status/domain/account_status_kind.dart';
+import '../../domain/entities/auth_session_entity.dart';
+import '../../domain/usecase/restore_session_usecase.dart';
 import '../../domain/user_role.dart';
 import '../widgets/account_type_bottom_sheet.dart';
 
@@ -15,9 +22,13 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({
     super.key,
     this.initialLoadingDuration = Duration.zero,
+    this.restoreSessionUseCase,
+    this.tokenService,
   });
 
   final Duration initialLoadingDuration;
+  final RestoreSessionUseCase? restoreSessionUseCase;
+  final TokenService? tokenService;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -30,7 +41,6 @@ class _SplashScreenState extends State<SplashScreen>
   late final AnimationController _animationController;
   late final Animation<Offset> _slideAnimation;
   late final Animation<double> _fadeAnimation;
-  Timer? _loadingTimer;
 
   @override
   void initState() {
@@ -39,30 +49,70 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOutCubic,
-      ),
-    );
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
     _fadeAnimation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeIn,
     );
 
-    if (widget.initialLoadingDuration == Duration.zero) {
-      _isLoading = false;
-      _animationController.forward();
-    } else {
-      _isLoading = true;
-      _loadingTimer = Timer(widget.initialLoadingDuration, _onLoadingFinished);
-    }
+    _isLoading = true;
+    _initializeStartup();
   }
 
-  void _onLoadingFinished() {
+  Future<void> _initializeStartup() async {
+    if (widget.initialLoadingDuration > Duration.zero) {
+      await Future.delayed(widget.initialLoadingDuration);
+    }
+    if (!mounted) return;
+
+    RestoreSessionUseCase? useCase = widget.restoreSessionUseCase;
+    if (useCase == null && getIt.isRegistered<RestoreSessionUseCase>()) {
+      useCase = getIt<RestoreSessionUseCase>();
+    }
+
+    if (useCase != null) {
+      final result = await useCase();
+      if (!mounted) return;
+
+      if (result is ApiSuccessResult<AuthSessionEntity?> &&
+          result.data != null) {
+        final session = result.data!;
+        if (session.isAuthenticated) {
+          final role = session.user.role;
+          context.pushReplacementNamed(
+            AppRoutes.appShell,
+            arguments: AppShellRouteArgs(role: role),
+          );
+          return;
+        }
+      }
+    }
+
+    TokenService? tokenService = widget.tokenService;
+    if (tokenService == null && getIt.isRegistered<TokenService>()) {
+      tokenService = getIt<TokenService>();
+    }
+
+    if (tokenService != null) {
+      final savedStatus = tokenService.getSavedAccountStatus();
+      if (savedStatus != null && savedStatus.isNotEmpty) {
+        if (!mounted) return;
+        context.pushReplacementNamed(
+          AppRoutes.accountStatus,
+          arguments: const AccountStatusRouteArgs(
+            kind: AccountStatusKind.underReview,
+          ),
+        );
+        return;
+      }
+    }
+
     if (!mounted) return;
     setState(() {
       _isLoading = false;
@@ -74,13 +124,12 @@ class _SplashScreenState extends State<SplashScreen>
     if (!mounted) return;
     context.pushReplacementNamed(
       AppRoutes.login,
-      arguments: _selectedRole,
+      arguments: LoginRouteArgs(role: _selectedRole),
     );
   }
 
   @override
   void dispose() {
-    _loadingTimer?.cancel();
     _animationController.dispose();
     super.dispose();
   }
@@ -95,10 +144,7 @@ class _SplashScreenState extends State<SplashScreen>
         fit: StackFit.expand,
         children: [
           // Exact Figma Splash background (node 1275-3665)
-          Image.asset(
-            AppAssets.authSplashBackground,
-            fit: BoxFit.cover,
-          ),
+          Image.asset(AppAssets.authSplashBackground, fit: BoxFit.cover),
 
           // Main Screen Content: Logo & Header
           SafeArea(
@@ -178,9 +224,7 @@ class _SplashScreenState extends State<SplashScreen>
           if (!_isLoading)
             FadeTransition(
               opacity: _fadeAnimation,
-              child: Container(
-                color: color.scrim.withValues(alpha: 0.35),
-              ),
+              child: Container(color: color.scrim.withValues(alpha: 0.35)),
             ),
 
           // Sliding Role Selection Dialog/Sheet

@@ -7,10 +7,7 @@ import '../../domain/entities/dispatcher_driver_entity.dart';
 import 'dispatcher_drivers_card_metric_item.dart';
 
 class DispatcherDriversCardMetricsRow extends StatelessWidget {
-  const DispatcherDriversCardMetricsRow({
-    super.key,
-    required this.driver,
-  });
+  const DispatcherDriversCardMetricsRow({super.key, required this.driver});
 
   final DispatcherDriverEntity driver;
 
@@ -43,8 +40,9 @@ class DispatcherDriversCardMetricsRow extends StatelessWidget {
         Expanded(
           child: DispatcherDriversCardMetricItem(
             assetPath: AppAssets.dispatcherMetricCar,
-            value:
-                locale.driversDistanceKm(driver.distanceKm.toStringAsFixed(0)),
+            value: locale.driversDistanceKm(
+              driver.distanceKm.toStringAsFixed(0),
+            ),
             label: locale.driversDistanceFromYou,
           ),
         ),

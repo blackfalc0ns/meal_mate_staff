@@ -33,9 +33,7 @@ class DispatcherNotificationsAppBar extends StatelessWidget
       bottom: false,
       child: Container(
         height: Spacing.appBarHeight,
-        padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.base,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

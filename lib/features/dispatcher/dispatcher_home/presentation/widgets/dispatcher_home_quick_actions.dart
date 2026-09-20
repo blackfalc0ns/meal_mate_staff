@@ -33,10 +33,7 @@ class DispatcherHomeQuickActions extends StatelessWidget {
     }
   }
 
-  Color _getTextColor(
-    ColorScheme color,
-    DispatcherHomeQuickActionType type,
-  ) {
+  Color _getTextColor(ColorScheme color, DispatcherHomeQuickActionType type) {
     switch (type) {
       case DispatcherHomeQuickActionType.assignDriver:
         return color.homeActionIconPurple;

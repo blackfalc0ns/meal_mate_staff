@@ -4,9 +4,7 @@ part 'refresh_token_request_dto.g.dart';
 
 @JsonSerializable()
 class RefreshTokenRequestDto {
-  const RefreshTokenRequestDto({
-    required this.refreshToken,
-  });
+  const RefreshTokenRequestDto({required this.refreshToken});
 
   factory RefreshTokenRequestDto.fromJson(Map<String, dynamic> json) =>
       _$RefreshTokenRequestDtoFromJson(json);

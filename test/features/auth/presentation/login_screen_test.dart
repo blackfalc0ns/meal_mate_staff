@@ -75,8 +75,7 @@ class _FakeLoginRepo implements AuthRepository {
   @override
   Future<ApiResult<String>> forgotPassword(
     ForgotPasswordRequestEntity request,
-  ) async =>
-      ApiSuccessResult(data: 'ok');
+  ) async => ApiSuccessResult(data: 'ok');
 
   @override
   Future<ApiResult<void>> logout() async => ApiSuccessResult(data: null);
@@ -88,8 +87,7 @@ class _FakeLoginRepo implements AuthRepository {
   @override
   Future<ApiResult<String>> resetPassword(
     ResetPasswordRequestEntity request,
-  ) async =>
-      ApiSuccessResult(data: 'ok');
+  ) async => ApiSuccessResult(data: 'ok');
 
   @override
   Future<ApiResult<AuthSessionEntity?>> restoreSession() async =>
@@ -98,14 +96,12 @@ class _FakeLoginRepo implements AuthRepository {
   @override
   Future<ApiResult<AuthSessionEntity>> setPassword(
     SetPasswordRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<VerifyFirstTimeOtpResultEntity>> verifyFirstTimeOtp(
     VerifyFirstTimeOtpRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 }
 
 void main() {
@@ -146,12 +142,7 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      buildTestApp(
-        LoginScreen(
-          role: UserRole.driver,
-          viewModel: viewModel,
-        ),
-      ),
+      buildTestApp(LoginScreen(role: UserRole.driver, viewModel: viewModel)),
     );
     await tester.pump();
 
@@ -168,12 +159,7 @@ void main() {
     );
 
     await tester.pumpWidget(
-      buildTestApp(
-        LoginScreen(
-          role: UserRole.driver,
-          viewModel: viewModel,
-        ),
-      ),
+      buildTestApp(LoginScreen(role: UserRole.driver, viewModel: viewModel)),
     );
     await tester.pump();
 
@@ -196,12 +182,7 @@ void main() {
     'LoginScreen displays CustomProgressIndicator while loading is active',
     (tester) async {
       await tester.pumpWidget(
-        buildTestApp(
-          LoginScreen(
-            role: UserRole.driver,
-            viewModel: viewModel,
-          ),
-        ),
+        buildTestApp(LoginScreen(role: UserRole.driver, viewModel: viewModel)),
       );
       await tester.pump();
 

@@ -51,8 +51,9 @@ class _RegisterPersonalDataScreenState
     _phoneController = TextEditingController(text: init?.phone ?? '');
     _emailController = TextEditingController(text: init?.email ?? '');
     _birthDateController = TextEditingController(text: init?.birthDate ?? '');
-    _nationalityController =
-        TextEditingController(text: init?.nationality ?? '');
+    _nationalityController = TextEditingController(
+      text: init?.nationality ?? '',
+    );
     _civilIdController = TextEditingController(text: init?.civilId ?? '');
 
     _selectedRestaurantId = init?.restaurantId ?? '';

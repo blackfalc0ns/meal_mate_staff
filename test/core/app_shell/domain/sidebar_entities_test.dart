@@ -70,7 +70,10 @@ void main() {
       expect(items.first.id, 'home');
       expect(items.first.isSelected, true);
       expect(items[1].isSelected, false);
-      expect(items.any((i) => i.id == 'notifications' && i.badgeCount == 3), true);
+      expect(
+        items.any((i) => i.id == 'notifications' && i.badgeCount == 3),
+        true,
+      );
     });
 
     test('SidebarFakeData provides default items for dispatcher', () {

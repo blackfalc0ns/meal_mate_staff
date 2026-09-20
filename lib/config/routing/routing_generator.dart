@@ -73,10 +73,7 @@ class RouteGenerator {
         }
         return _buildRoute(
           settings: settings,
-          page: AppShellScreen(
-            initialIndex: initialIndex,
-            role: role,
-          ),
+          page: AppShellScreen(initialIndex: initialIndex, role: role),
         );
 
       case AppRoutes.login:
@@ -114,10 +111,7 @@ class RouteGenerator {
         }
         return _buildRoute(
           settings: settings,
-          page: OtpVerificationScreen.phone(
-            target: target,
-            role: role,
-          ),
+          page: OtpVerificationScreen.phone(target: target, role: role),
         );
 
       case AppRoutes.verifyEmailOtp:
@@ -135,10 +129,7 @@ class RouteGenerator {
         }
         return _buildRoute(
           settings: settings,
-          page: OtpVerificationScreen.email(
-            target: target,
-            role: role,
-          ),
+          page: OtpVerificationScreen.email(target: target, role: role),
         );
 
       case AppRoutes.register:
@@ -290,10 +281,7 @@ class RouteGenerator {
           settings: settings,
           page: withoutShell
               ? const DriverAssignedBoxesScreen()
-              : const AppShellScreen(
-                  role: UserRole.driver,
-                  initialIndex: 0,
-                ),
+              : const AppShellScreen(role: UserRole.driver, initialIndex: 0),
         );
 
       case AppRoutes.driverConfirmReceipt:
@@ -326,8 +314,8 @@ class RouteGenerator {
       case AppRoutes.driverNotifications:
         final notifications =
             settings.arguments is List<DriverNotificationEntity>
-                ? settings.arguments! as List<DriverNotificationEntity>
-                : null;
+            ? settings.arguments! as List<DriverNotificationEntity>
+            : null;
         return _buildRoute(
           settings: settings,
           page: DriverNotificationsScreen(initialNotifications: notifications),

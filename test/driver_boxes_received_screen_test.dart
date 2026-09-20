@@ -72,24 +72,25 @@ void main() {
     expect(find.text('Start Delivery'), findsOneWidget);
   });
 
-  testWidgets('triggers onStartDelivery callback when action button is tapped', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(1080, 2400);
-    tester.view.devicePixelRatio = 2.0;
-    addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets(
+    'triggers onStartDelivery callback when action button is tapped',
+    (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
-    var tapped = false;
-    await tester.pumpWidget(
-      buildSubject(onStartDelivery: () => tapped = true),
-    );
-    await tester.pumpAndSettle();
+      var tapped = false;
+      await tester.pumpWidget(
+        buildSubject(onStartDelivery: () => tapped = true),
+      );
+      await tester.pumpAndSettle();
 
-    final buttonFinder = find.byType(DriverBoxesReceivedActionButton);
-    await tester.ensureVisible(buttonFinder);
-    await tester.tap(buttonFinder);
-    await tester.pumpAndSettle();
+      final buttonFinder = find.byType(DriverBoxesReceivedActionButton);
+      await tester.ensureVisible(buttonFinder);
+      await tester.tap(buttonFinder);
+      await tester.pumpAndSettle();
 
-    expect(tapped, isTrue);
-  });
+      expect(tapped, isTrue);
+    },
+  );
 }

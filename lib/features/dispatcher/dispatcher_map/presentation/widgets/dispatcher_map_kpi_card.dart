@@ -36,9 +36,7 @@ class DispatcherMapKpiCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.dispatcherCardRadius),
-        border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.6),
-        ),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

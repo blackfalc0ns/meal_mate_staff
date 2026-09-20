@@ -7,10 +7,7 @@ import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherNotificationsSectionHeader extends StatelessWidget {
-  const DispatcherNotificationsSectionHeader({
-    super.key,
-    this.onMarkAllAsRead,
-  });
+  const DispatcherNotificationsSectionHeader({super.key, this.onMarkAllAsRead});
 
   final VoidCallback? onMarkAllAsRead;
 

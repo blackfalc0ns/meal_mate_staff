@@ -1,6 +1,1 @@
-enum DriverNotificationFilterType {
-  all,
-  deliveryOrders,
-  offers,
-  system,
-}
+enum DriverNotificationFilterType { all, deliveryOrders, offers, system }

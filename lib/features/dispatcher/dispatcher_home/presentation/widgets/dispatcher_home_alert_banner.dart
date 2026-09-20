@@ -8,11 +8,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_home_alert_entity.dart';
 
 class DispatcherHomeAlertBanner extends StatelessWidget {
-  const DispatcherHomeAlertBanner({
-    super.key,
-    required this.alert,
-    this.onTap,
-  });
+  const DispatcherHomeAlertBanner({super.key, required this.alert, this.onTap});
 
   final DispatcherHomeAlertEntity alert;
   final VoidCallback? onTap;
@@ -80,7 +76,6 @@ class DispatcherHomeAlertBanner extends StatelessWidget {
                 Icons.arrow_forward_ios,
                 size: Spacing.iconXs,
                 color: color.homeAlertBannerText,
-                
               ),
             ],
           ),

@@ -8,10 +8,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_home_kpi_entity.dart';
 
 class DispatcherHomeKpiRow extends StatelessWidget {
-  const DispatcherHomeKpiRow({
-    super.key,
-    required this.items,
-  });
+  const DispatcherHomeKpiRow({super.key, required this.items});
 
   final List<DispatcherHomeKpiItemEntity> items;
 

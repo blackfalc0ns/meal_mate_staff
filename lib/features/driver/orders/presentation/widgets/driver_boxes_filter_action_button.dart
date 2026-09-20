@@ -7,10 +7,7 @@ import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverBoxesFilterActionButton extends StatelessWidget {
-  const DriverBoxesFilterActionButton({
-    super.key,
-    this.onTap,
-  });
+  const DriverBoxesFilterActionButton({super.key, this.onTap});
 
   final VoidCallback? onTap;
 

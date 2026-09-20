@@ -24,40 +24,43 @@ void main() {
   });
 
   group('TokenService Storage Isolation & Security Tests', () {
-    test('saves sensitive tokens in FlutterSecureStorage and flags in SharedPreferences', () async {
-      await tokenService.saveAccessToken('secret_access_token');
-      await tokenService.saveRefreshToken('secret_refresh_token');
+    test(
+      'saves sensitive tokens in FlutterSecureStorage and flags in SharedPreferences',
+      () async {
+        await tokenService.saveAccessToken('secret_access_token');
+        await tokenService.saveRefreshToken('secret_refresh_token');
 
-      // Secure storage contains secrets
-      expect(
-        await secureStorage.read(key: CoreStorageKeys.accessToken),
-        'secret_access_token',
-      );
-      expect(
-        await secureStorage.read(key: CoreStorageKeys.refreshToken),
-        'secret_refresh_token',
-      );
+        // Secure storage contains secrets
+        expect(
+          await secureStorage.read(key: CoreStorageKeys.accessToken),
+          'secret_access_token',
+        );
+        expect(
+          await secureStorage.read(key: CoreStorageKeys.refreshToken),
+          'secret_refresh_token',
+        );
 
-      // SharedPreferences does NOT contain raw secret tokens
-      expect(
-        sharedPreferences.getString(CoreStorageKeys.accessToken),
-        isNull,
-      );
-      expect(
-        sharedPreferences.getString(CoreStorageKeys.refreshToken),
-        isNull,
-      );
+        // SharedPreferences does NOT contain raw secret tokens
+        expect(
+          sharedPreferences.getString(CoreStorageKeys.accessToken),
+          isNull,
+        );
+        expect(
+          sharedPreferences.getString(CoreStorageKeys.refreshToken),
+          isNull,
+        );
 
-      // SharedPreferences contains flags
-      expect(
-        sharedPreferences.getBool(CoreStorageKeys.isAccessTokenSaved),
-        isTrue,
-      );
-      expect(
-        sharedPreferences.getBool(CoreStorageKeys.isRefreshTokenSaved),
-        isTrue,
-      );
-    });
+        // SharedPreferences contains flags
+        expect(
+          sharedPreferences.getBool(CoreStorageKeys.isAccessTokenSaved),
+          isTrue,
+        );
+        expect(
+          sharedPreferences.getBool(CoreStorageKeys.isRefreshTokenSaved),
+          isTrue,
+        );
+      },
+    );
 
     test('saveSession and clearTokens perform atomic operations', () async {
       await tokenService.saveSession(

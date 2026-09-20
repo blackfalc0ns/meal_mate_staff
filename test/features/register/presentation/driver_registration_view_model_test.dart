@@ -23,17 +23,19 @@ import 'package:meal_mate_delivery/features/register/presentation/manager/driver
 
 class MockDriverRegistrationRepository implements DriverRegistrationRepository {
   List<DriverRestaurantEntity> restaurants = [];
-  DriverFileUploadResultEntity uploadResult = const DriverFileUploadResultEntity(
-    storageKey: 'https://ik.imagekit.io/doc.png',
-  );
-  DriverRegistrationResultEntity submitResult = const DriverRegistrationResultEntity(
-    registrationId: 'reg-100',
-    restaurantId: 'res-1',
-    restaurantName: 'Balance Box',
-    phone: '+966501234567',
-    status: 'Submitted',
-    message: 'Application submitted successfully',
-  );
+  DriverFileUploadResultEntity uploadResult =
+      const DriverFileUploadResultEntity(
+        storageKey: 'https://ik.imagekit.io/doc.png',
+      );
+  DriverRegistrationResultEntity submitResult =
+      const DriverRegistrationResultEntity(
+        registrationId: 'reg-100',
+        restaurantId: 'res-1',
+        restaurantName: 'Balance Box',
+        phone: '+966501234567',
+        status: 'Submitted',
+        message: 'Application submitted successfully',
+      );
 
   bool shouldFailRestaurants = false;
   bool shouldFailUpload = false;
@@ -55,7 +57,9 @@ class MockDriverRegistrationRepository implements DriverRegistrationRepository {
   }
 
   @override
-  Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(File file) async {
+  Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(
+    File file,
+  ) async {
     if (shouldFailUpload) {
       return ApiErrorResult(
         failure: ServerFailure.fromDioError(
@@ -106,7 +110,9 @@ void main() {
         getRestaurantsUseCase: GetDriverRestaurantsUseCase(mockRepo),
         uploadDocumentUseCase: UploadDriverDocumentUseCase(mockRepo),
         submitRegistrationUseCase: SubmitDriverRegistrationUseCase(mockRepo),
-        resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(mockRepo),
+        resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(
+          mockRepo,
+        ),
       );
     });
 
@@ -135,7 +141,10 @@ void main() {
       viewModel.doIntent(const DriverRegistrationLoadRestaurantsEvent());
       await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.status, DriverRegistrationStatus.restaurantsLoaded);
+      expect(
+        viewModel.state.status,
+        DriverRegistrationStatus.restaurantsLoaded,
+      );
       expect(viewModel.state.restaurants.length, 1);
       expect(viewModel.state.draft.restaurantId, 'res-1');
       expect(viewModel.state.draft.restaurantName, 'Burger King');
@@ -195,23 +204,35 @@ void main() {
       expect(viewModel.state.selectedVehicleColor, const Color(0xFF112233));
     });
 
-    test('uploads document, tracks progress, and sets storage keys in draft', () async {
-      viewModel.doIntent(
-        DriverRegistrationUploadDocumentEvent(
-          documentId: 'civil-card',
-          file: File('civil_card.png'),
-        ),
-      );
+    test(
+      'uploads document, tracks progress, and sets storage keys in draft',
+      () async {
+        viewModel.doIntent(
+          DriverRegistrationUploadDocumentEvent(
+            documentId: 'civil-card',
+            file: File('civil_card.png'),
+          ),
+        );
 
-      await Future<void>.delayed(Duration.zero);
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.status, DriverRegistrationStatus.documentUploaded);
-      final civilDoc = viewModel.state.getDocument('civil-card');
-      expect(civilDoc?.isUploaded, isTrue);
-      expect(civilDoc?.storageKey, 'https://ik.imagekit.io/doc.png');
-      expect(viewModel.state.draft.nationalIdFrontStorageKey, 'https://ik.imagekit.io/doc.png');
-      expect(viewModel.state.draft.nationalIdBackStorageKey, 'https://ik.imagekit.io/doc.png');
-    });
+        expect(
+          viewModel.state.status,
+          DriverRegistrationStatus.documentUploaded,
+        );
+        final civilDoc = viewModel.state.getDocument('civil-card');
+        expect(civilDoc?.isUploaded, isTrue);
+        expect(civilDoc?.storageKey, 'https://ik.imagekit.io/doc.png');
+        expect(
+          viewModel.state.draft.nationalIdFrontStorageKey,
+          'https://ik.imagekit.io/doc.png',
+        );
+        expect(
+          viewModel.state.draft.nationalIdBackStorageKey,
+          'https://ik.imagekit.io/doc.png',
+        );
+      },
+    );
 
     test('handles upload document failure', () async {
       mockRepo.shouldFailUpload = true;
@@ -241,54 +262,65 @@ void main() {
         ),
       );
 
-      viewModel.doIntent(const DriverRegistrationRemoveDocumentEvent('civil-card'));
+      viewModel.doIntent(
+        const DriverRegistrationRemoveDocumentEvent('civil-card'),
+      );
 
       expect(viewModel.state.draft.nationalIdFrontStorageKey, '');
       expect(viewModel.state.draft.nationalIdBackStorageKey, '');
     });
 
-    test('submits registration successfully and emits submissionSuccess', () async {
-      viewModel.doIntent(
-        const DriverRegistrationSetDraftEvent(
-          DriverRegistrationDraftEntity(
-            restaurantId: 'res-1',
-            fullNameAr: 'أحمد',
-            fullNameEn: 'Ahmed',
-            phone: '+966501234567',
-            nationalId: '1234567890',
-            nationalIdExpiry: '2029-01-01T00:00:00Z',
-            nationality: 'Saudi',
-            vehicleType: 'Car',
-            vehicleModel: 'Camry',
-            vehiclePlate: 'ABC 1234',
-            vehicleYear: 2023,
-            licenseNumber: 'LIC-1',
-            licenseExpiry: '2029-01-01T00:00:00Z',
-            vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
-            nationalIdFrontStorageKey: 'nid-f',
-            nationalIdBackStorageKey: 'nid-b',
-            drivingLicenseFrontStorageKey: 'lic-f',
-            drivingLicenseBackStorageKey: 'lic-b',
-            vehicleRegistrationStorageKey: 'veh-r',
+    test(
+      'submits registration successfully and emits submissionSuccess',
+      () async {
+        viewModel.doIntent(
+          const DriverRegistrationSetDraftEvent(
+            DriverRegistrationDraftEntity(
+              restaurantId: 'res-1',
+              fullNameAr: 'أحمد',
+              fullNameEn: 'Ahmed',
+              phone: '+966501234567',
+              nationalId: '1234567890',
+              nationalIdExpiry: '2029-01-01T00:00:00Z',
+              nationality: 'Saudi',
+              vehicleType: 'Car',
+              vehicleModel: 'Camry',
+              vehiclePlate: 'ABC 1234',
+              vehicleYear: 2023,
+              licenseNumber: 'LIC-1',
+              licenseExpiry: '2029-01-01T00:00:00Z',
+              vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
+              nationalIdFrontStorageKey: 'nid-f',
+              nationalIdBackStorageKey: 'nid-b',
+              drivingLicenseFrontStorageKey: 'lic-f',
+              drivingLicenseBackStorageKey: 'lic-b',
+              vehicleRegistrationStorageKey: 'veh-r',
+            ),
           ),
-        ),
-      );
+        );
 
-      viewModel.doIntent(const DriverRegistrationSubmitEvent());
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(const DriverRegistrationSubmitEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.status, DriverRegistrationStatus.submissionSuccess);
-      expect(viewModel.state.submissionResult?.registrationId, 'reg-100');
-    });
+        expect(
+          viewModel.state.status,
+          DriverRegistrationStatus.submissionSuccess,
+        );
+        expect(viewModel.state.submissionResult?.registrationId, 'reg-100');
+      },
+    );
 
-    test('submits registration failure emits error and preserves draft', () async {
-      mockRepo.shouldFailSubmit = true;
+    test(
+      'submits registration failure emits error and preserves draft',
+      () async {
+        mockRepo.shouldFailSubmit = true;
 
-      viewModel.doIntent(const DriverRegistrationSubmitEvent());
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(const DriverRegistrationSubmitEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.status, DriverRegistrationStatus.error);
-      expect(viewModel.state.failure, isNotNull);
-    });
+        expect(viewModel.state.status, DriverRegistrationStatus.error);
+        expect(viewModel.state.failure, isNotNull);
+      },
+    );
   });
 }

@@ -25,7 +25,9 @@ class RegistrationReviewSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         border: Border.all(color: color.outline),
-        borderRadius: BorderRadius.circular(Spacing.registrationReviewCardRadius),
+        borderRadius: BorderRadius.circular(
+          Spacing.registrationReviewCardRadius,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(Spacing.md),

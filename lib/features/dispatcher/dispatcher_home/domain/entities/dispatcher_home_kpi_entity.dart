@@ -14,9 +14,4 @@ class DispatcherHomeKpiItemEntity {
   final DispatcherHomeKpiColorType accentColorType;
 }
 
-enum DispatcherHomeKpiColorType {
-  purple,
-  blue,
-  orange,
-  red,
-}
+enum DispatcherHomeKpiColorType { purple, blue, orange, red }

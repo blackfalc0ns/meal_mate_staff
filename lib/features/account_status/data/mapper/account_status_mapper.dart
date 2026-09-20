@@ -10,8 +10,8 @@ extension DriverRegistrationStatusResponseDtoMapper
 
     final kind = switch (normalized) {
       'submitted' || 'underreview' => AccountStatusKind.underReview,
-      'needschanges' || 'moreinformationrequired' =>
-        AccountStatusKind.moreInformationRequired,
+      'needschanges' ||
+      'moreinformationrequired' => AccountStatusKind.moreInformationRequired,
       'rejected' => AccountStatusKind.rejected,
       'approved' || 'accepted' => AccountStatusKind.accepted,
       _ => AccountStatusKind.underReview,
@@ -33,7 +33,8 @@ extension DriverRegistrationStatusResponseDtoMapper
       restaurantApprovalStatus: restaurantApprovalStatus,
       adminApprovalStatus: adminApprovalStatus,
       canResubmit: canResubmit ?? false,
-      isApproved: isApproved ?? (normalized == 'approved' || normalized == 'accepted'),
+      isApproved:
+          isApproved ?? (normalized == 'approved' || normalized == 'accepted'),
       changeRequestNotes: changeRequestNotes,
       rejectionReason: rejectionReason,
     );

@@ -7,11 +7,7 @@ import '../../../orders/presentation/widgets/driver_boxes_header_logo.dart';
 
 class DriverNotificationsHeader extends StatelessWidget
     implements PreferredSizeWidget {
-  const DriverNotificationsHeader({
-    super.key,
-    this.onBack,
-    this.onSettingsTap,
-  });
+  const DriverNotificationsHeader({super.key, this.onBack, this.onSettingsTap});
 
   final VoidCallback? onBack;
   final VoidCallback? onSettingsTap;

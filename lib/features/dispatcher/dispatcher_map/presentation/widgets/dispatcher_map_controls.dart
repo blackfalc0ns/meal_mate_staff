@@ -24,7 +24,9 @@ class DispatcherMapControls extends StatelessWidget {
       children: [
         InkWell(
           onTap: onLocationTap,
-          borderRadius: BorderRadius.circular(Spacing.dispatcherMapControlBtnSize),
+          borderRadius: BorderRadius.circular(
+            Spacing.dispatcherMapControlBtnSize,
+          ),
           child: Container(
             width: Spacing.dispatcherMapControlBtnSize,
             height: Spacing.dispatcherMapControlBtnSize,

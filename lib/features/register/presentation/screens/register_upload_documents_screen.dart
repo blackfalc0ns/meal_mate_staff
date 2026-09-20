@@ -61,8 +61,8 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
                 title: documentTitles[document.id] ?? locale.registrationOther,
                 subtitle:
                     documentSubtitles[document.id] ?? locale.registrationOther,
-                selectedImagePath: selectedImagePaths[document.id] ??
-                    document.localFilePath,
+                selectedImagePath:
+                    selectedImagePaths[document.id] ?? document.localFilePath,
                 onTap: () => onDocumentTap(document),
               ),
             ),

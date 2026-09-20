@@ -1,6 +1,1 @@
-enum DispatcherMapDriverStatus {
-  inDelivery,
-  onTheWayToLoad,
-  paused,
-  hasIssue,
-}
+enum DispatcherMapDriverStatus { inDelivery, onTheWayToLoad, paused, hasIssue }

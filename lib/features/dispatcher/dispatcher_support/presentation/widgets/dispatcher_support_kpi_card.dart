@@ -43,11 +43,7 @@ class DispatcherSupportKpiCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
-                size: Spacing.iconXs,
-                color: statusColor,
-              ),
+              Icon(icon, size: Spacing.iconXs, color: statusColor),
               const SizedBox(width: Spacing.border * 2),
               Flexible(
                 child: Text(

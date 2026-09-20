@@ -18,10 +18,7 @@ class DriverNotificationsFilterTabBar extends StatelessWidget {
 
   static const double _indicatorHeight = 2.5;
 
-  String _getFilterLabel(
-    DriverNotificationFilterType filter,
-    dynamic locale,
-  ) {
+  String _getFilterLabel(DriverNotificationFilterType filter, dynamic locale) {
     switch (filter) {
       case DriverNotificationFilterType.all:
         return locale.driverNotificationsFilterAll;
@@ -42,10 +39,7 @@ class DriverNotificationsFilterTabBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: color.outline,
-            width: Spacing.border,
-          ),
+          bottom: BorderSide(color: color.outline, width: Spacing.border),
         ),
       ),
       child: LayoutBuilder(
@@ -53,9 +47,7 @@ class DriverNotificationsFilterTabBar extends StatelessWidget {
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: constraints.maxWidth,
-              ),
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: DriverNotificationFilterType.values.map((filter) {

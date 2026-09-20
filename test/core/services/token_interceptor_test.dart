@@ -74,8 +74,7 @@ void main() {
         );
       }
 
-      if (options.path == '/protected' ||
-          options.path.endsWith('/protected')) {
+      if (options.path == '/protected' || options.path.endsWith('/protected')) {
         protectedEndpointCalls++;
         final authHeader = options.headers[NetworkConstants.authorization];
         if (authHeader == 'Bearer refreshed_access_token') {
@@ -120,7 +119,10 @@ void main() {
       });
 
       await testDio.get('/test');
-      expect(captured?.headers[NetworkConstants.authorization], 'Bearer initial_token');
+      expect(
+        captured?.headers[NetworkConstants.authorization],
+        'Bearer initial_token',
+      );
     });
 
     test('skips authorization header when skipAuth is true', () async {

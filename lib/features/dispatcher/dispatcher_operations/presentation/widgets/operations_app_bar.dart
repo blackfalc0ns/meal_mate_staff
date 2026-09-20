@@ -7,11 +7,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/custom_app_bar.dart';
 
 class OperationsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OperationsAppBar({
-    super.key,
-    this.onBackPressed,
-    this.onFilterTap,
-  });
+  const OperationsAppBar({super.key, this.onBackPressed, this.onFilterTap});
 
   final VoidCallback? onBackPressed;
   final VoidCallback? onFilterTap;

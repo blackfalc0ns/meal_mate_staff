@@ -88,7 +88,10 @@ class DriverSupportCategoryDropdown extends StatelessWidget {
                                 ),
                         ),
                         trailing: isSelected
-                            ? Icon(Icons.check_circle_rounded, color: color.primary)
+                            ? Icon(
+                                Icons.check_circle_rounded,
+                                color: color.primary,
+                              )
                             : null,
                         onTap: () {
                           Navigator.of(modalContext).pop();

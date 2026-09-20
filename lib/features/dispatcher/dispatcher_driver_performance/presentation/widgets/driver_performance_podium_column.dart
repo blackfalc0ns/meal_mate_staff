@@ -8,10 +8,7 @@ import '../../domain/entities/driver_podium_entry_entity.dart';
 import 'driver_performance_podium_badge.dart';
 
 class DriverPerformancePodiumColumn extends StatelessWidget {
-  const DriverPerformancePodiumColumn({
-    super.key,
-    required this.entry,
-  });
+  const DriverPerformancePodiumColumn({super.key, required this.entry});
 
   final DriverPodiumEntryEntity entry;
 
@@ -26,9 +23,7 @@ class DriverPerformancePodiumColumn extends StatelessWidget {
         vertical: Spacing.sm,
       ),
       decoration: BoxDecoration(
-        color: isRank1
-            ? color.primary.withValues(alpha: 0.08)
-            : color.surface,
+        color: isRank1 ? color.primary.withValues(alpha: 0.08) : color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
         border: Border.all(
           color: isRank1
@@ -92,11 +87,7 @@ class DriverPerformancePodiumColumn extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 2),
-              Icon(
-                Icons.star_rounded,
-                size: 14,
-                color: color.primary,
-              ),
+              Icon(Icons.star_rounded, size: 14, color: color.primary),
             ],
           ),
         ],

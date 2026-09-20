@@ -41,13 +41,13 @@ class DispatcherSupportFilterChips extends StatelessWidget {
                 onTap: () => onAreaSelected(area),
                 borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.sm,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: color.surface,
-                    borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
+                    borderRadius: BorderRadius.circular(
+                      Spacing.buttonSmallRadius,
+                    ),
                     border: Border.all(
                       color: isSelected
                           ? color.primary
@@ -75,9 +75,7 @@ class DispatcherSupportFilterChips extends StatelessWidget {
             onTap: onDateFilterTap,
             borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: color.surface,

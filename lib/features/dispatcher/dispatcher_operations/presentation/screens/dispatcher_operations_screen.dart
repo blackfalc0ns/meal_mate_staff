@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
@@ -56,10 +56,7 @@ class _DispatcherOperationsScreenState
   }
 
   void _onFilterTap() {
-    DispatcherDriverFilterBottomSheet.show(
-      context: context,
-      onApply: (_) {},
-    );
+    DispatcherDriverFilterBottomSheet.show(context: context, onApply: (_) {});
   }
 
   void _onDateFilterTap() {
@@ -153,10 +150,7 @@ class _DispatcherOperationsScreenState
                       itemCount: operations.length,
                       itemBuilder: (context, index) {
                         final item = operations[index];
-                        return OperationsCard(
-                          item: item,
-                          onTap: () {},
-                        );
+                        return OperationsCard(item: item, onTap: () {});
                       },
                     ),
             ),

@@ -7,11 +7,7 @@ import 'dispatcher_support_area_card.dart';
 import 'dispatcher_support_kpi_card.dart';
 
 class DispatcherSupportKpiBar extends StatelessWidget {
-  const DispatcherSupportKpiBar({
-    super.key,
-    required this.kpi,
-    this.onAreaTap,
-  });
+  const DispatcherSupportKpiBar({super.key, required this.kpi, this.onAreaTap});
 
   final DispatcherSupportKpiEntity kpi;
   final VoidCallback? onAreaTap;

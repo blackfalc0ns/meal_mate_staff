@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
@@ -202,8 +202,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final performanceCard =
-            find.byType(DispatcherProfileDriverPerformanceCard);
+        final performanceCard = find.byType(
+          DispatcherProfileDriverPerformanceCard,
+        );
         expect(performanceCard, findsOneWidget);
 
         await tester.tap(performanceCard);

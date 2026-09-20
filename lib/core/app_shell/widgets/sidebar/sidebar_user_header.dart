@@ -8,10 +8,7 @@ import 'sidebar_user_status_chip.dart';
 
 /// User profile header section shown at the top of the sidebar.
 class SidebarUserHeader extends StatelessWidget {
-  const SidebarUserHeader({
-    super.key,
-    required this.user,
-  });
+  const SidebarUserHeader({super.key, required this.user});
 
   final SidebarUserEntity user;
 
@@ -53,10 +50,7 @@ class SidebarUserHeader extends StatelessWidget {
           const SizedBox(height: Spacing.sm),
           Text(
             user.name,
-            style: getBoldStyle(
-              fontSize: 14,
-              color: color.onSurface,
-            ),
+            style: getBoldStyle(fontSize: 14, color: color.onSurface),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

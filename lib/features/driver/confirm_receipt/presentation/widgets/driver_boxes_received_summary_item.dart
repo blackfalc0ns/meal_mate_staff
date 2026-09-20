@@ -25,11 +25,7 @@ class DriverBoxesReceivedSummaryItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: Spacing.iconSm,
-            color: color.onSurfaceVariant,
-          ),
+          Icon(icon, size: Spacing.iconSm, color: color.onSurfaceVariant),
           const SizedBox(height: Spacing.xs),
           Text(
             label,

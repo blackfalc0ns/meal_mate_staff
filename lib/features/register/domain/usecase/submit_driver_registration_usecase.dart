@@ -13,6 +13,5 @@ class SubmitDriverRegistrationUseCase {
 
   Future<ApiResult<DriverRegistrationResultEntity>> call(
     DriverRegistrationDraftEntity draft,
-  ) =>
-      _repository.submitRegistration(draft);
+  ) => _repository.submitRegistration(draft);
 }

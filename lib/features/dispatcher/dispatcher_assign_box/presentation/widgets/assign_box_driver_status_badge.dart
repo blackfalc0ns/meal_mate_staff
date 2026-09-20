@@ -50,10 +50,7 @@ class AssignBoxDriverStatusBadge extends StatelessWidget {
       ),
       child: Text(
         statusText,
-        style: getSemiBoldStyle(
-          color: textColor,
-          fontSize: FontSize.size9,
-        ),
+        style: getSemiBoldStyle(color: textColor, fontSize: FontSize.size9),
       ),
     );
   }

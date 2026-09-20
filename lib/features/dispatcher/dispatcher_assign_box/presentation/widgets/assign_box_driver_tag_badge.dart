@@ -37,9 +37,7 @@ class AssignBoxDriverTagBadge extends StatelessWidget {
         surfaceColor = isPrimary
             ? color.dispatcherSuggestionSurface
             : color.dispatcherBadgeNormalSurface;
-        textColor = isPrimary
-            ? color.primary
-            : color.dispatcherBadgeNormal;
+        textColor = isPrimary ? color.primary : color.dispatcherBadgeNormal;
     }
 
     return Container(
@@ -55,10 +53,7 @@ class AssignBoxDriverTagBadge extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: Text(
           tagText,
-          style: getMediumStyle(
-            color: textColor,
-            fontSize: FontSize.size9,
-          ),
+          style: getMediumStyle(color: textColor, fontSize: FontSize.size9),
         ),
       ),
     );

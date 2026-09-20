@@ -131,7 +131,9 @@ void main() {
     if (getIt.isRegistered<AuthRepository>()) {
       getIt.unregister<AuthRepository>();
     }
-    getIt.registerLazySingleton<AuthRepository>(() => _FakeAuthFlowRepository());
+    getIt.registerLazySingleton<AuthRepository>(
+      () => _FakeAuthFlowRepository(),
+    );
   });
 
   Widget buildSplashRouteApp() {
@@ -237,8 +239,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(AppShellScreen), findsOneWidget);
-      final shellScreen =
-          tester.widget<AppShellScreen>(find.byType(AppShellScreen));
+      final shellScreen = tester.widget<AppShellScreen>(
+        find.byType(AppShellScreen),
+      );
       expect(shellScreen.role, UserRole.driver);
     },
   );
@@ -271,8 +274,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(AppShellScreen), findsOneWidget);
-      final shellScreen =
-          tester.widget<AppShellScreen>(find.byType(AppShellScreen));
+      final shellScreen = tester.widget<AppShellScreen>(
+        find.byType(AppShellScreen),
+      );
       expect(shellScreen.role, UserRole.operations);
       expect(find.byType(DispatcherHomeScreen), findsOneWidget);
     },

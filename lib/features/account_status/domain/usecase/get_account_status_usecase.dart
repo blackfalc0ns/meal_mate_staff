@@ -13,9 +13,8 @@ class GetAccountStatusUseCase {
   Future<ApiResult<DriverRegistrationStatusEntity>> call({
     String? phone,
     String? registrationId,
-  }) =>
-      _repository.getRegistrationStatus(
-        phone: phone,
-        registrationId: registrationId,
-      );
+  }) => _repository.getRegistrationStatus(
+    phone: phone,
+    registrationId: registrationId,
+  );
 }

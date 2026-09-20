@@ -82,7 +82,8 @@ class DriverSupportFormCard extends StatelessWidget {
               ValueListenableBuilder<TextEditingValue>(
                 valueListenable: messageController,
                 builder: (context, value, _) {
-                  final canSubmit = value.text.trim().isNotEmpty && !isSubmitting;
+                  final canSubmit =
+                      value.text.trim().isNotEmpty && !isSubmitting;
 
                   return AppButton(
                     text: locale.driverSupportSubmitButton,

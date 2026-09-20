@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/login_screen.dart';
 import 'package:meal_mate_delivery/features/register/presentation/screens/register_screen.dart';
 
@@ -17,7 +18,7 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         theme: AppTheme.lightTheme,
         onGenerateRoute: RouteGenerator.getRoute,
-        home: const LoginScreen(),
+        home: const LoginScreen(role: UserRole.driver),
       ),
     );
 

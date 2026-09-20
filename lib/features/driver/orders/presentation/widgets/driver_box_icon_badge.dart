@@ -58,10 +58,7 @@ class DriverBoxIconBadge extends StatelessWidget {
         badge = Container(
           width: Spacing.iconSm,
           height: Spacing.iconSm,
-          decoration: BoxDecoration(
-            color: color.error,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: color.error, shape: BoxShape.circle),
           alignment: Alignment.center,
           child: Icon(
             Icons.close,
@@ -87,10 +84,7 @@ class DriverBoxIconBadge extends StatelessWidget {
             AppAssets.driverBoxLinear,
             width: Spacing.registrationDocumentUploadIcon,
             height: Spacing.registrationDocumentUploadIcon,
-            colorFilter: ColorFilter.mode(
-              iconColor,
-              BlendMode.srcIn,
-            ),
+            colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
           ),
           if (badge != null)
             PositionedDirectional(

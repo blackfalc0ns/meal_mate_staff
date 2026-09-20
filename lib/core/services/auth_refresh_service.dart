@@ -5,10 +5,7 @@ import 'token_interceptor.dart';
 import 'token_service.dart';
 
 class AuthRefreshService {
-  AuthRefreshService({
-    required this.tokenService,
-    required this.dio,
-  });
+  AuthRefreshService({required this.tokenService, required this.dio});
 
   final TokenService tokenService;
   final Dio dio;

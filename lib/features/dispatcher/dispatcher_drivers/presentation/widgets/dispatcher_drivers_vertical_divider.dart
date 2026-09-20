@@ -14,7 +14,9 @@ class DispatcherDriversVerticalDivider extends StatelessWidget {
       height: Spacing.xxl,
       width: Spacing.border,
       color: color.outlineVariant.withValues(alpha: Spacing.hairline),
-      margin: const EdgeInsets.symmetric(horizontal: Spacing.border + Spacing.border),
+      margin: const EdgeInsets.symmetric(
+        horizontal: Spacing.border + Spacing.border,
+      ),
     );
   }
 }

@@ -63,13 +63,16 @@ void main() {
         ),
       );
 
-      final trackRect = tester
-          .getRect(find.byKey(const Key('registration-step-progress-track')));
+      final trackRect = tester.getRect(
+        find.byKey(const Key('registration-step-progress-track')),
+      );
       final checkOrNumFinders = find.byType(DecoratedBox);
       // The circles are decorated boxes with circle shape
       final circleRects = tester
           .widgetList<DecoratedBox>(checkOrNumFinders)
-          .where((w) => (w.decoration as BoxDecoration?)?.shape == BoxShape.circle)
+          .where(
+            (w) => (w.decoration as BoxDecoration?)?.shape == BoxShape.circle,
+          )
           .map((w) => tester.getRect(find.byWidget(w)))
           .toList();
 

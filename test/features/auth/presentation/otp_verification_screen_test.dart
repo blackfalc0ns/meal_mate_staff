@@ -62,26 +62,22 @@ class _FakeOtpRepo implements AuthRepository {
   @override
   Future<ApiResult<PhoneLookupResultEntity>> lookupPhone(
     PhoneLookupRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<AuthSessionEntity>> login(
     StaffLoginRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<String>> forgotPassword(
     ForgotPasswordRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<String>> resetPassword(
     ResetPasswordRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<AuthSessionEntity?>> restoreSession() async =>
@@ -90,8 +86,7 @@ class _FakeOtpRepo implements AuthRepository {
   @override
   Future<ApiResult<AuthSessionEntity>> setPassword(
     SetPasswordRequestEntity request,
-  ) async =>
-      throw UnimplementedError();
+  ) async => throw UnimplementedError();
 
   @override
   Future<ApiResult<void>> logout() async => ApiSuccessResult(data: null);

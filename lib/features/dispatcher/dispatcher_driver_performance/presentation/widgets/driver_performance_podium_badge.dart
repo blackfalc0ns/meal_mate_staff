@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverPerformancePodiumBadge extends StatelessWidget {
-  const DriverPerformancePodiumBadge({
-    super.key,
-    required this.rank,
-  });
+  const DriverPerformancePodiumBadge({super.key, required this.rank});
 
   final int rank;
 
@@ -37,10 +34,7 @@ class DriverPerformancePodiumBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: badgeColor,
         shape: BoxShape.circle,
-        border: Border.all(
-          color: color.surface,
-          width: 1.5,
-        ),
+        border: Border.all(color: color.surface, width: 1.5),
       ),
       alignment: Alignment.center,
       child: Text(

@@ -25,9 +25,8 @@ class DispatcherNotificationsList extends StatelessWidget {
       physics: physics,
       padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
       itemCount: notifications.length,
-      separatorBuilder: (_, _) => const SizedBox(
-        height: Spacing.sm - Spacing.border,
-      ),
+      separatorBuilder: (_, _) =>
+          const SizedBox(height: Spacing.sm - Spacing.border),
       itemBuilder: (context, index) {
         final item = notifications[index];
         return DispatcherNotificationCard(

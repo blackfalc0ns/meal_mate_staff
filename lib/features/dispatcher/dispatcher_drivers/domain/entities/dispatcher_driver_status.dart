@@ -1,5 +1,1 @@
-enum DispatcherDriverStatus {
-  available,
-  onTheWay,
-  onBreak,
-}
+enum DispatcherDriverStatus { available, onTheWay, onBreak }

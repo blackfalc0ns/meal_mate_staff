@@ -31,10 +31,7 @@ class DriverPerformanceTabItem extends StatelessWidget {
           color: isSelected ? color.surface : Colors.transparent,
           borderRadius: BorderRadius.circular(Spacing.radiusSm),
           border: isSelected
-              ? Border.all(
-                  color: color.primary,
-                  width: Spacing.border,
-                )
+              ? Border.all(color: color.primary, width: Spacing.border)
               : null,
           boxShadow: isSelected
               ? [

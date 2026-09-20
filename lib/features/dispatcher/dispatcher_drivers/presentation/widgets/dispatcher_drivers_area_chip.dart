@@ -36,7 +36,9 @@ class DispatcherDriversAreaChip extends StatelessWidget {
           border: isSelected
               ? null
               : Border.all(
-                  color: color.outlineVariant.withValues(alpha: Spacing.hairline + Spacing.border / 10),
+                  color: color.outlineVariant.withValues(
+                    alpha: Spacing.hairline + Spacing.border / 10,
+                  ),
                 ),
         ),
         child: Row(

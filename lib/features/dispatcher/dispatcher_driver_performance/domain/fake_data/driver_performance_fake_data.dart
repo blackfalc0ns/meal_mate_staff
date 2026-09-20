@@ -1,4 +1,4 @@
-﻿import '../../../dispatcher_drivers/domain/entities/dispatcher_driver_status.dart';
+import '../../../dispatcher_drivers/domain/entities/dispatcher_driver_status.dart';
 import '../entities/driver_performance_distribution_category.dart';
 import '../entities/driver_performance_distribution_item_entity.dart';
 import '../entities/driver_performance_kpi_entity.dart';
@@ -136,20 +136,8 @@ class DriverPerformanceFakeData {
   ];
 
   static const List<DriverPodiumEntryEntity> topRatedDrivers = [
-    DriverPodiumEntryEntity(
-      rank: 1,
-      name: 'أحمد السعيد',
-      rating: 4.6,
-    ),
-    DriverPodiumEntryEntity(
-      rank: 2,
-      name: 'محمد العنزي',
-      rating: 4.6,
-    ),
-    DriverPodiumEntryEntity(
-      rank: 3,
-      name: 'يوسف خالد',
-      rating: 4.6,
-    ),
+    DriverPodiumEntryEntity(rank: 1, name: 'أحمد السعيد', rating: 4.6),
+    DriverPodiumEntryEntity(rank: 2, name: 'محمد العنزي', rating: 4.6),
+    DriverPodiumEntryEntity(rank: 3, name: 'يوسف خالد', rating: 4.6),
   ];
 }

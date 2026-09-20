@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherProfileLogoutButton extends StatelessWidget {
-  const DispatcherProfileLogoutButton({
-    super.key,
-    required this.onTap,
-  });
+  const DispatcherProfileLogoutButton({super.key, required this.onTap});
 
   final VoidCallback onTap;
 

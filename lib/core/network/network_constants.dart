@@ -29,4 +29,3 @@ abstract class EndPoints {
   static const String driverRegistrationResubmit =
       '/api/v1/auth/staff/driver-registration/{registrationId}/resubmit';
 }
-

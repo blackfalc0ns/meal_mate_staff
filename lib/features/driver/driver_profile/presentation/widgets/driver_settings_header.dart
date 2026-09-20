@@ -26,11 +26,7 @@ class DriverSettingsHeader extends StatelessWidget
 
     return CustomAppBar.logo(
       leading: IconButton(
-        icon: Icon(
-          Icons.menu,
-          color: color.onSurface,
-          size: Spacing.iconMd,
-        ),
+        icon: Icon(Icons.menu, color: color.onSurface, size: Spacing.iconMd),
         onPressed: onMenuTap,
       ),
       actions: [

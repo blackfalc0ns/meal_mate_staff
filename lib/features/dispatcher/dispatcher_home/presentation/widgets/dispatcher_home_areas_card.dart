@@ -33,7 +33,10 @@ class DispatcherHomeAreasCard extends StatelessWidget {
     }
   }
 
-  Color _getAreaArrowColor(ColorScheme color, DispatcherHomeAreaColorType type) {
+  Color _getAreaArrowColor(
+    ColorScheme color,
+    DispatcherHomeAreaColorType type,
+  ) {
     switch (type) {
       case DispatcherHomeAreaColorType.salmiya:
         return color.error;

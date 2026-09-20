@@ -1,5 +1,1 @@
-enum DispatcherSupportStatus {
-  open,
-  inProgress,
-  resolved,
-}
+enum DispatcherSupportStatus { open, inProgress, resolved }

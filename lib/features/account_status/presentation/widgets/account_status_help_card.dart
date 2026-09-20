@@ -31,7 +31,6 @@ class AccountStatusHelpCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

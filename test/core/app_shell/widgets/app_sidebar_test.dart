@@ -6,9 +6,7 @@ import 'package:meal_mate_delivery/core/app_shell/widgets/sidebar/app_sidebar.da
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 
-Widget _buildTestApp({
-  UserRole role = UserRole.driver,
-}) {
+Widget _buildTestApp({UserRole role = UserRole.driver}) {
   return MaterialApp(
     localizationsDelegates: const [
       AppLocalizations.delegate,
@@ -27,21 +25,23 @@ void main() {
     testWidgets('AppSidebar renders correctly for Driver role', (tester) async {
       final scaffoldKey = GlobalKey<ScaffoldState>();
 
-      await tester.pumpWidget(MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: const Locale('ar'),
-        home: Scaffold(
-          key: scaffoldKey,
-          drawer: const AppSidebar(role: UserRole.driver),
-          body: const SizedBox(),
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('ar'),
+          home: Scaffold(
+            key: scaffoldKey,
+            drawer: const AppSidebar(role: UserRole.driver),
+            body: const SizedBox(),
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       // Open drawer
@@ -68,45 +68,50 @@ void main() {
       expect(find.text('الإصدار 2.4.1'), findsOneWidget);
     });
 
-    testWidgets('AppSidebar renders correctly for Operations role (omits driver status card)',
-        (tester) async {
-      final scaffoldKey = GlobalKey<ScaffoldState>();
+    testWidgets(
+      'AppSidebar renders correctly for Operations role (omits driver status card)',
+      (tester) async {
+        final scaffoldKey = GlobalKey<ScaffoldState>();
 
-      await tester.pumpWidget(MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: const Locale('ar'),
-        home: Scaffold(
-          key: scaffoldKey,
-          drawer: const AppSidebar(role: UserRole.operations),
-          body: const SizedBox(),
-        ),
-      ));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('ar'),
+            home: Scaffold(
+              key: scaffoldKey,
+              drawer: const AppSidebar(role: UserRole.operations),
+              body: const SizedBox(),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Open drawer
-      scaffoldKey.currentState?.openDrawer();
-      await tester.pumpAndSettle();
+        // Open drawer
+        scaffoldKey.currentState?.openDrawer();
+        await tester.pumpAndSettle();
 
-      // Verify dispatcher name and header
-      expect(find.text('عبدالله خالد'), findsOneWidget);
-      expect(find.text('متصل'), findsOneWidget);
+        // Verify dispatcher name and header
+        expect(find.text('عبدالله خالد'), findsOneWidget);
+        expect(find.text('متصل'), findsOneWidget);
 
-      // Verify items
-      expect(find.text('الرئيسية'), findsOneWidget);
-      expect(find.text('سجل العمليات'), findsOneWidget);
+        // Verify items
+        expect(find.text('الرئيسية'), findsOneWidget);
+        expect(find.text('سجل العمليات'), findsOneWidget);
 
-      // Driver status card should NOT be present for operations role
-      expect(find.text('حالة السائق'), findsNothing);
-    });
+        // Driver status card should NOT be present for operations role
+        expect(find.text('حالة السائق'), findsNothing);
+      },
+    );
 
-    testWidgets('AppShellScreen integrates AppSidebar as drawer',
-        (tester) async {
+    testWidgets('AppShellScreen integrates AppSidebar as drawer', (
+      tester,
+    ) async {
       await tester.pumpWidget(_buildTestApp(role: UserRole.driver));
       await tester.pumpAndSettle();
 
@@ -119,10 +124,12 @@ void main() {
       expect(find.text('محمد علي'), findsOneWidget);
 
       // Tap an item in sidebar to navigate/close drawer
-      await tester.tap(find.descendant(
-        of: find.byType(AppSidebar),
-        matching: find.text('الطلبات'),
-      ));
+      await tester.tap(
+        find.descendant(
+          of: find.byType(AppSidebar),
+          matching: find.text('الطلبات'),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Drawer should be closed

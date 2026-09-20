@@ -37,7 +37,8 @@ class RegistrationNoteCard extends StatelessWidget {
                 const SizedBox(width: Spacing.sm),
               ],
               Flexible(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (title != null) ...[

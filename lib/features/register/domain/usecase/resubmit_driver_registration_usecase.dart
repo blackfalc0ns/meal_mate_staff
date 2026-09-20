@@ -14,9 +14,8 @@ class ResubmitDriverRegistrationUseCase {
   Future<ApiResult<DriverRegistrationResultEntity>> call({
     required String registrationId,
     required DriverResubmitEntity resubmitData,
-  }) =>
-      _repository.resubmitRegistration(
-        registrationId: registrationId,
-        resubmitData: resubmitData,
-      );
+  }) => _repository.resubmitRegistration(
+    registrationId: registrationId,
+    resubmitData: resubmitData,
+  );
 }

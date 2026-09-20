@@ -5,10 +5,7 @@ import '../../domain/entities/driver_performance_kpi_entity.dart';
 import 'driver_performance_kpi_card.dart';
 
 class DriverPerformanceKpiList extends StatelessWidget {
-  const DriverPerformanceKpiList({
-    super.key,
-    required this.items,
-  });
+  const DriverPerformanceKpiList({super.key, required this.items});
 
   final List<DriverPerformanceKpiEntity> items;
 

@@ -7,10 +7,7 @@ import '../../domain/entities/driver_details_entity.dart';
 import 'driver_details_kpi_card.dart';
 
 class DriverDetailsKpiRow extends StatelessWidget {
-  const DriverDetailsKpiRow({
-    super.key,
-    required this.driver,
-  });
+  const DriverDetailsKpiRow({super.key, required this.driver});
 
   final DriverDetailsEntity driver;
 

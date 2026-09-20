@@ -4,10 +4,7 @@ part 'staff_message_response_dto.g.dart';
 
 @JsonSerializable()
 class StaffMessageResponseDto {
-  const StaffMessageResponseDto({
-    this.success,
-    this.message,
-  });
+  const StaffMessageResponseDto({this.success, this.message});
 
   factory StaffMessageResponseDto.fromJson(Map<String, dynamic> json) =>
       _$StaffMessageResponseDtoFromJson(json);

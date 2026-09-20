@@ -42,7 +42,8 @@ class DispatcherNotificationsFilterTabBar extends StatelessWidget {
         children: [
           Expanded(
             child: InkWell(
-              onTap: () => onFilterChanged(DispatcherNotificationFilterType.all),
+              onTap: () =>
+                  onFilterChanged(DispatcherNotificationFilterType.all),
               borderRadius: BorderRadius.circular(Spacing.radiusMd),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
@@ -54,10 +55,7 @@ class DispatcherNotificationsFilterTabBar extends StatelessWidget {
                       : color.transparent,
                   borderRadius: BorderRadius.circular(Spacing.radiusMd),
                   border: selectedFilter == DispatcherNotificationFilterType.all
-                      ? Border.all(
-                          color: color.primary,
-                          width: Spacing.border,
-                        )
+                      ? Border.all(color: color.primary, width: Spacing.border)
                       : null,
                 ),
                 child: Row(
@@ -67,7 +65,8 @@ class DispatcherNotificationsFilterTabBar extends StatelessWidget {
                     Flexible(
                       child: Text(
                         locale.notificationsTabAll,
-                        style: selectedFilter ==
+                        style:
+                            selectedFilter ==
                                 DispatcherNotificationFilterType.all
                             ? getBoldStyle(
                                 fontSize: FontSize.size10,
@@ -114,17 +113,14 @@ class DispatcherNotificationsFilterTabBar extends StatelessWidget {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
                 decoration: BoxDecoration(
-                  color: selectedFilter ==
-                          DispatcherNotificationFilterType.unread
+                  color:
+                      selectedFilter == DispatcherNotificationFilterType.unread
                       ? color.surface
                       : color.transparent,
                   borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                  border: selectedFilter ==
-                          DispatcherNotificationFilterType.unread
-                      ? Border.all(
-                          color: color.primary,
-                          width: Spacing.border,
-                        )
+                  border:
+                      selectedFilter == DispatcherNotificationFilterType.unread
+                      ? Border.all(color: color.primary, width: Spacing.border)
                       : null,
                 ),
                 child: Row(
@@ -134,7 +130,8 @@ class DispatcherNotificationsFilterTabBar extends StatelessWidget {
                     Flexible(
                       child: Text(
                         locale.notificationsTabUnread,
-                        style: selectedFilter ==
+                        style:
+                            selectedFilter ==
                                 DispatcherNotificationFilterType.unread
                             ? getBoldStyle(
                                 fontSize: FontSize.size10,
@@ -186,23 +183,20 @@ class DispatcherNotificationsFilterTabBar extends StatelessWidget {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
                 decoration: BoxDecoration(
-                  color: selectedFilter ==
-                          DispatcherNotificationFilterType.archive
+                  color:
+                      selectedFilter == DispatcherNotificationFilterType.archive
                       ? color.surface
                       : color.transparent,
                   borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                  border: selectedFilter ==
-                          DispatcherNotificationFilterType.archive
-                      ? Border.all(
-                          color: color.primary,
-                          width: Spacing.border,
-                        )
+                  border:
+                      selectedFilter == DispatcherNotificationFilterType.archive
+                      ? Border.all(color: color.primary, width: Spacing.border)
                       : null,
                 ),
                 child: Text(
                   locale.notificationsTabArchive,
-                  style: selectedFilter ==
-                          DispatcherNotificationFilterType.archive
+                  style:
+                      selectedFilter == DispatcherNotificationFilterType.archive
                       ? getBoldStyle(
                           fontSize: FontSize.size10,
                           color: color.primary,

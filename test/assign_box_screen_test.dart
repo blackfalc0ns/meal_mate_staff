@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
@@ -68,9 +68,7 @@ void main() {
     expect(find.text('تأكيد الإسناد'), findsOneWidget);
   });
 
-  testWidgets('allows selecting a different candidate driver', (
-    tester,
-  ) async {
+  testWidgets('allows selecting a different candidate driver', (tester) async {
     tester.view.physicalSize = const Size(1080, 2400);
     tester.view.devicePixelRatio = 2.5;
     addTearDown(() => tester.view.resetPhysicalSize());
@@ -86,9 +84,7 @@ void main() {
     expect(find.byIcon(Icons.radio_button_checked_rounded), findsOneWidget);
   });
 
-  testWidgets('renders AssignBoxScreen in English locale', (
-    tester,
-  ) async {
+  testWidgets('renders AssignBoxScreen in English locale', (tester) async {
     tester.view.physicalSize = const Size(1080, 2400);
     tester.view.devicePixelRatio = 2.5;
     addTearDown(() => tester.view.resetPhysicalSize());
@@ -104,21 +100,22 @@ void main() {
     expect(find.text('Confirm Assignment'), findsOneWidget);
   });
 
-  testWidgets('renders AssignBoxScreen on narrow 360px device without overflow', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(360, 780);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets(
+    'renders AssignBoxScreen on narrow 360px device without overflow',
+    (tester) async {
+      tester.view.physicalSize = const Size(360, 780);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
 
-    expect(tester.takeException(), isNull);
-    expect(find.text('سالم الحربي'), findsOneWidget);
-    expect(find.text('أحمد إبراهيم'), findsOneWidget);
-    expect(find.text('محمد السعيد'), findsOneWidget);
-  });
+      expect(tester.takeException(), isNull);
+      expect(find.text('سالم الحربي'), findsOneWidget);
+      expect(find.text('أحمد إبراهيم'), findsOneWidget);
+      expect(find.text('محمد السعيد'), findsOneWidget);
+    },
+  );
 
   testWidgets('tapping view all navigates to dispatcher drivers screen', (
     tester,

@@ -43,13 +43,13 @@ class DriverSupportMessageInput extends StatelessWidget {
                 maxLines: 5,
                 minLines: 4,
                 maxLength: maxLength,
-                buildCounter: (
-                  _, {
-                  required currentLength,
-                  required isFocused,
-                  maxLength,
-                }) =>
-                    null,
+                buildCounter:
+                    (
+                      _, {
+                      required currentLength,
+                      required isFocused,
+                      maxLength,
+                    }) => null,
                 style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
                   fontSize: FontSize.size13,

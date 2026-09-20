@@ -6,11 +6,7 @@ import '../../../extensions/extensions.dart';
 
 /// Pill-shaped status indicator showing whether the user is online.
 class SidebarUserStatusChip extends StatelessWidget {
-  const SidebarUserStatusChip({
-    super.key,
-    required this.isOnline,
-    this.label,
-  });
+  const SidebarUserStatusChip({super.key, required this.isOnline, this.label});
 
   final bool isOnline;
   final String? label;
@@ -20,9 +16,12 @@ class SidebarUserStatusChip extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final effectiveLabel = label ?? (isOnline ? locale.sidebarStatusOnline : '');
+    final effectiveLabel =
+        label ?? (isOnline ? locale.sidebarStatusOnline : '');
     final statusColor = isOnline ? color.tertiary : color.onSurfaceVariant;
-    final statusBgColor = isOnline ? color.tertiaryContainer : color.surfaceContainerHighest;
+    final statusBgColor = isOnline
+        ? color.tertiaryContainer
+        : color.surfaceContainerHighest;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -47,10 +46,7 @@ class SidebarUserStatusChip extends StatelessWidget {
           const SizedBox(width: Spacing.xs),
           Text(
             effectiveLabel,
-            style: getRegularStyle(
-              fontSize: 10,
-              color: statusColor,
-            ),
+            style: getRegularStyle(fontSize: 10, color: statusColor),
           ),
         ],
       ),

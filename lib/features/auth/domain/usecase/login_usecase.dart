@@ -11,9 +11,7 @@ class LoginUseCase {
 
   final AuthRepository _repository;
 
-  Future<ApiResult<AuthSessionEntity>> call(
-    StaffLoginRequestEntity request,
-  ) {
+  Future<ApiResult<AuthSessionEntity>> call(StaffLoginRequestEntity request) {
     return _repository.login(request);
   }
 }

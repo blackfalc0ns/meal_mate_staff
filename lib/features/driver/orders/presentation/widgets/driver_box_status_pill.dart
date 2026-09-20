@@ -45,7 +45,9 @@ class DriverBoxStatusPill extends StatelessWidget {
     }
 
     final bool isIssue = effectiveStatus == DriverBoxDeliveryStatus.failed;
-    final Color bgColor = isIssue ? color.errorContainer : color.tertiaryContainer;
+    final Color bgColor = isIssue
+        ? color.errorContainer
+        : color.tertiaryContainer;
     final Color contentColor = isIssue ? color.error : color.tertiary;
     final String label = isIssue
         ? locale.driverStatusIssueOccurred

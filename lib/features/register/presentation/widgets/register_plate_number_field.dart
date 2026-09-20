@@ -32,7 +32,6 @@ class RegisterPlateNumberField extends StatelessWidget {
           const SizedBox(height: Spacing.sm),
           Row(
             children: [
-             
               Expanded(
                 child: SizedBox(
                   height: Spacing.registrationFieldInputHeight,
@@ -58,7 +57,7 @@ class RegisterPlateNumberField extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.sm),
 
-               SizedBox(
+              SizedBox(
                 width: 110,
                 height: Spacing.registrationFieldInputHeight,
                 child: DecoratedBox(

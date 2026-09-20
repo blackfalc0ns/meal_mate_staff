@@ -94,36 +94,39 @@ void main() {
   });
 
   group('Auth Response Mappers', () {
-    test('maps PhoneLookupResponseDto to PhoneLookupResultEntity with defaults on null', () {
-      const dto = PhoneLookupResponseDto(
-        exists: true,
-        isFirstTimeSetup: true,
-        role: 'Driver',
-        phone: '+966501234567',
-        applicationStatus: StaffApplicationStatusDto(
-          stage: 1,
-          badge: 'قيد المراجعة',
-        ),
-      );
+    test(
+      'maps PhoneLookupResponseDto to PhoneLookupResultEntity with defaults on null',
+      () {
+        const dto = PhoneLookupResponseDto(
+          exists: true,
+          isFirstTimeSetup: true,
+          role: 'Driver',
+          phone: '+966501234567',
+          applicationStatus: StaffApplicationStatusDto(
+            stage: 1,
+            badge: 'قيد المراجعة',
+          ),
+        );
 
-      final entity = dto.toEntity(fallbackRole: UserRole.driver);
-      expect(entity.exists, isTrue);
-      expect(entity.isFirstTimeSetup, isTrue);
-      expect(entity.role, UserRole.driver);
-      expect(entity.applicationStatus?.stage, 1);
+        final entity = dto.toEntity(fallbackRole: UserRole.driver);
+        expect(entity.exists, isTrue);
+        expect(entity.isFirstTimeSetup, isTrue);
+        expect(entity.role, UserRole.driver);
+        expect(entity.applicationStatus?.stage, 1);
 
-      // Null handling
-      const emptyDto = PhoneLookupResponseDto();
-      final defaultEntity = emptyDto.toEntity(
-        fallbackRole: UserRole.operations,
-        fallbackPhone: '+966500000000',
-      );
-      expect(defaultEntity.exists, isFalse);
-      expect(defaultEntity.isFirstTimeSetup, isFalse);
-      expect(defaultEntity.role, UserRole.operations);
-      expect(defaultEntity.phone, '+966500000000');
-      expect(defaultEntity.applicationStatus, isNull);
-    });
+        // Null handling
+        const emptyDto = PhoneLookupResponseDto();
+        final defaultEntity = emptyDto.toEntity(
+          fallbackRole: UserRole.operations,
+          fallbackPhone: '+966500000000',
+        );
+        expect(defaultEntity.exists, isFalse);
+        expect(defaultEntity.isFirstTimeSetup, isFalse);
+        expect(defaultEntity.role, UserRole.operations);
+        expect(defaultEntity.phone, '+966500000000');
+        expect(defaultEntity.applicationStatus, isNull);
+      },
+    );
 
     test('maps VerifyFirstTimeOtpResponseDto to entity', () {
       const dto = VerifyFirstTimeOtpResponseDto(

@@ -1,6 +1,1 @@
-enum DriverPerformanceDistributionCategory {
-  onTime,
-  late,
-  failed,
-  cancelled,
-}
+enum DriverPerformanceDistributionCategory { onTime, late, failed, cancelled }

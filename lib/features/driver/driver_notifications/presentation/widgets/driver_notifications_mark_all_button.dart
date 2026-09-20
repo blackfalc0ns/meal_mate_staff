@@ -5,10 +5,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_button.dart';
 
 class DriverNotificationsMarkAllButton extends StatelessWidget {
-  const DriverNotificationsMarkAllButton({
-    super.key,
-    required this.onPressed,
-  });
+  const DriverNotificationsMarkAllButton({super.key, required this.onPressed});
 
   final VoidCallback? onPressed;
 

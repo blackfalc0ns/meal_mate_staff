@@ -11,10 +11,7 @@ import '../widgets/dispatcher_map_header.dart';
 import '../widgets/dispatcher_map_kpi_bar.dart';
 
 class DispatcherMapScreen extends StatefulWidget {
-  const DispatcherMapScreen({
-    super.key,
-    this.onBack,
-  });
+  const DispatcherMapScreen({super.key, this.onBack});
 
   final VoidCallback? onBack;
 
@@ -76,13 +73,9 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    DispatcherMapHeader(
-                      onMenuTap: widget.onBack,
-                    ),
+                    DispatcherMapHeader(onMenuTap: widget.onBack),
                     const SizedBox(height: Spacing.xs),
-                    const DispatcherMapKpiBar(
-                      kpi: DispatcherMapFakeData.kpi,
-                    ),
+                    const DispatcherMapKpiBar(kpi: DispatcherMapFakeData.kpi),
                     const SizedBox(height: Spacing.base),
                   ],
                 ),

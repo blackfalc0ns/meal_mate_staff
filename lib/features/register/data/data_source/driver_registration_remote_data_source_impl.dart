@@ -28,13 +28,11 @@ class DriverRegistrationRemoteDataSourceImpl
   @override
   Future<DriverRegistrationResponseDto> submitRegistration(
     DriverRegistrationRequestDto request,
-  ) =>
-      _apiServices.submitDriverRegistration(request);
+  ) => _apiServices.submitDriverRegistration(request);
 
   @override
   Future<DriverRegistrationResponseDto> resubmitRegistration(
     String registrationId,
     DriverResubmitRequestDto request,
-  ) =>
-      _apiServices.resubmitDriverRegistration(registrationId, request);
+  ) => _apiServices.resubmitDriverRegistration(registrationId, request);
 }

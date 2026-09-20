@@ -1,5 +1,1 @@
-enum DriverBoxesFilterType {
-  all,
-  readyForDelivery,
-  delivered,
-}
+enum DriverBoxesFilterType { all, readyForDelivery, delivered }

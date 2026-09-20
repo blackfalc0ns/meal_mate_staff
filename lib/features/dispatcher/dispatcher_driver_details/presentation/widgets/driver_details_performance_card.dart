@@ -9,10 +9,7 @@ import '../../domain/entities/driver_details_entity.dart';
 import 'driver_details_performance_column.dart';
 
 class DriverDetailsPerformanceCard extends StatelessWidget {
-  const DriverDetailsPerformanceCard({
-    super.key,
-    required this.driver,
-  });
+  const DriverDetailsPerformanceCard({super.key, required this.driver});
 
   final DriverDetailsEntity driver;
 

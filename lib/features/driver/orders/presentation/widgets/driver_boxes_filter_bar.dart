@@ -77,14 +77,18 @@ class DriverBoxesFilterBar extends StatelessWidget {
                     DriverBoxesFilterTabItem(
                       title: locale.driverBoxesFilterReadyForDelivery,
                       isSelected:
-                          selectedFilter == DriverBoxesFilterType.readyForDelivery,
-                      onTap: () =>
-                          onFilterChanged(DriverBoxesFilterType.readyForDelivery),
+                          selectedFilter ==
+                          DriverBoxesFilterType.readyForDelivery,
+                      onTap: () => onFilterChanged(
+                        DriverBoxesFilterType.readyForDelivery,
+                      ),
                     ),
                     DriverBoxesFilterTabItem(
                       title: locale.driverBoxesFilterDelivered,
-                      isSelected: selectedFilter == DriverBoxesFilterType.delivered,
-                      onTap: () => onFilterChanged(DriverBoxesFilterType.delivered),
+                      isSelected:
+                          selectedFilter == DriverBoxesFilterType.delivered,
+                      onTap: () =>
+                          onFilterChanged(DriverBoxesFilterType.delivered),
                     ),
                   ],
                 ),

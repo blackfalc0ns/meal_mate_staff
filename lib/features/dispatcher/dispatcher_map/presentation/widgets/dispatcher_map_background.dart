@@ -33,9 +33,11 @@ class DispatcherMapBackground extends StatelessWidget {
             ),
             for (final driver in drivers)
               Positioned(
-                left: (width * driver.mapRelativeX) -
+                left:
+                    (width * driver.mapRelativeX) -
                     (Spacing.dispatcherMapMarkerAvatarSize / 2),
-                top: (height * driver.mapRelativeY) -
+                top:
+                    (height * driver.mapRelativeY) -
                     (Spacing.dispatcherMapMarkerAvatarSize / 2),
                 child: DispatcherMapMarkerItem(
                   driver: driver,

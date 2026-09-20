@@ -65,11 +65,9 @@ class _DriverNotificationsScreenState extends State<DriverNotificationsScreen> {
   void _handleNotificationTap(DriverNotificationEntity notification) {
     if (!notification.isRead) {
       setState(() {
-        final index =
-            _notifications.indexWhere((n) => n.id == notification.id);
+        final index = _notifications.indexWhere((n) => n.id == notification.id);
         if (index != -1) {
-          _notifications[index] =
-              _notifications[index].copyWith(isRead: true);
+          _notifications[index] = _notifications[index].copyWith(isRead: true);
         }
       });
     }
@@ -99,8 +97,7 @@ class _DriverNotificationsScreenState extends State<DriverNotificationsScreen> {
 
     final filtered = _filteredNotifications;
     final todayNotifications = filtered.where((n) => n.isToday).toList();
-    final yesterdayNotifications =
-        filtered.where((n) => !n.isToday).toList();
+    final yesterdayNotifications = filtered.where((n) => !n.isToday).toList();
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -142,8 +139,7 @@ class _DriverNotificationsScreenState extends State<DriverNotificationsScreen> {
                           for (final notification in todayNotifications) ...[
                             DriverNotificationCard(
                               notification: notification,
-                              onTap: () =>
-                                  _handleNotificationTap(notification),
+                              onTap: () => _handleNotificationTap(notification),
                             ),
                             const SizedBox(height: Spacing.sm),
                           ],
@@ -154,11 +150,11 @@ class _DriverNotificationsScreenState extends State<DriverNotificationsScreen> {
                             title: locale.driverNotificationsSectionYesterday,
                           ),
                           const SizedBox(height: Spacing.xs),
-                          for (final notification in yesterdayNotifications) ...[
+                          for (final notification
+                              in yesterdayNotifications) ...[
                             DriverNotificationCard(
                               notification: notification,
-                              onTap: () =>
-                                  _handleNotificationTap(notification),
+                              onTap: () => _handleNotificationTap(notification),
                             ),
                             const SizedBox(height: Spacing.sm),
                           ],

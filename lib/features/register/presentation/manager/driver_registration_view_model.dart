@@ -10,8 +10,7 @@ import 'driver_registration_event.dart';
 import 'driver_registration_state.dart';
 
 @injectable
-class DriverRegistrationViewModel
-    extends Cubit<DriverRegistrationState> {
+class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
   DriverRegistrationViewModel({
     required this.getRestaurantsUseCase,
     required this.uploadDocumentUseCase,
@@ -33,28 +32,28 @@ class DriverRegistrationViewModel
       case DriverRegistrationPersonalDataUpdatedEvent(:final personalData):
         _handlePersonalDataUpdated(personalData);
       case DriverRegistrationVehicleDataUpdatedEvent(
-          :final vehicleData,
-          :final selectedColor,
-          :final ownsVehicle,
-        ):
+        :final vehicleData,
+        :final selectedColor,
+        :final ownsVehicle,
+      ):
         _handleVehicleDataUpdated(
           vehicleData,
           selectedColor: selectedColor,
           ownsVehicle: ownsVehicle,
         );
       case DriverRegistrationUploadDocumentEvent(
-          :final documentId,
-          :final file,
-        ):
+        :final documentId,
+        :final file,
+      ):
         _handleUploadDocument(documentId, file);
       case DriverRegistrationRemoveDocumentEvent(:final documentId):
         _handleRemoveDocument(documentId);
       case DriverRegistrationSubmitEvent():
         _handleSubmit();
       case DriverRegistrationResubmitEvent(
-          :final registrationId,
-          :final resubmitData,
-        ):
+        :final registrationId,
+        :final resubmitData,
+      ):
         _handleResubmit(registrationId, resubmitData);
       case DriverRegistrationSetDraftEvent(:final draft):
         emit(state.copyWith(draft: draft));
@@ -62,11 +61,7 @@ class DriverRegistrationViewModel
   }
 
   Future<void> _handleLoadRestaurants() async {
-    emit(
-      state.copyWith(
-        status: DriverRegistrationStatus.loadingRestaurants,
-      ),
-    );
+    emit(state.copyWith(status: DriverRegistrationStatus.loadingRestaurants));
 
     final result = await getRestaurantsUseCase();
     switch (result) {
@@ -129,8 +124,8 @@ class DriverRegistrationViewModel
       nationalIdExpiry: personalData.nationalIdExpiry.isNotEmpty
           ? personalData.nationalIdExpiry
           : (state.draft.nationalIdExpiry.isNotEmpty
-              ? state.draft.nationalIdExpiry
-              : defaultExpiry),
+                ? state.draft.nationalIdExpiry
+                : defaultExpiry),
       dateOfBirth: personalData.birthDate.isNotEmpty
           ? personalData.birthDate
           : state.draft.dateOfBirth,
@@ -151,8 +146,8 @@ class DriverRegistrationViewModel
         .add(const Duration(days: 365 * 3))
         .toIso8601String();
 
-    final year = int.tryParse(vehicleData.manufactureYear) ??
-        state.draft.vehicleYear;
+    final year =
+        int.tryParse(vehicleData.manufactureYear) ?? state.draft.vehicleYear;
 
     final updatedDraft = state.draft.copyWith(
       vehicleType: vehicleData.type.isNotEmpty
@@ -172,18 +167,18 @@ class DriverRegistrationViewModel
       licenseNumber: vehicleData.licenseNumber.isNotEmpty
           ? vehicleData.licenseNumber
           : (state.draft.licenseNumber.isNotEmpty
-              ? state.draft.licenseNumber
-              : 'LIC-${vehicleData.plateNumber}'),
+                ? state.draft.licenseNumber
+                : 'LIC-${vehicleData.plateNumber}'),
       licenseExpiry: vehicleData.licenseExpiry.isNotEmpty
           ? vehicleData.licenseExpiry
           : (state.draft.licenseExpiry.isNotEmpty
-              ? state.draft.licenseExpiry
-              : defaultExpiry),
+                ? state.draft.licenseExpiry
+                : defaultExpiry),
       vehicleLicenseExpiry: vehicleData.vehicleLicenseExpiry.isNotEmpty
           ? vehicleData.vehicleLicenseExpiry
           : (state.draft.vehicleLicenseExpiry.isNotEmpty
-              ? state.draft.vehicleLicenseExpiry
-              : defaultExpiry),
+                ? state.draft.vehicleLicenseExpiry
+                : defaultExpiry),
       contractExpiry: vehicleData.contractExpiry ?? state.draft.contractExpiry,
     );
 
@@ -241,16 +236,16 @@ class DriverRegistrationViewModel
             nationalIdFrontStorageKey: storageKey,
             nationalIdBackStorageKey:
                 updatedDraft.nationalIdBackStorageKey.isNotEmpty
-                    ? updatedDraft.nationalIdBackStorageKey
-                    : storageKey,
+                ? updatedDraft.nationalIdBackStorageKey
+                : storageKey,
           );
         } else if (documentId == 'driving-license') {
           updatedDraft = updatedDraft.copyWith(
             drivingLicenseFrontStorageKey: storageKey,
             drivingLicenseBackStorageKey:
                 updatedDraft.drivingLicenseBackStorageKey.isNotEmpty
-                    ? updatedDraft.drivingLicenseBackStorageKey
-                    : storageKey,
+                ? updatedDraft.drivingLicenseBackStorageKey
+                : storageKey,
           );
         } else if (documentId == 'car-registration') {
           updatedDraft = updatedDraft.copyWith(
@@ -321,25 +316,14 @@ class DriverRegistrationViewModel
         drivingLicenseBackStorageKey: '',
       );
     } else if (documentId == 'car-registration') {
-      updatedDraft = updatedDraft.copyWith(
-        vehicleRegistrationStorageKey: '',
-      );
+      updatedDraft = updatedDraft.copyWith(vehicleRegistrationStorageKey: '');
     } else if (documentId == 'vehicle-photo') {
-      updatedDraft = updatedDraft.copyWith(
-        vehiclePhotoStorageKey: null,
-      );
+      updatedDraft = updatedDraft.copyWith(vehiclePhotoStorageKey: null);
     } else if (documentId == 'personal-photo') {
-      updatedDraft = updatedDraft.copyWith(
-        profileImageStorageKey: null,
-      );
+      updatedDraft = updatedDraft.copyWith(profileImageStorageKey: null);
     }
 
-    emit(
-      state.copyWith(
-        documents: updatedDocs,
-        draft: updatedDraft,
-      ),
-    );
+    emit(state.copyWith(documents: updatedDocs, draft: updatedDraft));
   }
 
   Future<void> _handleSubmit() async {
@@ -365,8 +349,9 @@ class DriverRegistrationViewModel
       draftToSubmit = draftToSubmit.copyWith(licenseExpiry: defaultExpiry);
     }
     if (draftToSubmit.vehicleLicenseExpiry.isEmpty) {
-      draftToSubmit =
-          draftToSubmit.copyWith(vehicleLicenseExpiry: defaultExpiry);
+      draftToSubmit = draftToSubmit.copyWith(
+        vehicleLicenseExpiry: defaultExpiry,
+      );
     }
 
     emit(
@@ -402,11 +387,7 @@ class DriverRegistrationViewModel
   ) async {
     if (state.isSubmitting) return;
 
-    emit(
-      state.copyWith(
-        status: DriverRegistrationStatus.resubmitting,
-      ),
-    );
+    emit(state.copyWith(status: DriverRegistrationStatus.resubmitting));
 
     final result = await resubmitRegistrationUseCase(
       registrationId: registrationId,

@@ -26,8 +26,7 @@ class DriverRegistrationStatusResponseDto {
 
   factory DriverRegistrationStatusResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DriverRegistrationStatusResponseDtoFromJson(json);
+  ) => _$DriverRegistrationStatusResponseDtoFromJson(json);
 
   final String? registrationId;
   final String? phone;

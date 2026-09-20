@@ -25,10 +25,7 @@ class DriverEditVehiclePhotoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outline,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outline, width: Spacing.border),
       ),
       child: Row(
         children: [
@@ -97,10 +94,7 @@ class DriverEditVehiclePhotoCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: color.surface,
               borderRadius: BorderRadius.circular(Spacing.radiusMd),
-              border: Border.all(
-                color: color.outline,
-                width: Spacing.border,
-              ),
+              border: Border.all(color: color.outline, width: Spacing.border),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Spacing.radiusMd),

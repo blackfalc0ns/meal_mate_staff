@@ -10,9 +10,7 @@ class ResetPasswordUseCase {
 
   final AuthRepository _repository;
 
-  Future<ApiResult<String>> call(
-    ResetPasswordRequestEntity request,
-  ) {
+  Future<ApiResult<String>> call(ResetPasswordRequestEntity request) {
     return _repository.resetPassword(request);
   }
 }

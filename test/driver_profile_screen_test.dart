@@ -78,31 +78,35 @@ void main() {
     expect(find.text('Logout'), findsOneWidget);
   });
 
-  testWidgets('tapping logout button shows confirmation dialog and can cancel', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(1080, 2400);
-    tester.view.devicePixelRatio = 2.0;
-    addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets(
+    'tapping logout button shows confirmation dialog and can cancel',
+    (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
-
-    final logoutButton = find.byType(DriverSettingsLogoutButton);
-    await tester.ensureVisible(logoutButton);
-    await tester.tap(find.text('تسجيل الخروج'));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text('هل أنت متأكد من رغبتك في تسجيل الخروج؟'), findsOneWidget);
-
-    final cancelButton = find.text('إلغاء');
-    if (cancelButton.evaluate().isNotEmpty) {
-      await tester.tap(cancelButton);
+      await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsNothing);
-    }
-  });
+
+      final logoutButton = find.byType(DriverSettingsLogoutButton);
+      await tester.ensureVisible(logoutButton);
+      await tester.tap(find.text('تسجيل الخروج'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(
+        find.text('هل أنت متأكد من رغبتك في تسجيل الخروج؟'),
+        findsOneWidget,
+      );
+
+      final cancelButton = find.text('إلغاء');
+      if (cancelButton.evaluate().isNotEmpty) {
+        await tester.tap(cancelButton);
+        await tester.pumpAndSettle();
+        expect(find.byType(AlertDialog), findsNothing);
+      }
+    },
+  );
 
   testWidgets('tapping Help Center or Contact Us triggers support navigation', (
     tester,

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
@@ -41,8 +41,9 @@ void main() {
   }
 
   group('DispatcherDriverDetailsScreen Tests', () {
-    testWidgets('renders all major components and cards in RTL Arabic',
-        (tester) async {
+    testWidgets('renders all major components and cards in RTL Arabic', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
@@ -132,8 +133,9 @@ void main() {
       expect(selectedBox!.boxId, '#BX-10256');
     });
 
-    testWidgets('renders without overflow on narrow viewport (360x720)',
-        (tester) async {
+    testWidgets('renders without overflow on narrow viewport (360x720)', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(360, 720);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() => tester.view.resetPhysicalSize());
@@ -145,8 +147,9 @@ void main() {
       expect(find.byType(DispatcherDriverDetailsScreen), findsOneWidget);
     });
 
-    testWidgets('renders without overflow on extra small viewport (320x640)',
-        (tester) async {
+    testWidgets('renders without overflow on extra small viewport (320x640)', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(320, 640);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() => tester.view.resetPhysicalSize());

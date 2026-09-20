@@ -149,10 +149,13 @@ Future<void> configureDependencies() async {
     () => UploadDriverDocumentUseCase(getIt<DriverRegistrationRepository>()),
   );
   getIt.registerFactory<SubmitDriverRegistrationUseCase>(
-    () => SubmitDriverRegistrationUseCase(getIt<DriverRegistrationRepository>()),
+    () =>
+        SubmitDriverRegistrationUseCase(getIt<DriverRegistrationRepository>()),
   );
   getIt.registerFactory<ResubmitDriverRegistrationUseCase>(
-    () => ResubmitDriverRegistrationUseCase(getIt<DriverRegistrationRepository>()),
+    () => ResubmitDriverRegistrationUseCase(
+      getIt<DriverRegistrationRepository>(),
+    ),
   );
   getIt.registerFactory<DriverRegistrationViewModel>(
     () => DriverRegistrationViewModel(
@@ -167,9 +170,7 @@ Future<void> configureDependencies() async {
     () => AccountStatusRemoteDataSourceImpl(getIt<ApiServices>()),
   );
   getIt.registerLazySingleton<AccountStatusRepository>(
-    () => AccountStatusRepositoryImpl(
-      getIt<AccountStatusRemoteDataSource>(),
-    ),
+    () => AccountStatusRepositoryImpl(getIt<AccountStatusRemoteDataSource>()),
   );
   getIt.registerFactory<GetAccountStatusUseCase>(
     () => GetAccountStatusUseCase(getIt<AccountStatusRepository>()),
@@ -202,10 +203,7 @@ Dio _buildDio() {
   dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true));
 
   tokenInterceptor.attachRefreshService(
-    AuthRefreshService(
-      tokenService: getIt<TokenService>(),
-      dio: dio,
-    ),
+    AuthRefreshService(tokenService: getIt<TokenService>(), dio: dio),
   );
 
   return dio;

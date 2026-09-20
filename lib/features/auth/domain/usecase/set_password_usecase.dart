@@ -11,9 +11,7 @@ class SetPasswordUseCase {
 
   final AuthRepository _repository;
 
-  Future<ApiResult<AuthSessionEntity>> call(
-    SetPasswordRequestEntity request,
-  ) {
+  Future<ApiResult<AuthSessionEntity>> call(SetPasswordRequestEntity request) {
     return _repository.setPassword(request);
   }
 }

@@ -75,8 +75,9 @@ class AuthState {
       isSuccess: isSuccess ?? this.isSuccess,
       role: role ?? this.role,
       phone: phone ?? this.phone,
-      lookupResult:
-          clearLookupResult ? null : (lookupResult ?? this.lookupResult),
+      lookupResult: clearLookupResult
+          ? null
+          : (lookupResult ?? this.lookupResult),
       otpResult: clearOtpResult ? null : (otpResult ?? this.otpResult),
       session: clearSession ? null : (session ?? this.session),
       message: clearFeedback ? null : (message ?? this.message),

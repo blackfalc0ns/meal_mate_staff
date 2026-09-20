@@ -7,10 +7,7 @@ import '../../../extensions/extensions.dart';
 
 /// Card displayed at the bottom of the sidebar showing the driver's active delivery status.
 class SidebarDriverStatusCard extends StatelessWidget {
-  const SidebarDriverStatusCard({
-    super.key,
-    required this.user,
-  });
+  const SidebarDriverStatusCard({super.key, required this.user});
 
   final SidebarUserEntity user;
 
@@ -73,20 +70,14 @@ class SidebarDriverStatusCard extends StatelessWidget {
                     const SizedBox(width: Spacing.xs),
                     Text(
                       statusText,
-                      style: getBoldStyle(
-                        fontSize: 11,
-                        color: color.primary,
-                      ),
+                      style: getBoldStyle(fontSize: 11, color: color.primary),
                     ),
                   ],
                 ),
                 const SizedBox(height: Spacing.xs),
                 Text(
                   subtitle,
-                  style: getRegularStyle(
-                    fontSize: 9,
-                    color: color.onSurface,
-                  ),
+                  style: getRegularStyle(fontSize: 9, color: color.onSurface),
                 ),
               ],
             ),

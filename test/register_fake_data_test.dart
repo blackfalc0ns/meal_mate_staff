@@ -12,9 +12,9 @@ void main() {
     expect(data.vehicle.plateNumber, '54821');
     expect(data.documents, hasLength(5));
     expect(
-      data.documents.where((document) => document.isUploaded).map(
-            (document) => document.id,
-          ),
+      data.documents
+          .where((document) => document.isUploaded)
+          .map((document) => document.id),
       ['driving-license', 'vehicle-photo'],
     );
   });

@@ -84,10 +84,7 @@ void main() {
     await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
-    expect(
-      find.widgetWithText(AppButton, 'Continue'),
-      findsOneWidget,
-    );
+    expect(find.widgetWithText(AppButton, 'Continue'), findsOneWidget);
 
     await tester.ensureVisible(find.text('Continue'));
     await tester.tap(find.text('Continue'));

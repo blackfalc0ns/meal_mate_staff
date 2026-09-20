@@ -61,17 +61,13 @@ void main() {
         home: Builder(
           builder: (context) {
             return TextButton(
-              onPressed: () => context.pushNamedAndRemoveUntil(
-                '/root',
-                (route) => false,
-              ),
+              onPressed: () =>
+                  context.pushNamedAndRemoveUntil('/root', (route) => false),
               child: const Text('Reset'),
             );
           },
         ),
-        routes: {
-          '/root': (context) => const Scaffold(body: Text('RootPage')),
-        },
+        routes: {'/root': (context) => const Scaffold(body: Text('RootPage'))},
       ),
     );
 

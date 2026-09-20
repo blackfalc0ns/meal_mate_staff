@@ -56,18 +56,15 @@ class OperationsReassignedInfo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: Spacing.xs / 2),
-        Icon(
-          Icons.arrow_forward_rounded,
-          size: 11,
-          color: color.primary,
-        ),
+        Icon(Icons.arrow_forward_rounded, size: 11, color: color.primary),
         const SizedBox(width: Spacing.xs / 2),
         // To driver avatar
         CircleAvatar(
           radius: 13,
           backgroundColor: color.surfaceContainerHigh,
-          backgroundImage:
-              toAvatarUrl != null ? AssetImage(toAvatarUrl!) : null,
+          backgroundImage: toAvatarUrl != null
+              ? AssetImage(toAvatarUrl!)
+              : null,
           child: toAvatarUrl == null
               ? Icon(
                   Icons.person_rounded,

@@ -7,10 +7,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_issue_detail_entity.dart';
 
 class DispatcherIssueDetailsDriverCard extends StatelessWidget {
-  const DispatcherIssueDetailsDriverCard({
-    super.key,
-    required this.issue,
-  });
+  const DispatcherIssueDetailsDriverCard({super.key, required this.issue});
 
   final DispatcherIssueDetailEntity issue;
 

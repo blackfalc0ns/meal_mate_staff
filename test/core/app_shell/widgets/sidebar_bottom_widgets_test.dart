@@ -23,8 +23,9 @@ Widget _buildTestApp(Widget child) {
 
 void main() {
   group('Sidebar Bottom Widgets', () {
-    testWidgets('SidebarDriverStatusCard renders driver status info',
-        (tester) async {
+    testWidgets('SidebarDriverStatusCard renders driver status info', (
+      tester,
+    ) async {
       const user = SidebarUserEntity(
         name: 'محمد علي',
         role: UserRole.driver,
@@ -33,9 +34,9 @@ void main() {
         statusSubtitle: 'متاح لتوصيل الطلبات',
       );
 
-      await tester.pumpWidget(_buildTestApp(
-        const SidebarDriverStatusCard(user: user),
-      ));
+      await tester.pumpWidget(
+        _buildTestApp(const SidebarDriverStatusCard(user: user)),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('حالة السائق'), findsOneWidget);
@@ -46,9 +47,9 @@ void main() {
     testWidgets('SidebarLogoutButton triggers callback on tap', (tester) async {
       bool logoutTapped = false;
 
-      await tester.pumpWidget(_buildTestApp(
-        SidebarLogoutButton(onLogout: () => logoutTapped = true),
-      ));
+      await tester.pumpWidget(
+        _buildTestApp(SidebarLogoutButton(onLogout: () => logoutTapped = true)),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('تسجيل الخروج'), findsOneWidget);

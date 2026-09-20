@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/widget/custom_bottom_sheet.dart';
@@ -44,14 +44,17 @@ class DispatcherDriverFilterBottomSheet extends StatefulWidget {
       _DispatcherDriverFilterBottomSheetState();
 }
 
-class _DispatcherDriverFilterBottomSheetState extends State<DispatcherDriverFilterBottomSheet> {
+class _DispatcherDriverFilterBottomSheetState
+    extends State<DispatcherDriverFilterBottomSheet> {
   late DispatcherDriverFilterCriteriaEntity _criteria;
   late final TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
-    _criteria = widget.initialCriteria ?? DispatcherDriverFilterCriteriaEntity.initial();
+    _criteria =
+        widget.initialCriteria ??
+        DispatcherDriverFilterCriteriaEntity.initial();
     _searchController = TextEditingController(text: _criteria.searchQuery);
   }
 
@@ -94,7 +97,10 @@ class _DispatcherDriverFilterBottomSheetState extends State<DispatcherDriverFilt
           onClose: () => Navigator.of(context).maybePop(),
         ),
       ),
-      footer: DispatcherDriverFilterActionButtons(onReset: _onReset, onApply: _onApply),
+      footer: DispatcherDriverFilterActionButtons(
+        onReset: _onReset,
+        onApply: _onApply,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,

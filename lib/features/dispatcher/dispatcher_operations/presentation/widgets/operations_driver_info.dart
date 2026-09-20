@@ -32,8 +32,9 @@ class OperationsDriverInfo extends StatelessWidget {
             CircleAvatar(
               radius: 17,
               backgroundColor: color.surfaceContainerHigh,
-              backgroundImage:
-                  avatarUrl != null ? AssetImage(avatarUrl!) : null,
+              backgroundImage: avatarUrl != null
+                  ? AssetImage(avatarUrl!)
+                  : null,
               child: avatarUrl == null
                   ? Icon(
                       Icons.person_rounded,
@@ -52,10 +53,7 @@ class OperationsDriverInfo extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: color.primary,
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: color.surface,
-                      width: 1.5,
-                    ),
+                    border: Border.all(color: color.surface, width: 1.5),
                   ),
                 ),
               ),

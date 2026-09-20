@@ -83,9 +83,7 @@ void main() {
 
       String? submittedText;
       await tester.pumpWidget(
-        buildSubject(
-          onSubmitMessage: (msg) => submittedText = msg,
-        ),
+        buildSubject(onSubmitMessage: (msg) => submittedText = msg),
       );
       await tester.pumpAndSettle();
 

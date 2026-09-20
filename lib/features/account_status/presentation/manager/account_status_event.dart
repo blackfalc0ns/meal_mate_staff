@@ -5,10 +5,7 @@ sealed class AccountStatusEvent {
 }
 
 class AccountStatusLoadEvent extends AccountStatusEvent {
-  const AccountStatusLoadEvent({
-    this.phone,
-    this.registrationId,
-  });
+  const AccountStatusLoadEvent({this.phone, this.registrationId});
 
   final String? phone;
   final String? registrationId;

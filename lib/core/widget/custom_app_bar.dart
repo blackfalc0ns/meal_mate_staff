@@ -88,7 +88,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     IconData? subtitleIcon,
   }) {
     return CustomAppBar(
-      titleWidget: logo ??
+      titleWidget:
+          logo ??
           Image.asset(
             AppAssets.authHeaderLogo,
             height: 29,
@@ -265,9 +266,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(
-    _effectiveToolbarHeight + _effectiveBottomHeight,
-  );
+  Size get preferredSize =>
+      Size.fromHeight(_effectiveToolbarHeight + _effectiveBottomHeight);
 
   @override
   Widget build(BuildContext context) {

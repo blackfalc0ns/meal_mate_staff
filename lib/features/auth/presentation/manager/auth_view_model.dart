@@ -412,12 +412,7 @@ class AuthViewModel extends Cubit<AuthState> {
   }
 
   Future<void> _restoreSession() async {
-    emit(
-      state.copyWith(
-        isLoading: true,
-        status: AuthStatus.loading,
-      ),
-    );
+    emit(state.copyWith(isLoading: true, status: AuthStatus.loading));
 
     final result = await restoreSessionUseCase();
 

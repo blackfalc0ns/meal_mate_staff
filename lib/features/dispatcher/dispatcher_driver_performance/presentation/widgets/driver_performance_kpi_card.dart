@@ -8,10 +8,7 @@ import '../../domain/entities/driver_performance_kpi_entity.dart';
 import '../../domain/entities/driver_performance_kpi_type.dart';
 
 class DriverPerformanceKpiCard extends StatelessWidget {
-  const DriverPerformanceKpiCard({
-    super.key,
-    required this.item,
-  });
+  const DriverPerformanceKpiCard({super.key, required this.item});
 
   final DriverPerformanceKpiEntity item;
 

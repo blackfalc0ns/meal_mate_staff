@@ -48,7 +48,10 @@ void main() {
       expect(find.byType(DispatcherDriverFilterAreaSection), findsOneWidget);
       expect(find.byType(DispatcherDriverFilterStatusSection), findsOneWidget);
       expect(find.byType(DispatcherDriverFilterRatingSection), findsOneWidget);
-      expect(find.byType(DispatcherDriverFilterDistanceSection), findsOneWidget);
+      expect(
+        find.byType(DispatcherDriverFilterDistanceSection),
+        findsOneWidget,
+      );
       expect(find.byType(DispatcherDriverFilterOrdersSection), findsOneWidget);
       expect(find.byType(DispatcherDriverFilterSearchSection), findsOneWidget);
       expect(find.byType(DispatcherDriverFilterActionButtons), findsOneWidget);

@@ -10,10 +10,7 @@ class AuthRoleChangedEvent extends AuthEvent {
 }
 
 class AuthPhoneLookupEvent extends AuthEvent {
-  const AuthPhoneLookupEvent({
-    required this.phone,
-    required this.role,
-  });
+  const AuthPhoneLookupEvent({required this.phone, required this.role});
 
   final String phone;
   final UserRole role;
@@ -60,10 +57,7 @@ class AuthLoginEvent extends AuthEvent {
 }
 
 class AuthForgotPasswordEvent extends AuthEvent {
-  const AuthForgotPasswordEvent({
-    required this.phone,
-    required this.role,
-  });
+  const AuthForgotPasswordEvent({required this.phone, required this.role});
 
   final String phone;
   final UserRole role;
@@ -86,10 +80,7 @@ class AuthResetPasswordEvent extends AuthEvent {
 }
 
 class AuthResendOtpEvent extends AuthEvent {
-  const AuthResendOtpEvent({
-    required this.phone,
-    required this.role,
-  });
+  const AuthResendOtpEvent({required this.phone, required this.role});
 
   final String phone;
   final UserRole role;

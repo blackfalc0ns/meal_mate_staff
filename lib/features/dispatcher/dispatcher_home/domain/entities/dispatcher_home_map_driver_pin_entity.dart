@@ -1,8 +1,4 @@
-enum DispatcherHomePinStatus {
-  inDelivery,
-  onTheWayToLoad,
-  paused,
-}
+enum DispatcherHomePinStatus { inDelivery, onTheWayToLoad, paused }
 
 class DispatcherHomeMapDriverPinEntity {
   const DispatcherHomeMapDriverPinEntity({

@@ -64,7 +64,8 @@ class DispatcherSupportStatusTabs extends StatelessWidget {
                 status: DispatcherSupportStatus.inProgress,
                 label: locale.supportTabResolving(inProgressCount),
                 icon: Icons.access_time_rounded,
-                isSelected: selectedStatus == DispatcherSupportStatus.inProgress,
+                isSelected:
+                    selectedStatus == DispatcherSupportStatus.inProgress,
               ),
             ),
           ],

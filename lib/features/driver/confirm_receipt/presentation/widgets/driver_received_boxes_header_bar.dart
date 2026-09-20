@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverReceivedBoxesHeaderBar extends StatelessWidget {
-  const DriverReceivedBoxesHeaderBar({
-    super.key,
-    required this.count,
-  });
+  const DriverReceivedBoxesHeaderBar({super.key, required this.count});
 
   final int count;
 

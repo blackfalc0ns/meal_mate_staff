@@ -112,9 +112,7 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: color.dispatcherBadgeNewSurface,
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusPill,
-                        ),
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
                       ),
                       child: Text(
                         driver.statusText,
@@ -132,9 +130,7 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: color.surface,
-                        borderRadius: BorderRadius.circular(
-                          Spacing.radiusPill,
-                        ),
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
                         border: Border.all(color: color.primary),
                       ),
                       child: Row(
@@ -186,7 +182,8 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                                   Flexible(
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
-                                      alignment: AlignmentDirectional.centerStart,
+                                      alignment:
+                                          AlignmentDirectional.centerStart,
                                       child: Text(
                                         locale.assignBoxCurrentLoad,
                                         style: getRegularStyle(
@@ -274,7 +271,8 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                                   Flexible(
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
-                                      alignment: AlignmentDirectional.centerStart,
+                                      alignment:
+                                          AlignmentDirectional.centerStart,
                                       child: Text(
                                         locale.assignBoxExpectedCompletion,
                                         style: getRegularStyle(

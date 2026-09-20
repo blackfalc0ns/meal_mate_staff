@@ -29,11 +29,7 @@ class OperationsCancelledInfo extends StatelessWidget {
             color: color.error.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            Icons.storefront_outlined,
-            size: 18,
-            color: color.error,
-          ),
+          child: Icon(Icons.storefront_outlined, size: 18, color: color.error),
         ),
         const SizedBox(width: Spacing.xs),
         ConstrainedBox(

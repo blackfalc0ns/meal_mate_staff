@@ -15,9 +15,8 @@ class AccountStatusRemoteDataSourceImpl
   Future<DriverRegistrationStatusResponseDto> getRegistrationStatus({
     String? phone,
     String? registrationId,
-  }) =>
-      _apiServices.getDriverRegistrationStatus(
-        phone: phone,
-        registrationId: registrationId,
-      );
+  }) => _apiServices.getDriverRegistrationStatus(
+    phone: phone,
+    registrationId: registrationId,
+  );
 }

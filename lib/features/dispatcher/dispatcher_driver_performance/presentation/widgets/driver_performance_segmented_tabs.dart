@@ -40,7 +40,8 @@ class DriverPerformanceSegmentedTabs extends StatelessWidget {
           Expanded(
             child: DriverPerformanceTabItem(
               title: locale.driverPerformanceTabCompare,
-              isSelected: selectedTab == DriverPerformanceTabType.compareDrivers,
+              isSelected:
+                  selectedTab == DriverPerformanceTabType.compareDrivers,
               onTap: () =>
                   onTabChanged(DriverPerformanceTabType.compareDrivers),
             ),

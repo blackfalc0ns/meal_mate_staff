@@ -28,10 +28,7 @@ void main() {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('ar'), Locale('en')],
-      home: DriverVehicleDetailsScreen(
-        vehicle: vehicle,
-        onEdit: onEdit,
-      ),
+      home: DriverVehicleDetailsScreen(vehicle: vehicle, onEdit: onEdit),
     );
   }
 
@@ -86,27 +83,26 @@ void main() {
       expect(find.text('تعديل'), findsOneWidget);
     });
 
-    testWidgets('renders all major components in English LTR without overflow', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 2.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
+    testWidgets(
+      'renders all major components in English LTR without overflow',
+      (tester) async {
+        tester.view.physicalSize = const Size(1080, 2400);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
 
-      await tester.pumpWidget(
-        buildDetailsSubject(locale: const Locale('en')),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          buildDetailsSubject(locale: const Locale('en')),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('Vehicle Details'), findsOneWidget);
-      expect(find.text('Plate Number'), findsOneWidget);
-      expect(find.text('Note'), findsOneWidget);
-      expect(find.text('Edit'), findsOneWidget);
-    });
+        expect(find.text('Vehicle Details'), findsOneWidget);
+        expect(find.text('Plate Number'), findsOneWidget);
+        expect(find.text('Note'), findsOneWidget);
+        expect(find.text('Edit'), findsOneWidget);
+      },
+    );
 
-    testWidgets('tapping edit button triggers onEdit callback', (
-      tester,
-    ) async {
+    testWidgets('tapping edit button triggers onEdit callback', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(() => tester.view.resetPhysicalSize());
@@ -154,16 +150,12 @@ void main() {
       expect(find.text('حفظ التغييرات'), findsOneWidget);
     });
 
-    testWidgets('renders in English LTR without overflow', (
-      tester,
-    ) async {
+    testWidgets('renders in English LTR without overflow', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(() => tester.view.resetPhysicalSize());
 
-      await tester.pumpWidget(
-        buildEditSubject(locale: const Locale('en')),
-      );
+      await tester.pumpWidget(buildEditSubject(locale: const Locale('en')));
       await tester.pumpAndSettle();
 
       expect(find.text('Edit Vehicle Details'), findsOneWidget);
@@ -172,40 +164,38 @@ void main() {
     });
 
     testWidgets(
-        'save button is disabled initially and enabled after editing a field', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 2.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
+      'save button is disabled initially and enabled after editing a field',
+      (tester) async {
+        tester.view.physicalSize = const Size(1080, 2400);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
 
-      DriverVehicleEntity? savedVehicle;
-      await tester.pumpWidget(
-        buildEditSubject(
-          onSaveSuccess: (vehicle) => savedVehicle = vehicle,
-        ),
-      );
-      await tester.pumpAndSettle();
+        DriverVehicleEntity? savedVehicle;
+        await tester.pumpWidget(
+          buildEditSubject(onSaveSuccess: (vehicle) => savedVehicle = vehicle),
+        );
+        await tester.pumpAndSettle();
 
-      final saveButton = find.text('حفظ التغييرات');
-      await tester.ensureVisible(saveButton);
+        final saveButton = find.text('حفظ التغييرات');
+        await tester.ensureVisible(saveButton);
 
-      // Initially no changes: tapping should NOT save
-      await tester.tap(saveButton);
-      await tester.pump();
-      expect(savedVehicle, isNull);
+        // Initially no changes: tapping should NOT save
+        await tester.tap(saveButton);
+        await tester.pump();
+        expect(savedVehicle, isNull);
 
-      // Edit a field
-      final brandField = find.byType(TextFormField).first;
-      await tester.enterText(brandField, 'تويوتا كامري');
-      await tester.pumpAndSettle();
+        // Edit a field
+        final brandField = find.byType(TextFormField).first;
+        await tester.enterText(brandField, 'تويوتا كامري');
+        await tester.pumpAndSettle();
 
-      // Now save button is enabled
-      await tester.tap(saveButton);
-      await tester.pump();
+        // Now save button is enabled
+        await tester.tap(saveButton);
+        await tester.pump();
 
-      expect(savedVehicle, isNotNull);
-      expect(savedVehicle!.brandAndModel, 'تويوتا كامري');
-    });
+        expect(savedVehicle, isNotNull);
+        expect(savedVehicle!.brandAndModel, 'تويوتا كامري');
+      },
+    );
   });
 }

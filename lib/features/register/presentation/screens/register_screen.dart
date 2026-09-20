@@ -60,41 +60,38 @@ class _FakeRegistrationRepo implements DriverRegistrationRepository {
   @override
   Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(
     File file,
-  ) async =>
-      ApiSuccessResult(
-        data: const DriverFileUploadResultEntity(storageKey: 'key'),
-      );
+  ) async => ApiSuccessResult(
+    data: const DriverFileUploadResultEntity(storageKey: 'key'),
+  );
 
   @override
   Future<ApiResult<DriverRegistrationResultEntity>> submitRegistration(
     DriverRegistrationDraftEntity draft,
-  ) async =>
-      ApiSuccessResult(
-        data: const DriverRegistrationResultEntity(
-          registrationId: 'reg-1',
-          restaurantId: 'res-1',
-          restaurantName: 'Balance Box',
-          phone: '+966501234567',
-          status: 'Submitted',
-          message: 'Submitted',
-        ),
-      );
+  ) async => ApiSuccessResult(
+    data: const DriverRegistrationResultEntity(
+      registrationId: 'reg-1',
+      restaurantId: 'res-1',
+      restaurantName: 'Balance Box',
+      phone: '+966501234567',
+      status: 'Submitted',
+      message: 'Submitted',
+    ),
+  );
 
   @override
   Future<ApiResult<DriverRegistrationResultEntity>> resubmitRegistration({
     required String registrationId,
     required DriverResubmitEntity resubmitData,
-  }) async =>
-      ApiSuccessResult(
-        data: const DriverRegistrationResultEntity(
-          registrationId: 'reg-1',
-          restaurantId: 'res-1',
-          restaurantName: 'Balance Box',
-          phone: '+966501234567',
-          status: 'Submitted',
-          message: 'Submitted',
-        ),
-      );
+  }) async => ApiSuccessResult(
+    data: const DriverRegistrationResultEntity(
+      registrationId: 'reg-1',
+      restaurantId: 'res-1',
+      restaurantName: 'Balance Box',
+      phone: '+966501234567',
+      status: 'Submitted',
+      message: 'Submitted',
+    ),
+  );
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -118,8 +115,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         getRestaurantsUseCase: GetDriverRestaurantsUseCase(fakeRepo),
         uploadDocumentUseCase: UploadDriverDocumentUseCase(fakeRepo),
         submitRegistrationUseCase: SubmitDriverRegistrationUseCase(fakeRepo),
-        resubmitRegistrationUseCase:
-            ResubmitDriverRegistrationUseCase(fakeRepo),
+        resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(
+          fakeRepo,
+        ),
       );
       _isInternalViewModel = true;
     }
@@ -184,7 +182,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               state.status == DriverRegistrationStatus.resubmissionSuccess) {
             CustomSnackbar.showSuccess(
               context: context,
-              message: state.submissionResult?.message ??
+              message:
+                  state.submissionResult?.message ??
                   context.localization.accountStatusTitle,
             );
             context.pushReplacementNamed(
@@ -202,113 +201,106 @@ class _RegisterScreenState extends State<RegisterScreen> {
         builder: (context, state) {
           final content = switch (state.currentStep) {
             1 => RegisterPersonalDataScreen(
-                initialData: state.draft.toPersonalData(),
-                restaurants: state.restaurants,
-                onPersonalDataChanged: (data) {
-                  _viewModel.doIntent(
-                    DriverRegistrationPersonalDataUpdatedEvent(data),
-                  );
-                },
-                onContinue: () {
-                  _viewModel.doIntent(
-                    const DriverRegistrationStepChangedEvent(2),
-                  );
-                },
-                onBackPressed: () => _handleBack(state.currentStep),
-              ),
+              initialData: state.draft.toPersonalData(),
+              restaurants: state.restaurants,
+              onPersonalDataChanged: (data) {
+                _viewModel.doIntent(
+                  DriverRegistrationPersonalDataUpdatedEvent(data),
+                );
+              },
+              onContinue: () {
+                _viewModel.doIntent(
+                  const DriverRegistrationStepChangedEvent(2),
+                );
+              },
+              onBackPressed: () => _handleBack(state.currentStep),
+            ),
             2 => RegisterVehicleDataScreen(
-                initialData: state.draft.toVehicleData(),
-                selectedVehicleColor: state.selectedVehicleColor,
-                ownsVehicle: state.ownsVehicle,
-                onColorSelected: (color) {
-                  _viewModel.doIntent(
-                    DriverRegistrationVehicleDataUpdatedEvent(
-                      vehicleData: state.draft.toVehicleData(),
-                      selectedColor: color,
-                      ownsVehicle: state.ownsVehicle,
-                    ),
-                  );
-                },
-                onOwnsVehicleChanged: (ownsVehicle) {
-                  _viewModel.doIntent(
-                    DriverRegistrationVehicleDataUpdatedEvent(
-                      vehicleData: state.draft.toVehicleData(),
-                      selectedColor: state.selectedVehicleColor,
-                      ownsVehicle: ownsVehicle,
-                    ),
-                  );
-                },
-                onVehicleDataChanged: (data) {
-                  _viewModel.doIntent(
-                    DriverRegistrationVehicleDataUpdatedEvent(
-                      vehicleData: data,
-                      selectedColor: state.selectedVehicleColor,
-                      ownsVehicle: state.ownsVehicle,
-                    ),
-                  );
-                },
-                onContinue: () {
-                  _viewModel.doIntent(
-                    const DriverRegistrationStepChangedEvent(3),
-                  );
-                },
-                onBackPressed: () => _handleBack(state.currentStep),
-              ),
+              initialData: state.draft.toVehicleData(),
+              selectedVehicleColor: state.selectedVehicleColor,
+              ownsVehicle: state.ownsVehicle,
+              onColorSelected: (color) {
+                _viewModel.doIntent(
+                  DriverRegistrationVehicleDataUpdatedEvent(
+                    vehicleData: state.draft.toVehicleData(),
+                    selectedColor: color,
+                    ownsVehicle: state.ownsVehicle,
+                  ),
+                );
+              },
+              onOwnsVehicleChanged: (ownsVehicle) {
+                _viewModel.doIntent(
+                  DriverRegistrationVehicleDataUpdatedEvent(
+                    vehicleData: state.draft.toVehicleData(),
+                    selectedColor: state.selectedVehicleColor,
+                    ownsVehicle: ownsVehicle,
+                  ),
+                );
+              },
+              onVehicleDataChanged: (data) {
+                _viewModel.doIntent(
+                  DriverRegistrationVehicleDataUpdatedEvent(
+                    vehicleData: data,
+                    selectedColor: state.selectedVehicleColor,
+                    ownsVehicle: state.ownsVehicle,
+                  ),
+                );
+              },
+              onContinue: () {
+                _viewModel.doIntent(
+                  const DriverRegistrationStepChangedEvent(3),
+                );
+              },
+              onBackPressed: () => _handleBack(state.currentStep),
+            ),
             3 => RegisterUploadDocumentsScreen(
-                documents: state.documents,
-                selectedImagePaths: state.selectedImagePaths,
-                onDocumentTap: _pickDocumentImage,
-                onSubmit: () {
-                  _viewModel.doIntent(
-                    const DriverRegistrationStepChangedEvent(4),
-                  );
-                },
-                onBackPressed: () => _handleBack(state.currentStep),
-              ),
+              documents: state.documents,
+              selectedImagePaths: state.selectedImagePaths,
+              onDocumentTap: _pickDocumentImage,
+              onSubmit: () {
+                _viewModel.doIntent(
+                  const DriverRegistrationStepChangedEvent(4),
+                );
+              },
+              onBackPressed: () => _handleBack(state.currentStep),
+            ),
             _ => RegisterReviewScreen(
-                reviewData: RegisterReviewData(
-                  personal: state.draft.toPersonalData(),
-                  vehicle: state.draft.toVehicleData(),
-                  documents: state.documents,
-                ),
-                selectedImagePaths: state.selectedImagePaths,
-                onDocumentTap: _pickDocumentImage,
-                onSubmit: () {
-                  if (widget.isResubmission &&
-                      widget.registrationId != null &&
-                      widget.registrationId!.isNotEmpty) {
-                    _viewModel.doIntent(
-                      DriverRegistrationResubmitEvent(
-                        registrationId: widget.registrationId!,
-                        resubmitData: state.draft.toResubmitEntity(),
-                      ),
-                    );
-                  } else {
-                    _viewModel.doIntent(
-                      const DriverRegistrationSubmitEvent(),
-                    );
-                  }
-                },
-                onBackToEdit: () {
-                  _viewModel.doIntent(
-                    const DriverRegistrationStepChangedEvent(3),
-                  );
-                },
-                onBackPressed: () => _handleBack(state.currentStep),
+              reviewData: RegisterReviewData(
+                personal: state.draft.toPersonalData(),
+                vehicle: state.draft.toVehicleData(),
+                documents: state.documents,
               ),
+              selectedImagePaths: state.selectedImagePaths,
+              onDocumentTap: _pickDocumentImage,
+              onSubmit: () {
+                if (widget.isResubmission &&
+                    widget.registrationId != null &&
+                    widget.registrationId!.isNotEmpty) {
+                  _viewModel.doIntent(
+                    DriverRegistrationResubmitEvent(
+                      registrationId: widget.registrationId!,
+                      resubmitData: state.draft.toResubmitEntity(),
+                    ),
+                  );
+                } else {
+                  _viewModel.doIntent(const DriverRegistrationSubmitEvent());
+                }
+              },
+              onBackToEdit: () {
+                _viewModel.doIntent(
+                  const DriverRegistrationStepChangedEvent(3),
+                );
+              },
+              onBackPressed: () => _handleBack(state.currentStep),
+            ),
           };
 
           if (state.isSubmitting) {
             return Stack(
               children: [
                 content,
-                const ModalBarrier(
-                  dismissible: false,
-                  color: Colors.black26,
-                ),
-                const Center(
-                  child: CustomProgressIndicator(),
-                ),
+                const ModalBarrier(dismissible: false, color: Colors.black26),
+                const Center(child: CustomProgressIndicator()),
               ],
             );
           }

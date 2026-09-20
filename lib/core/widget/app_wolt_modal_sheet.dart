@@ -378,7 +378,9 @@ class _PickerContentState extends State<_PickerContent> {
                   vertical: Spacing.sm,
                 ),
                 filled: true,
-                fillColor: color.surfaceContainerHighest.withValues(alpha: 0.35),
+                fillColor: color.surfaceContainerHighest.withValues(
+                  alpha: 0.35,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(Spacing.radiusSm),
                   borderSide: BorderSide(color: color.outlineVariant),
@@ -433,8 +435,9 @@ class _PickerContentState extends State<_PickerContent> {
                             color: isSelected
                                 ? color.primary.withValues(alpha: 0.08)
                                 : Colors.transparent,
-                            borderRadius:
-                                BorderRadius.circular(Spacing.radiusSm),
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusSm,
+                            ),
                           ),
                           child: Row(
                             children: [

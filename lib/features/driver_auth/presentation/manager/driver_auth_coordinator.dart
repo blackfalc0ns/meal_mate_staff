@@ -39,12 +39,12 @@ class DriverAuthCoordinator {
           ),
         );
       case DriverAccountStatusDestination(
-          kind: final kind,
-          registrationId: final registrationId,
-          title: final title,
-          subtitle: final subtitle,
-          canResubmit: final canResubmit,
-        ):
+        kind: final kind,
+        registrationId: final registrationId,
+        title: final title,
+        subtitle: final subtitle,
+        canResubmit: final canResubmit,
+      ):
         context.pushNamed(
           AppRoutes.accountStatus,
           arguments: AccountStatusRouteArgs(

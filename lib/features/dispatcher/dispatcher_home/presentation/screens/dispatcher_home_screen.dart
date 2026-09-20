@@ -39,7 +39,10 @@ class DispatcherHomeScreen extends StatelessWidget {
   final List<DispatcherHomeAreaSummaryEntity> areaSummaries;
   final dynamic alert;
 
-  void _handleQuickAction(BuildContext context, DispatcherHomeQuickActionType type) {
+  void _handleQuickAction(
+    BuildContext context,
+    DispatcherHomeQuickActionType type,
+  ) {
     switch (type) {
       case DispatcherHomeQuickActionType.assignDriver:
         context.pushNamed(AppRoutes.dispatcherOrders);

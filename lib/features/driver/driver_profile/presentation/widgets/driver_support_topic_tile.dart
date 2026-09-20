@@ -77,11 +77,7 @@ class DriverSupportTopicTile extends StatelessWidget {
                     color: color.primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(Spacing.sm),
                   ),
-                  child: Icon(
-                    topic.icon,
-                    color: color.primary,
-                    size: 20,
-                  ),
+                  child: Icon(topic.icon, color: color.primary, size: 20),
                 ),
               ],
             ),

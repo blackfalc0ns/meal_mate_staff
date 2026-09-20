@@ -9,11 +9,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            appBar: CustomAppBar(
-              title: 'عنوان عادي',
-            ),
-          ),
+          home: Scaffold(appBar: CustomAppBar(title: 'عنوان عادي')),
         ),
       );
 
@@ -35,24 +31,25 @@ void main() {
     });
 
     testWidgets(
-        'renders both titleWidget (logo) and title (text) and subtitle together',
-        (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            appBar: CustomAppBar(
-              titleWidget: Icon(Icons.directions_car, key: Key('logo_icon')),
-              title: 'بيانات المركبة',
-              subtitle: 'عرض وتحديث بيانات وسيلة التوصيل',
+      'renders both titleWidget (logo) and title (text) and subtitle together',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              appBar: CustomAppBar(
+                titleWidget: Icon(Icons.directions_car, key: Key('logo_icon')),
+                title: 'بيانات المركبة',
+                subtitle: 'عرض وتحديث بيانات وسيلة التوصيل',
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      expect(find.byKey(const Key('logo_icon')), findsOneWidget);
-      expect(find.text('بيانات المركبة'), findsOneWidget);
-      expect(find.text('عرض وتحديث بيانات وسيلة التوصيل'), findsOneWidget);
-    });
+        expect(find.byKey(const Key('logo_icon')), findsOneWidget);
+        expect(find.text('بيانات المركبة'), findsOneWidget);
+        expect(find.text('عرض وتحديث بيانات وسيلة التوصيل'), findsOneWidget);
+      },
+    );
 
     testWidgets('CustomAppBar.logo factory works with title and subtitle', (
       tester,

@@ -5,8 +5,8 @@ import '../entities/dispatcher_issue_detail_entity.dart';
 class DispatcherIssueDetailFakeData {
   const DispatcherIssueDetailFakeData._();
 
-  static const DispatcherIssueDetailEntity sampleIssueDetail =
-      DispatcherIssueDetailEntity(
+  static const DispatcherIssueDetailEntity
+  sampleIssueDetail = DispatcherIssueDetailEntity(
     id: 'ISSUE-1258',
     title: 'تعطل الدراجة أثناء التوصيل',
     minutesAgo: 12,

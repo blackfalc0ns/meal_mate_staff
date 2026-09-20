@@ -9,10 +9,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_details_entity.dart';
 
 class DriverDetailsProfileCard extends StatelessWidget {
-  const DriverDetailsProfileCard({
-    super.key,
-    required this.driver,
-  });
+  const DriverDetailsProfileCard({super.key, required this.driver});
 
   final DriverDetailsEntity driver;
 

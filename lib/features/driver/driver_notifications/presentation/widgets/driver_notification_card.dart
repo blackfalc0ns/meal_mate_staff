@@ -85,10 +85,7 @@ class DriverNotificationCard extends StatelessWidget {
           padding: const EdgeInsets.all(Spacing.md),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Spacing.cardRadius),
-            border: Border.all(
-              color: color.outline,
-              width: Spacing.border,
-            ),
+            border: Border.all(color: color.outline, width: Spacing.border),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,11 +97,7 @@ class DriverNotificationCard extends StatelessWidget {
                   color: iconBg,
                   borderRadius: BorderRadius.circular(Spacing.radiusSm),
                 ),
-                child: Icon(
-                  icon,
-                  color: iconColor,
-                  size: Spacing.iconSm,
-                ),
+                child: Icon(icon, color: iconColor, size: Spacing.iconSm),
               ),
               const SizedBox(width: Spacing.md),
               Expanded(

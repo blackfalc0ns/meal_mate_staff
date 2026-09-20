@@ -1,5 +1,1 @@
-enum DispatcherNotificationFilterType {
-  all,
-  unread,
-  archive,
-}
+enum DispatcherNotificationFilterType { all, unread, archive }

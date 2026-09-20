@@ -6,10 +6,7 @@ import '../../../extensions/extensions.dart';
 
 /// Outlined logout button displayed at the bottom of the sidebar.
 class SidebarLogoutButton extends StatelessWidget {
-  const SidebarLogoutButton({
-    super.key,
-    this.onLogout,
-  });
+  const SidebarLogoutButton({super.key, this.onLogout});
 
   final VoidCallback? onLogout;
 
@@ -33,10 +30,7 @@ class SidebarLogoutButton extends StatelessWidget {
             height: _buttonHeight,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(_buttonRadius),
-              border: Border.all(
-                color: color.primary,
-                width: 1.2,
-              ),
+              border: Border.all(color: color.primary, width: 1.2),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -49,10 +43,7 @@ class SidebarLogoutButton extends StatelessWidget {
                 const SizedBox(width: Spacing.sm),
                 Text(
                   locale.sidebarLogout,
-                  style: getBoldStyle(
-                    fontSize: 12,
-                    color: color.primary,
-                  ),
+                  style: getBoldStyle(fontSize: 12, color: color.primary),
                 ),
               ],
             ),

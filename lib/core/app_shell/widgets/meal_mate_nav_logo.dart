@@ -22,8 +22,7 @@ class MealMateNavLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final resolvedInactiveColor =
-        inactiveColor ?? color.onSurface;
+    final resolvedInactiveColor = inactiveColor ?? color.onSurface;
 
     return SvgPicture.asset(
       AppAssets.navHome,
@@ -31,10 +30,7 @@ class MealMateNavLogo extends StatelessWidget {
       height: size,
       colorFilter: isSelected
           ? null
-          : ColorFilter.mode(
-              resolvedInactiveColor,
-              BlendMode.srcIn,
-            ),
+          : ColorFilter.mode(resolvedInactiveColor, BlendMode.srcIn),
     );
   }
 }

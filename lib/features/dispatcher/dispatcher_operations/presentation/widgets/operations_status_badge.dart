@@ -23,25 +23,25 @@ class OperationsStatusBadge extends StatelessWidget {
 
     final (String label, Color badgeColor, IconData icon) = switch (status) {
       OperationStatus.completed => (
-          locale.operationsTabCompleted,
-          color.primary,
-          Icons.check_circle_outline_rounded,
-        ),
+        locale.operationsTabCompleted,
+        color.primary,
+        Icons.check_circle_outline_rounded,
+      ),
       OperationStatus.reassigned => (
-          locale.operationsTabReassigned,
-          color.tertiary,
-          Icons.autorenew_rounded,
-        ),
+        locale.operationsTabReassigned,
+        color.tertiary,
+        Icons.autorenew_rounded,
+      ),
       OperationStatus.failed => (
-          locale.operationsTabFailed,
-          color.error,
-          Icons.error_outline_rounded,
-        ),
+        locale.operationsTabFailed,
+        color.error,
+        Icons.error_outline_rounded,
+      ),
       OperationStatus.cancelled => (
-          locale.operationsTabCancelled,
-          color.onSurfaceVariant,
-          Icons.cancel_outlined,
-        ),
+        locale.operationsTabCancelled,
+        color.onSurfaceVariant,
+        Icons.cancel_outlined,
+      ),
     };
 
     return Column(
@@ -56,18 +56,12 @@ class OperationsStatusBadge extends StatelessWidget {
           decoration: BoxDecoration(
             color: badgeColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(Spacing.radiusPill),
-            border: Border.all(
-              color: badgeColor.withValues(alpha: 0.3),
-            ),
+            border: Border.all(color: badgeColor.withValues(alpha: 0.3)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
-                size: 11,
-                color: badgeColor,
-              ),
+              Icon(icon, size: 11, color: badgeColor),
               const SizedBox(width: Spacing.xs / 2),
               Text(
                 label,

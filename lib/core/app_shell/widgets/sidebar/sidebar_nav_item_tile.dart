@@ -9,11 +9,7 @@ import 'sidebar_notification_badge.dart';
 
 /// Single item tile in the sidebar navigation list.
 class SidebarNavItemTile extends StatelessWidget {
-  const SidebarNavItemTile({
-    super.key,
-    required this.item,
-    this.onTap,
-  });
+  const SidebarNavItemTile({super.key, required this.item, this.onTap});
 
   final SidebarItemEntity item;
   final VoidCallback? onTap;
@@ -42,11 +38,7 @@ class SidebarNavItemTile extends StatelessWidget {
         colorFilter: ColorFilter.mode(itemColor, BlendMode.srcIn),
       );
     } else if (item.iconData != null) {
-      leadingIcon = Icon(
-        item.iconData,
-        size: _iconSize,
-        color: itemColor,
-      );
+      leadingIcon = Icon(item.iconData, size: _iconSize, color: itemColor);
     }
 
     return Material(

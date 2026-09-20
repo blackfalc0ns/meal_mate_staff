@@ -8,11 +8,7 @@ import 'dispatcher_drivers_card_metrics_row.dart';
 import 'dispatcher_drivers_card_top_row.dart';
 
 class DispatcherDriversCard extends StatelessWidget {
-  const DispatcherDriversCard({
-    super.key,
-    required this.driver,
-    this.onSelect,
-  });
+  const DispatcherDriversCard({super.key, required this.driver, this.onSelect});
 
   final DispatcherDriverEntity driver;
   final ValueChanged<DispatcherDriverEntity>? onSelect;
@@ -29,9 +25,7 @@ class DispatcherDriversCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.dispatcherCardRadius),
-        border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.6),
-        ),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
       ),
       child: Material(
         color: Colors.transparent,

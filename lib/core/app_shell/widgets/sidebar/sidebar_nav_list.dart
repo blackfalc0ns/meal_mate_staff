@@ -7,11 +7,7 @@ import 'sidebar_nav_item_tile.dart';
 
 /// Navigation list section displaying sidebar items with dividers.
 class SidebarNavList extends StatelessWidget {
-  const SidebarNavList({
-    super.key,
-    required this.items,
-    this.onItemTap,
-  });
+  const SidebarNavList({super.key, required this.items, this.onItemTap});
 
   final List<SidebarItemEntity> items;
   final ValueChanged<SidebarItemEntity>? onItemTap;

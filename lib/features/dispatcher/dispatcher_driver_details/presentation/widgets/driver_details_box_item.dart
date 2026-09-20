@@ -9,11 +9,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_active_box_entity.dart';
 
 class DriverDetailsBoxItem extends StatelessWidget {
-  const DriverDetailsBoxItem({
-    super.key,
-    required this.box,
-    this.onTap,
-  });
+  const DriverDetailsBoxItem({super.key, required this.box, this.onTap});
 
   final DriverActiveBoxEntity box;
   final VoidCallback? onTap;
@@ -55,10 +51,7 @@ class DriverDetailsBoxItem extends StatelessWidget {
                 color: color.primaryContainer.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),
               ),
-              child: Image.asset(
-                box.imageAsset,
-                fit: BoxFit.contain,
-              ),
+              child: Image.asset(box.imageAsset, fit: BoxFit.contain),
             ),
             const SizedBox(width: Spacing.sm),
             // 2. Box details & Customer (Next to 3D box)

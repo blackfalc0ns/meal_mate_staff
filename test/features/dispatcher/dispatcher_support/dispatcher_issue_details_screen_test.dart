@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/fake_data/dispatcher_issue_detail_fake_data.dart';
@@ -30,24 +30,29 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('DispatcherIssueDetailsScreen Tests', () {
-    testWidgets('renders all major components and cards in RTL',
-        (tester) async {
+    testWidgets('renders all major components and cards in RTL', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(390 * 2, 907 * 2);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(
-        _buildTestableWidget(
-          child: const DispatcherIssueDetailsScreen(),
-        ),
+        _buildTestableWidget(child: const DispatcherIssueDetailsScreen()),
       );
       await tester.pumpAndSettle();
 
       expect(find.byType(DispatcherIssueDetailsScreen), findsOneWidget);
       expect(find.byType(DispatcherIssueDetailsHeaderCard), findsOneWidget);
       expect(find.byType(DispatcherIssueDetailsDriverCard), findsOneWidget);
-      expect(find.byType(DispatcherIssueDetailsDescriptionCard), findsOneWidget);
-      expect(find.byType(DispatcherIssueDetailsAttachmentsCard), findsOneWidget);
+      expect(
+        find.byType(DispatcherIssueDetailsDescriptionCard),
+        findsOneWidget,
+      );
+      expect(
+        find.byType(DispatcherIssueDetailsAttachmentsCard),
+        findsOneWidget,
+      );
       expect(find.byType(DispatcherIssueDetailsTripCard), findsOneWidget);
       expect(find.byType(DispatcherIssueDetailsActionButtons), findsOneWidget);
 
@@ -88,8 +93,9 @@ void main() {
       );
     });
 
-    testWidgets('renders properly in LTR English without overflow',
-        (tester) async {
+    testWidgets('renders properly in LTR English without overflow', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(390 * 2, 907 * 2);
       tester.view.devicePixelRatio = 2.0;
       addTearDown(() => tester.view.resetPhysicalSize());

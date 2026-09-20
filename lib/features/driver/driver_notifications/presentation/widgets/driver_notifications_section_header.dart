@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverNotificationsSectionHeader extends StatelessWidget {
-  const DriverNotificationsSectionHeader({
-    super.key,
-    required this.title,
-  });
+  const DriverNotificationsSectionHeader({super.key, required this.title});
 
   final String title;
 
@@ -18,9 +15,7 @@ class DriverNotificationsSectionHeader extends StatelessWidget {
     final color = context.colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: Spacing.xs,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
       child: Text(
         title,
         style: getBoldStyle(

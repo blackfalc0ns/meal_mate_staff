@@ -37,7 +37,9 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
   @override
   void initState() {
     super.initState();
-    _boxes = List.of(widget.initialBoxes ?? DriverAssignedBoxesFakeData.defaultBoxes);
+    _boxes = List.of(
+      widget.initialBoxes ?? DriverAssignedBoxesFakeData.defaultBoxes,
+    );
   }
 
   List<DriverAssignedBoxEntity> get _filteredBoxes {
@@ -46,9 +48,11 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
         return _boxes;
       case DriverBoxesFilterType.readyForDelivery:
         return _boxes
-            .where((b) =>
-                b.status == DriverBoxDeliveryStatus.ready ||
-                b.status == DriverBoxDeliveryStatus.notLoaded)
+            .where(
+              (b) =>
+                  b.status == DriverBoxDeliveryStatus.ready ||
+                  b.status == DriverBoxDeliveryStatus.notLoaded,
+            )
             .toList();
       case DriverBoxesFilterType.delivered:
         return _boxes
@@ -98,7 +102,9 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
       if (index != -1) {
         final current = _boxes[index];
         if (current.status == DriverBoxDeliveryStatus.ready) {
-          _boxes[index] = current.copyWith(status: DriverBoxDeliveryStatus.delivered);
+          _boxes[index] = current.copyWith(
+            status: DriverBoxDeliveryStatus.delivered,
+          );
         }
       }
     });
@@ -156,8 +162,8 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
                       bottom: Spacing.bottomNavHeight + Spacing.md,
                     ),
                     itemCount: currentBoxes.length,
-                    separatorBuilder:
-                        (_, _) => const SizedBox(height: Spacing.sm),
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: Spacing.sm),
                     itemBuilder: (context, index) {
                       final box = currentBoxes[index];
                       return DriverAssignedBoxCard(

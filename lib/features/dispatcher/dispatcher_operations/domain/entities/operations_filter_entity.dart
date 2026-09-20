@@ -40,8 +40,9 @@ class OperationsFilterEntity {
   }) {
     return OperationsFilterEntity(
       searchQuery: searchQuery ?? this.searchQuery,
-      selectedStatus:
-          clearStatus ? null : (selectedStatus ?? this.selectedStatus),
+      selectedStatus: clearStatus
+          ? null
+          : (selectedStatus ?? this.selectedStatus),
       dateRangeLabel: dateRangeLabel ?? this.dateRangeLabel,
       totalCount: totalCount ?? this.totalCount,
       completedCount: completedCount ?? this.completedCount,

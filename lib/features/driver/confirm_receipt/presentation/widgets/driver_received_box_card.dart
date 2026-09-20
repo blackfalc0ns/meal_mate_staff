@@ -7,10 +7,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_received_box_item_entity.dart';
 
 class DriverReceivedBoxCard extends StatelessWidget {
-  const DriverReceivedBoxCard({
-    super.key,
-    required this.item,
-  });
+  const DriverReceivedBoxCard({super.key, required this.item});
 
   final DriverReceivedBoxItemEntity item;
 
@@ -30,10 +27,7 @@ class DriverReceivedBoxCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outline,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outline, width: Spacing.border),
       ),
       child: Row(
         children: [
@@ -44,10 +38,7 @@ class DriverReceivedBoxCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: color.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(Spacing.radiusSm),
-              border: Border.all(
-                color: color.outline,
-                width: Spacing.hairline,
-              ),
+              border: Border.all(color: color.outline, width: Spacing.hairline),
             ),
             child: Text(
               '${item.indexNumber}',

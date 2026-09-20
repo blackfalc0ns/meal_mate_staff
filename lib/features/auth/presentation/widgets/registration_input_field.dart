@@ -82,10 +82,7 @@ class RegistrationInputField extends StatelessWidget {
                           vertical: Spacing.sm,
                         ),
                         prefixIconConstraints: prefixIcon != null
-                            ? const BoxConstraints(
-                                minWidth: 38,
-                                minHeight: 38,
-                              )
+                            ? const BoxConstraints(minWidth: 38, minHeight: 38)
                             : null,
                         prefixIcon: prefixIcon == null
                             ? null
@@ -100,7 +97,8 @@ class RegistrationInputField extends StatelessWidget {
                                 color: color.onSurfaceVariant,
                                 size: Spacing.iconMd,
                               )
-                            : (isPicker && (showPickerArrow ?? (prefixIcon == null)))
+                            : (isPicker &&
+                                  (showPickerArrow ?? (prefixIcon == null)))
                             ? Icon(
                                 Icons.keyboard_arrow_down_rounded,
                                 color: color.onSurfaceVariant,

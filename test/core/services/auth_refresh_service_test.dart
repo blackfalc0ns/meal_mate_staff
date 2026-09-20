@@ -51,10 +51,7 @@ void main() {
               handler.reject(
                 DioException(
                   requestOptions: options,
-                  response: Response(
-                    requestOptions: options,
-                    statusCode: 401,
-                  ),
+                  response: Response(requestOptions: options, statusCode: 401),
                 ),
               );
               return;
@@ -65,10 +62,7 @@ void main() {
       ),
     );
 
-    refreshService = AuthRefreshService(
-      tokenService: tokenService,
-      dio: dio,
-    );
+    refreshService = AuthRefreshService(tokenService: tokenService, dio: dio);
   });
 
   group('AuthRefreshService Tests', () {

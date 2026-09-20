@@ -46,28 +46,28 @@ class DispatcherDriversAvatarWithStatus extends StatelessWidget {
             child: ClipOval(
               child: hasAvatar
                   ? (avatarUrl!.startsWith('http')
-                      ? Image.network(
-                          avatarUrl!,
-                          fit: BoxFit.cover,
-                          width: Spacing.dispatcherDriverAvatarSize,
-                          height: Spacing.dispatcherDriverAvatarSize,
-                          errorBuilder: (_, _, _) => Icon(
-                            Icons.person_rounded,
-                            size: Spacing.iconMd,
-                            color: color.primary,
-                          ),
-                        )
-                      : Image.asset(
-                          avatarUrl!,
-                          fit: BoxFit.cover,
-                          width: Spacing.dispatcherDriverAvatarSize,
-                          height: Spacing.dispatcherDriverAvatarSize,
-                          errorBuilder: (_, _, _) => Icon(
-                            Icons.person_rounded,
-                            size: Spacing.iconMd,
-                            color: color.primary,
-                          ),
-                        ))
+                        ? Image.network(
+                            avatarUrl!,
+                            fit: BoxFit.cover,
+                            width: Spacing.dispatcherDriverAvatarSize,
+                            height: Spacing.dispatcherDriverAvatarSize,
+                            errorBuilder: (_, _, _) => Icon(
+                              Icons.person_rounded,
+                              size: Spacing.iconMd,
+                              color: color.primary,
+                            ),
+                          )
+                        : Image.asset(
+                            avatarUrl!,
+                            fit: BoxFit.cover,
+                            width: Spacing.dispatcherDriverAvatarSize,
+                            height: Spacing.dispatcherDriverAvatarSize,
+                            errorBuilder: (_, _, _) => Icon(
+                              Icons.person_rounded,
+                              size: Spacing.iconMd,
+                              color: color.primary,
+                            ),
+                          ))
                   : Icon(
                       Icons.person_rounded,
                       size: Spacing.iconMd,

@@ -54,11 +54,7 @@ class DriverSupportContactCard extends StatelessWidget {
                     color: color.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    icon,
-                    color: color.primary,
-                    size: Spacing.iconMd,
-                  ),
+                  child: Icon(icon, color: color.primary, size: Spacing.iconMd),
                 ),
                 const SizedBox(height: Spacing.sm),
                 Text(

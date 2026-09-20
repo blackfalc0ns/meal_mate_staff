@@ -31,8 +31,7 @@ class DispatcherNotificationsFakeData {
       id: 'NOTIF-3',
       type: DispatcherNotificationType.driverCompleted,
       title: 'السائق أحمد أكمل كل بوكساته',
-      description:
-          'السائق أحمد حسن أكمل استلام جميع البوكسات (5 بوكسات) بنجاح',
+      description: 'السائق أحمد حسن أكمل استلام جميع البوكسات (5 بوكسات) بنجاح',
       timeAgo: 'منذ 12 دقيقة',
       iconAsset: AppAssets.notificationIconUser,
       isUnread: true,

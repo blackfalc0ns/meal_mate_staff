@@ -27,13 +27,12 @@ class _FakeAccountStatusRepo implements AccountStatusRepository {
   Future<ApiResult<DriverRegistrationStatusEntity>> getRegistrationStatus({
     String? phone,
     String? registrationId,
-  }) async =>
-      ApiSuccessResult(
-        data: const DriverRegistrationStatusEntity(
-          registrationId: 'reg-1',
-          kind: AccountStatusKind.underReview,
-        ),
-      );
+  }) async => ApiSuccessResult(
+    data: const DriverRegistrationStatusEntity(
+      registrationId: 'reg-1',
+      kind: AccountStatusKind.underReview,
+    ),
+  );
 }
 
 class AccountStatusScreen extends StatefulWidget {
@@ -150,10 +149,7 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
       return;
     }
 
-    context.pushNamedAndRemoveUntil(
-      AppRoutes.login,
-      (route) => false,
-    );
+    context.pushNamedAndRemoveUntil(AppRoutes.login, (route) => false);
   }
 
   @override
@@ -189,9 +185,7 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
           if (state.isLoading && !state.hasEntity) {
             return Scaffold(
               backgroundColor: color.surface,
-              body: const Center(
-                child: CustomProgressIndicator(),
-              ),
+              body: const Center(child: CustomProgressIndicator()),
             );
           }
 
@@ -201,7 +195,8 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
               backgroundColor: color.surface,
               body: Center(
                 child: ApiErrorWidget(
-                  exception: state.failure?.exception ??
+                  exception:
+                      state.failure?.exception ??
                       ApiException(
                         errorType: ApiErrorType.unknown,
                         message: state.errorMessage ?? 'An error occurred',
@@ -244,13 +239,8 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
             return Stack(
               children: [
                 content,
-                const ModalBarrier(
-                  dismissible: false,
-                  color: Colors.black26,
-                ),
-                const Center(
-                  child: CustomProgressIndicator(),
-                ),
+                const ModalBarrier(dismissible: false, color: Colors.black26),
+                const Center(child: CustomProgressIndicator()),
               ],
             );
           }

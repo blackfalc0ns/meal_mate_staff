@@ -23,11 +23,7 @@ class AppShellTabPlaceholder extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: Spacing.iconLg,
-            color: color.onSurfaceVariant,
-          ),
+          Icon(icon, size: Spacing.iconLg, color: color.onSurfaceVariant),
           const SizedBox(height: Spacing.sm),
           Text(
             label,

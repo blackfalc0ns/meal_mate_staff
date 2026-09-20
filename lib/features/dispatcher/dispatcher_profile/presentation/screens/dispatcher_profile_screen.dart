@@ -115,8 +115,7 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
               DispatcherProfileAdminCard(profile: _profile),
               const SizedBox(height: Spacing.md),
               DispatcherProfileOperationsCard(
-                onTap: () =>
-                    context.pushNamed(AppRoutes.dispatcherOperations),
+                onTap: () => context.pushNamed(AppRoutes.dispatcherOperations),
               ),
               const SizedBox(height: Spacing.md),
               DispatcherProfileDriverPerformanceCard(

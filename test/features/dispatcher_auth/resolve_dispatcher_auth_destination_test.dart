@@ -6,52 +6,64 @@ import 'package:meal_mate_delivery/features/dispatcher_auth/domain/resolve_dispa
 
 void main() {
   group('resolveDispatcherAuthDestination Table-Driven Tests', () {
-    test('when delivery manager account does not exist -> returns DispatcherAccountNotFoundDestination', () {
-      const lookup = PhoneLookupResultEntity(
-        exists: false,
-        isFirstTimeSetup: false,
-        role: UserRole.operations,
-        phone: '+96550999888',
-      );
+    test(
+      'when delivery manager account does not exist -> returns DispatcherAccountNotFoundDestination',
+      () {
+        const lookup = PhoneLookupResultEntity(
+          exists: false,
+          isFirstTimeSetup: false,
+          role: UserRole.operations,
+          phone: '+96550999888',
+        );
 
-      final destination = resolveDispatcherAuthDestination(lookup);
-      expect(destination, isA<DispatcherAccountNotFoundDestination>());
-      expect((destination as DispatcherAccountNotFoundDestination).phone, '+96550999888');
-    });
+        final destination = resolveDispatcherAuthDestination(lookup);
+        expect(destination, isA<DispatcherAccountNotFoundDestination>());
+        expect(
+          (destination as DispatcherAccountNotFoundDestination).phone,
+          '+96550999888',
+        );
+      },
+    );
 
-    test('when isFirstTimeSetup is true -> returns DispatcherFirstTimeOtpDestination', () {
-      const lookup = PhoneLookupResultEntity(
-        exists: true,
-        isFirstTimeSetup: true,
-        role: UserRole.operations,
-        phone: '+96550999888',
-        fullName: 'Operations Manager',
-        restaurantName: 'Protein Lab',
-      );
+    test(
+      'when isFirstTimeSetup is true -> returns DispatcherFirstTimeOtpDestination',
+      () {
+        const lookup = PhoneLookupResultEntity(
+          exists: true,
+          isFirstTimeSetup: true,
+          role: UserRole.operations,
+          phone: '+96550999888',
+          fullName: 'Operations Manager',
+          restaurantName: 'Protein Lab',
+        );
 
-      final destination = resolveDispatcherAuthDestination(lookup);
-      expect(destination, isA<DispatcherFirstTimeOtpDestination>());
-      final otpDest = destination as DispatcherFirstTimeOtpDestination;
-      expect(otpDest.phone, '+96550999888');
-      expect(otpDest.fullName, 'Operations Manager');
-      expect(otpDest.restaurantName, 'Protein Lab');
-    });
+        final destination = resolveDispatcherAuthDestination(lookup);
+        expect(destination, isA<DispatcherFirstTimeOtpDestination>());
+        final otpDest = destination as DispatcherFirstTimeOtpDestination;
+        expect(otpDest.phone, '+96550999888');
+        expect(otpDest.fullName, 'Operations Manager');
+        expect(otpDest.restaurantName, 'Protein Lab');
+      },
+    );
 
-    test('when manager exists and isFirstTimeSetup is false -> returns DispatcherPasswordLoginDestination', () {
-      const lookup = PhoneLookupResultEntity(
-        exists: true,
-        isFirstTimeSetup: false,
-        role: UserRole.operations,
-        phone: '+96550999888',
-        fullName: 'Existing Manager',
-        status: 'Active',
-      );
+    test(
+      'when manager exists and isFirstTimeSetup is false -> returns DispatcherPasswordLoginDestination',
+      () {
+        const lookup = PhoneLookupResultEntity(
+          exists: true,
+          isFirstTimeSetup: false,
+          role: UserRole.operations,
+          phone: '+96550999888',
+          fullName: 'Existing Manager',
+          status: 'Active',
+        );
 
-      final destination = resolveDispatcherAuthDestination(lookup);
-      expect(destination, isA<DispatcherPasswordLoginDestination>());
-      final passDest = destination as DispatcherPasswordLoginDestination;
-      expect(passDest.phone, '+96550999888');
-      expect(passDest.fullName, 'Existing Manager');
-    });
+        final destination = resolveDispatcherAuthDestination(lookup);
+        expect(destination, isA<DispatcherPasswordLoginDestination>());
+        final passDest = destination as DispatcherPasswordLoginDestination;
+        expect(passDest.phone, '+96550999888');
+        expect(passDest.fullName, 'Existing Manager');
+      },
+    );
   });
 }

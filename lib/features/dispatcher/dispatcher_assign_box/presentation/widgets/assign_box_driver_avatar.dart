@@ -28,10 +28,7 @@ class AssignBoxDriverAvatar extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color.surface,
-            border: Border.all(
-              color: color.primary,
-              width: Spacing.border,
-            ),
+            border: Border.all(color: color.primary, width: Spacing.border),
           ),
           child: Center(
             child: Icon(

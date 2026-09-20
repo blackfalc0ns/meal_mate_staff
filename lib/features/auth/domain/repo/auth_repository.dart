@@ -23,21 +23,13 @@ abstract interface class AuthRepository {
     SetPasswordRequestEntity request,
   );
 
-  Future<ApiResult<AuthSessionEntity>> login(
-    StaffLoginRequestEntity request,
-  );
+  Future<ApiResult<AuthSessionEntity>> login(StaffLoginRequestEntity request);
 
-  Future<ApiResult<String>> forgotPassword(
-    ForgotPasswordRequestEntity request,
-  );
+  Future<ApiResult<String>> forgotPassword(ForgotPasswordRequestEntity request);
 
-  Future<ApiResult<String>> resetPassword(
-    ResetPasswordRequestEntity request,
-  );
+  Future<ApiResult<String>> resetPassword(ResetPasswordRequestEntity request);
 
-  Future<ApiResult<String>> resendOtp(
-    ResendOtpRequestEntity request,
-  );
+  Future<ApiResult<String>> resendOtp(ResendOtpRequestEntity request);
 
   Future<ApiResult<AuthSessionEntity?>> restoreSession();
 

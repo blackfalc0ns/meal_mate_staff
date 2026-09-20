@@ -22,49 +22,52 @@ Widget _buildTestApp(Widget child, {Locale locale = const Locale('ar')}) {
 
 void main() {
   group('Sidebar Navigation Widgets', () {
-    testWidgets('SidebarNavItemTile renders active state with start indicator',
-        (tester) async {
-      bool tapped = false;
-      final activeItem = SidebarItemEntity(
-        id: 'home',
-        title: 'الرئيسية',
-        iconData: Icons.home_rounded,
-        isSelected: true,
-      );
+    testWidgets(
+      'SidebarNavItemTile renders active state with start indicator',
+      (tester) async {
+        bool tapped = false;
+        final activeItem = SidebarItemEntity(
+          id: 'home',
+          title: 'الرئيسية',
+          iconData: Icons.home_rounded,
+          isSelected: true,
+        );
 
-      await tester.pumpWidget(_buildTestApp(
-        SidebarNavItemTile(
-          item: activeItem,
-          onTap: () => tapped = true,
-        ),
-      ));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          _buildTestApp(
+            SidebarNavItemTile(item: activeItem, onTap: () => tapped = true),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('الرئيسية'), findsOneWidget);
-      expect(find.byIcon(Icons.home_rounded), findsOneWidget);
+        expect(find.text('الرئيسية'), findsOneWidget);
+        expect(find.byIcon(Icons.home_rounded), findsOneWidget);
 
-      await tester.tap(find.text('الرئيسية'));
-      expect(tapped, true);
-    });
+        await tester.tap(find.text('الرئيسية'));
+        expect(tapped, true);
+      },
+    );
 
-    testWidgets('SidebarNavItemTile renders inactive state with badge and chevron',
-        (tester) async {
-      final inactiveItem = SidebarItemEntity(
-        id: 'notifications',
-        title: 'الإشعارات',
-        iconData: Icons.notifications_rounded,
-        badgeCount: 3,
-        isSelected: false,
-      );
+    testWidgets(
+      'SidebarNavItemTile renders inactive state with badge and chevron',
+      (tester) async {
+        final inactiveItem = SidebarItemEntity(
+          id: 'notifications',
+          title: 'الإشعارات',
+          iconData: Icons.notifications_rounded,
+          badgeCount: 3,
+          isSelected: false,
+        );
 
-      await tester.pumpWidget(_buildTestApp(
-        SidebarNavItemTile(item: inactiveItem),
-      ));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          _buildTestApp(SidebarNavItemTile(item: inactiveItem)),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('الإشعارات'), findsOneWidget);
-      expect(find.text('3'), findsOneWidget);
-    });
+        expect(find.text('الإشعارات'), findsOneWidget);
+        expect(find.text('3'), findsOneWidget);
+      },
+    );
 
     testWidgets('SidebarNavList renders items with dividers', (tester) async {
       SidebarItemEntity? selectedItem;
@@ -82,12 +85,14 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(_buildTestApp(
-        SidebarNavList(
-          items: items,
-          onItemTap: (item) => selectedItem = item,
+      await tester.pumpWidget(
+        _buildTestApp(
+          SidebarNavList(
+            items: items,
+            onItemTap: (item) => selectedItem = item,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('الرئيسية'), findsOneWidget);

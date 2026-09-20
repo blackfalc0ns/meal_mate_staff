@@ -9,10 +9,7 @@ import '../../domain/entities/driver_performance_distribution_category.dart';
 import '../../domain/entities/driver_performance_distribution_item_entity.dart';
 
 class DriverPerformanceLegendRow extends StatelessWidget {
-  const DriverPerformanceLegendRow({
-    super.key,
-    required this.item,
-  });
+  const DriverPerformanceLegendRow({super.key, required this.item});
 
   final DriverPerformanceDistributionItemEntity item;
 
@@ -63,10 +60,7 @@ class DriverPerformanceLegendRow extends StatelessWidget {
           Container(
             width: 7,
             height: 7,
-            decoration: BoxDecoration(
-              color: dotColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
           ),
           const SizedBox(width: Spacing.xs),
           Expanded(

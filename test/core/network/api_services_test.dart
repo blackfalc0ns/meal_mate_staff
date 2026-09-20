@@ -97,10 +97,7 @@ void main() {
 
     test('forgotPassword hits POST EndPoints.forgotPassword', () async {
       await apiServices.forgotPassword(
-        const ForgotPasswordRequestDto(
-          phone: '+966501234567',
-          role: 'Driver',
-        ),
+        const ForgotPasswordRequestDto(phone: '+966501234567', role: 'Driver'),
       );
       expect(capturedOptions.method, 'POST');
       expect(capturedOptions.path, EndPoints.forgotPassword);
@@ -122,10 +119,7 @@ void main() {
 
     test('resendOtp hits POST EndPoints.resendOtp', () async {
       await apiServices.resendOtp(
-        const ResendOtpRequestDto(
-          phone: '+966501234567',
-          role: 'Driver',
-        ),
+        const ResendOtpRequestDto(phone: '+966501234567', role: 'Driver'),
       );
       expect(capturedOptions.method, 'POST');
       expect(capturedOptions.path, EndPoints.resendOtp);
@@ -145,56 +139,70 @@ void main() {
       expect(capturedOptions.path, EndPoints.driverRestaurants);
     });
 
-    test('submitDriverRegistration hits POST EndPoints.driverRegistration', () async {
-      await apiServices.submitDriverRegistration(
-        const DriverRegistrationRequestDto(
-          restaurantId: 'rest-1',
-          fullNameAr: 'أحمد',
-          fullNameEn: 'Ahmed',
+    test(
+      'submitDriverRegistration hits POST EndPoints.driverRegistration',
+      () async {
+        await apiServices.submitDriverRegistration(
+          const DriverRegistrationRequestDto(
+            restaurantId: 'rest-1',
+            fullNameAr: 'أحمد',
+            fullNameEn: 'Ahmed',
+            phone: '+966501234567',
+            nationalId: '1234567890',
+            nationalIdExpiry: '2029-01-01T00:00:00Z',
+            nationality: 'Saudi',
+            vehicleType: 'Car',
+            vehicleModel: 'Camry',
+            vehiclePlate: '1234',
+            vehicleYear: 2023,
+            isVehicleOwned: true,
+            licenseNumber: 'LIC-1',
+            licenseExpiry: '2029-01-01T00:00:00Z',
+            vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
+            nationalIdFrontStorageKey: 'key1',
+            nationalIdBackStorageKey: 'key2',
+            drivingLicenseFrontStorageKey: 'key3',
+            drivingLicenseBackStorageKey: 'key4',
+            vehicleRegistrationStorageKey: 'key5',
+          ),
+        );
+        expect(capturedOptions.method, 'POST');
+        expect(capturedOptions.path, EndPoints.driverRegistration);
+      },
+    );
+
+    test(
+      'getDriverRegistrationStatus hits GET EndPoints.driverRegistrationStatus with query parameters',
+      () async {
+        await apiServices.getDriverRegistrationStatus(
           phone: '+966501234567',
-          nationalId: '1234567890',
-          nationalIdExpiry: '2029-01-01T00:00:00Z',
-          nationality: 'Saudi',
-          vehicleType: 'Car',
-          vehicleModel: 'Camry',
-          vehiclePlate: '1234',
-          vehicleYear: 2023,
-          isVehicleOwned: true,
-          licenseNumber: 'LIC-1',
-          licenseExpiry: '2029-01-01T00:00:00Z',
-          vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
-          nationalIdFrontStorageKey: 'key1',
-          nationalIdBackStorageKey: 'key2',
-          drivingLicenseFrontStorageKey: 'key3',
-          drivingLicenseBackStorageKey: 'key4',
-          vehicleRegistrationStorageKey: 'key5',
-        ),
-      );
-      expect(capturedOptions.method, 'POST');
-      expect(capturedOptions.path, EndPoints.driverRegistration);
-    });
+          registrationId: 'reg-123',
+        );
+        expect(capturedOptions.method, 'GET');
+        expect(capturedOptions.path, EndPoints.driverRegistrationStatus);
+        expect(capturedOptions.queryParameters['phone'], '+966501234567');
+        expect(capturedOptions.queryParameters['registrationId'], 'reg-123');
+      },
+    );
 
-    test('getDriverRegistrationStatus hits GET EndPoints.driverRegistrationStatus with query parameters', () async {
-      await apiServices.getDriverRegistrationStatus(
-        phone: '+966501234567',
-        registrationId: 'reg-123',
-      );
-      expect(capturedOptions.method, 'GET');
-      expect(capturedOptions.path, EndPoints.driverRegistrationStatus);
-      expect(capturedOptions.queryParameters['phone'], '+966501234567');
-      expect(capturedOptions.queryParameters['registrationId'], 'reg-123');
-    });
-
-    test('resubmitDriverRegistration hits POST EndPoints.driverRegistrationResubmit', () async {
-      await apiServices.resubmitDriverRegistration(
-        'reg-123',
-        const DriverResubmitRequestDto(vehicleLicenseExpiry: '2029-01-01T00:00:00Z'),
-      );
-      expect(capturedOptions.method, 'POST');
-      expect(
-        capturedOptions.path,
-        EndPoints.driverRegistrationResubmit.replaceAll('{registrationId}', 'reg-123'),
-      );
-    });
+    test(
+      'resubmitDriverRegistration hits POST EndPoints.driverRegistrationResubmit',
+      () async {
+        await apiServices.resubmitDriverRegistration(
+          'reg-123',
+          const DriverResubmitRequestDto(
+            vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
+          ),
+        );
+        expect(capturedOptions.method, 'POST');
+        expect(
+          capturedOptions.path,
+          EndPoints.driverRegistrationResubmit.replaceAll(
+            '{registrationId}',
+            'reg-123',
+          ),
+        );
+      },
+    );
   });
 }

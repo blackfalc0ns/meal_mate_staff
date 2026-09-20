@@ -26,7 +26,6 @@ class DispatcherDriversHeader extends StatelessWidget
       primary: false,
       showBackButton: false,
       centerTitle: false,
-      subtitle: locale.driversSubtitle,
       leading: Padding(
         padding: const EdgeInsetsDirectional.only(start: Spacing.base),
         child: Center(

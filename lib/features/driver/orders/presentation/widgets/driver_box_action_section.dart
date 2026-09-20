@@ -33,10 +33,7 @@ class DriverBoxActionSection extends StatelessWidget {
     final message = currentStatus == DriverBoxDeliveryStatus.notLoaded
         ? locale.driverCompleteAction.replaceAll('\n', ' ')
         : locale.driverActionStartDelivery;
-    CustomSnackbar.showSuccess(
-      context: context,
-      message: message,
-    );
+    CustomSnackbar.showSuccess(context: context, message: message);
   }
 
   @override
@@ -67,11 +64,8 @@ class DriverBoxActionSection extends StatelessWidget {
       case DriverBoxDeliveryStatus.notLoaded:
         return AppButton(
           text: locale.driverCompleteAction,
-          onPressed: () => _handleTap(
-            context,
-            DriverBoxDeliveryStatus.notLoaded,
-            locale,
-          ),
+          onPressed: () =>
+              _handleTap(context, DriverBoxDeliveryStatus.notLoaded, locale),
           variant: AppButtonVariant.outlined,
           isExpanded: false,
           height: Spacing.dispatcherActionBtnSmallHeight,
@@ -91,10 +85,7 @@ class DriverBoxActionSection extends StatelessWidget {
             AppAssets.driverGestureTap,
             width: Spacing.iconSm,
             height: Spacing.iconSm,
-            colorFilter: ColorFilter.mode(
-              color.primary,
-              BlendMode.srcIn,
-            ),
+            colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
           ),
           iconGap: Spacing.xs,
         );
@@ -102,11 +93,8 @@ class DriverBoxActionSection extends StatelessWidget {
       case DriverBoxDeliveryStatus.ready:
         return AppButton(
           text: locale.driverActionStartDelivery,
-          onPressed: () => _handleTap(
-            context,
-            DriverBoxDeliveryStatus.ready,
-            locale,
-          ),
+          onPressed: () =>
+              _handleTap(context, DriverBoxDeliveryStatus.ready, locale),
           variant: AppButtonVariant.outlined,
           isExpanded: false,
           height: Spacing.dispatcherActionBtnSmallHeight,
@@ -126,10 +114,7 @@ class DriverBoxActionSection extends StatelessWidget {
             AppAssets.navDelivery,
             width: Spacing.iconSm,
             height: Spacing.iconSm,
-            colorFilter: ColorFilter.mode(
-              color.primary,
-              BlendMode.srcIn,
-            ),
+            colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
           ),
           iconGap: Spacing.xs,
         );

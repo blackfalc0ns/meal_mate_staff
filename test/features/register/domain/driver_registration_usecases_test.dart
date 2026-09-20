@@ -24,9 +24,12 @@ import 'package:meal_mate_delivery/features/register/domain/usecase/upload_drive
 class FakeDriverRegistrationRemoteDataSource
     implements DriverRegistrationRemoteDataSource {
   List<DriverRestaurantResponseDto> restaurantsResponse = [];
-  DriverFileUploadResponseDto uploadResponse = const DriverFileUploadResponseDto();
-  DriverRegistrationResponseDto submitResponse = const DriverRegistrationResponseDto();
-  DriverRegistrationResponseDto resubmitResponse = const DriverRegistrationResponseDto();
+  DriverFileUploadResponseDto uploadResponse =
+      const DriverFileUploadResponseDto();
+  DriverRegistrationResponseDto submitResponse =
+      const DriverRegistrationResponseDto();
+  DriverRegistrationResponseDto resubmitResponse =
+      const DriverRegistrationResponseDto();
   Exception? errorToThrow;
 
   @override
@@ -65,13 +68,13 @@ class FakeDriverRegistrationRepository implements DriverRegistrationRepository {
       const DriverFileUploadResultEntity(storageKey: 'fake-key');
   DriverRegistrationResultEntity registrationResult =
       const DriverRegistrationResultEntity(
-    registrationId: 'reg-1',
-    restaurantId: 'res-1',
-    restaurantName: 'Test',
-    phone: '+966500000000',
-    status: 'Submitted',
-    message: 'Success',
-  );
+        registrationId: 'reg-1',
+        restaurantId: 'res-1',
+        restaurantName: 'Test',
+        phone: '+966500000000',
+        status: 'Submitted',
+        message: 'Success',
+      );
 
   @override
   Future<ApiResult<List<DriverRestaurantEntity>>> getRestaurants() async {
@@ -79,7 +82,9 @@ class FakeDriverRegistrationRepository implements DriverRegistrationRepository {
   }
 
   @override
-  Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(File file) async {
+  Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(
+    File file,
+  ) async {
     return ApiSuccessResult(data: uploadResult);
   }
 
@@ -121,7 +126,8 @@ void main() {
       final result = await useCase();
 
       expect(result, isA<ApiSuccessResult<List<DriverRestaurantEntity>>>());
-      final data = (result as ApiSuccessResult<List<DriverRestaurantEntity>>).data;
+      final data =
+          (result as ApiSuccessResult<List<DriverRestaurantEntity>>).data;
       expect(data.first.id, 'res-1');
       expect(data.first.tradeName, 'Burger');
     });
@@ -131,31 +137,40 @@ void main() {
       final result = await useCase(File('dummy.png'));
 
       expect(result, isA<ApiSuccessResult<DriverFileUploadResultEntity>>());
-      final data = (result as ApiSuccessResult<DriverFileUploadResultEntity>).data;
+      final data =
+          (result as ApiSuccessResult<DriverFileUploadResultEntity>).data;
       expect(data.storageKey, 'fake-key');
     });
 
-    test('SubmitDriverRegistrationUseCase returns registration result entity', () async {
-      final useCase = SubmitDriverRegistrationUseCase(fakeRepo);
-      final result = await useCase(const DriverRegistrationDraftEntity());
+    test(
+      'SubmitDriverRegistrationUseCase returns registration result entity',
+      () async {
+        final useCase = SubmitDriverRegistrationUseCase(fakeRepo);
+        final result = await useCase(const DriverRegistrationDraftEntity());
 
-      expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
-      final data = (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
-      expect(data.registrationId, 'reg-1');
-      expect(data.status, 'Submitted');
-    });
+        expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
+        final data =
+            (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
+        expect(data.registrationId, 'reg-1');
+        expect(data.status, 'Submitted');
+      },
+    );
 
-    test('ResubmitDriverRegistrationUseCase returns registration result entity', () async {
-      final useCase = ResubmitDriverRegistrationUseCase(fakeRepo);
-      final result = await useCase(
-        registrationId: 'reg-1',
-        resubmitData: const DriverResubmitEntity(),
-      );
+    test(
+      'ResubmitDriverRegistrationUseCase returns registration result entity',
+      () async {
+        final useCase = ResubmitDriverRegistrationUseCase(fakeRepo);
+        final result = await useCase(
+          registrationId: 'reg-1',
+          resubmitData: const DriverResubmitEntity(),
+        );
 
-      expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
-      final data = (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
-      expect(data.registrationId, 'reg-1');
-    });
+        expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
+        final data =
+            (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
+        expect(data.registrationId, 'reg-1');
+      },
+    );
   });
 
   group('DriverRegistrationRepositoryImpl Tests', () {
@@ -169,16 +184,14 @@ void main() {
 
     test('getRestaurants maps DTO list to entity list on success', () async {
       fakeDataSource.restaurantsResponse = [
-        const DriverRestaurantResponseDto(
-          id: 'res-1',
-          tradeName: 'Pizza Box',
-        ),
+        const DriverRestaurantResponseDto(id: 'res-1', tradeName: 'Pizza Box'),
       ];
 
       final result = await repository.getRestaurants();
 
       expect(result, isA<ApiSuccessResult<List<DriverRestaurantEntity>>>());
-      final data = (result as ApiSuccessResult<List<DriverRestaurantEntity>>).data;
+      final data =
+          (result as ApiSuccessResult<List<DriverRestaurantEntity>>).data;
       expect(data.length, 1);
       expect(data.first.tradeName, 'Pizza Box');
     });
@@ -192,7 +205,8 @@ void main() {
       final result = await repository.getRestaurants();
 
       expect(result, isA<ApiErrorResult<List<DriverRestaurantEntity>>>());
-      final failure = (result as ApiErrorResult<List<DriverRestaurantEntity>>).failure;
+      final failure =
+          (result as ApiErrorResult<List<DriverRestaurantEntity>>).failure;
       expect(failure, isNotNull);
     });
 
@@ -205,7 +219,8 @@ void main() {
       final result = await repository.uploadDocument(File('id.jpg'));
 
       expect(result, isA<ApiSuccessResult<DriverFileUploadResultEntity>>());
-      final data = (result as ApiSuccessResult<DriverFileUploadResultEntity>).data;
+      final data =
+          (result as ApiSuccessResult<DriverFileUploadResultEntity>).data;
       expect(data.storageKey, 'key-abc');
       expect(data.fileName, 'id.jpg');
     });
@@ -222,7 +237,8 @@ void main() {
       );
 
       expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
-      final data = (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
+      final data =
+          (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
       expect(data.registrationId, 'reg-999');
       expect(data.restaurantName, 'Balance Box');
       expect(data.status, 'Submitted');
@@ -240,7 +256,8 @@ void main() {
       );
 
       expect(result, isA<ApiSuccessResult<DriverRegistrationResultEntity>>());
-      final data = (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
+      final data =
+          (result as ApiSuccessResult<DriverRegistrationResultEntity>).data;
       expect(data.registrationId, 'reg-999');
     });
   });

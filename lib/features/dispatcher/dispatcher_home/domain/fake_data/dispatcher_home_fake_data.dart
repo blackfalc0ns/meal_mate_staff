@@ -105,16 +105,16 @@ class DispatcherHomeFakeData {
 
   static const DispatcherHomeOperationsStatusEntity operationsStatus =
       DispatcherHomeOperationsStatusEntity(
-    completionRate: 87,
-    deliveredCount: 112,
-    deliveredLabel: 'تم التوصيل',
-    inDeliveryCount: 58,
-    inDeliveryLabel: 'في التوصيل',
-    pendingCount: 23,
-    pendingLabel: 'بانتظار الإسناد',
-    cancelledCount: 7,
-    cancelledLabel: 'تم الإلغاء',
-  );
+        completionRate: 87,
+        deliveredCount: 112,
+        deliveredLabel: 'تم التوصيل',
+        inDeliveryCount: 58,
+        inDeliveryLabel: 'في التوصيل',
+        pendingCount: 23,
+        pendingLabel: 'بانتظار الإسناد',
+        cancelledCount: 7,
+        cancelledLabel: 'تم الإلغاء',
+      );
 
   static const List<DispatcherHomeTopDriverEntity> topDrivers = [
     DispatcherHomeTopDriverEntity(

@@ -63,10 +63,7 @@ class AccountStatusViewModel extends Cubit<AccountStatusState> {
     emit(state.copyWith(status: AccountStatusStateStatus.activating));
 
     final result = await lookupPhoneUseCase!(
-      PhoneLookupRequestEntity(
-        phone: phone,
-        role: UserRole.driver,
-      ),
+      PhoneLookupRequestEntity(phone: phone, role: UserRole.driver),
     );
 
     switch (result) {

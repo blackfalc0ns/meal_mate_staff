@@ -36,10 +36,7 @@ class DispatcherHomeMapCard extends StatelessWidget {
     }
   }
 
-  Color _getStatusTextColor(
-    ColorScheme color,
-    DispatcherHomePinStatus status,
-  ) {
+  Color _getStatusTextColor(ColorScheme color, DispatcherHomePinStatus status) {
     switch (status) {
       case DispatcherHomePinStatus.inDelivery:
       case DispatcherHomePinStatus.onTheWayToLoad:
@@ -202,7 +199,9 @@ class DispatcherHomeMapCard extends StatelessWidget {
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: color.shadow.withValues(alpha: 0.15),
+                                      color: color.shadow.withValues(
+                                        alpha: 0.15,
+                                      ),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
                                     ),
@@ -249,7 +248,9 @@ class DispatcherHomeMapCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: color.surface,
-                              borderRadius: BorderRadius.circular(Spacing.radiusXs),
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusXs,
+                              ),
                               boxShadow: [
                                 BoxShadow(
                                   color: color.shadow.withValues(alpha: 0.1),
@@ -274,12 +275,15 @@ class DispatcherHomeMapCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: _getStatusBadgeColor(color, pin.status),
-                              borderRadius: BorderRadius.circular(Spacing.radiusXs),
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusXs,
+                              ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (pin.status == DispatcherHomePinStatus.paused) ...[
+                                if (pin.status ==
+                                    DispatcherHomePinStatus.paused) ...[
                                   Container(
                                     width: 3,
                                     height: 3,
@@ -295,7 +299,10 @@ class DispatcherHomeMapCard extends StatelessWidget {
                                   style: getBoldStyle(
                                     fontFamily: FontConstant.alexandria,
                                     fontSize: FontSize.size7 - 3,
-                                    color: _getStatusTextColor(color, pin.status),
+                                    color: _getStatusTextColor(
+                                      color,
+                                      pin.status,
+                                    ),
                                   ),
                                 ),
                               ],

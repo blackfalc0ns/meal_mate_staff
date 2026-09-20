@@ -89,9 +89,7 @@ class DriverRegistrationDraftEntity {
       vehicleRegistrationStorageKey.trim().isNotEmpty;
 
   bool get isReadyForSubmission =>
-      hasRequiredPersonalData &&
-      hasRequiredVehicleData &&
-      hasRequiredDocuments;
+      hasRequiredPersonalData && hasRequiredVehicleData && hasRequiredDocuments;
 
   RegisterPersonalData toPersonalData() {
     final names = fullNameEn.isNotEmpty ? fullNameEn.split(' ') : <String>[];
@@ -148,8 +146,9 @@ class DriverRegistrationDraftEntity {
       isVehicleOwned: isVehicleOwned,
       licenseNumber: licenseNumber.isNotEmpty ? licenseNumber : null,
       licenseExpiry: licenseExpiry.isNotEmpty ? licenseExpiry : null,
-      vehicleLicenseExpiry:
-          vehicleLicenseExpiry.isNotEmpty ? vehicleLicenseExpiry : null,
+      vehicleLicenseExpiry: vehicleLicenseExpiry.isNotEmpty
+          ? vehicleLicenseExpiry
+          : null,
       contractExpiry: contractExpiry,
       nationalIdFrontStorageKey: nationalIdFrontStorageKey.isNotEmpty
           ? nationalIdFrontStorageKey
@@ -221,8 +220,7 @@ class DriverRegistrationDraftEntity {
       isVehicleOwned: isVehicleOwned ?? this.isVehicleOwned,
       licenseNumber: licenseNumber ?? this.licenseNumber,
       licenseExpiry: licenseExpiry ?? this.licenseExpiry,
-      vehicleLicenseExpiry:
-          vehicleLicenseExpiry ?? this.vehicleLicenseExpiry,
+      vehicleLicenseExpiry: vehicleLicenseExpiry ?? this.vehicleLicenseExpiry,
       contractExpiry: contractExpiry ?? this.contractExpiry,
       nationalIdFrontStorageKey:
           nationalIdFrontStorageKey ?? this.nationalIdFrontStorageKey,

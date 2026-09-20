@@ -162,8 +162,7 @@ extension DispatcherNotificationsColorScheme on ColorScheme {
   Color get notificationUnreadDot => AppColors.notificationUnreadDot;
   Color get notificationIconPurpleSurface =>
       AppColors.notificationIconPurpleSurface;
-  Color get notificationIconRedSurface =>
-      AppColors.notificationIconRedSurface;
+  Color get notificationIconRedSurface => AppColors.notificationIconRedSurface;
   Color get notificationIconGreenSurface =>
       AppColors.notificationIconGreenSurface;
   Color get notificationIconOrangeSurface =>

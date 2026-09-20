@@ -93,11 +93,7 @@ class DriverSupportAttachmentBox extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.attach_file_rounded,
-                  color: color.primary,
-                  size: 18,
-                ),
+                Icon(Icons.attach_file_rounded, color: color.primary, size: 18),
                 const SizedBox(width: Spacing.xs),
                 Text(
                   locale.driverSupportAddAttachment,

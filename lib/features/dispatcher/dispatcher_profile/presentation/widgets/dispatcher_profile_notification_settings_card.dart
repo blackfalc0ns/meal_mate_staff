@@ -114,7 +114,9 @@ class DispatcherProfileNotificationSettingsCard extends StatelessWidget {
                       height: Spacing.dispatcherActionBtnSmallHeight,
                       decoration: BoxDecoration(
                         color: color.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(Spacing.radiusXs * 1.5),
+                        borderRadius: BorderRadius.circular(
+                          Spacing.radiusXs * 1.5,
+                        ),
                       ),
                       alignment: Alignment.center,
                       child: Icon(

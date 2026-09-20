@@ -1,6 +1,1 @@
-enum AssignBoxDriverStatusType {
-  available,
-  busy,
-  inDelivery,
-  returning,
-}
+enum AssignBoxDriverStatusType { available, busy, inDelivery, returning }

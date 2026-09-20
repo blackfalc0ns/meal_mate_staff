@@ -10,9 +10,7 @@ class ForgotPasswordUseCase {
 
   final AuthRepository _repository;
 
-  Future<ApiResult<String>> call(
-    ForgotPasswordRequestEntity request,
-  ) {
+  Future<ApiResult<String>> call(ForgotPasswordRequestEntity request) {
     return _repository.forgotPassword(request);
   }
 }

@@ -16,10 +16,7 @@ import 'staff_role_mapper.dart';
 
 extension PhoneLookupRequestEntityMapper on PhoneLookupRequestEntity {
   PhoneLookupRequestDto toDto() {
-    return PhoneLookupRequestDto(
-      phone: phone,
-      role: role.toApiValue(),
-    );
+    return PhoneLookupRequestDto(phone: phone, role: role.toApiValue());
   }
 }
 
@@ -58,10 +55,7 @@ extension StaffLoginRequestEntityMapper on StaffLoginRequestEntity {
 
 extension ForgotPasswordRequestEntityMapper on ForgotPasswordRequestEntity {
   ForgotPasswordRequestDto toDto() {
-    return ForgotPasswordRequestDto(
-      phone: phone,
-      role: role.toApiValue(),
-    );
+    return ForgotPasswordRequestDto(phone: phone, role: role.toApiValue());
   }
 }
 
@@ -79,9 +73,6 @@ extension ResetPasswordRequestEntityMapper on ResetPasswordRequestEntity {
 
 extension ResendOtpRequestEntityMapper on ResendOtpRequestEntity {
   ResendOtpRequestDto toDto() {
-    return ResendOtpRequestDto(
-      phone: phone,
-      role: role.toApiValue(),
-    );
+    return ResendOtpRequestDto(phone: phone, role: role.toApiValue());
   }
 }

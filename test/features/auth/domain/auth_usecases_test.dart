@@ -118,9 +118,7 @@ class MockAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<ApiResult<String>> resendOtp(
-    ResendOtpRequestEntity request,
-  ) async {
+  Future<ApiResult<String>> resendOtp(ResendOtpRequestEntity request) async {
     lastMethod = 'resendOtp';
     lastCallArg = request;
     return ApiSuccessResult(data: 'resent');

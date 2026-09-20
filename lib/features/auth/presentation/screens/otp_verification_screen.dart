@@ -91,10 +91,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void _resend() {
     _viewModel.doIntent(
-      AuthResendOtpEvent(
-        phone: widget.target.value,
-        role: widget.role,
-      ),
+      AuthResendOtpEvent(phone: widget.target.value, role: widget.role),
     );
   }
 
@@ -141,8 +138,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 body: AuthBackground(
                   child: SafeArea(
                     child: SingleChildScrollView(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: Spacing.base),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.base,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -258,9 +256,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 Positioned.fill(
                   child: ColoredBox(
                     color: AppColors.scrim.withValues(alpha: 0.3),
-                    child: const Center(
-                      child: CustomProgressIndicator(),
-                    ),
+                    child: const Center(child: CustomProgressIndicator()),
                   ),
                 ),
             ],
