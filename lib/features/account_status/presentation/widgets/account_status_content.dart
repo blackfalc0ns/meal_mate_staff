@@ -5,6 +5,7 @@ import '../../../../core/constants/assets.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../domain/account_status_data.dart';
 import '../../domain/account_status_kind.dart';
+import '../../domain/entities/driver_registration_status_entity.dart';
 import 'account_status_header.dart';
 import 'account_status_help_card.dart';
 import 'account_status_result_content.dart';
@@ -15,12 +16,14 @@ class AccountStatusContent extends StatelessWidget {
   const AccountStatusContent({
     super.key,
     required this.kind,
+    this.statusEntity,
     this.onPrimaryPressed,
     this.onSecondaryPressed,
     this.onHelpPressed,
   });
 
   final AccountStatusKind kind;
+  final DriverRegistrationStatusEntity? statusEntity;
   final VoidCallback? onPrimaryPressed;
   final VoidCallback? onSecondaryPressed;
   final VoidCallback? onHelpPressed;
@@ -28,14 +31,23 @@ class AccountStatusContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    final data = AccountStatusData.fromKind(
-      kind,
-      locale,
-      acceptedAsset: AppAssets.accountStatusAccepted,
-      rejectedAsset: AppAssets.accountStatusRejected,
-      moreInfoAsset: AppAssets.accountStatusMoreInfo,
-      underReviewAsset: AppAssets.accountStatusUnderReview,
-    );
+    final data = statusEntity != null
+        ? AccountStatusData.fromEntity(
+            statusEntity!,
+            locale,
+            acceptedAsset: AppAssets.accountStatusAccepted,
+            rejectedAsset: AppAssets.accountStatusRejected,
+            moreInfoAsset: AppAssets.accountStatusMoreInfo,
+            underReviewAsset: AppAssets.accountStatusUnderReview,
+          )
+        : AccountStatusData.fromKind(
+            kind,
+            locale,
+            acceptedAsset: AppAssets.accountStatusAccepted,
+            rejectedAsset: AppAssets.accountStatusRejected,
+            moreInfoAsset: AppAssets.accountStatusMoreInfo,
+            underReviewAsset: AppAssets.accountStatusUnderReview,
+          );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Spacing.base),

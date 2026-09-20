@@ -1,6 +1,7 @@
 import '../../../core/l10n/translations/app_localizations.dart';
 import 'account_status_kind.dart';
 import 'account_status_reason_tone.dart';
+import 'entities/driver_registration_status_entity.dart';
 
 class AccountStatusData {
   const AccountStatusData({
@@ -26,6 +27,61 @@ class AccountStatusData {
   final AccountStatusReasonTone? reasonTone;
 
   bool get hasReasons => reasons.isNotEmpty;
+
+  factory AccountStatusData.fromEntity(
+    DriverRegistrationStatusEntity entity,
+    AppLocalizations locale, {
+    required String acceptedAsset,
+    required String rejectedAsset,
+    required String moreInfoAsset,
+    required String underReviewAsset,
+  }) {
+    final base = AccountStatusData.fromKind(
+      entity.kind,
+      locale,
+      acceptedAsset: acceptedAsset,
+      rejectedAsset: rejectedAsset,
+      moreInfoAsset: moreInfoAsset,
+      underReviewAsset: underReviewAsset,
+    );
+
+    List<String> reasons = base.reasons;
+    if (entity.kind == AccountStatusKind.moreInformationRequired &&
+        entity.changeRequestNotes != null &&
+        entity.changeRequestNotes!.isNotEmpty) {
+      reasons = entity.changeRequestNotes!
+          .split('\n')
+          .map((s) => s.trim())
+          .where((s) => s.isNotEmpty)
+          .toList();
+    } else if (entity.kind == AccountStatusKind.rejected &&
+        entity.rejectionReason != null &&
+        entity.rejectionReason!.isNotEmpty) {
+      reasons = entity.rejectionReason!
+          .split('\n')
+          .map((s) => s.trim())
+          .where((s) => s.isNotEmpty)
+          .toList();
+    }
+
+    return AccountStatusData(
+      kind: entity.kind,
+      illustrationAsset: base.illustrationAsset,
+      title: (entity.title != null && entity.title!.isNotEmpty)
+          ? entity.title!
+          : base.title,
+      body: (entity.subtitle != null && entity.subtitle!.isNotEmpty)
+          ? entity.subtitle!
+          : base.body,
+      primaryAction: base.primaryAction,
+      secondaryAction: base.secondaryAction,
+      reasonTitle: (entity.badge != null && entity.badge!.isNotEmpty)
+          ? entity.badge
+          : base.reasonTitle,
+      reasons: reasons,
+      reasonTone: base.reasonTone,
+    );
+  }
 
   factory AccountStatusData.fromKind(
     AccountStatusKind kind,

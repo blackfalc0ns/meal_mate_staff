@@ -27,6 +27,12 @@ import '../../features/auth/domain/usecase/restore_session_usecase.dart';
 import '../../features/auth/domain/usecase/set_password_usecase.dart';
 import '../../features/auth/domain/usecase/verify_first_time_otp_usecase.dart';
 import '../../features/auth/presentation/manager/auth_view_model.dart';
+import '../../features/account_status/data/data_source/account_status_remote_data_source.dart';
+import '../../features/account_status/data/data_source/account_status_remote_data_source_impl.dart';
+import '../../features/account_status/data/repo/account_status_repository_impl.dart';
+import '../../features/account_status/domain/repo/account_status_repository.dart';
+import '../../features/account_status/domain/usecase/get_account_status_usecase.dart';
+import '../../features/account_status/presentation/manager/account_status_view_model.dart';
 import '../../features/register/data/data_source/driver_registration_remote_data_source.dart';
 import '../../features/register/data/data_source/driver_registration_remote_data_source_impl.dart';
 import '../../features/register/data/repo/driver_registration_repository_impl.dart';
@@ -154,6 +160,23 @@ Future<void> configureDependencies() async {
       uploadDocumentUseCase: getIt<UploadDriverDocumentUseCase>(),
       submitRegistrationUseCase: getIt<SubmitDriverRegistrationUseCase>(),
       resubmitRegistrationUseCase: getIt<ResubmitDriverRegistrationUseCase>(),
+    ),
+  );
+  // Account Status feature dependencies
+  getIt.registerLazySingleton<AccountStatusRemoteDataSource>(
+    () => AccountStatusRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<AccountStatusRepository>(
+    () => AccountStatusRepositoryImpl(
+      getIt<AccountStatusRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetAccountStatusUseCase>(
+    () => GetAccountStatusUseCase(getIt<AccountStatusRepository>()),
+  );
+  getIt.registerFactory<AccountStatusViewModel>(
+    () => AccountStatusViewModel(
+      getAccountStatusUseCase: getIt<GetAccountStatusUseCase>(),
     ),
   );
 }
