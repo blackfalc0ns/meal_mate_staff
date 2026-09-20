@@ -8,7 +8,6 @@ import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 
 Widget _buildTestApp({
   UserRole role = UserRole.driver,
-  VoidCallback? onLogout,
 }) {
   return MaterialApp(
     localizationsDelegates: const [
