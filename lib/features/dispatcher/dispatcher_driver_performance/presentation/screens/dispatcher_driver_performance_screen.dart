@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
-import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_performance_tab_type.dart';
 import '../../domain/fake_data/driver_performance_fake_data.dart';
 import '../widgets/driver_performance_distribution_card.dart';
@@ -32,10 +31,7 @@ class _DispatcherDriverPerformanceScreenState
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
-
     return Scaffold(
-      backgroundColor: color.surfaceContainerLowest,
       appBar: const DriverPerformanceHeader(),
       body: SafeArea(
         child: SingleChildScrollView(

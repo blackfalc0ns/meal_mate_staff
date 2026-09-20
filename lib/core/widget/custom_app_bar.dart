@@ -311,7 +311,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    return Container(
+    final content = Container(
       decoration: useGradient
           ? BoxDecoration(
               gradient: LinearGradient(
@@ -350,6 +350,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         titleSpacing: leading != null ? 0 : null,
         toolbarHeight: _effectiveToolbarHeight,
       ),
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (!constraints.hasBoundedHeight) {
+          final topPadding = primary ? MediaQuery.paddingOf(context).top : 0.0;
+          return SizedBox(
+            height: preferredSize.height + topPadding,
+            child: content,
+          );
+        }
+        return content;
+      },
     );
   }
 

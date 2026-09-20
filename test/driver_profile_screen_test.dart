@@ -14,6 +14,8 @@ void main() {
   Widget buildSubject({
     DriverProfileEntity? profile,
     Locale locale = const Locale('ar'),
+    VoidCallback? onHelpCenterTap,
+    VoidCallback? onContactUsTap,
   }) {
     return MaterialApp(
       locale: locale,
@@ -24,7 +26,11 @@ void main() {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('ar'), Locale('en')],
-      home: DriverProfileScreen(profile: profile),
+      home: DriverProfileScreen(
+        profile: profile,
+        onHelpCenterTap: onHelpCenterTap,
+        onContactUsTap: onContactUsTap,
+      ),
     );
   }
 
@@ -96,5 +102,36 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(AlertDialog), findsNothing);
     }
+  });
+
+  testWidgets('tapping Help Center or Contact Us triggers support navigation', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.0;
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    bool helpCenterTapped = false;
+    bool contactUsTapped = false;
+
+    await tester.pumpWidget(
+      buildSubject(
+        onHelpCenterTap: () => helpCenterTapped = true,
+        onContactUsTap: () => contactUsTapped = true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final helpCenterTile = find.text('مركز المساعدة');
+    await tester.ensureVisible(helpCenterTile);
+    await tester.tap(helpCenterTile);
+    await tester.pumpAndSettle();
+    expect(helpCenterTapped, isTrue);
+
+    final contactUsTile = find.text('تواصل معنا');
+    await tester.ensureVisible(contactUsTile);
+    await tester.tap(contactUsTile);
+    await tester.pumpAndSettle();
+    expect(contactUsTapped, isTrue);
   });
 }

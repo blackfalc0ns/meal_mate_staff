@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
@@ -28,11 +28,11 @@ void main() {
     return AppLocalizations.of(context)!;
   }
 
-  testWidgets('app starts at app shell by default', (tester) async {
+  testWidgets('app starts at splash screen by default', (tester) async {
     await tester.pumpWidget(const MyApp());
     await tester.pump();
 
-    expect(find.byType(AppShellScreen), findsOneWidget);
+    expect(find.byType(SplashScreen), findsOneWidget);
   });
 
   testWidgets('app starts at splash screen when splash route is used', (

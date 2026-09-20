@@ -7,11 +7,11 @@ import 'core/l10n/translations/app_localizations.dart';
 import 'core/services/app_locale_notifier.dart';
 
 void main() {
-  runApp(const MyApp(initialRoute: AppRoutes.driverAssignedBoxes));
+  runApp(const MyApp(initialRoute: AppRoutes.splash));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, this.initialRoute = AppRoutes.appShell});
+  const MyApp({super.key, this.initialRoute = AppRoutes.splash});
 
   final String initialRoute;
 
@@ -28,12 +28,7 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
           builder: (context, child) {
-            return Directionality(
-              textDirection: locale.languageCode == 'ar'
-                  ? TextDirection.rtl
-                  : TextDirection.ltr,
-              child: child ?? const SizedBox.shrink(),
-            );
+            return child ?? const SizedBox();
           },
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,

@@ -52,8 +52,8 @@ class DriverPerformanceDriverRow extends StatelessWidget {
     final failColor = _getFailColor(record.failedDeliveryCount, color);
 
     return InkWell(
-      onTap: onTap ??
-          () => context.pushNamed(AppRoutes.dispatcherDriverDetails),
+      onTap:
+          onTap ?? () => context.pushNamed(AppRoutes.dispatcherDriverDetails),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.sm,
@@ -206,17 +206,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    size: 10,
-                    color: color.primary,
-                  ),
-                  const SizedBox(width: Spacing.xs / 2),
-                  Icon(
-                    Icons.star_rounded,
-                    size: 14,
-                    color: color.primary,
-                  ),
+                  Icon(Icons.star_rounded, size: 14, color: color.primary),
                   const SizedBox(width: 2),
                   Text(
                     record.rating.toStringAsFixed(1),
@@ -225,6 +215,13 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                       fontSize: FontSize.size11,
                       color: color.onSurface,
                     ),
+                  ),
+                  const SizedBox(width: Spacing.xs / 2),
+
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 10,
+                    color: color.primary,
                   ),
                 ],
               ),

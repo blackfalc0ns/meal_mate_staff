@@ -42,6 +42,7 @@ import '../../features/driver/driver_notifications/domain/entities/driver_notifi
 import '../../features/driver/driver_vehicle/domain/entities/driver_vehicle_entity.dart';
 import '../../features/driver/driver_vehicle/presentation/screens/driver_edit_vehicle_details_screen.dart';
 import '../../features/driver/driver_vehicle/presentation/screens/driver_vehicle_details_screen.dart';
+import '../../features/driver/driver_profile/presentation/screens/driver_support_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -283,6 +284,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverEditVehicleDetailsScreen(vehicle: vehicle),
+        );
+
+      case AppRoutes.driverSupport:
+        return _buildRoute(
+          settings: settings,
+          page: const DriverSupportScreen(),
         );
 
       default:

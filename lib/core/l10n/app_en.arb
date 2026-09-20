@@ -755,5 +755,40 @@
   "driverEditVehicleNotesHint": "Add any additional notes here...",
   "driverEditVehicleCancel": "Cancel",
   "driverEditVehicleSaveChanges": "Save Changes",
-  "driverEditVehicleSuccessMessage": "Vehicle details updated successfully"
+  "driverEditVehicleSuccessMessage": "Vehicle details updated successfully",
+  "driverSupportTitle": "Technical Support",
+  "driverSupportSubtitle": "We are here to help you anytime",
+  "driverSupportContactMethodsTitle": "Contact Methods",
+  "driverSupportCallUs": "Call Us",
+  "driverSupportPhoneNumber": "800 123 4567",
+  "driverSupportCallHours": "Available 8 AM - 10 PM",
+  "driverSupportEmail": "Email",
+  "driverSupportEmailAddress": "support@Resturant.com",
+  "driverSupportEmailTurnaround": "Response within 24h",
+  "driverSupportFaqTitle": "Common Topics",
+  "driverSupportTopicDeliveryIssue": "Order Delivery Issue",
+  "driverSupportTopicDeliveryDesc": "Delay, missing package, or address problem",
+  "driverSupportTopicAppIssue": "App Issue",
+  "driverSupportTopicAppDesc": "Glitches, login, or technical errors",
+  "driverSupportTopicOrdersBilling": "Orders & Payments",
+  "driverSupportTopicOrdersBillingDesc": "Inquiries about orders and invoices",
+  "driverSupportTopicAccountProfile": "Account & Profile",
+  "driverSupportTopicAccountProfileDesc": "Update details, change phone number",
+  "driverSupportViewAllTopics": "View All Topics",
+  "driverSupportSendMessageTitle": "Send Us a Message",
+  "driverSupportCategoryLabel": "Issue Category",
+  "driverSupportCategoryHint": "Select category",
+  "driverSupportMessageDetailsHint": "Write the details of your issue here...",
+  "driverSupportAddAttachment": "Add Attachment (Optional)",
+  "driverSupportAttachmentHint": "Photos, screenshots, documents (Max 5 MB)",
+  "driverSupportSubmitButton": "Send Message",
+  "driverSupportSuccessMessage": "Your message has been sent to technical support successfully",
+  "driverSupportAttachmentSelected": "Attached: {fileName}",
+  "@driverSupportAttachmentSelected": {
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -9,11 +9,7 @@ import 'driver_performance_date_filter_chip.dart';
 
 class DriverPerformanceHeader extends StatelessWidget
     implements PreferredSizeWidget {
-  const DriverPerformanceHeader({
-    super.key,
-    this.onBack,
-    this.onDateFilterTap,
-  });
+  const DriverPerformanceHeader({super.key, this.onBack, this.onDateFilterTap});
 
   final VoidCallback? onBack;
   final VoidCallback? onDateFilterTap;
@@ -27,27 +23,9 @@ class DriverPerformanceHeader extends StatelessWidget
     final locale = context.localization;
 
     return CustomAppBar(
-      primary: false,
-      showBackButton: false,
+      showBackButton: true,
+
       centerTitle: true,
-      leading: Padding(
-        padding: const EdgeInsetsDirectional.only(start: Spacing.sm),
-        child: Center(
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: Spacing.iconSm,
-              color: color.onSurface,
-            ),
-            onPressed: onBack ??
-                () {
-                  if (Navigator.of(context).canPop()) {
-                    Navigator.of(context).pop();
-                  }
-                },
-          ),
-        ),
-      ),
       titleWidget: Text(
         locale.driverPerformanceTitle,
         style: getBoldStyle(
@@ -60,9 +38,7 @@ class DriverPerformanceHeader extends StatelessWidget
         Padding(
           padding: const EdgeInsetsDirectional.only(end: Spacing.base),
           child: Center(
-            child: DriverPerformanceDateFilterChip(
-              onTap: onDateFilterTap,
-            ),
+            child: DriverPerformanceDateFilterChip(onTap: onDateFilterTap),
           ),
         ),
       ],

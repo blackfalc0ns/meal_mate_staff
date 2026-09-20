@@ -12,7 +12,12 @@ import '../../domain/user_role.dart';
 import '../widgets/account_type_bottom_sheet.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({
+    super.key,
+    this.initialLoadingDuration = Duration.zero,
+  });
+
+  final Duration initialLoadingDuration;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -20,7 +25,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  bool _isLoading = true;
+  late bool _isLoading;
   UserRole _selectedRole = UserRole.driver;
   late final AnimationController _animationController;
   late final Animation<Offset> _slideAnimation;
@@ -48,7 +53,13 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Curves.easeIn,
     );
 
-    _loadingTimer = Timer(const Duration(seconds: 2), _onLoadingFinished);
+    if (widget.initialLoadingDuration == Duration.zero) {
+      _isLoading = false;
+      _animationController.forward();
+    } else {
+      _isLoading = true;
+      _loadingTimer = Timer(widget.initialLoadingDuration, _onLoadingFinished);
+    }
   }
 
   void _onLoadingFinished() {

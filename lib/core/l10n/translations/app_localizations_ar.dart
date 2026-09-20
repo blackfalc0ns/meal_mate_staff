@@ -1894,4 +1894,96 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverEditVehicleSuccessMessage => 'تم تحديث بيانات المركبة بنجاح';
+
+  @override
+  String get driverSupportTitle => 'التواصل مع الدعم الفني';
+
+  @override
+  String get driverSupportSubtitle => 'نحن هنا لمساعدتك في أي وقت';
+
+  @override
+  String get driverSupportContactMethodsTitle => 'طرق التواصل';
+
+  @override
+  String get driverSupportCallUs => 'اتصل بنا';
+
+  @override
+  String get driverSupportPhoneNumber => '800 123 4567';
+
+  @override
+  String get driverSupportCallHours => 'متاح من 8 ص - 10 م';
+
+  @override
+  String get driverSupportEmail => 'البريد الإلكتروني';
+
+  @override
+  String get driverSupportEmailAddress => 'support@Resturant.com';
+
+  @override
+  String get driverSupportEmailTurnaround => 'نرد خلال 24 ساعة';
+
+  @override
+  String get driverSupportFaqTitle => 'مواضيع شائعة';
+
+  @override
+  String get driverSupportTopicDeliveryIssue => 'مشكلة في تسليم الطلب';
+
+  @override
+  String get driverSupportTopicDeliveryDesc =>
+      'تأخير ، عدم استلام ، أو مشكلة في العنوان';
+
+  @override
+  String get driverSupportTopicAppIssue => 'مشكلة في التطبيق';
+
+  @override
+  String get driverSupportTopicAppDesc =>
+      'أعطال ، تسجيل دخول ، أو أخطاء في التطبيق';
+
+  @override
+  String get driverSupportTopicOrdersBilling => 'الطلبات والمدفوعات';
+
+  @override
+  String get driverSupportTopicOrdersBillingDesc =>
+      'استفسارات عن الطلبات الفواتير';
+
+  @override
+  String get driverSupportTopicAccountProfile => 'الحساب والملف الشخصي';
+
+  @override
+  String get driverSupportTopicAccountProfileDesc =>
+      'تحديث البيانات ، تغيير رقم الهاتف';
+
+  @override
+  String get driverSupportViewAllTopics => 'عرض جميع المواضيع';
+
+  @override
+  String get driverSupportSendMessageTitle => 'أرسل لنا رسالة';
+
+  @override
+  String get driverSupportCategoryLabel => 'تصنيف المشكلة';
+
+  @override
+  String get driverSupportCategoryHint => 'اختر التصنيف';
+
+  @override
+  String get driverSupportMessageDetailsHint => 'اكتب تفاصيل مشكلتك هنا...';
+
+  @override
+  String get driverSupportAddAttachment => 'إضافة مرفق (اختياري)';
+
+  @override
+  String get driverSupportAttachmentHint =>
+      'صور ، لقطات شاشة ، مستندات (الحد الأقصى 5 ميجابايت)';
+
+  @override
+  String get driverSupportSubmitButton => 'إرسال الرسالة';
+
+  @override
+  String get driverSupportSuccessMessage =>
+      'تم إرسال رسالتك إلى الدعم الفني بنجاح';
+
+  @override
+  String driverSupportAttachmentSelected(String fileName) {
+    return 'تم إرفاق: $fileName';
+  }
 }

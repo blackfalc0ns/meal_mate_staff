@@ -3697,6 +3697,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Vehicle details updated successfully'**
   String get driverEditVehicleSuccessMessage;
+
+  /// No description provided for @driverSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical Support'**
+  String get driverSupportTitle;
+
+  /// No description provided for @driverSupportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We are here to help you anytime'**
+  String get driverSupportSubtitle;
+
+  /// No description provided for @driverSupportContactMethodsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Methods'**
+  String get driverSupportContactMethodsTitle;
+
+  /// No description provided for @driverSupportCallUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Us'**
+  String get driverSupportCallUs;
+
+  /// No description provided for @driverSupportPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'800 123 4567'**
+  String get driverSupportPhoneNumber;
+
+  /// No description provided for @driverSupportCallHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Available 8 AM - 10 PM'**
+  String get driverSupportCallHours;
+
+  /// No description provided for @driverSupportEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get driverSupportEmail;
+
+  /// No description provided for @driverSupportEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'support@Resturant.com'**
+  String get driverSupportEmailAddress;
+
+  /// No description provided for @driverSupportEmailTurnaround.
+  ///
+  /// In en, this message translates to:
+  /// **'Response within 24h'**
+  String get driverSupportEmailTurnaround;
+
+  /// No description provided for @driverSupportFaqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Common Topics'**
+  String get driverSupportFaqTitle;
+
+  /// No description provided for @driverSupportTopicDeliveryIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Delivery Issue'**
+  String get driverSupportTopicDeliveryIssue;
+
+  /// No description provided for @driverSupportTopicDeliveryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Delay, missing package, or address problem'**
+  String get driverSupportTopicDeliveryDesc;
+
+  /// No description provided for @driverSupportTopicAppIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'App Issue'**
+  String get driverSupportTopicAppIssue;
+
+  /// No description provided for @driverSupportTopicAppDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Glitches, login, or technical errors'**
+  String get driverSupportTopicAppDesc;
+
+  /// No description provided for @driverSupportTopicOrdersBilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders & Payments'**
+  String get driverSupportTopicOrdersBilling;
+
+  /// No description provided for @driverSupportTopicOrdersBillingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiries about orders and invoices'**
+  String get driverSupportTopicOrdersBillingDesc;
+
+  /// No description provided for @driverSupportTopicAccountProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Account & Profile'**
+  String get driverSupportTopicAccountProfile;
+
+  /// No description provided for @driverSupportTopicAccountProfileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update details, change phone number'**
+  String get driverSupportTopicAccountProfileDesc;
+
+  /// No description provided for @driverSupportViewAllTopics.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Topics'**
+  String get driverSupportViewAllTopics;
+
+  /// No description provided for @driverSupportSendMessageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Us a Message'**
+  String get driverSupportSendMessageTitle;
+
+  /// No description provided for @driverSupportCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Category'**
+  String get driverSupportCategoryLabel;
+
+  /// No description provided for @driverSupportCategoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select category'**
+  String get driverSupportCategoryHint;
+
+  /// No description provided for @driverSupportMessageDetailsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the details of your issue here...'**
+  String get driverSupportMessageDetailsHint;
+
+  /// No description provided for @driverSupportAddAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Attachment (Optional)'**
+  String get driverSupportAddAttachment;
+
+  /// No description provided for @driverSupportAttachmentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos, screenshots, documents (Max 5 MB)'**
+  String get driverSupportAttachmentHint;
+
+  /// No description provided for @driverSupportSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get driverSupportSubmitButton;
+
+  /// No description provided for @driverSupportSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your message has been sent to technical support successfully'**
+  String get driverSupportSuccessMessage;
+
+  /// No description provided for @driverSupportAttachmentSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Attached: {fileName}'**
+  String driverSupportAttachmentSelected(String fileName);
 }
 
 class _AppLocalizationsDelegate

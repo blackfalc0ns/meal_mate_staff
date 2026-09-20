@@ -755,5 +755,40 @@
   "driverEditVehicleNotesHint": "أضف أي ملاحظات إضافية هنا...",
   "driverEditVehicleCancel": "إلغاء",
   "driverEditVehicleSaveChanges": "حفظ التغييرات",
-  "driverEditVehicleSuccessMessage": "تم تحديث بيانات المركبة بنجاح"
+  "driverEditVehicleSuccessMessage": "تم تحديث بيانات المركبة بنجاح",
+  "driverSupportTitle": "التواصل مع الدعم الفني",
+  "driverSupportSubtitle": "نحن هنا لمساعدتك في أي وقت",
+  "driverSupportContactMethodsTitle": "طرق التواصل",
+  "driverSupportCallUs": "اتصل بنا",
+  "driverSupportPhoneNumber": "800 123 4567",
+  "driverSupportCallHours": "متاح من 8 ص - 10 م",
+  "driverSupportEmail": "البريد الإلكتروني",
+  "driverSupportEmailAddress": "support@Resturant.com",
+  "driverSupportEmailTurnaround": "نرد خلال 24 ساعة",
+  "driverSupportFaqTitle": "مواضيع شائعة",
+  "driverSupportTopicDeliveryIssue": "مشكلة في تسليم الطلب",
+  "driverSupportTopicDeliveryDesc": "تأخير ، عدم استلام ، أو مشكلة في العنوان",
+  "driverSupportTopicAppIssue": "مشكلة في التطبيق",
+  "driverSupportTopicAppDesc": "أعطال ، تسجيل دخول ، أو أخطاء في التطبيق",
+  "driverSupportTopicOrdersBilling": "الطلبات والمدفوعات",
+  "driverSupportTopicOrdersBillingDesc": "استفسارات عن الطلبات الفواتير",
+  "driverSupportTopicAccountProfile": "الحساب والملف الشخصي",
+  "driverSupportTopicAccountProfileDesc": "تحديث البيانات ، تغيير رقم الهاتف",
+  "driverSupportViewAllTopics": "عرض جميع المواضيع",
+  "driverSupportSendMessageTitle": "أرسل لنا رسالة",
+  "driverSupportCategoryLabel": "تصنيف المشكلة",
+  "driverSupportCategoryHint": "اختر التصنيف",
+  "driverSupportMessageDetailsHint": "اكتب تفاصيل مشكلتك هنا...",
+  "driverSupportAddAttachment": "إضافة مرفق (اختياري)",
+  "driverSupportAttachmentHint": "صور ، لقطات شاشة ، مستندات (الحد الأقصى 5 ميجابايت)",
+  "driverSupportSubmitButton": "إرسال الرسالة",
+  "driverSupportSuccessMessage": "تم إرسال رسالتك إلى الدعم الفني بنجاح",
+  "driverSupportAttachmentSelected": "تم إرفاق: {fileName}",
+  "@driverSupportAttachmentSelected": {
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  }
 }

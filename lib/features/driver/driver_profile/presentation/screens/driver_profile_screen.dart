@@ -103,6 +103,14 @@ class DriverProfileScreen extends StatelessWidget {
     context.pushNamed(AppRoutes.driverVehicleDetails);
   }
 
+  void _handleSupportTap(BuildContext context, VoidCallback? customCallback) {
+    if (customCallback != null) {
+      customCallback();
+      return;
+    }
+    context.pushNamed(AppRoutes.driverSupport);
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -193,12 +201,12 @@ class DriverProfileScreen extends StatelessWidget {
                   DriverSettingsMenuTile(
                     icon: Icons.help_outline_rounded,
                     title: locale.driverSettingsHelpCenter,
-                    onTap: onHelpCenterTap,
+                    onTap: () => _handleSupportTap(context, onHelpCenterTap),
                   ),
                   DriverSettingsMenuTile(
                     icon: Icons.support_agent_rounded,
                     title: locale.driverSettingsContactUs,
-                    onTap: onContactUsTap,
+                    onTap: () => _handleSupportTap(context, onContactUsTap),
                   ),
                   DriverSettingsMenuTile(
                     icon: Icons.info_outline_rounded,

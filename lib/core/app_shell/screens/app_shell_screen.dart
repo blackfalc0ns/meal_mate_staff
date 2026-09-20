@@ -62,7 +62,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   List<Widget> _defaultPages(BuildContext context) {
     if (widget.role == UserRole.driver) {
       return [
-        const DriverAssignedBoxesScreen(),
+        const Text("Home"),
         const DriverAssignedBoxesScreen(),
         const Text("Map"),
         const Text("Support"),

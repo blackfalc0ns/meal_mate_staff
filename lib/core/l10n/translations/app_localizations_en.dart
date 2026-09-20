@@ -1900,4 +1900,97 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get driverEditVehicleSuccessMessage =>
       'Vehicle details updated successfully';
+
+  @override
+  String get driverSupportTitle => 'Technical Support';
+
+  @override
+  String get driverSupportSubtitle => 'We are here to help you anytime';
+
+  @override
+  String get driverSupportContactMethodsTitle => 'Contact Methods';
+
+  @override
+  String get driverSupportCallUs => 'Call Us';
+
+  @override
+  String get driverSupportPhoneNumber => '800 123 4567';
+
+  @override
+  String get driverSupportCallHours => 'Available 8 AM - 10 PM';
+
+  @override
+  String get driverSupportEmail => 'Email';
+
+  @override
+  String get driverSupportEmailAddress => 'support@Resturant.com';
+
+  @override
+  String get driverSupportEmailTurnaround => 'Response within 24h';
+
+  @override
+  String get driverSupportFaqTitle => 'Common Topics';
+
+  @override
+  String get driverSupportTopicDeliveryIssue => 'Order Delivery Issue';
+
+  @override
+  String get driverSupportTopicDeliveryDesc =>
+      'Delay, missing package, or address problem';
+
+  @override
+  String get driverSupportTopicAppIssue => 'App Issue';
+
+  @override
+  String get driverSupportTopicAppDesc =>
+      'Glitches, login, or technical errors';
+
+  @override
+  String get driverSupportTopicOrdersBilling => 'Orders & Payments';
+
+  @override
+  String get driverSupportTopicOrdersBillingDesc =>
+      'Inquiries about orders and invoices';
+
+  @override
+  String get driverSupportTopicAccountProfile => 'Account & Profile';
+
+  @override
+  String get driverSupportTopicAccountProfileDesc =>
+      'Update details, change phone number';
+
+  @override
+  String get driverSupportViewAllTopics => 'View All Topics';
+
+  @override
+  String get driverSupportSendMessageTitle => 'Send Us a Message';
+
+  @override
+  String get driverSupportCategoryLabel => 'Issue Category';
+
+  @override
+  String get driverSupportCategoryHint => 'Select category';
+
+  @override
+  String get driverSupportMessageDetailsHint =>
+      'Write the details of your issue here...';
+
+  @override
+  String get driverSupportAddAttachment => 'Add Attachment (Optional)';
+
+  @override
+  String get driverSupportAttachmentHint =>
+      'Photos, screenshots, documents (Max 5 MB)';
+
+  @override
+  String get driverSupportSubmitButton => 'Send Message';
+
+  @override
+  String get driverSupportSuccessMessage =>
+      'Your message has been sent to technical support successfully';
+
+  @override
+  String driverSupportAttachmentSelected(String fileName) {
+    return 'Attached: $fileName';
+  }
 }
