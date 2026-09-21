@@ -60,3 +60,15 @@ class AppShellRouteArgs {
   final UserRole role;
   final int initialIndex;
 }
+
+class SetPasswordRouteArgs {
+  const SetPasswordRouteArgs({
+    required this.phone,
+    this.role = UserRole.operations,
+    required this.verificationToken,
+  });
+
+  final String phone;
+  final UserRole role;
+  final String verificationToken;
+}

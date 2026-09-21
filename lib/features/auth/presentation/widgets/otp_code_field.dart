@@ -10,12 +10,14 @@ class OtpCodeField extends StatelessWidget {
   const OtpCodeField({
     super.key,
     this.controller,
+    this.focusNode,
     this.onChanged,
     this.onCompleted,
     this.enabled = true,
   });
 
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onCompleted;
   final bool enabled;
@@ -23,53 +25,54 @@ class OtpCodeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final availableWidth = screenWidth - (Spacing.base * 2);
+    final pinWidth = ((availableWidth - (Spacing.sm * 5)) / 6)
+        .clamp(44.0, 52.0)
+        .toDouble();
+    final pinHeight = pinWidth + 14;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final pinWidth = ((constraints.maxWidth - (Spacing.sm * 5)) / 6)
-            .clamp(44.0, 52.0)
-            .toDouble();
-        final pinHeight = pinWidth + 14;
-        final defaultPinTheme = PinTheme(
-          width: pinWidth,
-          height: pinHeight,
-          textStyle: getSemiBoldStyle(
-            color: color.onSurface,
-            fontSize: FontSize.size18,
-          ),
-          decoration: BoxDecoration(
-            color: color.surface,
-            border: Border.all(color: color.outlineVariant),
-            borderRadius: BorderRadius.circular(Spacing.radiusMd),
-          ),
-        );
+    final defaultPinTheme = PinTheme(
+      width: pinWidth,
+      height: pinHeight,
+      textStyle: getSemiBoldStyle(
+        color: color.onSurface,
+        fontSize: FontSize.size18,
+      ),
+      decoration: BoxDecoration(
+        color: color.surface,
+        border: Border.all(color: color.outlineVariant),
+        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+      ),
+    );
 
-        return Directionality(
-          textDirection: TextDirection.ltr,
-          child: Pinput(
-            length: 6,
-            controller: controller,
-            onChanged: onChanged,
-            onCompleted: onCompleted,
-            enabled: enabled,
-            keyboardType: TextInputType.number,
-            mainAxisAlignment: MainAxisAlignment.center,
-            separatorBuilder: (_) => const SizedBox(width: Spacing.sm),
-            defaultPinTheme: defaultPinTheme,
-            focusedPinTheme: defaultPinTheme.copyDecorationWith(
-              border: Border.all(color: color.primary, width: 1.2),
-              borderRadius: BorderRadius.circular(Spacing.radiusMd),
-            ),
-            submittedPinTheme: defaultPinTheme.copyDecorationWith(
-              border: Border.all(color: color.primary, width: 1.2),
-              borderRadius: BorderRadius.circular(Spacing.radiusMd),
-            ),
-            cursor: Center(
-              child: Container(width: 1, height: 28, color: color.primary),
-            ),
-          ),
-        );
-      },
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Pinput(
+        key: const ValueKey('otp_pinput_field'),
+        length: 6,
+        controller: controller,
+        focusNode: focusNode,
+        onChanged: onChanged,
+        onCompleted: onCompleted,
+        enabled: enabled,
+        keyboardType: TextInputType.number,
+        mainAxisAlignment: MainAxisAlignment.center,
+        separatorBuilder: (_) => const SizedBox(width: Spacing.sm),
+        defaultPinTheme: defaultPinTheme,
+        focusedPinTheme: defaultPinTheme.copyDecorationWith(
+          border: Border.all(color: color.primary, width: 1.2),
+          borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        ),
+        submittedPinTheme: defaultPinTheme.copyDecorationWith(
+          border: Border.all(color: color.primary, width: 1.2),
+          borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        ),
+        cursor: Center(
+          child: Container(width: 1, height: 28, color: color.primary),
+        ),
+        closeKeyboardWhenCompleted: false,
+      ),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../config/routing/app_routes.dart';
+import '../../../../config/routing/arguments/auth_route_arguments.dart';
 import '../../../../config/theme/colors.dart';
 import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
@@ -53,6 +55,7 @@ class OtpVerificationScreen extends StatefulWidget {
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   late final AuthViewModel _viewModel;
   late final TextEditingController _otpController;
+  late final FocusNode _otpFocusNode;
 
   @override
   void initState() {
@@ -60,10 +63,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     _viewModel = widget.viewModel ?? getIt<AuthViewModel>();
     _viewModel.doIntent(AuthRoleChangedEvent(widget.role));
     _otpController = TextEditingController();
+    _otpFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
+    _otpFocusNode.dispose();
     _otpController.dispose();
     if (widget.viewModel == null) {
       _viewModel.close();
@@ -120,9 +125,17 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               message: state.message ?? locale.resendIn,
             );
           } else if (state.status == AuthStatus.otpVerified) {
-            CustomSnackbar.showSuccess(
-              context: context,
-              message: state.otpResult?.message ?? locale.verifyPhoneTitle,
+            final token = state.otpResult?.verificationToken ?? '';
+            final phone = state.otpResult?.phone ?? widget.target.value;
+            final role = state.otpResult?.role ?? widget.role;
+
+            Navigator.of(context).pushReplacementNamed(
+              AppRoutes.setPassword,
+              arguments: SetPasswordRouteArgs(
+                phone: phone,
+                role: role,
+                verificationToken: token,
+              ),
             );
           }
         },
@@ -131,12 +144,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ? locale.resendIn
               : '${locale.resendIn} (${state.resendCountdown}s)';
 
-          return Stack(
-            children: [
-              Scaffold(
-                body: AuthBackground(
+          return Scaffold(
+            resizeToAvoidBottomInset: true,
+            body: Stack(
+              children: [
+                AuthBackground(
                   child: SafeArea(
                     child: SingleChildScrollView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.manual,
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.base,
                       ),
@@ -193,6 +209,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           const SizedBox(height: Spacing.sm),
                           OtpCodeField(
                             controller: _otpController,
+                            focusNode: _otpFocusNode,
                             enabled: !state.isLoading,
                             onCompleted: (code) => _verify(code),
                           ),
@@ -250,15 +267,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                   ),
                 ),
-              ),
-              if (state.isLoading)
-                Positioned.fill(
-                  child: ColoredBox(
-                    color: AppColors.scrim.withValues(alpha: 0.3),
-                    child: const Center(child: CustomProgressIndicator()),
+                if (state.isLoading)
+                  Positioned.fill(
+                    child: ColoredBox(
+                      color: AppColors.scrim.withValues(alpha: 0.3),
+                      child: const Center(child: CustomProgressIndicator()),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           );
         },
       ),

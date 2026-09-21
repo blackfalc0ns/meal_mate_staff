@@ -14,6 +14,7 @@ import 'package:meal_mate_delivery/features/auth/domain/auth_verification_target
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/login_screen.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/otp_verification_screen.dart';
+import 'package:meal_mate_delivery/features/auth/presentation/screens/set_password_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,13 @@ void main() {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.lightTheme,
       initialRoute: route,
+      onGenerateInitialRoutes: (initRoute) {
+        return [
+          RouteGenerator.getRoute(
+            RouteSettings(name: initRoute, arguments: arguments),
+          ),
+        ];
+      },
       onGenerateRoute: (settings) {
         if (settings.name == route && arguments != null) {
           return RouteGenerator.getRoute(
@@ -145,6 +153,30 @@ void main() {
         );
         expect(shell.role, UserRole.operations);
         expect(find.byType(DispatcherHomeScreen), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'SetPassword route with SetPasswordRouteArgs passes args to SetPasswordScreen',
+      (tester) async {
+        await tester.pumpWidget(
+          buildRouteApp(
+            AppRoutes.setPassword,
+            arguments: const SetPasswordRouteArgs(
+              phone: '+96599777222',
+              role: UserRole.operations,
+              verificationToken: 'vtoken_123',
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final screen = tester.widget<SetPasswordScreen>(
+          find.byType(SetPasswordScreen),
+        );
+        expect(screen.args.phone, '+96599777222');
+        expect(screen.args.role, UserRole.operations);
+        expect(screen.args.verificationToken, 'vtoken_123');
       },
     );
   });

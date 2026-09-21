@@ -10,6 +10,7 @@ import '../../features/auth/domain/user_role.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/role_selection_screen.dart';
+import '../../features/auth/presentation/screens/set_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import 'arguments/auth_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_order_entity.dart';
@@ -137,6 +138,29 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: OtpVerificationScreen.email(target: target, role: role),
+        );
+
+      case AppRoutes.setPassword:
+        final args = settings.arguments;
+        SetPasswordRouteArgs setPasswordArgs;
+        if (args is SetPasswordRouteArgs) {
+          setPasswordArgs = args;
+        } else if (args is Map) {
+          setPasswordArgs = SetPasswordRouteArgs(
+            phone: args['phone'] as String? ?? '',
+            role: (args['role'] as UserRole?) ?? UserRole.operations,
+            verificationToken: args['verificationToken'] as String? ?? '',
+          );
+        } else {
+          setPasswordArgs = const SetPasswordRouteArgs(
+            phone: '',
+            role: UserRole.operations,
+            verificationToken: '',
+          );
+        }
+        return _buildRoute(
+          settings: settings,
+          page: SetPasswordScreen(args: setPasswordArgs),
         );
 
       case AppRoutes.register:
