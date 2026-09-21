@@ -7,6 +7,7 @@ class DispatcherHomeAreaSummaryEntity {
     required this.ordersCount,
     required this.isIncreasing,
     required this.colorType,
+    this.percentageChange = 0,
   });
 
   final String id;
@@ -14,4 +15,5 @@ class DispatcherHomeAreaSummaryEntity {
   final int ordersCount;
   final bool isIncreasing;
   final DispatcherHomeAreaColorType colorType;
+  final double percentageChange;
 }

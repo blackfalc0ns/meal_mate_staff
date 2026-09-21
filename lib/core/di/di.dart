@@ -47,6 +47,13 @@ import '../../features/register/domain/usecase/search_driver_vehicle_models_usec
 import '../../features/register/domain/usecase/submit_driver_registration_usecase.dart';
 import '../../features/register/domain/usecase/upload_driver_document_usecase.dart';
 import '../../features/register/presentation/manager/driver_registration_view_model.dart';
+import '../../features/dispatcher/dispatcher_home/data/data_source/dispatcher_home_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_home/data/data_source/dispatcher_home_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_home/data/repo/dispatcher_home_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_home/domain/repo/dispatcher_home_repository.dart';
+import '../../features/dispatcher/dispatcher_home/domain/usecase/get_dispatcher_home_overview_usecase.dart';
+import '../../features/dispatcher/dispatcher_home/domain/usecase/get_dispatcher_live_drivers_usecase.dart';
+import '../../features/dispatcher/dispatcher_home/presentation/manager/dispatcher_home_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -205,6 +212,25 @@ Future<void> configureDependencies() async {
     () => AccountStatusViewModel(
       getAccountStatusUseCase: getIt<GetAccountStatusUseCase>(),
       lookupPhoneUseCase: getIt<LookupPhoneUseCase>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<DispatcherHomeRemoteDataSource>(
+    () => DispatcherHomeRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DispatcherHomeRepository>(
+    () => DispatcherHomeRepositoryImpl(getIt<DispatcherHomeRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetDispatcherHomeOverviewUseCase>(
+    () => GetDispatcherHomeOverviewUseCase(getIt<DispatcherHomeRepository>()),
+  );
+  getIt.registerFactory<GetDispatcherLiveDriversUseCase>(
+    () => GetDispatcherLiveDriversUseCase(getIt<DispatcherHomeRepository>()),
+  );
+  getIt.registerFactory<DispatcherHomeViewModel>(
+    () => DispatcherHomeViewModel(
+      getOverviewUseCase: getIt<GetDispatcherHomeOverviewUseCase>(),
+      getLiveDriversUseCase: getIt<GetDispatcherLiveDriversUseCase>(),
     ),
   );
 }

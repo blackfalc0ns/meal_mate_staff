@@ -100,7 +100,7 @@ class DispatcherHomeOperationsCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '${operations.completionRate}%',
+                        '${operations.completionRate % 1 == 0 ? operations.completionRate.toInt() : operations.completionRate.toStringAsFixed(1)}%',
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
                           fontSize: FontSize.size12,

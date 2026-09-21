@@ -1,62 +1,127 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/constants/assets.dart';
+import '../../../../../core/errors/error_widgets/empty_state_widget.dart';
+import '../../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/network/failures.dart';
+import '../../../../../core/widget/app_button.dart';
 import '../../domain/entities/dispatcher_home_map_driver_pin_entity.dart';
+import 'dispatcher_home_driver_marker.dart';
+import 'dispatcher_home_map_shimmer.dart';
 
-class DispatcherHomeMapCard extends StatelessWidget {
+class DispatcherHomeMapCard extends StatefulWidget {
   const DispatcherHomeMapCard({
     super.key,
     required this.pins,
+    this.isLoading = false,
+    this.failure,
+    this.onRetry,
     this.onViewFullMap,
-    this.onFocusLocation,
-    this.onPinTap,
   });
 
   final List<DispatcherHomeMapDriverPinEntity> pins;
+  final bool isLoading;
+  final Failure? failure;
+  final VoidCallback? onRetry;
   final VoidCallback? onViewFullMap;
-  final VoidCallback? onFocusLocation;
-  final ValueChanged<DispatcherHomeMapDriverPinEntity>? onPinTap;
 
-  Color _getStatusBadgeColor(
-    ColorScheme color,
-    DispatcherHomePinStatus status,
-  ) {
-    switch (status) {
-      case DispatcherHomePinStatus.inDelivery:
-        return color.homeTagDeliveryBg;
-      case DispatcherHomePinStatus.onTheWayToLoad:
-        return color.homeTagLoadingBg;
-      case DispatcherHomePinStatus.paused:
-        return color.homeTagPausedBg;
+  @override
+  State<DispatcherHomeMapCard> createState() => _DispatcherHomeMapCardState();
+}
+
+class _DispatcherHomeMapCardState extends State<DispatcherHomeMapCard> {
+  static const _kuwait = LatLng(29.3759, 47.9774);
+  GoogleMapController? _controller;
+  final Map<String, BitmapDescriptor> _markerIcons = {};
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadMarkerIcons());
+  }
+
+  @override
+  void didUpdateWidget(covariant DispatcherHomeMapCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.pins != widget.pins) {
+      _loadMarkerIcons();
+      if (!widget.isLoading) _focusDrivers();
     }
   }
 
-  Color _getStatusTextColor(ColorScheme color, DispatcherHomePinStatus status) {
-    switch (status) {
-      case DispatcherHomePinStatus.inDelivery:
-      case DispatcherHomePinStatus.onTheWayToLoad:
-        return color.surface;
-      case DispatcherHomePinStatus.paused:
-        return color.homeTagPausedText;
+  Set<Marker> get _markers => widget.pins.map((driver) {
+    return Marker(
+      markerId: MarkerId(driver.id),
+      position: LatLng(driver.latitude, driver.longitude),
+      infoWindow: InfoWindow(
+        title: driver.fullName,
+        snippet: '${driver.plateNumber} • ${driver.statusText}',
+      ),
+      icon:
+          _markerIcons[_markerCacheKey(driver)] ??
+          BitmapDescriptor.defaultMarker,
+      anchor: const Offset(0.5, 0.5),
+    );
+  }).toSet();
+
+  String _markerCacheKey(DispatcherHomeMapDriverPinEntity driver) =>
+      '${driver.id}|${driver.avatarUrl}|${driver.plateNumber}|'
+      '${driver.status.name}|${driver.statusText}';
+
+  Future<void> _loadMarkerIcons() async {
+    if (!mounted) return;
+    final next = <String, BitmapDescriptor>{};
+    for (final driver in widget.pins) {
+      final key = _markerCacheKey(driver);
+      next[key] =
+          _markerIcons[key] ??
+          await DispatcherHomeMarkerBitmapFactory.create(context, driver);
+      if (!mounted) return;
     }
+    setState(() {
+      _markerIcons
+        ..clear()
+        ..addAll(next);
+    });
   }
 
-  Color _getPinVehicleBubbleColor(
-    ColorScheme color,
-    DispatcherHomePinStatus status,
-  ) {
-    switch (status) {
-      case DispatcherHomePinStatus.inDelivery:
-        return color.primary;
-      case DispatcherHomePinStatus.onTheWayToLoad:
-        return color.error;
-      case DispatcherHomePinStatus.paused:
-        return color.onSurfaceVariant;
+  Future<void> _focusDrivers() async {
+    final controller = _controller;
+    if (controller == null) return;
+    final pins = widget.pins;
+    if (pins.isEmpty) {
+      await controller.animateCamera(CameraUpdate.newLatLngZoom(_kuwait, 11));
+    } else if (pins.length == 1) {
+      await controller.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(pins.first.latitude, pins.first.longitude),
+          14,
+        ),
+      );
+    } else {
+      final latitudes = pins.map((pin) => pin.latitude);
+      final longitudes = pins.map((pin) => pin.longitude);
+      await controller.animateCamera(
+        CameraUpdate.newLatLngBounds(
+          LatLngBounds(
+            southwest: LatLng(
+              latitudes.reduce((a, b) => a < b ? a : b),
+              longitudes.reduce((a, b) => a < b ? a : b),
+            ),
+            northeast: LatLng(
+              latitudes.reduce((a, b) => a > b ? a : b),
+              longitudes.reduce((a, b) => a > b ? a : b),
+            ),
+          ),
+          42,
+        ),
+      );
     }
   }
 
@@ -64,289 +129,130 @@ class DispatcherHomeMapCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 26,
-                    height: 26,
-                    decoration: BoxDecoration(
-                      color: color.homeSoftPurpleBg,
-                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                    ),
-                    child: Center(
-                      child: Image.asset(
-                        AppAssets.dispatcherHomeMapIcon,
-                        width: 14,
-                        height: 14,
-                      ),
+                  Text(
+                    locale.homeDriversMapTitle,
+                    style: getBoldStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size12,
+                      color: color.onSurface,
                     ),
                   ),
-                  const SizedBox(width: Spacing.sm),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          locale.homeDriversMapTitle,
-                          style: getBoldStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size10,
-                            color: color.onSurface,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          locale.homeDriversMapSubtitle,
-                          style: getRegularStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size7,
-                            color: color.homeMutedText,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                  Text(
+                    locale.homeDriversMapSubtitle,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size7,
+                      color: color.onSurfaceVariant,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: Spacing.xs),
-            InkWell(
-              onTap: onViewFullMap,
-              borderRadius: BorderRadius.circular(Spacing.radiusSm),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.sm,
-                  vertical: Spacing.xs,
-                ),
-                decoration: BoxDecoration(
-                  color: color.homeSoftPurpleBg,
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      AppAssets.dispatcherHomeMapIcon,
-                      width: 12,
-                      height: 12,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      locale.homeViewFullMap,
-                      style: getSemiBoldStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size9,
-                        color: color.homeActionIconPurple,
-                      ),
-                    ),
-                  ],
-                ),
+            AppButton(
+              onPressed: widget.onViewFullMap,
+              isExpanded: false,
+              height: 34,
+              variant: AppButtonVariant.text,
+              icon: Icons.map_outlined,
+              iconSize: Spacing.iconSm,
+              text: locale.homeViewFullMap,
+              textStyle: getRegularStyle(
+                fontFamily: FontConstant.alexandria,
+                fontSize: FontSize.size10,
+                color: color.onSurfaceVariant,
               ),
             ),
           ],
         ),
         const SizedBox(height: Spacing.sm),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          child: Container(
-            height: 185,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Spacing.cardRadius),
-              border: Border.all(
-                color: color.outlineVariant.withValues(alpha: 0.35),
-                width: Spacing.border,
-              ),
-            ),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Image.asset(
-                    AppAssets.dispatcherHomeMapBg,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                ...pins.map((pin) {
-                  return Align(
-                    alignment: FractionalOffset(pin.relativeX, pin.relativeY),
-                    child: GestureDetector(
-                      onTap: () => onPinTap?.call(pin),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Stack(
-                            clipBehavior: Clip.none,
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                width: 34,
-                                height: 34,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: color.surface,
-                                    width: 2,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: color.shadow.withValues(
-                                        alpha: 0.15,
-                                      ),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    pin.avatarUrl,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              PositionedDirectional(
-                                end: -4,
-                                bottom: -2,
-                                child: Container(
-                                  width: 16,
-                                  height: 16,
-                                  decoration: BoxDecoration(
-                                    color: _getPinVehicleBubbleColor(
-                                      color,
-                                      pin.status,
-                                    ),
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: color.surface,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Icon(
-                                    Icons.local_shipping_rounded,
-                                    size: 10,
-                                    color: color.surface,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 2),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 1,
-                            ),
-                            decoration: BoxDecoration(
-                              color: color.surface,
-                              borderRadius: BorderRadius.circular(
-                                Spacing.radiusXs,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: color.shadow.withValues(alpha: 0.1),
-                                  blurRadius: 2,
-                                ),
-                              ],
-                            ),
-                            child: Text(
-                              pin.boxCode,
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size7 - 2,
-                                color: color.onSurface,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 1),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 1,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getStatusBadgeColor(color, pin.status),
-                              borderRadius: BorderRadius.circular(
-                                Spacing.radiusXs,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (pin.status ==
-                                    DispatcherHomePinStatus.paused) ...[
-                                  Container(
-                                    width: 3,
-                                    height: 3,
-                                    decoration: BoxDecoration(
-                                      color: color.homeTagPausedDot,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 2),
-                                ],
-                                Text(
-                                  pin.statusText,
-                                  style: getBoldStyle(
-                                    fontFamily: FontConstant.alexandria,
-                                    fontSize: FontSize.size7 - 3,
-                                    color: _getStatusTextColor(
-                                      color,
-                                      pin.status,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+        if (widget.isLoading && widget.pins.isEmpty)
+          const DispatcherHomeMapShimmer()
+        else if (widget.failure != null && widget.pins.isEmpty)
+          InlineApiErrorWidget(
+            failure: widget.failure!,
+            onRetry: widget.onRetry,
+          )
+        else
+          ClipRRect(
+            borderRadius: BorderRadius.circular(Spacing.cardRadius),
+            child: SizedBox(
+              height: 210,
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: const CameraPosition(
+                      target: _kuwait,
+                      zoom: 11,
                     ),
-                  );
-                }),
-                PositionedDirectional(
-                  end: Spacing.sm,
-                  top: Spacing.sm,
-                  child: InkWell(
-                    onTap: onFocusLocation,
-                    borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: color.surface,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: color.shadow.withValues(alpha: 0.15),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+                    markers: _markers,
+                    myLocationButtonEnabled: false,
+                    mapToolbarEnabled: false,
+                    zoomControlsEnabled: false,
+                    scrollGesturesEnabled: true,
+                    zoomGesturesEnabled: true,
+                    rotateGesturesEnabled: true,
+                    tiltGesturesEnabled: true,
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                      Factory<EagerGestureRecognizer>(
+                        EagerGestureRecognizer.new,
                       ),
-                      child: Center(
-                        child: Image.asset(
-                          AppAssets.dispatcherHomeMapTarget,
-                          width: 16,
-                          height: 16,
+                    },
+                    onMapCreated: (controller) {
+                      _controller = controller;
+                      _focusDrivers();
+                    },
+                  ),
+                  if (widget.pins.isEmpty)
+                    const Positioned.fill(
+                      child: ColoredBox(
+                        color: Color(0xAAFFFFFF),
+                        child: Center(
+                          child: EmptyStateWidget(
+                            title: 'No drivers available',
+                            description: 'Driver locations will appear here.',
+                          ),
                         ),
                       ),
                     ),
+                  PositionedDirectional(
+                    end: Spacing.sm,
+                    bottom: Spacing.sm,
+                    child: FloatingActionButton.small(
+                      key: const Key('dispatcher-map-refresh'),
+                      heroTag: 'dispatcher-home-map-refresh',
+                      backgroundColor: color.surface,
+                      foregroundColor: color.primary,
+                      disabledElevation: 2,
+                      elevation: 2,
+                      onPressed: widget.isLoading ? null : widget.onRetry,
+                      child: widget.isLoading
+                          ? const SizedBox.square(
+                              dimension: 17,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.refresh_rounded),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
+        if (widget.failure != null && widget.pins.isNotEmpty) ...[
+          const SizedBox(height: Spacing.sm),
+          InlineApiErrorWidget(
+            failure: widget.failure!,
+            onRetry: widget.onRetry,
+          ),
+        ],
       ],
     );
   }

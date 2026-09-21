@@ -9,9 +9,20 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/notification_button.dart';
 
 class DispatcherHomeHeader extends StatelessWidget {
-  const DispatcherHomeHeader({super.key, this.onNotificationTap});
+  const DispatcherHomeHeader({
+    super.key,
+    this.onNotificationTap,
+    this.restaurantName,
+    this.role,
+    this.greeting,
+    this.greetingSubtitle,
+  });
 
   final VoidCallback? onNotificationTap;
+  final String? restaurantName;
+  final String? role;
+  final String? greeting;
+  final String? greetingSubtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +46,9 @@ class DispatcherHomeHeader extends StatelessWidget {
                   const SizedBox(width: Spacing.xs),
                   Flexible(
                     child: Text(
-                      locale.homeStoreName,
+                      restaurantName?.isNotEmpty == true
+                          ? restaurantName!
+                          : locale.homeStoreName,
                       style: getSemiBoldStyle(
                         fontFamily: FontConstant.alexandria,
                         fontSize: FontSize.size10,
@@ -65,7 +78,9 @@ class DispatcherHomeHeader extends StatelessWidget {
                         ),
                         const SizedBox(width: Spacing.xs / 2),
                         Text(
-                          locale.homeRoleDispatcher,
+                          role?.isNotEmpty == true
+                              ? role!
+                              : locale.homeRoleDispatcher,
                           style: getSemiBoldStyle(
                             fontFamily: FontConstant.alexandria,
                             fontSize: FontSize.size7,
@@ -99,7 +114,7 @@ class DispatcherHomeHeader extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.md),
         Text(
-          locale.homeGreeting,
+          greeting?.isNotEmpty == true ? greeting! : locale.homeGreeting,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size16,
@@ -108,7 +123,9 @@ class DispatcherHomeHeader extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.xs / 2),
         Text(
-          locale.homeGreetingSubtitle,
+          greetingSubtitle?.isNotEmpty == true
+              ? greetingSubtitle!
+              : locale.homeGreetingSubtitle,
           style: getRegularStyle(
             fontFamily: FontConstant.alexandria,
             fontSize: FontSize.size9,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routing/app_routes.dart';
+import '../../../../config/routing/arguments/auth_route_arguments.dart';
 import '../../../../config/theme/colors.dart';
 import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
@@ -219,26 +220,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: state.isLoading
                                   ? null
                                   : () {
-                                      final phone = _phoneController.text
-                                          .trim();
-                                      final fullPhone = phone.startsWith('+')
-                                          ? phone
-                                          : (phone.isNotEmpty
-                                                ? '+965$phone'
-                                                : '');
-                                      if (fullPhone.isNotEmpty) {
-                                        _viewModel.doIntent(
-                                          AuthForgotPasswordEvent(
-                                            phone: fullPhone,
-                                            role: widget.role,
-                                          ),
-                                        );
-                                      } else {
-                                        CustomSnackbar.showWarning(
-                                          context: context,
-                                          message: locale.phoneHint,
-                                        );
-                                      }
+                                      final phone =
+                                          _phoneController.text.trim();
+                                      Navigator.of(context).pushNamed(
+                                        AppRoutes.forgotPassword,
+                                        arguments: ForgotPasswordRouteArgs(
+                                          role: widget.role,
+                                          phone: phone.isNotEmpty
+                                              ? phone
+                                              : null,
+                                        ),
+                                      );
                                     },
                               child: Text(
                                 locale.forgotPassword,

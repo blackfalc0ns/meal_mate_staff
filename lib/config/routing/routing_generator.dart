@@ -7,8 +7,10 @@ import '../../features/account_status/presentation/screens/account_status_previe
 import '../../features/account_status/presentation/screens/account_status_screen.dart';
 import '../../features/auth/domain/auth_verification_target.dart';
 import '../../features/auth/domain/user_role.dart';
+import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
+import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/role_selection_screen.dart';
 import '../../features/auth/presentation/screens/set_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
@@ -138,6 +140,44 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: OtpVerificationScreen.email(target: target, role: role),
+        );
+
+      case AppRoutes.forgotPassword:
+        final args = settings.arguments;
+        ForgotPasswordRouteArgs forgotPasswordArgs;
+        if (args is ForgotPasswordRouteArgs) {
+          forgotPasswordArgs = args;
+        } else if (args is Map) {
+          forgotPasswordArgs = ForgotPasswordRouteArgs(
+            role: (args['role'] as UserRole?) ?? UserRole.operations,
+            phone: args['phone'] as String?,
+          );
+        } else if (args is UserRole) {
+          forgotPasswordArgs = ForgotPasswordRouteArgs(role: args);
+        } else {
+          forgotPasswordArgs = const ForgotPasswordRouteArgs();
+        }
+        return _buildRoute(
+          settings: settings,
+          page: ForgotPasswordScreen(args: forgotPasswordArgs),
+        );
+
+      case AppRoutes.resetPassword:
+        final args = settings.arguments;
+        ResetPasswordRouteArgs resetPasswordArgs;
+        if (args is ResetPasswordRouteArgs) {
+          resetPasswordArgs = args;
+        } else if (args is Map) {
+          resetPasswordArgs = ResetPasswordRouteArgs(
+            phone: args['phone'] as String? ?? '',
+            role: (args['role'] as UserRole?) ?? UserRole.operations,
+          );
+        } else {
+          resetPasswordArgs = const ResetPasswordRouteArgs(phone: '');
+        }
+        return _buildRoute(
+          settings: settings,
+          page: ResetPasswordScreen(args: resetPasswordArgs),
         );
 
       case AppRoutes.setPassword:

@@ -15,6 +15,7 @@ class AppCachedNetworkImage extends StatelessWidget {
     this.loadingWidget,
     this.errorWidget,
     this.semanticLabel,
+    this.onImageResolved,
   });
 
   final String? imageUrl;
@@ -26,12 +27,13 @@ class AppCachedNetworkImage extends StatelessWidget {
   final Widget? loadingWidget;
   final Widget? errorWidget;
   final String? semanticLabel;
+  final ValueChanged<bool>? onImageResolved;
 
   @override
   Widget build(BuildContext context) {
     final url = _resolveUrl(imageUrl);
     final child = url == null || url.isEmpty
-        ? _buildError(context)
+        ? _buildResolvedError(context)
         : Image.network(
             url,
             width: width,
@@ -39,10 +41,14 @@ class AppCachedNetworkImage extends StatelessWidget {
             fit: fit,
             semanticLabel: semanticLabel,
             frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-              if (wasSynchronouslyLoaded || frame != null) return child;
+              if (wasSynchronouslyLoaded || frame != null) {
+                _notifyResolved(true);
+                return child;
+              }
               return _buildLoading(context);
             },
-            errorBuilder: (context, error, stackTrace) => _buildError(context),
+            errorBuilder: (context, error, stackTrace) =>
+                _buildResolvedError(context),
           );
 
     final sizedChild = SizedBox(width: width, height: height, child: child);
@@ -86,5 +92,16 @@ class AppCachedNetworkImage extends StatelessWidget {
             size: Spacing.iconMd,
           ),
     );
+  }
+
+  Widget _buildResolvedError(BuildContext context) {
+    _notifyResolved(false);
+    return _buildError(context);
+  }
+
+  void _notifyResolved(bool didLoad) {
+    final callback = onImageResolved;
+    if (callback == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) => callback(didLoad));
   }
 }

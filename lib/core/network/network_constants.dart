@@ -37,4 +37,9 @@ abstract class EndPoints {
       '/api/v1/auth/staff/driver-registration/status';
   static const String driverRegistrationResubmit =
       '/api/v1/auth/staff/driver-registration/{registrationId}/resubmit';
+
+  static const String dispatcherDashboardOverview =
+      '/api/v1/dispatcher/dashboard/overview';
+  static const String dispatcherLiveLocations =
+      '/api/v1/dispatcher/drivers/live-locations';
 }

@@ -26,6 +26,8 @@ import '../../features/register/data/models/response/driver_nationality_response
 import '../../features/register/data/models/response/driver_vehicle_color_response_dto.dart';
 import '../../features/register/data/models/response/driver_vehicle_model_response_dto.dart';
 import '../../features/register/data/models/response/driver_vehicle_type_response_dto.dart';
+import '../../features/dispatcher/dispatcher_home/data/models/response/dispatcher_dashboard_overview_response_dto.dart';
+import '../../features/dispatcher/dispatcher_home/data/models/response/dispatcher_live_driver_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -118,4 +120,11 @@ abstract class ApiServices {
     @Path('registrationId') String registrationId,
     @Body() DriverResubmitRequestDto request,
   );
+
+  @GET(EndPoints.dispatcherDashboardOverview)
+  Future<DispatcherDashboardOverviewResponseDto>
+  getDispatcherDashboardOverview();
+
+  @GET(EndPoints.dispatcherLiveLocations)
+  Future<List<DispatcherLiveDriverResponseDto>> getDispatcherLiveLocations();
 }

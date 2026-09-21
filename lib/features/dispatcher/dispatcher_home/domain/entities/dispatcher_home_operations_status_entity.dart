@@ -11,7 +11,7 @@ class DispatcherHomeOperationsStatusEntity {
     required this.cancelledLabel,
   });
 
-  final int completionRate;
+  final double completionRate;
   final int deliveredCount;
   final String deliveredLabel;
   final int inDeliveryCount;

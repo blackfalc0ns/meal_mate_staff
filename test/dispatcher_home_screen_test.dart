@@ -1,133 +1,210 @@
-﻿import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:meal_mate_delivery/core/errors/api_error_type.dart';
+import 'package:meal_mate_delivery/core/errors/api_exception.dart';
+import 'package:meal_mate_delivery/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
+import 'package:meal_mate_delivery/core/network/failures.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/entities/dispatcher_home_alert_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/entities/dispatcher_home_area_summary_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/entities/dispatcher_home_map_driver_pin_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/entities/dispatcher_home_operations_status_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/entities/dispatcher_home_overview_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/entities/dispatcher_home_top_driver_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/repo/dispatcher_home_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/usecase/get_dispatcher_home_overview_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/domain/usecase/get_dispatcher_live_drivers_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/manager/dispatcher_home_view_model.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_alert_banner.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_areas_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_drivers_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_header.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_kpi_row.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_map_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_operations_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_quick_actions.dart';
-
-Widget _buildTestableWidget({
-  required Widget child,
-  Locale locale = const Locale('ar'),
-}) {
-  return MaterialApp(
-    locale: locale,
-    supportedLocales: AppLocalizations.supportedLocales,
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    theme: ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6744C2)),
-    ),
-    onGenerateRoute: RouteGenerator.getRoute,
-    home: child,
-  );
-}
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_home/presentation/widgets/dispatcher_home_shimmer.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('DispatcherHomeScreen Widget Tests', () {
-    testWidgets('renders all home screen sections and fake data in Arabic', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(390 * 2, 1200 * 2);
-      tester.view.devicePixelRatio = 2.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets('renders shimmer while the initial overview is loading', (
+    tester,
+  ) async {
+    final repository = _HomeRepository(holdOverview: true);
+    final viewModel = _viewModel(repository);
 
-      await tester.pumpWidget(
-        _buildTestableWidget(child: const DispatcherHomeScreen()),
-      );
-      await tester.pumpAndSettle();
+    await tester.pumpWidget(_app(viewModel));
+    await tester.pump();
 
-      expect(find.byType(DispatcherHomeScreen), findsOneWidget);
-      expect(find.byType(DispatcherHomeHeader), findsOneWidget);
-      expect(find.byType(DispatcherHomeKpiRow), findsOneWidget);
-      expect(find.byType(DispatcherHomeQuickActions), findsOneWidget);
-      expect(find.byType(DispatcherHomeMapCard), findsOneWidget);
-      expect(find.byType(DispatcherHomeOperationsCard), findsOneWidget);
-      expect(find.byType(DispatcherHomeDriversCard), findsOneWidget);
-      expect(find.byType(DispatcherHomeAreasCard), findsOneWidget);
-      expect(find.byType(DispatcherHomeAlertBanner), findsOneWidget);
+    expect(find.byType(DispatcherHomeShimmer), findsOneWidget);
+    await viewModel.close();
+  });
 
-      // Verify Header
-      expect(find.text('مرحبًا'), findsOneWidget);
-      expect(find.text('كل شيء تحت السيطرة اليوم 👋'), findsOneWidget);
-      expect(find.text('مطعم MealMate الكويت'), findsOneWidget);
-      expect(find.text('Dispatcher'), findsOneWidget);
+  testWidgets('renders shared API error when overview fails without data', (
+    tester,
+  ) async {
+    final viewModel = _viewModel(_HomeRepository(failOverview: true));
 
-      // Verify KPI Metrics
-      expect(find.text('128'), findsOneWidget);
-      expect(find.text('58'), findsWidgets);
-      expect(find.text('23'), findsWidgets);
-      expect(find.text('2'), findsOneWidget);
+    await tester.pumpWidget(_app(viewModel));
+    await tester.pump();
 
-      // Verify Quick Actions
-      expect(find.text('إجراءات سريعة'), findsOneWidget);
-      expect(find.text('تعيين سائق'), findsOneWidget);
-      expect(find.text('حل المشكلات'), findsOneWidget);
-      expect(find.text('خريطة السائقين'), findsOneWidget);
-      expect(find.text('كل السائقين'), findsOneWidget);
+    expect(find.byType(ApiErrorWidget), findsOneWidget);
+    await viewModel.close();
+  });
 
-      // Verify Map Preview
-      expect(find.text('مواقع السائقين'), findsOneWidget);
-      expect(find.text('مراقبة السائقين في الوقت الفعلي'), findsOneWidget);
-      expect(find.text('عرض الخريطة الكاملة'), findsOneWidget);
-      expect(find.text('BX-458622'), findsWidgets);
+  testWidgets('binds API content and renders Google Map', (tester) async {
+    tester.view.physicalSize = const Size(390 * 2, 1200 * 2);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.resetPhysicalSize);
+    final viewModel = _viewModel(_HomeRepository());
 
-      // Verify Operations Status
-      expect(find.text('حالة العمليات'), findsOneWidget);
-      expect(find.text('87%'), findsOneWidget);
-      expect(find.text('معدل الإنجاز'), findsOneWidget);
-      expect(find.text('عرض التقارير'), findsOneWidget);
-      expect(find.text('112'), findsOneWidget);
-      expect(find.text('7'), findsOneWidget);
+    await tester.pumpWidget(_app(viewModel));
+    await tester.pump();
 
-      // Verify Top Drivers
-      expect(find.text('استعراض السائقين'), findsOneWidget);
-      expect(find.text('أحمد السعيد'), findsOneWidget);
-      expect(find.text('محمد العنزي'), findsOneWidget);
-      expect(find.text('يوسف خالد'), findsOneWidget);
-      expect(find.text('عرض كل السائقين'), findsOneWidget);
+    expect(find.text('مطعم الاختبار'), findsOneWidget);
+    expect(find.text('128'), findsOneWidget);
+    expect(find.text('87.5%'), findsOneWidget);
+    expect(find.text('أحمد السعيد'), findsOneWidget);
+    expect(find.byType(GoogleMap), findsOneWidget);
+    expect(find.byType(DispatcherHomeAlertBanner), findsOneWidget);
+    await viewModel.close();
+  });
 
-      // Verify Areas Summary
-      expect(find.text('ملخص المناطق'), findsOneWidget);
-      expect(find.text('السالمية'), findsOneWidget);
-      expect(find.text('حولي'), findsOneWidget);
-      expect(find.text('الجهراء'), findsOneWidget);
-      expect(find.text('العاصمة'), findsOneWidget);
+  testWidgets('map refresh reloads locations without reloading overview', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390 * 2, 1200 * 2);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.resetPhysicalSize);
+    final repository = _HomeRepository();
+    final viewModel = _viewModel(repository);
+    await tester.pumpWidget(_app(viewModel));
+    await tester.pump();
 
-      // Verify Alert Banner
-      expect(find.text('هناك 2 مشكلة تحتاج إلى انتباهك'), findsOneWidget);
-    });
+    await tester.tap(find.byKey(const Key('dispatcher-map-refresh')));
+    await tester.pump();
 
-    testWidgets('renders cleanly in English LTR without overflow', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(390 * 2, 1200 * 2);
-      tester.view.devicePixelRatio = 2.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
-
-      await tester.pumpWidget(
-        _buildTestableWidget(
-          locale: const Locale('en'),
-          child: const DispatcherHomeScreen(),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.byType(DispatcherHomeScreen), findsOneWidget);
-      expect(find.text('Welcome'), findsOneWidget);
-      expect(find.text('Quick Actions'), findsOneWidget);
-      expect(find.text('Drivers Locations'), findsOneWidget);
-      expect(find.text('Operations Status'), findsOneWidget);
-      expect(find.text('Drivers Review'), findsOneWidget);
-      expect(find.text('Area Summary'), findsOneWidget);
-    });
+    expect(repository.overviewCalls, 1);
+    expect(repository.driverCalls, 2);
+    await viewModel.close();
   });
 }
+
+Widget _app(DispatcherHomeViewModel viewModel) => MaterialApp(
+  locale: const Locale('ar'),
+  supportedLocales: AppLocalizations.supportedLocales,
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  home: DispatcherHomeScreen(viewModel: viewModel),
+);
+
+DispatcherHomeViewModel _viewModel(DispatcherHomeRepository repository) =>
+    DispatcherHomeViewModel(
+      getOverviewUseCase: GetDispatcherHomeOverviewUseCase(repository),
+      getLiveDriversUseCase: GetDispatcherLiveDriversUseCase(repository),
+    );
+
+class _HomeRepository implements DispatcherHomeRepository {
+  _HomeRepository({this.failOverview = false, this.holdOverview = false});
+
+  final bool failOverview;
+  final bool holdOverview;
+  int overviewCalls = 0;
+  int driverCalls = 0;
+
+  @override
+  Future<ApiResult<DispatcherHomeOverviewEntity>> getOverview() {
+    overviewCalls++;
+    if (holdOverview) {
+      return Completer<ApiResult<DispatcherHomeOverviewEntity>>().future;
+    }
+    if (failOverview) {
+      return Future.value(
+        ApiErrorResult(
+          failure: Failure.fromException(
+            const ApiException(
+              errorType: ApiErrorType.serverError,
+              message: 'Overview failed',
+            ),
+          ),
+        ),
+      );
+    }
+    return Future.value(const ApiSuccessResult(data: _overview));
+  }
+
+  @override
+  Future<ApiResult<List<DispatcherHomeMapDriverPinEntity>>> getLiveDrivers() {
+    driverCalls++;
+    return Future.value(const ApiSuccessResult(data: [_driver]));
+  }
+}
+
+const _overview = DispatcherHomeOverviewEntity(
+  restaurant: DispatcherHomeRestaurantEntity(
+    id: 'restaurant-1',
+    nameAr: 'مطعم الاختبار',
+    nameEn: 'Test Restaurant',
+    role: 'Dispatcher',
+  ),
+  greeting: DispatcherHomeGreetingEntity(
+    title: 'مرحبًا',
+    subtitle: 'كل شيء تحت السيطرة',
+  ),
+  kpis: DispatcherHomeKpisEntity(
+    totalOrdersToday: 128,
+    inDeliveryCount: 58,
+    pendingAssignmentCount: 23,
+    activeIssuesCount: 2,
+  ),
+  operationsStatus: DispatcherHomeOperationsStatusEntity(
+    completionRate: 87.5,
+    deliveredCount: 112,
+    deliveredLabel: '',
+    inDeliveryCount: 58,
+    inDeliveryLabel: '',
+    pendingCount: 23,
+    pendingLabel: '',
+    cancelledCount: 7,
+    cancelledLabel: '',
+  ),
+  topDrivers: [
+    DispatcherHomeTopDriverEntity(
+      id: 'driver-1',
+      name: 'أحمد السعيد',
+      badgeText: 'أعلى تقييم',
+      rating: 4.9,
+      avatarUrl: '',
+      completedDeliveriesToday: 14,
+    ),
+  ],
+  regions: [
+    DispatcherHomeAreaSummaryEntity(
+      id: 'region-1',
+      name: 'السالمية',
+      ordersCount: 38,
+      isIncreasing: true,
+      colorType: DispatcherHomeAreaColorType.salmiya,
+      percentageChange: 14.5,
+    ),
+  ],
+  activeIssues: DispatcherHomeActiveIssuesEntity(
+    count: 2,
+    summaryAr: 'تأخير في التوصيل',
+    summaryEn: 'Delivery delay',
+    items: [],
+  ),
+);
+
+const _driver = DispatcherHomeMapDriverPinEntity(
+  id: 'driver-1',
+  fullName: 'سائق الاختبار',
+  phone: '+96550000000',
+  plateNumber: 'DX-1',
+  statusText: 'متاح',
+  status: DispatcherHomePinStatus.available,
+  avatarUrl: '',
+  latitude: 29.3759,
+  longitude: 47.9774,
+  heading: 0,
+  speedKmh: 0,
+  updatedAtUtc: null,
+);

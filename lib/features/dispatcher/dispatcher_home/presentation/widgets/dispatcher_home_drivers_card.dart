@@ -5,6 +5,7 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/constants/assets.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_home_top_driver_entity.dart';
 
@@ -95,8 +96,13 @@ class DispatcherHomeDriversCard extends StatelessWidget {
                     child: Row(
                       children: [
                         ClipOval(
-                          child: Image.asset(
-                            driver.avatarUrl,
+                          child: AppCachedNetworkImage(
+                            imageUrl: driver.avatarUrl,
+                            shape: BoxShape.circle,
+                            errorWidget: Image.asset(
+                              AppAssets.registrationDriverRole,
+                              fit: BoxFit.cover,
+                            ),
                             width: 28,
                             height: 28,
                             fit: BoxFit.cover,

@@ -5,6 +5,7 @@ class DispatcherHomeTopDriverEntity {
     required this.badgeText,
     required this.rating,
     required this.avatarUrl,
+    this.completedDeliveriesToday = 0,
   });
 
   final String id;
@@ -12,4 +13,5 @@ class DispatcherHomeTopDriverEntity {
   final String badgeText;
   final double rating;
   final String avatarUrl;
+  final int completedDeliveriesToday;
 }
