@@ -156,6 +156,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registrationFullNameEnHint => 'أدخل الاسم الكامل بالإنجليزية';
 
   @override
+  String get registrationWorkplace => 'جهة العمل والمطعم';
+
+  @override
+  String get registrationIdentityAndContact => 'بيانات الهوية والتواصل';
+
+  @override
   String get registrationRestaurant => 'المطعم الشريك';
 
   @override
@@ -203,6 +209,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get registrationContinue => 'متابعة';
+
+  @override
+  String get registrationVehicleSpecifications => 'مواصفات المركبة';
+
+  @override
+  String get registrationLicensesAndPlate => 'بيانات اللوحة والرخص';
 
   @override
   String get registrationVehicleType => 'نوع المركبة';

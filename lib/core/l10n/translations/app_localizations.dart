@@ -386,6 +386,18 @@ abstract class AppLocalizations {
   /// **'Enter full name in English'**
   String get registrationFullNameEnHint;
 
+  /// No description provided for @registrationWorkplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Workplace & Restaurant'**
+  String get registrationWorkplace;
+
+  /// No description provided for @registrationIdentityAndContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity & Contact Details'**
+  String get registrationIdentityAndContact;
+
   /// No description provided for @registrationRestaurant.
   ///
   /// In en, this message translates to:
@@ -481,6 +493,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get registrationContinue;
+
+  /// No description provided for @registrationVehicleSpecifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Specifications'**
+  String get registrationVehicleSpecifications;
+
+  /// No description provided for @registrationLicensesAndPlate.
+  ///
+  /// In en, this message translates to:
+  /// **'License & Plate Information'**
+  String get registrationLicensesAndPlate;
 
   /// No description provided for @registrationVehicleType.
   ///

@@ -156,6 +156,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registrationFullNameEnHint => 'Enter full name in English';
 
   @override
+  String get registrationWorkplace => 'Workplace & Restaurant';
+
+  @override
+  String get registrationIdentityAndContact => 'Identity & Contact Details';
+
+  @override
   String get registrationRestaurant => 'Partner restaurant';
 
   @override
@@ -203,6 +209,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registrationContinue => 'Continue';
+
+  @override
+  String get registrationVehicleSpecifications => 'Vehicle Specifications';
+
+  @override
+  String get registrationLicensesAndPlate => 'License & Plate Information';
 
   @override
   String get registrationVehicleType => 'Vehicle type';
