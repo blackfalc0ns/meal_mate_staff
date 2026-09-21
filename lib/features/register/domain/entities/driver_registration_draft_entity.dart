@@ -192,6 +192,7 @@ class DriverRegistrationDraftEntity {
     String? licenseExpiry,
     String? vehicleLicenseExpiry,
     String? contractExpiry,
+    bool clearContractExpiry = false,
     String? nationalIdFrontStorageKey,
     String? nationalIdBackStorageKey,
     String? drivingLicenseFrontStorageKey,
@@ -221,7 +222,9 @@ class DriverRegistrationDraftEntity {
       licenseNumber: licenseNumber ?? this.licenseNumber,
       licenseExpiry: licenseExpiry ?? this.licenseExpiry,
       vehicleLicenseExpiry: vehicleLicenseExpiry ?? this.vehicleLicenseExpiry,
-      contractExpiry: contractExpiry ?? this.contractExpiry,
+      contractExpiry: clearContractExpiry
+          ? null
+          : (contractExpiry ?? this.contractExpiry),
       nationalIdFrontStorageKey:
           nationalIdFrontStorageKey ?? this.nationalIdFrontStorageKey,
       nationalIdBackStorageKey:

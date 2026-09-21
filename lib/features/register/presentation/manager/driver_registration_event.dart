@@ -14,6 +14,47 @@ class DriverRegistrationLoadRestaurantsEvent extends DriverRegistrationEvent {
   const DriverRegistrationLoadRestaurantsEvent();
 }
 
+class DriverRegistrationLoadNationalitiesEvent extends DriverRegistrationEvent {
+  const DriverRegistrationLoadNationalitiesEvent();
+}
+
+class DriverRegistrationLoadVehicleTypesEvent extends DriverRegistrationEvent {
+  const DriverRegistrationLoadVehicleTypesEvent();
+}
+
+class DriverRegistrationLoadVehicleColorsEvent extends DriverRegistrationEvent {
+  const DriverRegistrationLoadVehicleColorsEvent();
+}
+
+class DriverRegistrationSearchVehicleModelsEvent
+    extends DriverRegistrationEvent {
+  const DriverRegistrationSearchVehicleModelsEvent({
+    this.search,
+    this.vehicleType,
+    this.limit = 40,
+  });
+
+  final String? search;
+  final String? vehicleType;
+  final int limit;
+}
+
+class DriverRegistrationVehicleModelQueryChangedEvent
+    extends DriverRegistrationEvent {
+  const DriverRegistrationVehicleModelQueryChangedEvent({
+    required this.search,
+    this.vehicleType,
+  });
+
+  final String search;
+  final String? vehicleType;
+}
+
+class DriverRegistrationRetryVehicleCatalogEvent
+    extends DriverRegistrationEvent {
+  const DriverRegistrationRetryVehicleCatalogEvent();
+}
+
 class DriverRegistrationStepChangedEvent extends DriverRegistrationEvent {
   const DriverRegistrationStepChangedEvent(this.step);
 

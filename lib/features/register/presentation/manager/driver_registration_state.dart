@@ -5,12 +5,24 @@ import '../../../../core/network/failures.dart';
 import '../../domain/entities/driver_registration_draft_entity.dart';
 import '../../domain/entities/driver_registration_result_entity.dart';
 import '../../domain/entities/driver_restaurant_entity.dart';
+import '../../domain/entities/driver_nationality_entity.dart';
+import '../../domain/entities/driver_vehicle_color_entity.dart';
+import '../../domain/entities/driver_vehicle_model_entity.dart';
+import '../../domain/entities/driver_vehicle_type_entity.dart';
 import '../../domain/register_document.dart';
 
 enum DriverRegistrationStatus {
   initial,
   loadingRestaurants,
   restaurantsLoaded,
+  loadingNationalities,
+  nationalitiesLoaded,
+  loadingVehicleTypes,
+  vehicleTypesLoaded,
+  loadingVehicleColors,
+  vehicleColorsLoaded,
+  searchingVehicleModels,
+  vehicleModelsLoaded,
   uploadingDocument,
   documentUploaded,
   submitting,
@@ -26,6 +38,14 @@ class DriverRegistrationState {
     this.currentStep = 1,
     this.draft = const DriverRegistrationDraftEntity(),
     this.restaurants = const [],
+    this.nationalities = const [],
+    this.vehicleTypes = const [],
+    this.vehicleColors = const [],
+    this.vehicleModels = const [],
+    this.isLoadingVehicleTypes = false,
+    this.isLoadingVehicleColors = false,
+    this.isSearchingVehicleModels = false,
+    this.vehicleCatalogFailure,
     this.documents = const [
       RegisterDocument(
         id: 'civil-card',
@@ -60,6 +80,14 @@ class DriverRegistrationState {
   final int currentStep;
   final DriverRegistrationDraftEntity draft;
   final List<DriverRestaurantEntity> restaurants;
+  final List<DriverNationalityEntity> nationalities;
+  final List<DriverVehicleTypeEntity> vehicleTypes;
+  final List<DriverVehicleColorEntity> vehicleColors;
+  final List<DriverVehicleModelEntity> vehicleModels;
+  final bool isLoadingVehicleTypes;
+  final bool isLoadingVehicleColors;
+  final bool isSearchingVehicleModels;
+  final Failure? vehicleCatalogFailure;
   final List<RegisterDocument> documents;
   final Color selectedVehicleColor;
   final bool ownsVehicle;
@@ -100,6 +128,14 @@ class DriverRegistrationState {
     int? currentStep,
     DriverRegistrationDraftEntity? draft,
     List<DriverRestaurantEntity>? restaurants,
+    List<DriverNationalityEntity>? nationalities,
+    List<DriverVehicleTypeEntity>? vehicleTypes,
+    List<DriverVehicleColorEntity>? vehicleColors,
+    List<DriverVehicleModelEntity>? vehicleModels,
+    bool? isLoadingVehicleTypes,
+    bool? isLoadingVehicleColors,
+    bool? isSearchingVehicleModels,
+    Failure? vehicleCatalogFailure,
     List<RegisterDocument>? documents,
     Color? selectedVehicleColor,
     bool? ownsVehicle,
@@ -108,12 +144,26 @@ class DriverRegistrationState {
     String? errorMessage,
     String? uploadingDocumentId,
     bool clearUploading = false,
+    bool clearVehicleCatalogFailure = false,
   }) {
     return DriverRegistrationState(
       status: status ?? this.status,
       currentStep: currentStep ?? this.currentStep,
       draft: draft ?? this.draft,
       restaurants: restaurants ?? this.restaurants,
+      nationalities: nationalities ?? this.nationalities,
+      vehicleTypes: vehicleTypes ?? this.vehicleTypes,
+      vehicleColors: vehicleColors ?? this.vehicleColors,
+      vehicleModels: vehicleModels ?? this.vehicleModels,
+      isLoadingVehicleTypes:
+          isLoadingVehicleTypes ?? this.isLoadingVehicleTypes,
+      isLoadingVehicleColors:
+          isLoadingVehicleColors ?? this.isLoadingVehicleColors,
+      isSearchingVehicleModels:
+          isSearchingVehicleModels ?? this.isSearchingVehicleModels,
+      vehicleCatalogFailure: clearVehicleCatalogFailure
+          ? null
+          : (vehicleCatalogFailure ?? this.vehicleCatalogFailure),
       documents: documents ?? this.documents,
       selectedVehicleColor: selectedVehicleColor ?? this.selectedVehicleColor,
       ownsVehicle: ownsVehicle ?? this.ownsVehicle,

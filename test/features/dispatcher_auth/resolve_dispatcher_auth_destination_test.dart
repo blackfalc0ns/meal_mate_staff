@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_mate_delivery/core/errors/api_error_type.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:meal_mate_delivery/features/dispatcher_auth/domain/dispatcher_auth_destination.dart';
@@ -18,10 +19,9 @@ void main() {
 
         final destination = resolveDispatcherAuthDestination(lookup);
         expect(destination, isA<DispatcherAccountNotFoundDestination>());
-        expect(
-          (destination as DispatcherAccountNotFoundDestination).phone,
-          '+96550999888',
-        );
+        final notFound = destination as DispatcherAccountNotFoundDestination;
+        expect(notFound.phone, '+96550999888');
+        expect(notFound.exception.errorType, ApiErrorType.notFound);
       },
     );
 

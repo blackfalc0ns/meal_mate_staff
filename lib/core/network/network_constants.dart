@@ -20,6 +20,14 @@ abstract class EndPoints {
   // Driver registration and status endpoints
   static const String driverRestaurants =
       '/api/v1/auth/staff/driver-registration/restaurants';
+  static const String driverNationalities =
+      '/api/v1/auth/staff/driver-registration/nationalities';
+  static const String driverVehicleTypes =
+      '/api/v1/auth/staff/driver-registration/vehicle-types';
+  static const String driverVehicleColors =
+      '/api/v1/auth/staff/driver-registration/vehicle-colors';
+  static const String driverVehicleModels =
+      '/api/v1/auth/staff/driver-registration/vehicle-models';
   static const String driverRegistrationUpload =
       '/api/v1/auth/staff/driver-registration/upload';
   static const String driverRegistration =

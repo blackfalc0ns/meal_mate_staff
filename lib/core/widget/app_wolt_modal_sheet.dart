@@ -11,8 +11,8 @@ import '../../config/theme/styles_manager.dart';
 import '../extensions/extensions.dart';
 import 'app_button.dart';
 
-class RegistrationFakeData {
-  const RegistrationFakeData._();
+class RegistrationConstants {
+  const RegistrationConstants._();
 
   static const List<String> nationalities = [
     'كويتي',
@@ -81,6 +81,8 @@ class RegistrationFakeData {
   ];
 }
 
+typedef RegistrationFakeData = RegistrationConstants;
+
 class AppWoltPickerSheet {
   const AppWoltPickerSheet._();
 
@@ -91,6 +93,7 @@ class AppWoltPickerSheet {
     String? selectedItem,
     String? searchHint,
     IconData? itemLeadingIcon,
+    Widget Function(String item)? itemLeadingBuilder,
   }) {
     return WoltModalSheet.show<String>(
       context: context,
@@ -117,6 +120,7 @@ class AppWoltPickerSheet {
               selectedItem: selectedItem,
               searchHint: searchHint ?? 'ابحث هنا...',
               itemLeadingIcon: itemLeadingIcon,
+              itemLeadingBuilder: itemLeadingBuilder,
               onItemSelected: (selected) {
                 Navigator.of(modalContext).pop(selected);
               },
@@ -292,6 +296,7 @@ class _PickerContent extends StatefulWidget {
     this.selectedItem,
     this.searchHint = 'ابحث...',
     this.itemLeadingIcon,
+    this.itemLeadingBuilder,
   });
 
   final List<String> items;
@@ -299,6 +304,7 @@ class _PickerContent extends StatefulWidget {
   final String? selectedItem;
   final String searchHint;
   final IconData? itemLeadingIcon;
+  final Widget Function(String item)? itemLeadingBuilder;
 
   @override
   State<_PickerContent> createState() => _PickerContentState();
@@ -441,14 +447,16 @@ class _PickerContentState extends State<_PickerContent> {
                           ),
                           child: Row(
                             children: [
-                              if (widget.itemLeadingIcon != null) ...[
-                                Icon(
-                                  widget.itemLeadingIcon,
-                                  size: Spacing.iconMd,
-                                  color: isSelected
-                                      ? color.primary
-                                      : color.onSurfaceVariant,
-                                ),
+                              if (widget.itemLeadingBuilder != null ||
+                                  widget.itemLeadingIcon != null) ...[
+                                widget.itemLeadingBuilder?.call(item) ??
+                                    Icon(
+                                      widget.itemLeadingIcon,
+                                      size: Spacing.iconMd,
+                                      color: isSelected
+                                          ? color.primary
+                                          : color.onSurfaceVariant,
+                                    ),
                                 const SizedBox(width: Spacing.sm),
                               ],
                               Expanded(

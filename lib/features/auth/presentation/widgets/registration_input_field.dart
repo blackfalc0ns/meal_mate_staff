@@ -13,12 +13,18 @@ class RegistrationInputField extends StatelessWidget {
     this.prefix,
     this.prefixIcon,
     this.suffixIcon,
+    this.suffixTooltip,
+    this.onSuffixTap,
     this.isPicker = false,
     this.showPickerArrow,
     this.onTap,
     this.controller,
     this.initialValue,
     this.onChanged,
+    this.validator,
+    this.autovalidateMode,
+    this.keyboardType,
+    this.focusNode,
   });
 
   final String label;
@@ -26,19 +32,27 @@ class RegistrationInputField extends StatelessWidget {
   final String? prefix;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
+  final String? suffixTooltip;
+  final VoidCallback? onSuffixTap;
   final bool isPicker;
   final bool? showPickerArrow;
   final VoidCallback? onTap;
   final TextEditingController? controller;
   final String? initialValue;
   final ValueChanged<String>? onChanged;
+  final FormFieldValidator<String>? validator;
+  final AutovalidateMode? autovalidateMode;
+  final TextInputType? keyboardType;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return SizedBox(
-      height: Spacing.registrationFieldHeight,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        minHeight: Spacing.registrationFieldHeight,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -60,51 +74,72 @@ class RegistrationInputField extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   child: SizedBox(
                     height: Spacing.registrationFieldInputHeight,
-                    child: TextFormField(
-                      controller: controller,
-                      initialValue: controller == null ? initialValue : null,
-                      readOnly: isPicker,
-                      onTap: onTap,
-                      onChanged: onChanged,
-                      textAlign: TextAlign.start,
-                      style: getMediumStyle(
-                        color: color.onSurface,
-                        fontSize: FontSize.size12,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: hint,
-                        hintStyle: getMediumStyle(
-                          color: color.onSurfaceVariant,
+                    child: Semantics(
+                      label: label,
+                      textField: true,
+                      child: TextFormField(
+                        focusNode: focusNode,
+                        controller: controller,
+                        initialValue: controller == null ? initialValue : null,
+                        readOnly: isPicker,
+                        onTap: onTap,
+                        onChanged: onChanged,
+                        validator: validator,
+                        autovalidateMode: autovalidateMode,
+                        keyboardType: keyboardType,
+                        textAlign: TextAlign.start,
+                        style: getMediumStyle(
+                          color: color.onSurface,
                           fontSize: FontSize.size12,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.md,
-                          vertical: Spacing.sm,
+                        decoration: InputDecoration(
+                          hintText: hint,
+                          hintStyle: getMediumStyle(
+                            color: color.onSurfaceVariant,
+                            fontSize: FontSize.size12,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.md,
+                            vertical: Spacing.sm,
+                          ),
+                          prefixIconConstraints: prefixIcon != null
+                              ? const BoxConstraints(
+                                  minWidth: 38,
+                                  minHeight: 38,
+                                )
+                              : null,
+                          prefixIcon: prefixIcon == null
+                              ? null
+                              : Icon(
+                                  prefixIcon,
+                                  color: color.onSurface,
+                                  size: 20,
+                                ),
+                          suffixIcon: suffixIcon != null
+                              ? onSuffixTap == null
+                                    ? Icon(
+                                        suffixIcon,
+                                        color: color.onSurfaceVariant,
+                                        size: Spacing.iconMd,
+                                      )
+                                    : IconButton(
+                                        tooltip: suffixTooltip,
+                                        onPressed: onSuffixTap,
+                                        icon: Icon(
+                                          suffixIcon,
+                                          color: color.onSurfaceVariant,
+                                          size: Spacing.iconMd,
+                                        ),
+                                      )
+                              : (isPicker &&
+                                    (showPickerArrow ?? (prefixIcon == null)))
+                              ? Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  color: color.onSurfaceVariant,
+                                  size: Spacing.iconMd,
+                                )
+                              : null,
                         ),
-                        prefixIconConstraints: prefixIcon != null
-                            ? const BoxConstraints(minWidth: 38, minHeight: 38)
-                            : null,
-                        prefixIcon: prefixIcon == null
-                            ? null
-                            : Icon(
-                                prefixIcon,
-                                color: color.onSurface,
-                                size: 20,
-                              ),
-                        suffixIcon: suffixIcon != null
-                            ? Icon(
-                                suffixIcon,
-                                color: color.onSurfaceVariant,
-                                size: Spacing.iconMd,
-                              )
-                            : (isPicker &&
-                                  (showPickerArrow ?? (prefixIcon == null)))
-                            ? Icon(
-                                Icons.keyboard_arrow_down_rounded,
-                                color: color.onSurfaceVariant,
-                                size: Spacing.iconMd,
-                              )
-                            : null,
                       ),
                     ),
                   ),

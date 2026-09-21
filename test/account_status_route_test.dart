@@ -3,10 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/account_status/domain/account_status_kind.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+    await configureDependencies();
+  });
   testWidgets('account status route defaults to under review', (tester) async {
     await tester.pumpWidget(
       MaterialApp(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../../config/theme/spacing.dart';
+import '../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/network/failures.dart';
 import '../../../../core/widget/app_button.dart';
 import '../../../auth/presentation/widgets/registration_note_card.dart';
 import '../../../auth/presentation/widgets/registration_scaffold.dart';
-import '../../data/register_fake_data.dart';
 import '../../domain/register_document.dart';
 import '../widgets/register_document_upload_card.dart';
 
@@ -17,6 +18,7 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
     required this.onSubmit,
     this.onBackPressed,
     this.documents,
+    this.failure,
   });
 
   final Map<String, String> selectedImagePaths;
@@ -24,11 +26,12 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
   final VoidCallback onSubmit;
   final VoidCallback? onBackPressed;
   final List<RegisterDocument>? documents;
+  final Failure? failure;
 
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    final docs = documents ?? RegisterFakeData.review.documents;
+    final docs = documents ?? const [];
     final documentTitles = {
       'civil-card': locale.registrationCivilCard,
       'driving-license': locale.registrationDrivingLicense,
@@ -73,6 +76,10 @@ class RegisterUploadDocumentsScreen extends StatelessWidget {
             text: locale.registrationUploadNote,
             icon: Icons.info_rounded,
           ),
+          if (failure != null) ...[
+            const SizedBox(height: Spacing.md),
+            InlineApiErrorWidget(failure: failure!),
+          ],
           const SizedBox(height: Spacing.md),
           AppButton(
             text: locale.registrationContinue,

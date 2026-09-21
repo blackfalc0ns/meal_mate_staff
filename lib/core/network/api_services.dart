@@ -21,6 +21,10 @@ import '../../features/register/data/models/request/driver_resubmit_request_dto.
 import '../../features/register/data/models/response/driver_file_upload_response_dto.dart';
 import '../../features/register/data/models/response/driver_registration_response_dto.dart';
 import '../../features/register/data/models/response/driver_restaurant_response_dto.dart';
+import '../../features/register/data/models/response/driver_nationality_response_dto.dart';
+import '../../features/register/data/models/response/driver_vehicle_color_response_dto.dart';
+import '../../features/register/data/models/response/driver_vehicle_model_response_dto.dart';
+import '../../features/register/data/models/response/driver_vehicle_type_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -71,6 +75,22 @@ abstract class ApiServices {
   // Driver-only registration and status endpoints
   @GET(EndPoints.driverRestaurants)
   Future<List<DriverRestaurantResponseDto>> getDriverRestaurants();
+
+  @GET(EndPoints.driverNationalities)
+  Future<List<DriverNationalityResponseDto>> getDriverNationalities();
+
+  @GET(EndPoints.driverVehicleTypes)
+  Future<List<DriverVehicleTypeResponseDto>> getDriverVehicleTypes();
+
+  @GET(EndPoints.driverVehicleColors)
+  Future<List<DriverVehicleColorResponseDto>> getDriverVehicleColors();
+
+  @GET(EndPoints.driverVehicleModels)
+  Future<List<DriverVehicleModelResponseDto>> searchDriverVehicleModels({
+    @Query('search') String? search,
+    @Query('vehicleType') String? vehicleType,
+    @Query('limit') int limit = 40,
+  });
 
   @POST(EndPoints.driverRegistrationUpload)
   @MultiPart()

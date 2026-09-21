@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,26 +5,15 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../config/routing/app_routes.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/extensions/extensions.dart';
-import '../../../../core/network/api_results.dart';
+import '../../../../core/helpers/image_picker_helper.dart';
 import '../../../../core/widget/custom_progress_indecator.dart';
 import '../../../../core/widget/custom_snak_bar.dart';
 import '../../../account_status/domain/account_status_kind.dart';
-import '../../domain/entities/driver_file_upload_result_entity.dart';
-import '../../domain/entities/driver_registration_draft_entity.dart';
-import '../../domain/entities/driver_registration_result_entity.dart';
-import '../../domain/entities/driver_restaurant_entity.dart';
-import '../../domain/entities/driver_resubmit_entity.dart';
-import '../../domain/repo/driver_registration_repository.dart';
 import '../../domain/register_document.dart';
 import '../../domain/register_review_data.dart';
-import '../../domain/usecase/get_driver_restaurants_usecase.dart';
-import '../../domain/usecase/resubmit_driver_registration_usecase.dart';
-import '../../domain/usecase/submit_driver_registration_usecase.dart';
-import '../../domain/usecase/upload_driver_document_usecase.dart';
 import '../manager/driver_registration_event.dart';
 import '../manager/driver_registration_state.dart';
 import '../manager/driver_registration_view_model.dart';
-import '../widgets/register_source_sheet.dart';
 import 'register_personal_data_screen.dart';
 import 'register_review_screen.dart';
 import 'register_upload_documents_screen.dart';
@@ -52,77 +39,20 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _FakeRegistrationRepo implements DriverRegistrationRepository {
-  @override
-  Future<ApiResult<List<DriverRestaurantEntity>>> getRestaurants() async =>
-      ApiSuccessResult(data: []);
-
-  @override
-  Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(
-    File file,
-  ) async => ApiSuccessResult(
-    data: const DriverFileUploadResultEntity(storageKey: 'key'),
-  );
-
-  @override
-  Future<ApiResult<DriverRegistrationResultEntity>> submitRegistration(
-    DriverRegistrationDraftEntity draft,
-  ) async => ApiSuccessResult(
-    data: const DriverRegistrationResultEntity(
-      registrationId: 'reg-1',
-      restaurantId: 'res-1',
-      restaurantName: 'Balance Box',
-      phone: '+966501234567',
-      status: 'Submitted',
-      message: 'Submitted',
-    ),
-  );
-
-  @override
-  Future<ApiResult<DriverRegistrationResultEntity>> resubmitRegistration({
-    required String registrationId,
-    required DriverResubmitEntity resubmitData,
-  }) async => ApiSuccessResult(
-    data: const DriverRegistrationResultEntity(
-      registrationId: 'reg-1',
-      restaurantId: 'res-1',
-      restaurantName: 'Balance Box',
-      phone: '+966501234567',
-      status: 'Submitted',
-      message: 'Submitted',
-    ),
-  );
-}
-
 class _RegisterScreenState extends State<RegisterScreen> {
   late final DriverRegistrationViewModel _viewModel;
-  late final bool _isInternalViewModel;
 
   ImagePicker get _imagePicker => widget.imagePicker ?? ImagePicker();
 
   @override
   void initState() {
     super.initState();
-    if (widget.viewModel != null) {
-      _viewModel = widget.viewModel!;
-      _isInternalViewModel = false;
-    } else if (getIt.isRegistered<DriverRegistrationViewModel>()) {
-      _viewModel = getIt<DriverRegistrationViewModel>();
-      _isInternalViewModel = true;
-    } else {
-      final fakeRepo = _FakeRegistrationRepo();
-      _viewModel = DriverRegistrationViewModel(
-        getRestaurantsUseCase: GetDriverRestaurantsUseCase(fakeRepo),
-        uploadDocumentUseCase: UploadDriverDocumentUseCase(fakeRepo),
-        submitRegistrationUseCase: SubmitDriverRegistrationUseCase(fakeRepo),
-        resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(
-          fakeRepo,
-        ),
-      );
-      _isInternalViewModel = true;
-    }
+    _viewModel = widget.viewModel ?? getIt<DriverRegistrationViewModel>();
 
     _viewModel.doIntent(const DriverRegistrationLoadRestaurantsEvent());
+    _viewModel.doIntent(const DriverRegistrationLoadNationalitiesEvent());
+    _viewModel.doIntent(const DriverRegistrationLoadVehicleTypesEvent());
+    _viewModel.doIntent(const DriverRegistrationLoadVehicleColorsEvent());
     if (widget.phone != null && widget.phone!.isNotEmpty) {
       _viewModel.doIntent(
         DriverRegistrationSetDraftEvent(
@@ -134,31 +64,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    if (_isInternalViewModel) {
+    if (widget.viewModel == null) {
       _viewModel.close();
     }
     super.dispose();
   }
 
   Future<void> _pickDocumentImage(RegisterDocument document) async {
-    final source = await showModalBottomSheet<ImageSource>(
-      context: context,
-      builder: (_) => const RegisterSourceSheet(),
+    final file = await ImagePickerHelper.pickImageWithSourceSheet(
+      context,
+      picker: _imagePicker,
     );
 
-    if (source == null || !mounted) {
-      return;
-    }
-
-    final image = await _imagePicker.pickImage(source: source);
-    if (image == null || !mounted) {
+    if (file == null || !mounted) {
       return;
     }
 
     _viewModel.doIntent(
       DriverRegistrationUploadDocumentEvent(
         documentId: document.id,
-        file: File(image.path),
+        file: file,
       ),
     );
   }
@@ -190,19 +115,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
               AppRoutes.accountStatus,
               arguments: AccountStatusKind.underReview,
             );
-          } else if (state.status == DriverRegistrationStatus.error &&
-              state.errorMessage != null) {
-            CustomSnackbar.showError(
-              context: context,
-              message: state.errorMessage!,
-            );
           }
         },
         builder: (context, state) {
+          final formFailure = state.status == DriverRegistrationStatus.error
+              ? state.failure
+              : null;
+          final stepFailure = state.currentStep == 2
+              ? state.vehicleCatalogFailure ?? formFailure
+              : formFailure;
+
           final content = switch (state.currentStep) {
             1 => RegisterPersonalDataScreen(
               initialData: state.draft.toPersonalData(),
               restaurants: state.restaurants,
+              nationalities: state.nationalities,
+              failure: stepFailure,
               onPersonalDataChanged: (data) {
                 _viewModel.doIntent(
                   DriverRegistrationPersonalDataUpdatedEvent(data),
@@ -217,8 +145,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             2 => RegisterVehicleDataScreen(
               initialData: state.draft.toVehicleData(),
+              vehicleTypes: state.vehicleTypes,
+              vehicleColors: state.vehicleColors,
+              vehicleModels: state.vehicleModels,
+              isLoadingVehicleTypes: state.isLoadingVehicleTypes,
+              isLoadingVehicleColors: state.isLoadingVehicleColors,
+              isSearchingVehicleModels: state.isSearchingVehicleModels,
               selectedVehicleColor: state.selectedVehicleColor,
               ownsVehicle: state.ownsVehicle,
+              failure: stepFailure,
+              onRetryVehicleCatalog: () {
+                _viewModel.doIntent(
+                  const DriverRegistrationRetryVehicleCatalogEvent(),
+                );
+              },
+              onVehicleModelQueryChanged: (search, vehicleType) {
+                _viewModel.doIntent(
+                  DriverRegistrationVehicleModelQueryChangedEvent(
+                    search: search,
+                    vehicleType: vehicleType,
+                  ),
+                );
+              },
+              onSearchVehicleModels: (search, vehicleType) {
+                _viewModel.doIntent(
+                  DriverRegistrationSearchVehicleModelsEvent(
+                    search: search,
+                    vehicleType: vehicleType,
+                  ),
+                );
+              },
               onColorSelected: (color) {
                 _viewModel.doIntent(
                   DriverRegistrationVehicleDataUpdatedEvent(
@@ -256,6 +212,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             3 => RegisterUploadDocumentsScreen(
               documents: state.documents,
               selectedImagePaths: state.selectedImagePaths,
+              failure: stepFailure,
               onDocumentTap: _pickDocumentImage,
               onSubmit: () {
                 _viewModel.doIntent(
@@ -271,6 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 documents: state.documents,
               ),
               selectedImagePaths: state.selectedImagePaths,
+              failure: stepFailure,
               onDocumentTap: _pickDocumentImage,
               onSubmit: () {
                 if (widget.isResubmission &&

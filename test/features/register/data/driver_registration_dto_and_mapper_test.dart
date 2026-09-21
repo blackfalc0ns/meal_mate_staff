@@ -5,11 +5,27 @@ import 'package:meal_mate_delivery/features/register/data/models/request/driver_
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_file_upload_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_registration_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_restaurant_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_nationality_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_registration_draft_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_resubmit_entity.dart';
 
 void main() {
   group('Driver Registration DTO and Serialization Tests', () {
+    test('DriverNationalityResponseDto preserves the backend contract', () {
+      final dto = DriverNationalityResponseDto.fromJson(const {
+        'code': 'KW',
+        'name': 'كويتي',
+        'nameAr': 'كويتي',
+        'nameEn': 'Kuwaiti',
+        'countryName': 'الكويت',
+        'countryNameAr': 'الكويت',
+        'countryNameEn': 'Kuwait',
+        'flagEmoji': '🇰🇼',
+      });
+      expect(dto.code, 'KW');
+      expect(dto.nameEn, 'Kuwaiti');
+      expect(dto.flagEmoji, '🇰🇼');
+    });
     test(
       'DriverRestaurantResponseDto handles full JSON, nulls, and empty map',
       () {
@@ -202,6 +218,7 @@ void main() {
           email: '  test@driver.com  ',
           nationalId: '9876543210',
           nationalIdExpiry: '2030-01-01T00:00:00Z',
+          dateOfBirth: '2000/01/01',
           nationality: 'Saudi',
           vehicleType: 'Motorcycle',
           vehicleModel: 'Honda',
@@ -225,6 +242,7 @@ void main() {
         expect(dto.restaurantId, 'res-99');
         expect(dto.fullNameAr, 'سائق تجريبي');
         expect(dto.email, 'test@driver.com'); // Trimmed
+        expect(dto.dateOfBirth, '2000-01-01');
         expect(dto.nationalIdFrontStorageKey, 'nid-f-key');
         expect(dto.vehicleType, 'Motorcycle');
         expect(dto.isVehicleOwned, isFalse);

@@ -2,31 +2,85 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/network/api_results.dart';
+import '../../../../core/network/failures.dart';
 import '../../domain/usecase/get_driver_restaurants_usecase.dart';
+import '../../domain/usecase/get_driver_nationalities_usecase.dart';
+import '../../domain/usecase/get_driver_vehicle_colors_usecase.dart';
+import '../../domain/usecase/get_driver_vehicle_types_usecase.dart';
 import '../../domain/usecase/resubmit_driver_registration_usecase.dart';
+import '../../domain/usecase/search_driver_vehicle_models_usecase.dart';
 import '../../domain/usecase/submit_driver_registration_usecase.dart';
 import '../../domain/usecase/upload_driver_document_usecase.dart';
 import 'driver_registration_event.dart';
 import 'driver_registration_state.dart';
 
+enum _VehicleCatalogOperation { vehicleTypes, vehicleColors, vehicleModels }
+
 @injectable
 class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
   DriverRegistrationViewModel({
     required this.getRestaurantsUseCase,
+    required this.getNationalitiesUseCase,
+    required this.getVehicleTypesUseCase,
+    required this.getVehicleColorsUseCase,
+    required this.searchVehicleModelsUseCase,
     required this.uploadDocumentUseCase,
     required this.submitRegistrationUseCase,
     required this.resubmitRegistrationUseCase,
   }) : super(const DriverRegistrationState());
 
   final GetDriverRestaurantsUseCase getRestaurantsUseCase;
+  final GetDriverNationalitiesUseCase getNationalitiesUseCase;
+  final GetDriverVehicleTypesUseCase getVehicleTypesUseCase;
+  final GetDriverVehicleColorsUseCase getVehicleColorsUseCase;
+  final SearchDriverVehicleModelsUseCase searchVehicleModelsUseCase;
   final UploadDriverDocumentUseCase uploadDocumentUseCase;
   final SubmitDriverRegistrationUseCase submitRegistrationUseCase;
   final ResubmitDriverRegistrationUseCase resubmitRegistrationUseCase;
+  int _vehicleModelRequestIdentity = 0;
+  String? _activeVehicleModelSearch;
+  String? _activeVehicleModelType;
+  int _activeVehicleModelLimit = 40;
+  final Map<_VehicleCatalogOperation, Failure> _vehicleCatalogFailures = {};
+
+  Failure? get _visibleVehicleCatalogFailure {
+    for (final operation in _VehicleCatalogOperation.values) {
+      final failure = _vehicleCatalogFailures[operation];
+      if (failure != null) return failure;
+    }
+    return null;
+  }
 
   void doIntent(DriverRegistrationEvent event) {
     switch (event) {
       case DriverRegistrationLoadRestaurantsEvent():
         _handleLoadRestaurants();
+      case DriverRegistrationLoadNationalitiesEvent():
+        _handleLoadNationalities();
+      case DriverRegistrationLoadVehicleTypesEvent():
+        _handleLoadVehicleTypes();
+      case DriverRegistrationLoadVehicleColorsEvent():
+        _handleLoadVehicleColors();
+      case DriverRegistrationSearchVehicleModelsEvent(
+        :final search,
+        :final vehicleType,
+        :final limit,
+      ):
+        _handleSearchVehicleModels(
+          search: search,
+          vehicleType: vehicleType,
+          limit: limit,
+        );
+      case DriverRegistrationVehicleModelQueryChangedEvent(
+        :final search,
+        :final vehicleType,
+      ):
+        _handleVehicleModelQueryChanged(
+          search: search,
+          vehicleType: vehicleType,
+        );
+      case DriverRegistrationRetryVehicleCatalogEvent():
+        _handleRetryVehicleCatalog();
       case DriverRegistrationStepChangedEvent(:final step):
         _handleStepChanged(step);
       case DriverRegistrationPersonalDataUpdatedEvent(:final personalData):
@@ -66,18 +120,10 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
     final result = await getRestaurantsUseCase();
     switch (result) {
       case ApiSuccessResult(:final data):
-        var updatedDraft = state.draft;
-        if (updatedDraft.restaurantId.isEmpty && data.isNotEmpty) {
-          updatedDraft = updatedDraft.copyWith(
-            restaurantId: data.first.id,
-            restaurantName: data.first.tradeName,
-          );
-        }
         emit(
           state.copyWith(
             status: DriverRegistrationStatus.restaurantsLoaded,
             restaurants: data,
-            draft: updatedDraft,
           ),
         );
       case ApiErrorResult(:final failure):
@@ -91,16 +137,211 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
     }
   }
 
+  Future<void> _handleLoadNationalities() async {
+    emit(state.copyWith(status: DriverRegistrationStatus.loadingNationalities));
+    final result = await getNationalitiesUseCase();
+    switch (result) {
+      case ApiSuccessResult(:final data):
+        emit(
+          state.copyWith(
+            status: DriverRegistrationStatus.nationalitiesLoaded,
+            nationalities: data,
+          ),
+        );
+      case ApiErrorResult(:final failure):
+        emit(
+          state.copyWith(
+            status: DriverRegistrationStatus.error,
+            failure: failure,
+            errorMessage: failure.errorMessage,
+          ),
+        );
+    }
+  }
+
+  Future<void> _handleLoadVehicleTypes({
+    bool preserveExistingFailure = false,
+  }) async {
+    if (!preserveExistingFailure) {
+      _vehicleCatalogFailures.remove(_VehicleCatalogOperation.vehicleTypes);
+    }
+    final visibleFailure = _visibleVehicleCatalogFailure;
+    emit(
+      state.copyWith(
+        isLoadingVehicleTypes: true,
+        vehicleCatalogFailure: visibleFailure,
+        clearVehicleCatalogFailure: visibleFailure == null,
+      ),
+    );
+
+    final result = await getVehicleTypesUseCase();
+    switch (result) {
+      case ApiSuccessResult(:final data):
+        _vehicleCatalogFailures.remove(_VehicleCatalogOperation.vehicleTypes);
+        final remainingFailure = _visibleVehicleCatalogFailure;
+        emit(
+          state.copyWith(
+            vehicleTypes: data,
+            isLoadingVehicleTypes: false,
+            vehicleCatalogFailure: remainingFailure,
+            clearVehicleCatalogFailure: remainingFailure == null,
+          ),
+        );
+      case ApiErrorResult(:final failure):
+        _vehicleCatalogFailures[_VehicleCatalogOperation.vehicleTypes] =
+            failure;
+        emit(
+          state.copyWith(
+            isLoadingVehicleTypes: false,
+            vehicleCatalogFailure: _visibleVehicleCatalogFailure,
+          ),
+        );
+    }
+  }
+
+  Future<void> _handleLoadVehicleColors({
+    bool preserveExistingFailure = false,
+  }) async {
+    if (!preserveExistingFailure) {
+      _vehicleCatalogFailures.remove(_VehicleCatalogOperation.vehicleColors);
+    }
+    final visibleFailure = _visibleVehicleCatalogFailure;
+    emit(
+      state.copyWith(
+        isLoadingVehicleColors: true,
+        vehicleCatalogFailure: visibleFailure,
+        clearVehicleCatalogFailure: visibleFailure == null,
+      ),
+    );
+
+    final result = await getVehicleColorsUseCase();
+    switch (result) {
+      case ApiSuccessResult(:final data):
+        _vehicleCatalogFailures.remove(_VehicleCatalogOperation.vehicleColors);
+        final remainingFailure = _visibleVehicleCatalogFailure;
+        emit(
+          state.copyWith(
+            vehicleColors: data,
+            isLoadingVehicleColors: false,
+            vehicleCatalogFailure: remainingFailure,
+            clearVehicleCatalogFailure: remainingFailure == null,
+          ),
+        );
+      case ApiErrorResult(:final failure):
+        _vehicleCatalogFailures[_VehicleCatalogOperation.vehicleColors] =
+            failure;
+        emit(
+          state.copyWith(
+            isLoadingVehicleColors: false,
+            vehicleCatalogFailure: _visibleVehicleCatalogFailure,
+          ),
+        );
+    }
+  }
+
+  Future<void> _handleSearchVehicleModels({
+    String? search,
+    String? vehicleType,
+    int limit = 40,
+    bool preserveExistingFailure = false,
+  }) async {
+    final requestIdentity = ++_vehicleModelRequestIdentity;
+    _activeVehicleModelSearch = search;
+    _activeVehicleModelType = vehicleType;
+    _activeVehicleModelLimit = limit;
+    if (!preserveExistingFailure) {
+      _vehicleCatalogFailures.remove(_VehicleCatalogOperation.vehicleModels);
+    }
+    final visibleFailure = _visibleVehicleCatalogFailure;
+    emit(
+      state.copyWith(
+        isSearchingVehicleModels: true,
+        vehicleModels: const [],
+        vehicleCatalogFailure: visibleFailure,
+        clearVehicleCatalogFailure: visibleFailure == null,
+      ),
+    );
+
+    final result = await searchVehicleModelsUseCase(
+      search: search,
+      vehicleType: vehicleType,
+      limit: limit,
+    );
+    if (requestIdentity != _vehicleModelRequestIdentity ||
+        search != _activeVehicleModelSearch ||
+        vehicleType != _activeVehicleModelType ||
+        limit != _activeVehicleModelLimit) {
+      return;
+    }
+    switch (result) {
+      case ApiSuccessResult(:final data):
+        _vehicleCatalogFailures.remove(_VehicleCatalogOperation.vehicleModels);
+        final remainingFailure = _visibleVehicleCatalogFailure;
+        emit(
+          state.copyWith(
+            vehicleModels: data,
+            isSearchingVehicleModels: false,
+            vehicleCatalogFailure: remainingFailure,
+            clearVehicleCatalogFailure: remainingFailure == null,
+          ),
+        );
+      case ApiErrorResult(:final failure):
+        _vehicleCatalogFailures[_VehicleCatalogOperation.vehicleModels] =
+            failure;
+        emit(
+          state.copyWith(
+            isSearchingVehicleModels: false,
+            vehicleCatalogFailure: _visibleVehicleCatalogFailure,
+          ),
+        );
+    }
+  }
+
+  void _handleVehicleModelQueryChanged({
+    required String search,
+    String? vehicleType,
+  }) {
+    _vehicleModelRequestIdentity++;
+    _activeVehicleModelSearch = search;
+    _activeVehicleModelType = vehicleType;
+    _vehicleCatalogFailures.remove(_VehicleCatalogOperation.vehicleModels);
+    final remainingFailure = _visibleVehicleCatalogFailure;
+    emit(
+      state.copyWith(
+        vehicleModels: const [],
+        isSearchingVehicleModels: false,
+        vehicleCatalogFailure: remainingFailure,
+        clearVehicleCatalogFailure: remainingFailure == null,
+      ),
+    );
+  }
+
+  void _handleRetryVehicleCatalog() {
+    final unresolvedOperations = _vehicleCatalogFailures.keys.toList(
+      growable: false,
+    );
+    for (final operation in unresolvedOperations) {
+      switch (operation) {
+        case _VehicleCatalogOperation.vehicleTypes:
+          _handleLoadVehicleTypes(preserveExistingFailure: true);
+        case _VehicleCatalogOperation.vehicleColors:
+          _handleLoadVehicleColors(preserveExistingFailure: true);
+        case _VehicleCatalogOperation.vehicleModels:
+          _handleSearchVehicleModels(
+            search: _activeVehicleModelSearch,
+            vehicleType: _activeVehicleModelType,
+            limit: _activeVehicleModelLimit,
+            preserveExistingFailure: true,
+          );
+      }
+    }
+  }
+
   void _handleStepChanged(int step) {
     emit(state.copyWith(currentStep: step));
   }
 
   void _handlePersonalDataUpdated(dynamic personalData) {
-    // Ensure standard future ISO dates if omitted
-    final defaultExpiry = DateTime.now()
-        .add(const Duration(days: 365 * 5))
-        .toIso8601String();
-
     final updatedDraft = state.draft.copyWith(
       restaurantId: personalData.restaurantId.isNotEmpty
           ? personalData.restaurantId
@@ -123,9 +364,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
           : state.draft.nationalId,
       nationalIdExpiry: personalData.nationalIdExpiry.isNotEmpty
           ? personalData.nationalIdExpiry
-          : (state.draft.nationalIdExpiry.isNotEmpty
-                ? state.draft.nationalIdExpiry
-                : defaultExpiry),
+          : state.draft.nationalIdExpiry,
       dateOfBirth: personalData.birthDate.isNotEmpty
           ? personalData.birthDate
           : state.draft.dateOfBirth,
@@ -142,10 +381,6 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
     dynamic selectedColor,
     bool? ownsVehicle,
   }) {
-    final defaultExpiry = DateTime.now()
-        .add(const Duration(days: 365 * 3))
-        .toIso8601String();
-
     final year =
         int.tryParse(vehicleData.manufactureYear) ?? state.draft.vehicleYear;
 
@@ -166,20 +401,15 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
       isVehicleOwned: ownsVehicle ?? vehicleData.isOwned,
       licenseNumber: vehicleData.licenseNumber.isNotEmpty
           ? vehicleData.licenseNumber
-          : (state.draft.licenseNumber.isNotEmpty
-                ? state.draft.licenseNumber
-                : 'LIC-${vehicleData.plateNumber}'),
+          : state.draft.licenseNumber,
       licenseExpiry: vehicleData.licenseExpiry.isNotEmpty
           ? vehicleData.licenseExpiry
-          : (state.draft.licenseExpiry.isNotEmpty
-                ? state.draft.licenseExpiry
-                : defaultExpiry),
+          : state.draft.licenseExpiry,
       vehicleLicenseExpiry: vehicleData.vehicleLicenseExpiry.isNotEmpty
           ? vehicleData.vehicleLicenseExpiry
-          : (state.draft.vehicleLicenseExpiry.isNotEmpty
-                ? state.draft.vehicleLicenseExpiry
-                : defaultExpiry),
-      contractExpiry: vehicleData.contractExpiry ?? state.draft.contractExpiry,
+          : state.draft.vehicleLicenseExpiry,
+      contractExpiry: vehicleData.contractExpiry,
+      clearContractExpiry: vehicleData.contractExpiry == null,
     );
 
     emit(
@@ -335,22 +565,6 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
       draftToSubmit = draftToSubmit.copyWith(
         restaurantId: state.restaurants.first.id,
         restaurantName: state.restaurants.first.tradeName,
-      );
-    }
-
-    // Default dates if missing
-    final defaultExpiry = DateTime.now()
-        .add(const Duration(days: 365 * 4))
-        .toIso8601String();
-    if (draftToSubmit.nationalIdExpiry.isEmpty) {
-      draftToSubmit = draftToSubmit.copyWith(nationalIdExpiry: defaultExpiry);
-    }
-    if (draftToSubmit.licenseExpiry.isEmpty) {
-      draftToSubmit = draftToSubmit.copyWith(licenseExpiry: defaultExpiry);
-    }
-    if (draftToSubmit.vehicleLicenseExpiry.isEmpty) {
-      draftToSubmit = draftToSubmit.copyWith(
-        vehicleLicenseExpiry: defaultExpiry,
       );
     }
 

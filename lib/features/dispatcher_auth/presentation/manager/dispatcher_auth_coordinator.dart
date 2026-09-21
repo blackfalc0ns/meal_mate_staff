@@ -18,12 +18,10 @@ class DispatcherAuthCoordinator {
 
   void navigate(BuildContext context, DispatcherAuthDestination destination) {
     switch (destination) {
-      case DispatcherAccountNotFoundDestination():
-        CustomSnackbar.showError(
-          context: context,
-          message:
-              'هذا الرقم غير مسجل كمسؤول توصيل. يرجى التواصل مع إدارة المطعم لإضافتك أولاً.',
-        );
+      case DispatcherAccountNotFoundDestination(:final exception):
+        CustomSnackbar.showError(context: context, message: exception.message);
+      case DispatcherErrorDestination(:final exception):
+        CustomSnackbar.showError(context: context, message: exception.message);
       case DispatcherFirstTimeOtpDestination(phone: final phone):
         context.pushNamed(
           AppRoutes.verifyPhoneOtp,

@@ -1,3 +1,4 @@
+import '../../../../core/errors/api_exception.dart';
 import '../../account_status/domain/account_status_kind.dart';
 
 sealed class DriverAuthDestination {
@@ -38,12 +39,19 @@ class DriverAccountStatusDestination extends DriverAuthDestination {
     this.title,
     this.subtitle,
     this.canResubmit = false,
+    this.exception,
   });
   final AccountStatusKind kind;
   final String? registrationId;
   final String? title;
   final String? subtitle;
   final bool canResubmit;
+  final ApiException? exception;
+}
+
+class DriverErrorDestination extends DriverAuthDestination {
+  const DriverErrorDestination({required this.exception});
+  final ApiException exception;
 }
 
 class DriverHomeDestination extends DriverAuthDestination {

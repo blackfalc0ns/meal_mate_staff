@@ -144,6 +144,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registrationLastNameHint => 'أدخل اسم العائلة';
 
   @override
+  String get registrationFullNameAr => 'الاسم الكامل بالعربية';
+
+  @override
+  String get registrationFullNameArHint => 'أدخل الاسم الكامل بالعربية';
+
+  @override
+  String get registrationFullNameEn => 'الاسم الكامل بالإنجليزية';
+
+  @override
+  String get registrationFullNameEnHint => 'أدخل الاسم الكامل بالإنجليزية';
+
+  @override
+  String get registrationRestaurant => 'المطعم الشريك';
+
+  @override
+  String get registrationRestaurantHint => 'اختر المطعم';
+
+  @override
+  String get registrationRestaurantHelp =>
+      'اختر المطعم الشريك الذي تعمل لصالحه';
+
+  @override
   String get registrationPhone => 'رقم الهاتف';
 
   @override
@@ -153,7 +175,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registrationEmail => 'البريد الإلكتروني';
 
   @override
-  String get registrationEmailHint => 'أدخل البريد الإلكتروني';
+  String get registrationEmailHint => 'أدخل البريد الإلكتروني (اختياري)';
 
   @override
   String get registrationBirthDate => 'تاريخ الميلاد';
@@ -172,6 +194,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get registrationCivilIdHint => 'أدخل الرقم المدني';
+
+  @override
+  String get registrationIdExpiry => 'تاريخ انتهاء الهوية';
+
+  @override
+  String get registrationIdExpiryHint => 'اختر تاريخ انتهاء الهوية';
 
   @override
   String get registrationContinue => 'متابعة';
@@ -211,6 +239,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get registrationOther => 'أخرى';
+
+  @override
+  String get registrationVehicleModelSearchHint => 'ابحث عن موديل المركبة';
+
+  @override
+  String get registrationLicenseExpiry => 'تاريخ انتهاء رخصة القيادة';
+
+  @override
+  String get registrationVehicleLicenseExpiry => 'تاريخ انتهاء رخصة المركبة';
+
+  @override
+  String get registrationContractExpiry => 'تاريخ انتهاء العقد (اختياري)';
+
+  @override
+  String get registrationClearContractExpiry => 'مسح تاريخ انتهاء العقد';
+
+  @override
+  String get registrationDateHint => 'اختر تاريخاً مستقبلياً';
+
+  @override
+  String get registrationHexColor => 'لون HEX';
+
+  @override
+  String get registrationUseColor => 'استخدام اللون';
+
+  @override
+  String get registrationInvalidHexColor => 'أدخل لون HEX صالحاً من 6 خانات';
+
+  @override
+  String get validationFutureDate => 'يجب أن يكون التاريخ في المستقبل';
+
+  @override
+  String validationManufactureYearRange(int maximumYear) {
+    return 'أدخل سنة من 1990 إلى $maximumYear';
+  }
 
   @override
   String get registrationOwnVehicle => 'المركبة ملكك؟';
@@ -2036,4 +2099,50 @@ class AppLocalizationsAr extends AppLocalizations {
   String sidebarAppVersion(String version) {
     return 'الإصدار $version';
   }
+
+  @override
+  String get validationFieldRequired => 'هذا الحقل مطلوب';
+
+  @override
+  String get validationNameRequired => 'الاسم مطلوب';
+
+  @override
+  String get validationNameInvalid => 'الاسم غير صالح';
+
+  @override
+  String get validationEmailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get validationEmailInvalid => 'البريد الإلكتروني غير صالح';
+
+  @override
+  String get validationPasswordRequired => 'كلمة المرور مطلوبة';
+
+  @override
+  String get validationPasswordInvalid =>
+      'يجب أن تحتوي كلمة المرور على 8 خانات، ورقم، وحرف كبير، ورمز';
+
+  @override
+  String get validationConfirmPasswordRequired => 'تأكيد كلمة المرور مطلوب';
+
+  @override
+  String get validationPasswordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get validationPhoneRequired => 'رقم الهاتف مطلوب';
+
+  @override
+  String get validationPhoneInvalid => 'رقم الهاتف غير صالح';
+
+  @override
+  String get validationOtpRequired => 'رمز التحقق مطلوب';
+
+  @override
+  String get validationOtpInvalid => 'رمز التحقق غير صالح';
+
+  @override
+  String get validationCivilIdRequired => 'الرقم المدني مطلوب';
+
+  @override
+  String get validationCivilIdInvalid => 'الرقم المدني غير صالح';
 }

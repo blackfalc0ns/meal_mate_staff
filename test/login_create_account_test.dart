@@ -3,11 +3,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/login_screen.dart';
 import 'package:meal_mate_delivery/features/register/presentation/screens/register_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+    await configureDependencies();
+  });
   testWidgets('opens first registration step when create account is tapped', (
     tester,
   ) async {

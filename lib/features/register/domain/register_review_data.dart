@@ -9,6 +9,11 @@ class RegisterReviewData {
     required this.documents,
   });
 
+  const RegisterReviewData.empty()
+    : personal = RegisterPersonalData.empty,
+      vehicle = RegisterVehicleData.empty,
+      documents = const [];
+
   final RegisterPersonalData personal;
   final RegisterVehicleData vehicle;
   final List<RegisterDocument> documents;

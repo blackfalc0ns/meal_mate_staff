@@ -6,6 +6,7 @@ import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/di/di.dart';
+import '../../../../core/helpers/validators.dart';
 import '../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/widget/custom_progress_indecator.dart';
@@ -72,11 +73,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void _verify([String? code]) {
     final otp = (code ?? _otpController.text).trim();
-    if (otp.length < 4) {
-      CustomSnackbar.showWarning(
-        context: context,
-        message: context.localization.otpHint,
-      );
+    final otpError = Validations.validOtp(context, otp);
+    if (otpError != null) {
+      CustomSnackbar.showWarning(context: context, message: otpError);
       return;
     }
 

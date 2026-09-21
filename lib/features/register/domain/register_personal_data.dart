@@ -14,6 +14,16 @@ class RegisterPersonalData {
     this.nationalIdExpiry = '',
   });
 
+  static const empty = RegisterPersonalData(
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    birthDate: '',
+    nationality: '',
+    civilId: '',
+  );
+
   final String firstName;
   final String lastName;
   final String phone;

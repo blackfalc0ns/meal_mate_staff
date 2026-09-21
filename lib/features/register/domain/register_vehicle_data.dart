@@ -13,6 +13,16 @@ class RegisterVehicleData {
     this.contractExpiry,
   });
 
+  static const empty = RegisterVehicleData(
+    type: '',
+    model: '',
+    manufactureYear: '',
+    plateNumber: '',
+    country: '',
+    color: '',
+    isOwned: true,
+  );
+
   final String type;
   final String model;
   final String manufactureYear;
@@ -37,6 +47,7 @@ class RegisterVehicleData {
     String? licenseExpiry,
     String? vehicleLicenseExpiry,
     String? contractExpiry,
+    bool clearContractExpiry = false,
   }) {
     return RegisterVehicleData(
       type: type ?? this.type,
@@ -49,7 +60,9 @@ class RegisterVehicleData {
       licenseNumber: licenseNumber ?? this.licenseNumber,
       licenseExpiry: licenseExpiry ?? this.licenseExpiry,
       vehicleLicenseExpiry: vehicleLicenseExpiry ?? this.vehicleLicenseExpiry,
-      contractExpiry: contractExpiry ?? this.contractExpiry,
+      contractExpiry: clearContractExpiry
+          ? null
+          : (contractExpiry ?? this.contractExpiry),
     );
   }
 }

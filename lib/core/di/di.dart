@@ -38,7 +38,11 @@ import '../../features/register/data/data_source/driver_registration_remote_data
 import '../../features/register/data/repo/driver_registration_repository_impl.dart';
 import '../../features/register/domain/repo/driver_registration_repository.dart';
 import '../../features/register/domain/usecase/get_driver_restaurants_usecase.dart';
+import '../../features/register/domain/usecase/get_driver_nationalities_usecase.dart';
+import '../../features/register/domain/usecase/get_driver_vehicle_colors_usecase.dart';
+import '../../features/register/domain/usecase/get_driver_vehicle_types_usecase.dart';
 import '../../features/register/domain/usecase/resubmit_driver_registration_usecase.dart';
+import '../../features/register/domain/usecase/search_driver_vehicle_models_usecase.dart';
 import '../../features/register/domain/usecase/submit_driver_registration_usecase.dart';
 import '../../features/register/domain/usecase/upload_driver_document_usecase.dart';
 import '../../features/register/presentation/manager/driver_registration_view_model.dart';
@@ -145,6 +149,19 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<GetDriverRestaurantsUseCase>(
     () => GetDriverRestaurantsUseCase(getIt<DriverRegistrationRepository>()),
   );
+  getIt.registerFactory<GetDriverNationalitiesUseCase>(
+    () => GetDriverNationalitiesUseCase(getIt<DriverRegistrationRepository>()),
+  );
+  getIt.registerFactory<GetDriverVehicleTypesUseCase>(
+    () => GetDriverVehicleTypesUseCase(getIt<DriverRegistrationRepository>()),
+  );
+  getIt.registerFactory<GetDriverVehicleColorsUseCase>(
+    () => GetDriverVehicleColorsUseCase(getIt<DriverRegistrationRepository>()),
+  );
+  getIt.registerFactory<SearchDriverVehicleModelsUseCase>(
+    () =>
+        SearchDriverVehicleModelsUseCase(getIt<DriverRegistrationRepository>()),
+  );
   getIt.registerFactory<UploadDriverDocumentUseCase>(
     () => UploadDriverDocumentUseCase(getIt<DriverRegistrationRepository>()),
   );
@@ -160,6 +177,10 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<DriverRegistrationViewModel>(
     () => DriverRegistrationViewModel(
       getRestaurantsUseCase: getIt<GetDriverRestaurantsUseCase>(),
+      getNationalitiesUseCase: getIt<GetDriverNationalitiesUseCase>(),
+      getVehicleTypesUseCase: getIt<GetDriverVehicleTypesUseCase>(),
+      getVehicleColorsUseCase: getIt<GetDriverVehicleColorsUseCase>(),
+      searchVehicleModelsUseCase: getIt<SearchDriverVehicleModelsUseCase>(),
       uploadDocumentUseCase: getIt<UploadDriverDocumentUseCase>(),
       submitRegistrationUseCase: getIt<SubmitDriverRegistrationUseCase>(),
       resubmitRegistrationUseCase: getIt<ResubmitDriverRegistrationUseCase>(),

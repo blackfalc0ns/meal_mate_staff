@@ -144,6 +144,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registrationLastNameHint => 'Enter last name';
 
   @override
+  String get registrationFullNameAr => 'Full name in Arabic';
+
+  @override
+  String get registrationFullNameArHint => 'Enter full name in Arabic';
+
+  @override
+  String get registrationFullNameEn => 'Full name in English';
+
+  @override
+  String get registrationFullNameEnHint => 'Enter full name in English';
+
+  @override
+  String get registrationRestaurant => 'Partner restaurant';
+
+  @override
+  String get registrationRestaurantHint => 'Choose restaurant';
+
+  @override
+  String get registrationRestaurantHelp =>
+      'Choose the partner restaurant you work for';
+
+  @override
   String get registrationPhone => 'Phone number';
 
   @override
@@ -153,7 +175,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registrationEmail => 'Email';
 
   @override
-  String get registrationEmailHint => 'Enter email';
+  String get registrationEmailHint => 'Enter email (optional)';
 
   @override
   String get registrationBirthDate => 'Birth date';
@@ -172,6 +194,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registrationCivilIdHint => 'Enter civil ID';
+
+  @override
+  String get registrationIdExpiry => 'ID expiry date';
+
+  @override
+  String get registrationIdExpiryHint => 'Choose ID expiry date';
 
   @override
   String get registrationContinue => 'Continue';
@@ -211,6 +239,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registrationOther => 'Other';
+
+  @override
+  String get registrationVehicleModelSearchHint => 'Search vehicle models';
+
+  @override
+  String get registrationLicenseExpiry => 'Driving license expiry';
+
+  @override
+  String get registrationVehicleLicenseExpiry => 'Vehicle license expiry';
+
+  @override
+  String get registrationContractExpiry => 'Contract expiry (optional)';
+
+  @override
+  String get registrationClearContractExpiry => 'Clear contract expiry';
+
+  @override
+  String get registrationDateHint => 'Choose a future date';
+
+  @override
+  String get registrationHexColor => 'HEX color';
+
+  @override
+  String get registrationUseColor => 'Use color';
+
+  @override
+  String get registrationInvalidHexColor => 'Enter a valid 6-digit HEX color';
+
+  @override
+  String get validationFutureDate => 'Date must be in the future';
+
+  @override
+  String validationManufactureYearRange(int maximumYear) {
+    return 'Enter a year from 1990 through $maximumYear';
+  }
 
   @override
   String get registrationOwnVehicle => 'Do you own the vehicle?';
@@ -2043,4 +2106,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String sidebarAppVersion(String version) {
     return 'Version $version';
   }
+
+  @override
+  String get validationFieldRequired => 'This field is required';
+
+  @override
+  String get validationNameRequired => 'Name is required';
+
+  @override
+  String get validationNameInvalid => 'Name is not valid';
+
+  @override
+  String get validationEmailRequired => 'Email is required';
+
+  @override
+  String get validationEmailInvalid => 'Email is not valid';
+
+  @override
+  String get validationPasswordRequired => 'Password is required';
+
+  @override
+  String get validationPasswordInvalid =>
+      'Password must include 8 characters, a number, uppercase letter, and symbol';
+
+  @override
+  String get validationConfirmPasswordRequired =>
+      'Confirm password is required';
+
+  @override
+  String get validationPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get validationPhoneRequired => 'Phone number is required';
+
+  @override
+  String get validationPhoneInvalid => 'Phone number is not valid';
+
+  @override
+  String get validationOtpRequired => 'Verification code is required';
+
+  @override
+  String get validationOtpInvalid => 'Verification code is invalid';
+
+  @override
+  String get validationCivilIdRequired => 'Civil ID is required';
+
+  @override
+  String get validationCivilIdInvalid => 'Civil ID is not valid';
 }

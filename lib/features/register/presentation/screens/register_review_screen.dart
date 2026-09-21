@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../../config/theme/spacing.dart';
+import '../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/l10n/translations/app_localizations.dart';
+import '../../../../core/network/failures.dart';
 import '../../../auth/presentation/widgets/registration_note_card.dart';
 import '../../../auth/presentation/widgets/registration_scaffold.dart';
-import '../../data/register_fake_data.dart';
 import '../../domain/register_document.dart';
 import '../../domain/register_personal_data.dart';
 import '../../domain/register_review_data.dart';
@@ -24,6 +25,7 @@ class RegisterReviewScreen extends StatelessWidget {
     required this.onBackToEdit,
     this.onBackPressed,
     this.reviewData,
+    this.failure,
   });
 
   final Map<String, String> selectedImagePaths;
@@ -32,11 +34,12 @@ class RegisterReviewScreen extends StatelessWidget {
   final VoidCallback onBackToEdit;
   final VoidCallback? onBackPressed;
   final RegisterReviewData? reviewData;
+  final Failure? failure;
 
   @override
   Widget build(BuildContext context) {
     final locale = context.localization;
-    final review = reviewData ?? RegisterFakeData.review;
+    final review = reviewData ?? const RegisterReviewData.empty();
 
     return RegistrationScaffold(
       title: locale.registrationReviewOrder,
@@ -69,6 +72,10 @@ class RegisterReviewScreen extends StatelessWidget {
             text: locale.registrationReviewNote,
             icon: Icons.info_rounded,
           ),
+          if (failure != null) ...[
+            const SizedBox(height: Spacing.sm),
+            InlineApiErrorWidget(failure: failure!, onRetry: onSubmit),
+          ],
           const SizedBox(height: Spacing.sm),
           RegisterActionButtons(onSubmit: onSubmit, onBackToEdit: onBackToEdit),
           const SizedBox(height: Spacing.screenV),

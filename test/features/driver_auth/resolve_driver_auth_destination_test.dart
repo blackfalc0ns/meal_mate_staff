@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_mate_delivery/core/errors/api_error_type.dart';
 import 'package:meal_mate_delivery/features/account_status/domain/account_status_kind.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/staff_application_status_entity.dart';
@@ -119,6 +120,7 @@ void main() {
         expect(destination, isA<DriverAccountStatusDestination>());
         final statusDest = destination as DriverAccountStatusDestination;
         expect(statusDest.kind, AccountStatusKind.rejected);
+        expect(statusDest.exception?.errorType, ApiErrorType.forbidden);
       },
     );
 

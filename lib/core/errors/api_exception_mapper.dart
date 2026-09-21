@@ -31,7 +31,10 @@ class ApiExceptionMapper {
     if (response == null) return _exception(ApiErrorType.serverError);
 
     final errorType = _mapStatusCode(response.statusCode);
-    final backendMessage = _extractBackendMessage(response.data);
+    final backendMessage = _extractBackendMessage(
+      response.data,
+      contentType: response.headers.value(Headers.contentTypeHeader),
+    );
 
     return ApiException(
       errorType: errorType,
@@ -76,7 +79,7 @@ class ApiExceptionMapper {
     };
   }
 
-  static String? _extractBackendMessage(Object? data) {
+  static String? _extractBackendMessage(Object? data, {String? contentType}) {
     if (data is Map) {
       for (final key in const [
         'detail',
@@ -90,7 +93,16 @@ class ApiExceptionMapper {
         if (value is String && value.trim().isNotEmpty) return value.trim();
       }
     }
-    if (data is String && data.trim().isNotEmpty) return data.trim();
+    if (data is String && data.trim().isNotEmpty) {
+      final message = data.trim();
+      final normalizedContentType = contentType?.toLowerCase() ?? '';
+      final normalizedMessage = message.toLowerCase();
+      final isHtml =
+          normalizedContentType.contains('text/html') ||
+          normalizedMessage.startsWith('<!doctype html') ||
+          normalizedMessage.startsWith('<html');
+      if (!isHtml) return message;
+    }
     return null;
   }
 

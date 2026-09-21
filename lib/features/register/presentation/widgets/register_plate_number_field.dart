@@ -7,9 +7,16 @@ import '../../../../core/extensions/extensions.dart';
 import '../../../../core/l10n/translations/app_localizations.dart';
 
 class RegisterPlateNumberField extends StatelessWidget {
-  const RegisterPlateNumberField({super.key, required this.locale});
+  const RegisterPlateNumberField({
+    super.key,
+    required this.locale,
+    this.controller,
+    this.validator,
+  });
 
   final AppLocalizations locale;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +43,8 @@ class RegisterPlateNumberField extends StatelessWidget {
                 child: SizedBox(
                   height: Spacing.registrationFieldInputHeight,
                   child: TextFormField(
+                    controller: controller,
+                    validator: validator,
                     textAlign: TextAlign.start,
                     style: getRegularStyle(
                       color: color.onSurface,

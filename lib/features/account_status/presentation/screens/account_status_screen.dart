@@ -3,37 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routing/app_routes.dart';
 import '../../../../config/routing/arguments/auth_route_arguments.dart';
+import '../../../../config/theme/spacing.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/errors/api_error_type.dart';
 import '../../../../core/errors/api_exception.dart';
 import '../../../../core/errors/error_widgets/api_error_widget.dart';
+import '../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../core/extensions/extensions.dart';
-import '../../../../core/network/api_results.dart';
 import '../../../../core/widget/custom_progress_indecator.dart';
 import '../../../../core/widget/custom_snak_bar.dart';
 import '../../../auth/domain/user_role.dart';
 import '../../../driver_auth/presentation/manager/driver_auth_coordinator.dart';
 import '../../domain/account_status_kind.dart';
 import '../../domain/entities/driver_registration_status_entity.dart';
-import '../../domain/repo/account_status_repository.dart';
-import '../../domain/usecase/get_account_status_usecase.dart';
 import '../manager/account_status_event.dart';
 import '../manager/account_status_state.dart';
 import '../manager/account_status_view_model.dart';
 import '../widgets/account_status_content.dart';
-
-class _FakeAccountStatusRepo implements AccountStatusRepository {
-  @override
-  Future<ApiResult<DriverRegistrationStatusEntity>> getRegistrationStatus({
-    String? phone,
-    String? registrationId,
-  }) async => ApiSuccessResult(
-    data: const DriverRegistrationStatusEntity(
-      registrationId: 'reg-1',
-      kind: AccountStatusKind.underReview,
-    ),
-  );
-}
 
 class AccountStatusScreen extends StatefulWidget {
   const AccountStatusScreen({
@@ -60,30 +46,23 @@ class AccountStatusScreen extends StatefulWidget {
 }
 
 class _AccountStatusScreenState extends State<AccountStatusScreen> {
-  late final AccountStatusViewModel _viewModel;
-  late final bool _isInternalViewModel;
+  AccountStatusViewModel? _viewModel;
 
   @override
   void initState() {
     super.initState();
     if (widget.viewModel != null) {
-      _viewModel = widget.viewModel!;
-      _isInternalViewModel = false;
+      _viewModel = widget.viewModel;
     } else if (getIt.isRegistered<AccountStatusViewModel>()) {
       _viewModel = getIt<AccountStatusViewModel>();
-      _isInternalViewModel = true;
     } else {
-      final fakeRepo = _FakeAccountStatusRepo();
-      _viewModel = AccountStatusViewModel(
-        getAccountStatusUseCase: GetAccountStatusUseCase(fakeRepo),
-      );
-      _isInternalViewModel = true;
+      _viewModel = null;
     }
 
-    _viewModel.doIntent(AccountStatusSetKindEvent(widget.kind));
+    _viewModel?.doIntent(AccountStatusSetKindEvent(widget.kind));
 
     if (widget.phone != null || widget.registrationId != null) {
-      _viewModel.doIntent(
+      _viewModel?.doIntent(
         AccountStatusLoadEvent(
           phone: widget.phone,
           registrationId: widget.registrationId,
@@ -94,8 +73,8 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
 
   @override
   void dispose() {
-    if (_isInternalViewModel) {
-      _viewModel.close();
+    if (widget.viewModel == null) {
+      _viewModel?.close();
     }
     super.dispose();
   }
@@ -115,8 +94,10 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
 
     switch (currentKind) {
       case AccountStatusKind.accepted:
-        if (effectivePhone != null && effectivePhone.isNotEmpty) {
-          _viewModel.doIntent(
+        if (effectivePhone != null &&
+            effectivePhone.isNotEmpty &&
+            _viewModel != null) {
+          _viewModel!.doIntent(
             AccountStatusActivateApprovedEvent(effectivePhone),
           );
         } else {
@@ -155,9 +136,27 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final viewModel = _viewModel;
+
+    if (viewModel == null) {
+      return Scaffold(
+        backgroundColor: color.surface,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: AccountStatusContent(
+              kind: widget.kind,
+              onPrimaryPressed: () =>
+                  _handlePrimary(context, widget.kind, null),
+              onSecondaryPressed: () => _handleSecondary(context),
+              onHelpPressed: widget.onHelpPressed,
+            ),
+          ),
+        ),
+      );
+    }
 
     return BlocProvider.value(
-      value: _viewModel,
+      value: viewModel,
       child: BlocConsumer<AccountStatusViewModel, AccountStatusState>(
         listener: (context, state) {
           if (state.status == AccountStatusStateStatus.activationSuccess) {
@@ -202,7 +201,7 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
                         message: state.errorMessage ?? 'An error occurred',
                       ),
                   onRetry: () {
-                    _viewModel.doIntent(
+                    _viewModel?.doIntent(
                       AccountStatusLoadEvent(
                         phone: widget.phone,
                         registrationId: widget.registrationId,
@@ -220,16 +219,37 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
             backgroundColor: color.surface,
             body: SafeArea(
               child: SingleChildScrollView(
-                child: AccountStatusContent(
-                  kind: effectiveKind,
-                  statusEntity: state.statusEntity,
-                  onPrimaryPressed: () => _handlePrimary(
-                    context,
-                    effectiveKind,
-                    state.statusEntity,
-                  ),
-                  onSecondaryPressed: () => _handleSecondary(context),
-                  onHelpPressed: widget.onHelpPressed,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (state.status == AccountStatusStateStatus.error &&
+                        state.failure != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.base,
+                          vertical: Spacing.sm,
+                        ),
+                        child: InlineApiErrorWidget(
+                          failure: state.failure!,
+                          onRetry: () => _handlePrimary(
+                            context,
+                            effectiveKind,
+                            state.statusEntity,
+                          ),
+                        ),
+                      ),
+                    AccountStatusContent(
+                      kind: effectiveKind,
+                      statusEntity: state.statusEntity,
+                      onPrimaryPressed: () => _handlePrimary(
+                        context,
+                        effectiveKind,
+                        state.statusEntity,
+                      ),
+                      onSecondaryPressed: () => _handleSecondary(context),
+                      onHelpPressed: widget.onHelpPressed,
+                    ),
+                  ],
                 ),
               ),
             ),

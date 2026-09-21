@@ -234,6 +234,9 @@ void main() {
       final loginScreen = tester.widget<LoginScreen>(find.byType(LoginScreen));
       expect(loginScreen.role, UserRole.driver);
 
+      await tester.enterText(find.byType(TextFormField).first, '50123456');
+      await tester.enterText(find.byType(TextFormField).last, 'Password123!');
+
       // Tap Login button
       await tester.tap(find.text(locale.login));
       await tester.pumpAndSettle();
@@ -268,6 +271,9 @@ void main() {
 
       final loginScreen = tester.widget<LoginScreen>(find.byType(LoginScreen));
       expect(loginScreen.role, UserRole.operations);
+
+      await tester.enterText(find.byType(TextFormField).first, '50123456');
+      await tester.enterText(find.byType(TextFormField).last, 'Password123!');
 
       // Tap Login button
       await tester.tap(find.text(locale.login));

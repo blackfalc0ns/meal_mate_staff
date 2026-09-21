@@ -12,15 +12,27 @@ import 'package:meal_mate_delivery/features/register/data/models/request/driver_
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_file_upload_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_registration_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_restaurant_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_nationality_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_vehicle_color_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_vehicle_model_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_vehicle_type_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/repo/driver_registration_repository_impl.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_file_upload_result_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_registration_draft_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_registration_result_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_restaurant_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_nationality_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_resubmit_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_color_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_model_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_type_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/repo/driver_registration_repository.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/get_driver_restaurants_usecase.dart';
+import 'package:meal_mate_delivery/features/register/domain/usecase/get_driver_nationalities_usecase.dart';
+import 'package:meal_mate_delivery/features/register/domain/usecase/get_driver_vehicle_colors_usecase.dart';
+import 'package:meal_mate_delivery/features/register/domain/usecase/get_driver_vehicle_types_usecase.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/resubmit_driver_registration_usecase.dart';
+import 'package:meal_mate_delivery/features/register/domain/usecase/search_driver_vehicle_models_usecase.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/submit_driver_registration_usecase.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/upload_driver_document_usecase.dart';
 import 'package:meal_mate_delivery/features/register/presentation/manager/driver_registration_event.dart';
@@ -34,6 +46,24 @@ class _MockRemoteDataSource implements DriverRegistrationRemoteDataSource {
 
   @override
   Future<List<DriverRestaurantResponseDto>> getRestaurants() async => [];
+
+  @override
+  Future<List<DriverNationalityResponseDto>> getNationalities() async => [];
+
+  @override
+  Future<List<DriverVehicleTypeResponseDto>> getVehicleTypes() async =>
+      const [];
+
+  @override
+  Future<List<DriverVehicleColorResponseDto>> getVehicleColors() async =>
+      const [];
+
+  @override
+  Future<List<DriverVehicleModelResponseDto>> searchVehicleModels({
+    String? search,
+    String? vehicleType,
+    int limit = 40,
+  }) async => const [];
 
   @override
   Future<DriverFileUploadResponseDto> uploadDocument(File file) async =>
@@ -80,6 +110,25 @@ class _MockRepo implements DriverRegistrationRepository {
   @override
   Future<ApiResult<List<DriverRestaurantEntity>>> getRestaurants() async =>
       ApiSuccessResult(data: []);
+
+  @override
+  Future<ApiResult<List<DriverNationalityEntity>>> getNationalities() async =>
+      ApiSuccessResult(data: []);
+
+  @override
+  Future<ApiResult<List<DriverVehicleTypeEntity>>> getVehicleTypes() async =>
+      ApiSuccessResult(data: const []);
+
+  @override
+  Future<ApiResult<List<DriverVehicleColorEntity>>> getVehicleColors() async =>
+      ApiSuccessResult(data: const []);
+
+  @override
+  Future<ApiResult<List<DriverVehicleModelEntity>>> searchVehicleModels({
+    String? search,
+    String? vehicleType,
+    int limit = 40,
+  }) async => ApiSuccessResult(data: const []);
 
   @override
   Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(
@@ -252,6 +301,12 @@ void main() {
         final mockRepo = _MockRepo();
         final viewModel = DriverRegistrationViewModel(
           getRestaurantsUseCase: GetDriverRestaurantsUseCase(mockRepo),
+          getNationalitiesUseCase: GetDriverNationalitiesUseCase(mockRepo),
+          getVehicleTypesUseCase: GetDriverVehicleTypesUseCase(mockRepo),
+          getVehicleColorsUseCase: GetDriverVehicleColorsUseCase(mockRepo),
+          searchVehicleModelsUseCase: SearchDriverVehicleModelsUseCase(
+            mockRepo,
+          ),
           uploadDocumentUseCase: UploadDriverDocumentUseCase(mockRepo),
           submitRegistrationUseCase: SubmitDriverRegistrationUseCase(mockRepo),
           resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(
@@ -290,6 +345,12 @@ void main() {
         final mockRepo = _MockRepo()..shouldFail = true;
         final viewModel = DriverRegistrationViewModel(
           getRestaurantsUseCase: GetDriverRestaurantsUseCase(mockRepo),
+          getNationalitiesUseCase: GetDriverNationalitiesUseCase(mockRepo),
+          getVehicleTypesUseCase: GetDriverVehicleTypesUseCase(mockRepo),
+          getVehicleColorsUseCase: GetDriverVehicleColorsUseCase(mockRepo),
+          searchVehicleModelsUseCase: SearchDriverVehicleModelsUseCase(
+            mockRepo,
+          ),
           uploadDocumentUseCase: UploadDriverDocumentUseCase(mockRepo),
           submitRegistrationUseCase: SubmitDriverRegistrationUseCase(mockRepo),
           resubmitRegistrationUseCase: ResubmitDriverRegistrationUseCase(

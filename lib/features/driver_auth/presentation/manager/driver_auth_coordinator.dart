@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/core/constants/assets.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
+import 'package:meal_mate_delivery/core/widget/custom_snak_bar.dart';
 import 'package:meal_mate_delivery/features/auth/domain/auth_verification_target.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
@@ -19,6 +20,8 @@ class DriverAuthCoordinator {
 
   void navigate(BuildContext context, DriverAuthDestination destination) {
     switch (destination) {
+      case DriverErrorDestination(:final exception):
+        CustomSnackbar.showError(context: context, message: exception.message);
       case DriverRegistrationDestination(phone: final phone):
         context.pushNamed(
           AppRoutes.register,

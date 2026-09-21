@@ -1,3 +1,6 @@
+import '../../../../core/errors/api_error_type.dart';
+import '../../../../core/errors/api_exception.dart';
+
 sealed class DispatcherAuthDestination {
   const DispatcherAuthDestination();
 }
@@ -27,9 +30,24 @@ class DispatcherPasswordLoginDestination extends DispatcherAuthDestination {
 }
 
 class DispatcherAccountNotFoundDestination extends DispatcherAuthDestination {
-  const DispatcherAccountNotFoundDestination({required this.phone});
+  const DispatcherAccountNotFoundDestination({
+    required this.phone,
+    this.exception = const ApiException(
+      errorType: ApiErrorType.notFound,
+      message:
+          'هذا الرقم غير مسجل كمسؤول توصيل. يرجى التواصل مع إدارة المطعم لإضافتك أولاً.',
+      statusCode: 404,
+    ),
+  });
 
   final String phone;
+  final ApiException exception;
+}
+
+class DispatcherErrorDestination extends DispatcherAuthDestination {
+  const DispatcherErrorDestination({required this.exception});
+
+  final ApiException exception;
 }
 
 class DispatcherHomeDestination extends DispatcherAuthDestination {

@@ -362,6 +362,48 @@ abstract class AppLocalizations {
   /// **'Enter last name'**
   String get registrationLastNameHint;
 
+  /// No description provided for @registrationFullNameAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name in Arabic'**
+  String get registrationFullNameAr;
+
+  /// No description provided for @registrationFullNameArHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter full name in Arabic'**
+  String get registrationFullNameArHint;
+
+  /// No description provided for @registrationFullNameEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name in English'**
+  String get registrationFullNameEn;
+
+  /// No description provided for @registrationFullNameEnHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter full name in English'**
+  String get registrationFullNameEnHint;
+
+  /// No description provided for @registrationRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner restaurant'**
+  String get registrationRestaurant;
+
+  /// No description provided for @registrationRestaurantHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose restaurant'**
+  String get registrationRestaurantHint;
+
+  /// No description provided for @registrationRestaurantHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the partner restaurant you work for'**
+  String get registrationRestaurantHelp;
+
   /// No description provided for @registrationPhone.
   ///
   /// In en, this message translates to:
@@ -383,7 +425,7 @@ abstract class AppLocalizations {
   /// No description provided for @registrationEmailHint.
   ///
   /// In en, this message translates to:
-  /// **'Enter email'**
+  /// **'Enter email (optional)'**
   String get registrationEmailHint;
 
   /// No description provided for @registrationBirthDate.
@@ -421,6 +463,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter civil ID'**
   String get registrationCivilIdHint;
+
+  /// No description provided for @registrationIdExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'ID expiry date'**
+  String get registrationIdExpiry;
+
+  /// No description provided for @registrationIdExpiryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose ID expiry date'**
+  String get registrationIdExpiryHint;
 
   /// No description provided for @registrationContinue.
   ///
@@ -499,6 +553,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get registrationOther;
+
+  /// No description provided for @registrationVehicleModelSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search vehicle models'**
+  String get registrationVehicleModelSearchHint;
+
+  /// No description provided for @registrationLicenseExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving license expiry'**
+  String get registrationLicenseExpiry;
+
+  /// No description provided for @registrationVehicleLicenseExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle license expiry'**
+  String get registrationVehicleLicenseExpiry;
+
+  /// No description provided for @registrationContractExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract expiry (optional)'**
+  String get registrationContractExpiry;
+
+  /// No description provided for @registrationClearContractExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear contract expiry'**
+  String get registrationClearContractExpiry;
+
+  /// No description provided for @registrationDateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a future date'**
+  String get registrationDateHint;
+
+  /// No description provided for @registrationHexColor.
+  ///
+  /// In en, this message translates to:
+  /// **'HEX color'**
+  String get registrationHexColor;
+
+  /// No description provided for @registrationUseColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Use color'**
+  String get registrationUseColor;
+
+  /// No description provided for @registrationInvalidHexColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 6-digit HEX color'**
+  String get registrationInvalidHexColor;
+
+  /// No description provided for @validationFutureDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date must be in the future'**
+  String get validationFutureDate;
+
+  /// No description provided for @validationManufactureYearRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a year from 1990 through {maximumYear}'**
+  String validationManufactureYearRange(int maximumYear);
 
   /// No description provided for @registrationOwnVehicle.
   ///
@@ -3961,6 +4081,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version {version}'**
   String sidebarAppVersion(String version);
+
+  /// No description provided for @validationFieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get validationFieldRequired;
+
+  /// No description provided for @validationNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get validationNameRequired;
+
+  /// No description provided for @validationNameInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is not valid'**
+  String get validationNameInvalid;
+
+  /// No description provided for @validationEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get validationEmailRequired;
+
+  /// No description provided for @validationEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is not valid'**
+  String get validationEmailInvalid;
+
+  /// No description provided for @validationPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get validationPasswordRequired;
+
+  /// No description provided for @validationPasswordInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must include 8 characters, a number, uppercase letter, and symbol'**
+  String get validationPasswordInvalid;
+
+  /// No description provided for @validationConfirmPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password is required'**
+  String get validationConfirmPasswordRequired;
+
+  /// No description provided for @validationPasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get validationPasswordsDoNotMatch;
+
+  /// No description provided for @validationPhoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get validationPhoneRequired;
+
+  /// No description provided for @validationPhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is not valid'**
+  String get validationPhoneInvalid;
+
+  /// No description provided for @validationOtpRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code is required'**
+  String get validationOtpRequired;
+
+  /// No description provided for @validationOtpInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code is invalid'**
+  String get validationOtpInvalid;
+
+  /// No description provided for @validationCivilIdRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Civil ID is required'**
+  String get validationCivilIdRequired;
+
+  /// No description provided for @validationCivilIdInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Civil ID is not valid'**
+  String get validationCivilIdInvalid;
 }
 
 class _AppLocalizationsDelegate

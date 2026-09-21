@@ -25,7 +25,8 @@ void main() {
         onRequest: (options, handler) {
           capturedOptions = options;
           dynamic responseData = <String, dynamic>{};
-          if (options.path == EndPoints.driverRestaurants) {
+          if (options.path == EndPoints.driverRestaurants ||
+              options.path == EndPoints.driverNationalities) {
             responseData = <dynamic>[];
           }
           handler.resolve(
@@ -138,6 +139,15 @@ void main() {
       expect(capturedOptions.method, 'GET');
       expect(capturedOptions.path, EndPoints.driverRestaurants);
     });
+
+    test(
+      'getDriverNationalities hits GET EndPoints.driverNationalities',
+      () async {
+        await apiServices.getDriverNationalities();
+        expect(capturedOptions.method, 'GET');
+        expect(capturedOptions.path, EndPoints.driverNationalities);
+      },
+    );
 
     test(
       'submitDriverRegistration hits POST EndPoints.driverRegistration',

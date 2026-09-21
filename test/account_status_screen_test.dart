@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/widget/app_button.dart';
 import 'package:meal_mate_delivery/features/account_status/domain/account_status_kind.dart';
 import 'package:meal_mate_delivery/features/account_status/presentation/screens/account_status_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+    await configureDependencies();
+  });
+
   Widget buildSubject(
     AccountStatusKind kind, {
     Locale locale = const Locale('en'),

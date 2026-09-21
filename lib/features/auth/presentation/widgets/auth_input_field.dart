@@ -19,6 +19,8 @@ class AuthInputField extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.enabled = true,
+    this.validator,
+    this.autovalidateMode,
   });
 
   final String hint;
@@ -32,6 +34,8 @@ class AuthInputField extends StatelessWidget {
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final bool enabled;
+  final FormFieldValidator<String>? validator;
+  final AutovalidateMode? autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +99,8 @@ class AuthInputField extends StatelessWidget {
                 controller: controller,
                 onChanged: onChanged,
                 enabled: enabled,
+                validator: validator,
+                autovalidateMode: autovalidateMode,
                 keyboardType: keyboardType,
                 obscureText: obscureText,
                 textAlign: TextAlign.start,

@@ -9,14 +9,23 @@ import 'package:meal_mate_delivery/features/register/data/models/request/driver_
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_file_upload_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_registration_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_restaurant_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_nationality_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_vehicle_color_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_vehicle_model_response_dto.dart';
+import 'package:meal_mate_delivery/features/register/data/models/response/driver_vehicle_type_response_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/repo/driver_registration_repository_impl.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_file_upload_result_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_registration_draft_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_registration_result_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_restaurant_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_nationality_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_resubmit_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_color_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_model_entity.dart';
+import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_type_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/repo/driver_registration_repository.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/get_driver_restaurants_usecase.dart';
+import 'package:meal_mate_delivery/features/register/domain/usecase/get_driver_nationalities_usecase.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/resubmit_driver_registration_usecase.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/submit_driver_registration_usecase.dart';
 import 'package:meal_mate_delivery/features/register/domain/usecase/upload_driver_document_usecase.dart';
@@ -24,6 +33,7 @@ import 'package:meal_mate_delivery/features/register/domain/usecase/upload_drive
 class FakeDriverRegistrationRemoteDataSource
     implements DriverRegistrationRemoteDataSource {
   List<DriverRestaurantResponseDto> restaurantsResponse = [];
+  List<DriverNationalityResponseDto> nationalitiesResponse = [];
   DriverFileUploadResponseDto uploadResponse =
       const DriverFileUploadResponseDto();
   DriverRegistrationResponseDto submitResponse =
@@ -37,6 +47,27 @@ class FakeDriverRegistrationRemoteDataSource
     if (errorToThrow != null) throw errorToThrow!;
     return restaurantsResponse;
   }
+
+  @override
+  Future<List<DriverNationalityResponseDto>> getNationalities() async {
+    if (errorToThrow != null) throw errorToThrow!;
+    return nationalitiesResponse;
+  }
+
+  @override
+  Future<List<DriverVehicleTypeResponseDto>> getVehicleTypes() async =>
+      const [];
+
+  @override
+  Future<List<DriverVehicleColorResponseDto>> getVehicleColors() async =>
+      const [];
+
+  @override
+  Future<List<DriverVehicleModelResponseDto>> searchVehicleModels({
+    String? search,
+    String? vehicleType,
+    int limit = 40,
+  }) async => const [];
 
   @override
   Future<DriverFileUploadResponseDto> uploadDocument(File file) async {
@@ -63,6 +94,7 @@ class FakeDriverRegistrationRemoteDataSource
 }
 
 class FakeDriverRegistrationRepository implements DriverRegistrationRepository {
+  List<DriverNationalityEntity> nationalities = [];
   List<DriverRestaurantEntity> restaurants = [];
   DriverFileUploadResultEntity uploadResult =
       const DriverFileUploadResultEntity(storageKey: 'fake-key');
@@ -80,6 +112,25 @@ class FakeDriverRegistrationRepository implements DriverRegistrationRepository {
   Future<ApiResult<List<DriverRestaurantEntity>>> getRestaurants() async {
     return ApiSuccessResult(data: restaurants);
   }
+
+  @override
+  Future<ApiResult<List<DriverNationalityEntity>>> getNationalities() async =>
+      ApiSuccessResult(data: nationalities);
+
+  @override
+  Future<ApiResult<List<DriverVehicleTypeEntity>>> getVehicleTypes() async =>
+      ApiSuccessResult(data: const []);
+
+  @override
+  Future<ApiResult<List<DriverVehicleColorEntity>>> getVehicleColors() async =>
+      ApiSuccessResult(data: const []);
+
+  @override
+  Future<ApiResult<List<DriverVehicleModelEntity>>> searchVehicleModels({
+    String? search,
+    String? vehicleType,
+    int limit = 40,
+  }) async => ApiSuccessResult(data: const []);
 
   @override
   Future<ApiResult<DriverFileUploadResultEntity>> uploadDocument(
@@ -131,6 +182,29 @@ void main() {
       expect(data.first.id, 'res-1');
       expect(data.first.tradeName, 'Burger');
     });
+
+    test(
+      'GetDriverNationalitiesUseCase returns nationality entities',
+      () async {
+        fakeRepo.nationalities = const [
+          DriverNationalityEntity(
+            code: 'SA',
+            name: 'Saudi',
+            nameAr: 'سعودي',
+            nameEn: 'Saudi',
+            countryName: 'Saudi Arabia',
+            countryNameAr: 'السعودية',
+            countryNameEn: 'Saudi Arabia',
+            flagEmoji: '🇸🇦',
+          ),
+        ];
+
+        final result = await GetDriverNationalitiesUseCase(fakeRepo)();
+        final data =
+            (result as ApiSuccessResult<List<DriverNationalityEntity>>).data;
+        expect(data.single.code, 'SA');
+      },
+    );
 
     test('UploadDriverDocumentUseCase returns upload result entity', () async {
       final useCase = UploadDriverDocumentUseCase(fakeRepo);
@@ -208,6 +282,26 @@ void main() {
       final failure =
           (result as ApiErrorResult<List<DriverRestaurantEntity>>).failure;
       expect(failure, isNotNull);
+    });
+
+    test('getNationalities maps DTO list to entity list', () async {
+      fakeDataSource.nationalitiesResponse = const [
+        DriverNationalityResponseDto(
+          code: 'EG',
+          name: 'Egyptian',
+          nameAr: 'مصري',
+          nameEn: 'Egyptian',
+          countryName: 'Egypt',
+          countryNameAr: 'مصر',
+          countryNameEn: 'Egypt',
+          flagEmoji: '🇪🇬',
+        ),
+      ];
+
+      final result = await repository.getNationalities();
+      final data =
+          (result as ApiSuccessResult<List<DriverNationalityEntity>>).data;
+      expect(data.single.nameAr, 'مصري');
     });
 
     test('uploadDocument maps upload response to entity', () async {
