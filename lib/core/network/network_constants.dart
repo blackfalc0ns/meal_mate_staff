@@ -16,6 +16,7 @@ abstract class EndPoints {
   static const String forgotPassword = '/api/v1/auth/staff/forgot-password';
   static const String resetPassword = '/api/v1/auth/staff/reset-password';
   static const String resendOtp = '/api/v1/auth/staff/resend-otp';
+  static const String staffRoles = '/api/v1/auth/staff/roles';
 
   // Driver registration and status endpoints
   static const String driverRestaurants =

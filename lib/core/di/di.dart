@@ -18,6 +18,7 @@ import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repo/auth_repository_impl.dart';
 import '../../features/auth/domain/repo/auth_repository.dart';
 import '../../features/auth/domain/usecase/forgot_password_usecase.dart';
+import '../../features/auth/domain/usecase/get_staff_roles_usecase.dart';
 import '../../features/auth/domain/usecase/login_usecase.dart';
 import '../../features/auth/domain/usecase/logout_usecase.dart';
 import '../../features/auth/domain/usecase/lookup_phone_usecase.dart';
@@ -124,6 +125,9 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<LogoutUseCase>(
     () => LogoutUseCase(getIt<AuthRepository>()),
   );
+  getIt.registerFactory<GetStaffRolesUseCase>(
+    () => GetStaffRolesUseCase(getIt<AuthRepository>()),
+  );
   getIt.registerFactory<AuthViewModel>(
     () => AuthViewModel(
       lookupPhoneUseCase: getIt<LookupPhoneUseCase>(),
@@ -135,6 +139,7 @@ Future<void> configureDependencies() async {
       resendOtpUseCase: getIt<ResendOtpUseCase>(),
       restoreSessionUseCase: getIt<RestoreSessionUseCase>(),
       logoutUseCase: getIt<LogoutUseCase>(),
+      getStaffRolesUseCase: getIt<GetStaffRolesUseCase>(),
     ),
   );
   // Driver Registration feature dependencies

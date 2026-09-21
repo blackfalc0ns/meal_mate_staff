@@ -18,6 +18,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get splashSubtitle => 'Delivering better, together every day';
 
   @override
+  String get authRoleSelectionTitle => 'Choose your role to continue';
+
+  @override
+  String get authRoleSelectionSubtitle =>
+      'Please select your job role to access your daily tasks';
+
+  @override
+  String get rolesDriver => 'Driver';
+
+  @override
+  String get rolesDriverDesc =>
+      'Deliver orders, update statuses, and follow routes';
+
+  @override
+  String get rolesDeliveryManager => 'Delivery Manager';
+
+  @override
+  String get rolesDeliveryManagerDesc =>
+      'Manage trips, assign drivers, and monitor dispatch';
+
+  @override
+  String get commonContinue => 'Continue';
+
+  @override
   String get loading => 'Loading...';
 
   @override

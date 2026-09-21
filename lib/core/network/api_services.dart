@@ -15,6 +15,7 @@ import '../../features/auth/data/models/request/verify_first_time_otp_request_dt
 import '../../features/auth/data/models/response/phone_lookup_response_dto.dart';
 import '../../features/auth/data/models/response/staff_auth_response_dto.dart';
 import '../../features/auth/data/models/response/staff_message_response_dto.dart';
+import '../../features/auth/data/models/response/staff_role_response_dto.dart';
 import '../../features/auth/data/models/response/verify_first_time_otp_response_dto.dart';
 import '../../features/register/data/models/request/driver_registration_request_dto.dart';
 import '../../features/register/data/models/request/driver_resubmit_request_dto.dart';
@@ -71,6 +72,9 @@ abstract class ApiServices {
   Future<StaffAuthResponseDto> refreshToken(
     @Body() RefreshTokenRequestDto request,
   );
+
+  @GET(EndPoints.staffRoles)
+  Future<List<StaffRoleResponseDto>> getStaffRoles();
 
   // Driver-only registration and status endpoints
   @GET(EndPoints.driverRestaurants)

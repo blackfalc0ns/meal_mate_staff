@@ -18,6 +18,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get splashSubtitle => 'نقدم الأفضل، معًا كل يوم';
 
   @override
+  String get authRoleSelectionTitle => 'اختر دورك للمتابعة';
+
+  @override
+  String get authRoleSelectionSubtitle =>
+      'يرجى تحديد دورك الوظيفي للوصول إلى مهامك اليومية';
+
+  @override
+  String get rolesDriver => 'سائق';
+
+  @override
+  String get rolesDriverDesc =>
+      'توصيل الطلبات، تحديث الحالات، ومتابعة المسارات';
+
+  @override
+  String get rolesDeliveryManager => 'مسؤول توصيل';
+
+  @override
+  String get rolesDeliveryManagerDesc =>
+      'إدارة الرحلات، تعيين السائقين، ومتابعة الحركة';
+
+  @override
+  String get commonContinue => 'متابعة';
+
+  @override
   String get loading => 'جاري التحميل...';
 
   @override

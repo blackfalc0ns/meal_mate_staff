@@ -11,6 +11,7 @@ import '../../domain/entities/set_password_request_entity.dart';
 import '../../domain/entities/staff_login_request_entity.dart';
 import '../../domain/entities/verify_first_time_otp_request_entity.dart';
 import '../../domain/usecase/forgot_password_usecase.dart';
+import '../../domain/usecase/get_staff_roles_usecase.dart';
 import '../../domain/usecase/login_usecase.dart';
 import '../../domain/usecase/logout_usecase.dart';
 import '../../domain/usecase/lookup_phone_usecase.dart';
@@ -34,7 +35,10 @@ class AuthViewModel extends Cubit<AuthState> {
     required this.resendOtpUseCase,
     required this.restoreSessionUseCase,
     required this.logoutUseCase,
-  }) : super(const AuthState());
+    GetStaffRolesUseCase? getStaffRolesUseCase,
+  })  : getStaffRolesUseCase =
+            getStaffRolesUseCase ?? const GetStaffRolesUseCase(),
+        super(const AuthState());
 
   final LookupPhoneUseCase lookupPhoneUseCase;
   final VerifyFirstTimeOtpUseCase verifyFirstTimeOtpUseCase;
@@ -45,6 +49,7 @@ class AuthViewModel extends Cubit<AuthState> {
   final ResendOtpUseCase resendOtpUseCase;
   final RestoreSessionUseCase restoreSessionUseCase;
   final LogoutUseCase logoutUseCase;
+  final GetStaffRolesUseCase getStaffRolesUseCase;
 
   Timer? _countdownTimer;
 
@@ -86,6 +91,34 @@ class AuthViewModel extends Cubit<AuthState> {
       case AuthResetStateEvent():
         _cancelTimer();
         emit(AuthState(role: state.role));
+
+      case AuthGetStaffRolesEvent():
+        _getStaffRoles();
+    }
+  }
+
+  Future<void> _getStaffRoles() async {
+    emit(state.copyWith(isLoadingRoles: true, clearRolesFailure: true));
+    final result = await getStaffRolesUseCase();
+    if (isClosed) return;
+    switch (result) {
+      case ApiSuccessResult(:final data):
+        final sorted = List.of(data)
+          ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
+        emit(
+          state.copyWith(
+            isLoadingRoles: false,
+            roles: sorted,
+            clearRolesFailure: true,
+          ),
+        );
+      case ApiErrorResult(:final failure):
+        emit(
+          state.copyWith(
+            isLoadingRoles: false,
+            rolesFailure: failure,
+          ),
+        );
     }
   }
 
@@ -488,3 +521,4 @@ class AuthViewModel extends Cubit<AuthState> {
     return super.close();
   }
 }
+

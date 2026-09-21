@@ -1,6 +1,7 @@
 import '../../../../core/network/failures.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/phone_lookup_result_entity.dart';
+import '../../domain/entities/staff_role_entity.dart';
 import '../../domain/entities/verify_first_time_otp_result_entity.dart';
 import '../../domain/user_role.dart';
 
@@ -33,6 +34,9 @@ class AuthState {
   final String? errorMessage;
   final int resendCountdown;
   final bool canResendOtp;
+  final List<StaffRoleEntity> roles;
+  final bool isLoadingRoles;
+  final Failure? rolesFailure;
 
   const AuthState({
     this.status = AuthStatus.initial,
@@ -48,6 +52,9 @@ class AuthState {
     this.errorMessage,
     this.resendCountdown = 60,
     this.canResendOtp = false,
+    this.roles = const [],
+    this.isLoadingRoles = false,
+    this.rolesFailure,
   });
 
   AuthState copyWith({
@@ -64,10 +71,14 @@ class AuthState {
     String? errorMessage,
     int? resendCountdown,
     bool? canResendOtp,
+    List<StaffRoleEntity>? roles,
+    bool? isLoadingRoles,
+    Failure? rolesFailure,
     bool clearLookupResult = false,
     bool clearOtpResult = false,
     bool clearSession = false,
     bool clearFeedback = false,
+    bool clearRolesFailure = false,
   }) {
     return AuthState(
       status: status ?? this.status,
@@ -85,6 +96,9 @@ class AuthState {
       errorMessage: clearFeedback ? null : (errorMessage ?? this.errorMessage),
       resendCountdown: resendCountdown ?? this.resendCountdown,
       canResendOtp: canResendOtp ?? this.canResendOtp,
+      roles: roles ?? this.roles,
+      isLoadingRoles: isLoadingRoles ?? this.isLoadingRoles,
+      rolesFailure: clearRolesFailure ? null : (rolesFailure ?? this.rolesFailure),
     );
   }
 }

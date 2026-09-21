@@ -15,6 +15,7 @@ import 'package:meal_mate_delivery/features/auth/domain/entities/resend_otp_requ
 import 'package:meal_mate_delivery/features/auth/domain/entities/reset_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/set_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/staff_login_request_entity.dart';
+import 'package:meal_mate_delivery/features/auth/domain/entities/staff_role_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/verify_first_time_otp_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/verify_first_time_otp_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/repo/auth_repository.dart';
@@ -90,6 +91,10 @@ class _FakeOtpRepo implements AuthRepository {
 
   @override
   Future<ApiResult<void>> logout() async => ApiSuccessResult(data: null);
+
+  @override
+  Future<ApiResult<List<StaffRoleEntity>>> getStaffRoles() async =>
+      const ApiSuccessResult(data: []);
 }
 
 void main() {

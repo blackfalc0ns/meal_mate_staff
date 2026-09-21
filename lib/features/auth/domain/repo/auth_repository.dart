@@ -7,10 +7,13 @@ import '../entities/resend_otp_request_entity.dart';
 import '../entities/reset_password_request_entity.dart';
 import '../entities/set_password_request_entity.dart';
 import '../entities/staff_login_request_entity.dart';
+import '../entities/staff_role_entity.dart';
 import '../entities/verify_first_time_otp_request_entity.dart';
 import '../entities/verify_first_time_otp_result_entity.dart';
 
-abstract interface class AuthRepository {
+abstract class AuthRepository {
+  const AuthRepository();
+
   Future<ApiResult<PhoneLookupResultEntity>> lookupPhone(
     PhoneLookupRequestEntity request,
   );
@@ -34,4 +37,8 @@ abstract interface class AuthRepository {
   Future<ApiResult<AuthSessionEntity?>> restoreSession();
 
   Future<ApiResult<void>> logout();
+
+  Future<ApiResult<List<StaffRoleEntity>>> getStaffRoles() async {
+    return ApiSuccessResult(data: const []);
+  }
 }

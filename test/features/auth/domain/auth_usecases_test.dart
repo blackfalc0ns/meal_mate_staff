@@ -12,7 +12,9 @@ import 'package:meal_mate_delivery/features/auth/domain/entities/staff_login_req
 import 'package:meal_mate_delivery/features/auth/domain/entities/verify_first_time_otp_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/verify_first_time_otp_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/repo/auth_repository.dart';
+import 'package:meal_mate_delivery/features/auth/domain/entities/staff_role_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/forgot_password_usecase.dart';
+import 'package:meal_mate_delivery/features/auth/domain/usecase/get_staff_roles_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/login_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/lookup_phone_usecase.dart';
@@ -134,6 +136,27 @@ class MockAuthRepository implements AuthRepository {
   Future<ApiResult<void>> logout() async {
     lastMethod = 'logout';
     return ApiSuccessResult(data: null);
+  }
+
+  @override
+  Future<ApiResult<List<StaffRoleEntity>>> getStaffRoles() async {
+    lastMethod = 'getStaffRoles';
+    return const ApiSuccessResult(
+      data: [
+        StaffRoleEntity(
+          code: 'driver',
+          name: 'Driver',
+          nameAr: 'سائق',
+          nameEn: 'Driver',
+          description: 'Deliver',
+          descriptionAr: 'توصيل',
+          descriptionEn: 'Deliver',
+          iconKey: 'delivery_dining',
+          allowsSelfRegistration: true,
+          displayOrder: 1,
+        ),
+      ],
+    );
   }
 }
 
@@ -257,5 +280,13 @@ void main() {
 
     expect(repo.lastMethod, 'logout');
     expect(result, isA<ApiSuccessResult<void>>());
+  });
+
+  test('GetStaffRolesUseCase delegates to repository', () async {
+    final useCase = GetStaffRolesUseCase(repo);
+    final result = await useCase();
+
+    expect(repo.lastMethod, 'getStaffRoles');
+    expect(result, isA<ApiSuccessResult<List<StaffRoleEntity>>>());
   });
 }

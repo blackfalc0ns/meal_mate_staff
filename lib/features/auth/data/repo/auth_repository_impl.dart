@@ -11,6 +11,7 @@ import '../../domain/entities/resend_otp_request_entity.dart';
 import '../../domain/entities/reset_password_request_entity.dart';
 import '../../domain/entities/set_password_request_entity.dart';
 import '../../domain/entities/staff_login_request_entity.dart';
+import '../../domain/entities/staff_role_entity.dart';
 import '../../domain/entities/verify_first_time_otp_request_entity.dart';
 import '../../domain/entities/verify_first_time_otp_result_entity.dart';
 import '../../domain/repo/auth_repository.dart';
@@ -18,6 +19,7 @@ import '../../domain/user_role.dart';
 import '../data_source/auth_remote_data_source.dart';
 import '../mapper/auth_request_mapper.dart';
 import '../mapper/auth_response_mapper.dart';
+import '../mapper/staff_role_mapper.dart';
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
@@ -173,6 +175,14 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<ApiResult<void>> logout() {
     return safeLocalCall(() async {
       await _tokenService.clearTokens();
+    });
+  }
+
+  @override
+  Future<ApiResult<List<StaffRoleEntity>>> getStaffRoles() {
+    return safeApiCall(() async {
+      final response = await _remoteDataSource.getStaffRoles();
+      return response.map((dto) => dto.toEntity()).toList();
     });
   }
 }

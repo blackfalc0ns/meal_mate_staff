@@ -116,6 +116,48 @@ abstract class AppLocalizations {
   /// **'Delivering better, together every day'**
   String get splashSubtitle;
 
+  /// No description provided for @authRoleSelectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your role to continue'**
+  String get authRoleSelectionTitle;
+
+  /// No description provided for @authRoleSelectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your job role to access your daily tasks'**
+  String get authRoleSelectionSubtitle;
+
+  /// No description provided for @rolesDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get rolesDriver;
+
+  /// No description provided for @rolesDriverDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliver orders, update statuses, and follow routes'**
+  String get rolesDriverDesc;
+
+  /// No description provided for @rolesDeliveryManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Manager'**
+  String get rolesDeliveryManager;
+
+  /// No description provided for @rolesDeliveryManagerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage trips, assign drivers, and monitor dispatch'**
+  String get rolesDeliveryManagerDesc;
+
+  /// No description provided for @commonContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get commonContinue;
+
   /// No description provided for @loading.
   ///
   /// In en, this message translates to:

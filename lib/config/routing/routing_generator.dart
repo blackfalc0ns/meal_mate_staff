@@ -9,6 +9,7 @@ import '../../features/auth/domain/auth_verification_target.dart';
 import '../../features/auth/domain/user_role.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
+import '../../features/auth/presentation/screens/role_selection_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import 'arguments/auth_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_order_entity.dart';
@@ -55,6 +56,12 @@ class RouteGenerator {
     switch (settings.name) {
       case AppRoutes.splash:
         return _buildRoute(settings: settings, page: const SplashScreen());
+
+      case AppRoutes.roleSelection:
+        return _buildRoute(
+          settings: settings,
+          page: const RoleSelectionScreen(),
+        );
 
       case AppRoutes.appShell || AppRoutes.home:
         int initialIndex = 0;

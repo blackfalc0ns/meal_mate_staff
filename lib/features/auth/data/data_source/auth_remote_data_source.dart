@@ -9,9 +9,10 @@ import '../models/request/verify_first_time_otp_request_dto.dart';
 import '../models/response/phone_lookup_response_dto.dart';
 import '../models/response/staff_auth_response_dto.dart';
 import '../models/response/staff_message_response_dto.dart';
+import '../models/response/staff_role_response_dto.dart';
 import '../models/response/verify_first_time_otp_response_dto.dart';
 
-abstract interface class AuthRemoteDataSource {
+abstract class AuthRemoteDataSource {
   Future<PhoneLookupResponseDto> lookupPhone(PhoneLookupRequestDto request);
 
   Future<VerifyFirstTimeOtpResponseDto> verifyFirstTimeOtp(
@@ -33,4 +34,6 @@ abstract interface class AuthRemoteDataSource {
   Future<StaffMessageResponseDto> resendOtp(ResendOtpRequestDto request);
 
   Future<StaffAuthResponseDto> refreshToken(RefreshTokenRequestDto request);
+
+  Future<List<StaffRoleResponseDto>> getStaffRoles() async => const [];
 }

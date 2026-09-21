@@ -3,10 +3,12 @@ import 'package:dio/dio.dart';
 import '../errors/api_exception_mapper.dart';
 import 'failures.dart';
 
-sealed class ApiResult<T> {}
+sealed class ApiResult<T> {
+  const ApiResult();
+}
 
 class ApiSuccessResult<T> extends ApiResult<T> {
-  ApiSuccessResult({required this.data});
+  const ApiSuccessResult({required this.data});
 
   final T data;
 }

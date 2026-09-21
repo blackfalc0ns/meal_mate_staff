@@ -10,10 +10,12 @@ import 'package:meal_mate_delivery/features/auth/domain/entities/resend_otp_requ
 import 'package:meal_mate_delivery/features/auth/domain/entities/reset_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/set_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/staff_login_request_entity.dart';
+import 'package:meal_mate_delivery/features/auth/domain/entities/staff_role_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/verify_first_time_otp_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/verify_first_time_otp_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/repo/auth_repository.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/forgot_password_usecase.dart';
+import 'package:meal_mate_delivery/features/auth/domain/usecase/get_staff_roles_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/login_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/lookup_phone_usecase.dart';
@@ -36,6 +38,7 @@ class _FakeAuthRepository implements AuthRepository {
   ApiResult<String>? resetPasswordResult;
   ApiResult<String>? resendOtpResult;
   ApiResult<AuthSessionEntity?>? restoreSessionResult;
+  ApiResult<List<StaffRoleEntity>>? getStaffRolesResult;
   bool logoutCalled = false;
   int lookupCallCount = 0;
 
@@ -97,6 +100,11 @@ class _FakeAuthRepository implements AuthRepository {
     logoutCalled = true;
     return ApiSuccessResult(data: null);
   }
+
+  @override
+  Future<ApiResult<List<StaffRoleEntity>>> getStaffRoles() async {
+    return getStaffRolesResult ?? ApiSuccessResult(data: const []);
+  }
 }
 
 void main() {
@@ -110,6 +118,7 @@ void main() {
   late ResendOtpUseCase resendOtpUseCase;
   late RestoreSessionUseCase restoreSessionUseCase;
   late LogoutUseCase logoutUseCase;
+  late GetStaffRolesUseCase getStaffRolesUseCase;
   late AuthViewModel viewModel;
 
   setUp(() {
@@ -123,6 +132,7 @@ void main() {
     resendOtpUseCase = ResendOtpUseCase(fakeRepo);
     restoreSessionUseCase = RestoreSessionUseCase(fakeRepo);
     logoutUseCase = LogoutUseCase(fakeRepo);
+    getStaffRolesUseCase = GetStaffRolesUseCase(fakeRepo);
 
     viewModel = AuthViewModel(
       lookupPhoneUseCase: lookupPhoneUseCase,
@@ -134,6 +144,7 @@ void main() {
       resendOtpUseCase: resendOtpUseCase,
       restoreSessionUseCase: restoreSessionUseCase,
       logoutUseCase: logoutUseCase,
+      getStaffRolesUseCase: getStaffRolesUseCase,
     );
   });
 
@@ -382,6 +393,35 @@ void main() {
       final state = await future;
       expect(fakeRepo.logoutCalled, true);
       expect(state.session, null);
+    });
+
+    test('AuthGetStaffRolesEvent fetches roles and updates state', () async {
+      const mockRoles = [
+        StaffRoleEntity(
+          code: 'driver',
+          name: 'Driver',
+          nameAr: 'سائق',
+          nameEn: 'Driver',
+          description: 'Deliver orders',
+          descriptionAr: 'توصيل الطلبات',
+          descriptionEn: 'Deliver orders',
+          iconKey: 'delivery_dining',
+          allowsSelfRegistration: true,
+          displayOrder: 1,
+        ),
+      ];
+      fakeRepo.getStaffRolesResult = const ApiSuccessResult(data: mockRoles);
+
+      final future = viewModel.stream.firstWhere(
+        (s) => !s.isLoadingRoles && s.roles.isNotEmpty,
+      );
+
+      viewModel.doIntent(const AuthGetStaffRolesEvent());
+
+      final state = await future;
+      expect(state.roles.length, 1);
+      expect(state.roles.first.code, 'driver');
+      expect(state.rolesFailure, isNull);
     });
   });
 }

@@ -101,3 +101,8 @@ class AuthClearFeedbackEvent extends AuthEvent {
 class AuthResetStateEvent extends AuthEvent {
   const AuthResetStateEvent();
 }
+
+class AuthGetStaffRolesEvent extends AuthEvent {
+  const AuthGetStaffRolesEvent();
+}
+

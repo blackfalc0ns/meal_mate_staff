@@ -11,9 +11,12 @@ import '../../../../core/constants/assets.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/network/api_results.dart';
+import '../../../../core/network/failures.dart';
 import '../../../../core/services/token_service.dart';
 import '../../../account_status/domain/account_status_kind.dart';
 import '../../domain/entities/auth_session_entity.dart';
+import '../../domain/entities/staff_role_entity.dart';
+import '../../domain/usecase/get_staff_roles_usecase.dart';
 import '../../domain/usecase/restore_session_usecase.dart';
 import '../../domain/user_role.dart';
 import '../widgets/account_type_bottom_sheet.dart';
@@ -24,11 +27,13 @@ class SplashScreen extends StatefulWidget {
     this.initialLoadingDuration = Duration.zero,
     this.restoreSessionUseCase,
     this.tokenService,
+    this.getStaffRolesUseCase,
   });
 
   final Duration initialLoadingDuration;
   final RestoreSessionUseCase? restoreSessionUseCase;
   final TokenService? tokenService;
+  final GetStaffRolesUseCase? getStaffRolesUseCase;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -37,10 +42,21 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late bool _isLoading;
+  bool _isNavigating = false;
   UserRole _selectedRole = UserRole.driver;
+  List<StaffRoleEntity> _roles = [];
+  bool _isLoadingRoles = false;
+  Failure? _rolesFailure;
   late final AnimationController _animationController;
   late final Animation<Offset> _slideAnimation;
   late final Animation<double> _fadeAnimation;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(const AssetImage(AppAssets.authLoginBackground), context);
+    precacheImage(const AssetImage(AppAssets.authHeaderLogo), context);
+  }
 
   @override
   void initState() {
@@ -63,6 +79,45 @@ class _SplashScreenState extends State<SplashScreen>
 
     _isLoading = true;
     _initializeStartup();
+    _fetchRoles();
+  }
+
+  Future<void> _fetchRoles() async {
+    GetStaffRolesUseCase? rolesUseCase = widget.getStaffRolesUseCase;
+    if (rolesUseCase == null && getIt.isRegistered<GetStaffRolesUseCase>()) {
+      rolesUseCase = getIt<GetStaffRolesUseCase>();
+    }
+
+    if (rolesUseCase == null) return;
+
+    if (mounted) {
+      setState(() {
+        _isLoadingRoles = true;
+        _rolesFailure = null;
+      });
+    }
+
+    final result = await rolesUseCase();
+    if (!mounted) return;
+
+    if (result is ApiSuccessResult<List<StaffRoleEntity>>) {
+      setState(() {
+        _roles = result.data;
+        _isLoadingRoles = false;
+        _rolesFailure = null;
+        if (_roles.isNotEmpty) {
+          final hasCurrent = _roles.any((r) => r.userRole == _selectedRole);
+          if (!hasCurrent) {
+            _selectedRole = _roles.first.userRole;
+          }
+        }
+      });
+    } else if (result is ApiErrorResult<List<StaffRoleEntity>>) {
+      setState(() {
+        _isLoadingRoles = false;
+        _rolesFailure = result.failure;
+      });
+    }
   }
 
   Future<void> _initializeStartup() async {
@@ -121,7 +176,10 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToLogin() {
-    if (!mounted) return;
+    if (!mounted || _isNavigating) return;
+    setState(() {
+      _isNavigating = true;
+    });
     context.pushReplacementNamed(
       AppRoutes.login,
       arguments: LoginRouteArgs(role: _selectedRole),
@@ -235,6 +293,11 @@ class _SplashScreenState extends State<SplashScreen>
                 position: _slideAnimation,
                 child: AccountTypeBottomSheet(
                   selectedRole: _selectedRole,
+                  roles: _roles,
+                  isLoading: _isLoadingRoles,
+                  isNavigating: _isNavigating,
+                  failure: _rolesFailure,
+                  onRetry: _fetchRoles,
                   onRoleChanged: (role) {
                     setState(() {
                       _selectedRole = role;

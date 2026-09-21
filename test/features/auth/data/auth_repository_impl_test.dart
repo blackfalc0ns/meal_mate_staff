@@ -15,6 +15,7 @@ import 'package:meal_mate_delivery/features/auth/data/models/request/verify_firs
 import 'package:meal_mate_delivery/features/auth/data/models/response/phone_lookup_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/response/staff_auth_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/response/staff_message_response_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/response/staff_role_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/response/verify_first_time_otp_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/repo/auth_repository_impl.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/auth_session_entity.dart';
@@ -22,11 +23,14 @@ import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_re
 import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/set_password_request_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/staff_login_request_entity.dart';
+import 'package:meal_mate_delivery/features/auth/domain/entities/staff_role_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   dynamic errorToThrow;
+
+  List<StaffRoleResponseDto> staffRolesResponse = const [];
 
   PhoneLookupResponseDto phoneLookupResponse = const PhoneLookupResponseDto(
     exists: true,
@@ -113,6 +117,12 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   ) async {
     if (errorToThrow != null) throw errorToThrow;
     return authResponse;
+  }
+
+  @override
+  Future<List<StaffRoleResponseDto>> getStaffRoles() async {
+    if (errorToThrow != null) throw errorToThrow;
+    return staffRolesResponse;
   }
 }
 
@@ -223,6 +233,31 @@ void main() {
 
       expect(await tokenService.getToken(), isNull);
       expect(await tokenService.getRefreshToken(), isNull);
+    });
+
+    test('getStaffRoles maps response DTOs to entities successfully', () async {
+      remoteDataSource.staffRolesResponse = const [
+        StaffRoleResponseDto(
+          code: 'driver',
+          name: 'Driver',
+          nameAr: 'سائق',
+          nameEn: 'Driver',
+          description: 'Deliver orders',
+          descriptionAr: 'توصيل الطلبات',
+          descriptionEn: 'Deliver orders',
+          iconKey: 'delivery_dining',
+          allowsSelfRegistration: true,
+          displayOrder: 1,
+        ),
+      ];
+
+      final result = await repository.getStaffRoles();
+
+      expect(result, isA<ApiSuccessResult<List<StaffRoleEntity>>>());
+      final data = (result as ApiSuccessResult<List<StaffRoleEntity>>).data;
+      expect(data.length, 1);
+      expect(data.first.code, 'driver');
+      expect(data.first.userRole, UserRole.driver);
     });
   });
 }
