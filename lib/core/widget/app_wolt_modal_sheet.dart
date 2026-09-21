@@ -29,6 +29,7 @@ class AppWoltPickerSheet {
     IconData? itemLeadingIcon,
     Widget Function(String item)? itemLeadingBuilder,
   }) {
+    FocusManager.instance.primaryFocus?.unfocus();
     return WoltModalSheet.show<String>(
       context: context,
       useSafeArea: true,
@@ -73,6 +74,7 @@ class AppWoltPickerSheet {
     DateTime? lastDate,
     CalendarDatePicker2Mode? initialCalendarViewMode,
   }) {
+    FocusManager.instance.primaryFocus?.unfocus();
     return WoltModalSheet.show<DateTime>(
       context: context,
       useSafeArea: true,
@@ -159,7 +161,7 @@ class _DatePickerContentState extends State<_DatePickerContent> {
               selectedDayHighlightColor: color.primary,
               firstDate: widget.firstDate,
               lastDate: widget.lastDate,
-              currentDate: widget.initialDate,
+              currentDate: DateTime.now(),
               selectedDayTextStyle: getBoldStyle(
                 fontSize: FontSize.size14,
                 color: color.onPrimary,

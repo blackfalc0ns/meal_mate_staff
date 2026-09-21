@@ -22,10 +22,13 @@ class RegisterPlateNumberField extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return SizedBox(
-      height: Spacing.registrationFieldHeight,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        minHeight: Spacing.registrationFieldHeight,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             locale.registrationPlateNumber,
@@ -38,28 +41,30 @@ class RegisterPlateNumberField extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.sm),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: SizedBox(
-                  height: Spacing.registrationFieldInputHeight,
-                  child: TextFormField(
-                    controller: controller,
-                    validator: validator,
-                    textAlign: TextAlign.start,
-                    style: getRegularStyle(
-                      color: color.onSurface,
-                      fontSize: FontSize.size11,
+                child: TextFormField(
+                  controller: controller,
+                  validator: validator,
+                  textAlign: TextAlign.start,
+                  style: getRegularStyle(
+                    color: color.onSurface,
+                    fontSize: FontSize.size11,
+                  ),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    constraints: const BoxConstraints(
+                      minHeight: Spacing.registrationFieldInputHeight,
                     ),
-                    decoration: InputDecoration(
-                      hintText: locale.registrationPlateNumberHint,
-                      hintStyle: getMediumStyle(
-                        color: color.onSurfaceVariant,
-                        fontSize: FontSize.size12,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.md,
-                        vertical: Spacing.sm,
-                      ),
+                    hintText: locale.registrationPlateNumberHint,
+                    hintStyle: getMediumStyle(
+                      color: color.onSurfaceVariant,
+                      fontSize: FontSize.size12,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.md,
+                      vertical: 11,
                     ),
                   ),
                 ),

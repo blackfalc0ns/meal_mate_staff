@@ -53,7 +53,13 @@ class RegistrationScaffold extends StatelessWidget {
                 RegistrationStepProgress(currentStep: currentStep!),
               ],
               const SizedBox(height: Spacing.base),
-              Expanded(child: SingleChildScrollView(child: child)),
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(child: child),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

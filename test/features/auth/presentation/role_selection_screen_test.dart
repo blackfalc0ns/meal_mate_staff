@@ -32,7 +32,6 @@ import 'package:meal_mate_delivery/features/auth/domain/usecase/reset_password_u
 import 'package:meal_mate_delivery/features/auth/domain/usecase/restore_session_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/set_password_usecase.dart';
 import 'package:meal_mate_delivery/features/auth/domain/usecase/verify_first_time_otp_usecase.dart';
-import 'package:meal_mate_delivery/features/auth/presentation/manager/auth_event.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/manager/auth_view_model.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/screens/role_selection_screen.dart';
 import 'package:meal_mate_delivery/features/auth/presentation/widgets/role_selection_card.dart';

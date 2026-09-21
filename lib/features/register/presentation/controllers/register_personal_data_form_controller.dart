@@ -126,7 +126,6 @@ class RegisterPersonalDataFormController {
       title: context.localization.registrationNationality,
       items: labels,
       selectedItem: nationality.text.isNotEmpty ? nationality.text : null,
-      itemLeadingIcon: Icons.flag_rounded,
       searchHint: isArabic ? 'ابحث عن الجنسية...' : 'Search nationality...',
     );
 

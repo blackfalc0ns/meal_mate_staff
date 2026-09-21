@@ -6,6 +6,7 @@ import 'package:meal_mate_delivery/core/widget/custom_snak_bar.dart';
 import 'package:meal_mate_delivery/features/auth/domain/auth_verification_target.dart';
 import 'package:meal_mate_delivery/features/auth/domain/entities/phone_lookup_result_entity.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
+import '../../../../config/routing/arguments/auth_route_arguments.dart';
 import 'package:meal_mate_delivery/features/dispatcher_auth/domain/dispatcher_auth_destination.dart';
 import 'package:meal_mate_delivery/features/dispatcher_auth/domain/resolve_dispatcher_auth_destination.dart';
 
@@ -25,9 +26,12 @@ class DispatcherAuthCoordinator {
       case DispatcherFirstTimeOtpDestination(phone: final phone):
         context.pushNamed(
           AppRoutes.verifyPhoneOtp,
-          arguments: AuthVerificationTarget(
-            value: phone,
-            imageAsset: AppAssets.authPhoneOtp,
+          arguments: OtpVerificationRouteArgs(
+            target: AuthVerificationTarget(
+              value: phone,
+              imageAsset: AppAssets.authPhoneOtp,
+            ),
+            role: UserRole.operations,
           ),
         );
       case DispatcherPasswordLoginDestination():

@@ -67,85 +67,97 @@ class RegistrationInputField extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.sm),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: GestureDetector(
-                  onTap: isPicker ? onTap : null,
-                  behavior: HitTestBehavior.opaque,
-                  child: SizedBox(
-                    height: Spacing.registrationFieldInputHeight,
-                    child: Semantics(
-                      label: label,
-                      textField: true,
-                      child: TextFormField(
-                        focusNode: focusNode,
-                        controller: controller,
-                        initialValue: controller == null ? initialValue : null,
-                        readOnly: isPicker,
-                        onTap: onTap,
-                        onChanged: onChanged,
-                        validator: validator,
-                        autovalidateMode: autovalidateMode,
-                        keyboardType: keyboardType,
-                        textAlign: TextAlign.start,
-                        style: getMediumStyle(
-                          color: color.onSurface,
+                child: Semantics(
+                  label: label,
+                  textField: true,
+                  child: TextFormField(
+                    focusNode: focusNode,
+                    controller: controller,
+                    initialValue: controller == null ? initialValue : null,
+                    readOnly: isPicker,
+                    canRequestFocus: !isPicker,
+                    enableInteractiveSelection: !isPicker,
+                    onTap: isPicker
+                        ? () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            onTap?.call();
+                          }
+                        : onTap,
+                    onChanged: onChanged,
+                    validator: validator,
+                    autovalidateMode: autovalidateMode,
+                      keyboardType: keyboardType,
+                      textAlign: TextAlign.start,
+                      style: getMediumStyle(
+                        color: color.onSurface,
+                        fontSize: FontSize.size12,
+                      ),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        constraints: const BoxConstraints(
+                          minHeight: Spacing.registrationFieldInputHeight,
+                        ),
+                        hintText: hint,
+                        hintStyle: getMediumStyle(
+                          color: color.onSurfaceVariant,
                           fontSize: FontSize.size12,
                         ),
-                        decoration: InputDecoration(
-                          hintText: hint,
-                          hintStyle: getMediumStyle(
-                            color: color.onSurfaceVariant,
-                            fontSize: FontSize.size12,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.md,
-                            vertical: Spacing.sm,
-                          ),
-                          prefixIconConstraints: prefixIcon != null
-                              ? const BoxConstraints(
-                                  minWidth: 38,
-                                  minHeight: 38,
-                                )
-                              : null,
-                          prefixIcon: prefixIcon == null
-                              ? null
-                              : Icon(
-                                  prefixIcon,
-                                  color: color.onSurface,
-                                  size: 20,
-                                ),
-                          suffixIcon: suffixIcon != null
-                              ? onSuffixTap == null
-                                    ? Icon(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.md,
+                          vertical: 11,
+                        ),
+                        prefixIconConstraints: const BoxConstraints(
+                          minWidth: 38,
+                          minHeight: 38,
+                        ),
+                        prefixIcon: prefixIcon == null
+                            ? null
+                            : Icon(
+                                prefixIcon,
+                                color: color.onSurface,
+                                size: 20,
+                              ),
+                        suffixIconConstraints: const BoxConstraints(
+                          minWidth: 38,
+                          minHeight: 38,
+                        ),
+                        suffixIcon: suffixIcon != null
+                            ? onSuffixTap == null
+                                  ? Icon(
+                                      suffixIcon,
+                                      color: color.onSurfaceVariant,
+                                      size: Spacing.iconMd,
+                                    )
+                                  : IconButton(
+                                      tooltip: suffixTooltip,
+                                      onPressed: onSuffixTap,
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(
+                                        minWidth: 38,
+                                        minHeight: 38,
+                                      ),
+                                      icon: Icon(
                                         suffixIcon,
                                         color: color.onSurfaceVariant,
                                         size: Spacing.iconMd,
-                                      )
-                                    : IconButton(
-                                        tooltip: suffixTooltip,
-                                        onPressed: onSuffixTap,
-                                        icon: Icon(
-                                          suffixIcon,
-                                          color: color.onSurfaceVariant,
-                                          size: Spacing.iconMd,
-                                        ),
-                                      )
-                              : (isPicker &&
-                                    (showPickerArrow ?? (prefixIcon == null)))
-                              ? Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: color.onSurfaceVariant,
-                                  size: Spacing.iconMd,
-                                )
-                              : null,
-                        ),
+                                      ),
+                                    )
+                            : (isPicker &&
+                                  (showPickerArrow ?? (prefixIcon == null)))
+                            ? Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color: color.onSurfaceVariant,
+                                size: Spacing.iconMd,
+                              )
+                            : null,
                       ),
                     ),
                   ),
                 ),
-              ),
-              if (prefix != null) ...[
+                if (prefix != null) ...[
                 const SizedBox(width: Spacing.md),
                 SizedBox(
                   width: Spacing.xxxl * 2,
