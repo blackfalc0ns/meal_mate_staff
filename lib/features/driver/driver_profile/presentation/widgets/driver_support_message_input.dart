@@ -25,7 +25,7 @@ class DriverSupportMessageInput extends StatelessWidget {
       builder: (context, value, _) {
         final currentLength = value.text.length;
 
-        return Container(
+        return DecoratedBox(
           decoration: BoxDecoration(
             color: color.surface,
             borderRadius: BorderRadius.circular(Spacing.cardRadius),

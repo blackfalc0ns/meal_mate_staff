@@ -112,13 +112,14 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
         driver.longitude != null &&
         driver.latitude!.isFinite &&
         driver.longitude!.isFinite) {
-      _cameraController.centerOn(
-        LatLng(driver.latitude!, driver.longitude!),
-      );
+      _cameraController.centerOn(LatLng(driver.latitude!, driver.longitude!));
     }
   }
 
-  void _handleLocationTap(List<DispatcherMapDriverEntity> drivers, String? selectedId) {
+  void _handleLocationTap(
+    List<DispatcherMapDriverEntity> drivers,
+    String? selectedId,
+  ) {
     if (selectedId != null) {
       final selected = drivers.where((d) => d.id == selectedId).firstOrNull;
       if (selected != null &&
@@ -158,9 +159,7 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
                 ),
               );
             }
-            return const Scaffold(
-              body: DispatcherMapShimmer(),
-            );
+            return const Scaffold(body: DispatcherMapShimmer());
           }
 
           final drivers = state.drivers;
@@ -185,7 +184,7 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: Container(
+                  child: DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
@@ -206,7 +205,8 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
                           DispatcherMapHeader(onMenuTap: widget.onBack),
                           const SizedBox(height: Spacing.xs),
                           DispatcherMapKpiBar(
-                            kpi: state.kpi ??
+                            kpi:
+                                state.kpi ??
                                 const DispatcherMapKpiEntity(
                                   activeDriversCount: 0,
                                   inDeliveryCount: 0,
@@ -224,7 +224,8 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
                               ),
                             ),
                           ],
-                          if (state.isRefreshLoading || state.isReconciling) ...[
+                          if (state.isRefreshLoading ||
+                              state.isReconciling) ...[
                             const SizedBox(height: Spacing.xs),
                             SizedBox(
                               width: 16,
@@ -259,7 +260,8 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
                 // 3. Floating Map Controls
                 PositionedDirectional(
                   end: Spacing.base,
-                  bottom: Spacing.dispatcherMapBottomCarouselHeight + Spacing.lg,
+                  bottom:
+                      Spacing.dispatcherMapBottomCarouselHeight + Spacing.lg,
                   child: DispatcherMapControls(
                     onLocationTap: () =>
                         _handleLocationTap(drivers, selectedDriverId),

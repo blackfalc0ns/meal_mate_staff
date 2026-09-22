@@ -36,7 +36,7 @@ class DriverNotificationsFilterTabBar extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: color.outline, width: Spacing.border),

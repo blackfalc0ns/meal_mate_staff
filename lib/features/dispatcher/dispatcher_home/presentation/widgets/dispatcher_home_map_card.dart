@@ -201,14 +201,15 @@ class _DispatcherHomeMapCardState extends State<DispatcherHomeMapCard> {
                     zoomGesturesEnabled: true,
                     rotateGesturesEnabled: true,
                     tiltGesturesEnabled: true,
-                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                      Factory<EagerGestureRecognizer>(
-                        EagerGestureRecognizer.new,
-                      ),
-                    },
-                    onMapCreated: (controller) {
+                    gestureRecognizers:
+                        const <Factory<OneSequenceGestureRecognizer>>{
+                          Factory<EagerGestureRecognizer>(
+                            EagerGestureRecognizer.new,
+                          ),
+                        },
+                    onMapCreated: (controller) async {
                       _controller = controller;
-                      _focusDrivers();
+                      await _focusDrivers();
                     },
                   ),
                   if (widget.pins.isEmpty)

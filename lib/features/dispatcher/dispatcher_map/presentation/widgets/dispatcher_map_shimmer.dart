@@ -11,11 +11,7 @@ class DispatcherMapShimmer extends StatelessWidget {
     return Stack(
       children: [
         // Background map shimmer
-        const Positioned.fill(
-          child: ShimmerWidget(
-            borderRadius: 0,
-          ),
-        ),
+        const Positioned.fill(child: ShimmerWidget(borderRadius: 0)),
 
         // Top overlay: Header & KPI bar shimmer
         Positioned(
@@ -80,12 +76,12 @@ class DispatcherMapShimmer extends StatelessWidget {
         ),
 
         // Controls placeholder (floating right/bottom-ish)
-        PositionedDirectional(
+        const PositionedDirectional(
           end: Spacing.base,
           bottom: Spacing.dispatcherMapBottomCarouselHeight + Spacing.lg,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               ShimmerWidget(
                 width: Spacing.dispatcherMapControlBtnSize,
                 height: Spacing.dispatcherMapControlBtnSize,

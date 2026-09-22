@@ -96,7 +96,7 @@ class DispatcherHomeHeader extends StatelessWidget {
               ),
             ),
             const SizedBox(width: Spacing.xs),
-            Container(
+            DecoratedBox(
               decoration: BoxDecoration(
                 color: color.surface,
                 borderRadius: BorderRadius.circular(Spacing.radiusSm),

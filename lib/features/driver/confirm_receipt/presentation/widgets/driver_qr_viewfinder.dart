@@ -86,7 +86,7 @@ class _DriverQrViewfinderState extends State<DriverQrViewfinder>
                           }
                         },
                         errorBuilder: (context, error) {
-                          return Container(
+                          return ColoredBox(
                             color: color.surface,
                             child: Center(
                               child: Column(

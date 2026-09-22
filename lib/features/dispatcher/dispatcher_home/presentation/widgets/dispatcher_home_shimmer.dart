@@ -34,8 +34,8 @@ class DispatcherHomeShimmer extends StatelessWidget {
           const SizedBox(height: Spacing.lg),
           const ShimmerWidget(height: 240, borderRadius: Spacing.cardRadius),
           const SizedBox(height: Spacing.lg),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Expanded(child: ShimmerWidget(height: 260)),
               SizedBox(width: Spacing.sm),
               Expanded(child: ShimmerWidget(height: 260)),

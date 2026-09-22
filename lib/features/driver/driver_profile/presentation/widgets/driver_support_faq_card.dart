@@ -37,7 +37,7 @@ class DriverSupportFaqCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Spacing.sm),
-        Container(
+        DecoratedBox(
           decoration: BoxDecoration(
             color: color.surface,
             borderRadius: BorderRadius.circular(Spacing.cardRadius),

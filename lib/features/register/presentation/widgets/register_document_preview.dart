@@ -89,7 +89,7 @@ class _DashedBorderPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = Spacing.border;
-    final radius = Radius.circular(Spacing.registrationDocumentUploadRadius);
+    const radius = Radius.circular(Spacing.registrationDocumentUploadRadius);
     final path = Path()
       ..addRRect(RRect.fromRectAndRadius(Offset.zero & size, radius));
 
