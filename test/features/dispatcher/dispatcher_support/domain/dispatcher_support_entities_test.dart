@@ -53,7 +53,7 @@ void main() {
     });
 
     test('resetToFirstPage resets pageNumber to 1', () {
-      final query = const DispatcherSupportQueryEntity(pageNumber: 3);
+      const query = DispatcherSupportQueryEntity(pageNumber: 3);
       expect(query.pageNumber, 3);
       expect(query.resetToFirstPage().pageNumber, 1);
     });

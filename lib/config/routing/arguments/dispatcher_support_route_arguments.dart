@@ -3,3 +3,9 @@ class DispatcherSupportIssueDetailsRouteArgs {
 
   final String issueId;
 }
+
+class DispatcherReassignDriverRouteArgs {
+  const DispatcherReassignDriverRouteArgs({required this.issueId});
+
+  final String issueId;
+}
