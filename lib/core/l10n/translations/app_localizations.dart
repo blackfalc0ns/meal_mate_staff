@@ -2228,6 +2228,84 @@ abstract class AppLocalizations {
   /// **'Orders'**
   String get homeUnitOrder;
 
+  /// No description provided for @homeKpiTotalOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Orders Today'**
+  String get homeKpiTotalOrders;
+
+  /// No description provided for @homeKpiInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get homeKpiInDelivery;
+
+  /// No description provided for @homeKpiPendingAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Assignment'**
+  String get homeKpiPendingAssignment;
+
+  /// No description provided for @homeKpiActiveIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Issues'**
+  String get homeKpiActiveIssues;
+
+  /// No description provided for @homeOpDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get homeOpDelivered;
+
+  /// No description provided for @homeOpInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get homeOpInDelivery;
+
+  /// No description provided for @homeOpPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Assignment'**
+  String get homeOpPending;
+
+  /// No description provided for @homeOpCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get homeOpCancelled;
+
+  /// No description provided for @homeAlertActiveIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} issues need your attention'**
+  String homeAlertActiveIssues(int count);
+
+  /// No description provided for @homeMapNoDrivers.
+  ///
+  /// In en, this message translates to:
+  /// **'No drivers available'**
+  String get homeMapNoDrivers;
+
+  /// No description provided for @homeMapNoDriversDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver locations will appear here.'**
+  String get homeMapNoDriversDesc;
+
+  /// No description provided for @homeNoTopDrivers.
+  ///
+  /// In en, this message translates to:
+  /// **'No drivers data available'**
+  String get homeNoTopDrivers;
+
+  /// No description provided for @homeNoAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'No areas data available'**
+  String get homeNoAreas;
+
   /// No description provided for @driverDetailsTitle.
   ///
   /// In en, this message translates to:

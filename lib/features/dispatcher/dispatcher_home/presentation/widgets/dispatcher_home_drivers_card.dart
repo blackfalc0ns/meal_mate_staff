@@ -79,90 +79,109 @@ class DispatcherHomeDriversCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Spacing.sm),
-          ...drivers.map((driver) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: Spacing.xs),
-              child: Material(
-                color: color.homeDriverItemBg,
-                borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                child: InkWell(
-                  onTap: () => onDriverTap?.call(driver),
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.xs,
-                      vertical: Spacing.xs / 2,
+          if (drivers.isEmpty)
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
+                  child: Text(
+                    locale.homeNoTopDrivers,
+                    style: getRegularStyle(
+                      fontFamily: FontConstant.alexandria,
+                      fontSize: FontSize.size8,
+                      color: color.homeMutedText,
                     ),
-                    child: Row(
-                      children: [
-                        ClipOval(
-                          child: AppCachedNetworkImage(
-                            imageUrl: driver.avatarUrl,
-                            shape: BoxShape.circle,
-                            errorWidget: Image.asset(
-                              AppAssets.registrationDriverRole,
-                              fit: BoxFit.cover,
-                            ),
-                            width: 28,
-                            height: 28,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                driver.name,
-                                style: getBoldStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size8,
-                                  color: color.onSurface,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                driver.badgeText,
-                                style: getRegularStyle(
-                                  fontFamily: FontConstant.alexandria,
-                                  fontSize: FontSize.size9 - 1,
-                                  color: color.homeMutedText,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.star_rounded,
-                              size: 14,
-                              color: color.homeStar,
-                            ),
-                            const SizedBox(width: 2),
-                            Text(
-                              driver.rating.toStringAsFixed(1),
-                              style: getBoldStyle(
-                                fontFamily: FontConstant.alexandria,
-                                fontSize: FontSize.size9,
-                                color: color.onSurface,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
-            );
-          }),
-          Spacer(),
+            )
+          else ...[
+            ...drivers.map((driver) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: Spacing.xs),
+                child: Material(
+                  color: color.homeDriverItemBg,
+                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                  child: InkWell(
+                    onTap: () => onDriverTap?.call(driver),
+                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.xs,
+                        vertical: Spacing.xs / 2,
+                      ),
+                      child: Row(
+                        children: [
+                          ClipOval(
+                            child: AppCachedNetworkImage(
+                              imageUrl: driver.avatarUrl,
+                              shape: BoxShape.circle,
+                              errorWidget: Image.asset(
+                                AppAssets.registrationDriverRole,
+                                fit: BoxFit.cover,
+                              ),
+                              width: 28,
+                              height: 28,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.xs),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  driver.name,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size8,
+                                    color: color.onSurface,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  driver.badgeText,
+                                  style: getRegularStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size9 - 1,
+                                    color: color.homeMutedText,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.star_rounded,
+                                size: 14,
+                                color: color.homeStar,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                driver.rating.toStringAsFixed(1),
+                                style: getBoldStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size9,
+                                  color: color.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+            const Spacer(),
+          ],
           Material(
             color: color.homeSoftPurpleBg,
             borderRadius: BorderRadius.circular(Spacing.radiusSm),

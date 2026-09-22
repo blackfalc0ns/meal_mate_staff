@@ -212,13 +212,13 @@ class _DispatcherHomeMapCardState extends State<DispatcherHomeMapCard> {
                     },
                   ),
                   if (widget.pins.isEmpty)
-                    const Positioned.fill(
+                    Positioned.fill(
                       child: ColoredBox(
-                        color: Color(0xAAFFFFFF),
+                        color: color.surface.withValues(alpha: 0.85),
                         child: Center(
                           child: EmptyStateWidget(
-                            title: 'No drivers available',
-                            description: 'Driver locations will appear here.',
+                            title: locale.homeMapNoDrivers,
+                            description: locale.homeMapNoDriversDesc,
                           ),
                         ),
                       ),

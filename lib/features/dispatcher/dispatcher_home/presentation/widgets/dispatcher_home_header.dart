@@ -16,6 +16,7 @@ class DispatcherHomeHeader extends StatelessWidget {
     this.role,
     this.greeting,
     this.greetingSubtitle,
+    this.hasUnreadNotifications = false,
   });
 
   final VoidCallback? onNotificationTap;
@@ -23,6 +24,7 @@ class DispatcherHomeHeader extends StatelessWidget {
   final String? role;
   final String? greeting;
   final String? greetingSubtitle;
+  final bool hasUnreadNotifications;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +106,7 @@ class DispatcherHomeHeader extends StatelessWidget {
                 ),
               ),
               child: NotificationButton(
-                hasUnread: true,
+                hasUnread: hasUnreadNotifications,
                 onPressed:
                     onNotificationTap ??
                     () => context.pushNamed(AppRoutes.dispatcherNotifications),

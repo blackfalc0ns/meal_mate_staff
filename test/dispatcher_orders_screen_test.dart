@@ -288,7 +288,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap first assign button
-      final assignButtons = find.widgetWithText(ElevatedButton, 'إسناد');
+      final assignButtons = find.text('إسناد');
       expect(assignButtons, findsWidgets);
 
       await tester.tap(assignButtons.first);

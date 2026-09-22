@@ -103,8 +103,24 @@ class DispatcherHomeAreasCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: Spacing.sm),
-        Row(
-          children: areas.map((area) {
+        if (areas.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
+            child: Center(
+              child: Text(
+                locale.homeNoAreas,
+                style: getRegularStyle(
+                  fontFamily: FontConstant.alexandria,
+                  fontSize: FontSize.size9,
+                  color: color.homeMutedText,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        else
+          Row(
+            children: areas.map((area) {
             final bgColor = _getAreaBgColor(color, area.colorType);
             final arrowColor = _getAreaArrowColor(color, area.colorType);
 

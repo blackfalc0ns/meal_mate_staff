@@ -474,6 +474,26 @@
   "homeAreaSummaryTitle": "Area Summary",
   "homeViewAll": "View All",
   "homeUnitOrder": "Orders",
+  "homeKpiTotalOrders": "Total Orders Today",
+  "homeKpiInDelivery": "In Delivery",
+  "homeKpiPendingAssignment": "Pending Assignment",
+  "homeKpiActiveIssues": "Active Issues",
+  "homeOpDelivered": "Delivered",
+  "homeOpInDelivery": "In Delivery",
+  "homeOpPending": "Pending Assignment",
+  "homeOpCancelled": "Cancelled",
+  "homeAlertActiveIssues": "{count} issues need your attention",
+  "@homeAlertActiveIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeMapNoDrivers": "No drivers available",
+  "homeMapNoDriversDesc": "Driver locations will appear here.",
+  "homeNoTopDrivers": "No drivers data available",
+  "homeNoAreas": "No areas data available",
   "driverDetailsTitle": "Driver Details",
   "driverDetailsStatusAvailable": "Available",
   "driverDetailsLastUpdatedNow": "Last updated now",

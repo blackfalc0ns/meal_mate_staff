@@ -1142,6 +1142,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeUnitOrder => 'Orders';
 
   @override
+  String get homeKpiTotalOrders => 'Total Orders Today';
+
+  @override
+  String get homeKpiInDelivery => 'In Delivery';
+
+  @override
+  String get homeKpiPendingAssignment => 'Pending Assignment';
+
+  @override
+  String get homeKpiActiveIssues => 'Active Issues';
+
+  @override
+  String get homeOpDelivered => 'Delivered';
+
+  @override
+  String get homeOpInDelivery => 'In Delivery';
+
+  @override
+  String get homeOpPending => 'Pending Assignment';
+
+  @override
+  String get homeOpCancelled => 'Cancelled';
+
+  @override
+  String homeAlertActiveIssues(int count) {
+    return '$count issues need your attention';
+  }
+
+  @override
+  String get homeMapNoDrivers => 'No drivers available';
+
+  @override
+  String get homeMapNoDriversDesc => 'Driver locations will appear here.';
+
+  @override
+  String get homeNoTopDrivers => 'No drivers data available';
+
+  @override
+  String get homeNoAreas => 'No areas data available';
+
+  @override
   String get driverDetailsTitle => 'Driver Details';
 
   @override

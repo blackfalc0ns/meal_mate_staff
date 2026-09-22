@@ -1141,6 +1141,47 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeUnitOrder => 'طلب';
 
   @override
+  String get homeKpiTotalOrders => 'طلبات اليوم';
+
+  @override
+  String get homeKpiInDelivery => 'في التوصيل';
+
+  @override
+  String get homeKpiPendingAssignment => 'بانتظار الإسناد';
+
+  @override
+  String get homeKpiActiveIssues => 'مشاكل حالية';
+
+  @override
+  String get homeOpDelivered => 'تم التوصيل';
+
+  @override
+  String get homeOpInDelivery => 'في التوصيل';
+
+  @override
+  String get homeOpPending => 'بانتظار الإسناد';
+
+  @override
+  String get homeOpCancelled => 'تم الإلغاء';
+
+  @override
+  String homeAlertActiveIssues(int count) {
+    return 'هناك $count مشكلة تحتاج إلى انتباهك';
+  }
+
+  @override
+  String get homeMapNoDrivers => 'لا يوجد سائقين متاحين';
+
+  @override
+  String get homeMapNoDriversDesc => 'ستظهر مواقع السائقين هنا عند توفرها';
+
+  @override
+  String get homeNoTopDrivers => 'لا توجد بيانات سائقين حالياً';
+
+  @override
+  String get homeNoAreas => 'لا توجد بيانات مناطق حالياً';
+
+  @override
   String get driverDetailsTitle => 'تفاصيل السائق';
 
   @override

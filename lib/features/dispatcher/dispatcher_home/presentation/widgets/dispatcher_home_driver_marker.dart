@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../../../config/theme/colors.dart';
+import '../../../../../config/theme/font_manager.dart';
+import '../../../../../config/theme/spacing.dart';
+import '../../../../../config/theme/styles_manager.dart';
+import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_cached_network_image.dart';
 import '../../domain/entities/dispatcher_home_map_driver_pin_entity.dart';
 
@@ -21,29 +26,31 @@ class DispatcherHomeDriverMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = _colors(driver.status);
+    final color = context.colorScheme;
+    final colors = _colors(color, driver.status);
+
     return SizedBox(
       width: 104,
       height: 112,
       child: Stack(
         clipBehavior: Clip.none,
-        alignment: Alignment.topCenter,
+        alignment: AlignmentDirectional.topCenter,
         children: [
-          Positioned(
+          PositionedDirectional(
             top: 0,
-            left: 17,
+            start: Spacing.base + Spacing.border,
             child: Container(
-              width: 48,
-              height: 48,
-              padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              width: Spacing.xxxl,
+              height: Spacing.xxxl,
+              padding: const EdgeInsets.all(Spacing.border * 2),
+              decoration: BoxDecoration(
+                color: color.surface,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0x33000000),
-                    blurRadius: 5,
-                    offset: Offset(0, 2),
+                    color: color.shadow.withValues(alpha: 0.2),
+                    blurRadius: Spacing.xs + Spacing.border,
+                    offset: const Offset(0, Spacing.border * 2),
                   ),
                 ],
               ),
@@ -51,53 +58,56 @@ class DispatcherHomeDriverMarker extends StatelessWidget {
                 imageUrl: driver.avatarUrl,
                 shape: BoxShape.circle,
                 onImageResolved: onAvatarResolved,
-                // errorWidget: const ColoredBox(
-                //   color: Color(0xFFE9E4F8),
-                //   child: Icon(Icons.person_rounded, color: Color(0xFF6946C6)),
-                // ),
-                //  loadingWidget: const ColoredBox(color: Color(0xFFE9E4F8)),
               ),
             ),
           ),
-          Positioned(
-            top: 19,
-            right: 15,
+          PositionedDirectional(
+            top: Spacing.lg - Spacing.border,
+            end: Spacing.base - Spacing.border,
             child: Container(
-              width: 31,
-              height: 31,
+              width: Spacing.xxl - Spacing.border,
+              height: Spacing.xxl - Spacing.border,
               decoration: BoxDecoration(
                 color: colors.$1,
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
-                boxShadow: const [
-                  BoxShadow(color: Color(0x22000000), blurRadius: 3),
+                border: Border.all(
+                  color: color.surface,
+                  width: Spacing.border * 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.shadow.withValues(alpha: 0.15),
+                    blurRadius: Spacing.xs - Spacing.border,
+                  ),
                 ],
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.local_shipping_rounded,
-                color: Colors.white,
-                size: 16,
+                color: color.onPrimary,
+                size: Spacing.iconSm,
               ),
             ),
           ),
           Positioned(
-            top: 49,
+            top: Spacing.xxxl + Spacing.border,
             child: _pill(
               text: driver.plateNumber,
-              background: Colors.white,
-              foreground: const Color(0xFF171717),
-              fontSize: 9,
-              horizontalPadding: 8,
+              background: color.surface,
+              foreground: color.onSurface,
+              fontSize: FontSize.size9,
+              horizontalPadding: Spacing.sm,
+              shadowColor: color.shadow.withValues(alpha: 0.12),
             ),
           ),
           Positioned(
-            top: 72,
+            top: Spacing.bottomNavHeight,
             child: _pill(
               text: driver.statusText,
               background: colors.$1,
               foreground: colors.$2,
-              fontSize: 8,
-              horizontalPadding: 7,
+              fontSize: FontSize.size8,
+              horizontalPadding: Spacing.sm - Spacing.border,
+              shadowColor: color.shadow.withValues(alpha: 0.12),
             ),
           ),
         ],
@@ -111,18 +121,22 @@ class DispatcherHomeDriverMarker extends StatelessWidget {
     required Color foreground,
     required double fontSize,
     required double horizontalPadding,
+    required Color shadowColor,
   }) {
     return Container(
       constraints: const BoxConstraints(maxWidth: 102),
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 3),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: Spacing.xs - Spacing.border,
+      ),
       decoration: BoxDecoration(
         color: background,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
+        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x1F000000),
-            blurRadius: 3,
-            offset: Offset(0, 1),
+            color: shadowColor,
+            blurRadius: Spacing.xs - Spacing.border,
+            offset: const Offset(0, Spacing.border),
           ),
         ],
       ),
@@ -131,33 +145,37 @@ class DispatcherHomeDriverMarker extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: getBoldStyle(
           color: foreground,
           fontSize: fontSize,
-          fontWeight: FontWeight.w700,
-          fontFamily: 'Alexandria',
-          decoration: TextDecoration.none,
         ),
       ),
     );
   }
 
-  (Color, Color) _colors(DispatcherHomePinStatus status) => switch (status) {
-    DispatcherHomePinStatus.inDelivery => (
-      const Color(0xFF22B96E),
-      Colors.white,
-    ),
-    DispatcherHomePinStatus.enRouteToCustomer => (
-      const Color(0xFFFF8A00),
-      Colors.white,
-    ),
-    DispatcherHomePinStatus.onBreak => (const Color(0xFF7F8795), Colors.white),
-    DispatcherHomePinStatus.available => (
-      const Color(0xFF6946C6),
-      Colors.white,
-    ),
-    DispatcherHomePinStatus.unknown => (const Color(0xFF667085), Colors.white),
-  };
+  (Color, Color) _colors(ColorScheme color, DispatcherHomePinStatus status) =>
+      switch (status) {
+        DispatcherHomePinStatus.inDelivery => (
+          color.homeTagDeliveryBg,
+          color.onPrimary,
+        ),
+        DispatcherHomePinStatus.enRouteToCustomer => (
+          color.homeTagLoadingBg,
+          color.onPrimary,
+        ),
+        DispatcherHomePinStatus.onBreak => (
+          color.homeTagPausedDot,
+          color.onPrimary,
+        ),
+        DispatcherHomePinStatus.available => (
+          color.homeActionIconPurple,
+          color.onPrimary,
+        ),
+        DispatcherHomePinStatus.unknown => (
+          color.homeMutedText,
+          color.onPrimary,
+        ),
+      };
 }
 
 class DispatcherHomeMarkerBitmapFactory {
@@ -167,6 +185,8 @@ class DispatcherHomeMarkerBitmapFactory {
     BuildContext context,
     DispatcherHomeMapDriverPinEntity driver,
   ) async {
+    final color = context.colorScheme;
+    final directionality = Directionality.of(context);
     final pixelRatio = MediaQuery.devicePixelRatioOf(context).clamp(1.5, 3.0);
     final boundaryKey = GlobalKey();
     final avatarResolved = Completer<void>();
@@ -178,12 +198,15 @@ class DispatcherHomeMarkerBitmapFactory {
         child: RepaintBoundary(
           key: boundaryKey,
           child: Material(
-            color: Colors.transparent,
-            child: DispatcherHomeDriverMarker(
-              driver: driver,
-              onAvatarResolved: (_) {
-                if (!avatarResolved.isCompleted) avatarResolved.complete();
-              },
+            color: color.transparent,
+            child: Directionality(
+              textDirection: directionality,
+              child: DispatcherHomeDriverMarker(
+                driver: driver,
+                onAvatarResolved: (_) {
+                  if (!avatarResolved.isCompleted) avatarResolved.complete();
+                },
+              ),
             ),
           ),
         ),

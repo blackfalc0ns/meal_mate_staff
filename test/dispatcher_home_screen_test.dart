@@ -87,12 +87,121 @@ void main() {
     expect(repository.driverCalls, 2);
     await viewModel.close();
   });
+
+  testWidgets('renders empty state in map when no drivers are available', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390 * 2, 1200 * 2);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    final viewModel = _viewModel(
+      _HomeRepository(driversData: const []),
+    );
+    await tester.pumpWidget(_app(viewModel));
+    await tester.pump();
+
+    expect(find.text('لا يوجد سائقين متاحين'), findsOneWidget);
+    await viewModel.close();
+  });
+
+  testWidgets('renders empty state for top drivers and areas when lists are empty', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390 * 2, 1200 * 2);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    const emptyOverview = DispatcherHomeOverviewEntity(
+      restaurant: DispatcherHomeRestaurantEntity(
+        id: '1',
+        nameAr: 'مطعم الاختبار',
+        nameEn: 'Test',
+        role: 'Dispatcher',
+      ),
+      greeting: DispatcherHomeGreetingEntity(title: 'مرحبا', subtitle: 'اهلا'),
+      kpis: DispatcherHomeKpisEntity(
+        totalOrdersToday: 0,
+        inDeliveryCount: 0,
+        pendingAssignmentCount: 0,
+        activeIssuesCount: 0,
+      ),
+      operationsStatus: DispatcherHomeOperationsStatusEntity(
+        completionRate: 0,
+        deliveredCount: 0,
+        deliveredLabel: '',
+        inDeliveryCount: 0,
+        inDeliveryLabel: '',
+        pendingCount: 0,
+        pendingLabel: '',
+        cancelledCount: 0,
+        cancelledLabel: '',
+      ),
+      topDrivers: [],
+      regions: [],
+      activeIssues: DispatcherHomeActiveIssuesEntity(
+        count: 0,
+        summaryAr: '',
+        summaryEn: '',
+        items: [],
+      ),
+    );
+
+    final viewModel = _viewModel(
+      _HomeRepository(overviewData: emptyOverview),
+    );
+    await tester.pumpWidget(_app(viewModel));
+    await tester.pump();
+
+    expect(find.text('لا توجد بيانات سائقين حالياً'), findsOneWidget);
+    expect(find.text('لا توجد بيانات مناطق حالياً'), findsOneWidget);
+    await viewModel.close();
+  });
+
+  testWidgets('tapping KPI navigates to the corresponding route', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390 * 2, 1200 * 2);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    String? pushedRoute;
+    final viewModel = _viewModel(_HomeRepository());
+
+    await tester.pumpWidget(
+      _app(
+        viewModel,
+        routes: {
+          '/dispatcher-orders': (context) {
+            pushedRoute = '/dispatcher-orders';
+            return const Scaffold(body: Text('Orders Queue Screen'));
+          },
+          '/dispatcher-support': (context) {
+            pushedRoute = '/dispatcher-support';
+            return const Scaffold(body: Text('Support Screen'));
+          },
+        },
+      ),
+    );
+    await tester.pump();
+
+    // Tap total orders KPI
+    await tester.tap(find.text('طلبات اليوم'));
+    await tester.pumpAndSettle();
+    expect(pushedRoute, '/dispatcher-orders');
+
+    await viewModel.close();
+  });
 }
 
-Widget _app(DispatcherHomeViewModel viewModel) => MaterialApp(
+Widget _app(
+  DispatcherHomeViewModel viewModel, {
+  Map<String, WidgetBuilder>? routes,
+}) => MaterialApp(
   locale: const Locale('ar'),
   supportedLocales: AppLocalizations.supportedLocales,
   localizationsDelegates: AppLocalizations.localizationsDelegates,
+  routes: routes ?? const {},
   home: DispatcherHomeScreen(viewModel: viewModel),
 );
 
@@ -103,10 +212,17 @@ DispatcherHomeViewModel _viewModel(DispatcherHomeRepository repository) =>
     );
 
 class _HomeRepository implements DispatcherHomeRepository {
-  _HomeRepository({this.failOverview = false, this.holdOverview = false});
+  _HomeRepository({
+    this.failOverview = false,
+    this.holdOverview = false,
+    this.overviewData = _overview,
+    this.driversData = const [_driver],
+  });
 
   final bool failOverview;
   final bool holdOverview;
+  final DispatcherHomeOverviewEntity overviewData;
+  final List<DispatcherHomeMapDriverPinEntity> driversData;
   int overviewCalls = 0;
   int driverCalls = 0;
 
@@ -128,13 +244,13 @@ class _HomeRepository implements DispatcherHomeRepository {
         ),
       );
     }
-    return Future.value(const ApiSuccessResult(data: _overview));
+    return Future.value(ApiSuccessResult(data: overviewData));
   }
 
   @override
   Future<ApiResult<List<DispatcherHomeMapDriverPinEntity>>> getLiveDrivers() {
     driverCalls++;
-    return Future.value(const ApiSuccessResult(data: [_driver]));
+    return Future.value(ApiSuccessResult(data: driversData));
   }
 }
 

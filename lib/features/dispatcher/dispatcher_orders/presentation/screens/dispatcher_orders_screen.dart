@@ -7,7 +7,6 @@ import '../../../../../core/di/di.dart';
 import '../../../../../core/errors/error_widgets/api_error_widget.dart';
 import '../../../../../core/errors/error_widgets/empty_state_widget.dart';
 import '../../../../../core/extensions/extensions.dart';
-import '../../../../../core/services/token_service.dart';
 import '../../domain/entities/dispatcher_metric_entity.dart';
 import '../../domain/entities/dispatcher_metric_type.dart';
 import '../../domain/entities/dispatcher_order_entity.dart';
@@ -49,13 +48,7 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
         (getIt.isRegistered<DispatcherOrdersViewModel>()
             ? getIt<DispatcherOrdersViewModel>()
             : null);
-    final canLoad =
-        widget.viewModel != null ||
-        (getIt.isRegistered<TokenService>() &&
-            getIt<TokenService>().isAccessTokenSaved);
-    if (canLoad) {
-      _viewModel?.doIntent(const LoadDispatcherOrdersEvent());
-    }
+    _viewModel?.doIntent(const LoadDispatcherOrdersEvent());
   }
 
   @override
@@ -136,35 +129,48 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
       ),
     ];
 
+    final isShimmering =
+        state.isFilterLoading ||
+        (state.isInitialLoading && queue.boxes.isEmpty);
+
     return Scaffold(
       backgroundColor: color.surface,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () =>
               viewModel.doIntent(const RefreshDispatcherOrdersEvent()),
-          child: SingleChildScrollView(
+          child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DispatcherTopHeader(restaurantName: restaurantName, role: role),
-                const SizedBox(height: Spacing.xs),
-                const DispatcherTitleSection(),
-                const SizedBox(height: Spacing.xs),
-                DispatcherMetricsGrid(metrics: metrics),
-                const SizedBox(height: Spacing.xs),
-                DispatcherFilterBar(
-                  selectedFilter: state.selectedFilter,
-                  counts: counts,
-                  onFilterSelected: (filter) {
-                    viewModel.doIntent(SelectDispatcherFilterEvent(filter));
-                  },
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DispatcherTopHeader(
+                      restaurantName: restaurantName,
+                      role: role,
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    const DispatcherTitleSection(),
+                    const SizedBox(height: Spacing.xs),
+                    DispatcherMetricsGrid(metrics: metrics),
+                    const SizedBox(height: Spacing.xs),
+                    DispatcherFilterBar(
+                      selectedFilter: state.selectedFilter,
+                      counts: counts,
+                      onFilterSelected: (filter) {
+                        viewModel.doIntent(SelectDispatcherFilterEvent(filter));
+                      },
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                  ],
                 ),
-                const SizedBox(height: Spacing.xs),
-                if (state.isLoading)
-                  const DispatcherCardsShimmer()
-                else if (queue.boxes.isEmpty)
-                  Padding(
+              ),
+              if (isShimmering)
+                const SliverToBoxAdapter(child: DispatcherCardsShimmer())
+              else if (queue.boxes.isEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Spacing.screenH,
                       vertical: Spacing.xl,
@@ -177,18 +183,20 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
                       ),
                       actionText: isArabic ? 'تحديث' : 'Refresh',
                     ),
-                  )
-                else
-                  DispatcherOrdersList(
-                    orders: queue.boxes,
-                    onAssignOrder:
-                        widget.onAssignOrder ??
-                        (_) => context.pushNamed(AppRoutes.assignBox),
-                    onOrderDetails: widget.onOrderDetails,
                   ),
-                const SizedBox(height: Spacing.base),
-              ],
-            ),
+                )
+              else
+                DispatcherOrdersList(
+                  orders: queue.boxes,
+                  onAssignOrder:
+                      widget.onAssignOrder ??
+                      (_) => context.pushNamed(AppRoutes.assignBox),
+                  onOrderDetails: widget.onOrderDetails,
+                ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: Spacing.base),
+              ),
+            ],
           ),
         ),
       ),

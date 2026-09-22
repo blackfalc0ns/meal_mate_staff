@@ -19,25 +19,30 @@ class DispatcherOrdersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        return DispatcherOrderCard(
-          key: ValueKey(order.id),
-          order: order,
-          onAssignPressed: () {
-            if (onAssignOrder != null) {
-              onAssignOrder!(order);
-            } else {
-              context.pushNamed(AppRoutes.assignBox);
-            }
-          },
-          onDetailsPressed: null,
-        );
-      },
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final order = orders[index];
+          return RepaintBoundary(
+            child: DispatcherOrderCard(
+              key: ValueKey(order.id),
+              order: order,
+              onAssignPressed: () {
+                if (onAssignOrder != null) {
+                  onAssignOrder!(order);
+                } else {
+                  context.pushNamed(AppRoutes.assignBox);
+                }
+              },
+              onDetailsPressed: onOrderDetails != null
+                  ? () => onOrderDetails!(order)
+                  : null,
+            ),
+          );
+        },
+        childCount: orders.length,
+        addAutomaticKeepAlives: false,
+      ),
     );
   }
 }
