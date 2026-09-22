@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import '../../domain/entities/dispatcher_support_date_preset.dart';
 import '../../domain/entities/dispatcher_support_query_entity.dart';
@@ -9,6 +10,7 @@ import '../../domain/usecase/get_dispatcher_support_issues_usecase.dart';
 import 'dispatcher_support_event.dart';
 import 'dispatcher_support_state.dart';
 
+@injectable
 class DispatcherSupportViewModel extends Cubit<DispatcherSupportState> {
   DispatcherSupportViewModel({
     required this.getIssuesUseCase,

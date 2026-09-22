@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import '../../../domain/entities/reassign_driver_candidates_entity.dart';
 import '../../../domain/entities/reassign_driver_request_entity.dart';
@@ -9,10 +10,11 @@ import '../../../domain/usecase/reassign_dispatcher_issue_usecase.dart';
 import 'dispatcher_reassignment_event.dart';
 import 'dispatcher_reassignment_state.dart';
 
+@injectable
 class DispatcherReassignmentViewModel
     extends Cubit<DispatcherReassignmentState> {
   DispatcherReassignmentViewModel({
-    required this.issueId,
+    @factoryParam required this.issueId,
     required this.getCandidatesUseCase,
     required this.reassignUseCase,
   }) : super(const DispatcherReassignmentState());

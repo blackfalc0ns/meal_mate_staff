@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
 import '../entities/reassign_driver_candidates_entity.dart';
 import '../repo/dispatcher_support_repository.dart';
 
+@injectable
 class GetReplacementDriverCandidatesUseCase {
   const GetReplacementDriverCandidatesUseCase(this._repository);
 

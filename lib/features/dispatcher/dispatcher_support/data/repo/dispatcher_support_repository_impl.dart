@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import '../../domain/entities/dispatcher_issue_detail_entity.dart';
 import '../../domain/entities/dispatcher_support_query_entity.dart';
@@ -13,6 +14,7 @@ import '../mapper/dispatcher_reassignment_mapper.dart';
 import '../mapper/dispatcher_support_mapper.dart';
 import '../models/request/resolve_issue_request_dto.dart';
 
+@LazySingleton(as: DispatcherSupportRepository)
 class DispatcherSupportRepositoryImpl implements DispatcherSupportRepository {
   const DispatcherSupportRepositoryImpl(this._remoteDataSource);
 

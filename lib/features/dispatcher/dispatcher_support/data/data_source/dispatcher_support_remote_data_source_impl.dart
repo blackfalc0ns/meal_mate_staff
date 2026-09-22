@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_services.dart';
 import '../../domain/entities/dispatcher_support_query_entity.dart';
 import '../models/request/reassign_driver_request_dto.dart';
@@ -9,6 +10,7 @@ import '../models/response/reassignment_response_dto.dart';
 import '../models/response/resolve_issue_response_dto.dart';
 import 'dispatcher_support_remote_data_source.dart';
 
+@LazySingleton(as: DispatcherSupportRemoteDataSource)
 class DispatcherSupportRemoteDataSourceImpl
     implements DispatcherSupportRemoteDataSource {
   const DispatcherSupportRemoteDataSourceImpl(this._apiServices);

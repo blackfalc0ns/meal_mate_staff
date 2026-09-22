@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import '../../../domain/entities/dispatcher_issue_resolution_entity.dart';
 import '../../../domain/entities/reassignment_result_entity.dart';
@@ -9,10 +10,11 @@ import '../../../domain/usecase/resolve_dispatcher_issue_usecase.dart';
 import 'dispatcher_issue_details_event.dart';
 import 'dispatcher_issue_details_state.dart';
 
+@injectable
 class DispatcherIssueDetailsViewModel
     extends Cubit<DispatcherIssueDetailsState> {
   DispatcherIssueDetailsViewModel({
-    required this.issueId,
+    @factoryParam required this.issueId,
     required this.getDetailsUseCase,
     required this.resolveUseCase,
   }) : super(const DispatcherIssueDetailsState());
