@@ -30,6 +30,12 @@ import '../../features/dispatcher/dispatcher_home/data/models/response/dispatche
 import '../../features/dispatcher/dispatcher_home/data/models/response/dispatcher_live_driver_response_dto.dart';
 import '../../features/dispatcher/dispatcher_orders/data/models/response/dispatcher_order_queue_response_dto.dart';
 import '../../features/dispatcher/dispatcher_map/data/models/response/dispatcher_live_monitoring_response_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/reassign_driver_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/resolve_issue_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/response/dispatcher_issue_details_response_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/response/reassign_driver_candidates_response_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/response/reassignment_response_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/response/resolve_issue_response_dto.dart';
 import '../../features/dispatcher/dispatcher_support/data/models/response/dispatcher_support_response_dto.dart';
 import 'network_constants.dart';
 
@@ -153,4 +159,28 @@ abstract class ApiServices {
     @Query('pageNumber') int? pageNumber,
     @Query('pageSize') int? pageSize,
   });
+
+  @GET('${EndPoints.dispatcherSupportIssues}/{issueId}')
+  Future<DispatcherIssueDetailsResponseDto> getDispatcherIssueDetails(
+    @Path('issueId') String issueId,
+  );
+
+  @POST('${EndPoints.dispatcherSupportIssues}/{issueId}/resolve')
+  Future<ResolveIssueResponseDto> resolveDispatcherIssue(
+    @Path('issueId') String issueId,
+    @Body() ResolveIssueRequestDto request,
+  );
+
+  @GET('${EndPoints.dispatcherSupportIssues}/{issueId}/candidates')
+  Future<ReassignDriverCandidatesResponseDto> getReplacementDriverCandidates(
+    @Path('issueId') String issueId,
+    @Query('pageNumber') int pageNumber,
+    @Query('pageSize') int pageSize,
+  );
+
+  @POST('${EndPoints.dispatcherSupportIssues}/{issueId}/reassign')
+  Future<ReassignmentResponseDto> reassignDispatcherIssue(
+    @Path('issueId') String issueId,
+    @Body() ReassignDriverRequestDto request,
+  );
 }

@@ -53,6 +53,9 @@ void main() {
 }
 
 class _RecordingRemoteDataSource implements DispatcherSupportRemoteDataSource {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
   DispatcherSupportQueryEntity? lastQuery;
 
   @override
@@ -76,6 +79,9 @@ class _RecordingRemoteDataSource implements DispatcherSupportRemoteDataSource {
 }
 
 class _FailingRemoteDataSource implements DispatcherSupportRemoteDataSource {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
   @override
   Future<DispatcherSupportResponseDto> getIssues(
     DispatcherSupportQueryEntity query,

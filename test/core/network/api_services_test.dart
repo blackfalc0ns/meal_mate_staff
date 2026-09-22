@@ -12,6 +12,8 @@ import 'package:meal_mate_delivery/features/auth/data/models/request/staff_login
 import 'package:meal_mate_delivery/features/auth/data/models/request/verify_first_time_otp_request_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/request/driver_registration_request_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/request/driver_resubmit_request_dto.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/reassign_driver_request_dto.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/resolve_issue_request_dto.dart';
 
 void main() {
   late Dio dio;
@@ -240,6 +242,73 @@ void main() {
           'pageNumber': 1,
           'pageSize': 20,
         });
+      },
+    );
+
+    test(
+      'getDispatcherIssueDetails hits GET EndPoints.dispatcherSupportIssues/{issueId}',
+      () async {
+        await apiServices.getDispatcherIssueDetails('issue-123');
+        expect(capturedOptions.method, 'GET');
+        expect(
+          capturedOptions.path,
+          '${EndPoints.dispatcherSupportIssues}/issue-123',
+        );
+      },
+    );
+
+    test(
+      'resolveDispatcherIssue hits POST EndPoints.dispatcherSupportIssues/{issueId}/resolve',
+      () async {
+        await apiServices.resolveDispatcherIssue(
+          'issue-123',
+          const ResolveIssueRequestDto(resolutionNotes: 'Notes'),
+        );
+        expect(capturedOptions.method, 'POST');
+        expect(
+          capturedOptions.path,
+          '${EndPoints.dispatcherSupportIssues}/issue-123/resolve',
+        );
+        expect(capturedOptions.data, {'resolutionNotes': 'Notes'});
+      },
+    );
+
+    test(
+      'getReplacementDriverCandidates hits GET EndPoints.dispatcherSupportIssues/{issueId}/candidates',
+      () async {
+        await apiServices.getReplacementDriverCandidates(
+          'issue-123',
+          1,
+          20,
+        );
+        expect(capturedOptions.method, 'GET');
+        expect(
+          capturedOptions.path,
+          '${EndPoints.dispatcherSupportIssues}/issue-123/candidates',
+        );
+        expect(capturedOptions.queryParameters, {
+          'pageNumber': 1,
+          'pageSize': 20,
+        });
+      },
+    );
+
+    test(
+      'reassignDispatcherIssue hits POST EndPoints.dispatcherSupportIssues/{issueId}/reassign',
+      () async {
+        await apiServices.reassignDispatcherIssue(
+          'issue-123',
+          const ReassignDriverRequestDto(
+            replacementDriverId: 'drv-2',
+            notes: null,
+          ),
+        );
+        expect(capturedOptions.method, 'POST');
+        expect(
+          capturedOptions.path,
+          '${EndPoints.dispatcherSupportIssues}/issue-123/reassign',
+        );
+        expect(capturedOptions.data, {'replacementDriverId': 'drv-2'});
       },
     );
   });

@@ -299,6 +299,9 @@ void main() {
 }
 
 class _MockSupportRepository implements DispatcherSupportRepository {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
   ApiResult<DispatcherSupportResponseEntity>? nextResult;
   Future<ApiResult<DispatcherSupportResponseEntity>> Function(
     DispatcherSupportQueryEntity,

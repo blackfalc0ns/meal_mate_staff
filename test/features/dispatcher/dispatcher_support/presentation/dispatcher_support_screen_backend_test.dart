@@ -31,6 +31,9 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presen
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_shimmer.dart';
 
 class _TestRepository implements DispatcherSupportRepository {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
   Completer<ApiResult<DispatcherSupportResponseEntity>>? pendingCompleter;
   ApiResult<DispatcherSupportResponseEntity>? nextResult;
   final List<DispatcherSupportQueryEntity> capturedQueries = [];

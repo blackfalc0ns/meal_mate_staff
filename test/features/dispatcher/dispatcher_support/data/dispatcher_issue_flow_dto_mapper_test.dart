@@ -206,13 +206,13 @@ void main() {
     });
 
     test('Request DTO serialization and omission of null notes', () {
-      final reqWithoutNotes = const ReassignDriverRequestDto(
+      const reqWithoutNotes = ReassignDriverRequestDto(
         replacementDriverId: 'driver-2',
         notes: null,
       );
       expect(reqWithoutNotes.toJson(), {'replacementDriverId': 'driver-2'});
 
-      final reqWithNotes = const ReassignDriverRequestDto(
+      const reqWithNotes = ReassignDriverRequestDto(
         replacementDriverId: 'driver-2',
         notes: 'ملاحظة خاصة',
       );
@@ -221,7 +221,7 @@ void main() {
         'notes': 'ملاحظة خاصة',
       });
 
-      final resolveReq = const ResolveIssueRequestDto(
+      const resolveReq = ResolveIssueRequestDto(
         resolutionNotes: 'ملاحظات حل البلاغ',
       );
       expect(resolveReq.toJson(), {
