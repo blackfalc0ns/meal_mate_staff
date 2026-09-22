@@ -92,7 +92,11 @@ extension DispatcherIssueDriverDtoMapper on DispatcherIssueDriverDto {
       status: resolvedStatus,
       statusLabel: statusText ?? statusLabel ?? resolvedStatus,
       statusColorHex: statusColor,
-      subStatus: subStatus ?? driverSubStatus ?? '',
+      subStatus: unavailabilityReasonText ??
+          unavailabilityReason ??
+          subStatus ??
+          driverSubStatus ??
+          '',
       vehicleInfo: vehicleInfo,
       rating: rating,
     );

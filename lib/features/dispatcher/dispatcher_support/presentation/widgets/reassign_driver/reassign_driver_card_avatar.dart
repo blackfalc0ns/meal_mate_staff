@@ -11,38 +11,9 @@ class ReassignDriverCardAvatar extends StatelessWidget {
   final ReassignDriverCandidateEntity candidate;
 
   Widget _buildAvatarImage(BuildContext context) {
-    final color = context.colorScheme;
-    final hasUrl = candidate.avatarUrl != null && candidate.avatarUrl!.isNotEmpty;
-    final isNetwork = hasUrl &&
-        (candidate.avatarUrl!.startsWith('http://') ||
-            candidate.avatarUrl!.startsWith('https://'));
-
-    if (isNetwork) {
-      return AppCachedNetworkImage(
-        imageUrl: candidate.avatarUrl!,
-        fit: BoxFit.cover,
-        errorWidget: Icon(
-          Icons.person_rounded,
-          size: Spacing.iconMd,
-          color: color.onSurfaceVariant.withValues(alpha: 0.5),
-        ),
-      );
-    }
-    if (candidate.avatarAsset != null && candidate.avatarAsset!.isNotEmpty) {
-      return Image.asset(
-        candidate.avatarAsset!,
-        fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => Icon(
-          Icons.person_rounded,
-          size: Spacing.iconMd,
-          color: color.onSurfaceVariant.withValues(alpha: 0.5),
-        ),
-      );
-    }
-    return Icon(
-      Icons.person_rounded,
-      size: Spacing.iconMd,
-      color: color.onSurfaceVariant.withValues(alpha: 0.5),
+    return AppCachedNetworkImage(
+      imageUrl: candidate.avatarUrl,
+      fit: BoxFit.cover,
     );
   }
 

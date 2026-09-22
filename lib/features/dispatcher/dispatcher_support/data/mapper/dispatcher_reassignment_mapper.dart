@@ -13,8 +13,9 @@ import 'dispatcher_support_mapper.dart';
 extension ReassignDriverCandidatesResponseDtoMapper
     on ReassignDriverCandidatesResponseDto {
   ReassignDriverCandidatesEntity toEntity() {
+    final effectiveSummary = summary ?? issue;
     return ReassignDriverCandidatesEntity(
-      summary: summary?.toEntity() ??
+      summary: effectiveSummary?.toEntity() ??
           const ReassignDriverIssueSummaryEntity(
             issueId: '',
             title: '',
@@ -31,6 +32,9 @@ extension ReassignDriverCandidatesResponseDtoMapper
 
 extension ReassignDriverIssueSummaryDtoMapper on ReassignDriverIssueSummaryDto {
   ReassignDriverIssueSummaryEntity toEntity() {
+    final resolvedPriority = priority ?? '';
+    final resolvedPriorityText = priorityText ?? resolvedPriority;
+
     return ReassignDriverIssueSummaryEntity(
       issueId: issueId ?? id ?? '',
       title: title ?? '',
@@ -39,8 +43,8 @@ extension ReassignDriverIssueSummaryDtoMapper on ReassignDriverIssueSummaryDto {
       categoryColorHex: categoryColor ?? '#EF4444',
       reportedTimeText: reportedTimeText ?? '',
       minutesAgo: minutesAgo ?? 0,
-      priority: priority ?? '',
-      priorityText: priorityText ?? priority ?? '',
+      priority: resolvedPriority,
+      priorityText: resolvedPriorityText,
       priorityColorHex: priorityColor ?? '#EF4444',
       taskNumber: taskNumber ?? boxCode ?? '',
       area: area ?? '',
@@ -53,7 +57,9 @@ extension ReassignDriverIssueSummaryDtoMapper on ReassignDriverIssueSummaryDto {
 
 extension ReassignDriverCandidateDtoMapper on ReassignDriverCandidateDto {
   ReassignDriverCandidateEntity toEntity() {
-    final rawDate = lastLocationUpdateUtc ?? lastLocationUpdate;
+    final rawDate = lastLocationUpdatedAtUtc ??
+        lastLocationUpdateUtc ??
+        lastLocationUpdate;
     final parsedDate = rawDate != null ? DateTime.tryParse(rawDate) : null;
 
     final resolvedRank = recommendationRank ?? rank ?? 1;
@@ -61,24 +67,29 @@ extension ReassignDriverCandidateDtoMapper on ReassignDriverCandidateDto {
     final resolvedDistance = distanceKm ?? 0.0;
     final resolvedStatus = status ?? (isAvailable == false ? 'BUSY' : 'AVAILABLE');
 
+    final resolvedColor = statusColor ??
+        statusColorHex ??
+        (resolvedStatus.toUpperCase() == 'AVAILABLE' ? '#10B981' : '#F59E0B');
+
     return ReassignDriverCandidateEntity(
       id: id ?? driverId ?? '',
-      name: name ?? '',
-      code: code ?? '',
+      name: fullName ?? name ?? '',
+      code: driverCode ?? code ?? '',
       avatarUrl: avatarUrl,
       avatarAsset: null,
       isAvailable: isAvailable ?? (resolvedStatus.toUpperCase() == 'AVAILABLE'),
       status: resolvedStatus,
-      statusText: statusText ?? (resolvedStatus.toUpperCase() == 'AVAILABLE' ? 'متاح' : 'مشغول'),
-      statusColorHex: statusColorHex ??
-          (resolvedStatus.toUpperCase() == 'AVAILABLE' ? '#10B981' : '#F59E0B'),
+      statusText: statusText ??
+          (resolvedStatus.toUpperCase() == 'AVAILABLE' ? 'متاح الآن' : 'مشغول'),
+      statusColorHex: resolvedColor,
       rating: rating ?? 0.0,
       activeOrdersCount: resolvedOrdersCount,
       ordersCount: resolvedOrdersCount,
       area: area ?? '',
       isSameArea: isSameArea ?? false,
       distanceKm: resolvedDistance,
-      distanceText: distanceText ?? (resolvedDistance > 0 ? '$resolvedDistance كم' : ''),
+      distanceText: distanceText ??
+          (resolvedDistance > 0 ? '$resolvedDistance كم' : ''),
       estimatedArrivalMinutes: estimatedArrivalMinutes ?? 0,
       estimatedArrivalText: estimatedArrivalText ?? '',
       vehicleInfo: vehicleInfo ?? '',

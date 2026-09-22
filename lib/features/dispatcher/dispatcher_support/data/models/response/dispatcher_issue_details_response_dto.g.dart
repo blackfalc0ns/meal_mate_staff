@@ -98,6 +98,8 @@ DispatcherIssueDriverDto _$DispatcherIssueDriverDtoFromJson(
   statusColor: json['statusColor'] as String?,
   subStatus: json['subStatus'] as String?,
   driverSubStatus: json['driverSubStatus'] as String?,
+  unavailabilityReason: json['unavailabilityReason'] as String?,
+  unavailabilityReasonText: json['unavailabilityReasonText'] as String?,
   vehicleInfo: json['vehicleInfo'] as String?,
   rating: (json['rating'] as num?)?.toDouble(),
 );

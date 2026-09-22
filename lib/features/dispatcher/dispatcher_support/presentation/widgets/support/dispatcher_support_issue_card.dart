@@ -269,7 +269,7 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                                     ),
                                     const SizedBox(width: Spacing.border),
                                     Text(
-                                      '#${issue.boxCode}',
+                                      issue.boxCode,
                                       style: getBoldStyle(
                                         fontSize: FontSize.size10,
                                         color: color.primary,

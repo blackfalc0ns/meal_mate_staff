@@ -134,7 +134,7 @@ void main() {
       theme: AppTheme.lightTheme,
       onGenerateRoute: (settings) {
         if (settings.name == AppRoutes.dispatcherReassignDriver) {
-          return MaterialPageRoute<ReassignmentResultEntity>(
+          return MaterialPageRoute<dynamic>(
             builder: (routeContext) => Scaffold(
               body: Center(
                 child: ElevatedButton(

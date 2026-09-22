@@ -9,6 +9,7 @@ part 'reassign_driver_candidates_response_dto.g.dart';
 class ReassignDriverCandidatesResponseDto {
   const ReassignDriverCandidatesResponseDto({
     this.summary,
+    this.issue,
     this.currentDriver,
     this.candidates,
     this.pagination,
@@ -20,6 +21,7 @@ class ReassignDriverCandidatesResponseDto {
       _$ReassignDriverCandidatesResponseDtoFromJson(json);
 
   final ReassignDriverIssueSummaryDto? summary;
+  final ReassignDriverIssueSummaryDto? issue;
   final DispatcherIssueDriverDto? currentDriver;
   final List<ReassignDriverCandidateDto>? candidates;
   final DispatcherSupportPaginationDto? pagination;
@@ -34,6 +36,7 @@ class ReassignDriverIssueSummaryDto {
     this.category,
     this.categoryLabel,
     this.categoryColor,
+    this.createdAtUtc,
     this.reportedTimeText,
     this.minutesAgo,
     this.priority,
@@ -45,6 +48,7 @@ class ReassignDriverIssueSummaryDto {
     this.affectedBoxesCount,
     this.affectedBoxesText,
     this.description,
+    this.status,
   });
 
   factory ReassignDriverIssueSummaryDto.fromJson(Map<String, dynamic> json) =>
@@ -56,6 +60,7 @@ class ReassignDriverIssueSummaryDto {
   final String? category;
   final String? categoryLabel;
   final String? categoryColor;
+  final String? createdAtUtc;
   final String? reportedTimeText;
   final int? minutesAgo;
   final String? priority;
@@ -67,6 +72,7 @@ class ReassignDriverIssueSummaryDto {
   final int? affectedBoxesCount;
   final String? affectedBoxesText;
   final String? description;
+  final String? status;
 }
 
 @JsonSerializable(createToJson: false)
@@ -75,11 +81,14 @@ class ReassignDriverCandidateDto {
     this.id,
     this.driverId,
     this.name,
+    this.fullName,
     this.code,
+    this.driverCode,
     this.avatarUrl,
     this.isAvailable,
     this.status,
     this.statusText,
+    this.statusColor,
     this.statusColorHex,
     this.rating,
     this.activeOrdersCount,
@@ -93,6 +102,7 @@ class ReassignDriverCandidateDto {
     this.vehicleInfo,
     this.lastLocationUpdate,
     this.lastLocationUpdateUtc,
+    this.lastLocationUpdatedAtUtc,
     this.lastLocationUpdateText,
     this.recommendationRank,
     this.rank,
@@ -104,11 +114,14 @@ class ReassignDriverCandidateDto {
   final String? id;
   final String? driverId;
   final String? name;
+  final String? fullName;
   final String? code;
+  final String? driverCode;
   final String? avatarUrl;
   final bool? isAvailable;
   final String? status;
   final String? statusText;
+  final String? statusColor;
   final String? statusColorHex;
   final double? rating;
   final int? activeOrdersCount;
@@ -122,6 +135,7 @@ class ReassignDriverCandidateDto {
   final String? vehicleInfo;
   final String? lastLocationUpdate;
   final String? lastLocationUpdateUtc;
+  final String? lastLocationUpdatedAtUtc;
   final String? lastLocationUpdateText;
   final int? recommendationRank;
   final int? rank;

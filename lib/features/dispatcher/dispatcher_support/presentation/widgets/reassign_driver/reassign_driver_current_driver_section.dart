@@ -4,6 +4,7 @@ import '../../../../../../config/theme/font_manager.dart';
 import '../../../../../../config/theme/spacing.dart';
 import '../../../../../../config/theme/styles_manager.dart';
 import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../../core/widget/app_cached_network_image.dart';
 import '../../../domain/entities/dispatcher_issue_detail_entity.dart';
 
 class ReassignDriverCurrentDriverSection extends StatelessWidget {
@@ -109,9 +110,11 @@ class ReassignDriverCurrentDriverSection extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xs / 2),
                 Text(
-                  issue.description.isNotEmpty
-                      ? issue.description
-                      : locale.reassignDriverVehicleFailureReason,
+                  issue.driverSubStatus.isNotEmpty
+                      ? issue.driverSubStatus
+                      : (issue.description.isNotEmpty
+                          ? issue.description
+                          : locale.reassignDriverVehicleFailureReason),
                   style: getRegularStyle(
                     color: color.onSurfaceVariant,
                     fontSize: FontSize.size10,
@@ -146,23 +149,18 @@ class ReassignDriverCurrentDriverSection extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   clipBehavior: Clip.antiAlias,
-                  child: issue.driverAvatar.isNotEmpty
-                      ? Image.asset(
-                          issue.driverAvatar,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            Icons.person_rounded,
-                            size: Spacing.iconMd,
-                            color: color.onSurfaceVariant.withValues(
-                              alpha: 0.5,
-                            ),
-                          ),
-                        )
-                      : Icon(
-                          Icons.person_rounded,
-                          size: Spacing.iconMd,
-                          color: color.onSurfaceVariant.withValues(alpha: 0.5),
-                        ),
+                  child: AppCachedNetworkImage(
+                    imageUrl: issue.driverAvatar,
+                    fit: BoxFit.cover,
+                    shape: BoxShape.circle,
+                    errorWidget: Icon(
+                      Icons.person_rounded,
+                      size: Spacing.iconMd,
+                      color: color.onSurfaceVariant.withValues(
+                        alpha: 0.5,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               PositionedDirectional(

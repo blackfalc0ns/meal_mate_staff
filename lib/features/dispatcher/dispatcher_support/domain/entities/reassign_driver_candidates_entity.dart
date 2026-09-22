@@ -37,6 +37,8 @@ class ReassignDriverIssueSummaryEntity {
   final String affectedBoxesText;
   final String description;
 
+  String get boxCode => taskNumber;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

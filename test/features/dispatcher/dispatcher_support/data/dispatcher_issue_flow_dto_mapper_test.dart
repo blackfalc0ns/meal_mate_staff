@@ -170,6 +170,90 @@ void main() {
       expect(emptyCandidates.toEntity().currentDriver, isNull);
     });
 
+    test('Maps real candidates backend payload with fullName and driverCode', () {
+      final json = {
+        'summary': {
+          'issueId': '0c4de05c-9c89-4659-b696-f93b90d2fda5',
+          'title': 'صندوق وجبة مكسور - السالمية، قطعة 4',
+          'category': 'DamagedBox',
+          'categoryLabel': 'مشكلة توصيل',
+          'categoryColor': '#EF4444',
+          'createdAtUtc': '2026-09-22T14:12:50.278636Z',
+          'reportedTimeText': 'منذ 100 دقيقة',
+          'boxCode': '#BX-8821',
+          'area': 'السالمية',
+          'affectedBoxesCount': 1,
+          'affectedBoxesText': '1 بوكس متأثر',
+          'priority': 'High',
+          'priorityText': 'أولوية عالية',
+          'priorityColor': '#EF4444',
+          'status': 'Open'
+        },
+        'currentDriver': {
+          'driverId': 'a30817de-4920-4028-ba23-76316f41cda3',
+          'driverCode': 'L-30819',
+          'fullName': 'محمد العنزي',
+          'avatarUrl': 'https://cdn.mealmate.app/avatars/a30817de.jpg',
+          'status': 'Unavailable',
+          'statusText': 'غير متاح',
+          'statusColor': '#EF4444',
+          'unavailabilityReason': 'VehicleBreakdown',
+          'unavailabilityReasonText': 'تعطل المركبة / بلاغ طارئ'
+        },
+        'candidates': [
+          {
+            'driverId': '97c9a81f-d3f6-4312-86ed-3e8244c81d38',
+            'driverCode': 'L-10254',
+            'fullName': 'أحمد السعيد',
+            'avatarUrl': 'https://cdn.mealmate.app/avatars/dr-1195.jpg',
+            'status': 'Available',
+            'statusText': 'متاح الآن',
+            'statusColor': '#10B981',
+            'rating': 4.7,
+            'activeOrdersCount': 44,
+            'area': 'السالمية',
+            'isSameArea': true,
+            'distanceKm': 1.2,
+            'distanceText': '1٫2 كم',
+            'estimatedArrivalMinutes': 4,
+            'estimatedArrivalText': '4 دقائق',
+            'vehicleInfo': 'هيونداي النترا • أبيض',
+            'lastLocationUpdatedAtUtc': '2026-09-22T15:51:52.6530151Z',
+            'recommendationRank': 1
+          }
+        ],
+        'pagination': {
+          'pageNumber': 1,
+          'pageSize': 20,
+          'totalItems': 1,
+          'totalPages': 1,
+          'hasPreviousPage': false,
+          'hasNextPage': false
+        }
+      };
+
+      final dto = ReassignDriverCandidatesResponseDto.fromJson(json);
+      final entity = dto.toEntity();
+
+      expect(entity.summary.boxCode, '#BX-8821');
+      expect(entity.summary.taskNumber, '#BX-8821');
+      expect(entity.summary.priorityText, 'أولوية عالية');
+
+      expect(entity.currentDriver, isNotNull);
+      expect(entity.currentDriver?.name, 'محمد العنزي');
+      expect(entity.currentDriver?.code, 'L-30819');
+      expect(entity.currentDriver?.subStatus, 'تعطل المركبة / بلاغ طارئ');
+
+      expect(entity.candidates.length, 1);
+      final candidate = entity.candidates.first;
+      expect(candidate.name, 'أحمد السعيد');
+      expect(candidate.code, 'L-10254');
+      expect(candidate.statusText, 'متاح الآن');
+      expect(candidate.statusColorHex, '#10B981');
+      expect(candidate.vehicleInfo, 'هيونداي النترا • أبيض');
+      expect(candidate.distanceKm, 1.2);
+    });
+
     test('Reassignment and Resolve response DTOs mapping', () {
       final reassignmentJson = {
         'issueId': 'iss-004',

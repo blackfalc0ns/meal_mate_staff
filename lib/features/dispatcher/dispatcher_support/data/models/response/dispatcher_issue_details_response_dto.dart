@@ -119,6 +119,8 @@ class DispatcherIssueDriverDto {
     this.statusColor,
     this.subStatus,
     this.driverSubStatus,
+    this.unavailabilityReason,
+    this.unavailabilityReasonText,
     this.vehicleInfo,
     this.rating,
   });
@@ -144,6 +146,8 @@ class DispatcherIssueDriverDto {
   final String? statusColor;
   final String? subStatus;
   final String? driverSubStatus;
+  final String? unavailabilityReason;
+  final String? unavailabilityReasonText;
   final String? vehicleInfo;
   final double? rating;
 }

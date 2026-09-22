@@ -60,7 +60,9 @@ class ReassignDriverCardInfo extends StatelessWidget {
               const SizedBox(width: Spacing.xs / 2),
               Flexible(
                 child: Text(
-                  locale.reassignDriverAvailableNow,
+                  candidate.statusText.isNotEmpty
+                      ? candidate.statusText
+                      : locale.reassignDriverAvailableNow,
                   style: getBoldStyle(
                     color: color.tertiary,
                     fontSize: FontSize.size10,

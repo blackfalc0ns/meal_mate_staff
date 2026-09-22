@@ -97,11 +97,11 @@ class _DispatcherIssueDetailsScreenState
     BuildContext context,
     String issueId,
   ) async {
-    final result = await Navigator.of(context).pushNamed<ReassignmentResultEntity>(
+    final result = await Navigator.of(context).pushNamed(
       AppRoutes.dispatcherReassignDriver,
       arguments: DispatcherReassignDriverRouteArgs(issueId: issueId),
     );
-    if (result != null && mounted) {
+    if (result is ReassignmentResultEntity && mounted) {
       _viewModel.applyReassignmentResult(result);
     }
   }
