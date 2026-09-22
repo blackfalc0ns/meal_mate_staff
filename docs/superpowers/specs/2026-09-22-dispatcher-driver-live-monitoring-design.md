@@ -43,6 +43,8 @@ Excluded:
 - `driver-location-updated` is the only location event.
 - Events are ephemeral; `onreconnected` must trigger an immediate REST reconciliation.
 - Events carry trusted ISO-8601 UTC timestamps. An event older than the last applied timestamp for the same driver/event category is ignored.
+- Use the already-declared `signalr_netcore: ^1.4.4` dependency; do not add a second realtime package.
+- Build the hub URL from the configured API environment, replacing the HTTP scheme with `ws`/`wss` and appending `/hubs/dispatcher`. Do not hardcode the staging or production host in feature code.
 
 ### Event application rules
 
@@ -67,6 +69,211 @@ SignalR Client -> Repository stream -> UseCase -> ViewModel -> State -> UI
 REST DTOs stay in the data layer. The repository maps them into domain entities and wraps REST calls with `safeApiCall`. SignalR transport payloads are also data-layer DTOs and are mapped before presentation code sees them. The ViewModel owns subscriptions and reconciliation policy; widgets own only visual controllers and camera/scroll effects.
 
 The realtime implementation sits inside the dispatcher-map feature because the contract is feature-specific. A narrow transport abstraction keeps the SignalR package out of the domain and presentation layers and makes connection behavior unit-testable.
+
+## Realtime Stream Implementation Contract
+
+The implementation must use the following concrete boundaries so the transport package does not leak into presentation code.
+
+### Files and responsibilities
+
+```text
+lib/features/dispatcher/dispatcher_map/
+  data/realtime/
+    dispatcher_map_realtime_client.dart
+    dispatcher_map_signalr_client.dart
+    dispatcher_map_realtime_event_dto.dart
+  data/mapper/
+    dispatcher_map_realtime_mapper.dart
+  domain/entities/
+    dispatcher_map_realtime_event.dart
+    dispatcher_map_connection_status.dart
+  domain/usecase/
+    observe_dispatcher_map_updates_usecase.dart
+    start_dispatcher_map_updates_usecase.dart
+    stop_dispatcher_map_updates_usecase.dart
+```
+
+- `DispatcherMapRealtimeClient` is the package-independent data contract.
+- `DispatcherMapSignalRClient` is its only production implementation and is the only file allowed to import `signalr_netcore`.
+- Realtime DTOs parse the raw `List<Object?>?` SignalR callback arguments defensively.
+- The mapper converts realtime DTOs into a sealed domain event hierarchy.
+- Start, stop, update stream, and connection-state stream are exposed to the ViewModel through use cases/repository methods; the ViewModel never receives a `HubConnection`.
+
+### Required client interface
+
+```dart
+abstract interface class DispatcherMapRealtimeClient {
+  Stream<DispatcherMapRealtimeEventDto> get events;
+  Stream<DispatcherMapConnectionStatus> get connectionStatuses;
+
+  Future<void> connect();
+  Future<void> disconnect();
+  Future<void> dispose();
+}
+```
+
+The production client owns:
+
+- One nullable `HubConnection`.
+- One broadcast event controller.
+- One broadcast connection-status controller.
+- One in-flight connect future to deduplicate concurrent `connect()` calls.
+- A disposed flag.
+- Exactly one registered handler for each backend event.
+
+The controllers are created once per client instance, are never recreated during reconnect, and close only in `dispose()`. `disconnect()` stops the transport but intentionally keeps the controllers reusable when the user returns to the tab.
+
+### Domain event hierarchy
+
+```dart
+sealed class DispatcherMapRealtimeEvent {
+  const DispatcherMapRealtimeEvent();
+}
+
+final class DriverLocationUpdated extends DispatcherMapRealtimeEvent { /* payload */ }
+final class DriverStatusUpdated extends DispatcherMapRealtimeEvent { /* payload */ }
+final class DriverIssueUpdated extends DispatcherMapRealtimeEvent { /* payload */ }
+final class DriverBoxAssigned extends DispatcherMapRealtimeEvent { /* payload */ }
+```
+
+Each concrete event contains the backend fields from the approved contract and a parsed UTC timestamp. Malformed events are dropped and reported through debug-only sanitized logging; they must not terminate the stream. Unknown event names are never subscribed to.
+
+### Handler registration
+
+Register these exact method names once, before `start()`:
+
+```text
+driver-location-updated
+driver-status-updated
+driver-issue-updated
+box-assigned
+```
+
+Each SignalR callback must:
+
+1. Verify that the argument list contains a first item.
+2. Accept a `Map<String, dynamic>` or convert a string-keyed `Map<Object?, Object?>` safely.
+3. Parse the matching nullable DTO without force casts or `!` on backend values.
+4. Require the identifiers and timestamp needed to apply that event safely.
+5. Push a valid DTO to the event controller.
+6. Catch parsing errors locally so one bad event does not close the hub or stream.
+
+Handlers are removed before rebuilding or disposing the connection. Repeated `connect()` calls must not register them again.
+
+### Authentication
+
+The hub options use an asynchronous access-token factory that calls `TokenService.getToken()` for every initial connection or reconnect attempt. It must not capture a token once at client construction, because the REST refresh interceptor may rotate the token later.
+
+- Missing/empty token: emit `unauthorized`, do not call `start()`, and let the existing authentication flow handle session expiry.
+- Hub `401/403`: emit `unauthorized`, stop reconnect attempts, and never log the token or authenticated URL.
+- The feature never appends a restaurant ID to the group name or invokes a group method.
+
+### Connection state machine
+
+Use these app-level states:
+
+```dart
+enum DispatcherMapConnectionStatus {
+  disconnected,
+  connecting,
+  connected,
+  reconnecting,
+  unauthorized,
+}
+```
+
+Allowed transitions:
+
+| Current | Trigger | Next | Action |
+|---|---|---|---|
+| disconnected | active tab after snapshot | connecting | Build/register/start once |
+| connecting | start succeeds | connected | Begin consuming events |
+| connecting | recoverable failure | reconnecting | Keep snapshot, allow configured retry |
+| connected | transport reconnecting | reconnecting | Keep snapshot, show compact indicator |
+| reconnecting | transport reconnected | connected | Dispatch exactly one REST reconciliation |
+| any non-disposed | tab inactive/background/logout | disconnected | Stop hub and cancel ViewModel event subscription |
+| any | missing/invalid token | unauthorized | Stop hub and route through existing auth policy |
+
+Use the package's automatic reconnect support with delays equivalent to `2s, 5s, 10s, 30s`; after the last delay, remain disconnected and expose manual retry through the screen. There must never be an application polling timer.
+
+### Connect algorithm
+
+`connect()` is idempotent and must follow this order:
+
+1. Return immediately when disposed, already connected, or already connecting.
+2. Reuse the current in-flight connect future when another caller invokes `connect()` concurrently.
+3. Read the latest token through the access-token factory.
+4. Create the `HubConnection` only when none exists or the previous one was permanently disposed.
+5. Attach server-event and connection-lifecycle handlers once.
+6. Emit `connecting`.
+7. Await `HubConnection.start()`.
+8. Emit `connected` only after start succeeds.
+9. On recoverable failure, emit `reconnecting`/`disconnected` according to whether automatic reconnect remains active.
+10. Clear the in-flight future in `finally`.
+
+REST success is required before the first connection so an incoming event always has a known snapshot to update. If the initial REST load fails, SignalR does not start; Retry repeats REST and then connects.
+
+### Disconnect and dispose algorithms
+
+`disconnect()`:
+
+1. Return if already disconnected or disposed.
+2. Await `HubConnection.stop()` once.
+3. Emit `disconnected`.
+4. Keep the hub object and broadcast controllers available for a later tab reactivation.
+
+`dispose()`:
+
+1. Mark disposed so no later callback can emit.
+2. Remove the four server-event handlers and lifecycle callbacks.
+3. Stop the hub if needed.
+4. Close both broadcast controllers exactly once.
+5. Clear connection and in-flight references.
+
+### ViewModel stream ownership
+
+The ViewModel owns two nullable subscriptions: realtime events and connection statuses. `_startRealtime()` must subscribe before calling `connect()` so no connection-state transition is missed. Starting twice first checks the existing subscriptions and cannot create duplicates.
+
+Every domain realtime event is converted into an internal `DispatcherMapEvent` and passed through `doIntent`; the subscription callback must not mutate state directly. `_stopRealtime()` awaits cancellation of both subscriptions and then calls the stop use case. `close()` calls the permanent dispose path rather than fire-and-forget cleanup.
+
+### Tab and application lifecycle wiring
+
+`AppShellScreen` currently uses an `IndexedStack`, so inactive tabs remain mounted and `dispose()` does not run when the user changes tabs. The implementation must therefore make activity explicit:
+
+- Add `isActive` to `DispatcherMapScreen`, defaulting to `true` for the standalone route.
+- Construct the shell map page with `isActive: activeIndex == 2`.
+- In `didUpdateWidget`, dispatch `DispatcherMapTabActivatedEvent` or `DispatcherMapTabDeactivatedEvent` only when the value changes.
+- The screen implements `WidgetsBindingObserver` and dispatches paused/resumed lifecycle events.
+- Reconnect only when both `isActive == true` and the app lifecycle is resumed.
+- Deactivation/backgrounding stops the stream but preserves the successful snapshot.
+- Reactivation/resume first reconciles REST, then reconnects SignalR. Concurrent activation and resume signals are coalesced.
+
+The standalone route starts active, follows app lifecycle, and permanently disposes its internally created ViewModel when popped. An externally injected ViewModel is not closed by the screen.
+
+### Reconciliation coordinator
+
+The ViewModel owns `_isReconciling` and `_reconcileAgain` flags:
+
+1. If reconciliation is requested while idle, set `_isReconciling`, fetch REST, apply the newest successful snapshot, then clear the flag.
+2. If requested while active, set `_reconcileAgain = true` and return without starting another request.
+3. After the active request finishes, run one trailing reconciliation when `_reconcileAgain` was set, then clear it.
+4. Request generations prevent a response started earlier from overwriting a later user refresh.
+5. Issue, assignment, reactivation, app resume, and `onreconnected` all use this coordinator.
+
+### Event ordering and merge rules
+
+- Track `lastLocationAtByDriver` and `lastStatusAtByDriver` separately.
+- Ignore an event when its timestamp is strictly older than the stored timestamp in its category.
+- Equal timestamps are idempotent: applying the same event twice must not change state twice.
+- Unknown driver location/status events are ignored and schedule one reconciliation; they never create incomplete driver entities.
+- Location events retain old zone/distance fields individually when the corresponding incoming field is null.
+- Status events replace the supplied complete KPI object atomically with the driver status update.
+- Issue and assignment events do not guess missing card/status fields; they schedule reconciliation.
+- A REST snapshot replaces the authoritative driver/KPI collection but preserves the current selected ID if it still exists; otherwise select the first driver with valid coordinates, then the first driver, otherwise null.
+
+### Rapid location update policy
+
+Maintain one pending newest location event per driver. Flush pending changes at most once per 100 milliseconds; a newer event replaces an older pending event for the same driver. This bounds state emissions to ten per second per active burst without adding network polling. Marker animation interpolates for 250 milliseconds toward the latest accepted target and retargets from the currently rendered point if a newer update arrives.
 
 ## Domain Model
 
