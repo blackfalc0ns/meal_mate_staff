@@ -60,6 +60,18 @@ import '../../features/dispatcher/dispatcher_orders/data/repo/dispatcher_orders_
 import '../../features/dispatcher/dispatcher_orders/domain/repo/dispatcher_orders_repository.dart';
 import '../../features/dispatcher/dispatcher_orders/domain/usecase/get_dispatcher_order_queue_usecase.dart';
 import '../../features/dispatcher/dispatcher_orders/presentation/manager/dispatcher_orders_view_model.dart';
+import '../../features/dispatcher/dispatcher_map/data/data_source/dispatcher_map_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_map/data/data_source/dispatcher_map_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_map/data/realtime/dispatcher_map_realtime_client.dart';
+import '../../features/dispatcher/dispatcher_map/data/realtime/dispatcher_map_signalr_client.dart';
+import '../../features/dispatcher/dispatcher_map/data/repo/dispatcher_map_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_map/domain/repo/dispatcher_map_repository.dart';
+import '../../features/dispatcher/dispatcher_map/domain/usecase/get_dispatcher_live_monitoring_usecase.dart';
+import '../../features/dispatcher/dispatcher_map/domain/usecase/observe_dispatcher_map_connection_status_usecase.dart';
+import '../../features/dispatcher/dispatcher_map/domain/usecase/observe_dispatcher_map_updates_usecase.dart';
+import '../../features/dispatcher/dispatcher_map/domain/usecase/start_dispatcher_map_updates_usecase.dart';
+import '../../features/dispatcher/dispatcher_map/domain/usecase/stop_dispatcher_map_updates_usecase.dart';
+import '../../features/dispatcher/dispatcher_map/presentation/manager/dispatcher_map_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -255,6 +267,52 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<DispatcherOrdersViewModel>(
     () => DispatcherOrdersViewModel(
       getQueueUseCase: getIt<GetDispatcherOrderQueueUseCase>(),
+    ),
+  );
+
+  // Dispatcher Map feature dependencies
+  getIt.registerLazySingleton<DispatcherMapRealtimeClient>(
+    () => DispatcherMapSignalRClient(
+      getIt<TokenService>(),
+      refreshService: getIt<AuthRefreshService>(),
+    ),
+  );
+  getIt.registerLazySingleton<DispatcherMapRemoteDataSource>(
+    () => DispatcherMapRemoteDataSourceImpl(
+      getIt<ApiServices>(),
+      getIt<DispatcherMapRealtimeClient>(),
+    ),
+  );
+  getIt.registerLazySingleton<DispatcherMapRepository>(
+    () => DispatcherMapRepositoryImpl(
+      getIt<DispatcherMapRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDispatcherLiveMonitoringUseCase>(
+    () => GetDispatcherLiveMonitoringUseCase(getIt<DispatcherMapRepository>()),
+  );
+  getIt.registerFactory<ObserveDispatcherMapUpdatesUseCase>(
+    () => ObserveDispatcherMapUpdatesUseCase(getIt<DispatcherMapRepository>()),
+  );
+  getIt.registerFactory<ObserveDispatcherMapConnectionStatusUseCase>(
+    () => ObserveDispatcherMapConnectionStatusUseCase(
+      getIt<DispatcherMapRepository>(),
+    ),
+  );
+  getIt.registerFactory<StartDispatcherMapUpdatesUseCase>(
+    () => StartDispatcherMapUpdatesUseCase(getIt<DispatcherMapRepository>()),
+  );
+  getIt.registerFactory<StopDispatcherMapUpdatesUseCase>(
+    () => StopDispatcherMapUpdatesUseCase(getIt<DispatcherMapRepository>()),
+  );
+  getIt.registerFactory<DispatcherMapViewModel>(
+    () => DispatcherMapViewModel(
+      getLiveMonitoringUseCase: getIt<GetDispatcherLiveMonitoringUseCase>(),
+      observeUpdatesUseCase: getIt<ObserveDispatcherMapUpdatesUseCase>(),
+      observeConnectionStatusUseCase:
+          getIt<ObserveDispatcherMapConnectionStatusUseCase>(),
+      startUpdatesUseCase: getIt<StartDispatcherMapUpdatesUseCase>(),
+      stopUpdatesUseCase: getIt<StopDispatcherMapUpdatesUseCase>(),
     ),
   );
 }

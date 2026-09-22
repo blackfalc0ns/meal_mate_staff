@@ -7,6 +7,7 @@ import '../../../../../core/di/di.dart';
 import '../../../../../core/errors/error_widgets/api_error_widget.dart';
 import '../../../../../core/errors/error_widgets/empty_state_widget.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/services/token_service.dart';
 import '../../domain/entities/dispatcher_metric_entity.dart';
 import '../../domain/entities/dispatcher_metric_type.dart';
 import '../../domain/entities/dispatcher_order_entity.dart';
@@ -48,7 +49,13 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
         (getIt.isRegistered<DispatcherOrdersViewModel>()
             ? getIt<DispatcherOrdersViewModel>()
             : null);
-    _viewModel?.doIntent(const LoadDispatcherOrdersEvent());
+    final canLoad =
+        widget.viewModel != null ||
+        (getIt.isRegistered<TokenService>() &&
+            getIt<TokenService>().isAccessTokenSaved);
+    if (canLoad) {
+      _viewModel?.doIntent(const LoadDispatcherOrdersEvent());
+    }
   }
 
   @override

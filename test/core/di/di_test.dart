@@ -7,6 +7,15 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/data/da
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/domain/repo/dispatcher_orders_repository.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/domain/usecase/get_dispatcher_order_queue_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/presentation/manager/dispatcher_orders_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/data/data_source/dispatcher_map_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/data/realtime/dispatcher_map_realtime_client.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/repo/dispatcher_map_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/usecase/get_dispatcher_live_monitoring_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/usecase/observe_dispatcher_map_connection_status_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/usecase/observe_dispatcher_map_updates_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/usecase/start_dispatcher_map_updates_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/usecase/stop_dispatcher_map_updates_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/presentation/manager/dispatcher_map_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -78,6 +87,38 @@ void main() {
       expect(remoteDataSource, isNotNull);
       expect(repository, isNotNull);
       expect(useCase, isNotNull);
+      expect(viewModel, isNotNull);
+    },
+  );
+
+  test(
+    'configureDependencies registers dispatcher map dependencies',
+    () async {
+      await configureDependencies();
+
+      expect(getIt.isRegistered<DispatcherMapRealtimeClient>(), isTrue);
+      expect(getIt.isRegistered<DispatcherMapRemoteDataSource>(), isTrue);
+      expect(getIt.isRegistered<DispatcherMapRepository>(), isTrue);
+      expect(getIt.isRegistered<GetDispatcherLiveMonitoringUseCase>(), isTrue);
+      expect(getIt.isRegistered<ObserveDispatcherMapUpdatesUseCase>(), isTrue);
+      expect(
+        getIt.isRegistered<ObserveDispatcherMapConnectionStatusUseCase>(),
+        isTrue,
+      );
+      expect(getIt.isRegistered<StartDispatcherMapUpdatesUseCase>(), isTrue);
+      expect(getIt.isRegistered<StopDispatcherMapUpdatesUseCase>(), isTrue);
+      expect(getIt.isRegistered<DispatcherMapViewModel>(), isTrue);
+
+      final realtimeClient = getIt<DispatcherMapRealtimeClient>();
+      final remoteDataSource = getIt<DispatcherMapRemoteDataSource>();
+      final repository = getIt<DispatcherMapRepository>();
+      final liveUseCase = getIt<GetDispatcherLiveMonitoringUseCase>();
+      final viewModel = getIt<DispatcherMapViewModel>();
+
+      expect(realtimeClient, isNotNull);
+      expect(remoteDataSource, isNotNull);
+      expect(repository, isNotNull);
+      expect(liveUseCase, isNotNull);
       expect(viewModel, isNotNull);
     },
   );

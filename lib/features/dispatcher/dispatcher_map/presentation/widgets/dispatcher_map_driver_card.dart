@@ -5,7 +5,8 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
-import '../../domain/entities/dispatcher_map_driver_marker_entity.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
+import '../../domain/entities/dispatcher_map_driver_entity.dart';
 import '../../domain/entities/dispatcher_map_driver_status.dart';
 
 class DispatcherMapDriverCard extends StatelessWidget {
@@ -16,7 +17,7 @@ class DispatcherMapDriverCard extends StatelessWidget {
     this.onTap,
   });
 
-  final DispatcherMapDriverMarkerEntity driver;
+  final DispatcherMapDriverEntity driver;
   final bool isSelected;
   final VoidCallback? onTap;
 
@@ -29,30 +30,61 @@ class DispatcherMapDriverCard extends StatelessWidget {
     final Color statusBgColor;
     final String statusText;
 
-    switch (driver.status) {
-      case DispatcherMapDriverStatus.inDelivery:
-        statusColor = color.success;
-        statusBgColor = color.success.withValues(alpha: 0.12);
-        statusText = locale.mapStatusInDelivery;
-      case DispatcherMapDriverStatus.onTheWayToLoad:
-        statusColor = color.warning;
-        statusBgColor = color.warning.withValues(alpha: 0.12);
-        statusText = locale.mapStatusOnTheWayToLoad;
-      case DispatcherMapDriverStatus.paused:
-        statusColor = color.onSurfaceVariant;
-        statusBgColor = color.onSurfaceVariant.withValues(alpha: 0.12);
-        statusText = locale.mapStatusPaused;
-      case DispatcherMapDriverStatus.hasIssue:
-        statusColor = color.error;
-        statusBgColor = color.error.withValues(alpha: 0.12);
-        statusText = locale.mapKpiIssues;
+    if (driver.hasIssue ||
+        driver.status == DispatcherMapDriverStatus.hasIssue) {
+      statusColor = color.error;
+      statusBgColor = color.error.withValues(alpha: 0.12);
+      statusText = driver.statusText?.isNotEmpty == true
+          ? driver.statusText!
+          : locale.mapKpiIssues;
+    } else {
+      switch (driver.status) {
+        case DispatcherMapDriverStatus.inDelivery:
+          statusColor = color.success;
+          statusBgColor = color.success.withValues(alpha: 0.12);
+          statusText = driver.statusText?.isNotEmpty == true
+              ? driver.statusText!
+              : locale.mapStatusInDelivery;
+        case DispatcherMapDriverStatus.onTheWayToLoad:
+          statusColor = color.warning;
+          statusBgColor = color.warning.withValues(alpha: 0.12);
+          statusText = driver.statusText?.isNotEmpty == true
+              ? driver.statusText!
+              : locale.mapStatusOnTheWayToLoad;
+        case DispatcherMapDriverStatus.paused:
+          statusColor = color.onSurfaceVariant;
+          statusBgColor = color.onSurfaceVariant.withValues(alpha: 0.12);
+          statusText = driver.statusText?.isNotEmpty == true
+              ? driver.statusText!
+              : locale.mapStatusPaused;
+        case DispatcherMapDriverStatus.hasIssue:
+          statusColor = color.error;
+          statusBgColor = color.error.withValues(alpha: 0.12);
+          statusText = driver.statusText?.isNotEmpty == true
+              ? driver.statusText!
+              : locale.mapKpiIssues;
+        case DispatcherMapDriverStatus.unknown:
+          statusColor = color.onSurfaceVariant;
+          statusBgColor = color.onSurfaceVariant.withValues(alpha: 0.12);
+          statusText = driver.statusText?.isNotEmpty == true
+              ? driver.statusText!
+              : (Localizations.localeOf(context).languageCode == 'ar'
+                    ? 'غير معروف'
+                    : 'Unknown');
+      }
     }
 
-    final distanceStr = driver.remainingDistanceKm != null
-        ? locale.mapRemainingDistanceKm(
-            driver.remainingDistanceKm!.toStringAsFixed(1),
-          )
-        : locale.mapNoDistance;
+    final distanceStr =
+        driver.remainingDistanceText != null &&
+            driver.remainingDistanceText!.isNotEmpty
+        ? driver.remainingDistanceText!
+        : (driver.remainingDistanceKm != null
+              ? locale.mapRemainingDistanceKm(
+                  driver.remainingDistanceKm!.toStringAsFixed(1),
+                )
+              : locale.mapNoDistance);
+
+    final zoneDisplay = driver.locationZone ?? driver.boxId;
 
     return InkWell(
       onTap: onTap,
@@ -107,7 +139,33 @@ class DispatcherMapDriverCard extends StatelessWidget {
                 ),
               ),
               child: ClipOval(
-                child: Image.asset(driver.avatarUrl, fit: BoxFit.cover),
+                child:
+                    driver.avatarUrl != null &&
+                        driver.avatarUrl!.startsWith('http')
+                    ? AppCachedNetworkImage(
+                        imageUrl: driver.avatarUrl!,
+                        fit: BoxFit.cover,
+                        errorWidget: Icon(
+                          Icons.person_rounded,
+                          size: Spacing.iconSm,
+                          color: color.onSurfaceVariant,
+                        ),
+                      )
+                    : (driver.avatarUrl != null && driver.avatarUrl!.isNotEmpty
+                          ? Image.asset(
+                              driver.avatarUrl!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, _, _) => Icon(
+                                Icons.person_rounded,
+                                size: Spacing.iconSm,
+                                color: color.onSurfaceVariant,
+                              ),
+                            )
+                          : Icon(
+                              Icons.person_rounded,
+                              size: Spacing.iconSm,
+                              color: color.onSurfaceVariant,
+                            )),
               ),
             ),
             const SizedBox(height: Spacing.border),
@@ -120,14 +178,15 @@ class DispatcherMapDriverCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            Text(
-              driver.boxId,
-              style: getBoldStyle(
-                fontSize: FontSize.size9,
-                color: color.primary,
+            if (driver.boxId.isNotEmpty)
+              Text(
+                driver.boxId,
+                style: getBoldStyle(
+                  fontSize: FontSize.size9,
+                  color: color.primary,
+                ),
+                maxLines: 1,
               ),
-              maxLines: 1,
-            ),
             const SizedBox(height: Spacing.border),
             Container(
               padding: const EdgeInsets.symmetric(
@@ -139,6 +198,7 @@ class DispatcherMapDriverCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),
               ),
               child: Text(
+                textAlign: TextAlign.center,
                 statusText,
                 style: getBoldStyle(
                   fontSize: FontSize.size8,
@@ -156,7 +216,7 @@ class DispatcherMapDriverCard extends StatelessWidget {
               ),
             ),
             Text(
-              driver.locationName,
+              zoneDisplay,
               style: getBoldStyle(
                 fontSize: FontSize.size9,
                 color: color.onSurface,

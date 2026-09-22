@@ -60,7 +60,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     widget.onItemSelected?.call(index);
   }
 
-  List<Widget> _defaultPages(BuildContext context) {
+  List<Widget> _defaultPages(BuildContext context, int activeIndex) {
     if (widget.role == UserRole.driver) {
       return [
         const Text("Home"),
@@ -73,7 +73,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     return [
       const DispatcherHomeScreen(),
       const DispatcherOrdersScreen(),
-      const DispatcherMapScreen(),
+      DispatcherMapScreen(isActive: activeIndex == 2),
       const DispatcherSupportScreen(),
       const DispatcherProfileScreen(showBackButton: false),
     ];
@@ -86,7 +86,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
 
     final resolvedPages = widget.pages.isNotEmpty
         ? widget.pages
-        : _defaultPages(context);
+        : _defaultPages(context, activeIndex);
 
     final content =
         widget.body ??

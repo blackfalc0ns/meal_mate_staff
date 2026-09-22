@@ -5,7 +5,8 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
-import '../../domain/entities/dispatcher_map_driver_marker_entity.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
+import '../../domain/entities/dispatcher_map_driver_entity.dart';
 import '../../domain/entities/dispatcher_map_driver_status.dart';
 
 class DispatcherMapMarkerItem extends StatelessWidget {
@@ -14,11 +15,13 @@ class DispatcherMapMarkerItem extends StatelessWidget {
     required this.driver,
     this.isSelected = false,
     this.onTap,
+    this.onAvatarResolved,
   });
 
-  final DispatcherMapDriverMarkerEntity driver;
+  final DispatcherMapDriverEntity driver;
   final bool isSelected;
   final VoidCallback? onTap;
+  final ValueChanged<bool>? onAvatarResolved;
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +35,31 @@ class DispatcherMapMarkerItem extends StatelessWidget {
     switch (driver.status) {
       case DispatcherMapDriverStatus.inDelivery:
         badgeColor = color.success;
-        statusText = locale.mapStatusInDelivery;
+        statusText = driver.statusText ?? locale.mapStatusInDelivery;
         statusIcon = Icons.local_shipping_rounded;
       case DispatcherMapDriverStatus.onTheWayToLoad:
         badgeColor = color.warning;
-        statusText = locale.mapStatusOnTheWayToLoad;
+        statusText = driver.statusText ?? locale.mapStatusOnTheWayToLoad;
         statusIcon = Icons.local_shipping_rounded;
       case DispatcherMapDriverStatus.paused:
         badgeColor = color.onSurfaceVariant;
-        statusText = locale.mapStatusPaused;
+        statusText = driver.statusText ?? locale.mapStatusPaused;
         statusIcon = Icons.pause_rounded;
       case DispatcherMapDriverStatus.hasIssue:
         badgeColor = color.error;
-        statusText = locale.mapKpiIssues;
+        statusText = driver.statusText ?? locale.mapKpiIssues;
         statusIcon = Icons.warning_rounded;
+      case DispatcherMapDriverStatus.unknown:
+        badgeColor = color.outlineVariant;
+        statusText = driver.statusText ?? 'Unknown';
+        statusIcon = Icons.help_outline_rounded;
+    }
+
+    final hasAvatar = driver.avatarUrl != null && driver.avatarUrl!.isNotEmpty;
+    if (!hasAvatar) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        onAvatarResolved?.call(true);
+      });
     }
 
     return GestureDetector(
@@ -80,7 +94,30 @@ class DispatcherMapMarkerItem extends StatelessWidget {
                   ],
                 ),
                 child: ClipOval(
-                  child: Image.asset(driver.avatarUrl, fit: BoxFit.cover),
+                  child: hasAvatar
+                      ? AppCachedNetworkImage(
+                          imageUrl: driver.avatarUrl,
+                          fit: BoxFit.cover,
+                          onImageResolved: onAvatarResolved,
+                          errorWidget: Container(
+                            color: color.surfaceContainerHighest,
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.person_rounded,
+                              size: Spacing.iconSm,
+                              color: color.primary,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          color: color.surfaceContainerHighest,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.person_rounded,
+                            size: Spacing.iconSm,
+                            color: color.primary,
+                          ),
+                        ),
                 ),
               ),
               PositionedDirectional(
