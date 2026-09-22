@@ -607,6 +607,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get dispatcherNoOrdersTitle => 'لا توجد طلبات';
+
+  @override
+  String get dispatcherNoOrdersSubtitle =>
+      'لا توجد بوكسات في طابور الانتظار لهذه الحالة';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override

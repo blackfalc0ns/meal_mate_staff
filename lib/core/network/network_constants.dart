@@ -42,4 +42,5 @@ abstract class EndPoints {
       '/api/v1/dispatcher/dashboard/overview';
   static const String dispatcherLiveLocations =
       '/api/v1/dispatcher/drivers/live-locations';
+  static const String dispatcherOrdersQueue = '/api/v1/dispatcher/orders/queue';
 }

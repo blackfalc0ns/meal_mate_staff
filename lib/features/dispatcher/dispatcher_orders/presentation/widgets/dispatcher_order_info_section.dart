@@ -31,7 +31,7 @@ class DispatcherOrderInfoSection extends StatelessWidget {
                   color: color.onSurface,
                   fontSize: FontSize.size11,
                 ),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: Spacing.sm),
@@ -120,7 +120,11 @@ class DispatcherOrderInfoSection extends StatelessWidget {
                   const SizedBox(width: Spacing.xs),
                   Flexible(
                     child: Text(
-                      locale.dispatcherDistanceKm(order.distanceKm),
+                      locale.dispatcherDistanceKm(
+                        order.distanceText.isNotEmpty
+                            ? order.distanceText
+                            : order.distanceKm.toString(),
+                      ),
                       style: getBoldStyle(
                         color: color.onSurface,
                         fontSize: FontSize.size11,

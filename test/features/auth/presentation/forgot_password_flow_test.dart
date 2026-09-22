@@ -60,9 +60,7 @@ class _FakeForgotAndResetRepo implements AuthRepository {
   }
 
   @override
-  Future<ApiResult<String>> resendOtp(
-    ResendOtpRequestEntity request,
-  ) async {
+  Future<ApiResult<String>> resendOtp(ResendOtpRequestEntity request) async {
     lastResendOtpRequest = request;
     return const ApiSuccessResult(data: 'OTP Resent');
   }
@@ -181,150 +179,152 @@ void main() {
   });
 
   group('LoginScreen Forgot Password Navigation', () {
-    testWidgets('Tapping forgot password button navigates to ForgotPasswordScreen', (
-      tester,
-    ) async {
-      final repo = _FakeForgotAndResetRepo();
-      final vm = _buildViewModel(repo);
+    testWidgets(
+      'Tapping forgot password button navigates to ForgotPasswordScreen',
+      (tester) async {
+        final repo = _FakeForgotAndResetRepo();
+        final vm = _buildViewModel(repo);
 
-      String? pushedRoute;
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: AppTheme.lightTheme,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('ar'),
-          onGenerateRoute: (settings) {
-            pushedRoute = settings.name;
-            if (settings.name == AppRoutes.forgotPassword) {
-              return MaterialPageRoute(
-                builder: (_) => const Scaffold(body: Text('ForgotPasswordScreenTarget')),
-              );
-            }
-            return RouteGenerator.getRoute(settings);
-          },
-          home: LoginScreen(
-            role: UserRole.operations,
-            viewModel: vm,
+        String? pushedRoute;
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.lightTheme,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('ar'),
+            onGenerateRoute: (settings) {
+              pushedRoute = settings.name;
+              if (settings.name == AppRoutes.forgotPassword) {
+                return MaterialPageRoute(
+                  builder: (_) =>
+                      const Scaffold(body: Text('ForgotPasswordScreenTarget')),
+                );
+              }
+              return RouteGenerator.getRoute(settings);
+            },
+            home: LoginScreen(role: UserRole.operations, viewModel: vm),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      final forgotButton = find.text('نسيت كلمة المرور؟');
-      expect(forgotButton, findsOneWidget);
+        final forgotButton = find.text('نسيت كلمة المرور؟');
+        expect(forgotButton, findsOneWidget);
 
-      await tester.tap(forgotButton);
-      await tester.pumpAndSettle();
+        await tester.tap(forgotButton);
+        await tester.pumpAndSettle();
 
-      expect(pushedRoute, AppRoutes.forgotPassword);
-      expect(find.text('ForgotPasswordScreenTarget'), findsOneWidget);
-    });
+        expect(pushedRoute, AppRoutes.forgotPassword);
+        expect(find.text('ForgotPasswordScreenTarget'), findsOneWidget);
+      },
+    );
   });
 
   group('ForgotPasswordScreen Tests', () {
-    testWidgets('Renders phone field and submits AuthForgotPasswordEvent on tap', (
-      tester,
-    ) async {
-      final repo = _FakeForgotAndResetRepo();
-      final vm = _buildViewModel(repo);
+    testWidgets(
+      'Renders phone field and submits AuthForgotPasswordEvent on tap',
+      (tester) async {
+        final repo = _FakeForgotAndResetRepo();
+        final vm = _buildViewModel(repo);
 
-      String? pushedRoute;
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: AppTheme.lightTheme,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('ar'),
-          onGenerateRoute: (settings) {
-            pushedRoute = settings.name;
-            if (settings.name == AppRoutes.resetPassword) {
-              return MaterialPageRoute(
-                builder: (_) => const Scaffold(body: Text('ResetPasswordScreenTarget')),
-              );
-            }
-            return RouteGenerator.getRoute(settings);
-          },
-          home: ForgotPasswordScreen(
-            args: const ForgotPasswordRouteArgs(
-              role: UserRole.operations,
-              phone: '99777222',
+        String? pushedRoute;
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.lightTheme,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('ar'),
+            onGenerateRoute: (settings) {
+              pushedRoute = settings.name;
+              if (settings.name == AppRoutes.resetPassword) {
+                return MaterialPageRoute(
+                  builder: (_) =>
+                      const Scaffold(body: Text('ResetPasswordScreenTarget')),
+                );
+              }
+              return RouteGenerator.getRoute(settings);
+            },
+            home: ForgotPasswordScreen(
+              args: const ForgotPasswordRouteArgs(
+                role: UserRole.operations,
+                phone: '99777222',
+              ),
+              viewModel: vm,
             ),
-            viewModel: vm,
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('نسيت كلمة المرور'), findsOneWidget);
-      expect(find.byType(AuthInputField), findsOneWidget);
-      expect(find.byType(AuthPrimaryButton), findsOneWidget);
+        expect(find.text('نسيت كلمة المرور'), findsOneWidget);
+        expect(find.byType(AuthInputField), findsOneWidget);
+        expect(find.byType(AuthPrimaryButton), findsOneWidget);
 
-      await tester.tap(find.byType(AuthPrimaryButton));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(AuthPrimaryButton));
+        await tester.pumpAndSettle();
 
-      expect(repo.lastForgotPasswordRequest?.phone, '+96599777222');
-      expect(repo.lastForgotPasswordRequest?.role, UserRole.operations);
-      expect(pushedRoute, AppRoutes.resetPassword);
-      expect(find.text('ResetPasswordScreenTarget'), findsOneWidget);
-    });
+        expect(repo.lastForgotPasswordRequest?.phone, '+96599777222');
+        expect(repo.lastForgotPasswordRequest?.role, UserRole.operations);
+        expect(pushedRoute, AppRoutes.resetPassword);
+        expect(find.text('ResetPasswordScreenTarget'), findsOneWidget);
+      },
+    );
   });
 
   group('ResetPasswordScreen Tests', () {
-    testWidgets('Renders fields, validates and submits AuthResetPasswordEvent on tap', (
-      tester,
-    ) async {
-      final repo = _FakeForgotAndResetRepo();
-      final vm = _buildViewModel(repo);
+    testWidgets(
+      'Renders fields, validates and submits AuthResetPasswordEvent on tap',
+      (tester) async {
+        final repo = _FakeForgotAndResetRepo();
+        final vm = _buildViewModel(repo);
 
-      String? pushedRoute;
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: AppTheme.lightTheme,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('ar'),
-          onGenerateRoute: (settings) {
-            pushedRoute = settings.name;
-            if (settings.name == AppRoutes.login) {
-              return MaterialPageRoute(
-                builder: (_) => const Scaffold(body: Text('LoginScreenTarget')),
-              );
-            }
-            return RouteGenerator.getRoute(settings);
-          },
-          home: ResetPasswordScreen(
-            args: const ResetPasswordRouteArgs(
-              role: UserRole.operations,
-              phone: '+96599777222',
+        String? pushedRoute;
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.lightTheme,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('ar'),
+            onGenerateRoute: (settings) {
+              pushedRoute = settings.name;
+              if (settings.name == AppRoutes.login) {
+                return MaterialPageRoute(
+                  builder: (_) =>
+                      const Scaffold(body: Text('LoginScreenTarget')),
+                );
+              }
+              return RouteGenerator.getRoute(settings);
+            },
+            home: ResetPasswordScreen(
+              args: const ResetPasswordRouteArgs(
+                role: UserRole.operations,
+                phone: '+96599777222',
+              ),
+              viewModel: vm,
             ),
-            viewModel: vm,
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('إعادة تعيين كلمة المرور'), findsOneWidget);
-      expect(find.text('+96599777222'), findsOneWidget);
+        expect(find.text('إعادة تعيين كلمة المرور'), findsOneWidget);
+        expect(find.text('+96599777222'), findsOneWidget);
 
-      // Enter OTP
-      await tester.enterText(find.byType(Pinput), '123456');
+        // Enter OTP
+        await tester.enterText(find.byType(Pinput), '123456');
 
-      // Enter New Password & Confirm Password
-      await tester.enterText(find.byType(TextField).at(0), 'Yahya123!');
-      await tester.enterText(find.byType(TextField).at(1), 'Yahya123!');
-      await tester.pump();
+        // Enter New Password & Confirm Password
+        await tester.enterText(find.byType(TextField).at(0), 'Yahya123!');
+        await tester.enterText(find.byType(TextField).at(1), 'Yahya123!');
+        await tester.pump();
 
-      await tester.tap(find.byType(AuthPrimaryButton));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(AuthPrimaryButton));
+        await tester.pumpAndSettle();
 
-      expect(repo.lastResetPasswordRequest?.phone, '+96599777222');
-      expect(repo.lastResetPasswordRequest?.role, UserRole.operations);
-      expect(repo.lastResetPasswordRequest?.otpCode, '123456');
-      expect(repo.lastResetPasswordRequest?.newPassword, 'Yahya123!');
-      expect(pushedRoute, AppRoutes.login);
-      expect(find.text('LoginScreenTarget'), findsOneWidget);
-    });
+        expect(repo.lastResetPasswordRequest?.phone, '+96599777222');
+        expect(repo.lastResetPasswordRequest?.role, UserRole.operations);
+        expect(repo.lastResetPasswordRequest?.otpCode, '123456');
+        expect(repo.lastResetPasswordRequest?.newPassword, 'Yahya123!');
+        expect(pushedRoute, AppRoutes.login);
+        expect(find.text('LoginScreenTarget'), findsOneWidget);
+      },
+    );
   });
 }
-

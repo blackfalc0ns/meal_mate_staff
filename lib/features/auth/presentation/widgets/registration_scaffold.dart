@@ -55,9 +55,7 @@ class RegistrationScaffold extends StatelessWidget {
               const SizedBox(height: Spacing.base),
               Expanded(
                 child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(child: child),
-                  ],
+                  slivers: [SliverToBoxAdapter(child: child)],
                 ),
               ),
             ],

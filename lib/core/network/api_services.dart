@@ -28,6 +28,7 @@ import '../../features/register/data/models/response/driver_vehicle_model_respon
 import '../../features/register/data/models/response/driver_vehicle_type_response_dto.dart';
 import '../../features/dispatcher/dispatcher_home/data/models/response/dispatcher_dashboard_overview_response_dto.dart';
 import '../../features/dispatcher/dispatcher_home/data/models/response/dispatcher_live_driver_response_dto.dart';
+import '../../features/dispatcher/dispatcher_orders/data/models/response/dispatcher_order_queue_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -127,4 +128,9 @@ abstract class ApiServices {
 
   @GET(EndPoints.dispatcherLiveLocations)
   Future<List<DispatcherLiveDriverResponseDto>> getDispatcherLiveLocations();
+
+  @GET(EndPoints.dispatcherOrdersQueue)
+  Future<DispatcherOrderQueueResponseDto> getDispatcherOrdersQueue(
+    @Query('filter') String filter,
+  );
 }

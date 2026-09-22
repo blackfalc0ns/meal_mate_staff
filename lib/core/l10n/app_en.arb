@@ -220,6 +220,8 @@
       }
     }
   },
+  "dispatcherNoOrdersTitle": "No orders found",
+  "dispatcherNoOrdersSubtitle": "No boxes in the queue for this status",
   "navHome": "Home",
   "navOrders": "Orders",
   "navDelivery": "Delivery",

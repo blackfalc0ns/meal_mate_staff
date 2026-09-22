@@ -38,7 +38,7 @@ class DispatcherPriorityBadge extends StatelessWidget {
         textColor = color.dispatcherBadgeHigh;
         surfaceColor = color.dispatcherBadgeHighSurface;
         icon = Icons.star_rounded;
-      case DispatcherOrderPriority.normal:
+      case DispatcherOrderPriority.normal || DispatcherOrderPriority.unknown:
         text = locale.dispatcherPriorityNormal;
         textColor = color.dispatcherBadgeNormal;
         surfaceColor = color.dispatcherBadgeNormalSurface;

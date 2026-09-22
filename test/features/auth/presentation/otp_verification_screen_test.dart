@@ -207,7 +207,8 @@ void main() {
               pushedRoute = settings.name;
               pushedArgs = settings.arguments;
               return MaterialPageRoute(
-                builder: (_) => const Scaffold(body: Text('Set Password Screen')),
+                builder: (_) =>
+                    const Scaffold(body: Text('Set Password Screen')),
                 settings: settings,
               );
             }

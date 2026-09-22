@@ -83,9 +83,7 @@ class _RegisterPersonalDataScreenState
               formController: _formController,
               nationalities: widget.nationalities,
             ),
-            RegisterIdentitySection(
-              formController: _formController,
-            ),
+            RegisterIdentitySection(formController: _formController),
             if (widget.failure != null) ...[
               const SizedBox(height: Spacing.xs),
               InlineApiErrorWidget(failure: widget.failure!),

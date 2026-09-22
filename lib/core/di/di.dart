@@ -54,6 +54,12 @@ import '../../features/dispatcher/dispatcher_home/domain/repo/dispatcher_home_re
 import '../../features/dispatcher/dispatcher_home/domain/usecase/get_dispatcher_home_overview_usecase.dart';
 import '../../features/dispatcher/dispatcher_home/domain/usecase/get_dispatcher_live_drivers_usecase.dart';
 import '../../features/dispatcher/dispatcher_home/presentation/manager/dispatcher_home_view_model.dart';
+import '../../features/dispatcher/dispatcher_orders/data/data_source/dispatcher_orders_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_orders/data/data_source/dispatcher_orders_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_orders/data/repo/dispatcher_orders_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_orders/domain/repo/dispatcher_orders_repository.dart';
+import '../../features/dispatcher/dispatcher_orders/domain/usecase/get_dispatcher_order_queue_usecase.dart';
+import '../../features/dispatcher/dispatcher_orders/presentation/manager/dispatcher_orders_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -231,6 +237,24 @@ Future<void> configureDependencies() async {
     () => DispatcherHomeViewModel(
       getOverviewUseCase: getIt<GetDispatcherHomeOverviewUseCase>(),
       getLiveDriversUseCase: getIt<GetDispatcherLiveDriversUseCase>(),
+    ),
+  );
+
+  // Dispatcher Orders feature dependencies
+  getIt.registerLazySingleton<DispatcherOrdersRemoteDataSource>(
+    () => DispatcherOrdersRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DispatcherOrdersRepository>(
+    () => DispatcherOrdersRepositoryImpl(
+      getIt<DispatcherOrdersRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDispatcherOrderQueueUseCase>(
+    () => GetDispatcherOrderQueueUseCase(getIt<DispatcherOrdersRepository>()),
+  );
+  getIt.registerFactory<DispatcherOrdersViewModel>(
+    () => DispatcherOrdersViewModel(
+      getQueueUseCase: getIt<GetDispatcherOrderQueueUseCase>(),
     ),
   );
 }

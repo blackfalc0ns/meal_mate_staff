@@ -16,9 +16,7 @@ class RegisterPersonalDataFormController {
     fullNameEn = TextEditingController(
       text: initialData?.resolvedFullNameEn ?? '',
     );
-    restaurant = TextEditingController(
-      text: initialData?.restaurantName ?? '',
-    );
+    restaurant = TextEditingController(text: initialData?.restaurantName ?? '');
     phone = TextEditingController(text: initialData?.phone ?? '');
     email = TextEditingController(text: initialData?.email ?? '');
     birthDate = TextEditingController(text: initialData?.birthDate ?? '');

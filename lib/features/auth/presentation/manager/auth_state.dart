@@ -98,7 +98,9 @@ class AuthState {
       canResendOtp: canResendOtp ?? this.canResendOtp,
       roles: roles ?? this.roles,
       isLoadingRoles: isLoadingRoles ?? this.isLoadingRoles,
-      rolesFailure: clearRolesFailure ? null : (rolesFailure ?? this.rolesFailure),
+      rolesFailure: clearRolesFailure
+          ? null
+          : (rolesFailure ?? this.rolesFailure),
     );
   }
 }

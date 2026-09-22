@@ -51,7 +51,9 @@ class RoleSelectionCard extends StatelessWidget {
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusXl),
         border: Border.all(
-          color: isSelected ? color.primary : color.outlineVariant.withValues(alpha: 0.8),
+          color: isSelected
+              ? color.primary
+              : color.outlineVariant.withValues(alpha: 0.8),
           width: isSelected ? 2 : 1,
         ),
         boxShadow: isSelected
@@ -91,7 +93,9 @@ class RoleSelectionCard extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: isSelected
                             ? color.primary.withValues(alpha: 0.1)
-                            : color.surfaceContainerHighest.withValues(alpha: 0.4),
+                            : color.surfaceContainerHighest.withValues(
+                                alpha: 0.4,
+                              ),
                       ),
                       child: ClipOval(
                         child: Image.asset(
@@ -102,7 +106,9 @@ class RoleSelectionCard extends StatelessWidget {
                           errorBuilder: (_, _, _) => Icon(
                             _fallbackIcon,
                             size: 28,
-                            color: isSelected ? color.primary : color.onSurfaceVariant,
+                            color: isSelected
+                                ? color.primary
+                                : color.onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -136,7 +142,9 @@ class RoleSelectionCard extends StatelessWidget {
                             child: Text(
                               title,
                               style: getBoldStyle(
-                                color: isSelected ? color.primary : color.onSurface,
+                                color: isSelected
+                                    ? color.primary
+                                    : color.onSurface,
                                 fontSize: FontSize.size16,
                               ),
                             ),
@@ -149,7 +157,9 @@ class RoleSelectionCard extends StatelessWidget {
                               ),
                               decoration: BoxDecoration(
                                 color: color.primary.withValues(alpha: 0.08),
-                                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                                borderRadius: BorderRadius.circular(
+                                  Spacing.radiusSm,
+                                ),
                               ),
                               child: Text(
                                 isArabic ? 'تسجيل ذاتي' : 'Self sign-up',

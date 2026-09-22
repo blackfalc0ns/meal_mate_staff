@@ -93,9 +93,8 @@ class _FakeRoleSelectionRepo implements AuthRepository {
   Future<ApiResult<void>> logout() async => throw UnimplementedError();
 
   @override
-  Future<ApiResult<String>> resendOtp(
-    ResendOtpRequestEntity request,
-  ) async => throw UnimplementedError();
+  Future<ApiResult<String>> resendOtp(ResendOtpRequestEntity request) async =>
+      throw UnimplementedError();
 
   @override
   Future<ApiResult<String>> resetPassword(

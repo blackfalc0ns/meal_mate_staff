@@ -25,13 +25,11 @@ class RoleSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = viewModel ??
+    final vm =
+        viewModel ??
         (getIt.isRegistered<AuthViewModel>() ? getIt<AuthViewModel>() : null);
     if (vm != null) {
-      return BlocProvider.value(
-        value: vm,
-        child: const _RoleSelectionView(),
-      );
+      return BlocProvider.value(value: vm, child: const _RoleSelectionView());
     }
     return const _RoleSelectionView();
   }
@@ -120,17 +118,25 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: _toggleLanguage,
-                          borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusPill,
+                          ),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: Spacing.md,
                               vertical: Spacing.xs,
                             ),
                             decoration: BoxDecoration(
-                              color: color.surfaceContainerHighest.withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                              color: color.surfaceContainerHighest.withValues(
+                                alpha: 0.5,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusPill,
+                              ),
                               border: Border.all(
-                                color: color.outlineVariant.withValues(alpha: 0.6),
+                                color: color.outlineVariant.withValues(
+                                  alpha: 0.6,
+                                ),
                               ),
                             ),
                             child: Row(
@@ -159,9 +165,7 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
                 ),
 
                 // Main Content
-                Expanded(
-                  child: _buildBody(context, state, locale, color),
-                ),
+                Expanded(child: _buildBody(context, state, locale, color)),
 
                 // Bottom Continue Button (fixed)
                 if (state.roles.isNotEmpty)
@@ -192,9 +196,7 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
     ColorScheme color,
   ) {
     if (state.isLoadingRoles) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (state.rolesFailure != null && state.roles.isEmpty) {
@@ -204,9 +206,9 @@ class _RoleSelectionViewState extends State<_RoleSelectionView> {
           child: ApiErrorWidget(
             exception: state.rolesFailure!.exception,
             onRetry: () {
-              context
-                  .read<AuthViewModel>()
-                  .doIntent(const AuthGetStaffRolesEvent());
+              context.read<AuthViewModel>().doIntent(
+                const AuthGetStaffRolesEvent(),
+              );
             },
           ),
         ),

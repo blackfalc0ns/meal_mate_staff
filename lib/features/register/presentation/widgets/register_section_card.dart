@@ -28,9 +28,7 @@ class RegisterSectionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusLg),
-        border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.6),
-        ),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
             color: color.shadow.withValues(alpha: 0.03),

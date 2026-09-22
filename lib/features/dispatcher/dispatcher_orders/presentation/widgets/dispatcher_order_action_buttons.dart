@@ -47,7 +47,7 @@ class DispatcherOrderActionButtons extends StatelessWidget {
           AppButton(
             text: locale.dispatcherDetails,
             variant: AppButtonVariant.outlined,
-            onPressed: onDetailsPressed ?? () {},
+            onPressed: onDetailsPressed,
             color: color.primary,
             textColor: color.primary,
             height: Spacing.dispatcherActionBtnSmallHeight,

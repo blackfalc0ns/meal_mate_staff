@@ -19,11 +19,7 @@ import '../widgets/auth_input_field.dart';
 import '../widgets/auth_primary_button.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({
-    super.key,
-    required this.args,
-    this.viewModel,
-  });
+  const ForgotPasswordScreen({super.key, required this.args, this.viewModel});
 
   final ForgotPasswordRouteArgs args;
   final AuthViewModel? viewModel;
@@ -71,10 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     final fullPhone = _formatPhone(_phoneController.text);
     _viewModel.doIntent(
-      AuthForgotPasswordEvent(
-        phone: fullPhone,
-        role: widget.args.role,
-      ),
+      AuthForgotPasswordEvent(phone: fullPhone, role: widget.args.role),
     );
   }
 
@@ -103,7 +96,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             final fullPhone = _formatPhone(_phoneController.text);
             CustomSnackbar.showSuccess(
               context: context,
-              message: state.message ??
+              message:
+                  state.message ??
                   (isAr
                       ? 'تم إرسال رمز التحقق بنجاح'
                       : 'Verification code sent successfully'),

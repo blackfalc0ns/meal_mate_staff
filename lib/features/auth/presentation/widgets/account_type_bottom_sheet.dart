@@ -103,23 +103,21 @@ class AccountTypeBottomSheet extends StatelessWidget {
           else if (failure != null && roles.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
-              child: InlineApiErrorWidget(
-                failure: failure!,
-                onRetry: onRetry,
-              ),
+              child: InlineApiErrorWidget(failure: failure!, onRetry: onRetry),
             )
           else if (roles.isNotEmpty)
             ...roles.asMap().entries.map((entry) {
               final index = entry.key;
               final role = entry.value;
-              final isDriver = role.iconKey.toLowerCase().contains('driver') ||
+              final isDriver =
+                  role.iconKey.toLowerCase().contains('driver') ||
                   role.code.toLowerCase() == 'driver';
               final isSelected = selectedRole == role.userRole;
               final badge = isDriver
                   ? locale.registrationDefaultRole
                   : (role.allowsSelfRegistration
-                      ? (isArabic ? 'تسجيل ذاتي' : 'Self-Registration')
-                      : null);
+                        ? (isArabic ? 'تسجيل ذاتي' : 'Self-Registration')
+                        : null);
 
               return Padding(
                 padding: EdgeInsets.only(

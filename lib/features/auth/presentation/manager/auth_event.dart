@@ -105,4 +105,3 @@ class AuthResetStateEvent extends AuthEvent {
 class AuthGetStaffRolesEvent extends AuthEvent {
   const AuthGetStaffRolesEvent();
 }
-

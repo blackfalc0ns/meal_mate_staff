@@ -609,6 +609,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get dispatcherNoOrdersTitle => 'No orders found';
+
+  @override
+  String get dispatcherNoOrdersSubtitle =>
+      'No boxes in the queue for this status';
+
+  @override
   String get navHome => 'Home';
 
   @override

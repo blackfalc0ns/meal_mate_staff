@@ -41,6 +41,7 @@ class DispatcherOrderCard extends StatelessWidget {
           DispatcherOrderCardHeader(order: order),
           const SizedBox(height: Spacing.md),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
@@ -48,8 +49,10 @@ class DispatcherOrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DispatcherOrderInfoSection(order: order),
-                    const SizedBox(height: Spacing.sm),
-                    DispatcherDriverSuggestionTile(order: order),
+                    if (order.suggestion != null) ...[
+                      const SizedBox(height: Spacing.sm),
+                      DispatcherDriverSuggestionTile(order: order),
+                    ],
                   ],
                 ),
               ),

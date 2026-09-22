@@ -20,11 +20,7 @@ import '../widgets/auth_primary_button.dart';
 import '../widgets/otp_code_field.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({
-    super.key,
-    required this.args,
-    this.viewModel,
-  });
+  const ResetPasswordScreen({super.key, required this.args, this.viewModel});
 
   final ResetPasswordRouteArgs args;
   final AuthViewModel? viewModel;
@@ -68,10 +64,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   void _resend() {
     _viewModel.doIntent(
-      AuthResendOtpEvent(
-        phone: widget.args.phone,
-        role: widget.args.role,
-      ),
+      AuthResendOtpEvent(phone: widget.args.phone, role: widget.args.role),
     );
   }
 
@@ -111,14 +104,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ? 'رمز التحقق (OTP) المكون من 6 أرقام'
         : '6-digit verification code';
     final newPasswordLabel = isAr ? 'كلمة المرور الجديدة' : 'New Password';
-    final newPasswordHint =
-        isAr ? 'أدخل كلمة المرور الجديدة' : 'Enter new password';
-    final confirmPasswordLabel =
-        isAr ? 'تأكيد كلمة المرور' : 'Confirm Password';
-    final confirmPasswordHint =
-        isAr ? 'أعد إدخال كلمة المرور' : 'Re-enter password';
-    final submitButtonText =
-        isAr ? 'تأكيد وتغيير كلمة المرور' : 'Confirm & Reset Password';
+    final newPasswordHint = isAr
+        ? 'أدخل كلمة المرور الجديدة'
+        : 'Enter new password';
+    final confirmPasswordLabel = isAr
+        ? 'تأكيد كلمة المرور'
+        : 'Confirm Password';
+    final confirmPasswordHint = isAr
+        ? 'أعد إدخال كلمة المرور'
+        : 'Re-enter password';
+    final submitButtonText = isAr
+        ? 'تأكيد وتغيير كلمة المرور'
+        : 'Confirm & Reset Password';
 
     return BlocProvider.value(
       value: _viewModel,
@@ -132,7 +129,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           } else if (state.status == AuthStatus.otpResentSuccess) {
             CustomSnackbar.showSuccess(
               context: context,
-              message: state.message ??
+              message:
+                  state.message ??
                   (isAr
                       ? 'تم إعادة إرسال رمز التحقق'
                       : 'Verification code resent successfully'),
@@ -140,7 +138,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           } else if (state.status == AuthStatus.resetPasswordSuccess) {
             CustomSnackbar.showSuccess(
               context: context,
-              message: state.message ??
+              message:
+                  state.message ??
                   (isAr
                       ? 'تم تعيين كلمة المرور بنجاح'
                       : 'Password reset successfully'),
@@ -156,8 +155,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           final resendLabel = state.canResendOtp
               ? (isAr ? 'إعادة إرسال الرمز' : 'Resend Code')
               : (isAr
-                  ? 'إعادة الإرسال بعد (${state.resendCountdown} ث)'
-                  : 'Resend in (${state.resendCountdown}s)');
+                    ? 'إعادة الإرسال بعد (${state.resendCountdown} ث)'
+                    : 'Resend in (${state.resendCountdown}s)');
 
           return Scaffold(
             resizeToAvoidBottomInset: true,
@@ -166,9 +165,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 child: SingleChildScrollView(
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.manual,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.base,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -232,10 +229,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         const SizedBox(height: Spacing.xs),
                         Center(
                           child: TextButton(
-                            onPressed:
-                                state.canResendOtp && !state.isLoading
-                                    ? _resend
-                                    : null,
+                            onPressed: state.canResendOtp && !state.isLoading
+                                ? _resend
+                                : null,
                             child: Text(
                               resendLabel,
                               style: getMediumStyle(
@@ -297,10 +293,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           ),
                           validator: (value) =>
                               Validations.validateConfirmPassword(
-                            context,
-                            _newPasswordController.text,
-                            value,
-                          ),
+                                context,
+                                _newPasswordController.text,
+                                value,
+                              ),
                         ),
                         const SizedBox(height: Spacing.xl),
                         AuthPrimaryButton(

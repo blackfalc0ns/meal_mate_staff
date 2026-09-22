@@ -19,11 +19,7 @@ import '../widgets/auth_input_field.dart';
 import '../widgets/auth_primary_button.dart';
 
 class SetPasswordScreen extends StatefulWidget {
-  const SetPasswordScreen({
-    super.key,
-    required this.args,
-    this.viewModel,
-  });
+  const SetPasswordScreen({super.key, required this.args, this.viewModel});
 
   final SetPasswordRouteArgs args;
   final AuthViewModel? viewModel;
@@ -85,9 +81,15 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
         ? 'يرجى تعيين كلمة مرور جديدة لحسابك للمتابعة'
         : 'Please set a new password for your account to continue';
     final newPasswordLabel = isAr ? 'كلمة المرور الجديدة' : 'New Password';
-    final newPasswordHint = isAr ? 'أدخل كلمة المرور الجديدة' : 'Enter new password';
-    final confirmPasswordLabel = isAr ? 'تأكيد كلمة المرور' : 'Confirm Password';
-    final confirmPasswordHint = isAr ? 'أعد إدخال كلمة المرور' : 'Re-enter password';
+    final newPasswordHint = isAr
+        ? 'أدخل كلمة المرور الجديدة'
+        : 'Enter new password';
+    final confirmPasswordLabel = isAr
+        ? 'تأكيد كلمة المرور'
+        : 'Confirm Password';
+    final confirmPasswordHint = isAr
+        ? 'أعد إدخال كلمة المرور'
+        : 'Re-enter password';
     final submitButtonText = isAr ? 'تأكيد وحفظ' : 'Confirm & Save';
 
     return BlocProvider.value(
@@ -102,7 +104,8 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
           } else if (state.status == AuthStatus.passwordSetSuccess) {
             CustomSnackbar.showSuccess(
               context: context,
-              message: state.message ??
+              message:
+                  state.message ??
                   (isAr
                       ? 'تم تعيين كلمة المرور بنجاح'
                       : 'Password set successfully'),
@@ -119,9 +122,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
             body: AuthBackground(
               child: SafeArea(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.base,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -182,10 +183,10 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                           enabled: !state.isLoading,
                           validator: (val) =>
                               Validations.validateConfirmPassword(
-                            context,
-                            _newPasswordController.text,
-                            val,
-                          ),
+                                context,
+                                _newPasswordController.text,
+                                val,
+                              ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureConfirmPassword

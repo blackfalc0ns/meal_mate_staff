@@ -87,9 +87,8 @@ class _FakeSetPasswordRepo implements AuthRepository {
   ) async => throw UnimplementedError();
 
   @override
-  Future<ApiResult<String>> resendOtp(
-    ResendOtpRequestEntity request,
-  ) async => throw UnimplementedError();
+  Future<ApiResult<String>> resendOtp(ResendOtpRequestEntity request) async =>
+      throw UnimplementedError();
 
   @override
   Future<ApiResult<AuthSessionEntity?>> restoreSession() async =>
@@ -152,10 +151,10 @@ void main() {
       onGenerateInitialRoutes: initialRoute == null
           ? null
           : (initRoute) => [
-                RouteGenerator.getRoute(
-                  RouteSettings(name: initRoute, arguments: testArgs),
-                ),
-              ],
+              RouteGenerator.getRoute(
+                RouteSettings(name: initRoute, arguments: testArgs),
+              ),
+            ],
       onGenerateRoute: onGenerateRoute,
       home: home,
     );
@@ -177,64 +176,62 @@ void main() {
       },
     );
 
-    testWidgets('Validates password fields and submits valid matching passwords', (
-      tester,
-    ) async {
-      String? pushedRoute;
-      Object? pushedArgs;
+    testWidgets(
+      'Validates password fields and submits valid matching passwords',
+      (tester) async {
+        String? pushedRoute;
+        Object? pushedArgs;
 
-      await tester.pumpWidget(
-        buildTestApp(
-          onGenerateRoute: (settings) {
-            if (settings.name == AppRoutes.appShell) {
-              pushedRoute = settings.name;
-              pushedArgs = settings.arguments;
-              return MaterialPageRoute(
-                builder: (_) => const Scaffold(body: Text('Shell')),
-                settings: settings,
-              );
-            }
-            return null;
-          },
-          home: SetPasswordScreen(
-            args: testArgs,
-            viewModel: viewModel,
+        await tester.pumpWidget(
+          buildTestApp(
+            onGenerateRoute: (settings) {
+              if (settings.name == AppRoutes.appShell) {
+                pushedRoute = settings.name;
+                pushedArgs = settings.arguments;
+                return MaterialPageRoute(
+                  builder: (_) => const Scaffold(body: Text('Shell')),
+                  settings: settings,
+                );
+              }
+              return null;
+            },
+            home: SetPasswordScreen(args: testArgs, viewModel: viewModel),
           ),
-        ),
-      );
-      await tester.pump();
+        );
+        await tester.pump();
 
-      expect(find.byType(SetPasswordScreen), findsOneWidget);
-      expect(find.byType(AuthInputField), findsNWidgets(2));
+        expect(find.byType(SetPasswordScreen), findsOneWidget);
+        expect(find.byType(AuthInputField), findsNWidgets(2));
 
-      // Attempt to submit empty form
-      await tester.tap(find.byType(AuthPrimaryButton));
-      await tester.pump();
+        // Attempt to submit empty form
+        await tester.tap(find.byType(AuthPrimaryButton));
+        await tester.pump();
 
-      // No request made on empty
-      expect(fakeRepo.lastRequest, isNull);
+        // No request made on empty
+        expect(fakeRepo.lastRequest, isNull);
 
-      // Enter valid password and confirm password
-      final inputFields = find.byType(TextFormField);
-      await tester.enterText(inputFields.first, 'StrongPassword123!');
-      await tester.enterText(inputFields.last, 'StrongPassword123!');
-      await tester.pump();
+        // Enter valid password and confirm password
+        final inputFields = find.byType(TextFormField);
+        await tester.enterText(inputFields.first, 'StrongPassword123!');
+        await tester.enterText(inputFields.last, 'StrongPassword123!');
+        await tester.pump();
 
-      // Tap submit
-      await tester.tap(find.byType(AuthPrimaryButton));
-      await tester.pumpAndSettle();
+        // Tap submit
+        await tester.tap(find.byType(AuthPrimaryButton));
+        await tester.pumpAndSettle();
 
-      // Request sent to use case
-      expect(fakeRepo.lastRequest, isNotNull);
-      expect(fakeRepo.lastRequest!.phone, '+96599777222');
-      expect(fakeRepo.lastRequest!.role, UserRole.operations);
-      expect(fakeRepo.lastRequest!.verificationToken, 'test_token_123');
-      expect(fakeRepo.lastRequest!.newPassword, 'StrongPassword123!');
-      expect(fakeRepo.lastRequest!.confirmPassword, 'StrongPassword123!');
+        // Request sent to use case
+        expect(fakeRepo.lastRequest, isNotNull);
+        expect(fakeRepo.lastRequest!.phone, '+96599777222');
+        expect(fakeRepo.lastRequest!.role, UserRole.operations);
+        expect(fakeRepo.lastRequest!.verificationToken, 'test_token_123');
+        expect(fakeRepo.lastRequest!.newPassword, 'StrongPassword123!');
+        expect(fakeRepo.lastRequest!.confirmPassword, 'StrongPassword123!');
 
-      // Navigated to appShell
-      expect(pushedRoute, AppRoutes.appShell);
-      expect(pushedArgs, UserRole.operations);
-    });
+        // Navigated to appShell
+        expect(pushedRoute, AppRoutes.appShell);
+        expect(pushedArgs, UserRole.operations);
+      },
+    );
   });
 }

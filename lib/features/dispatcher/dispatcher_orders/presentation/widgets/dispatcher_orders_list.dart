@@ -26,6 +26,7 @@ class DispatcherOrdersList extends StatelessWidget {
       itemBuilder: (context, index) {
         final order = orders[index];
         return DispatcherOrderCard(
+          key: ValueKey(order.id),
           order: order,
           onAssignPressed: () {
             if (onAssignOrder != null) {
@@ -34,7 +35,7 @@ class DispatcherOrdersList extends StatelessWidget {
               context.pushNamed(AppRoutes.assignBox);
             }
           },
-          onDetailsPressed: () => onOrderDetails?.call(order),
+          onDetailsPressed: null,
         );
       },
     );

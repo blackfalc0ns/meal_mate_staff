@@ -74,10 +74,7 @@ class SetPasswordRouteArgs {
 }
 
 class ForgotPasswordRouteArgs {
-  const ForgotPasswordRouteArgs({
-    this.role = UserRole.operations,
-    this.phone,
-  });
+  const ForgotPasswordRouteArgs({this.role = UserRole.operations, this.phone});
 
   final UserRole role;
   final String? phone;
@@ -92,4 +89,3 @@ class ResetPasswordRouteArgs {
   final String phone;
   final UserRole role;
 }
-

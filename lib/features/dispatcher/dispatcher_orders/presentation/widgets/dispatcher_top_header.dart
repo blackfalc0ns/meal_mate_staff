@@ -6,7 +6,10 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherTopHeader extends StatelessWidget {
-  const DispatcherTopHeader({super.key});
+  const DispatcherTopHeader({super.key, this.restaurantName, this.role});
+
+  final String? restaurantName;
+  final String? role;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,9 @@ class DispatcherTopHeader extends StatelessWidget {
                 const SizedBox(width: Spacing.xs),
                 Flexible(
                   child: Text(
-                    locale.dispatcherRestaurantName,
+                    restaurantName?.isNotEmpty == true
+                        ? restaurantName!
+                        : locale.dispatcherRestaurantName,
                     style: getSemiBoldStyle(
                       color: color.onSurface,
                       fontSize: FontSize.size12,
@@ -61,7 +66,7 @@ class DispatcherTopHeader extends StatelessWidget {
                 Icon(Icons.person, size: Spacing.iconSm, color: color.primary),
                 const SizedBox(width: Spacing.xs),
                 Text(
-                  locale.dispatcherRoleBadge,
+                  role?.isNotEmpty == true ? role! : locale.dispatcherRoleBadge,
                   style: getSemiBoldStyle(
                     color: color.primary,
                     fontSize: FontSize.size10,

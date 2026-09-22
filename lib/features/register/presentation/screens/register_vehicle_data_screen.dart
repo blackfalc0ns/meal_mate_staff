@@ -138,9 +138,7 @@ class _RegisterVehicleDataScreenState extends State<RegisterVehicleDataScreen> {
               onSearchVehicleModels: widget.onSearchVehicleModels,
             ),
             const SizedBox(height: Spacing.sm),
-            RegisterVehicleLicenseSection(
-              formController: _formController,
-            ),
+            RegisterVehicleLicenseSection(formController: _formController),
             const SizedBox(height: Spacing.sm),
             RegisterVehicleOwnershipSection(
               formController: _formController,

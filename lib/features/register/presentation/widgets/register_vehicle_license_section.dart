@@ -68,8 +68,9 @@ class RegisterVehicleLicenseSection extends StatelessWidget {
         ListenableBuilder(
           listenable: formController.contractExpiryController,
           builder: (context, _) {
-            final hasText =
-                formController.contractExpiryController.text.trim().isNotEmpty;
+            final hasText = formController.contractExpiryController.text
+                .trim()
+                .isNotEmpty;
             return RegistrationInputField(
               label: locale.registrationContractExpiry,
               hint: locale.registrationDateHint,

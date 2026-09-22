@@ -8,10 +8,7 @@ import '../controllers/register_personal_data_form_controller.dart';
 import 'register_section_card.dart';
 
 class RegisterIdentitySection extends StatelessWidget {
-  const RegisterIdentitySection({
-    super.key,
-    required this.formController,
-  });
+  const RegisterIdentitySection({super.key, required this.formController});
 
   final RegisterPersonalDataFormController formController;
 

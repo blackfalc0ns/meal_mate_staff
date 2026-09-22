@@ -34,8 +34,12 @@ class StaffRoleEntity {
   }
 
   String localizedDescription(bool isArabic) {
-    if (isArabic && descriptionAr.trim().isNotEmpty) return descriptionAr.trim();
-    if (!isArabic && descriptionEn.trim().isNotEmpty) return descriptionEn.trim();
+    if (isArabic && descriptionAr.trim().isNotEmpty) {
+      return descriptionAr.trim();
+    }
+    if (!isArabic && descriptionEn.trim().isNotEmpty) {
+      return descriptionEn.trim();
+    }
     return description.trim();
   }
 }

@@ -220,8 +220,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: state.isLoading
                                   ? null
                                   : () {
-                                      final phone =
-                                          _phoneController.text.trim();
+                                      final phone = _phoneController.text
+                                          .trim();
                                       Navigator.of(context).pushNamed(
                                         AppRoutes.forgotPassword,
                                         arguments: ForgotPasswordRouteArgs(

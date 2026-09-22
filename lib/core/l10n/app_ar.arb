@@ -220,6 +220,8 @@
       }
     }
   },
+  "dispatcherNoOrdersTitle": "لا توجد طلبات",
+  "dispatcherNoOrdersSubtitle": "لا توجد بوكسات في طابور الانتظار لهذه الحالة",
   "navHome": "الرئيسية",
   "navOrders": "الطلبات",
   "navDelivery": "التوصيل",

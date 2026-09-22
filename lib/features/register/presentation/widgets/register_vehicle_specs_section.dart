@@ -102,8 +102,10 @@ class RegisterVehicleSpecsSection extends StatelessWidget {
                         (model) => ListTile(
                           dense: true,
                           title: Text(modelLabel(model)),
-                          onTap: () =>
-                              formController.selectModel(model, modelLabel(model)),
+                          onTap: () => formController.selectModel(
+                            model,
+                            modelLabel(model),
+                          ),
                         ),
                       )
                       .toList(),

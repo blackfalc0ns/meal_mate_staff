@@ -1226,6 +1226,18 @@ abstract class AppLocalizations {
   /// **'Least busy: {name}'**
   String dispatcherSuggestionLeastLoaded(String name);
 
+  /// No description provided for @dispatcherNoOrdersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No orders found'**
+  String get dispatcherNoOrdersTitle;
+
+  /// No description provided for @dispatcherNoOrdersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No boxes in the queue for this status'**
+  String get dispatcherNoOrdersSubtitle;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:

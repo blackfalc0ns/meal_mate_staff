@@ -36,9 +36,9 @@ class AuthViewModel extends Cubit<AuthState> {
     required this.restoreSessionUseCase,
     required this.logoutUseCase,
     GetStaffRolesUseCase? getStaffRolesUseCase,
-  })  : getStaffRolesUseCase =
-            getStaffRolesUseCase ?? const GetStaffRolesUseCase(),
-        super(const AuthState());
+  }) : getStaffRolesUseCase =
+           getStaffRolesUseCase ?? const GetStaffRolesUseCase(),
+       super(const AuthState());
 
   final LookupPhoneUseCase lookupPhoneUseCase;
   final VerifyFirstTimeOtpUseCase verifyFirstTimeOtpUseCase;
@@ -113,12 +113,7 @@ class AuthViewModel extends Cubit<AuthState> {
           ),
         );
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isLoadingRoles: false,
-            rolesFailure: failure,
-          ),
-        );
+        emit(state.copyWith(isLoadingRoles: false, rolesFailure: failure));
     }
   }
 
@@ -521,4 +516,3 @@ class AuthViewModel extends Cubit<AuthState> {
     return super.close();
   }
 }
-

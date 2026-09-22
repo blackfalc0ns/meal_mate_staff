@@ -3,6 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/network/api_services.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/request/phone_lookup_request_dto.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/data/data_source/dispatcher_orders_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/domain/repo/dispatcher_orders_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/domain/usecase/get_dispatcher_order_queue_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/presentation/manager/dispatcher_orders_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -53,6 +57,28 @@ void main() {
 
       expect(intercepted, isTrue);
       expect(result.exists, isTrue);
+    },
+  );
+
+  test(
+    'configureDependencies registers dispatcher orders dependencies',
+    () async {
+      await configureDependencies();
+
+      expect(getIt.isRegistered<DispatcherOrdersRemoteDataSource>(), isTrue);
+      expect(getIt.isRegistered<DispatcherOrdersRepository>(), isTrue);
+      expect(getIt.isRegistered<GetDispatcherOrderQueueUseCase>(), isTrue);
+      expect(getIt.isRegistered<DispatcherOrdersViewModel>(), isTrue);
+
+      final remoteDataSource = getIt<DispatcherOrdersRemoteDataSource>();
+      final repository = getIt<DispatcherOrdersRepository>();
+      final useCase = getIt<GetDispatcherOrderQueueUseCase>();
+      final viewModel = getIt<DispatcherOrdersViewModel>();
+
+      expect(remoteDataSource, isNotNull);
+      expect(repository, isNotNull);
+      expect(useCase, isNotNull);
+      expect(viewModel, isNotNull);
     },
   );
 }

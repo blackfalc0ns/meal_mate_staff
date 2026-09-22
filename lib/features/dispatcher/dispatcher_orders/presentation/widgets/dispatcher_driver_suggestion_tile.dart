@@ -5,6 +5,7 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
 import '../../domain/entities/dispatcher_order_entity.dart';
 
 class DispatcherDriverSuggestionTile extends StatelessWidget {
@@ -14,12 +15,30 @@ class DispatcherDriverSuggestionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (order.suggestion == null) return const SizedBox.shrink();
+
     final color = context.colorScheme;
     final locale = context.localization;
 
     final prefix = order.isLeastLoaded
         ? locale.dispatcherLeastBusyPrefix
         : locale.dispatcherSuggestionPrefix;
+
+    final placeholder = SizedBox.expand(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color.outline.withValues(alpha: 0.25),
+        ),
+        child: Center(
+          child: Icon(
+            Icons.person,
+            size: Spacing.iconSm,
+            color: color.onSurfaceVariant,
+          ),
+        ),
+      ),
+    );
 
     return Container(
       padding: const EdgeInsetsDirectional.only(
@@ -44,16 +63,12 @@ class DispatcherDriverSuggestionTile extends StatelessWidget {
               border: Border.all(color: color.primary, width: Spacing.border),
             ),
             padding: const EdgeInsets.all(Spacing.border),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.outline.withValues(alpha: 0.25),
-              ),
-              child: Icon(
-                Icons.person,
-                size: Spacing.iconSm,
-                color: color.onSurfaceVariant,
-              ),
+            child: AppCachedNetworkImage(
+              imageUrl: order.suggestedDriverAvatarUrl,
+              shape: BoxShape.circle,
+              fit: BoxFit.cover,
+              loadingWidget: placeholder,
+              errorWidget: placeholder,
             ),
           ),
           const SizedBox(width: Spacing.xs),
