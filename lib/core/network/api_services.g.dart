@@ -721,6 +721,52 @@ class _ApiServices implements ApiServices {
     return _value;
   }
 
+  @override
+  Future<DispatcherSupportResponseDto> getDispatcherSupportIssues({
+    String? area,
+    String? status,
+    String? search,
+    String? datePreset,
+    String? fromDateUtc,
+    String? toDateUtc,
+    int? pageNumber,
+    int? pageSize,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'area': area,
+      r'status': status,
+      r'search': search,
+      r'datePreset': datePreset,
+      r'fromDateUtc': fromDateUtc,
+      r'toDateUtc': toDateUtc,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<DispatcherSupportResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/dispatcher/support/issues',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DispatcherSupportResponseDto _value;
+    try {
+      _value = DispatcherSupportResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

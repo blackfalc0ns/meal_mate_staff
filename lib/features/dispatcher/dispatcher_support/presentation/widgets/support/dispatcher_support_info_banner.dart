@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../config/theme/font_manager.dart';
-import '../../../../../config/theme/spacing.dart';
-import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/extensions/extensions.dart';
+import '../../../../../../config/theme/font_manager.dart';
+import '../../../../../../config/theme/spacing.dart';
+import '../../../../../../config/theme/styles_manager.dart';
+import '../../../../../../core/extensions/extensions.dart';
 
 class DispatcherSupportInfoBanner extends StatelessWidget {
   const DispatcherSupportInfoBanner({super.key});

@@ -1,31 +1,106 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_issue_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_kpi_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_query_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_response_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/fake_data/dispatcher_support_fake_data.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/repo/dispatcher_support_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/usecase/get_dispatcher_support_issues_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/manager/dispatcher_support_view_model.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_area_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_filter_chips.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_header.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_info_banner.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_issue_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_kpi_bar.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_kpi_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_search_bar.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_support_status_tabs.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_area_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_filter_chips.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_header.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_info_banner.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_issue_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_kpi_bar.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_kpi_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_search_bar.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/support/dispatcher_support_status_tabs.dart';
+
+class _FakeSupportRepository implements DispatcherSupportRepository {
+  _FakeSupportRepository({this.isEnglish = false});
+
+  final bool isEnglish;
+
+  @override
+  Future<ApiResult<DispatcherSupportResponseEntity>> getIssues(
+    DispatcherSupportQueryEntity query,
+  ) async {
+    final allIssues = DispatcherSupportFakeData.issues;
+    final filtered = allIssues.where((issue) {
+      if (issue.status != query.status) return false;
+      if (query.area != null &&
+          query.area!.isNotEmpty &&
+          issue.area != query.area) {
+        return false;
+      }
+      return true;
+    }).toList();
+
+    return ApiSuccessResult(
+      data: DispatcherSupportResponseEntity(
+        counters: const DispatcherSupportKpiEntity(
+          currentArea: 'السالمية',
+          openCount: 8,
+          inProgressCount: 3,
+          resolvedCount: 15,
+          totalCount: 26,
+        ),
+        areaChips: [
+          DispatcherSupportAreaChipEntity(
+            areaKey: '',
+            displayName: isEnglish ? 'All Areas' : 'كل المناطق',
+            count: 0,
+          ),
+          const DispatcherSupportAreaChipEntity(
+            areaKey: 'السالمية',
+            displayName: 'السالمية',
+            count: 5,
+          ),
+        ],
+        issues: filtered,
+        pagination: DispatcherSupportPaginationEntity(
+          pageNumber: query.pageNumber,
+          pageSize: query.pageSize,
+          totalCount: filtered.length,
+          totalPages: 1,
+          hasNextPage: false,
+          hasPreviousPage: false,
+        ),
+      ),
+    );
+  }
+}
 
 void main() {
+  DispatcherSupportViewModel createVm({bool isEnglish = false}) {
+    final repo = _FakeSupportRepository(isEnglish: isEnglish);
+    final useCase = GetDispatcherSupportIssuesUseCase(repo);
+    return DispatcherSupportViewModel(
+      getIssuesUseCase: useCase,
+      searchDebounceDuration: Duration.zero,
+    );
+  }
+
   Widget buildSubject({
     Locale locale = const Locale('ar'),
+    DispatcherSupportViewModel? viewModel,
     ValueChanged<DispatcherSupportIssueEntity>? onViewDetails,
     ValueChanged<DispatcherSupportIssueEntity>? onAssignAlternativeDriver,
   }) {
+    final vm = viewModel ?? createVm(isEnglish: locale.languageCode == 'en');
     return MaterialApp(
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.lightTheme,
       home: DispatcherSupportScreen(
+        viewModel: vm,
         onViewDetails: onViewDetails,
         onAssignAlternativeDriver: onAssignAlternativeDriver,
       ),

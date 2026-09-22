@@ -5,7 +5,6 @@ import 'config/routing/routing_generator.dart';
 import 'config/theme/app_theme.dart';
 import 'core/l10n/translations/app_localizations.dart';
 import 'core/services/app_locale_notifier.dart';
-
 import 'core/di/di.dart';
 
 void main() async {

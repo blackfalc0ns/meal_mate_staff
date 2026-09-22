@@ -873,6 +873,40 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can contact the driver directly from the issue details to resolve it quickly';
 
   @override
+  String get supportEmptyTitle => 'No issues found';
+
+  @override
+  String get supportEmptyDescription =>
+      'There are no support issues matching your criteria.';
+
+  @override
+  String get supportDateFilterTitle => 'Filter by Date';
+
+  @override
+  String get supportDatePresetToday => 'Today';
+
+  @override
+  String get supportDatePresetYesterday => 'Yesterday';
+
+  @override
+  String get supportDatePresetLast7Days => 'Last 7 Days';
+
+  @override
+  String get supportDatePresetLast30Days => 'Last 30 Days';
+
+  @override
+  String get supportDatePresetCustom => 'Custom Range';
+
+  @override
+  String get supportApplyDateFilter => 'Apply';
+
+  @override
+  String get supportLoadingMore => 'Loading more...';
+
+  @override
+  String get supportRetryLoadingMore => 'Failed to load more. Tap to retry.';
+
+  @override
   String get issueDetailsTitle => 'Problem Details';
 
   @override

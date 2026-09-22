@@ -72,6 +72,12 @@ import '../../features/dispatcher/dispatcher_map/domain/usecase/observe_dispatch
 import '../../features/dispatcher/dispatcher_map/domain/usecase/start_dispatcher_map_updates_usecase.dart';
 import '../../features/dispatcher/dispatcher_map/domain/usecase/stop_dispatcher_map_updates_usecase.dart';
 import '../../features/dispatcher/dispatcher_map/presentation/manager/dispatcher_map_view_model.dart';
+import '../../features/dispatcher/dispatcher_support/data/data_source/dispatcher_support_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_support/data/data_source/dispatcher_support_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_support/data/repo/dispatcher_support_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_support/domain/repo/dispatcher_support_repository.dart';
+import '../../features/dispatcher/dispatcher_support/domain/usecase/get_dispatcher_support_issues_usecase.dart';
+import '../../features/dispatcher/dispatcher_support/presentation/manager/dispatcher_support_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -313,6 +319,26 @@ Future<void> configureDependencies() async {
           getIt<ObserveDispatcherMapConnectionStatusUseCase>(),
       startUpdatesUseCase: getIt<StartDispatcherMapUpdatesUseCase>(),
       stopUpdatesUseCase: getIt<StopDispatcherMapUpdatesUseCase>(),
+    ),
+  );
+
+  // Dispatcher support feature dependencies
+  getIt.registerLazySingleton<DispatcherSupportRemoteDataSource>(
+    () => DispatcherSupportRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DispatcherSupportRepository>(
+    () => DispatcherSupportRepositoryImpl(
+      getIt<DispatcherSupportRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDispatcherSupportIssuesUseCase>(
+    () => GetDispatcherSupportIssuesUseCase(
+      getIt<DispatcherSupportRepository>(),
+    ),
+  );
+  getIt.registerFactory<DispatcherSupportViewModel>(
+    () => DispatcherSupportViewModel(
+      getIssuesUseCase: getIt<GetDispatcherSupportIssuesUseCase>(),
     ),
   );
 }

@@ -46,4 +46,6 @@ abstract class EndPoints {
   static const String dispatcherLiveMonitoring =
       '/api/v1/dispatcher/drivers/live-monitoring';
   static const String dispatcherHub = '/hubs/dispatcher';
+  static const String dispatcherSupportIssues =
+      '/api/v1/dispatcher/support/issues';
 }

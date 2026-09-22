@@ -3,12 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/fake_data/dispatcher_issue_detail_fake_data.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/screens/dispatcher_issue_details_screen.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_issue_details_action_buttons.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_issue_details_attachments_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_issue_details_description_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_issue_details_driver_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_issue_details_header_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/dispatcher_issue_details_trip_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/issue_details/dispatcher_issue_details_action_buttons.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/issue_details/dispatcher_issue_details_attachments_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/issue_details/dispatcher_issue_details_description_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/issue_details/dispatcher_issue_details_driver_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/issue_details/dispatcher_issue_details_header_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/widgets/issue_details/dispatcher_issue_details_trip_card.dart';
 
 Widget _buildTestableWidget({
   required Widget child,

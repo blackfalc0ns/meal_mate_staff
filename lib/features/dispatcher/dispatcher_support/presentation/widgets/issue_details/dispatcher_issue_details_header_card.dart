@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../../config/theme/font_manager.dart';
-import '../../../../../config/theme/spacing.dart';
-import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/extensions/extensions.dart';
-import '../../domain/entities/dispatcher_issue_detail_entity.dart';
+import '../../../../../../config/theme/font_manager.dart';
+import '../../../../../../config/theme/spacing.dart';
+import '../../../../../../config/theme/styles_manager.dart';
+import '../../../../../../core/extensions/extensions.dart';
+import '../../../domain/entities/dispatcher_issue_detail_entity.dart';
 
 class DispatcherIssueDetailsHeaderCard extends StatelessWidget {
   const DispatcherIssueDetailsHeaderCard({super.key, required this.issue});

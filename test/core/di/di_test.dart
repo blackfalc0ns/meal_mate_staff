@@ -16,6 +16,10 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/use
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/usecase/start_dispatcher_map_updates_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/usecase/stop_dispatcher_map_updates_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/presentation/manager/dispatcher_map_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/data_source/dispatcher_support_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/repo/dispatcher_support_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/usecase/get_dispatcher_support_issues_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/manager/dispatcher_support_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -120,6 +124,30 @@ void main() {
       expect(repository, isNotNull);
       expect(liveUseCase, isNotNull);
       expect(viewModel, isNotNull);
+    },
+  );
+
+  test(
+    'configureDependencies registers dispatcher support dependencies',
+    () async {
+      await configureDependencies();
+
+      expect(getIt.isRegistered<DispatcherSupportRemoteDataSource>(), isTrue);
+      expect(getIt.isRegistered<DispatcherSupportRepository>(), isTrue);
+      expect(getIt.isRegistered<GetDispatcherSupportIssuesUseCase>(), isTrue);
+      expect(getIt.isRegistered<DispatcherSupportViewModel>(), isTrue);
+
+      final remoteDataSource = getIt<DispatcherSupportRemoteDataSource>();
+      final repository = getIt<DispatcherSupportRepository>();
+      final useCase = getIt<GetDispatcherSupportIssuesUseCase>();
+      final vm1 = getIt<DispatcherSupportViewModel>();
+      final vm2 = getIt<DispatcherSupportViewModel>();
+
+      expect(remoteDataSource, isNotNull);
+      expect(repository, isNotNull);
+      expect(useCase, isNotNull);
+      expect(vm1, isNotNull);
+      expect(identical(vm1, vm2), isFalse); // factory
     },
   );
 }

@@ -1712,6 +1712,72 @@ abstract class AppLocalizations {
   /// **'You can contact the driver directly from the issue details to resolve it quickly'**
   String get supportInfoBannerText;
 
+  /// No description provided for @supportEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No issues found'**
+  String get supportEmptyTitle;
+
+  /// No description provided for @supportEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no support issues matching your criteria.'**
+  String get supportEmptyDescription;
+
+  /// No description provided for @supportDateFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Date'**
+  String get supportDateFilterTitle;
+
+  /// No description provided for @supportDatePresetToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get supportDatePresetToday;
+
+  /// No description provided for @supportDatePresetYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get supportDatePresetYesterday;
+
+  /// No description provided for @supportDatePresetLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get supportDatePresetLast7Days;
+
+  /// No description provided for @supportDatePresetLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 Days'**
+  String get supportDatePresetLast30Days;
+
+  /// No description provided for @supportDatePresetCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Range'**
+  String get supportDatePresetCustom;
+
+  /// No description provided for @supportApplyDateFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get supportApplyDateFilter;
+
+  /// No description provided for @supportLoadingMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading more...'**
+  String get supportLoadingMore;
+
+  /// No description provided for @supportRetryLoadingMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load more. Tap to retry.'**
+  String get supportRetryLoadingMore;
+
   /// No description provided for @issueDetailsTitle.
   ///
   /// In en, this message translates to:

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../config/theme/font_manager.dart';
-import '../../../../../config/theme/spacing.dart';
-import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/extensions/extensions.dart';
-import '../../domain/entities/dispatcher_support_issue_entity.dart';
-import '../../domain/entities/dispatcher_support_issue_type.dart';
+import '../../../../../../config/theme/font_manager.dart';
+import '../../../../../../config/theme/spacing.dart';
+import '../../../../../../config/theme/styles_manager.dart';
+import '../../../../../../core/constants/assets.dart';
+import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../../core/widget/app_cached_network_image.dart';
+import '../../../domain/entities/dispatcher_support_issue_entity.dart';
+import '../../../domain/entities/dispatcher_support_issue_type.dart';
 
 class DispatcherSupportIssueCard extends StatelessWidget {
   const DispatcherSupportIssueCard({
@@ -104,12 +106,7 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                                     width: Spacing.border,
                                   ),
                                 ),
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    issue.driverAvatar,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                                child: ClipOval(child: _buildAvatar(color)),
                               ),
                               Positioned(
                                 bottom: 0,
@@ -184,16 +181,22 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: Spacing.sm),
-                                Text(
-                                  '${issue.vehicleModel} • ${issue.vehicleColor}',
-                                  style: getRegularStyle(
-                                    fontSize: FontSize.size9,
-                                    color: color.onSurfaceVariant,
+                                if (issue.vehicleInfo.isNotEmpty ||
+                                    issue.vehicleModel.isNotEmpty ||
+                                    issue.vehicleColor.isNotEmpty) ...[
+                                  const SizedBox(height: Spacing.sm),
+                                  Text(
+                                    issue.vehicleInfo.isNotEmpty
+                                        ? issue.vehicleInfo
+                                        : '${issue.vehicleModel} • ${issue.vehicleColor}',
+                                    style: getRegularStyle(
+                                      fontSize: FontSize.size9,
+                                      color: color.onSurfaceVariant,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                ],
                               ],
                             ),
                           ),
@@ -225,9 +228,11 @@ class DispatcherSupportIssueCard extends StatelessWidget {
                                   ),
                                   const SizedBox(width: Spacing.xs),
                                   Text(
-                                    locale.supportTimeMinutesAgo(
-                                      issue.minutesAgo,
-                                    ),
+                                    issue.timeAgo.isNotEmpty
+                                        ? issue.timeAgo
+                                        : locale.supportTimeMinutesAgo(
+                                            issue.minutesAgo,
+                                          ),
                                     style: getRegularStyle(
                                       fontSize: FontSize.size9,
                                       color: color.onSurfaceVariant,
@@ -382,7 +387,33 @@ class DispatcherSupportIssueCard extends StatelessWidget {
     );
   }
 
+  Widget _buildAvatar(ColorScheme color) {
+    final avatar = issue.driverAvatar;
+    if (avatar.startsWith('http')) {
+      return AppCachedNetworkImage(
+        imageUrl: avatar,
+        fit: BoxFit.cover,
+        errorWidget: Image.asset(
+          AppAssets.registrationDriverRole,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    if (avatar.isNotEmpty) {
+      return Image.asset(
+        avatar,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) =>
+            Image.asset(AppAssets.registrationDriverRole, fit: BoxFit.cover),
+      );
+    }
+    return Image.asset(AppAssets.registrationDriverRole, fit: BoxFit.cover);
+  }
+
   Color _getIndicatorColor(ColorScheme color) {
+    if (issue.categoryColor != null) {
+      return Color(issue.categoryColor!);
+    }
     switch (issue.issueType) {
       case DispatcherSupportIssueType.severeDelay:
       case DispatcherSupportIssueType.addressProblem:
@@ -390,6 +421,8 @@ class DispatcherSupportIssueCard extends StatelessWidget {
       case DispatcherSupportIssueType.damagedBox:
       case DispatcherSupportIssueType.customerUnavailable:
         return color.secondary;
+      case DispatcherSupportIssueType.unknown:
+        return color.primary;
     }
   }
 
@@ -402,27 +435,56 @@ class DispatcherSupportIssueCard extends StatelessWidget {
     final Color badgeColor;
     final Color badgeBgColor;
 
+    if (issue.categoryColor != null) {
+      badgeColor = Color(issue.categoryColor!);
+      badgeBgColor = badgeColor.withValues(alpha: 0.15);
+    } else {
+      switch (issue.issueType) {
+        case DispatcherSupportIssueType.severeDelay:
+        case DispatcherSupportIssueType.addressProblem:
+          badgeColor = color.error;
+          badgeBgColor = color.errorContainer;
+        case DispatcherSupportIssueType.damagedBox:
+        case DispatcherSupportIssueType.customerUnavailable:
+          badgeColor = color.secondary;
+          badgeBgColor = color.secondaryContainer;
+        case DispatcherSupportIssueType.unknown:
+          badgeColor = color.primary;
+          badgeBgColor = color.primaryContainer;
+      }
+    }
+
+    final catLabel = issue.categoryLabel;
+    if (catLabel != null && catLabel.isNotEmpty) {
+      label = catLabel;
+    } else if (issue.issueCategory.isNotEmpty) {
+      label = issue.issueCategory;
+    } else {
+      switch (issue.issueType) {
+        case DispatcherSupportIssueType.severeDelay:
+          label = locale.supportIssueLate;
+        case DispatcherSupportIssueType.damagedBox:
+          label = locale.supportIssueDamagedBox;
+        case DispatcherSupportIssueType.customerUnavailable:
+          label = locale.supportIssueCustomerUnavailable;
+        case DispatcherSupportIssueType.addressProblem:
+          label = locale.supportIssueAddressProblem;
+        case DispatcherSupportIssueType.unknown:
+          label = locale.supportTitle;
+      }
+    }
+
     switch (issue.issueType) {
       case DispatcherSupportIssueType.severeDelay:
-        label = locale.supportIssueLate;
         icon = Icons.info_rounded;
-        badgeColor = color.error;
-        badgeBgColor = color.errorContainer;
       case DispatcherSupportIssueType.damagedBox:
-        label = locale.supportIssueDamagedBox;
         icon = Icons.inventory_2_rounded;
-        badgeColor = color.secondary;
-        badgeBgColor = color.secondaryContainer;
       case DispatcherSupportIssueType.customerUnavailable:
-        label = locale.supportIssueCustomerUnavailable;
         icon = Icons.phone_disabled_rounded;
-        badgeColor = color.secondary;
-        badgeBgColor = color.secondaryContainer;
       case DispatcherSupportIssueType.addressProblem:
-        label = locale.supportIssueAddressProblem;
         icon = Icons.location_on_rounded;
-        badgeColor = color.error;
-        badgeBgColor = color.errorContainer;
+      case DispatcherSupportIssueType.unknown:
+        icon = Icons.help_outline_rounded;
     }
 
     return Container(

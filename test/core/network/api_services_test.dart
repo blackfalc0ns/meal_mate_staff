@@ -214,5 +214,33 @@ void main() {
         );
       },
     );
+
+    test(
+      'getDispatcherSupportIssues hits GET EndPoints.dispatcherSupportIssues with query parameters',
+      () async {
+        await apiServices.getDispatcherSupportIssues(
+          area: 'Al Malqa',
+          status: 'Open',
+          search: 'box-1',
+          datePreset: 'Last7Days',
+          fromDateUtc: '2026-09-01T00:00:00.000Z',
+          toDateUtc: '2026-09-22T00:00:00.000Z',
+          pageNumber: 1,
+          pageSize: 20,
+        );
+        expect(capturedOptions.method, 'GET');
+        expect(capturedOptions.path, EndPoints.dispatcherSupportIssues);
+        expect(capturedOptions.queryParameters, {
+          'area': 'Al Malqa',
+          'status': 'Open',
+          'search': 'box-1',
+          'datePreset': 'Last7Days',
+          'fromDateUtc': '2026-09-01T00:00:00.000Z',
+          'toDateUtc': '2026-09-22T00:00:00.000Z',
+          'pageNumber': 1,
+          'pageSize': 20,
+        });
+      },
+    );
   });
 }

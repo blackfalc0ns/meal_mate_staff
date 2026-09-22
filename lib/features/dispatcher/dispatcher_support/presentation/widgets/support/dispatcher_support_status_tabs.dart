@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../config/theme/font_manager.dart';
-import '../../../../../config/theme/spacing.dart';
-import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/extensions/extensions.dart';
-import '../../domain/entities/dispatcher_support_status.dart';
+import '../../../../../../config/theme/font_manager.dart';
+import '../../../../../../config/theme/spacing.dart';
+import '../../../../../../config/theme/styles_manager.dart';
+import '../../../../../../core/extensions/extensions.dart';
+import '../../../domain/entities/dispatcher_support_status.dart';
 
 class DispatcherSupportStatusTabs extends StatelessWidget {
   const DispatcherSupportStatusTabs({

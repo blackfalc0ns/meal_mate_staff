@@ -30,6 +30,7 @@ import '../../features/dispatcher/dispatcher_home/data/models/response/dispatche
 import '../../features/dispatcher/dispatcher_home/data/models/response/dispatcher_live_driver_response_dto.dart';
 import '../../features/dispatcher/dispatcher_orders/data/models/response/dispatcher_order_queue_response_dto.dart';
 import '../../features/dispatcher/dispatcher_map/data/models/response/dispatcher_live_monitoring_response_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/response/dispatcher_support_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -139,5 +140,17 @@ abstract class ApiServices {
   Future<DispatcherLiveMonitoringResponseDto> getDispatcherLiveMonitoring({
     @Query('restaurantId') String? restaurantId,
     @Query('status') String? status,
+  });
+
+  @GET(EndPoints.dispatcherSupportIssues)
+  Future<DispatcherSupportResponseDto> getDispatcherSupportIssues({
+    @Query('area') String? area,
+    @Query('status') String? status,
+    @Query('search') String? search,
+    @Query('datePreset') String? datePreset,
+    @Query('fromDateUtc') String? fromDateUtc,
+    @Query('toDateUtc') String? toDateUtc,
+    @Query('pageNumber') int? pageNumber,
+    @Query('pageSize') int? pageSize,
   });
 }

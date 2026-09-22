@@ -7,12 +7,12 @@ import '../../../../../core/widget/custom_app_bar.dart';
 import '../../../../../core/widget/notification_button.dart';
 import '../../domain/entities/dispatcher_issue_detail_entity.dart';
 import '../../domain/fake_data/dispatcher_issue_detail_fake_data.dart';
-import '../widgets/dispatcher_issue_details_action_buttons.dart';
-import '../widgets/dispatcher_issue_details_attachments_card.dart';
-import '../widgets/dispatcher_issue_details_description_card.dart';
-import '../widgets/dispatcher_issue_details_driver_card.dart';
-import '../widgets/dispatcher_issue_details_header_card.dart';
-import '../widgets/dispatcher_issue_details_trip_card.dart';
+import '../widgets/issue_details/dispatcher_issue_details_action_buttons.dart';
+import '../widgets/issue_details/dispatcher_issue_details_attachments_card.dart';
+import '../widgets/issue_details/dispatcher_issue_details_description_card.dart';
+import '../widgets/issue_details/dispatcher_issue_details_driver_card.dart';
+import '../widgets/issue_details/dispatcher_issue_details_header_card.dart';
+import '../widgets/issue_details/dispatcher_issue_details_trip_card.dart';
 
 class DispatcherIssueDetailsScreen extends StatelessWidget {
   const DispatcherIssueDetailsScreen({super.key, this.issue});

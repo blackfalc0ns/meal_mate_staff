@@ -3,4 +3,5 @@ enum DispatcherSupportIssueType {
   damagedBox,
   customerUnavailable,
   addressProblem,
+  unknown,
 }

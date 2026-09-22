@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../config/theme/spacing.dart';
-import '../../../../../core/extensions/extensions.dart';
-import '../../domain/entities/dispatcher_support_kpi_entity.dart';
+import '../../../../../../config/theme/spacing.dart';
+import '../../../../../../core/extensions/extensions.dart';
+import '../../../domain/entities/dispatcher_support_kpi_entity.dart';
 import 'dispatcher_support_area_card.dart';
 import 'dispatcher_support_kpi_card.dart';
 

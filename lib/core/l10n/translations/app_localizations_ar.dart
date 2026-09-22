@@ -871,6 +871,41 @@ class AppLocalizationsAr extends AppLocalizations {
       'يمكنك التواصل مع السائق مباشرة من تفاصيل المشكلة لحلها بسرعة';
 
   @override
+  String get supportEmptyTitle => 'لا توجد مشاكل';
+
+  @override
+  String get supportEmptyDescription =>
+      'لا توجد مشاكل دعم تطابق معايير البحث المحددة.';
+
+  @override
+  String get supportDateFilterTitle => 'تصفية بالتاريخ';
+
+  @override
+  String get supportDatePresetToday => 'اليوم';
+
+  @override
+  String get supportDatePresetYesterday => 'أمس';
+
+  @override
+  String get supportDatePresetLast7Days => 'آخر 7 أيام';
+
+  @override
+  String get supportDatePresetLast30Days => 'آخر 30 يوم';
+
+  @override
+  String get supportDatePresetCustom => 'فترة مخصصة';
+
+  @override
+  String get supportApplyDateFilter => 'تطبيق';
+
+  @override
+  String get supportLoadingMore => 'جارٍ تحميل المزيد...';
+
+  @override
+  String get supportRetryLoadingMore =>
+      'فشل تحميل المزيد. اضغط لإعادة المحاولة.';
+
+  @override
   String get issueDetailsTitle => 'تفاصيل المشكلة';
 
   @override
