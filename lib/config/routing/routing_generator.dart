@@ -15,6 +15,7 @@ import '../../features/auth/presentation/screens/role_selection_screen.dart';
 import '../../features/auth/presentation/screens/set_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import 'arguments/auth_route_arguments.dart';
+import 'arguments/dispatcher_support_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_order_entity.dart';
 import '../../features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_entity.dart';
@@ -281,21 +282,40 @@ class RouteGenerator {
         );
 
       case AppRoutes.dispatcherSupportIssueDetails:
-        final issue = settings.arguments is DispatcherIssueDetailEntity
-            ? settings.arguments! as DispatcherIssueDetailEntity
-            : null;
+        String? issueId;
+        DispatcherIssueDetailEntity? issue;
+        final detailsArgs = settings.arguments;
+        if (detailsArgs is DispatcherSupportIssueDetailsRouteArgs) {
+          issueId = detailsArgs.issueId;
+        } else if (detailsArgs is DispatcherIssueDetailEntity) {
+          issue = detailsArgs;
+          issueId = detailsArgs.issueId;
+        } else if (detailsArgs is String) {
+          issueId = detailsArgs;
+        }
         return _buildRoute(
           settings: settings,
-          page: DispatcherIssueDetailsScreen(issue: issue),
+          page: DispatcherIssueDetailsScreen(issueId: issueId, issue: issue),
         );
 
       case AppRoutes.dispatcherReassignDriver || AppRoutes.reassignDriver:
-        final issue = settings.arguments is DispatcherIssueDetailEntity
-            ? settings.arguments! as DispatcherIssueDetailEntity
-            : null;
+        String? reassignIssueId;
+        DispatcherIssueDetailEntity? reassignIssue;
+        final reassignArgs = settings.arguments;
+        if (reassignArgs is DispatcherReassignDriverRouteArgs) {
+          reassignIssueId = reassignArgs.issueId;
+        } else if (reassignArgs is DispatcherIssueDetailEntity) {
+          reassignIssue = reassignArgs;
+          reassignIssueId = reassignArgs.issueId;
+        } else if (reassignArgs is String) {
+          reassignIssueId = reassignArgs;
+        }
         return _buildRoute(
           settings: settings,
-          page: DispatcherReassignDriverScreen(issue: issue),
+          page: DispatcherReassignDriverScreen(
+            issueId: reassignIssueId,
+            issue: reassignIssue,
+          ),
         );
 
       case AppRoutes.dispatcherProfile:

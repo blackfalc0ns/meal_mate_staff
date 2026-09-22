@@ -2313,4 +2313,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get issueDetailsClose => 'Close';
+
+  @override
+  String get reassignDriverEmptyTitle => 'No replacement drivers available';
+
+  @override
+  String get reassignDriverEmptySubtitle =>
+      'No drivers match the current criteria at this time';
+
+  @override
+  String get reassignDriverConflictDriverUnavailable =>
+      'The selected driver is no longer available, please select another driver';
+
+  @override
+  String get reassignDriverConflictIssueTerminal =>
+      'This issue has already been resolved or reassigned';
 }

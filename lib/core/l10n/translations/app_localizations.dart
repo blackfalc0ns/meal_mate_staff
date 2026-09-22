@@ -4471,6 +4471,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get issueDetailsClose;
+
+  /// No description provided for @reassignDriverEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No replacement drivers available'**
+  String get reassignDriverEmptyTitle;
+
+  /// No description provided for @reassignDriverEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No drivers match the current criteria at this time'**
+  String get reassignDriverEmptySubtitle;
+
+  /// No description provided for @reassignDriverConflictDriverUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected driver is no longer available, please select another driver'**
+  String get reassignDriverConflictDriverUnavailable;
+
+  /// No description provided for @reassignDriverConflictIssueTerminal.
+  ///
+  /// In en, this message translates to:
+  /// **'This issue has already been resolved or reassigned'**
+  String get reassignDriverConflictIssueTerminal;
 }
 
 class _AppLocalizationsDelegate

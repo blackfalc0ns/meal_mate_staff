@@ -903,5 +903,9 @@
   "issueDetailsResolvedAt": "وقت الحل",
   "issueDetailsResolutionNotes": "ملاحظات الحل",
   "issueDetailsResolutionAction": "الإجراء المتخذ",
-  "issueDetailsClose": "إغلاق"
+  "issueDetailsClose": "إغلاق",
+  "reassignDriverEmptyTitle": "لا يوجد سائقون بدلاء متاحون",
+  "reassignDriverEmptySubtitle": "لا توجد نتائج مطابقة لمعايير البحث في الوقت الحالي",
+  "reassignDriverConflictDriverUnavailable": "السائق المختار لم يعد متاحاً، يرجى اختيار سائق آخر",
+  "reassignDriverConflictIssueTerminal": "تم حل هذه المشكلة أو إعادة تعيين سائق لها مسبقاً"
 }

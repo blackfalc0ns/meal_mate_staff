@@ -3,6 +3,7 @@ import 'dispatcher_issue_driver_entity.dart';
 import 'dispatcher_issue_resolution_entity.dart';
 import 'dispatcher_issue_status.dart';
 import 'dispatcher_issue_trip_entity.dart';
+import 'reassign_driver_candidates_entity.dart';
 
 class DispatcherIssueDetailEntity {
   const DispatcherIssueDetailEntity({
@@ -34,6 +35,31 @@ class DispatcherIssueDetailEntity {
     ),
     this.resolution,
   });
+
+  factory DispatcherIssueDetailEntity.fromReassignmentSummary({
+    required ReassignDriverIssueSummaryEntity summary,
+    DispatcherIssueDriverEntity? currentDriver,
+  }) {
+    return DispatcherIssueDetailEntity(
+      issueId: summary.issueId,
+      title: summary.title,
+      category: summary.category,
+      categoryLabel: summary.categoryLabel,
+      categoryColorHex: summary.categoryColorHex,
+      reportedTimeText: summary.reportedTimeText,
+      boxCode: summary.taskNumber,
+      area: summary.area,
+      affectedBoxesCount: summary.affectedBoxesCount,
+      affectedBoxesText: summary.affectedBoxesText,
+      priority: summary.priorityText.isNotEmpty
+          ? summary.priorityText
+          : summary.priority,
+      priorityText: summary.priorityText,
+      priorityColorHex: summary.priorityColorHex,
+      driver: currentDriver,
+      description: summary.description,
+    );
+  }
 
   final String issueId;
   final String title;

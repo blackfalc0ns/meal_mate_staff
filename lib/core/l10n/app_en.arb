@@ -910,5 +910,9 @@
   "issueDetailsResolvedAt": "Resolved At",
   "issueDetailsResolutionNotes": "Resolution Notes",
   "issueDetailsResolutionAction": "Action Taken",
-  "issueDetailsClose": "Close"
+  "issueDetailsClose": "Close",
+  "reassignDriverEmptyTitle": "No replacement drivers available",
+  "reassignDriverEmptySubtitle": "No drivers match the current criteria at this time",
+  "reassignDriverConflictDriverUnavailable": "The selected driver is no longer available, please select another driver",
+  "reassignDriverConflictIssueTerminal": "This issue has already been resolved or reassigned"
 }

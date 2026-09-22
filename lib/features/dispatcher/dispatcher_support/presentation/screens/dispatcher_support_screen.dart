@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_mate_delivery/core/errors/error_widgets/api_error_widget.dart';
@@ -50,7 +52,7 @@ class _DispatcherSupportScreenState extends State<DispatcherSupportScreen> {
     );
 
     if (!_viewModel.state.hasLoadedOnce && !_viewModel.state.isLoading) {
-      _viewModel.doIntent(const LoadDispatcherSupportEvent());
+      unawaited(_viewModel.doIntent(const LoadDispatcherSupportEvent()));
     }
   }
 
@@ -58,7 +60,7 @@ class _DispatcherSupportScreenState extends State<DispatcherSupportScreen> {
   void dispose() {
     _searchController.dispose();
     if (!_isExternalViewModel) {
-      _viewModel.close();
+      unawaited(_viewModel.close());
     }
     super.dispose();
   }
@@ -67,22 +69,28 @@ class _DispatcherSupportScreenState extends State<DispatcherSupportScreen> {
     BuildContext context,
     DispatcherSupportState state,
   ) {
-    DispatcherSupportDateFilterSheet.show(
-      context,
-      selectedPreset: state.query.datePreset,
-      initialCustomFrom: state.query.fromDateUtc,
-      initialCustomTo: state.query.toDateUtc,
-      onPresetSelected: (preset) {
-        _viewModel.doIntent(ChangeDispatcherSupportDatePresetEvent(preset));
-      },
-      onCustomRangeSelected: (fromUtc, toUtc) {
-        _viewModel.doIntent(
-          ChangeDispatcherSupportCustomDateRangeEvent(
-            fromDateUtc: fromUtc,
-            toDateUtc: toUtc,
-          ),
-        );
-      },
+    unawaited(
+      DispatcherSupportDateFilterSheet.show(
+        context,
+        selectedPreset: state.query.datePreset,
+        initialCustomFrom: state.query.fromDateUtc,
+        initialCustomTo: state.query.toDateUtc,
+        onPresetSelected: (preset) {
+          unawaited(
+            _viewModel.doIntent(ChangeDispatcherSupportDatePresetEvent(preset)),
+          );
+        },
+        onCustomRangeSelected: (fromUtc, toUtc) {
+          unawaited(
+            _viewModel.doIntent(
+              ChangeDispatcherSupportCustomDateRangeEvent(
+                fromDateUtc: fromUtc,
+                toDateUtc: toUtc,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 

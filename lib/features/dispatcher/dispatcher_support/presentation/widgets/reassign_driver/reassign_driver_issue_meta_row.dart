@@ -37,8 +37,8 @@ class ReassignDriverIssueMetaRow extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xs / 2),
                 InkWell(
-                  onTap: () {
-                    Clipboard.setData(ClipboardData(text: issue.taskNumber));
+                  onTap: () async {
+                    await Clipboard.setData(ClipboardData(text: issue.taskNumber));
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

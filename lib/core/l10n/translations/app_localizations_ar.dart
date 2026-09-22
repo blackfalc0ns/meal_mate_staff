@@ -2306,4 +2306,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get issueDetailsClose => 'إغلاق';
+
+  @override
+  String get reassignDriverEmptyTitle => 'لا يوجد سائقون بدلاء متاحون';
+
+  @override
+  String get reassignDriverEmptySubtitle =>
+      'لا توجد نتائج مطابقة لمعايير البحث في الوقت الحالي';
+
+  @override
+  String get reassignDriverConflictDriverUnavailable =>
+      'السائق المختار لم يعد متاحاً، يرجى اختيار سائق آخر';
+
+  @override
+  String get reassignDriverConflictIssueTerminal =>
+      'تم حل هذه المشكلة أو إعادة تعيين سائق لها مسبقاً';
 }

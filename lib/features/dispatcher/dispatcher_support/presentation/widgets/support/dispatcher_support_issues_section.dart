@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../config/routing/app_routes.dart';
 import '../../../../../../config/routing/arguments/dispatcher_support_route_arguments.dart';
 import '../../../../../../core/extensions/extensions.dart';
+import '../../../domain/entities/dispatcher_issue_workflow_result_entity.dart';
 import '../../../domain/entities/dispatcher_support_issue_entity.dart';
+import '../../../domain/entities/reassignment_result_entity.dart';
+import '../../manager/dispatcher_support_event.dart';
+import '../../manager/dispatcher_support_view_model.dart';
 import 'dispatcher_support_empty_state.dart';
 import 'dispatcher_support_issue_card.dart';
 
@@ -35,8 +40,8 @@ class DispatcherSupportIssuesSection extends StatelessWidget {
         (context, index) {
           final issue = issues[index];
           return RepaintBoundary(
+            key: ValueKey(issue.id),
             child: DispatcherSupportIssueCard(
-              key: ValueKey(issue.id),
               issue: issue,
               onTap: () => _handleViewDetails(context, issue),
               onViewDetails: () => _handleViewDetails(context, issue),
@@ -46,7 +51,7 @@ class DispatcherSupportIssuesSection extends StatelessWidget {
           );
         },
         childCount: issues.length,
-        findChildIndexCallback: (Key key) {
+        findChildIndexCallback: (key) {
           if (key is ValueKey<String>) {
             final index = issues.indexWhere((i) => i.id == key.value);
             return index == -1 ? null : index;
@@ -57,28 +62,43 @@ class DispatcherSupportIssuesSection extends StatelessWidget {
     );
   }
 
-  void _handleViewDetails(
+  Future<void> _handleViewDetails(
     BuildContext context,
     DispatcherSupportIssueEntity issue,
-  ) {
+  ) async {
     if (onViewDetails != null) {
       onViewDetails!(issue);
     } else {
-      context.pushNamed(
+      final result = await context.pushNamed(
         AppRoutes.dispatcherSupportIssueDetails,
         arguments: DispatcherSupportIssueDetailsRouteArgs(issueId: issue.id),
       );
+      if (result is DispatcherIssueWorkflowResultEntity &&
+          result.requiresRefresh &&
+          context.mounted) {
+        context
+            .read<DispatcherSupportViewModel>()
+            .doIntent(const LoadDispatcherSupportEvent());
+      }
     }
   }
 
-  void _handleAssignDriver(
+  Future<void> _handleAssignDriver(
     BuildContext context,
     DispatcherSupportIssueEntity issue,
-  ) {
+  ) async {
     if (onAssignAlternativeDriver != null) {
       onAssignAlternativeDriver!(issue);
     } else {
-      context.pushNamed(AppRoutes.assignBox);
+      final result = await context.pushNamed(
+        AppRoutes.dispatcherReassignDriver,
+        arguments: DispatcherReassignDriverRouteArgs(issueId: issue.id),
+      );
+      if (result is ReassignmentResultEntity && context.mounted) {
+        context
+            .read<DispatcherSupportViewModel>()
+            .doIntent(const LoadDispatcherSupportEvent());
+      }
     }
   }
 }

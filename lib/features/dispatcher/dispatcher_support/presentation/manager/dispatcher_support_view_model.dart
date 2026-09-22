@@ -107,8 +107,10 @@ class DispatcherSupportViewModel extends Cubit<DispatcherSupportState> {
     _searchDebounce = Timer(searchDebounceDuration, () {
       if (isClosed || trimmed == _lastFetchedSearch) return;
       _lastFetchedSearch = trimmed;
-      _fetchReplacement(
-        state.query.copyWith(search: trimmed).resetToFirstPage(),
+      unawaited(
+        _fetchReplacement(
+          state.query.copyWith(search: trimmed).resetToFirstPage(),
+        ),
       );
     });
   }
@@ -219,7 +221,7 @@ class DispatcherSupportViewModel extends Cubit<DispatcherSupportState> {
     final maxScroll = scrollController.position.maxScrollExtent;
     final currentScroll = scrollController.position.pixels;
     if (maxScroll - currentScroll <= 300) {
-      _loadNextPage();
+      unawaited(_loadNextPage());
     }
   }
 

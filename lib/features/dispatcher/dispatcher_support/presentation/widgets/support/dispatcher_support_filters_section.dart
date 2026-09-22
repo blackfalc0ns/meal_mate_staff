@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../../../../config/theme/spacing.dart';
@@ -42,18 +44,24 @@ class DispatcherSupportFiltersSection extends StatelessWidget {
           inProgressCount: counters.inProgressCount,
           resolvedCount: counters.resolvedCount,
           onChanged: (status) {
-            viewModel.doIntent(ChangeDispatcherSupportStatusEvent(status));
+            unawaited(
+              viewModel.doIntent(ChangeDispatcherSupportStatusEvent(status)),
+            );
           },
         ),
         const SizedBox(height: Spacing.sm),
         DispatcherSupportSearchBar(
           controller: searchController,
           onChanged: (val) {
-            viewModel.doIntent(ChangeDispatcherSupportSearchEvent(val));
+            unawaited(
+              viewModel.doIntent(ChangeDispatcherSupportSearchEvent(val)),
+            );
           },
           onClear: () {
             searchController.clear();
-            viewModel.doIntent(const ClearDispatcherSupportSearchEvent());
+            unawaited(
+              viewModel.doIntent(const ClearDispatcherSupportSearchEvent()),
+            );
           },
         ),
         const SizedBox(height: Spacing.sm),
@@ -63,9 +71,11 @@ class DispatcherSupportFiltersSection extends StatelessWidget {
           isDateFilterActive:
               state.query.datePreset != DispatcherSupportDatePreset.last7Days,
           onAreaSelected: (areaKey) {
-            viewModel.doIntent(
-              ChangeDispatcherSupportAreaEvent(
-                areaKey.isEmpty ? null : areaKey,
+            unawaited(
+              viewModel.doIntent(
+                ChangeDispatcherSupportAreaEvent(
+                  areaKey.isEmpty ? null : areaKey,
+                ),
               ),
             );
           },

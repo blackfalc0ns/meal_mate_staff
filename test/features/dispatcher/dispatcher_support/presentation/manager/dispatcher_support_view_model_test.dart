@@ -32,14 +32,14 @@ void main() {
     );
   }
 
-  test('initial state has default query with status open and page 1', () {
+  test('initial state has default query with status open and page 1', () async {
     final vm = createViewModel();
     expect(vm.state.query.status, DispatcherSupportStatus.open);
     expect(vm.state.query.pageNumber, 1);
     expect(vm.state.query.pageSize, 20);
     expect(vm.state.response, isNull);
     expect(vm.state.isInitialLoading, isFalse);
-    vm.close();
+    await vm.close();
   });
 
   test(

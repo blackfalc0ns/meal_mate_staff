@@ -77,7 +77,13 @@ import '../../features/dispatcher/dispatcher_support/data/data_source/dispatcher
 import '../../features/dispatcher/dispatcher_support/data/repo/dispatcher_support_repository_impl.dart';
 import '../../features/dispatcher/dispatcher_support/domain/repo/dispatcher_support_repository.dart';
 import '../../features/dispatcher/dispatcher_support/domain/usecase/get_dispatcher_support_issues_usecase.dart';
+import '../../features/dispatcher/dispatcher_support/domain/usecase/get_dispatcher_issue_details_usecase.dart';
+import '../../features/dispatcher/dispatcher_support/domain/usecase/resolve_dispatcher_issue_usecase.dart';
+import '../../features/dispatcher/dispatcher_support/domain/usecase/get_replacement_driver_candidates_usecase.dart';
+import '../../features/dispatcher/dispatcher_support/domain/usecase/reassign_dispatcher_issue_usecase.dart';
 import '../../features/dispatcher/dispatcher_support/presentation/manager/dispatcher_support_view_model.dart';
+import '../../features/dispatcher/dispatcher_support/presentation/manager/issue_details/dispatcher_issue_details_view_model.dart';
+import '../../features/dispatcher/dispatcher_support/presentation/manager/reassignment/dispatcher_reassignment_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -336,9 +342,43 @@ Future<void> configureDependencies() async {
       getIt<DispatcherSupportRepository>(),
     ),
   );
+  getIt.registerFactory<GetDispatcherIssueDetailsUseCase>(
+    () => GetDispatcherIssueDetailsUseCase(
+      getIt<DispatcherSupportRepository>(),
+    ),
+  );
+  getIt.registerFactory<ResolveDispatcherIssueUseCase>(
+    () => ResolveDispatcherIssueUseCase(
+      getIt<DispatcherSupportRepository>(),
+    ),
+  );
+  getIt.registerFactory<GetReplacementDriverCandidatesUseCase>(
+    () => GetReplacementDriverCandidatesUseCase(
+      getIt<DispatcherSupportRepository>(),
+    ),
+  );
+  getIt.registerFactory<ReassignDispatcherIssueUseCase>(
+    () => ReassignDispatcherIssueUseCase(
+      getIt<DispatcherSupportRepository>(),
+    ),
+  );
   getIt.registerFactory<DispatcherSupportViewModel>(
     () => DispatcherSupportViewModel(
       getIssuesUseCase: getIt<GetDispatcherSupportIssuesUseCase>(),
+    ),
+  );
+  getIt.registerFactoryParam<DispatcherIssueDetailsViewModel, String, void>(
+    (issueId, _) => DispatcherIssueDetailsViewModel(
+      issueId: issueId,
+      getDetailsUseCase: getIt<GetDispatcherIssueDetailsUseCase>(),
+      resolveUseCase: getIt<ResolveDispatcherIssueUseCase>(),
+    ),
+  );
+  getIt.registerFactoryParam<DispatcherReassignmentViewModel, String, void>(
+    (issueId, _) => DispatcherReassignmentViewModel(
+      issueId: issueId,
+      getCandidatesUseCase: getIt<GetReplacementDriverCandidatesUseCase>(),
+      reassignUseCase: getIt<ReassignDispatcherIssueUseCase>(),
     ),
   );
 }
