@@ -13,6 +13,7 @@ import 'package:meal_mate_delivery/core/errors/error_widgets/empty_state_widget.
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
+import 'package:meal_mate_delivery/core/widget/app_button.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/domain/entities/dispatcher_driver_suggestion_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/domain/entities/dispatcher_filter_type.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/domain/entities/dispatcher_order_entity.dart';
@@ -94,7 +95,7 @@ void main() {
 
       // Tap retry after restoring repository
       repository.failQueue = false;
-      final retryBtn = find.text('Retry');
+      final retryBtn = find.byType(AppButton);
       expect(retryBtn, findsOneWidget);
       await tester.tap(retryBtn);
       await tester.pumpAndSettle();

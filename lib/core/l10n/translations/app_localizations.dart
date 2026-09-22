@@ -4495,6 +4495,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This issue has already been resolved or reassigned'**
   String get reassignDriverConflictIssueTerminal;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// No description provided for @connectionTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timeout'**
+  String get connectionTimeout;
+
+  /// No description provided for @receiveTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive timeout'**
+  String get receiveTimeout;
+
+  /// No description provided for @sendTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Send timeout'**
+  String get sendTimeout;
+
+  /// No description provided for @requestTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Request timeout'**
+  String get requestTimeout;
+
+  /// No description provided for @noInternetConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get noInternetConnection;
+
+  /// No description provided for @noInternetConnectionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get noInternetConnectionDesc;
+
+  /// No description provided for @serverError.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error'**
+  String get serverError;
+
+  /// No description provided for @serverErrorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred on the server. Please try again later.'**
+  String get serverErrorDesc;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// No description provided for @somethingWentWrongDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred. Please try again.'**
+  String get somethingWentWrongDesc;
+
+  /// No description provided for @checkConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Check connection'**
+  String get checkConnection;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get contactSupport;
+
+  /// No description provided for @goBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get goBack;
+
+  /// No description provided for @requestError.
+  ///
+  /// In en, this message translates to:
+  /// **'Request error'**
+  String get requestError;
+
+  /// No description provided for @unauthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Unauthorized'**
+  String get unauthorized;
+
+  /// No description provided for @forbidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Forbidden'**
+  String get forbidden;
+
+  /// No description provided for @notFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found'**
+  String get notFound;
+
+  /// No description provided for @conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Conflict'**
+  String get conflict;
+
+  /// No description provided for @validationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Validation error'**
+  String get validationError;
+
+  /// No description provided for @tooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests'**
+  String get tooManyRequests;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Request cancelled'**
+  String get cancelled;
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get unknownError;
+
+  /// No description provided for @emptyNoDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No data found'**
+  String get emptyNoDataTitle;
+
+  /// No description provided for @emptyNoDataDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing to show right now.'**
+  String get emptyNoDataDesc;
 }
 
 class _AppLocalizationsDelegate

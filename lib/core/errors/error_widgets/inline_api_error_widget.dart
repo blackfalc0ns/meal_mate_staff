@@ -4,6 +4,8 @@ import '../../../config/theme/colors.dart';
 import '../../../config/theme/font_manager.dart';
 import '../../../config/theme/spacing.dart';
 import '../../../config/theme/styles_manager.dart';
+import '../../extensions/extensions.dart';
+import '../../network/failuer_mapper.dart';
 import '../../network/failures.dart';
 
 class InlineApiErrorWidget extends StatelessWidget {
@@ -14,6 +16,7 @@ class InlineApiErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.localization;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -29,7 +32,7 @@ class InlineApiErrorWidget extends StatelessWidget {
             const SizedBox(width: Spacing.md),
             Expanded(
               child: Text(
-                failure.errorMessage,
+                mapFailureMessage(context, failure.errorMessage),
                 style: getRegularStyle(
                   color: AppColors.textSecondary,
                   fontSize: FontSize.size12,
@@ -38,7 +41,7 @@ class InlineApiErrorWidget extends StatelessWidget {
               ),
             ),
             if (onRetry != null)
-              TextButton(onPressed: onRetry, child: const Text('Retry')),
+              TextButton(onPressed: onRetry, child: Text(l10n.retry)),
           ],
         ),
       ),

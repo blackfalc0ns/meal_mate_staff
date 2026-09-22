@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme/colors.dart';
+import '../../extensions/extensions.dart';
 import 'base_error_widget.dart';
 
 class NoInternetErrorWidget extends StatelessWidget {
@@ -15,15 +16,16 @@ class NoInternetErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.localization;
     return BaseErrorWidget(
-      title: 'No internet connection',
-      description: 'Check your connection and try again.',
+      title: l10n.noInternetConnection,
+      description: l10n.noInternetConnectionDesc,
       icon: Icons.wifi_off_rounded,
       onRetry: onRetry,
       onSecondaryAction: onCheckConnection,
       secondaryActionText: onCheckConnection == null
           ? null
-          : 'Check connection',
+          : l10n.checkConnection,
       primaryColor: AppColors.warning,
     );
   }

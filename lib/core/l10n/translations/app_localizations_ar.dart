@@ -2321,4 +2321,85 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get reassignDriverConflictIssueTerminal =>
       'تم حل هذه المشكلة أو إعادة تعيين سائق لها مسبقاً';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get refresh => 'تحديث';
+
+  @override
+  String get connectionTimeout => 'انتهت مهلة الاتصال';
+
+  @override
+  String get receiveTimeout => 'انتهت مهلة استلام البيانات';
+
+  @override
+  String get sendTimeout => 'انتهت مهلة إرسال البيانات';
+
+  @override
+  String get requestTimeout => 'انتهت مهلة معالجة الطلب';
+
+  @override
+  String get noInternetConnection => 'لا يوجد اتصال بالإنترنت';
+
+  @override
+  String get noInternetConnectionDesc =>
+      'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
+
+  @override
+  String get serverError => 'حدث خطأ في الخادم';
+
+  @override
+  String get serverErrorDesc =>
+      'حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقاً.';
+
+  @override
+  String get somethingWentWrong => 'حدث خطأ غير متوقع';
+
+  @override
+  String get somethingWentWrongDesc =>
+      'حدث خطأ غير متوقع. يرجى إعادة المحاولة.';
+
+  @override
+  String get checkConnection => 'فحص الاتصال';
+
+  @override
+  String get contactSupport => 'التواصل مع الدعم';
+
+  @override
+  String get goBack => 'الرجوع';
+
+  @override
+  String get requestError => 'خطأ في الطلب';
+
+  @override
+  String get unauthorized => 'غير مصرح لك بالوصول';
+
+  @override
+  String get forbidden => 'غير مسموح بهذا الإجراء';
+
+  @override
+  String get notFound => 'العنصر غير موجود';
+
+  @override
+  String get conflict => 'تعارض في البيانات';
+
+  @override
+  String get validationError => 'خطأ في التحقق من البيانات';
+
+  @override
+  String get tooManyRequests => 'طلبات كثيرة جداً، يرجى الانتظار';
+
+  @override
+  String get cancelled => 'تم إلغاء الطلب';
+
+  @override
+  String get unknownError => 'خطأ غير معروف';
+
+  @override
+  String get emptyNoDataTitle => 'لا توجد بيانات';
+
+  @override
+  String get emptyNoDataDesc => 'لا يوجد شيء لعرضه في الوقت الحالي.';
 }

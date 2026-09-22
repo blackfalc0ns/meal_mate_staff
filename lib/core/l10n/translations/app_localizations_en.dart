@@ -2328,4 +2328,84 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reassignDriverConflictIssueTerminal =>
       'This issue has already been resolved or reassigned';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get connectionTimeout => 'Connection timeout';
+
+  @override
+  String get receiveTimeout => 'Receive timeout';
+
+  @override
+  String get sendTimeout => 'Send timeout';
+
+  @override
+  String get requestTimeout => 'Request timeout';
+
+  @override
+  String get noInternetConnection => 'No internet connection';
+
+  @override
+  String get noInternetConnectionDesc => 'Check your connection and try again.';
+
+  @override
+  String get serverError => 'Server error';
+
+  @override
+  String get serverErrorDesc =>
+      'An error occurred on the server. Please try again later.';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong';
+
+  @override
+  String get somethingWentWrongDesc =>
+      'An unexpected error occurred. Please try again.';
+
+  @override
+  String get checkConnection => 'Check connection';
+
+  @override
+  String get contactSupport => 'Contact support';
+
+  @override
+  String get goBack => 'Go back';
+
+  @override
+  String get requestError => 'Request error';
+
+  @override
+  String get unauthorized => 'Unauthorized';
+
+  @override
+  String get forbidden => 'Forbidden';
+
+  @override
+  String get notFound => 'Not found';
+
+  @override
+  String get conflict => 'Conflict';
+
+  @override
+  String get validationError => 'Validation error';
+
+  @override
+  String get tooManyRequests => 'Too many requests';
+
+  @override
+  String get cancelled => 'Request cancelled';
+
+  @override
+  String get unknownError => 'Unknown error';
+
+  @override
+  String get emptyNoDataTitle => 'No data found';
+
+  @override
+  String get emptyNoDataDesc => 'There is nothing to show right now.';
 }

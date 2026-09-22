@@ -214,7 +214,7 @@ void main() {
 
         // Setup next result as success and tap retry
         repository.nextResult = ApiSuccessResult(data: _sampleResponse());
-        final retryButton = find.widgetWithText(AppButton, 'Retry');
+        final retryButton = find.byType(AppButton);
         expect(retryButton, findsOneWidget);
 
         await tester.tap(retryButton);

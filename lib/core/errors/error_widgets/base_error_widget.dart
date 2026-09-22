@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../config/theme/font_manager.dart';
 import '../../../config/theme/spacing.dart';
 import '../../../config/theme/styles_manager.dart';
+import '../../extensions/extensions.dart';
 import '../../widget/app_button.dart';
 
 class BaseErrorWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class BaseErrorWidget extends StatelessWidget {
     this.onSecondaryAction,
     this.secondaryActionText,
     this.primaryColor,
-    this.retryText = 'Retry',
+    this.retryText,
   });
 
   final String title;
@@ -25,12 +26,13 @@ class BaseErrorWidget extends StatelessWidget {
   final VoidCallback? onSecondaryAction;
   final String? secondaryActionText;
   final Color? primaryColor;
-  final String retryText;
+  final String? retryText;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final accent = primaryColor ?? colorScheme.error;
+    final effectiveRetryText = retryText ?? context.localization.retry;
 
     return Center(
       child: SingleChildScrollView(
@@ -70,7 +72,7 @@ class BaseErrorWidget extends StatelessWidget {
             ),
             if (onRetry != null) ...[
               const SizedBox(height: Spacing.xl),
-              AppButton(text: retryText, onPressed: onRetry),
+              AppButton(text: effectiveRetryText, onPressed: onRetry),
             ],
             if (onSecondaryAction != null && secondaryActionText != null) ...[
               const SizedBox(height: Spacing.md),

@@ -1,3 +1,7 @@
+import 'package:flutter/widgets.dart';
+
+import '../extensions/extensions.dart';
+
 enum ApiErrorType {
   noInternetConnection,
   connectionTimeout,
@@ -44,6 +48,32 @@ extension ApiErrorTypeExtension on ApiErrorType {
       ApiErrorType.cancelled => 'Request cancelled',
       ApiErrorType.unknown => 'Unknown error',
       ApiErrorType.other => 'Something went wrong',
+    };
+  }
+
+  String localizedMessage(BuildContext context) {
+    final l10n = context.localization;
+    return switch (this) {
+      ApiErrorType.noInternetConnection => l10n.noInternetConnection,
+      ApiErrorType.connectionTimeout => l10n.connectionTimeout,
+      ApiErrorType.receiveTimeout => l10n.receiveTimeout,
+      ApiErrorType.sendTimeout => l10n.sendTimeout,
+      ApiErrorType.requestTimeout => l10n.requestTimeout,
+      ApiErrorType.serverError ||
+      ApiErrorType.internalServerError ||
+      ApiErrorType.badGateway ||
+      ApiErrorType.serviceUnavailable ||
+      ApiErrorType.gatewayTimeout => l10n.serverError,
+      ApiErrorType.unauthorized => l10n.unauthorized,
+      ApiErrorType.forbidden => l10n.forbidden,
+      ApiErrorType.notFound => l10n.notFound,
+      ApiErrorType.conflict => l10n.conflict,
+      ApiErrorType.validationError => l10n.validationError,
+      ApiErrorType.tooManyRequests => l10n.tooManyRequests,
+      ApiErrorType.cancelled => l10n.cancelled,
+      ApiErrorType.unknown => l10n.unknownError,
+      ApiErrorType.badRequest ||
+      ApiErrorType.other => l10n.somethingWentWrong,
     };
   }
 }

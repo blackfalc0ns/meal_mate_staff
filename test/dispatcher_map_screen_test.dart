@@ -9,6 +9,7 @@ import 'package:meal_mate_delivery/core/errors/error_widgets/empty_state_widget.
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
+import 'package:meal_mate_delivery/core/widget/app_button.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/entities/dispatcher_live_monitoring_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/entities/dispatcher_map_connection_status.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/entities/dispatcher_map_driver_entity.dart';
@@ -189,7 +190,7 @@ void main() {
 
     testWidgets('shows ApiErrorWidget on initial error and retries on tap', (tester) async {
       final failure = Failure.fromException(
-        ApiException(
+        const ApiException(
           errorType: ApiErrorType.noInternetConnection,
           message: 'No internet',
         ),
@@ -205,7 +206,7 @@ void main() {
       expect(find.byType(ApiErrorWidget), findsOneWidget);
       expect(find.byType(DispatcherMapShimmer), findsNothing);
 
-      final retryBtn = find.text('Retry');
+      final retryBtn = find.byType(AppButton);
       expect(retryBtn, findsOneWidget);
 
       await tester.tap(retryBtn);
