@@ -4393,6 +4393,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Civil ID is not valid'**
   String get validationCivilIdInvalid;
+
+  /// No description provided for @issueDetailsResolveIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolve Issue'**
+  String get issueDetailsResolveIssue;
+
+  /// No description provided for @issueDetailsResolveDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolve Issue and Confirm'**
+  String get issueDetailsResolveDialogTitle;
+
+  /// No description provided for @issueDetailsResolveNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution Notes'**
+  String get issueDetailsResolveNotesLabel;
+
+  /// No description provided for @issueDetailsResolveNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter resolution details here (3 to 500 characters)...'**
+  String get issueDetailsResolveNotesHint;
+
+  /// No description provided for @issueDetailsResolveNotesMinError.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution notes must be at least 3 characters'**
+  String get issueDetailsResolveNotesMinError;
+
+  /// No description provided for @issueDetailsResolveNotesMaxError.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution notes cannot exceed 500 characters'**
+  String get issueDetailsResolveNotesMaxError;
+
+  /// No description provided for @issueDetailsConfirmResolve.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Resolution'**
+  String get issueDetailsConfirmResolve;
+
+  /// No description provided for @issueDetailsResolutionCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution Details'**
+  String get issueDetailsResolutionCardTitle;
+
+  /// No description provided for @issueDetailsResolvedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved By'**
+  String get issueDetailsResolvedBy;
+
+  /// No description provided for @issueDetailsResolvedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved At'**
+  String get issueDetailsResolvedAt;
+
+  /// No description provided for @issueDetailsResolutionNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution Notes'**
+  String get issueDetailsResolutionNotes;
+
+  /// No description provided for @issueDetailsResolutionAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Action Taken'**
+  String get issueDetailsResolutionAction;
+
+  /// No description provided for @issueDetailsClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get issueDetailsClose;
 }
 
 class _AppLocalizationsDelegate

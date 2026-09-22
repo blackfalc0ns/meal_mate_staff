@@ -4,6 +4,7 @@ import '../../../../../../config/theme/font_manager.dart';
 import '../../../../../../config/theme/spacing.dart';
 import '../../../../../../config/theme/styles_manager.dart';
 import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../../core/widget/app_cached_network_image.dart';
 import '../../../domain/entities/dispatcher_issue_detail_entity.dart';
 
 class DispatcherIssueDetailsDriverCard extends StatelessWidget {
@@ -43,12 +44,38 @@ class DispatcherIssueDetailsDriverCard extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   ClipOval(
-                    child: Image.asset(
-                      issue.driverAvatar,
-                      width: Spacing.buttonSmallHeight * 1.15,
-                      height: Spacing.buttonSmallHeight * 1.15,
-                      fit: BoxFit.cover,
-                    ),
+                    child: issue.driverAvatar.startsWith('http')
+                        ? AppCachedNetworkImage(
+                            imageUrl: issue.driverAvatar,
+                            width: Spacing.buttonSmallHeight * 1.15,
+                            height: Spacing.buttonSmallHeight * 1.15,
+                            fit: BoxFit.cover,
+                            errorWidget: Image.asset(
+                              'assets/images/dispatcher/driver_avatar.png',
+                              width: Spacing.buttonSmallHeight * 1.15,
+                              height: Spacing.buttonSmallHeight * 1.15,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : (issue.driverAvatar.isNotEmpty
+                            ? Image.asset(
+                                issue.driverAvatar,
+                                width: Spacing.buttonSmallHeight * 1.15,
+                                height: Spacing.buttonSmallHeight * 1.15,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, _, _) => Container(
+                                  width: Spacing.buttonSmallHeight * 1.15,
+                                  height: Spacing.buttonSmallHeight * 1.15,
+                                  color: color.primary.withValues(alpha: 0.1),
+                                  child: Icon(Icons.person_rounded, color: color.primary),
+                                ),
+                              )
+                            : Container(
+                                width: Spacing.buttonSmallHeight * 1.15,
+                                height: Spacing.buttonSmallHeight * 1.15,
+                                color: color.primary.withValues(alpha: 0.1),
+                                child: Icon(Icons.person_rounded, color: color.primary),
+                              )),
                   ),
                   if (issue.isDriverOnline)
                     PositionedDirectional(

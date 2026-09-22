@@ -17,7 +17,7 @@ class DispatcherIssueDetailsHeaderCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusSm),
@@ -262,8 +262,8 @@ class DispatcherIssueDetailsHeaderCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Clipboard.setData(
+                              onTap: () async {
+                                await Clipboard.setData(
                                   ClipboardData(text: issue.taskNumber),
                                 );
                               },

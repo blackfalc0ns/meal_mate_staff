@@ -2271,4 +2271,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validationCivilIdInvalid => 'Civil ID is not valid';
+
+  @override
+  String get issueDetailsResolveIssue => 'Resolve Issue';
+
+  @override
+  String get issueDetailsResolveDialogTitle => 'Resolve Issue and Confirm';
+
+  @override
+  String get issueDetailsResolveNotesLabel => 'Resolution Notes';
+
+  @override
+  String get issueDetailsResolveNotesHint =>
+      'Enter resolution details here (3 to 500 characters)...';
+
+  @override
+  String get issueDetailsResolveNotesMinError =>
+      'Resolution notes must be at least 3 characters';
+
+  @override
+  String get issueDetailsResolveNotesMaxError =>
+      'Resolution notes cannot exceed 500 characters';
+
+  @override
+  String get issueDetailsConfirmResolve => 'Confirm Resolution';
+
+  @override
+  String get issueDetailsResolutionCardTitle => 'Resolution Details';
+
+  @override
+  String get issueDetailsResolvedBy => 'Resolved By';
+
+  @override
+  String get issueDetailsResolvedAt => 'Resolved At';
+
+  @override
+  String get issueDetailsResolutionNotes => 'Resolution Notes';
+
+  @override
+  String get issueDetailsResolutionAction => 'Action Taken';
+
+  @override
+  String get issueDetailsClose => 'Close';
 }

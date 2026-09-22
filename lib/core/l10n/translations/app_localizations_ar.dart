@@ -2264,4 +2264,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get validationCivilIdInvalid => 'الرقم المدني غير صالح';
+
+  @override
+  String get issueDetailsResolveIssue => 'حل المشكلة';
+
+  @override
+  String get issueDetailsResolveDialogTitle => 'حل المشكلة وتأكيد المعالجة';
+
+  @override
+  String get issueDetailsResolveNotesLabel => 'ملاحظات الحل';
+
+  @override
+  String get issueDetailsResolveNotesHint =>
+      'اكتب تفاصيل الحل هنا (من 3 إلى 500 حرف)...';
+
+  @override
+  String get issueDetailsResolveNotesMinError =>
+      'ملاحظات الحل يجب أن تكون 3 أحرف على الأقل';
+
+  @override
+  String get issueDetailsResolveNotesMaxError =>
+      'ملاحظات الحل لا يمكن أن تتجاوز 500 حرف';
+
+  @override
+  String get issueDetailsConfirmResolve => 'تأكيد الحل';
+
+  @override
+  String get issueDetailsResolutionCardTitle => 'تفاصيل الحل';
+
+  @override
+  String get issueDetailsResolvedBy => 'تم الحل بواسطة';
+
+  @override
+  String get issueDetailsResolvedAt => 'وقت الحل';
+
+  @override
+  String get issueDetailsResolutionNotes => 'ملاحظات الحل';
+
+  @override
+  String get issueDetailsResolutionAction => 'الإجراء المتخذ';
+
+  @override
+  String get issueDetailsClose => 'إغلاق';
 }

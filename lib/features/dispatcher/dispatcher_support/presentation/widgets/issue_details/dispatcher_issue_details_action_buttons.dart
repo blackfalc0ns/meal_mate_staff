@@ -10,10 +10,14 @@ class DispatcherIssueDetailsActionButtons extends StatelessWidget {
     super.key,
     required this.onAssignReplacementTap,
     required this.onContactDriverTap,
+    this.onResolveTap,
+    this.canMutate = true,
   });
 
-  final VoidCallback onAssignReplacementTap;
-  final VoidCallback onContactDriverTap;
+  final VoidCallback? onAssignReplacementTap;
+  final VoidCallback? onContactDriverTap;
+  final VoidCallback? onResolveTap;
+  final bool canMutate;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +49,12 @@ class DispatcherIssueDetailsActionButtons extends StatelessWidget {
             width: double.infinity,
             height: Spacing.accountStatusButtonHeight,
             child: ElevatedButton.icon(
-              onPressed: onAssignReplacementTap,
+              onPressed: canMutate ? onAssignReplacementTap : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: color.primary,
                 foregroundColor: color.onPrimary,
+                disabledBackgroundColor: color.onSurface.withValues(alpha: 0.12),
+                disabledForegroundColor: color.onSurface.withValues(alpha: 0.38),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                     Spacing.buttonSmallRadius,
@@ -56,16 +62,46 @@ class DispatcherIssueDetailsActionButtons extends StatelessWidget {
                 ),
                 elevation: Spacing.cardElevation,
               ),
-              icon: Icon(Icons.person_add_alt_1_rounded, size: Spacing.iconSm),
+              icon: const Icon(Icons.person_add_alt_1_rounded, size: Spacing.iconSm),
               label: Text(
                 locale.issueDetailsAssignReplacementDriver,
                 style: getBoldStyle(
                   fontSize: FontSize.size12,
-                  color: color.onPrimary,
+                  color: canMutate ? color.onPrimary : color.onSurface.withValues(alpha: 0.38),
                 ),
               ),
             ),
           ),
+          if (onResolveTap != null) ...[
+            const SizedBox(height: Spacing.sm),
+            SizedBox(
+              width: double.infinity,
+              height: Spacing.accountStatusButtonHeight,
+              child: ElevatedButton.icon(
+                onPressed: canMutate ? onResolveTap : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color.secondary,
+                  foregroundColor: color.onSecondary,
+                  disabledBackgroundColor: color.onSurface.withValues(alpha: 0.12),
+                  disabledForegroundColor: color.onSurface.withValues(alpha: 0.38),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      Spacing.buttonSmallRadius,
+                    ),
+                  ),
+                  elevation: Spacing.cardElevation,
+                ),
+                icon: const Icon(Icons.check_circle_outline_rounded, size: Spacing.iconSm),
+                label: Text(
+                  locale.issueDetailsResolveIssue,
+                  style: getBoldStyle(
+                    fontSize: FontSize.size12,
+                    color: canMutate ? color.onSecondary : color.onSurface.withValues(alpha: 0.38),
+                  ),
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: Spacing.sm),
           SizedBox(
             width: double.infinity,

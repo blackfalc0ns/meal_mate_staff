@@ -897,5 +897,18 @@
   "validationOtpRequired": "Verification code is required",
   "validationOtpInvalid": "Verification code is invalid",
   "validationCivilIdRequired": "Civil ID is required",
-  "validationCivilIdInvalid": "Civil ID is not valid"
+  "validationCivilIdInvalid": "Civil ID is not valid",
+  "issueDetailsResolveIssue": "Resolve Issue",
+  "issueDetailsResolveDialogTitle": "Resolve Issue and Confirm",
+  "issueDetailsResolveNotesLabel": "Resolution Notes",
+  "issueDetailsResolveNotesHint": "Enter resolution details here (3 to 500 characters)...",
+  "issueDetailsResolveNotesMinError": "Resolution notes must be at least 3 characters",
+  "issueDetailsResolveNotesMaxError": "Resolution notes cannot exceed 500 characters",
+  "issueDetailsConfirmResolve": "Confirm Resolution",
+  "issueDetailsResolutionCardTitle": "Resolution Details",
+  "issueDetailsResolvedBy": "Resolved By",
+  "issueDetailsResolvedAt": "Resolved At",
+  "issueDetailsResolutionNotes": "Resolution Notes",
+  "issueDetailsResolutionAction": "Action Taken",
+  "issueDetailsClose": "Close"
 }

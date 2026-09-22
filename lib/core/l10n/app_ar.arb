@@ -890,5 +890,18 @@
   "validationOtpRequired": "رمز التحقق مطلوب",
   "validationOtpInvalid": "رمز التحقق غير صالح",
   "validationCivilIdRequired": "الرقم المدني مطلوب",
-  "validationCivilIdInvalid": "الرقم المدني غير صالح"
+  "validationCivilIdInvalid": "الرقم المدني غير صالح",
+  "issueDetailsResolveIssue": "حل المشكلة",
+  "issueDetailsResolveDialogTitle": "حل المشكلة وتأكيد المعالجة",
+  "issueDetailsResolveNotesLabel": "ملاحظات الحل",
+  "issueDetailsResolveNotesHint": "اكتب تفاصيل الحل هنا (من 3 إلى 500 حرف)...",
+  "issueDetailsResolveNotesMinError": "ملاحظات الحل يجب أن تكون 3 أحرف على الأقل",
+  "issueDetailsResolveNotesMaxError": "ملاحظات الحل لا يمكن أن تتجاوز 500 حرف",
+  "issueDetailsConfirmResolve": "تأكيد الحل",
+  "issueDetailsResolutionCardTitle": "تفاصيل الحل",
+  "issueDetailsResolvedBy": "تم الحل بواسطة",
+  "issueDetailsResolvedAt": "وقت الحل",
+  "issueDetailsResolutionNotes": "ملاحظات الحل",
+  "issueDetailsResolutionAction": "الإجراء المتخذ",
+  "issueDetailsClose": "إغلاق"
 }
