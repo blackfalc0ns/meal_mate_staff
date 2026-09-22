@@ -101,6 +101,8 @@ class DispatcherIssueDetailEntity {
   String get driverCode => driver?.code ?? '';
   String get driverAvatar => driver?.avatarUrl ?? '';
   bool get isDriverOnline => driver?.isOnline ?? false;
+  String get driverStatusLabel => driver?.statusLabel ?? '';
+  String? get driverStatusColorHex => driver?.statusColorHex;
   String get driverSubStatus => driver?.subStatus ?? '';
 
   List<DispatcherIssueAttachmentEntity> get attachments => evidencePhotos;

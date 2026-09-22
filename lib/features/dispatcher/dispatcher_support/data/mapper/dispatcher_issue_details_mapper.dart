@@ -14,8 +14,31 @@ extension DispatcherIssueDetailsResponseDtoMapper
     final rawDate = createdAtUtc ?? createdAt;
     final parsedDate = rawDate != null ? DateTime.tryParse(rawDate) : null;
 
-    final resolvedPriority = priority ?? '';
-    final resolvedPriorityText = priorityText ?? priorityLabel ?? resolvedPriority;
+    final resolvedPriority =
+        metadata?.priority ?? priority ?? '';
+    final resolvedPriorityText = metadata?.priorityText ??
+        metadata?.priorityLabel ??
+        priorityText ??
+        priorityLabel ??
+        resolvedPriority;
+    final resolvedPriorityColor =
+        metadata?.priorityColor ?? priorityColor ?? '#EF4444';
+    final resolvedBoxCode = metadata?.boxCode ??
+        metadata?.taskNumber ??
+        boxCode ??
+        taskNumber ??
+        '';
+    final resolvedArea = metadata?.area ?? area ?? '';
+    final resolvedAffectedBoxesCount =
+        metadata?.affectedBoxesCount ?? affectedBoxesCount ?? 0;
+    final resolvedAffectedBoxesText =
+        metadata?.affectedBoxesText ?? affectedBoxesText ?? '';
+
+    final rawPhotos = evidencePhotos ?? attachments ?? const [];
+    final mappedPhotos = <DispatcherIssueAttachmentEntity>[];
+    for (var i = 0; i < rawPhotos.length; i++) {
+      mappedPhotos.add(rawPhotos[i].toEntity(fallbackOrderNumber: i + 1));
+    }
 
     return DispatcherIssueDetailEntity(
       issueId: issueId ?? id ?? '',
@@ -27,18 +50,16 @@ extension DispatcherIssueDetailsResponseDtoMapper
       reportedTimeText: reportedTimeText ?? timeAgo ?? '',
       status: DispatcherIssueStatusX.fromApi(status),
       statusLabel: statusLabel ?? '',
-      boxCode: boxCode ?? taskNumber ?? '',
-      area: area ?? '',
-      affectedBoxesCount: affectedBoxesCount ?? 0,
-      affectedBoxesText: affectedBoxesText ?? '',
+      boxCode: resolvedBoxCode,
+      area: resolvedArea,
+      affectedBoxesCount: resolvedAffectedBoxesCount,
+      affectedBoxesText: resolvedAffectedBoxesText,
       priority: resolvedPriority,
       priorityText: resolvedPriorityText,
-      priorityColorHex: priorityColor ?? '#EF4444',
+      priorityColorHex: resolvedPriorityColor,
       driver: driver?.toEntity(),
       description: description ?? '',
-      evidencePhotos: (evidencePhotos ?? attachments ?? const [])
-          .map((photo) => photo.toEntity())
-          .toList(),
+      evidencePhotos: mappedPhotos,
       tripInfo: tripInfo?.toEntity() ??
           const DispatcherIssueTripEntity(
             clientName: '',
@@ -54,15 +75,23 @@ extension DispatcherIssueDetailsResponseDtoMapper
 
 extension DispatcherIssueDriverDtoMapper on DispatcherIssueDriverDto {
   DispatcherIssueDriverEntity toEntity() {
+    final resolvedStatus = status ?? '';
+    final resolvedStatusLower = resolvedStatus.trim().toLowerCase();
+    final computedIsOnline = isOnline ??
+        (resolvedStatusLower == 'available' ||
+            resolvedStatusLower == 'online' ||
+            resolvedStatusLower == 'متصل');
+
     return DispatcherIssueDriverEntity(
       id: id ?? driverId ?? '',
-      name: name ?? driverName ?? '',
+      name: fullName ?? name ?? driverName ?? '',
       code: code ?? driverCode ?? '',
       avatarUrl: avatarUrl ?? driverAvatar,
       phoneNumber: phoneNumber ?? phone,
-      isOnline: isOnline ?? true,
-      status: status ?? '',
-      statusLabel: statusLabel ?? '',
+      isOnline: computedIsOnline,
+      status: resolvedStatus,
+      statusLabel: statusText ?? statusLabel ?? resolvedStatus,
+      statusColorHex: statusColor,
       subStatus: subStatus ?? driverSubStatus ?? '',
       vehicleInfo: vehicleInfo,
       rating: rating,
@@ -71,7 +100,7 @@ extension DispatcherIssueDriverDtoMapper on DispatcherIssueDriverDto {
 }
 
 extension DispatcherIssueAttachmentDtoMapper on DispatcherIssueAttachmentDto {
-  DispatcherIssueAttachmentEntity toEntity() {
+  DispatcherIssueAttachmentEntity toEntity({int? fallbackOrderNumber}) {
     final rawDate = uploadedAtUtc ?? uploadedAt;
     final parsedDate = rawDate != null ? DateTime.tryParse(rawDate) : null;
 
@@ -80,7 +109,7 @@ extension DispatcherIssueAttachmentDtoMapper on DispatcherIssueAttachmentDto {
       url: url ?? '',
       thumbnailUrl: thumbnailUrl ?? url,
       uploadedAtUtc: parsedDate,
-      orderNumber: orderNumber ?? 1,
+      orderNumber: orderNumber ?? fallbackOrderNumber ?? 1,
     );
   }
 }
@@ -88,11 +117,12 @@ extension DispatcherIssueAttachmentDtoMapper on DispatcherIssueAttachmentDto {
 extension DispatcherIssueTripDtoMapper on DispatcherIssueTripDto {
   DispatcherIssueTripEntity toEntity() {
     return DispatcherIssueTripEntity(
-      clientName: clientName ?? '',
+      clientName: customerName ?? clientName ?? '',
       mealsCount: mealsCount ?? 0,
-      expectedDeliveryTime: expectedDeliveryTime ?? '',
+      expectedDeliveryTime:
+          expectedDeliveryTimeText ?? expectedDeliveryTime ?? '',
       pickupLocation: pickupLocation ?? '',
-      dropoffLocation: dropoffLocation ?? '',
+      dropoffLocation: deliveryAddress ?? dropoffLocation ?? '',
       orderId: orderId,
     );
   }

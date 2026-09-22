@@ -150,7 +150,9 @@ class DispatcherIssueDetailsHeaderCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(Spacing.radiusXs),
                         ),
                         child: Text(
-                          issue.priority,
+                          issue.priorityText.isNotEmpty
+                              ? issue.priorityText
+                              : issue.priority,
                           style: getBoldStyle(
                             fontSize: FontSize.size10,
                             color: color.error,
@@ -193,9 +195,11 @@ class DispatcherIssueDetailsHeaderCard extends StatelessWidget {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          locale.issueDetailsBoxesCount(
-                            issue.affectedBoxesCount,
-                          ),
+                          issue.affectedBoxesText.isNotEmpty
+                              ? issue.affectedBoxesText
+                              : locale.issueDetailsBoxesCount(
+                                  issue.affectedBoxesCount,
+                                ),
                           style: getBoldStyle(
                             fontSize: FontSize.size11,
                             color: color.onSurface,

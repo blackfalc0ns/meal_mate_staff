@@ -8,6 +8,7 @@ class DispatcherIssueDriverEntity {
     this.isOnline = true,
     this.status = '',
     this.statusLabel = '',
+    this.statusColorHex,
     this.subStatus = '',
     this.vehicleInfo,
     this.rating,
@@ -21,6 +22,7 @@ class DispatcherIssueDriverEntity {
   final bool isOnline;
   final String status;
   final String statusLabel;
+  final String? statusColorHex;
   final String subStatus;
   final String? vehicleInfo;
   final double? rating;

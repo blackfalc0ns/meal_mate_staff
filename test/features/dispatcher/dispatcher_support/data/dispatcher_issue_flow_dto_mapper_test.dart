@@ -241,5 +241,94 @@ void main() {
       expect(entity.driver, isNull);
       expect(entity.resolution, isNull);
     });
+
+    test('Maps real backend payload with metadata, fullName, and tripInfo', () {
+      final json = {
+        'issueId': '0c4de05c-9c89-4659-b696-f93b90d2fda5',
+        'title': 'صندوق وجبة مكسور - السالمية، قطعة 4',
+        'category': 'DamagedBox',
+        'categoryLabel': 'مشكلة توصيل',
+        'categoryColor': '#EF4444',
+        'createdAtUtc': '2026-09-22T14:12:50.278636Z',
+        'reportedTimeText': 'منذ 15 دقيقة',
+        'status': 'UnderInvestigation',
+        'statusLabel': 'قيد التحقيق',
+        'metadata': {
+          'boxCode': '#BX-8821',
+          'area': 'السالمية',
+          'affectedBoxesCount': 1,
+          'affectedBoxesText': '1 بوكس متأثر',
+          'priority': 'High',
+          'priorityText': 'أولوية عالية',
+          'priorityColor': '#EF4444'
+        },
+        'driver': {
+          'driverId': 'a30817de-4920-4028-ba23-76316f41cda3',
+          'driverCode': 'L-30819',
+          'fullName': 'محمد العنزي',
+          'avatarUrl': 'https://cdn.mealmate.app/avatars/dr-1491.jpg',
+          'status': 'Unavailable',
+          'statusText': 'غير متاح',
+          'statusColor': '#EF4444',
+          'phoneNumber': '+96550234567',
+          'vehicleInfo': 'تويوتا كامري • أبيض'
+        },
+        'description':
+            'وجدت الصندوق مكسور عند محاولة تسليمه للعميل. الوجبة تالفة بالكامل بسبب الضغط أثناء النقل.',
+        'evidencePhotos': [
+          {
+            'id': 'e44d3209-4ce4-4828-b0a7-bc45e69e46a7',
+            'url': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500',
+            'thumbnailUrl':
+                'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200',
+            'uploadedAtUtc': '2026-09-22T14:12:50.278636Z'
+          }
+        ],
+        'tripInfo': {
+          'customerName': 'جاسم العتيبي',
+          'mealsCount': 2,
+          'mealsCountText': '2 وجبة',
+          'expectedDeliveryFromUtc': '2026-09-22T09:30:00Z',
+          'expectedDeliveryToUtc': '2026-09-22T11:00:00Z',
+          'expectedDeliveryTimeText': '12:30 م - 02:00 م',
+          'pickupLocation': 'مطعم دايت كير - فرع السالمية',
+          'deliveryAddress': 'السالمية، قطعة 4، شارع 12، منزل 15'
+        },
+        'resolution': null
+      };
+
+      final dto = DispatcherIssueDetailsResponseDto.fromJson(json);
+      final entity = dto.toEntity();
+
+      expect(entity.issueId, '0c4de05c-9c89-4659-b696-f93b90d2fda5');
+      expect(entity.title, 'صندوق وجبة مكسور - السالمية، قطعة 4');
+      expect(entity.boxCode, '#BX-8821');
+      expect(entity.taskNumber, '#BX-8821');
+      expect(entity.area, 'السالمية');
+      expect(entity.affectedBoxesCount, 1);
+      expect(entity.affectedBoxesText, '1 بوكس متأثر');
+      expect(entity.priority, 'High');
+      expect(entity.priorityText, 'أولوية عالية');
+      expect(entity.priorityColorHex, '#EF4444');
+
+      // Driver mapping
+      expect(entity.driver, isNotNull);
+      expect(entity.driverName, 'محمد العنزي');
+      expect(entity.driverCode, 'L-30819');
+      expect(entity.isDriverOnline, isFalse);
+      expect(entity.driverStatusLabel, 'غير متاح');
+      expect(entity.driverStatusColorHex, '#EF4444');
+
+      // Trip info mapping
+      expect(entity.clientName, 'جاسم العتيبي');
+      expect(entity.mealsCount, 2);
+      expect(entity.expectedDeliveryTime, '12:30 م - 02:00 م');
+      expect(entity.pickupLocation, 'مطعم دايت كير - فرع السالمية');
+      expect(entity.dropoffLocation, 'السالمية، قطعة 4، شارع 12، منزل 15');
+
+      // Evidence photos
+      expect(entity.evidencePhotos.length, 1);
+      expect(entity.evidencePhotos.first.orderNumber, 1);
+    });
   });
 }

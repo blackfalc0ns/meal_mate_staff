@@ -30,6 +30,11 @@ DispatcherIssueDetailsResponseDto _$DispatcherIssueDetailsResponseDtoFromJson(
   priorityText: json['priorityText'] as String?,
   priorityLabel: json['priorityLabel'] as String?,
   priorityColor: json['priorityColor'] as String?,
+  metadata: json['metadata'] == null
+      ? null
+      : DispatcherIssueMetadataDto.fromJson(
+          json['metadata'] as Map<String, dynamic>,
+        ),
   driver: json['driver'] == null
       ? null
       : DispatcherIssueDriverDto.fromJson(
@@ -58,6 +63,20 @@ DispatcherIssueDetailsResponseDto _$DispatcherIssueDetailsResponseDtoFromJson(
         ),
 );
 
+DispatcherIssueMetadataDto _$DispatcherIssueMetadataDtoFromJson(
+  Map<String, dynamic> json,
+) => DispatcherIssueMetadataDto(
+  boxCode: json['boxCode'] as String?,
+  taskNumber: json['taskNumber'] as String?,
+  area: json['area'] as String?,
+  affectedBoxesCount: (json['affectedBoxesCount'] as num?)?.toInt(),
+  affectedBoxesText: json['affectedBoxesText'] as String?,
+  priority: json['priority'] as String?,
+  priorityText: json['priorityText'] as String?,
+  priorityLabel: json['priorityLabel'] as String?,
+  priorityColor: json['priorityColor'] as String?,
+);
+
 DispatcherIssueDriverDto _$DispatcherIssueDriverDtoFromJson(
   Map<String, dynamic> json,
 ) => DispatcherIssueDriverDto(
@@ -65,6 +84,7 @@ DispatcherIssueDriverDto _$DispatcherIssueDriverDtoFromJson(
   driverId: json['driverId'] as String?,
   name: json['name'] as String?,
   driverName: json['driverName'] as String?,
+  fullName: json['fullName'] as String?,
   code: json['code'] as String?,
   driverCode: json['driverCode'] as String?,
   avatarUrl: json['avatarUrl'] as String?,
@@ -73,7 +93,9 @@ DispatcherIssueDriverDto _$DispatcherIssueDriverDtoFromJson(
   phone: json['phone'] as String?,
   isOnline: json['isOnline'] as bool?,
   status: json['status'] as String?,
+  statusText: json['statusText'] as String?,
   statusLabel: json['statusLabel'] as String?,
+  statusColor: json['statusColor'] as String?,
   subStatus: json['subStatus'] as String?,
   driverSubStatus: json['driverSubStatus'] as String?,
   vehicleInfo: json['vehicleInfo'] as String?,
@@ -95,10 +117,14 @@ DispatcherIssueTripDto _$DispatcherIssueTripDtoFromJson(
   Map<String, dynamic> json,
 ) => DispatcherIssueTripDto(
   clientName: json['clientName'] as String?,
+  customerName: json['customerName'] as String?,
   mealsCount: (json['mealsCount'] as num?)?.toInt(),
+  mealsCountText: json['mealsCountText'] as String?,
   expectedDeliveryTime: json['expectedDeliveryTime'] as String?,
+  expectedDeliveryTimeText: json['expectedDeliveryTimeText'] as String?,
   pickupLocation: json['pickupLocation'] as String?,
   dropoffLocation: json['dropoffLocation'] as String?,
+  deliveryAddress: json['deliveryAddress'] as String?,
   orderId: json['orderId'] as String?,
 );
 

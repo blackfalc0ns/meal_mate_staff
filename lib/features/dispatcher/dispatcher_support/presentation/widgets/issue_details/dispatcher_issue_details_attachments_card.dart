@@ -54,45 +54,24 @@ class DispatcherIssueDetailsAttachmentsCard extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(width: Spacing.sm),
               itemBuilder: (context, index) {
                 final attachment = attachments[index];
-                final isNetwork = (attachment.thumbnailUrl != null &&
-                        attachment.thumbnailUrl!.isNotEmpty) ||
-                    attachment.url.startsWith('http');
                 final fullPhotoUrl = attachment.url.isNotEmpty
                     ? attachment.url
                     : attachment.imageAsset;
 
                 return GestureDetector(
-                  onTap: () => DispatcherEvidencePhotoViewer.show(
-                    context,
-                    fullPhotoUrl,
-                  ),
+                  onTap: () =>
+                      DispatcherEvidencePhotoViewer.show(context, fullPhotoUrl),
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                        child: isNetwork
-                            ? AppCachedNetworkImage(
-                                imageUrl: (attachment.thumbnailUrl != null &&
-                                        attachment.thumbnailUrl!.isNotEmpty)
-                                    ? attachment.thumbnailUrl!
-                                    : attachment.url,
-                                width: Spacing.accountStatusResultImageWidth * 0.35,
-                                height: Spacing.accountStatusResultImageHeight * 0.34,
-                                fit: BoxFit.cover,
-                                errorWidget: Image.asset(
-                                  attachment.imageAsset,
-                                  width: Spacing.accountStatusResultImageWidth * 0.35,
-                                  height: Spacing.accountStatusResultImageHeight * 0.34,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Image.asset(
-                                attachment.imageAsset,
-                                width: Spacing.accountStatusResultImageWidth * 0.35,
-                                height: Spacing.accountStatusResultImageHeight * 0.34,
-                                fit: BoxFit.cover,
-                              ),
+                        child: AppCachedNetworkImage(
+                          imageUrl: attachment.url,
+                          width: Spacing.accountStatusResultImageWidth * 0.35,
+                          height: Spacing.accountStatusResultImageHeight * 0.34,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       PositionedDirectional(
                         top: Spacing.xs,

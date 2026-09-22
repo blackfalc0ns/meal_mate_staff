@@ -26,6 +26,7 @@ class DispatcherIssueDetailsResponseDto {
     this.priorityText,
     this.priorityLabel,
     this.priorityColor,
+    this.metadata,
     this.driver,
     this.description,
     this.evidencePhotos,
@@ -60,6 +61,7 @@ class DispatcherIssueDetailsResponseDto {
   final String? priorityText;
   final String? priorityLabel;
   final String? priorityColor;
+  final DispatcherIssueMetadataDto? metadata;
   final DispatcherIssueDriverDto? driver;
   final String? description;
   final List<DispatcherIssueAttachmentDto>? evidencePhotos;
@@ -69,12 +71,41 @@ class DispatcherIssueDetailsResponseDto {
 }
 
 @JsonSerializable(createToJson: false)
+class DispatcherIssueMetadataDto {
+  const DispatcherIssueMetadataDto({
+    this.boxCode,
+    this.taskNumber,
+    this.area,
+    this.affectedBoxesCount,
+    this.affectedBoxesText,
+    this.priority,
+    this.priorityText,
+    this.priorityLabel,
+    this.priorityColor,
+  });
+
+  factory DispatcherIssueMetadataDto.fromJson(Map<String, dynamic> json) =>
+      _$DispatcherIssueMetadataDtoFromJson(json);
+
+  final String? boxCode;
+  final String? taskNumber;
+  final String? area;
+  final int? affectedBoxesCount;
+  final String? affectedBoxesText;
+  final String? priority;
+  final String? priorityText;
+  final String? priorityLabel;
+  final String? priorityColor;
+}
+
+@JsonSerializable(createToJson: false)
 class DispatcherIssueDriverDto {
   const DispatcherIssueDriverDto({
     this.id,
     this.driverId,
     this.name,
     this.driverName,
+    this.fullName,
     this.code,
     this.driverCode,
     this.avatarUrl,
@@ -83,7 +114,9 @@ class DispatcherIssueDriverDto {
     this.phone,
     this.isOnline,
     this.status,
+    this.statusText,
     this.statusLabel,
+    this.statusColor,
     this.subStatus,
     this.driverSubStatus,
     this.vehicleInfo,
@@ -97,6 +130,7 @@ class DispatcherIssueDriverDto {
   final String? driverId;
   final String? name;
   final String? driverName;
+  final String? fullName;
   final String? code;
   final String? driverCode;
   final String? avatarUrl;
@@ -105,7 +139,9 @@ class DispatcherIssueDriverDto {
   final String? phone;
   final bool? isOnline;
   final String? status;
+  final String? statusText;
   final String? statusLabel;
+  final String? statusColor;
   final String? subStatus;
   final String? driverSubStatus;
   final String? vehicleInfo;
@@ -138,10 +174,14 @@ class DispatcherIssueAttachmentDto {
 class DispatcherIssueTripDto {
   const DispatcherIssueTripDto({
     this.clientName,
+    this.customerName,
     this.mealsCount,
+    this.mealsCountText,
     this.expectedDeliveryTime,
+    this.expectedDeliveryTimeText,
     this.pickupLocation,
     this.dropoffLocation,
+    this.deliveryAddress,
     this.orderId,
   });
 
@@ -149,10 +189,14 @@ class DispatcherIssueTripDto {
       _$DispatcherIssueTripDtoFromJson(json);
 
   final String? clientName;
+  final String? customerName;
   final int? mealsCount;
+  final String? mealsCountText;
   final String? expectedDeliveryTime;
+  final String? expectedDeliveryTimeText;
   final String? pickupLocation;
   final String? dropoffLocation;
+  final String? deliveryAddress;
   final String? orderId;
 }
 

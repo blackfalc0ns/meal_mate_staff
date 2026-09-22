@@ -12,10 +12,29 @@ class DispatcherIssueDetailsDriverCard extends StatelessWidget {
 
   final DispatcherIssueDetailEntity issue;
 
+  Color _parseColor(String? hexString, Color fallback) {
+    if (hexString == null || hexString.isEmpty) return fallback;
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    final value = int.tryParse(buffer.toString(), radix: 16);
+    return value != null ? Color(value) : fallback;
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final isOnline = issue.isDriverOnline;
+    final statusColor = _parseColor(
+      issue.driverStatusColorHex,
+      isOnline ? color.secondary : color.error,
+    );
+    final statusBgColor = statusColor.withValues(alpha: 0.12);
+    final statusText = issue.driverStatusLabel.isNotEmpty
+        ? issue.driverStatusLabel
+        : (isOnline ? locale.issueDetailsStatusOnline : 'غير متاح');
 
     return Container(
       padding: const EdgeInsets.all(Spacing.md),
@@ -44,56 +63,29 @@ class DispatcherIssueDetailsDriverCard extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   ClipOval(
-                    child: issue.driverAvatar.startsWith('http')
-                        ? AppCachedNetworkImage(
-                            imageUrl: issue.driverAvatar,
-                            width: Spacing.buttonSmallHeight * 1.15,
-                            height: Spacing.buttonSmallHeight * 1.15,
-                            fit: BoxFit.cover,
-                            errorWidget: Image.asset(
-                              'assets/images/dispatcher/driver_avatar.png',
-                              width: Spacing.buttonSmallHeight * 1.15,
-                              height: Spacing.buttonSmallHeight * 1.15,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : (issue.driverAvatar.isNotEmpty
-                            ? Image.asset(
-                                issue.driverAvatar,
-                                width: Spacing.buttonSmallHeight * 1.15,
-                                height: Spacing.buttonSmallHeight * 1.15,
-                                fit: BoxFit.cover,
-                                errorBuilder: (_, _, _) => Container(
-                                  width: Spacing.buttonSmallHeight * 1.15,
-                                  height: Spacing.buttonSmallHeight * 1.15,
-                                  color: color.primary.withValues(alpha: 0.1),
-                                  child: Icon(Icons.person_rounded, color: color.primary),
-                                ),
-                              )
-                            : Container(
-                                width: Spacing.buttonSmallHeight * 1.15,
-                                height: Spacing.buttonSmallHeight * 1.15,
-                                color: color.primary.withValues(alpha: 0.1),
-                                child: Icon(Icons.person_rounded, color: color.primary),
-                              )),
+                    child: AppCachedNetworkImage(
+                      imageUrl: issue.driverAvatar,
+                      width: Spacing.buttonSmallHeight * 1.15,
+                      height: Spacing.buttonSmallHeight * 1.15,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  if (issue.isDriverOnline)
-                    PositionedDirectional(
-                      end: 0,
-                      bottom: 0,
-                      child: Container(
-                        width: Spacing.md,
-                        height: Spacing.md,
-                        decoration: BoxDecoration(
-                          color: color.secondary,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: color.surface,
-                            width: Spacing.border * 2,
-                          ),
+                  PositionedDirectional(
+                    end: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: Spacing.md,
+                      height: Spacing.md,
+                      decoration: BoxDecoration(
+                        color: statusColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: color.surface,
+                          width: Spacing.border * 2,
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
               const SizedBox(width: Spacing.md),
@@ -142,7 +134,7 @@ class DispatcherIssueDetailsDriverCard extends StatelessWidget {
                       vertical: Spacing.xs / 2,
                     ),
                     decoration: BoxDecoration(
-                      color: color.secondaryContainer.withValues(alpha: 0.5),
+                      color: statusBgColor,
                       borderRadius: BorderRadius.circular(Spacing.radiusSm),
                     ),
                     child: Row(
@@ -152,29 +144,31 @@ class DispatcherIssueDetailsDriverCard extends StatelessWidget {
                           width: Spacing.xs * 1.5,
                           height: Spacing.xs * 1.5,
                           decoration: BoxDecoration(
-                            color: color.secondary,
+                            color: statusColor,
                             shape: BoxShape.circle,
                           ),
                         ),
                         const SizedBox(width: Spacing.xs),
                         Text(
-                          locale.issueDetailsStatusOnline,
+                          statusText,
                           style: getMediumStyle(
                             fontSize: FontSize.size10,
-                            color: color.secondary,
+                            color: statusColor,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: Spacing.xs / 2),
-                  Text(
-                    issue.driverSubStatus,
-                    style: getRegularStyle(
-                      fontSize: FontSize.size10,
-                      color: color.onSurfaceVariant,
+                  if (issue.driverSubStatus.isNotEmpty) ...[
+                    const SizedBox(height: Spacing.xs / 2),
+                    Text(
+                      issue.driverSubStatus,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ],
