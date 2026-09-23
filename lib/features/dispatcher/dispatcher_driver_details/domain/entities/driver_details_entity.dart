@@ -1,39 +1,27 @@
-import 'driver_active_box_entity.dart';
+import 'driver_daily_summary_entity.dart';
+import 'driver_kpis_entity.dart';
+import 'driver_profile_entity.dart';
 
 class DriverDetailsEntity {
   const DriverDetailsEntity({
-    required this.id,
-    required this.name,
-    required this.phone,
-    required this.isAvailable,
-    required this.lastUpdate,
-    required this.currentBoxesCount,
-    required this.deliveredTodayCount,
-    required this.avgDelayMinutes,
-    required this.performanceRating,
-    required this.locationStatus,
-    required this.locationTimeAgoMinutes,
-    required this.locationStreet,
-    required this.locationArea,
-    required this.approxKm,
-    required this.failedDeliveryCount,
-    required this.activeBoxes,
+    required this.driver,
+    required this.kpis,
+    required this.dailySummary,
   });
 
-  final String id;
-  final String name;
-  final String phone;
-  final bool isAvailable;
-  final String lastUpdate;
-  final int currentBoxesCount;
-  final int deliveredTodayCount;
-  final int avgDelayMinutes;
-  final double performanceRating;
-  final String locationStatus;
-  final int locationTimeAgoMinutes;
-  final String locationStreet;
-  final String locationArea;
-  final int approxKm;
-  final int failedDeliveryCount;
-  final List<DriverActiveBoxEntity> activeBoxes;
+  final DriverProfileEntity driver;
+  final DriverKpisEntity kpis;
+  final DriverDailySummaryEntity dailySummary;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DriverDetailsEntity &&
+          runtimeType == other.runtimeType &&
+          driver == other.driver &&
+          kpis == other.kpis &&
+          dailySummary == other.dailySummary;
+
+  @override
+  int get hashCode => Object.hash(driver, kpis, dailySummary);
 }
