@@ -1640,6 +1640,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverPerformanceTopRatedTitle => 'Top Rated Drivers';
 
   @override
+  String get driverPerformanceToday => 'Today';
+
+  @override
+  String get driverPerformanceYesterday => 'Yesterday';
+
+  @override
+  String get driverPerformanceLast30Days => 'Last 30 days';
+
+  @override
+  String get driverPerformanceThisMonth => 'This month';
+
+  @override
+  String get driverPerformanceCustom => 'Custom';
+
+  @override
+  String get driverPerformancePeriodSheetTitle => 'Select Period';
+
+  @override
+  String get driverPerformanceComparisonTotalAssigned => 'Total Assigned';
+
+  @override
+  String get driverPerformanceComparisonDelivered => 'Delivered';
+
+  @override
+  String get driverPerformanceComparisonOnTime => 'On-Time Rate';
+
+  @override
+  String get driverPerformanceComparisonAvgDelay => 'Avg Delay';
+
+  @override
+  String get driverPerformanceComparisonRating => 'Rating';
+
+  @override
+  String get driverPerformanceComparisonFailed => 'Failed';
+
+  @override
+  String get driverPerformanceComparisonDistance => 'Total Distance';
+
+  @override
+  String get driverPerformanceComparisonEmpty => 'No comparison data available';
+
+  @override
   String get driverBoxesTitle => 'Boxes List';
 
   @override

@@ -1637,6 +1637,48 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverPerformanceTopRatedTitle => 'أعلى السائقين تقييماً';
 
   @override
+  String get driverPerformanceToday => 'اليوم';
+
+  @override
+  String get driverPerformanceYesterday => 'أمس';
+
+  @override
+  String get driverPerformanceLast30Days => 'آخر 30 يوماً';
+
+  @override
+  String get driverPerformanceThisMonth => 'هذا الشهر';
+
+  @override
+  String get driverPerformanceCustom => 'مخصص';
+
+  @override
+  String get driverPerformancePeriodSheetTitle => 'تحديد الفترة';
+
+  @override
+  String get driverPerformanceComparisonTotalAssigned => 'إجمالي المعين';
+
+  @override
+  String get driverPerformanceComparisonDelivered => 'تم التوصيل';
+
+  @override
+  String get driverPerformanceComparisonOnTime => 'نسبة في الوقت';
+
+  @override
+  String get driverPerformanceComparisonAvgDelay => 'متوسط التأخير';
+
+  @override
+  String get driverPerformanceComparisonRating => 'التقييم';
+
+  @override
+  String get driverPerformanceComparisonFailed => 'فشل التسليم';
+
+  @override
+  String get driverPerformanceComparisonDistance => 'إجمالي المسافة';
+
+  @override
+  String get driverPerformanceComparisonEmpty => 'لا توجد بيانات مقارنة متاحة';
+
+  @override
   String get driverBoxesTitle => 'قائمة الصناديق';
 
   @override

@@ -3182,6 +3182,90 @@ abstract class AppLocalizations {
   /// **'Top Rated Drivers'**
   String get driverPerformanceTopRatedTitle;
 
+  /// No description provided for @driverPerformanceToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get driverPerformanceToday;
+
+  /// No description provided for @driverPerformanceYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get driverPerformanceYesterday;
+
+  /// No description provided for @driverPerformanceLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get driverPerformanceLast30Days;
+
+  /// No description provided for @driverPerformanceThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get driverPerformanceThisMonth;
+
+  /// No description provided for @driverPerformanceCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get driverPerformanceCustom;
+
+  /// No description provided for @driverPerformancePeriodSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Period'**
+  String get driverPerformancePeriodSheetTitle;
+
+  /// No description provided for @driverPerformanceComparisonTotalAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Assigned'**
+  String get driverPerformanceComparisonTotalAssigned;
+
+  /// No description provided for @driverPerformanceComparisonDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get driverPerformanceComparisonDelivered;
+
+  /// No description provided for @driverPerformanceComparisonOnTime.
+  ///
+  /// In en, this message translates to:
+  /// **'On-Time Rate'**
+  String get driverPerformanceComparisonOnTime;
+
+  /// No description provided for @driverPerformanceComparisonAvgDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Delay'**
+  String get driverPerformanceComparisonAvgDelay;
+
+  /// No description provided for @driverPerformanceComparisonRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get driverPerformanceComparisonRating;
+
+  /// No description provided for @driverPerformanceComparisonFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get driverPerformanceComparisonFailed;
+
+  /// No description provided for @driverPerformanceComparisonDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Distance'**
+  String get driverPerformanceComparisonDistance;
+
+  /// No description provided for @driverPerformanceComparisonEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No comparison data available'**
+  String get driverPerformanceComparisonEmpty;
+
   /// No description provided for @driverBoxesTitle.
   ///
   /// In en, this message translates to:

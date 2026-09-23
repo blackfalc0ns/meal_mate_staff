@@ -6,14 +6,23 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverPerformanceDateFilterChip extends StatelessWidget {
-  const DriverPerformanceDateFilterChip({super.key, this.onTap});
+  const DriverPerformanceDateFilterChip({
+    super.key,
+    this.label,
+    this.onTap,
+  });
 
+  final String? label;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final displayText = (label != null && label!.isNotEmpty)
+        ? label!
+        : locale.driverPerformanceLast7Days;
 
     return Material(
       color: Colors.transparent,
@@ -43,7 +52,7 @@ class DriverPerformanceDateFilterChip extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.xs),
               Text(
-                locale.driverPerformanceLast7Days,
+                displayText,
                 style: getMediumStyle(
                   fontSize: FontSize.size11,
                   color: color.onSurface,
