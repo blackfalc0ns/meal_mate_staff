@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,6 +19,7 @@ import '../manager/dispatcher_map_view_model.dart';
 import '../widgets/dispatcher_map_background.dart';
 import '../widgets/dispatcher_map_camera_controller.dart';
 import '../widgets/dispatcher_map_controls.dart';
+import '../widgets/dispatcher_map_driver_bottom_sheet.dart';
 import '../widgets/dispatcher_map_drivers_carousel.dart';
 import '../widgets/dispatcher_map_header.dart';
 import '../widgets/dispatcher_map_kpi_bar.dart';
@@ -114,6 +117,8 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
         driver.longitude!.isFinite) {
       _cameraController.centerOn(LatLng(driver.latitude!, driver.longitude!));
     }
+
+    unawaited(DispatcherMapDriverBottomSheet.show(context, driver: driver));
   }
 
   void _handleLocationTap(

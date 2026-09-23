@@ -64,6 +64,61 @@ void main() {
       expect(driver.remainingDistanceKm, 4.2);
     });
 
+    test('parses real backend API payload with driverId, driverName, attentionRequiredCount', () {
+      final json = {
+        'kpis': {
+          'activeDriversCount': 6,
+          'inDeliveryCount': 0,
+          'pausedCount': 1,
+          'attentionRequiredCount': 5,
+        },
+        'drivers': [
+          {
+            'driverId': '5db39f96-a20e-464a-93c6-b9478d1e58f5',
+            'driverCode': 'L-98765',
+            'driverName': 'أحمد السائق (مذاق البيت)',
+            'phone': null,
+            'plateNumber': 'KW-1001',
+            'avatarUrl': 'https://cdn.mealmate.app/avatars/5db39f96.jpg',
+            'boxCode': 'BX-194934',
+            'latitude': null,
+            'longitude': null,
+            'heading': 210,
+            'speedKmh': 0,
+            'statusCategory': 'AttentionRequired',
+            'statusText': 'مشكلة تتطلب انتباه',
+            'statusColor': 'Red',
+            'topIndicatorColor': 'Red',
+            'locationZone': 'اليرموك',
+            'remainingDistanceKm': null,
+            'remainingDistanceText': '—',
+            'hasIssue': true,
+            'issueDescription': 'انقطاع إشارة التتبع منذ أكثر من 20 دقيقة',
+            'updatedAtUtc': '2026-09-22T16:33:24.3992233Z',
+          }
+        ],
+      };
+
+      final dto = DispatcherLiveMonitoringResponseDto.fromJson(json);
+
+      expect(dto.kpis, isNotNull);
+      expect(dto.kpis?.activeDriversCount, 6);
+      expect(dto.kpis?.inDeliveryCount, 0);
+      expect(dto.kpis?.pausedCount, 1);
+      expect(dto.kpis?.attentionRequiredCount, 5);
+
+      expect(dto.drivers, hasLength(1));
+      final driver = dto.drivers!.first;
+      expect(driver.driverId, '5db39f96-a20e-464a-93c6-b9478d1e58f5');
+      expect(driver.driverCode, 'L-98765');
+      expect(driver.driverName, 'أحمد السائق (مذاق البيت)');
+      expect(driver.boxCode, 'BX-194934');
+      expect(driver.statusCategory, 'AttentionRequired');
+      expect(driver.speedKmh, 0.0);
+      expect(driver.hasIssue, isTrue);
+      expect(driver.updatedAtUtc, '2026-09-22T16:33:24.3992233Z');
+    });
+
     test('handles empty or null fields defensively without crashing', () {
       final json = <String, dynamic>{};
       final dto = DispatcherLiveMonitoringResponseDto.fromJson(json);

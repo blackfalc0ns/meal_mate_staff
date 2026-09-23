@@ -40,7 +40,7 @@ extension DispatcherMapKpiResponseDtoMapper on DispatcherMapKpiResponseDto? {
       activeDriversCount: this?.activeDriversCount ?? 0,
       inDeliveryCount: this?.inDeliveryCount ?? 0,
       pausedCount: this?.pausedCount ?? 0,
-      issuesCount: this?.issuesCount ?? 0,
+      issuesCount: this?.attentionRequiredCount ?? this?.issuesCount ?? 0,
     );
   }
 }
@@ -48,25 +48,29 @@ extension DispatcherMapKpiResponseDtoMapper on DispatcherMapKpiResponseDto? {
 extension DispatcherMapDriverResponseDtoMapper on DispatcherMapDriverResponseDto {
   DispatcherMapDriverEntity toEntity() {
     return DispatcherMapDriverEntity(
-      id: id ?? '',
+      id: driverId ?? id ?? '',
       driverCode: driverCode,
-      name: name ?? '',
-      phoneNumber: phoneNumber,
+      name: driverName ?? name ?? '',
+      phoneNumber: phone ?? phoneNumber,
       plateNumber: plateNumber,
       avatarUrl: avatarUrl,
-      boxId: boxId ?? '',
+      boxId: boxCode ?? boxId ?? '',
       tripId: tripId,
       latitude: latitude,
       longitude: longitude,
       heading: heading,
-      speed: speed,
-      lastLocationTimestamp: _parseNullableTimestamp(lastLocationTimestamp),
-      status: status.toDriverStatus(),
+      speed: speedKmh ?? speed,
+      lastLocationTimestamp: _parseNullableTimestamp(
+        updatedAtUtc ?? lastLocationTimestamp,
+      ),
+      status: (statusCategory ?? status).toDriverStatus(),
       statusText: statusText,
-      statusColor: statusColor,
+      statusColor: topIndicatorColor ?? statusColor,
       hasIssue: hasIssue ?? false,
       issueDescription: issueDescription,
-      lastStatusTimestamp: _parseNullableTimestamp(lastStatusTimestamp),
+      lastStatusTimestamp: _parseNullableTimestamp(
+        updatedAtUtc ?? lastStatusTimestamp,
+      ),
       locationZone: locationZone,
       remainingDistanceKm: remainingDistanceKm,
       remainingDistanceText: remainingDistanceText,

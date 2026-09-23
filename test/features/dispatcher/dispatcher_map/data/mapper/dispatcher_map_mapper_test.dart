@@ -74,6 +74,47 @@ void main() {
       expect(second.hasValidCoordinates, isFalse);
     });
 
+    test('maps backend fields (driverId, driverName, boxCode, attentionRequiredCount) to entity', () {
+      final dto = DispatcherLiveMonitoringResponseDto(
+        kpis: const DispatcherMapKpiResponseDto(
+          activeDriversCount: 6,
+          inDeliveryCount: 0,
+          pausedCount: 1,
+          attentionRequiredCount: 5,
+        ),
+        drivers: [
+          const DispatcherMapDriverResponseDto(
+            driverId: '5db39f96-a20e-464a-93c6-b9478d1e58f5',
+            driverCode: 'L-98765',
+            driverName: 'أحمد السائق (مذاق البيت)',
+            boxCode: 'BX-194934',
+            statusCategory: 'AttentionRequired',
+            statusText: 'مشكلة تتطلب انتباه',
+            hasIssue: true,
+            issueDescription: 'انقطاع إشارة التتبع منذ أكثر من 20 دقيقة',
+            speedKmh: 0,
+            locationZone: 'اليرموك',
+          ),
+        ],
+      );
+
+      final entity = dto.toEntity();
+
+      expect(entity.kpi.activeDriversCount, 6);
+      expect(entity.kpi.issuesCount, 5);
+
+      expect(entity.drivers, hasLength(1));
+      final driver = entity.drivers.first;
+      expect(driver.id, '5db39f96-a20e-464a-93c6-b9478d1e58f5');
+      expect(driver.driverCode, 'L-98765');
+      expect(driver.name, 'أحمد السائق (مذاق البيت)');
+      expect(driver.boxId, 'BX-194934');
+      expect(driver.status, DispatcherMapDriverStatus.hasIssue);
+      expect(driver.speed, 0.0);
+      expect(driver.hasIssue, isTrue);
+      expect(driver.issueDescription, 'انقطاع إشارة التتبع منذ أكثر من 20 دقيقة');
+    });
+
     test('maps canonical status strings correctly', () {
       expect('InDelivery'.toDriverStatus(), DispatcherMapDriverStatus.inDelivery);
       expect('indelivery'.toDriverStatus(), DispatcherMapDriverStatus.inDelivery);
