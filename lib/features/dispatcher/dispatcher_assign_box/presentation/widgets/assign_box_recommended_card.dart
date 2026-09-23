@@ -6,6 +6,7 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/assign_box_candidate_driver_entity.dart';
+import 'assign_box_driver_avatar.dart';
 
 class AssignBoxRecommendedCard extends StatelessWidget {
   const AssignBoxRecommendedCard({
@@ -307,24 +308,9 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.xs),
                 // Avatar (Far Left in RTL)
-                Container(
-                  width: Spacing.buttonSmallHeight,
-                  height: Spacing.buttonSmallHeight,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: color.surface,
-                    border: Border.all(
-                      color: color.primary,
-                      width: Spacing.border,
-                    ),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: Spacing.iconMd,
-                      color: color.onSurfaceVariant,
-                    ),
-                  ),
+                AssignBoxDriverAvatar(
+                  avatarUrl: driver.avatarUrl,
+                  size: Spacing.buttonSmallHeight,
                 ),
               ],
             ),
@@ -334,3 +320,4 @@ class AssignBoxRecommendedCard extends StatelessWidget {
     );
   }
 }
+

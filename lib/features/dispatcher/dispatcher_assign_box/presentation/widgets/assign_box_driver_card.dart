@@ -6,6 +6,7 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/assign_box_candidate_driver_entity.dart';
+import 'assign_box_driver_avatar.dart';
 import 'assign_box_driver_status_badge.dart';
 import 'assign_box_driver_tag_badge.dart';
 
@@ -79,23 +80,12 @@ class AssignBoxDriverCard extends StatelessWidget {
             ),
             const SizedBox(width: Spacing.xs),
             // 2. Avatar with purple border
-            Container(
-              width: Spacing.registrationStepCircle,
-              height: Spacing.registrationStepCircle,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.surface,
-                border: Border.all(color: color.primary, width: Spacing.border),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.person_rounded,
-                  size: Spacing.iconSm,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
+            AssignBoxDriverAvatar(
+              avatarUrl: driver.avatarUrl,
+              size: Spacing.registrationStepCircle,
             ),
             const SizedBox(width: Spacing.xs),
+
             // 3. Driver Info: Status Badge, Name, Tag Badge
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 82),
@@ -211,7 +201,9 @@ class AssignBoxDriverCard extends StatelessWidget {
                           fit: BoxFit.scaleDown,
                           alignment: AlignmentDirectional.centerStart,
                           child: Text(
-                            driver.currentLoadText ?? '0 بوكسات',
+                            driver.currentLoadText.isNotEmpty
+                                ? driver.currentLoadText
+                                : '—',
                             style: getSemiBoldStyle(
                               color: color.onSurface,
                               fontSize: FontSize.size11,
@@ -259,7 +251,10 @@ class AssignBoxDriverCard extends StatelessWidget {
                           fit: BoxFit.scaleDown,
                           alignment: AlignmentDirectional.centerStart,
                           child: Text(
-                            driver.expectedCompletionText ?? '10:20 ص',
+                            (driver.expectedCompletionText != null &&
+                                    driver.expectedCompletionText!.isNotEmpty)
+                                ? driver.expectedCompletionText!
+                                : '—',
                             style: getSemiBoldStyle(
                               color: color.onSurface,
                               fontSize: FontSize.size11,
@@ -267,6 +262,7 @@ class AssignBoxDriverCard extends StatelessWidget {
                             maxLines: 1,
                           ),
                         ),
+
                       ],
                     ),
                   ),

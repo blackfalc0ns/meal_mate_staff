@@ -4,14 +4,17 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
 
 class AssignBoxDriverAvatar extends StatelessWidget {
   const AssignBoxDriverAvatar({
     super.key,
+    this.avatarUrl,
     this.badgeNumber,
     this.size = Spacing.buttonSmallHeight,
   });
 
+  final String? avatarUrl;
   final String? badgeNumber;
   final double size;
 
@@ -30,11 +33,25 @@ class AssignBoxDriverAvatar extends StatelessWidget {
             color: color.surface,
             border: Border.all(color: color.primary, width: Spacing.border),
           ),
-          child: Center(
-            child: Icon(
-              Icons.person_rounded,
-              size: Spacing.iconMd,
-              color: color.primary,
+          child: AppCachedNetworkImage(
+            imageUrl: avatarUrl,
+            width: size,
+            height: size,
+            shape: BoxShape.circle,
+            fit: BoxFit.cover,
+            errorWidget: Center(
+              child: Icon(
+                Icons.person_rounded,
+                size: Spacing.iconMd,
+                color: color.primary,
+              ),
+            ),
+            loadingWidget: Center(
+              child: Icon(
+                Icons.person_rounded,
+                size: Spacing.iconMd,
+                color: color.primary,
+              ),
             ),
           ),
         ),

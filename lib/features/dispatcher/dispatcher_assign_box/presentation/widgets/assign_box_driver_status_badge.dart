@@ -37,7 +37,11 @@ class AssignBoxDriverStatusBadge extends StatelessWidget {
       case AssignBoxDriverStatusType.returning:
         surfaceColor = color.dispatcherSuggestionSurface;
         textColor = color.primary;
+      case AssignBoxDriverStatusType.unknown:
+        surfaceColor = color.outlineVariant;
+        textColor = color.onSurfaceVariant;
     }
+
 
     return Container(
       padding: const EdgeInsets.symmetric(
