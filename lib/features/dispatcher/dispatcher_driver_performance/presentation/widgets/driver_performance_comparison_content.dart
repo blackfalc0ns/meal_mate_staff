@@ -60,8 +60,14 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
     final locale = context.localization;
 
     final labels = [
-      (locale.driverPerformanceComparisonTotalAssigned, Icons.inventory_2_outlined),
-      (locale.driverPerformanceComparisonDelivered, Icons.check_circle_outline_rounded),
+      (
+        locale.driverPerformanceComparisonTotalAssigned,
+        Icons.inventory_2_outlined,
+      ),
+      (
+        locale.driverPerformanceComparisonDelivered,
+        Icons.check_circle_outline_rounded,
+      ),
       (locale.driverPerformanceComparisonOnTime, Icons.timer_outlined),
       (locale.driverPerformanceComparisonAvgDelay, Icons.access_time_rounded),
       (locale.driverPerformanceComparisonRating, Icons.star_outline_rounded),
@@ -153,7 +159,10 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                         driver.avgDelayMinutes,
                         color,
                       );
-                      final failColor = _getFailColor(driver.failedCount, color);
+                      final failColor = _getFailColor(
+                        driver.failedCount,
+                        color,
+                      );
 
                       return SizedBox(
                         width: _colWidth,
@@ -165,7 +174,9 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                             ),
                             Divider(
                               height: 1,
-                              color: color.outlineVariant.withValues(alpha: 0.4),
+                              color: color.outlineVariant.withValues(
+                                alpha: 0.4,
+                              ),
                             ),
 
                             // 1. Total Assigned
@@ -174,7 +185,8 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                               height: _rowHeight,
                               backgroundColor: _getRowBg(0, color),
                               child: Text(
-                                driver.totalAssignedText ?? '${driver.totalAssigned}',
+                                driver.totalAssignedText ??
+                                    '${driver.totalAssigned}',
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size12,
@@ -192,7 +204,8 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    driver.deliveredCountText ?? '${driver.deliveredCount}',
+                                    driver.deliveredCountText ??
+                                        '${driver.deliveredCount}',
                                     style: getBoldStyle(
                                       fontFamily: FontConstant.alexandria,
                                       fontSize: FontSize.size12,
@@ -200,7 +213,8 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    driver.deliveredPercentageText ?? '(${driver.deliveredPercentage.toInt()}%)',
+                                    driver.deliveredPercentageText ??
+                                        '(${driver.deliveredPercentage.toInt()}%)',
                                     style: getMediumStyle(
                                       fontFamily: FontConstant.alexandria,
                                       fontSize: FontSize.size9,
@@ -217,7 +231,8 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                               height: _rowHeight,
                               backgroundColor: _getRowBg(2, color),
                               child: Text(
-                                driver.onTimePercentageText ?? '${driver.onTimePercentage.toInt()}%',
+                                driver.onTimePercentageText ??
+                                    '${driver.onTimePercentage.toInt()}%',
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size12,
@@ -232,7 +247,10 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                               height: _rowHeight,
                               backgroundColor: _getRowBg(3, color),
                               child: Text(
-                                driver.avgDelayText ?? locale.driverPerformanceMinutesShort(driver.avgDelayMinutes),
+                                driver.avgDelayText ??
+                                    locale.driverPerformanceMinutesShort(
+                                      driver.avgDelayMinutes,
+                                    ),
                                 style: getBoldStyle(
                                   fontFamily: FontConstant.alexandria,
                                   fontSize: FontSize.size11,
@@ -250,10 +268,15 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   if (driver.rating != null) ...[
-                                    Icon(Icons.star_rounded, size: 14, color: color.primary),
+                                    Icon(
+                                      Icons.star_rounded,
+                                      size: 14,
+                                      color: color.primary,
+                                    ),
                                     const SizedBox(width: 2),
                                     Text(
-                                      driver.ratingText ?? driver.rating!.toStringAsFixed(1),
+                                      driver.ratingText ??
+                                          driver.rating!.toStringAsFixed(1),
                                       style: getBoldStyle(
                                         fontFamily: FontConstant.alexandria,
                                         fontSize: FontSize.size11,
@@ -282,7 +305,8 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    driver.failedCountText ?? '${driver.failedCount}',
+                                    driver.failedCountText ??
+                                        '${driver.failedCount}',
                                     style: getBoldStyle(
                                       fontFamily: FontConstant.alexandria,
                                       fontSize: FontSize.size12,
@@ -290,7 +314,8 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    driver.failedPercentageText ?? '(${driver.failedPercentage.toInt()}%)',
+                                    driver.failedPercentageText ??
+                                        '(${driver.failedPercentage.toInt()}%)',
                                     style: getMediumStyle(
                                       fontFamily: FontConstant.alexandria,
                                       fontSize: FontSize.size9,
@@ -308,7 +333,8 @@ class DriverPerformanceComparisonContent extends StatelessWidget {
                               backgroundColor: _getRowBg(6, color),
                               child: Text(
                                 driver.totalDistanceKm != null
-                                    ? (driver.totalDistanceKmText ?? '${driver.totalDistanceKm!.toStringAsFixed(1)} km')
+                                    ? (driver.totalDistanceKmText ??
+                                          '${driver.totalDistanceKm!.toStringAsFixed(1)} km')
                                     : '—',
                                 style: getMediumStyle(
                                   fontFamily: FontConstant.alexandria,

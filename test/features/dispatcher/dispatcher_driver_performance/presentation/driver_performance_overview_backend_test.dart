@@ -117,7 +117,8 @@ DriverPerformanceOverviewEntity _createSampleOverview({
         ),
       ],
     ),
-    topDrivers: topDrivers ??
+    topDrivers:
+        topDrivers ??
         const [
           DriverPodiumEntryEntity(
             rank: 1,
@@ -141,7 +142,8 @@ DriverPerformanceOverviewEntity _createSampleOverview({
             avatarUrl: null,
           ),
         ],
-    driversTable: driversTable ??
+    driversTable:
+        driversTable ??
         const [
           DriverPerformanceRecordEntity(
             driverId: 'drv-1',
@@ -270,8 +272,9 @@ void main() {
         expect(find.byType(DriverPerformanceTableCard), findsNothing);
 
         // Prepare success and retry
-        repository.nextOverviewResult =
-            ApiSuccessResult(data: _createSampleOverview());
+        repository.nextOverviewResult = ApiSuccessResult(
+          data: _createSampleOverview(),
+        );
         final retryButton = find.byType(AppButton);
         expect(retryButton, findsOneWidget);
 
@@ -283,25 +286,26 @@ void main() {
       },
     );
 
-    testWidgets(
-      'renders EmptyStateWidget when overview data is empty',
-      (tester) async {
-        repository.nextOverviewResult =
-            ApiSuccessResult(data: _createEmptyOverview());
+    testWidgets('renders EmptyStateWidget when overview data is empty', (
+      tester,
+    ) async {
+      repository.nextOverviewResult = ApiSuccessResult(
+        data: _createEmptyOverview(),
+      );
 
-        await tester.pumpWidget(_buildSubject(viewModel: viewModel));
-        await tester.pumpAndSettle();
+      await tester.pumpWidget(_buildSubject(viewModel: viewModel));
+      await tester.pumpAndSettle();
 
-        expect(find.byType(EmptyStateWidget), findsOneWidget);
-        expect(find.byType(DriverPerformanceTableCard), findsNothing);
-      },
-    );
+      expect(find.byType(EmptyStateWidget), findsOneWidget);
+      expect(find.byType(DriverPerformanceTableCard), findsNothing);
+    });
 
     testWidgets(
       'renders all 5 KPIs, table card, distribution, and top rated podium',
       (tester) async {
-        repository.nextOverviewResult =
-            ApiSuccessResult(data: _createSampleOverview());
+        repository.nextOverviewResult = ApiSuccessResult(
+          data: _createSampleOverview(),
+        );
 
         await tester.pumpWidget(_buildSubject(viewModel: viewModel));
         await tester.pumpAndSettle();
@@ -343,8 +347,9 @@ void main() {
     testWidgets(
       'tapping table header columns triggers sorting and toggles ascending/descending',
       (tester) async {
-        repository.nextOverviewResult =
-            ApiSuccessResult(data: _createSampleOverview());
+        repository.nextOverviewResult = ApiSuccessResult(
+          data: _createSampleOverview(),
+        );
 
         await tester.pumpWidget(_buildSubject(viewModel: viewModel));
         await tester.pumpAndSettle();
@@ -376,8 +381,9 @@ void main() {
       'tapping a driver row emits onOpenDriverDetails with exact driverId',
       (tester) async {
         String? selectedId;
-        repository.nextOverviewResult =
-            ApiSuccessResult(data: _createSampleOverview());
+        repository.nextOverviewResult = ApiSuccessResult(
+          data: _createSampleOverview(),
+        );
 
         await tester.pumpWidget(
           _buildSubject(
@@ -398,8 +404,9 @@ void main() {
     testWidgets(
       'refresh failure keeps cards visible and renders InlineApiErrorWidget',
       (tester) async {
-        repository.nextOverviewResult =
-            ApiSuccessResult(data: _createSampleOverview());
+        repository.nextOverviewResult = ApiSuccessResult(
+          data: _createSampleOverview(),
+        );
 
         await tester.pumpWidget(_buildSubject(viewModel: viewModel));
         await tester.pumpAndSettle();
@@ -431,9 +438,12 @@ void main() {
       },
     );
 
-    testWidgets('renders cleanly in English LTR without overflow', (tester) async {
-      repository.nextOverviewResult =
-          ApiSuccessResult(data: _createSampleOverview());
+    testWidgets('renders cleanly in English LTR without overflow', (
+      tester,
+    ) async {
+      repository.nextOverviewResult = ApiSuccessResult(
+        data: _createSampleOverview(),
+      );
 
       await tester.pumpWidget(
         _buildSubject(viewModel: viewModel, locale: const Locale('en')),

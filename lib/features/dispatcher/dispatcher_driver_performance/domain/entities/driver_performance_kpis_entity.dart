@@ -36,9 +36,11 @@ class DriverPerformanceKpisEntity {
   final String? failedPercentageText;
 
   List<DriverPerformanceKpiEntity> toKpiList() {
-    final deliveredSub = deliveredPercentageText ??
+    final deliveredSub =
+        deliveredPercentageText ??
         '${deliveredPercentage % 1 == 0 ? deliveredPercentage.toInt() : deliveredPercentage.toStringAsFixed(1)}%';
-    final failedSub = failedPercentageText ??
+    final failedSub =
+        failedPercentageText ??
         '${failedPercentage % 1 == 0 ? failedPercentage.toInt() : failedPercentage.toStringAsFixed(1)}%';
 
     return [

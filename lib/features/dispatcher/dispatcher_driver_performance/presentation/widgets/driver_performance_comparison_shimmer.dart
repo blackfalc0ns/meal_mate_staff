@@ -21,10 +21,7 @@ class DriverPerformanceComparisonShimmer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Segmented tabs placeholder
-          const ShimmerWidget(
-            height: 44,
-            borderRadius: Spacing.radiusMd,
-          ),
+          const ShimmerWidget(height: 44, borderRadius: Spacing.radiusMd),
           const SizedBox(height: Spacing.md),
 
           // Horizontally scrollable comparison card placeholder
@@ -50,31 +47,54 @@ class DriverPerformanceComparisonShimmer extends StatelessWidget {
                     children: List.generate(
                       4,
                       (index) => Padding(
-                        padding: const EdgeInsetsDirectional.only(end: Spacing.md),
+                        padding: const EdgeInsetsDirectional.only(
+                          end: Spacing.md,
+                        ),
                         child: Container(
                           width: 140,
                           padding: const EdgeInsets.all(Spacing.sm),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusSm,
+                            ),
                             border: Border.all(
-                              color: color.outlineVariant.withValues(alpha: 0.4),
+                              color: color.outlineVariant.withValues(
+                                alpha: 0.4,
+                              ),
                               width: Spacing.border,
                             ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const ShimmerWidget(width: 44, height: 44, borderRadius: 22),
+                              const ShimmerWidget(
+                                width: 44,
+                                height: 44,
+                                borderRadius: 22,
+                              ),
                               const SizedBox(height: Spacing.xs),
-                              const ShimmerWidget(width: 80, height: 14, borderRadius: 3),
+                              const ShimmerWidget(
+                                width: 80,
+                                height: 14,
+                                borderRadius: 3,
+                              ),
                               const SizedBox(height: Spacing.xs),
-                              const ShimmerWidget(width: 50, height: 10, borderRadius: 3),
+                              const ShimmerWidget(
+                                width: 50,
+                                height: 10,
+                                borderRadius: 3,
+                              ),
                               const SizedBox(height: Spacing.md),
                               ...List.generate(
                                 7,
                                 (metricIndex) => const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: Spacing.xs),
-                                  child: ShimmerWidget(height: 22, borderRadius: 4),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: Spacing.xs,
+                                  ),
+                                  child: ShimmerWidget(
+                                    height: 22,
+                                    borderRadius: 4,
+                                  ),
                                 ),
                               ),
                             ],

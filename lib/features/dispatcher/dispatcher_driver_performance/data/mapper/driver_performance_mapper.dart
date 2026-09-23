@@ -12,7 +12,8 @@ import '../../domain/entities/driver_podium_entry_entity.dart';
 import '../models/response/driver_performance_comparison_response_dto.dart';
 import '../models/response/driver_performance_overview_response_dto.dart';
 
-extension DriverPerformanceOverviewResponseDtoMapper on DriverPerformanceOverviewResponseDto {
+extension DriverPerformanceOverviewResponseDtoMapper
+    on DriverPerformanceOverviewResponseDto {
   DriverPerformanceOverviewEntity toEntity() {
     return DriverPerformanceOverviewEntity(
       period: DriverPerformancePeriod.fromApi(period),
@@ -20,7 +21,8 @@ extension DriverPerformanceOverviewResponseDtoMapper on DriverPerformanceOvervie
       dateRangeText: dateRangeText ?? '',
       fromDate: _parseDateTime(fromDate),
       toDate: _parseDateTime(toDate),
-      kpis: kpis?.toEntity() ??
+      kpis:
+          kpis?.toEntity() ??
           const DriverPerformanceKpisEntity(
             totalBoxes: 0,
             deliveredCount: 0,
@@ -30,20 +32,24 @@ extension DriverPerformanceOverviewResponseDtoMapper on DriverPerformanceOvervie
             failedCount: 0,
             failedPercentage: 0.0,
           ),
-      distribution: distribution?.toEntity() ??
+      distribution:
+          distribution?.toEntity() ??
           const DriverPerformanceDistributionEntity(
             totalBoxes: 0,
             segments: <DriverPerformanceDistributionItemEntity>[],
           ),
-      topDrivers: topDrivers?.map((dto) => dto.toEntity()).toList(growable: false) ??
+      topDrivers:
+          topDrivers?.map((dto) => dto.toEntity()).toList(growable: false) ??
           const <DriverPodiumEntryEntity>[],
-      driversTable: driversTable?.map((dto) => dto.toEntity()).toList(growable: false) ??
+      driversTable:
+          driversTable?.map((dto) => dto.toEntity()).toList(growable: false) ??
           const <DriverPerformanceRecordEntity>[],
     );
   }
 }
 
-extension DriverPerformanceKpisResponseDtoMapper on DriverPerformanceKpisResponseDto {
+extension DriverPerformanceKpisResponseDtoMapper
+    on DriverPerformanceKpisResponseDto {
   DriverPerformanceKpisEntity toEntity() {
     return DriverPerformanceKpisEntity(
       totalBoxes: totalBoxes ?? 0,
@@ -64,11 +70,13 @@ extension DriverPerformanceKpisResponseDtoMapper on DriverPerformanceKpisRespons
   }
 }
 
-extension DriverPerformanceDistributionResponseDtoMapper on DriverPerformanceDistributionResponseDto {
+extension DriverPerformanceDistributionResponseDtoMapper
+    on DriverPerformanceDistributionResponseDto {
   DriverPerformanceDistributionEntity toEntity() {
     return DriverPerformanceDistributionEntity(
       totalBoxes: totalBoxes ?? 0,
-      segments: segments?.map((dto) => dto.toEntity()).toList(growable: false) ??
+      segments:
+          segments?.map((dto) => dto.toEntity()).toList(growable: false) ??
           const <DriverPerformanceDistributionItemEntity>[],
     );
   }
@@ -88,7 +96,8 @@ extension DriverPerformanceDistributionSegmentResponseDtoMapper
   }
 }
 
-extension DriverPerformancePodiumResponseDtoMapper on DriverPerformancePodiumResponseDto {
+extension DriverPerformancePodiumResponseDtoMapper
+    on DriverPerformancePodiumResponseDto {
   DriverPodiumEntryEntity toEntity() {
     return DriverPodiumEntryEntity(
       rank: rank ?? 0,
@@ -101,7 +110,8 @@ extension DriverPerformancePodiumResponseDtoMapper on DriverPerformancePodiumRes
   }
 }
 
-extension DriverPerformanceTableRowResponseDtoMapper on DriverPerformanceTableRowResponseDto {
+extension DriverPerformanceTableRowResponseDtoMapper
+    on DriverPerformanceTableRowResponseDto {
   DriverPerformanceRecordEntity toEntity() {
     return DriverPerformanceRecordEntity(
       driverId: driverId ?? '',
@@ -127,7 +137,8 @@ extension DriverPerformanceTableRowResponseDtoMapper on DriverPerformanceTableRo
   }
 }
 
-extension DriverPerformanceComparisonResponseDtoMapper on DriverPerformanceComparisonResponseDto {
+extension DriverPerformanceComparisonResponseDtoMapper
+    on DriverPerformanceComparisonResponseDto {
   DriverPerformanceComparisonEntity toEntity() {
     return DriverPerformanceComparisonEntity(
       period: DriverPerformancePeriod.fromApi(period),
@@ -135,13 +146,15 @@ extension DriverPerformanceComparisonResponseDtoMapper on DriverPerformanceCompa
       dateRangeText: dateRangeText ?? '',
       fromDate: _parseDateTime(fromDate),
       toDate: _parseDateTime(toDate),
-      drivers: drivers?.map((dto) => dto.toEntity()).toList(growable: false) ??
+      drivers:
+          drivers?.map((dto) => dto.toEntity()).toList(growable: false) ??
           const <DriverComparisonRecordEntity>[],
     );
   }
 }
 
-extension DriverComparisonDriverResponseDtoMapper on DriverComparisonDriverResponseDto {
+extension DriverComparisonDriverResponseDtoMapper
+    on DriverComparisonDriverResponseDto {
   DriverComparisonRecordEntity toEntity() {
     return DriverComparisonRecordEntity(
       driverId: driverId ?? '',

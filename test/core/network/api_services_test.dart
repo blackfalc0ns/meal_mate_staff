@@ -276,11 +276,7 @@ void main() {
     test(
       'getReplacementDriverCandidates hits GET EndPoints.dispatcherSupportIssues/{issueId}/candidates',
       () async {
-        await apiServices.getReplacementDriverCandidates(
-          'issue-123',
-          1,
-          20,
-        );
+        await apiServices.getReplacementDriverCandidates('issue-123', 1, 20);
         expect(capturedOptions.method, 'GET');
         expect(
           capturedOptions.path,
@@ -312,32 +308,38 @@ void main() {
       },
     );
 
-    test('getDriverPerformanceOverview hits GET EndPoints.dispatcherPerformanceOverview', () async {
-      await apiServices.getDriverPerformanceOverview(
-        period: 'Last7Days',
-        fromDate: null,
-        toDate: null,
-      );
-      expect(capturedOptions.method, 'GET');
-      expect(capturedOptions.path, EndPoints.dispatcherPerformanceOverview);
-      expect(capturedOptions.queryParameters, {'period': 'Last7Days'});
-    });
+    test(
+      'getDriverPerformanceOverview hits GET EndPoints.dispatcherPerformanceOverview',
+      () async {
+        await apiServices.getDriverPerformanceOverview(
+          period: 'Last7Days',
+          fromDate: null,
+          toDate: null,
+        );
+        expect(capturedOptions.method, 'GET');
+        expect(capturedOptions.path, EndPoints.dispatcherPerformanceOverview);
+        expect(capturedOptions.queryParameters, {'period': 'Last7Days'});
+      },
+    );
 
-    test('getDriverPerformanceComparison hits GET EndPoints.dispatcherPerformanceComparison', () async {
-      await apiServices.getDriverPerformanceComparison(
-        period: 'Custom',
-        driverIds: ['dr_1', 'dr_2'],
-        fromDate: '2025-05-01',
-        toDate: '2025-05-07',
-      );
-      expect(capturedOptions.method, 'GET');
-      expect(capturedOptions.path, EndPoints.dispatcherPerformanceComparison);
-      expect(capturedOptions.queryParameters, {
-        'period': 'Custom',
-        'driverIds': ['dr_1', 'dr_2'],
-        'fromDate': '2025-05-01',
-        'toDate': '2025-05-07',
-      });
-    });
+    test(
+      'getDriverPerformanceComparison hits GET EndPoints.dispatcherPerformanceComparison',
+      () async {
+        await apiServices.getDriverPerformanceComparison(
+          period: 'Custom',
+          driverIds: ['dr_1', 'dr_2'],
+          fromDate: '2025-05-01',
+          toDate: '2025-05-07',
+        );
+        expect(capturedOptions.method, 'GET');
+        expect(capturedOptions.path, EndPoints.dispatcherPerformanceComparison);
+        expect(capturedOptions.queryParameters, {
+          'period': 'Custom',
+          'driverIds': ['dr_1', 'dr_2'],
+          'fromDate': '2025-05-01',
+          'toDate': '2025-05-07',
+        });
+      },
+    );
   });
 }

@@ -89,7 +89,8 @@ DriverPerformanceComparisonEntity _createSampleComparison({
     period: DriverPerformancePeriod.last7Days,
     periodText: '1 May - 7 May',
     dateRangeText: '2026-05-01 - 2026-05-07',
-    drivers: drivers ??
+    drivers:
+        drivers ??
         const [
           DriverComparisonRecordEntity(
             driverId: 'drv-1',
@@ -139,9 +140,7 @@ Widget _buildSubject({
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6744C2)),
     ),
-    home: DispatcherDriverPerformanceScreen(
-      viewModel: viewModel,
-    ),
+    home: DispatcherDriverPerformanceScreen(viewModel: viewModel),
   );
 }
 
@@ -236,8 +235,9 @@ void main() {
         expect(find.byType(DriverPerformanceComparisonContent), findsNothing);
 
         // Setup success and tap retry
-        repository.nextComparisonResult =
-            ApiSuccessResult(data: _createSampleComparison());
+        repository.nextComparisonResult = ApiSuccessResult(
+          data: _createSampleComparison(),
+        );
         final retryBtn = find.byType(AppButton);
         expect(retryBtn, findsOneWidget);
 
@@ -300,21 +300,20 @@ void main() {
       },
     );
 
-    testWidgets(
-      'renders cleanly in English LTR without overflow',
-      (tester) async {
-        await tester.pumpWidget(
-          _buildSubject(viewModel: viewModel, locale: const Locale('en')),
-        );
-        await tester.pumpAndSettle();
+    testWidgets('renders cleanly in English LTR without overflow', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _buildSubject(viewModel: viewModel, locale: const Locale('en')),
+      );
+      await tester.pumpAndSettle();
 
-        final compareTab = find.text('Compare Drivers');
-        await tester.tap(compareTab);
-        await tester.pumpAndSettle();
+      final compareTab = find.text('Compare Drivers');
+      await tester.tap(compareTab);
+      await tester.pumpAndSettle();
 
-        expect(tester.takeException(), isNull);
-        expect(find.byType(DriverPerformanceComparisonContent), findsOneWidget);
-      },
-    );
+      expect(tester.takeException(), isNull);
+      expect(find.byType(DriverPerformanceComparisonContent), findsOneWidget);
+    });
   });
 }

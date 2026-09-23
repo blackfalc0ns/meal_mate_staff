@@ -27,7 +27,7 @@ class DriverPerformancePeriodSheet extends StatelessWidget {
     required DriverPerformancePeriod selectedPeriod,
     required ValueChanged<DriverPerformancePeriod> onPeriodSelected,
     required void Function(DateTime fromDate, DateTime toDate)
-        onCustomRangeSelected,
+    onCustomRangeSelected,
     DateTime? initialCustomFrom,
     DateTime? initialCustomTo,
   }) {
@@ -160,11 +160,7 @@ class DriverPerformancePeriodSheet extends StatelessWidget {
         picked.start.month,
         picked.start.day,
       );
-      final end = DateTime(
-        picked.end.year,
-        picked.end.month,
-        picked.end.day,
-      );
+      final end = DateTime(picked.end.year, picked.end.month, picked.end.day);
       onCustomRangeSelected(start, end);
     }
   }

@@ -194,7 +194,8 @@ abstract class ApiServices {
   });
 
   @GET(EndPoints.dispatcherPerformanceComparison)
-  Future<DriverPerformanceComparisonResponseDto> getDriverPerformanceComparison({
+  Future<DriverPerformanceComparisonResponseDto>
+  getDriverPerformanceComparison({
     @Query('period') String? period,
     @Query('driverIds') List<String>? driverIds,
     @Query('fromDate') String? fromDate,

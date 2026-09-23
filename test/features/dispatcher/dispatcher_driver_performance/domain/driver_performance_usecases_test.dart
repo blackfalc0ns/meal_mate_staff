@@ -22,15 +22,16 @@ class FakeDriverPerformanceRepository implements DriverPerformanceRepository {
   DriverPerformanceQueryEntity? lastComparisonQuery;
 
   @override
-  Future<ApiResult<DriverPerformanceOverviewEntity>> getOverview(DriverPerformanceQueryEntity query) async {
+  Future<ApiResult<DriverPerformanceOverviewEntity>> getOverview(
+    DriverPerformanceQueryEntity query,
+  ) async {
     lastOverviewQuery = query;
     if (returnError) {
-      return ApiErrorResult(
-        failure: Failure(errorMessage: 'Overview failed'),
-      );
+      return ApiErrorResult(failure: Failure(errorMessage: 'Overview failed'));
     }
     return ApiSuccessResult(
-      data: overviewEntity ??
+      data:
+          overviewEntity ??
           DriverPerformanceOverviewEntity(
             period: query.period,
             periodText: 'Text',
@@ -55,7 +56,9 @@ class FakeDriverPerformanceRepository implements DriverPerformanceRepository {
   }
 
   @override
-  Future<ApiResult<DriverPerformanceComparisonEntity>> getComparison(DriverPerformanceQueryEntity query) async {
+  Future<ApiResult<DriverPerformanceComparisonEntity>> getComparison(
+    DriverPerformanceQueryEntity query,
+  ) async {
     lastComparisonQuery = query;
     if (returnError) {
       return ApiErrorResult(
@@ -63,7 +66,8 @@ class FakeDriverPerformanceRepository implements DriverPerformanceRepository {
       );
     }
     return ApiSuccessResult(
-      data: comparisonEntity ??
+      data:
+          comparisonEntity ??
           DriverPerformanceComparisonEntity(
             period: query.period,
             periodText: 'Text',
@@ -86,58 +90,70 @@ void main() {
       getComparisonUseCase = GetDriverPerformanceComparisonUseCase(repository);
     });
 
-    test('GetDriverPerformanceOverviewUseCase validates invalid custom date range locally without calling repository', () async {
-      const invalidQuery = DriverPerformanceQueryEntity(
-        period: DriverPerformancePeriod.custom,
-        fromDate: null,
-        toDate: null,
-      );
+    test(
+      'GetDriverPerformanceOverviewUseCase validates invalid custom date range locally without calling repository',
+      () async {
+        const invalidQuery = DriverPerformanceQueryEntity(
+          period: DriverPerformancePeriod.custom,
+          fromDate: null,
+          toDate: null,
+        );
 
-      final result = await getOverviewUseCase(invalidQuery);
+        final result = await getOverviewUseCase(invalidQuery);
 
-      expect(result, isA<ApiErrorResult>());
-      final error = result as ApiErrorResult;
-      expect(error.failure.exception.errorType, ApiErrorType.validationError);
-      expect(repository.lastOverviewQuery, isNull);
-    });
+        expect(result, isA<ApiErrorResult>());
+        final error = result as ApiErrorResult;
+        expect(error.failure.exception.errorType, ApiErrorType.validationError);
+        expect(repository.lastOverviewQuery, isNull);
+      },
+    );
 
-    test('GetDriverPerformanceOverviewUseCase forwards valid query to repository', () async {
-      final validQuery = DriverPerformanceQueryEntity(
-        period: DriverPerformancePeriod.custom,
-        fromDate: DateTime(2025, 5, 1),
-        toDate: DateTime(2025, 5, 7),
-      );
+    test(
+      'GetDriverPerformanceOverviewUseCase forwards valid query to repository',
+      () async {
+        final validQuery = DriverPerformanceQueryEntity(
+          period: DriverPerformancePeriod.custom,
+          fromDate: DateTime(2025, 5, 1),
+          toDate: DateTime(2025, 5, 7),
+        );
 
-      final result = await getOverviewUseCase(validQuery);
+        final result = await getOverviewUseCase(validQuery);
 
-      expect(result, isA<ApiSuccessResult>());
-      expect(repository.lastOverviewQuery, validQuery);
-    });
+        expect(result, isA<ApiSuccessResult>());
+        expect(repository.lastOverviewQuery, validQuery);
+      },
+    );
 
-    test('GetDriverPerformanceComparisonUseCase validates invalid custom date range locally', () async {
-      final invalidQuery = DriverPerformanceQueryEntity(
-        period: DriverPerformancePeriod.custom,
-        fromDate: DateTime(2025, 5, 10),
-        toDate: DateTime(2025, 5, 1),
-      );
+    test(
+      'GetDriverPerformanceComparisonUseCase validates invalid custom date range locally',
+      () async {
+        final invalidQuery = DriverPerformanceQueryEntity(
+          period: DriverPerformancePeriod.custom,
+          fromDate: DateTime(2025, 5, 10),
+          toDate: DateTime(2025, 5, 1),
+        );
 
-      final result = await getComparisonUseCase(invalidQuery);
+        final result = await getComparisonUseCase(invalidQuery);
 
-      expect(result, isA<ApiErrorResult>());
-      final error = result as ApiErrorResult;
-      expect(error.failure.exception.errorType, ApiErrorType.validationError);
-      expect(repository.lastComparisonQuery, isNull);
-    });
+        expect(result, isA<ApiErrorResult>());
+        final error = result as ApiErrorResult;
+        expect(error.failure.exception.errorType, ApiErrorType.validationError);
+        expect(repository.lastComparisonQuery, isNull);
+      },
+    );
 
-    test('GetDriverPerformanceComparisonUseCase forwards valid query to repository', () async {
-      const validQuery = DriverPerformanceQueryEntity(
-        period: DriverPerformancePeriod.last30Days,
-      );
+    test(
+      'GetDriverPerformanceComparisonUseCase forwards valid query to repository',
+      () async {
+        const validQuery = DriverPerformanceQueryEntity(
+          period: DriverPerformancePeriod.last30Days,
+        );
 
-      final result = await getComparisonUseCase(validQuery);
+        final result = await getComparisonUseCase(validQuery);
 
-      expect(result, isA<ApiSuccessResult>());
-      expect(repository.lastComparisonQuery, validQuery);
-    });
+        expect(result, isA<ApiSuccessResult>());
+        expect(repository.lastComparisonQuery, validQuery);
+      },
+    );
   });
 }

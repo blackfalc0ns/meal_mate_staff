@@ -76,10 +76,7 @@ class _DispatcherDriverPerformanceScreenState
         },
         onCustomRangeSelected: (from, to) {
           _viewModel.add(
-            SelectDriverPerformanceCustomRangeEvent(
-              fromDate: from,
-              toDate: to,
-            ),
+            SelectDriverPerformanceCustomRangeEvent(fromDate: from, toDate: to),
           );
         },
       ),
@@ -132,9 +129,7 @@ class _DispatcherDriverPerformanceScreenState
             dateFilterLabel: _resolveDateFilterLabel(context, state),
             onDateFilterTap: () => _openPeriodSheet(context, state),
           ),
-          body: SafeArea(
-            child: _buildBody(context, state),
-          ),
+          body: SafeArea(child: _buildBody(context, state)),
         );
       },
     );
@@ -273,8 +268,6 @@ class _DispatcherDriverPerformanceScreenState
     final comparison = state.comparison;
     if (comparison == null) return const [];
 
-    return [
-      DriverPerformanceComparisonContent(comparison: comparison),
-    ];
+    return [DriverPerformanceComparisonContent(comparison: comparison)];
   }
 }

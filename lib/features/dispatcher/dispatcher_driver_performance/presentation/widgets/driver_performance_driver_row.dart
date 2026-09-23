@@ -20,7 +20,10 @@ class DriverPerformanceDriverRow extends StatelessWidget {
   final DriverPerformanceRecordEntity record;
   final VoidCallback? onTap;
 
-  Color _getStatusColor(DriverPerformanceDriverStatus status, ColorScheme color) {
+  Color _getStatusColor(
+    DriverPerformanceDriverStatus status,
+    ColorScheme color,
+  ) {
     switch (status) {
       case DriverPerformanceDriverStatus.available:
         return color.success;
@@ -33,7 +36,11 @@ class DriverPerformanceDriverRow extends StatelessWidget {
     }
   }
 
-  Color _getDelayColor(DriverPerformanceDelayLevel level, int minutes, ColorScheme color) {
+  Color _getDelayColor(
+    DriverPerformanceDelayLevel level,
+    int minutes,
+    ColorScheme color,
+  ) {
     switch (level) {
       case DriverPerformanceDelayLevel.good:
         return color.success;
@@ -60,7 +67,11 @@ class DriverPerformanceDriverRow extends StatelessWidget {
     final locale = context.localization;
 
     final statusDotColor = _getStatusColor(record.status, color);
-    final delayColor = _getDelayColor(record.delayLevel, record.avgDelayMinutes, color);
+    final delayColor = _getDelayColor(
+      record.delayLevel,
+      record.avgDelayMinutes,
+      color,
+    );
     final failColor = _getFailColor(record.failedDeliveryCount, color);
 
     return InkWell(
@@ -168,7 +179,8 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    record.deliveredPercentageText ?? '(${record.deliveredPercentage.toInt()}%)',
+                    record.deliveredPercentageText ??
+                        '(${record.deliveredPercentage.toInt()}%)',
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
@@ -184,7 +196,10 @@ class DriverPerformanceDriverRow extends StatelessWidget {
               flex: 2,
               child: Center(
                 child: Text(
-                  record.avgDelayText ?? locale.driverPerformanceMinutesShort(record.avgDelayMinutes),
+                  record.avgDelayText ??
+                      locale.driverPerformanceMinutesShort(
+                        record.avgDelayMinutes,
+                      ),
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size11,
@@ -200,7 +215,8 @@ class DriverPerformanceDriverRow extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    record.failedDeliveryCountText ?? '${record.failedDeliveryCount}',
+                    record.failedDeliveryCountText ??
+                        '${record.failedDeliveryCount}',
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
@@ -208,7 +224,8 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    record.failedDeliveryPercentageText ?? '(${record.failedDeliveryPercentage.toInt()}%)',
+                    record.failedDeliveryPercentageText ??
+                        '(${record.failedDeliveryPercentage.toInt()}%)',
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,

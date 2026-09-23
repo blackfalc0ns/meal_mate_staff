@@ -51,14 +51,14 @@ class DriverPerformanceState {
   }
 
   bool get isActiveTabLoading => switch (selectedTab) {
-        DriverPerformanceTabType.overview => isOverviewInitialLoading,
-        DriverPerformanceTabType.compareDrivers => isComparisonInitialLoading,
-      };
+    DriverPerformanceTabType.overview => isOverviewInitialLoading,
+    DriverPerformanceTabType.compareDrivers => isComparisonInitialLoading,
+  };
 
   Failure? get activeTabFailure => switch (selectedTab) {
-        DriverPerformanceTabType.overview => overviewFailure,
-        DriverPerformanceTabType.compareDrivers => comparisonFailure,
-      };
+    DriverPerformanceTabType.overview => overviewFailure,
+    DriverPerformanceTabType.compareDrivers => comparisonFailure,
+  };
 
   DriverPerformanceState copyWith({
     DriverPerformanceTabType? selectedTab,

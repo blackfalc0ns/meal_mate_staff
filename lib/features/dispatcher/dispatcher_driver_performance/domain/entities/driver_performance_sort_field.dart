@@ -8,7 +8,8 @@ enum DriverPerformanceSortField {
   rating,
 }
 
-extension DriverPerformanceRecordListSort on List<DriverPerformanceRecordEntity> {
+extension DriverPerformanceRecordListSort
+    on List<DriverPerformanceRecordEntity> {
   List<DriverPerformanceRecordEntity> sortedByField(
     DriverPerformanceSortField field, {
     required bool ascending,

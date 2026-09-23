@@ -1,9 +1,4 @@
-enum DriverPerformanceDelayLevel {
-  good,
-  warning,
-  critical,
-  unknown;
-}
+enum DriverPerformanceDelayLevel { good, warning, critical, unknown }
 
 extension DriverPerformanceDelayLevelX on DriverPerformanceDelayLevel {
   static DriverPerformanceDelayLevel fromApi(String? value) {

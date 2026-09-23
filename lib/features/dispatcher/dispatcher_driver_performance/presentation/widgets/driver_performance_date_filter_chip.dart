@@ -6,11 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverPerformanceDateFilterChip extends StatelessWidget {
-  const DriverPerformanceDateFilterChip({
-    super.key,
-    this.label,
-    this.onTap,
-  });
+  const DriverPerformanceDateFilterChip({super.key, this.label, this.onTap});
 
   final String? label;
   final VoidCallback? onTap;

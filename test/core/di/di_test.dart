@@ -100,37 +100,34 @@ void main() {
     },
   );
 
-  test(
-    'configureDependencies registers dispatcher map dependencies',
-    () async {
-      await configureDependencies();
+  test('configureDependencies registers dispatcher map dependencies', () async {
+    await configureDependencies();
 
-      expect(getIt.isRegistered<DispatcherMapRealtimeClient>(), isTrue);
-      expect(getIt.isRegistered<DispatcherMapRemoteDataSource>(), isTrue);
-      expect(getIt.isRegistered<DispatcherMapRepository>(), isTrue);
-      expect(getIt.isRegistered<GetDispatcherLiveMonitoringUseCase>(), isTrue);
-      expect(getIt.isRegistered<ObserveDispatcherMapUpdatesUseCase>(), isTrue);
-      expect(
-        getIt.isRegistered<ObserveDispatcherMapConnectionStatusUseCase>(),
-        isTrue,
-      );
-      expect(getIt.isRegistered<StartDispatcherMapUpdatesUseCase>(), isTrue);
-      expect(getIt.isRegistered<StopDispatcherMapUpdatesUseCase>(), isTrue);
-      expect(getIt.isRegistered<DispatcherMapViewModel>(), isTrue);
+    expect(getIt.isRegistered<DispatcherMapRealtimeClient>(), isTrue);
+    expect(getIt.isRegistered<DispatcherMapRemoteDataSource>(), isTrue);
+    expect(getIt.isRegistered<DispatcherMapRepository>(), isTrue);
+    expect(getIt.isRegistered<GetDispatcherLiveMonitoringUseCase>(), isTrue);
+    expect(getIt.isRegistered<ObserveDispatcherMapUpdatesUseCase>(), isTrue);
+    expect(
+      getIt.isRegistered<ObserveDispatcherMapConnectionStatusUseCase>(),
+      isTrue,
+    );
+    expect(getIt.isRegistered<StartDispatcherMapUpdatesUseCase>(), isTrue);
+    expect(getIt.isRegistered<StopDispatcherMapUpdatesUseCase>(), isTrue);
+    expect(getIt.isRegistered<DispatcherMapViewModel>(), isTrue);
 
-      final realtimeClient = getIt<DispatcherMapRealtimeClient>();
-      final remoteDataSource = getIt<DispatcherMapRemoteDataSource>();
-      final repository = getIt<DispatcherMapRepository>();
-      final liveUseCase = getIt<GetDispatcherLiveMonitoringUseCase>();
-      final viewModel = getIt<DispatcherMapViewModel>();
+    final realtimeClient = getIt<DispatcherMapRealtimeClient>();
+    final remoteDataSource = getIt<DispatcherMapRemoteDataSource>();
+    final repository = getIt<DispatcherMapRepository>();
+    final liveUseCase = getIt<GetDispatcherLiveMonitoringUseCase>();
+    final viewModel = getIt<DispatcherMapViewModel>();
 
-      expect(realtimeClient, isNotNull);
-      expect(remoteDataSource, isNotNull);
-      expect(repository, isNotNull);
-      expect(liveUseCase, isNotNull);
-      expect(viewModel, isNotNull);
-    },
-  );
+    expect(realtimeClient, isNotNull);
+    expect(remoteDataSource, isNotNull);
+    expect(repository, isNotNull);
+    expect(liveUseCase, isNotNull);
+    expect(viewModel, isNotNull);
+  });
 
   test(
     'configureDependencies registers dispatcher support dependencies',
@@ -164,7 +161,10 @@ void main() {
       expect(getIt.isRegistered<DriverPerformanceRemoteDataSource>(), isTrue);
       expect(getIt.isRegistered<DriverPerformanceRepository>(), isTrue);
       expect(getIt.isRegistered<GetDriverPerformanceOverviewUseCase>(), isTrue);
-      expect(getIt.isRegistered<GetDriverPerformanceComparisonUseCase>(), isTrue);
+      expect(
+        getIt.isRegistered<GetDriverPerformanceComparisonUseCase>(),
+        isTrue,
+      );
       expect(getIt.isRegistered<DriverPerformanceViewModel>(), isTrue);
 
       final remoteDataSource = getIt<DriverPerformanceRemoteDataSource>();

@@ -303,9 +303,7 @@ Future<void> configureDependencies() async {
     ),
   );
   getIt.registerLazySingleton<DispatcherMapRepository>(
-    () => DispatcherMapRepositoryImpl(
-      getIt<DispatcherMapRemoteDataSource>(),
-    ),
+    () => DispatcherMapRepositoryImpl(getIt<DispatcherMapRemoteDataSource>()),
   );
   getIt.registerFactory<GetDispatcherLiveMonitoringUseCase>(
     () => GetDispatcherLiveMonitoringUseCase(getIt<DispatcherMapRepository>()),
@@ -345,19 +343,15 @@ Future<void> configureDependencies() async {
     ),
   );
   getIt.registerFactory<GetDispatcherSupportIssuesUseCase>(
-    () => GetDispatcherSupportIssuesUseCase(
-      getIt<DispatcherSupportRepository>(),
-    ),
+    () =>
+        GetDispatcherSupportIssuesUseCase(getIt<DispatcherSupportRepository>()),
   );
   getIt.registerFactory<GetDispatcherIssueDetailsUseCase>(
-    () => GetDispatcherIssueDetailsUseCase(
-      getIt<DispatcherSupportRepository>(),
-    ),
+    () =>
+        GetDispatcherIssueDetailsUseCase(getIt<DispatcherSupportRepository>()),
   );
   getIt.registerFactory<ResolveDispatcherIssueUseCase>(
-    () => ResolveDispatcherIssueUseCase(
-      getIt<DispatcherSupportRepository>(),
-    ),
+    () => ResolveDispatcherIssueUseCase(getIt<DispatcherSupportRepository>()),
   );
   getIt.registerFactory<GetReplacementDriverCandidatesUseCase>(
     () => GetReplacementDriverCandidatesUseCase(
@@ -365,9 +359,7 @@ Future<void> configureDependencies() async {
     ),
   );
   getIt.registerFactory<ReassignDispatcherIssueUseCase>(
-    () => ReassignDispatcherIssueUseCase(
-      getIt<DispatcherSupportRepository>(),
-    ),
+    () => ReassignDispatcherIssueUseCase(getIt<DispatcherSupportRepository>()),
   );
   getIt.registerFactory<DispatcherSupportViewModel>(
     () => DispatcherSupportViewModel(
@@ -391,9 +383,7 @@ Future<void> configureDependencies() async {
 
   // Dispatcher Driver Performance
   getIt.registerLazySingleton<DriverPerformanceRemoteDataSource>(
-    () => DriverPerformanceRemoteDataSourceImpl(
-      getIt<ApiServices>(),
-    ),
+    () => DriverPerformanceRemoteDataSourceImpl(getIt<ApiServices>()),
   );
   getIt.registerLazySingleton<DriverPerformanceRepository>(
     () => DriverPerformanceRepositoryImpl(
