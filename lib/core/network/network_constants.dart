@@ -66,5 +66,11 @@ abstract class EndPoints {
       '/api/v1/dispatcher/orders/{boxId}/tracking';
   static const String dispatcherOrderIssues =
       '/api/v1/dispatcher/orders/{boxId}/issues';
+  static const String dispatcherDriverDetails =
+      '/api/v1/dispatcher/drivers/{driverId}/details';
+  static const String dispatcherDriverActiveBoxes =
+      '/api/v1/dispatcher/drivers/{driverId}/active-boxes';
+  static const String dispatcherDriverCurrentLocation =
+      '/api/v1/dispatcher/drivers/{driverId}/current-location';
 }
 

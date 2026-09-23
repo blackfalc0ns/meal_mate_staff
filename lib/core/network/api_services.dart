@@ -48,6 +48,9 @@ import '../../features/dispatcher/dispatcher_assign_box/data/models/response/ass
 import '../../features/dispatcher/dispatcher_box_tracking/data/models/request/report_box_issue_request_dto.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/data/models/response/box_tracking_response_dto.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/data/models/response/report_box_issue_response_dto.dart';
+import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_active_boxes_response_dto.dart';
+import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_current_location_response_dto.dart';
+import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_details_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -253,6 +256,21 @@ abstract class ApiServices {
   Future<ReportBoxIssueResponseDto> reportBoxIssue(
     @Path('boxId') String boxId,
     @Body() ReportBoxIssueRequestDto request,
+  );
+
+  @GET(EndPoints.dispatcherDriverDetails)
+  Future<DriverDetailsResponseDto> getDispatcherDriverDetails(
+    @Path('driverId') String driverId,
+  );
+
+  @GET(EndPoints.dispatcherDriverActiveBoxes)
+  Future<DriverActiveBoxesResponseDto> getDispatcherDriverActiveBoxes(
+    @Path('driverId') String driverId,
+  );
+
+  @GET(EndPoints.dispatcherDriverCurrentLocation)
+  Future<DriverCurrentLocationResponseDto> getDispatcherDriverCurrentLocation(
+    @Path('driverId') String driverId,
   );
 }
 

@@ -442,6 +442,27 @@ void main() {
         'severity': 'Medium',
       });
     });
+
+    test('getDispatcherDriverDetails hits GET EndPoints.dispatcherDriverDetails with path substitution', () async {
+      const driverId = '4a6f235e-c04d-45db-9c3f-c39775c96da9';
+      await apiServices.getDispatcherDriverDetails(driverId);
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, '/api/v1/dispatcher/drivers/$driverId/details');
+    });
+
+    test('getDispatcherDriverActiveBoxes hits GET EndPoints.dispatcherDriverActiveBoxes with path substitution', () async {
+      const driverId = '4a6f235e-c04d-45db-9c3f-c39775c96da9';
+      await apiServices.getDispatcherDriverActiveBoxes(driverId);
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, '/api/v1/dispatcher/drivers/$driverId/active-boxes');
+    });
+
+    test('getDispatcherDriverCurrentLocation hits GET EndPoints.dispatcherDriverCurrentLocation with path substitution', () async {
+      const driverId = '4a6f235e-c04d-45db-9c3f-c39775c96da9';
+      await apiServices.getDispatcherDriverCurrentLocation(driverId);
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, '/api/v1/dispatcher/drivers/$driverId/current-location');
+    });
   });
 }
 
