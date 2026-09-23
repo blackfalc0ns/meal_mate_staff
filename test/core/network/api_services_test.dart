@@ -311,5 +311,33 @@ void main() {
         expect(capturedOptions.data, {'replacementDriverId': 'drv-2'});
       },
     );
+
+    test('getDriverPerformanceOverview hits GET EndPoints.dispatcherPerformanceOverview', () async {
+      await apiServices.getDriverPerformanceOverview(
+        period: 'Last7Days',
+        fromDate: null,
+        toDate: null,
+      );
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, EndPoints.dispatcherPerformanceOverview);
+      expect(capturedOptions.queryParameters, {'period': 'Last7Days'});
+    });
+
+    test('getDriverPerformanceComparison hits GET EndPoints.dispatcherPerformanceComparison', () async {
+      await apiServices.getDriverPerformanceComparison(
+        period: 'Custom',
+        driverIds: ['dr_1', 'dr_2'],
+        fromDate: '2025-05-01',
+        toDate: '2025-05-07',
+      );
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, EndPoints.dispatcherPerformanceComparison);
+      expect(capturedOptions.queryParameters, {
+        'period': 'Custom',
+        'driverIds': ['dr_1', 'dr_2'],
+        'fromDate': '2025-05-01',
+        'toDate': '2025-05-07',
+      });
+    });
   });
 }

@@ -48,4 +48,8 @@ abstract class EndPoints {
   static const String dispatcherHub = '/hubs/dispatcher';
   static const String dispatcherSupportIssues =
       '/api/v1/dispatcher/support/issues';
+  static const String dispatcherPerformanceOverview =
+      '/api/v1/dispatcher/performance/overview';
+  static const String dispatcherPerformanceComparison =
+      '/api/v1/dispatcher/performance/comparison';
 }

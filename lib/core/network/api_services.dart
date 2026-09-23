@@ -37,6 +37,8 @@ import '../../features/dispatcher/dispatcher_support/data/models/response/reassi
 import '../../features/dispatcher/dispatcher_support/data/models/response/reassignment_response_dto.dart';
 import '../../features/dispatcher/dispatcher_support/data/models/response/resolve_issue_response_dto.dart';
 import '../../features/dispatcher/dispatcher_support/data/models/response/dispatcher_support_response_dto.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/data/models/response/driver_performance_comparison_response_dto.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/data/models/response/driver_performance_overview_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -183,4 +185,19 @@ abstract class ApiServices {
     @Path('issueId') String issueId,
     @Body() ReassignDriverRequestDto request,
   );
+
+  @GET(EndPoints.dispatcherPerformanceOverview)
+  Future<DriverPerformanceOverviewResponseDto> getDriverPerformanceOverview({
+    @Query('period') String? period,
+    @Query('fromDate') String? fromDate,
+    @Query('toDate') String? toDate,
+  });
+
+  @GET(EndPoints.dispatcherPerformanceComparison)
+  Future<DriverPerformanceComparisonResponseDto> getDriverPerformanceComparison({
+    @Query('period') String? period,
+    @Query('driverIds') List<String>? driverIds,
+    @Query('fromDate') String? fromDate,
+    @Query('toDate') String? toDate,
+  });
 }
