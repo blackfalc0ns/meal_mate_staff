@@ -12,16 +12,112 @@ class DriverDetailsActionButtons extends StatelessWidget {
   const DriverDetailsActionButtons({
     super.key,
     this.onSendMessage,
+    this.onSelectSms,
+    this.onSelectWhatsApp,
     this.onCall,
   });
 
   final VoidCallback? onSendMessage;
+  final VoidCallback? onSelectSms;
+  final VoidCallback? onSelectWhatsApp;
   final VoidCallback? onCall;
+
+  void _handleMessageTap(BuildContext context) {
+    if (onSelectSms != null || onSelectWhatsApp != null) {
+      _showMessageChoiceSheet(context);
+    } else {
+      onSendMessage?.call();
+    }
+  }
+
+  void _showMessageChoiceSheet(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(Spacing.radiusLg)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.base,
+              vertical: Spacing.md,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: color.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Spacing.md),
+                Text(
+                  locale.driverDetailsChooseMessagingApp,
+                  style: getBoldStyle(
+                    color: color.onSurface,
+                    fontSize: FontSize.size16,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: Spacing.md),
+                if (onSelectSms != null)
+                  ListTile(
+                    leading: Icon(Icons.sms_outlined, color: color.primary),
+                    title: Text(
+                      locale.driverDetailsSms,
+                      style: getMediumStyle(
+                        color: color.onSurface,
+                        fontSize: FontSize.size14,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      onSelectSms?.call();
+                    },
+                  ),
+                if (onSelectWhatsApp != null)
+                  ListTile(
+                    leading: Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      color: color.tertiary,
+                    ),
+                    title: Text(
+                      locale.driverDetailsWhatsApp,
+                      style: getMediumStyle(
+                        color: color.onSurface,
+                        fontSize: FontSize.size14,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      onSelectWhatsApp?.call();
+                    },
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final hasMessageAction =
+        onSelectSms != null || onSelectWhatsApp != null || onSendMessage != null;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -34,7 +130,7 @@ class DriverDetailsActionButtons extends StatelessWidget {
           Expanded(
             child: AppButton(
               text: locale.driverDetailsSendMessage,
-              onPressed: onSendMessage,
+              onPressed: hasMessageAction ? () => _handleMessageTap(context) : null,
               variant: AppButtonVariant.filled,
               color: color.primary,
               textColor: color.onPrimary,
