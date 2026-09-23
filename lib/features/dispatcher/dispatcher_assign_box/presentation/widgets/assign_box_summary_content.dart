@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
@@ -105,7 +104,11 @@ class AssignBoxSummaryContent extends StatelessWidget {
         const SizedBox(height: Spacing.md),
 
         // 2. Customer Information
-        _buildSectionHeader(context, locale.assignBoxCustomerInfo, Icons.person_outline_rounded),
+        _buildSectionHeader(
+          context,
+          locale.assignBoxCustomerInfo,
+          Icons.person_outline_rounded,
+        ),
         const SizedBox(height: Spacing.xs),
         Container(
           width: double.infinity,
@@ -118,7 +121,8 @@ class AssignBoxSummaryContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (summary.customerNameMasked != null && summary.customerNameMasked!.isNotEmpty)
+              if (summary.customerNameMasked != null &&
+                  summary.customerNameMasked!.isNotEmpty)
                 Text(
                   summary.customerNameMasked!,
                   style: getBoldStyle(
@@ -126,7 +130,8 @@ class AssignBoxSummaryContent extends StatelessWidget {
                     fontSize: FontSize.size13,
                   ),
                 ),
-              if (summary.customerPhoneMasked != null && summary.customerPhoneMasked!.isNotEmpty) ...[
+              if (summary.customerPhoneMasked != null &&
+                  summary.customerPhoneMasked!.isNotEmpty) ...[
                 const SizedBox(height: Spacing.xs),
                 Row(
                   children: [
@@ -146,7 +151,8 @@ class AssignBoxSummaryContent extends StatelessWidget {
                   ],
                 ),
               ],
-              if (summary.customerMaskedId != null && summary.customerMaskedId!.isNotEmpty) ...[
+              if (summary.customerMaskedId != null &&
+                  summary.customerMaskedId!.isNotEmpty) ...[
                 const SizedBox(height: Spacing.xs),
                 Text(
                   summary.customerMaskedId!,
@@ -162,7 +168,11 @@ class AssignBoxSummaryContent extends StatelessWidget {
         const SizedBox(height: Spacing.md),
 
         // 3. Delivery Details
-        _buildSectionHeader(context, locale.assignBoxDeliveryInfo, Icons.location_on_outlined),
+        _buildSectionHeader(
+          context,
+          locale.assignBoxDeliveryInfo,
+          Icons.location_on_outlined,
+        ),
         const SizedBox(height: Spacing.xs),
         Container(
           width: double.infinity,
@@ -178,11 +188,18 @@ class AssignBoxSummaryContent extends StatelessWidget {
               if (summary.zoneName != null && summary.zoneName!.isNotEmpty)
                 Row(
                   children: [
-                    Icon(Icons.map_outlined, size: Spacing.iconXs, color: color.primary),
+                    Icon(
+                      Icons.map_outlined,
+                      size: Spacing.iconXs,
+                      color: color.primary,
+                    ),
                     const SizedBox(width: Spacing.xs / 2),
                     Text(
                       summary.zoneName!,
-                      style: getBoldStyle(color: color.onSurface, fontSize: FontSize.size12),
+                      style: getBoldStyle(
+                        color: color.onSurface,
+                        fontSize: FontSize.size12,
+                      ),
                     ),
                   ],
                 ),
@@ -190,18 +207,29 @@ class AssignBoxSummaryContent extends StatelessWidget {
                 const SizedBox(height: Spacing.xs),
                 Text(
                   summary.address!,
-                  style: getRegularStyle(color: color.onSurfaceVariant, fontSize: FontSize.size12),
+                  style: getRegularStyle(
+                    color: color.onSurfaceVariant,
+                    fontSize: FontSize.size12,
+                  ),
                 ),
               ],
-              if (summary.deliveryTimeWindow != null && summary.deliveryTimeWindow!.isNotEmpty) ...[
+              if (summary.deliveryTimeWindow != null &&
+                  summary.deliveryTimeWindow!.isNotEmpty) ...[
                 const SizedBox(height: Spacing.xs),
                 Row(
                   children: [
-                    Icon(Icons.access_time_rounded, size: Spacing.iconXs, color: color.onSurfaceVariant),
+                    Icon(
+                      Icons.access_time_rounded,
+                      size: Spacing.iconXs,
+                      color: color.onSurfaceVariant,
+                    ),
                     const SizedBox(width: Spacing.xs / 2),
                     Text(
                       summary.deliveryTimeWindow!,
-                      style: getMediumStyle(color: color.onSurfaceVariant, fontSize: FontSize.size11),
+                      style: getMediumStyle(
+                        color: color.onSurfaceVariant,
+                        fontSize: FontSize.size11,
+                      ),
                     ),
                   ],
                 ),
@@ -212,8 +240,13 @@ class AssignBoxSummaryContent extends StatelessWidget {
         const SizedBox(height: Spacing.md),
 
         // 4. Delivery Notes (if any)
-        if (summary.deliveryNotes != null && summary.deliveryNotes!.isNotEmpty) ...[
-          _buildSectionHeader(context, locale.assignBoxDeliveryNotes, Icons.notes_rounded),
+        if (summary.deliveryNotes != null &&
+            summary.deliveryNotes!.isNotEmpty) ...[
+          _buildSectionHeader(
+            context,
+            locale.assignBoxDeliveryNotes,
+            Icons.notes_rounded,
+          ),
           const SizedBox(height: Spacing.xs),
           Container(
             width: double.infinity,
@@ -225,21 +258,31 @@ class AssignBoxSummaryContent extends StatelessWidget {
             ),
             child: Text(
               summary.deliveryNotes!,
-              style: getRegularStyle(color: color.onSurface, fontSize: FontSize.size12),
+              style: getRegularStyle(
+                color: color.onSurface,
+                fontSize: FontSize.size12,
+              ),
             ),
           ),
           const SizedBox(height: Spacing.md),
         ],
 
         // 5. Allergies
-        _buildSectionHeader(context, locale.assignBoxAllergiesTitle, Icons.warning_amber_rounded),
+        _buildSectionHeader(
+          context,
+          locale.assignBoxAllergiesTitle,
+          Icons.warning_amber_rounded,
+        ),
         const SizedBox(height: Spacing.xs),
         if (summary.allergies.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
             child: Text(
               locale.assignBoxNoAllergies,
-              style: getRegularStyle(color: color.onSurfaceVariant, fontSize: FontSize.size12),
+              style: getRegularStyle(
+                color: color.onSurfaceVariant,
+                fontSize: FontSize.size12,
+              ),
             ),
           )
         else
@@ -250,7 +293,10 @@ class AssignBoxSummaryContent extends StatelessWidget {
                 .map(
                   (allergy) => Chip(
                     label: Text(allergy),
-                    labelStyle: getMediumStyle(color: color.error, fontSize: FontSize.size11),
+                    labelStyle: getMediumStyle(
+                      color: color.error,
+                      fontSize: FontSize.size11,
+                    ),
                     backgroundColor: color.errorContainer,
                     side: BorderSide(color: color.error),
                     visualDensity: VisualDensity.compact,
@@ -262,14 +308,21 @@ class AssignBoxSummaryContent extends StatelessWidget {
         const SizedBox(height: Spacing.md),
 
         // 6. Meals List
-        _buildSectionHeader(context, locale.assignBoxMealsTitle, Icons.restaurant_rounded),
+        _buildSectionHeader(
+          context,
+          locale.assignBoxMealsTitle,
+          Icons.restaurant_rounded,
+        ),
         const SizedBox(height: Spacing.xs),
         if (summary.meals.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
             child: Text(
               locale.assignBoxNoMeals,
-              style: getRegularStyle(color: color.onSurfaceVariant, fontSize: FontSize.size12),
+              style: getRegularStyle(
+                color: color.onSurfaceVariant,
+                fontSize: FontSize.size12,
+              ),
             ),
           )
         else
@@ -278,7 +331,11 @@ class AssignBoxSummaryContent extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title, IconData icon) {
+  Widget _buildSectionHeader(
+    BuildContext context,
+    String title,
+    IconData icon,
+  ) {
     final color = context.colorScheme;
     return Row(
       children: [

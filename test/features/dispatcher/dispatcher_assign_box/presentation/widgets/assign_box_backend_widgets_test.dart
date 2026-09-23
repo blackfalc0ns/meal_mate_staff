@@ -10,13 +10,11 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/dom
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_status.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_summary_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_bottom_actions.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_driver_avatar.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_driver_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_driver_status_badge.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_recommended_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_summary_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_summary_content.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_summary_meal_row.dart';
 
 Widget buildTestWidget({
   required Widget child,
@@ -29,7 +27,6 @@ Widget buildTestWidget({
     home: Scaffold(body: child),
   );
 }
-
 
 void main() {
   const sampleBox = AssignBoxOrderEntity(
@@ -109,32 +106,37 @@ void main() {
   });
 
   group('AssignBoxRecommendedCard', () {
-    testWidgets('renders best suggestion details, radio selection, and network avatar', (tester) async {
-      var selected = false;
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: AssignBoxRecommendedCard(
-            driver: sampleBestDriver,
-            isSelected: true,
-            onSelected: () => selected = true,
+    testWidgets(
+      'renders best suggestion details, radio selection, and network avatar',
+      (tester) async {
+        var selected = false;
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: AssignBoxRecommendedCard(
+              driver: sampleBestDriver,
+              isSelected: true,
+              onSelected: () => selected = true,
+            ),
           ),
-        ),
-      );
+        );
 
-      expect(find.text('سالم الحربي'), findsOneWidget);
-      expect(find.text('4 بوكسات'), findsOneWidget);
-      expect(find.text('2.4 كم'), findsOneWidget);
-      expect(find.text('الأسرع وصولاً'), findsOneWidget);
-      expect(find.byType(AppCachedNetworkImage), findsOneWidget);
-      expect(find.byIcon(Icons.radio_button_checked_rounded), findsOneWidget);
+        expect(find.text('سالم الحربي'), findsOneWidget);
+        expect(find.text('4 بوكسات'), findsOneWidget);
+        expect(find.text('2.4 كم'), findsOneWidget);
+        expect(find.text('الأسرع وصولاً'), findsOneWidget);
+        expect(find.byType(AppCachedNetworkImage), findsOneWidget);
+        expect(find.byIcon(Icons.radio_button_checked_rounded), findsOneWidget);
 
-      await tester.tap(find.byType(AssignBoxRecommendedCard));
-      expect(selected, isTrue);
-    });
+        await tester.tap(find.byType(AssignBoxRecommendedCard));
+        expect(selected, isTrue);
+      },
+    );
   });
 
   group('AssignBoxDriverCard', () {
-    testWidgets('renders candidate driver row with metrics and status badge', (tester) async {
+    testWidgets('renders candidate driver row with metrics and status badge', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
           child: AssignBoxDriverCard(
@@ -154,7 +156,9 @@ void main() {
   });
 
   group('AssignBoxDriverStatusBadge', () {
-    testWidgets('renders four status types and unknown properly', (tester) async {
+    testWidgets('renders four status types and unknown properly', (
+      tester,
+    ) async {
       for (final status in AssignBoxDriverStatusType.values) {
         await tester.pumpWidget(
           buildTestWidget(
@@ -170,7 +174,9 @@ void main() {
   });
 
   group('AssignBoxBottomActions', () {
-    testWidgets('handles isConfirmEnabled and isSubmitting states', (tester) async {
+    testWidgets('handles isConfirmEnabled and isSubmitting states', (
+      tester,
+    ) async {
       var confirmTapped = false;
       await tester.pumpWidget(
         buildTestWidget(
@@ -200,42 +206,56 @@ void main() {
   });
 
   group('AssignBoxSummaryContent and AssignBoxSummaryMealRow', () {
-    testWidgets('renders full masked customer data, barcode, allergies, and meals', (tester) async {
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: const AssignBoxSummaryContent(summary: sampleSummary),
-        ),
-      );
+    testWidgets(
+      'renders full masked customer data, barcode, allergies, and meals',
+      (tester) async {
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: const AssignBoxSummaryContent(summary: sampleSummary),
+          ),
+        );
 
-      expect(find.text('#BX-1256'), findsOneWidget);
-      expect(find.text('MM-BX-1256-KWT'), findsOneWidget);
-      expect(find.text('أحمد ***'), findsOneWidget);
-      expect(find.text('+965 **** 1234'), findsOneWidget);
-      expect(find.text('السالمية'), findsOneWidget);
-      expect(find.text('شارع سالم المبارك، برج السنابل، شقة 14'), findsOneWidget);
-      expect(find.text('مكسرات'), findsOneWidget);
-      expect(find.text('لاكتوز'), findsOneWidget);
-      expect(find.text('سالمون مشوي مع الكينوا والخضار السوتيه'), findsOneWidget);
-      expect(find.text('بدون بصل'), findsOneWidget);
-    });
+        expect(find.text('#BX-1256'), findsOneWidget);
+        expect(find.text('MM-BX-1256-KWT'), findsOneWidget);
+        expect(find.text('أحمد ***'), findsOneWidget);
+        expect(find.text('+965 **** 1234'), findsOneWidget);
+        expect(find.text('السالمية'), findsOneWidget);
+        expect(
+          find.text('شارع سالم المبارك، برج السنابل، شقة 14'),
+          findsOneWidget,
+        );
+        expect(find.text('مكسرات'), findsOneWidget);
+        expect(find.text('لاكتوز'), findsOneWidget);
+        expect(
+          find.text('سالمون مشوي مع الكينوا والخضار السوتيه'),
+          findsOneWidget,
+        );
+        expect(find.text('بدون بصل'), findsOneWidget);
+      },
+    );
 
-    testWidgets('renders empty allergies and empty meals gracefully with localized fallback', (tester) async {
-      const emptySummary = AssignBoxSummaryEntity(
-        boxId: 'b-1',
-        boxCode: '#BX-1',
-        boxCount: 1,
-      );
+    testWidgets(
+      'renders empty allergies and empty meals gracefully with localized fallback',
+      (tester) async {
+        const emptySummary = AssignBoxSummaryEntity(
+          boxId: 'b-1',
+          boxCode: '#BX-1',
+          boxCount: 1,
+        );
 
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: const AssignBoxSummaryContent(summary: emptySummary),
-        ),
-      );
+        await tester.pumpWidget(
+          buildTestWidget(
+            child: const AssignBoxSummaryContent(summary: emptySummary),
+          ),
+        );
 
-      expect(tester.takeException(), isNull);
-    });
+        expect(tester.takeException(), isNull);
+      },
+    );
 
-    testWidgets('renders without overflow on narrow 360px viewport', (tester) async {
+    testWidgets('renders without overflow on narrow 360px viewport', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(360, 640);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);

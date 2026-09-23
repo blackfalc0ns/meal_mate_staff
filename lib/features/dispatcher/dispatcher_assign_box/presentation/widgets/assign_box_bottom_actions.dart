@@ -48,8 +48,9 @@ class AssignBoxBottomActions extends StatelessWidget {
                 icon: Icons.near_me_rounded,
                 variant: AppButtonVariant.filled,
                 isLoading: isSubmitting,
-                onPressed:
-                    (isConfirmEnabled && !isSubmitting) ? onConfirmPressed : null,
+                onPressed: (isConfirmEnabled && !isSubmitting)
+                    ? onConfirmPressed
+                    : null,
               ),
             ),
             const SizedBox(width: Spacing.md),

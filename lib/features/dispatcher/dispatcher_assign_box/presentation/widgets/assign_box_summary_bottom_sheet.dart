@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +24,7 @@ class AssignBoxSummaryBottomSheet extends StatelessWidget {
   }) {
     // If not cached, trigger load
     if (viewModel.state.summary == null && !viewModel.state.isSummaryLoading) {
-      viewModel.doIntent(const LoadAssignBoxSummaryEvent());
+      unawaited(viewModel.doIntent(const LoadAssignBoxSummaryEvent()));
     }
 
     return CustomBottomSheet.show<void>(
@@ -60,7 +62,8 @@ class AssignBoxSummaryBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.all(Spacing.base),
             child: InlineApiErrorWidget(
               failure: state.summaryFailure!,
-              onRetry: () => viewModel.doIntent(const RetryAssignBoxSummaryEvent()),
+              onRetry: () =>
+                  viewModel.doIntent(const RetryAssignBoxSummaryEvent()),
             ),
           );
         }

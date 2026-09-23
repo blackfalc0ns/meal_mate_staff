@@ -1,10 +1,4 @@
-enum AssignBoxPriority {
-  normal,
-  high,
-  urgent,
-  low,
-  unknown,
-}
+enum AssignBoxPriority { normal, high, urgent, low, unknown }
 
 extension AssignBoxPriorityX on AssignBoxPriority {
   static AssignBoxPriority fromApi(String? value) {

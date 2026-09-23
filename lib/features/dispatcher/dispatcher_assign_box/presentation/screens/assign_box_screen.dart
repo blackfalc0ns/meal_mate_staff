@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,15 +63,16 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
     _lastSeenNoticeId = _viewModel.state.noticeId;
     _lastSeenSuccessId = _viewModel.state.successId;
 
-    if (_viewModel.state.details == null && !_viewModel.state.isInitialLoading) {
-      _viewModel.doIntent(const LoadAssignBoxEvent());
+    if (_viewModel.state.details == null &&
+        !_viewModel.state.isInitialLoading) {
+      unawaited(_viewModel.doIntent(const LoadAssignBoxEvent()));
     }
   }
 
   @override
   void dispose() {
     if (_isInternalViewModel) {
-      _viewModel.close();
+      unawaited(_viewModel.close());
     }
     super.dispose();
   }
@@ -106,7 +109,8 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
                 state.assignmentResult != null) {
               widget.onAssignmentCompleted!(state.assignmentResult!);
             }
-            final msg = state.assignmentResult?.message ??
+            final msg =
+                state.assignmentResult?.message ??
                 context.localization.assignBoxSuccessMessage;
             CustomSnackbar.showSuccess(context: context, message: msg);
             Navigator.of(context).pop(true);
@@ -115,12 +119,13 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
 
           if (state.noticeId > _lastSeenNoticeId) {
             _lastSeenNoticeId = state.noticeId;
-            final errorMsg = state.submitFailure?.errorMessage ??
+            final errorMsg =
+                state.submitFailure?.errorMessage ??
                 state.refreshFailure?.errorMessage;
             if (errorMsg != null && errorMsg.isNotEmpty) {
               CustomSnackbar.showError(context: context, message: errorMsg);
             }
-            _viewModel.doIntent(const ClearAssignBoxNoticeEvent());
+            unawaited(_viewModel.doIntent(const ClearAssignBoxNoticeEvent()));
           }
         },
         builder: (context, state) {
@@ -160,7 +165,8 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
                       const SizedBox(height: Spacing.base),
                       AssignBoxRecommendedCard(
                         driver: state.details!.bestSuggestion!,
-                        isSelected: state.selectedDriverId ==
+                        isSelected:
+                            state.selectedDriverId ==
                             state.details!.bestSuggestion!.driverId,
                         onSelected: () => _viewModel.doIntent(
                           SelectAssignBoxDriverEvent(
@@ -205,12 +211,7 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
               title: title,
               showBackButton: true,
               onBackPressed: () => Navigator.of(context).maybePop(),
-              actions: [
-                NotificationButton(
-                  hasUnread: false,
-                  onPressed: () {},
-                ),
-              ],
+              actions: [NotificationButton(hasUnread: false, onPressed: () {})],
             ),
             body: body,
             bottomNavigationBar: state.details != null

@@ -75,18 +75,23 @@ void main() {
     test('locally rejects empty box ID without calling repository', () async {
       final result = await getDetailsUseCase('');
       expect(result, isA<ApiErrorResult<AssignBoxDetailsEntity>>());
-      final failure = (result as ApiErrorResult<AssignBoxDetailsEntity>).failure;
+      final failure =
+          (result as ApiErrorResult<AssignBoxDetailsEntity>).failure;
       expect(failure.exception.errorType, ApiErrorType.validationError);
       expect(repository.getDetailsCalls, 0);
     });
 
-    test('locally rejects non-GUID box ID without calling repository', () async {
-      final result = await getDetailsUseCase('not-a-guid');
-      expect(result, isA<ApiErrorResult<AssignBoxDetailsEntity>>());
-      final failure = (result as ApiErrorResult<AssignBoxDetailsEntity>).failure;
-      expect(failure.exception.errorType, ApiErrorType.validationError);
-      expect(repository.getDetailsCalls, 0);
-    });
+    test(
+      'locally rejects non-GUID box ID without calling repository',
+      () async {
+        final result = await getDetailsUseCase('not-a-guid');
+        expect(result, isA<ApiErrorResult<AssignBoxDetailsEntity>>());
+        final failure =
+            (result as ApiErrorResult<AssignBoxDetailsEntity>).failure;
+        expect(failure.exception.errorType, ApiErrorType.validationError);
+        expect(repository.getDetailsCalls, 0);
+      },
+    );
 
     test('calls repository when boxId is valid GUID', () async {
       const validId = 'a1111111-1111-1111-1111-111111111111';
@@ -102,18 +107,23 @@ void main() {
     test('locally rejects empty box ID without calling repository', () async {
       final result = await getSummaryUseCase('   ');
       expect(result, isA<ApiErrorResult<AssignBoxSummaryEntity>>());
-      final failure = (result as ApiErrorResult<AssignBoxSummaryEntity>).failure;
+      final failure =
+          (result as ApiErrorResult<AssignBoxSummaryEntity>).failure;
       expect(failure.exception.errorType, ApiErrorType.validationError);
       expect(repository.getSummaryCalls, 0);
     });
 
-    test('locally rejects non-GUID box ID without calling repository', () async {
-      final result = await getSummaryUseCase('invalid-id-format');
-      expect(result, isA<ApiErrorResult<AssignBoxSummaryEntity>>());
-      final failure = (result as ApiErrorResult<AssignBoxSummaryEntity>).failure;
-      expect(failure.exception.errorType, ApiErrorType.validationError);
-      expect(repository.getSummaryCalls, 0);
-    });
+    test(
+      'locally rejects non-GUID box ID without calling repository',
+      () async {
+        final result = await getSummaryUseCase('invalid-id-format');
+        expect(result, isA<ApiErrorResult<AssignBoxSummaryEntity>>());
+        final failure =
+            (result as ApiErrorResult<AssignBoxSummaryEntity>).failure;
+        expect(failure.exception.errorType, ApiErrorType.validationError);
+        expect(repository.getSummaryCalls, 0);
+      },
+    );
 
     test('calls repository when boxId is valid GUID', () async {
       const validId = 'a1111111-1111-1111-1111-111111111111';

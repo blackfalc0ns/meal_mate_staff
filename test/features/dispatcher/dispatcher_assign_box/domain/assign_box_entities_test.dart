@@ -24,108 +24,105 @@ void main() {
   });
 
   group('AssignBoxDriverStatusTypeX', () {
-    test('parses all four driver statuses from API strings and unknown fallback', () {
-      expect(
-        AssignBoxDriverStatusTypeX.fromApi('Available'),
-        AssignBoxDriverStatusType.available,
-      );
-      expect(
-        AssignBoxDriverStatusTypeX.fromApi('Busy'),
-        AssignBoxDriverStatusType.busy,
-      );
-      expect(
-        AssignBoxDriverStatusTypeX.fromApi('InDelivery'),
-        AssignBoxDriverStatusType.inDelivery,
-      );
-      expect(
-        AssignBoxDriverStatusTypeX.fromApi('Returning'),
-        AssignBoxDriverStatusType.returning,
-      );
-      expect(
-        AssignBoxDriverStatusTypeX.fromApi('SomethingElse'),
-        AssignBoxDriverStatusType.unknown,
-      );
-      expect(
-        AssignBoxDriverStatusTypeX.fromApi(null),
-        AssignBoxDriverStatusType.unknown,
-      );
-    });
+    test(
+      'parses all four driver statuses from API strings and unknown fallback',
+      () {
+        expect(
+          AssignBoxDriverStatusTypeX.fromApi('Available'),
+          AssignBoxDriverStatusType.available,
+        );
+        expect(
+          AssignBoxDriverStatusTypeX.fromApi('Busy'),
+          AssignBoxDriverStatusType.busy,
+        );
+        expect(
+          AssignBoxDriverStatusTypeX.fromApi('InDelivery'),
+          AssignBoxDriverStatusType.inDelivery,
+        );
+        expect(
+          AssignBoxDriverStatusTypeX.fromApi('Returning'),
+          AssignBoxDriverStatusType.returning,
+        );
+        expect(
+          AssignBoxDriverStatusTypeX.fromApi('SomethingElse'),
+          AssignBoxDriverStatusType.unknown,
+        );
+        expect(
+          AssignBoxDriverStatusTypeX.fromApi(null),
+          AssignBoxDriverStatusType.unknown,
+        );
+      },
+    );
   });
 
   group('AssignBoxPriorityX', () {
-    test('parses priorities correctly including high priority and fallback', () {
-      expect(
-        AssignBoxPriorityX.fromApi('HighPriority'),
-        AssignBoxPriority.high,
-      );
-      expect(
-        AssignBoxPriorityX.fromApi('High'),
-        AssignBoxPriority.high,
-      );
-      expect(
-        AssignBoxPriorityX.fromApi('Normal'),
-        AssignBoxPriority.normal,
-      );
-      expect(
-        AssignBoxPriorityX.fromApi('Urgent'),
-        AssignBoxPriority.urgent,
-      );
-      expect(
-        AssignBoxPriorityX.fromApi('Low'),
-        AssignBoxPriority.low,
-      );
-      expect(
-        AssignBoxPriorityX.fromApi(null),
-        AssignBoxPriority.unknown,
-      );
-    });
+    test(
+      'parses priorities correctly including high priority and fallback',
+      () {
+        expect(
+          AssignBoxPriorityX.fromApi('HighPriority'),
+          AssignBoxPriority.high,
+        );
+        expect(AssignBoxPriorityX.fromApi('High'), AssignBoxPriority.high);
+        expect(AssignBoxPriorityX.fromApi('Normal'), AssignBoxPriority.normal);
+        expect(AssignBoxPriorityX.fromApi('Urgent'), AssignBoxPriority.urgent);
+        expect(AssignBoxPriorityX.fromApi('Low'), AssignBoxPriority.low);
+        expect(AssignBoxPriorityX.fromApi(null), AssignBoxPriority.unknown);
+      },
+    );
   });
 
   group('AssignBoxStatusX', () {
     test('parses box statuses correctly and fallback', () {
       expect(AssignBoxStatusX.fromApi('Pending'), AssignBoxStatus.pending);
       expect(AssignBoxStatusX.fromApi('Assigned'), AssignBoxStatus.assigned);
-      expect(AssignBoxStatusX.fromApi('InDelivery'), AssignBoxStatus.inDelivery);
+      expect(
+        AssignBoxStatusX.fromApi('InDelivery'),
+        AssignBoxStatus.inDelivery,
+      );
       expect(AssignBoxStatusX.fromApi('Issue'), AssignBoxStatus.issue);
       expect(AssignBoxStatusX.fromApi(null), AssignBoxStatus.unknown);
     });
   });
 
   group('AssignBoxCandidateDriverEntity', () {
-    test('holds separate ID, display, and metric fields with compatibility getters', () {
-      const driver = AssignBoxCandidateDriverEntity(
-        driverId: 'd-1',
-        fullName: 'سالم الحربي',
-        avatarUrl: 'https://example.com/avatar.jpg',
-        plateNumber: '40-12849',
-        phone: '0501234567',
-        distanceKm: 2.4,
-        distanceText: '2.4 كم',
-        activeOrdersCount: 1,
-        currentLoadBoxes: 4,
-        currentLoadLabel: '4 بوكسات',
-        rating: 4.8,
-        status: AssignBoxDriverStatusType.available,
-        driverStatusText: 'متاح',
-        statusTag: 'الأسرع وصولاً',
-        estimatedFinishTimeText: '10:20 ص',
-        rank: 1,
-        isRecommended: true,
-        recommendationReason: 'الأقرب لموقع الاستلام',
-      );
+    test(
+      'holds separate ID, display, and metric fields with compatibility getters',
+      () {
+        const driver = AssignBoxCandidateDriverEntity(
+          driverId: 'd-1',
+          fullName: 'سالم الحربي',
+          avatarUrl: 'https://example.com/avatar.jpg',
+          plateNumber: '40-12849',
+          phone: '0501234567',
+          distanceKm: 2.4,
+          distanceText: '2.4 كم',
+          activeOrdersCount: 1,
+          currentLoadBoxes: 4,
+          currentLoadLabel: '4 بوكسات',
+          rating: 4.8,
+          status: AssignBoxDriverStatusType.available,
+          driverStatusText: 'متاح',
+          statusTag: 'الأسرع وصولاً',
+          estimatedFinishTimeText: '10:20 ص',
+          rank: 1,
+          isRecommended: true,
+          recommendationReason: 'الأقرب لموقع الاستلام',
+        );
 
-      expect(driver.driverId, 'd-1');
-      expect(driver.id, 'd-1');
-      expect(driver.fullName, 'سالم الحربي');
-      expect(driver.name, 'سالم الحربي');
-      expect(driver.plateNumber, '40-12849');
-      expect(driver.badgeNumber, '40-12849');
-      expect(driver.status, AssignBoxDriverStatusType.available);
-      expect(driver.statusType, AssignBoxDriverStatusType.available);
-      expect(driver.currentLoadBoxes, 4);
-      expect(driver.currentLoadText, '4 بوكسات');
-      expect(driver.isRecommended, isTrue);
-    });
+        expect(driver.driverId, 'd-1');
+        expect(driver.id, 'd-1');
+        expect(driver.fullName, 'سالم الحربي');
+        expect(driver.name, 'سالم الحربي');
+        expect(driver.plateNumber, '40-12849');
+        expect(driver.badgeNumber, '40-12849');
+        expect(driver.status, AssignBoxDriverStatusType.available);
+        expect(driver.statusType, AssignBoxDriverStatusType.available);
+        expect(driver.currentLoadBoxes, 4);
+        expect(driver.currentLoadText, '4 بوكسات');
+        expect(driver.isRecommended, isTrue);
+      },
+    );
   });
 
   group('AssignBoxDetailsEntity', () {

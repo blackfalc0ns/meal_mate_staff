@@ -238,46 +238,45 @@ void main() {
     await viewModel.close();
   });
 
-  testWidgets(
-    'shows shimmer cards while filter loading is in progress',
-    (tester) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 2.5;
-      addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets('shows shimmer cards while filter loading is in progress', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.5;
+    addTearDown(() => tester.view.resetPhysicalSize());
 
-      final repository = _OrdersRepository();
-      final viewModel = _viewModel(repository);
+    final repository = _OrdersRepository();
+    final viewModel = _viewModel(repository);
 
-      await tester.pumpWidget(buildSubject(viewModel: viewModel));
-      await tester.pumpAndSettle();
+    await tester.pumpWidget(buildSubject(viewModel: viewModel));
+    await tester.pumpAndSettle();
 
-      // Initially cards are visible
-      expect(find.byType(DispatcherOrderCard), findsOneWidget);
-      expect(find.byType(DispatcherCardsShimmer), findsNothing);
+    // Initially cards are visible
+    expect(find.byType(DispatcherOrderCard), findsOneWidget);
+    expect(find.byType(DispatcherCardsShimmer), findsNothing);
 
-      // Now hold the next request
-      repository.holdQueue = true;
-      final pendingChip = find.widgetWithText(
-        DispatcherFilterChip,
-        'بانتظار الإسناد',
-      );
-      expect(pendingChip, findsOneWidget);
-      await tester.tap(pendingChip);
-      await tester.pump();
+    // Now hold the next request
+    repository.holdQueue = true;
+    final pendingChip = find.widgetWithText(
+      DispatcherFilterChip,
+      'بانتظار الإسناد',
+    );
+    expect(pendingChip, findsOneWidget);
+    await tester.tap(pendingChip);
+    await tester.pump();
 
-      // Cards shimmer is displayed during filter loading
-      expect(find.byType(DispatcherCardsShimmer), findsOneWidget);
-      expect(find.byType(DispatcherOrderCard), findsNothing);
+    // Cards shimmer is displayed during filter loading
+    expect(find.byType(DispatcherCardsShimmer), findsOneWidget);
+    expect(find.byType(DispatcherOrderCard), findsNothing);
 
-      repository.releaseQueue();
-      await tester.pumpAndSettle();
+    repository.releaseQueue();
+    await tester.pumpAndSettle();
 
-      // Cards shimmer is gone after loading completes
-      expect(find.byType(DispatcherCardsShimmer), findsNothing);
-      expect(find.byType(DispatcherOrderCard), findsOneWidget);
-      await viewModel.close();
-    },
-  );
+    // Cards shimmer is gone after loading completes
+    expect(find.byType(DispatcherCardsShimmer), findsNothing);
+    expect(find.byType(DispatcherOrderCard), findsOneWidget);
+    await viewModel.close();
+  });
 
   testWidgets(
     'tapping assign button opens AssignBoxScreen via route generator',

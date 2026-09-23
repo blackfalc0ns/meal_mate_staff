@@ -64,9 +64,7 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
   Widget build(BuildContext context) {
     final viewModel = _viewModel;
     if (viewModel == null) {
-      return const Scaffold(
-        body: SafeArea(child: DispatcherOrdersShimmer()),
-      );
+      return const Scaffold(body: SafeArea(child: DispatcherOrdersShimmer()));
     }
 
     return BlocProvider.value(
@@ -204,9 +202,7 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
                       },
                   onOrderDetails: widget.onOrderDetails,
                 ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: Spacing.base),
-              ),
+              const SliverToBoxAdapter(child: SizedBox(height: Spacing.base)),
             ],
           ),
         ),

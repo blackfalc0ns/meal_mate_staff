@@ -41,10 +41,7 @@ void main() {
 
     test('returns ApiSuccessResult when remote data source succeeds', () async {
       fakeDataSource.detailsResponse = const AssignBoxDetailsResponseDto(
-        box: AssignBoxOrderDto(
-          boxId: boxId,
-          boxCode: '#BX-1256',
-        ),
+        box: AssignBoxOrderDto(boxId: boxId, boxCode: '#BX-1256'),
       );
 
       final result = await repository.getDetails(boxId);
@@ -55,23 +52,27 @@ void main() {
       expect(data.box.boxCode, '#BX-1256');
     });
 
-    test('returns ApiErrorResult when remote data source throws DioException', () async {
-      fakeDataSource.exceptionToThrow = DioException(
-        requestOptions: RequestOptions(path: '/details'),
-        response: Response(
+    test(
+      'returns ApiErrorResult when remote data source throws DioException',
+      () async {
+        fakeDataSource.exceptionToThrow = DioException(
           requestOptions: RequestOptions(path: '/details'),
-          statusCode: 404,
-          data: {'message': 'Box not found'},
-        ),
-        type: DioExceptionType.badResponse,
-      );
+          response: Response(
+            requestOptions: RequestOptions(path: '/details'),
+            statusCode: 404,
+            data: {'message': 'Box not found'},
+          ),
+          type: DioExceptionType.badResponse,
+        );
 
-      final result = await repository.getDetails(boxId);
+        final result = await repository.getDetails(boxId);
 
-      expect(result, isA<ApiErrorResult<AssignBoxDetailsEntity>>());
-      final failure = (result as ApiErrorResult<AssignBoxDetailsEntity>).failure;
-      expect(failure, isA<ServerFailure>());
-    });
+        expect(result, isA<ApiErrorResult<AssignBoxDetailsEntity>>());
+        final failure =
+            (result as ApiErrorResult<AssignBoxDetailsEntity>).failure;
+        expect(failure, isA<ServerFailure>());
+      },
+    );
   });
 
   group('AssignBoxRepositoryImpl - getSummary', () {
@@ -92,12 +93,15 @@ void main() {
       expect(data.customerNameMasked, 'محمد ***');
     });
 
-    test('returns ApiErrorResult with Failure when remote data source throws generic exception', () async {
-      fakeDataSource.exceptionToThrow = Exception('Network error');
+    test(
+      'returns ApiErrorResult with Failure when remote data source throws generic exception',
+      () async {
+        fakeDataSource.exceptionToThrow = Exception('Network error');
 
-      final result = await repository.getSummary(boxId);
+        final result = await repository.getSummary(boxId);
 
-      expect(result, isA<ApiErrorResult<AssignBoxSummaryEntity>>());
-    });
+        expect(result, isA<ApiErrorResult<AssignBoxSummaryEntity>>());
+      },
+    );
   });
 }

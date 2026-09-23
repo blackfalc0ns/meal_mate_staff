@@ -165,7 +165,7 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                   child: Row(
                     children: [
                       // Current Load Column
-                      if (driver.currentLoadText != null)
+                      if (driver.currentLoadText.isNotEmpty)
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +202,7 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                                 fit: BoxFit.scaleDown,
                                 alignment: AlignmentDirectional.centerStart,
                                 child: Text(
-                                  driver.currentLoadText!,
+                                  driver.currentLoadText,
                                   style: getBoldStyle(
                                     color: color.onSurface,
                                     fontSize: FontSize.size11,
@@ -258,7 +258,7 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                                 maxLines: 1,
                               ),
                             ),
-                            if (driver.expectedCompletionText != null) ...[
+                            if (driver.expectedCompletionText.isNotEmpty) ...[
                               const SizedBox(height: Spacing.xs / 2),
                               Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -291,7 +291,7 @@ class AssignBoxRecommendedCard extends StatelessWidget {
                                 fit: BoxFit.scaleDown,
                                 alignment: AlignmentDirectional.centerStart,
                                 child: Text(
-                                  driver.expectedCompletionText!,
+                                  driver.expectedCompletionText,
                                   style: getBoldStyle(
                                     color: color.onSurface,
                                     fontSize: FontSize.size11,
@@ -320,4 +320,3 @@ class AssignBoxRecommendedCard extends StatelessWidget {
     );
   }
 }
-

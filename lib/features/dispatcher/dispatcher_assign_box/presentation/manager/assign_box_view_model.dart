@@ -50,19 +50,9 @@ class AssignBoxViewModel extends Cubit<AssignBoxState> {
     final generation = ++_requestGeneration;
 
     if (isRefresh) {
-      emit(
-        state.copyWith(
-          isRefreshLoading: true,
-          clearRefreshFailure: true,
-        ),
-      );
+      emit(state.copyWith(isRefreshLoading: true, clearRefreshFailure: true));
     } else {
-      emit(
-        state.copyWith(
-          isInitialLoading: true,
-          clearInitialFailure: true,
-        ),
-      );
+      emit(state.copyWith(isInitialLoading: true, clearInitialFailure: true));
     }
 
     final result = await _getDetailsUseCase(state.boxId);
@@ -73,8 +63,8 @@ class AssignBoxViewModel extends Cubit<AssignBoxState> {
       case ApiSuccessResult(:final data):
         String? newSelection;
         if (isRefresh && state.selectedDriverId != null) {
-          final isStillPresent = data.bestSuggestion?.driverId ==
-                  state.selectedDriverId ||
+          final isStillPresent =
+              data.bestSuggestion?.driverId == state.selectedDriverId ||
               data.candidates.any((c) => c.driverId == state.selectedDriverId);
           newSelection = isStillPresent
               ? state.selectedDriverId
@@ -105,10 +95,7 @@ class AssignBoxViewModel extends Cubit<AssignBoxState> {
           );
         } else {
           emit(
-            state.copyWith(
-              isInitialLoading: false,
-              initialFailure: failure,
-            ),
+            state.copyWith(isInitialLoading: false, initialFailure: failure),
           );
         }
     }
@@ -122,12 +109,7 @@ class AssignBoxViewModel extends Cubit<AssignBoxState> {
     if (state.summary != null) return;
     if (state.isSummaryLoading) return;
 
-    emit(
-      state.copyWith(
-        isSummaryLoading: true,
-        clearSummaryFailure: true,
-      ),
-    );
+    emit(state.copyWith(isSummaryLoading: true, clearSummaryFailure: true));
 
     final result = await _getSummaryUseCase(state.boxId);
 
@@ -141,12 +123,7 @@ class AssignBoxViewModel extends Cubit<AssignBoxState> {
           ),
         );
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            summaryFailure: failure,
-            isSummaryLoading: false,
-          ),
-        );
+        emit(state.copyWith(summaryFailure: failure, isSummaryLoading: false));
     }
   }
 
@@ -158,12 +135,7 @@ class AssignBoxViewModel extends Cubit<AssignBoxState> {
   Future<void> _submitAssignment(String localizedNotes) async {
     if (!state.canSubmit || state.isSubmitting) return;
 
-    emit(
-      state.copyWith(
-        isSubmitting: true,
-        clearSubmitFailure: true,
-      ),
-    );
+    emit(state.copyWith(isSubmitting: true, clearSubmitFailure: true));
 
     final request = AssignDriverRequestEntity(
       boxId: state.details!.box.boxId,
@@ -202,11 +174,6 @@ class AssignBoxViewModel extends Cubit<AssignBoxState> {
   }
 
   void _clearNotice() {
-    emit(
-      state.copyWith(
-        clearRefreshFailure: true,
-        clearSubmitFailure: true,
-      ),
-    );
+    emit(state.copyWith(clearRefreshFailure: true, clearSubmitFailure: true));
   }
 }

@@ -138,9 +138,7 @@ void main() {
   late MockDriversRepo driversRepo;
   late AssignBoxViewModel viewModel;
 
-  Widget buildSubject({
-    ValueChanged<String>? onViewAllDrivers,
-  }) {
+  Widget buildSubject({ValueChanged<String>? onViewAllDrivers}) {
     return MaterialApp(
       locale: const Locale('ar'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -167,7 +165,9 @@ void main() {
     );
   });
 
-  testWidgets('renders AssignBoxShimmer on first frame while loading', (tester) async {
+  testWidgets('renders AssignBoxShimmer on first frame while loading', (
+    tester,
+  ) async {
     boxRepo.detailsCompleter = Completer<ApiResult<AssignBoxDetailsEntity>>();
 
     await tester.pumpWidget(buildSubject());
@@ -176,99 +176,114 @@ void main() {
     expect(find.byType(AssignBoxShimmer), findsOneWidget);
   });
 
-  testWidgets('renders ApiErrorWidget on initial load failure and retries on tap', (tester) async {
-    boxRepo.nextDetailsResult = ApiErrorResult(
-      failure: Failure(
-        errorMessage: 'Network error',
-        code: '500',
-        exception: const ApiException(
-          errorType: ApiErrorType.serverError,
-          message: 'Server error',
+  testWidgets(
+    'renders ApiErrorWidget on initial load failure and retries on tap',
+    (tester) async {
+      boxRepo.nextDetailsResult = ApiErrorResult(
+        failure: Failure(
+          errorMessage: 'Network error',
+          code: '500',
+          exception: const ApiException(
+            errorType: ApiErrorType.serverError,
+            message: 'Server error',
+          ),
         ),
-      ),
-    );
+      );
 
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
 
-    expect(find.byType(ApiErrorWidget), findsOneWidget);
-    expect(boxRepo.detailsCalls, 1);
+      expect(find.byType(ApiErrorWidget), findsOneWidget);
+      expect(boxRepo.detailsCalls, 1);
 
-    boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
-    await tester.tap(find.text('إعادة المحاولة'));
-    await tester.pumpAndSettle();
+      boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
+      await tester.tap(find.text('إعادة المحاولة'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('#BX-1256'), findsOneWidget);
-    expect(boxRepo.detailsCalls, 2);
-  });
+      expect(find.text('#BX-1256'), findsOneWidget);
+      expect(boxRepo.detailsCalls, 2);
+    },
+  );
 
-  testWidgets('renders API data, selects bestSuggestion by default, and single selection works', (tester) async {
-    boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
+  testWidgets(
+    'renders API data, selects bestSuggestion by default, and single selection works',
+    (tester) async {
+      boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
 
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
 
-    expect(find.text('#BX-1256'), findsOneWidget);
-    expect(find.text('سالم الحربي'), findsOneWidget);
-    expect(find.text('عمر الدوسري'), findsOneWidget);
-    expect(viewModel.state.selectedDriverId, driverId1);
+      expect(find.text('#BX-1256'), findsOneWidget);
+      expect(find.text('سالم الحربي'), findsOneWidget);
+      expect(find.text('عمر الدوسري'), findsOneWidget);
+      expect(viewModel.state.selectedDriverId, driverId1);
 
-    // Select candidate
-    await tester.tap(find.text('عمر الدوسري'));
-    await tester.pumpAndSettle();
+      // Select candidate
+      await tester.tap(find.text('عمر الدوسري'));
+      await tester.pumpAndSettle();
 
-    expect(viewModel.state.selectedDriverId, driverId2);
-    expect(boxRepo.detailsCalls, 1); // No new request
-  });
+      expect(viewModel.state.selectedDriverId, driverId2);
+      expect(boxRepo.detailsCalls, 1); // No new request
+    },
+  );
 
-  testWidgets('View Box modal opens with AssignBoxSummaryShimmer then displays summary', (tester) async {
-    boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
-    boxRepo.summaryCompleter = Completer<ApiResult<AssignBoxSummaryEntity>>();
+  testWidgets(
+    'View Box modal opens with AssignBoxSummaryShimmer then displays summary',
+    (tester) async {
+      boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
+      boxRepo.summaryCompleter = Completer<ApiResult<AssignBoxSummaryEntity>>();
 
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
 
-    // Tap View Box
-    await tester.tap(find.text('عرض البوكس'));
-    await tester.pump();
+      // Tap View Box
+      await tester.tap(find.text('عرض البوكس'));
+      await tester.pump();
 
-    expect(find.byType(AssignBoxSummaryShimmer), findsOneWidget);
+      expect(find.byType(AssignBoxSummaryShimmer), findsOneWidget);
 
-    boxRepo.summaryCompleter!.complete(const ApiSuccessResult(data: sampleSummary));
-    await tester.pumpAndSettle();
+      boxRepo.summaryCompleter!.complete(
+        const ApiSuccessResult(data: sampleSummary),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.byType(AssignBoxSummaryShimmer), findsNothing);
-    expect(find.text('1 بوكس'), findsOneWidget);
-  });
+      expect(find.byType(AssignBoxSummaryShimmer), findsNothing);
+      expect(find.text('1 بوكس'), findsOneWidget);
+    },
+  );
 
-  testWidgets('submit shows progress in Confirm button and handles successful assignment', (tester) async {
-    boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
-    driversRepo.assignCompleter = Completer<ApiResult<DriverAssignmentResultEntity>>();
+  testWidgets(
+    'submit shows progress in Confirm button and handles successful assignment',
+    (tester) async {
+      boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);
+      driversRepo.assignCompleter =
+          Completer<ApiResult<DriverAssignmentResultEntity>>();
 
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
 
-    // Confirm button is enabled with default selection
-    expect(find.byType(AssignBoxBottomActions), findsOneWidget);
+      // Confirm button is enabled with default selection
+      expect(find.byType(AssignBoxBottomActions), findsOneWidget);
 
-    await tester.tap(find.text('تأكيد الإسناد'));
-    await tester.pump();
+      await tester.tap(find.text('تأكيد الإسناد'));
+      await tester.pump();
 
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(driversRepo.assignCalls, 1);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(driversRepo.assignCalls, 1);
 
-    driversRepo.assignCompleter!.complete(
-      const ApiSuccessResult(
-        data: DriverAssignmentResultEntity(
-          success: true,
-          message: 'تم إسناد البوكس بنجاح',
+      driversRepo.assignCompleter!.complete(
+        const ApiSuccessResult(
+          data: DriverAssignmentResultEntity(
+            success: true,
+            message: 'تم إسناد البوكس بنجاح',
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    expect(viewModel.state.successId, 1);
-  });
+      expect(viewModel.state.successId, 1);
+    },
+  );
 
   testWidgets('View All triggers callback with boxId', (tester) async {
     boxRepo.nextDetailsResult = const ApiSuccessResult(data: sampleDetails);

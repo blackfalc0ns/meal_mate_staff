@@ -104,8 +104,9 @@ void main() {
     };
 
     test('maps valid details payload accurately to entity', () {
-      final entity =
-          AssignBoxDetailsResponseDto.fromJson(validDetailsJson).toEntity();
+      final entity = AssignBoxDetailsResponseDto.fromJson(
+        validDetailsJson,
+      ).toEntity();
 
       expect(entity.box.boxId, 'a1111111-1111-1111-1111-111111111111');
       expect(entity.box.boxCode, '#BX-1256');
@@ -117,7 +118,10 @@ void main() {
         '33333333-3333-3333-3333-333333333333',
       );
       expect(entity.bestSuggestion?.fullName, 'سالم الحربي');
-      expect(entity.bestSuggestion?.status, AssignBoxDriverStatusType.available);
+      expect(
+        entity.bestSuggestion?.status,
+        AssignBoxDriverStatusType.available,
+      );
       expect(entity.bestSuggestion?.isRecommended, isTrue);
 
       expect(entity.candidates.length, 4);
@@ -127,16 +131,19 @@ void main() {
       expect(entity.candidates[3].status, AssignBoxDriverStatusType.returning);
     });
 
-    test('defensively handles null bestSuggestion, empty candidates, and missing box', () {
-      const emptyDto = AssignBoxDetailsResponseDto();
-      final entity = emptyDto.toEntity();
+    test(
+      'defensively handles null bestSuggestion, empty candidates, and missing box',
+      () {
+        const emptyDto = AssignBoxDetailsResponseDto();
+        final entity = emptyDto.toEntity();
 
-      expect(entity.box.boxId, '');
-      expect(entity.box.priority, AssignBoxPriority.unknown);
-      expect(entity.box.status, AssignBoxStatus.unknown);
-      expect(entity.bestSuggestion, isNull);
-      expect(entity.candidates, isEmpty);
-    });
+        expect(entity.box.boxId, '');
+        expect(entity.box.priority, AssignBoxPriority.unknown);
+        expect(entity.box.status, AssignBoxStatus.unknown);
+        expect(entity.bestSuggestion, isNull);
+        expect(entity.candidates, isEmpty);
+      },
+    );
 
     test('handles unknown enums and null optional driver fields safely', () {
       final jsonWithUnknowns = {
@@ -155,12 +162,13 @@ void main() {
             'phone': null,
             'distanceKm': null,
             'isRecommended': null,
-          }
+          },
         ],
       };
 
-      final entity =
-          AssignBoxDetailsResponseDto.fromJson(jsonWithUnknowns).toEntity();
+      final entity = AssignBoxDetailsResponseDto.fromJson(
+        jsonWithUnknowns,
+      ).toEntity();
       expect(entity.box.priority, AssignBoxPriority.unknown);
       expect(entity.box.status, AssignBoxStatus.unknown);
       expect(entity.candidates.length, 1);
@@ -201,13 +209,14 @@ void main() {
           'quantity': 1,
           'category': 'سلطات',
           'notes': null,
-        }
+        },
       ],
     };
 
     test('maps valid summary payload accurately to entity', () {
-      final summary =
-          AssignBoxSummaryResponseDto.fromJson(validSummaryJson).toEntity();
+      final summary = AssignBoxSummaryResponseDto.fromJson(
+        validSummaryJson,
+      ).toEntity();
 
       expect(summary.boxId, 'a1111111-1111-1111-1111-111111111111');
       expect(summary.boxCode, '#BX-1256');

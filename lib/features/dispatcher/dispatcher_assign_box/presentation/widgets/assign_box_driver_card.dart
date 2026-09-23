@@ -251,9 +251,8 @@ class AssignBoxDriverCard extends StatelessWidget {
                           fit: BoxFit.scaleDown,
                           alignment: AlignmentDirectional.centerStart,
                           child: Text(
-                            (driver.expectedCompletionText != null &&
-                                    driver.expectedCompletionText!.isNotEmpty)
-                                ? driver.expectedCompletionText!
+                            driver.expectedCompletionText.isNotEmpty
+                                ? driver.expectedCompletionText
                                 : '—',
                             style: getSemiBoldStyle(
                               color: color.onSurface,
@@ -262,7 +261,6 @@ class AssignBoxDriverCard extends StatelessWidget {
                             maxLines: 1,
                           ),
                         ),
-
                       ],
                     ),
                   ),

@@ -42,7 +42,6 @@ class AssignBoxDriverStatusBadge extends StatelessWidget {
         textColor = color.onSurfaceVariant;
     }
 
-
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.sm - Spacing.border,

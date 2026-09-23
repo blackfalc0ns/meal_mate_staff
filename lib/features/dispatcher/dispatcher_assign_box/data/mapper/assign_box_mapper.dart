@@ -14,9 +14,8 @@ extension AssignBoxDetailsResponseDtoMapper on AssignBoxDetailsResponseDto {
     return AssignBoxDetailsEntity(
       box: (box ?? const AssignBoxOrderDto()).toEntity(),
       bestSuggestion: bestSuggestion?.toEntity(),
-      candidates: candidates
-              ?.map((c) => c.toEntity())
-              .toList(growable: false) ??
+      candidates:
+          candidates?.map((c) => c.toEntity()).toList(growable: false) ??
           const [],
     );
   }
@@ -33,7 +32,8 @@ extension AssignBoxOrderDtoMapper on AssignBoxOrderDto {
       mealsCount: count,
       mealsCountText: mealCountLabel ?? (count > 0 ? '$count وجبات' : ''),
       distanceKm: distanceKm,
-      distanceText: distanceText ?? (distanceKm != null ? '$distanceKm كم' : ''),
+      distanceText:
+          distanceText ?? (distanceKm != null ? '$distanceKm كم' : ''),
       priority: AssignBoxPriorityX.fromApi(priority),
       priorityText: priorityBadgeText ?? priority ?? '',
       status: AssignBoxStatusX.fromApi(status),
@@ -55,7 +55,8 @@ extension AssignBoxCandidateDriverDtoMapper on AssignBoxCandidateDriverDto {
       plateNumber: plateNumber,
       phone: phone,
       distanceKm: distanceKm,
-      distanceText: distanceText ?? (distanceKm != null ? '$distanceKm كم' : ''),
+      distanceText:
+          distanceText ?? (distanceKm != null ? '$distanceKm كم' : ''),
       activeOrdersCount: activeOrders,
       currentLoadBoxes: loadBoxes,
       currentLoadLabel: currentLoadLabel ?? '$loadBoxes بوكسات',

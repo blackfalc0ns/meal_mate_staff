@@ -98,14 +98,18 @@ class AssignBoxState {
       isRefreshLoading: isRefreshLoading ?? this.isRefreshLoading,
       isSummaryLoading: isSummaryLoading ?? this.isSummaryLoading,
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      initialFailure:
-          clearInitialFailure ? null : (initialFailure ?? this.initialFailure),
-      refreshFailure:
-          clearRefreshFailure ? null : (refreshFailure ?? this.refreshFailure),
-      summaryFailure:
-          clearSummaryFailure ? null : (summaryFailure ?? this.summaryFailure),
-      submitFailure:
-          clearSubmitFailure ? null : (submitFailure ?? this.submitFailure),
+      initialFailure: clearInitialFailure
+          ? null
+          : (initialFailure ?? this.initialFailure),
+      refreshFailure: clearRefreshFailure
+          ? null
+          : (refreshFailure ?? this.refreshFailure),
+      summaryFailure: clearSummaryFailure
+          ? null
+          : (summaryFailure ?? this.summaryFailure),
+      submitFailure: clearSubmitFailure
+          ? null
+          : (submitFailure ?? this.submitFailure),
       assignmentResult: clearAssignmentResult
           ? null
           : (assignmentResult ?? this.assignmentResult),

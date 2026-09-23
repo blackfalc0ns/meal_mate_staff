@@ -189,10 +189,10 @@ class _FakeDriversRepository implements DispatcherDriversRepository {
 }
 
 void main() {
-  setUp(() {
+  setUp(() async {
     final driversRepo = _FakeDriversRepository();
     if (getIt.isRegistered<DispatcherDriversViewModel>()) {
-      getIt.unregister<DispatcherDriversViewModel>();
+      await getIt.unregister<DispatcherDriversViewModel>();
     }
     getIt.registerFactoryParam<
       DispatcherDriversViewModel,
@@ -207,7 +207,7 @@ void main() {
     );
 
     if (getIt.isRegistered<AssignBoxViewModel>()) {
-      getIt.unregister<AssignBoxViewModel>();
+      await getIt.unregister<AssignBoxViewModel>();
     }
     final boxRepo = _FakeAssignBoxRepository();
     getIt.registerFactoryParam<AssignBoxViewModel, String?, void>(
@@ -226,9 +226,7 @@ void main() {
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.lightTheme,
-      home: const AssignBoxScreen(
-        args: AssignBoxRouteArgs(boxId: _testBoxId),
-      ),
+      home: const AssignBoxScreen(args: AssignBoxRouteArgs(boxId: _testBoxId)),
     );
   }
 
