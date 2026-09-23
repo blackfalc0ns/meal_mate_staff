@@ -26,6 +26,8 @@ class DriverPerformanceLegendRow extends StatelessWidget {
         return color.error;
       case DriverPerformanceDistributionCategory.cancelled:
         return color.outline;
+      case DriverPerformanceDistributionCategory.unknown:
+        return color.outlineVariant;
     }
   }
 
@@ -42,6 +44,8 @@ class DriverPerformanceLegendRow extends StatelessWidget {
         return locale.driverPerformanceDistFailed;
       case DriverPerformanceDistributionCategory.cancelled:
         return locale.driverPerformanceDistCancelled;
+      case DriverPerformanceDistributionCategory.unknown:
+        return '';
     }
   }
 

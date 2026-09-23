@@ -1,4 +1,4 @@
-﻿import '../../../../../config/theme/colors.dart';
+import '../../../../../config/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
@@ -6,7 +6,8 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
-import '../../../dispatcher_drivers/domain/entities/dispatcher_driver_status.dart';
+import '../../domain/entities/driver_performance_delay_level.dart';
+import '../../domain/entities/driver_performance_driver_status.dart';
 import '../../domain/entities/driver_performance_record_entity.dart';
 
 class DriverPerformanceDriverRow extends StatelessWidget {
@@ -19,26 +20,37 @@ class DriverPerformanceDriverRow extends StatelessWidget {
   final DriverPerformanceRecordEntity record;
   final VoidCallback? onTap;
 
-  Color _getStatusColor(DispatcherDriverStatus status, ColorScheme color) {
+  Color _getStatusColor(DriverPerformanceDriverStatus status, ColorScheme color) {
     switch (status) {
-      case DispatcherDriverStatus.available:
+      case DriverPerformanceDriverStatus.available:
         return color.success;
-      case DispatcherDriverStatus.onTheWay:
+      case DriverPerformanceDriverStatus.onTheWay:
         return color.warning;
-      case DispatcherDriverStatus.onBreak:
+      case DriverPerformanceDriverStatus.onBreak:
+        return color.error;
+      case DriverPerformanceDriverStatus.unknown:
+        return color.onSurfaceVariant;
+    }
+  }
+
+  Color _getDelayColor(DriverPerformanceDelayLevel level, int minutes, ColorScheme color) {
+    switch (level) {
+      case DriverPerformanceDelayLevel.good:
+        return color.success;
+      case DriverPerformanceDelayLevel.warning:
+        return color.warning;
+      case DriverPerformanceDelayLevel.critical:
+        return color.error;
+      case DriverPerformanceDelayLevel.unknown:
+        if (minutes <= 10) return color.success;
+        if (minutes <= 15) return color.warning;
         return color.error;
     }
   }
 
-  Color _getDelayColor(int minutes, ColorScheme color) {
-    if (minutes <= 10) return color.success;
-    if (minutes <= 15) return color.warning;
-    return color.error;
-  }
-
-  Color _getFailColor(String count, ColorScheme color) {
-    if (count == '0') return color.success;
-    if (count == '1') return color.warning;
+  Color _getFailColor(int count, ColorScheme color) {
+    if (count == 0) return color.success;
+    if (count == 1) return color.warning;
     return color.error;
   }
 
@@ -48,7 +60,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
     final locale = context.localization;
 
     final statusDotColor = _getStatusColor(record.status, color);
-    final delayColor = _getDelayColor(record.avgDelayMinutes, color);
+    final delayColor = _getDelayColor(record.delayLevel, record.avgDelayMinutes, color);
     final failColor = _getFailColor(record.failedDeliveryCount, color);
 
     return InkWell(
@@ -141,7 +153,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    record.deliveredCount,
+                    record.deliveredCountText ?? '${record.deliveredCount}',
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
@@ -149,7 +161,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    record.deliveredPercentage,
+                    record.deliveredPercentageText ?? '(${record.deliveredPercentage.toInt()}%)',
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,
@@ -165,7 +177,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
               flex: 2,
               child: Center(
                 child: Text(
-                  locale.driverPerformanceMinutesShort(record.avgDelayMinutes),
+                  record.avgDelayText ?? locale.driverPerformanceMinutesShort(record.avgDelayMinutes),
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
                     fontSize: FontSize.size11,
@@ -181,7 +193,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    record.failedDeliveryCount,
+                    record.failedDeliveryCountText ?? '${record.failedDeliveryCount}',
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size12,
@@ -189,7 +201,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    record.failedDeliveryPercentage,
+                    record.failedDeliveryPercentageText ?? '(${record.failedDeliveryPercentage.toInt()}%)',
                     style: getMediumStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size9,

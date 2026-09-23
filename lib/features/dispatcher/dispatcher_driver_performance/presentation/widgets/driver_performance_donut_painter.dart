@@ -24,6 +24,8 @@ class DriverPerformanceDonutPainter extends CustomPainter {
         return colorScheme.error;
       case DriverPerformanceDistributionCategory.cancelled:
         return colorScheme.outline;
+      case DriverPerformanceDistributionCategory.unknown:
+        return colorScheme.outlineVariant;
     }
   }
 
