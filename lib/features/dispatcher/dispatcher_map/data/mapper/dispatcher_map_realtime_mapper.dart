@@ -46,6 +46,7 @@ extension DispatcherDriverStatusEventDtoMapper on DispatcherDriverStatusEventDto
       issueDescription: issueDescription,
       timestamp: _parseTimestamp(timestamp),
       kpis: kpis?.toEntity(),
+      activeBoxesCount: activeBoxesCount,
     );
   }
 }
@@ -65,6 +66,7 @@ extension DispatcherBoxAssignedEventDtoMapper on DispatcherBoxAssignedEventDto {
   DriverBoxAssigned toDomain() {
     return DriverBoxAssigned(
       boxId: boxId,
+      boxCode: boxCode,
       driverId: driverId,
       tripId: tripId,
       timestamp: _parseNullableTimestamp(timestamp),

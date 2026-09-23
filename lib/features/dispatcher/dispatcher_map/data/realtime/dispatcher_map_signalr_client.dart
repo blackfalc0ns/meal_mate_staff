@@ -295,6 +295,26 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
   ];
   int _retryAttempt = 0;
   Timer? _retryTimer;
+  final Set<String> _owners = <String>{};
+
+  @override
+  Future<void> acquire(String ownerId) {
+    if (_isDisposed) return Future.value();
+    _owners.add(ownerId);
+    _log('👥 [OWNER] Owner acquired: $ownerId (total owners: ${_owners.length})');
+    return connect();
+  }
+
+  @override
+  Future<void> release(String ownerId) {
+    if (_isDisposed) return Future.value();
+    _owners.remove(ownerId);
+    _log('👥 [OWNER] Owner released: $ownerId (remaining owners: ${_owners.length})');
+    if (_owners.isEmpty) {
+      return disconnect();
+    }
+    return Future.value();
+  }
 
   @override
   Future<void> connect() {
@@ -447,6 +467,7 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
     _isDisposed = true;
     _log('🧹 [DISPOSE] Disposing SignalR client and closing streams.');
 
+    _owners.clear();
     _retryTimer?.cancel();
     _retryTimer = null;
     _retryAttempt = 0;

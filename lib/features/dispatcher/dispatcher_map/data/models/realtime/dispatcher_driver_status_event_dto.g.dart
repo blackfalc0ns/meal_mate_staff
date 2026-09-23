@@ -15,10 +15,13 @@ DispatcherDriverStatusEventDto _$DispatcherDriverStatusEventDtoFromJson(
   statusColor: json['statusColor'] as String?,
   hasIssue: json['hasIssue'] as bool?,
   issueDescription: json['issueDescription'] as String?,
-  timestamp: json['timestamp'] as String?,
+  timestamp:
+      DispatcherDriverStatusEventDto._readRecordedAt(json, 'timestamp')
+          as String?,
   kpis: json['kpis'] == null
       ? null
       : DispatcherMapKpiResponseDto.fromJson(
           json['kpis'] as Map<String, dynamic>,
         ),
+  activeBoxesCount: (json['activeBoxesCount'] as num?)?.toInt(),
 );

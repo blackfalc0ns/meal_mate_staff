@@ -34,11 +34,13 @@ class DispatcherMapRemoteDataSourceImpl
   Stream<DispatcherMapConnectionStatus> get connectionStatuses =>
       _realtimeClient.connectionStatuses;
 
-  @override
-  Future<void> startRealtime() => _realtimeClient.connect();
+  static const String mapOwnerId = 'dispatcher-map';
 
   @override
-  Future<void> stopRealtime() => _realtimeClient.disconnect();
+  Future<void> startRealtime() => _realtimeClient.acquire(mapOwnerId);
+
+  @override
+  Future<void> stopRealtime() => _realtimeClient.release(mapOwnerId);
 
   @override
   Future<void> disposeRealtime() => _realtimeClient.dispose();

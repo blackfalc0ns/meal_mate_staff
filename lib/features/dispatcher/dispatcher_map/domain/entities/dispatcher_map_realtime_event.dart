@@ -39,6 +39,7 @@ final class DriverStatusUpdated extends DispatcherMapRealtimeEvent {
     this.issueDescription,
     required this.timestamp,
     this.kpis,
+    this.activeBoxesCount,
   });
 
   final String driverId;
@@ -49,6 +50,7 @@ final class DriverStatusUpdated extends DispatcherMapRealtimeEvent {
   final String? issueDescription;
   final DateTime timestamp;
   final DispatcherMapKpiEntity? kpis;
+  final int? activeBoxesCount;
 }
 
 final class DriverIssueUpdated extends DispatcherMapRealtimeEvent {
@@ -68,12 +70,14 @@ final class DriverIssueUpdated extends DispatcherMapRealtimeEvent {
 final class DriverBoxAssigned extends DispatcherMapRealtimeEvent {
   const DriverBoxAssigned({
     this.boxId,
+    this.boxCode,
     this.driverId,
     this.tripId,
     this.timestamp,
   });
 
   final String? boxId;
+  final String? boxCode;
   final String? driverId;
   final String? tripId;
   final DateTime? timestamp;

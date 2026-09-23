@@ -325,5 +325,84 @@ void main() {
 
       await sub.cancel();
     });
+
+    test('shared lease ownership reference counting (acquire/release)', () async {
+      const driverId = '4a6f235e-c04d-45db-9c3f-c39775c96da9';
+      await client.acquire('dispatcher-map');
+      expect(fakeHub.startCalls, 1);
+      expect(client.currentStatus, DispatcherMapConnectionStatus.connected);
+
+      // Duplicate acquire is idempotent
+      await client.acquire('dispatcher-map');
+      expect(fakeHub.startCalls, 1);
+
+      // Second owner acquires
+      await client.acquire('driver-details:$driverId');
+      expect(fakeHub.startCalls, 1);
+
+      // Release first owner does not disconnect
+      await client.release('driver-details:$driverId');
+      expect(fakeHub.stopCalls, 0);
+      expect(client.currentStatus, DispatcherMapConnectionStatus.connected);
+
+      // Release last owner disconnects
+      await client.release('dispatcher-map');
+      expect(fakeHub.stopCalls, 1);
+      expect(client.currentStatus, DispatcherMapConnectionStatus.disconnected);
+    });
+
+    test('event parsing supports backend wire names speedKmh, recordedAtUtc, activeBoxesCount, boxCode, assignedAtUtc', () async {
+      final events = <DispatcherMapRealtimeEventDto>[];
+      final sub = client.events.listen(events.add);
+
+      await client.connect();
+
+      fakeHub.handlers['driver-location-updated']?.call([
+        {
+          'driverId': 'drv-1',
+          'latitude': 29.35,
+          'longitude': 47.95,
+          'speedKmh': 55.5,
+          'recordedAtUtc': '2026-09-23T18:00:00.000Z',
+        }
+      ]);
+
+      fakeHub.handlers['driver-status-updated']?.call([
+        {
+          'driverId': 'drv-1',
+          'status': 'Available',
+          'statusText': 'متاح',
+          'activeBoxesCount': 3,
+          'recordedAtUtc': '2026-09-23T18:00:00.000Z',
+        }
+      ]);
+
+      fakeHub.handlers['box-assigned']?.call([
+        {
+          'boxId': '3c19356d-f432-47d5-89f5-7e82845c8531',
+          'boxCode': 'BX-10256',
+          'driverId': 'drv-1',
+          'assignedAtUtc': '2026-09-23T18:00:00.000Z',
+        }
+      ]);
+
+      await pumpEventQueue();
+
+      expect(events, hasLength(3));
+      final loc = (events[0] as LocationUpdatedRealtimeDto).dto;
+      expect(loc.speed, 55.5);
+      expect(loc.timestamp, '2026-09-23T18:00:00.000Z');
+
+      final st = (events[1] as StatusUpdatedRealtimeDto).dto;
+      expect(st.activeBoxesCount, 3);
+      expect(st.timestamp, '2026-09-23T18:00:00.000Z');
+
+      final box = (events[2] as BoxAssignedRealtimeDto).dto;
+      expect(box.boxId, '3c19356d-f432-47d5-89f5-7e82845c8531');
+      expect(box.boxCode, 'BX-10256');
+      expect(box.timestamp, '2026-09-23T18:00:00.000Z');
+
+      await sub.cancel();
+    });
   });
 }

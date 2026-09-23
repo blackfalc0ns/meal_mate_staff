@@ -15,6 +15,7 @@ class DispatcherDriverStatusEventDto {
     this.issueDescription,
     this.timestamp,
     this.kpis,
+    this.activeBoxesCount,
   });
 
   final String? driverId;
@@ -23,8 +24,15 @@ class DispatcherDriverStatusEventDto {
   final String? statusColor;
   final bool? hasIssue;
   final String? issueDescription;
+
+  @JsonKey(readValue: _readRecordedAt)
   final String? timestamp;
+
   final DispatcherMapKpiResponseDto? kpis;
+  final int? activeBoxesCount;
+
+  static Object? _readRecordedAt(Map json, String key) =>
+      json['recordedAtUtc'] ?? json['timestamp'];
 
   factory DispatcherDriverStatusEventDto.fromJson(Map<String, dynamic> json) =>
       _$DispatcherDriverStatusEventDtoFromJson(json);

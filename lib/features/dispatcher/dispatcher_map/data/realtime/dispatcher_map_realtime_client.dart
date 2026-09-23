@@ -5,6 +5,9 @@ abstract interface class DispatcherMapRealtimeClient {
   Stream<DispatcherMapRealtimeEventDto> get events;
   Stream<DispatcherMapConnectionStatus> get connectionStatuses;
 
+  Future<void> acquire(String ownerId);
+  Future<void> release(String ownerId);
+
   Future<void> connect();
   Future<void> disconnect();
   Future<void> dispose();
