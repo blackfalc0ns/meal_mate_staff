@@ -26,7 +26,8 @@ class DispatcherMapViewModel extends Cubit<DispatcherMapState> {
 
   final GetDispatcherLiveMonitoringUseCase getLiveMonitoringUseCase;
   final ObserveDispatcherMapUpdatesUseCase observeUpdatesUseCase;
-  final ObserveDispatcherMapConnectionStatusUseCase observeConnectionStatusUseCase;
+  final ObserveDispatcherMapConnectionStatusUseCase
+  observeConnectionStatusUseCase;
   final StartDispatcherMapUpdatesUseCase startUpdatesUseCase;
   final StopDispatcherMapUpdatesUseCase stopUpdatesUseCase;
 
@@ -149,12 +150,7 @@ class DispatcherMapViewModel extends Cubit<DispatcherMapState> {
           ),
         );
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isRefreshLoading: false,
-            failure: failure,
-          ),
-        );
+        emit(state.copyWith(isRefreshLoading: false, failure: failure));
     }
   }
 
@@ -386,8 +382,7 @@ class DispatcherMapViewModel extends Cubit<DispatcherMapState> {
         state.connectionStatus == DispatcherMapConnectionStatus.reconnecting;
     emit(state.copyWith(connectionStatus: status));
 
-    if (wasReconnecting &&
-        status == DispatcherMapConnectionStatus.connected) {
+    if (wasReconnecting && status == DispatcherMapConnectionStatus.connected) {
       await _triggerCoalescedReconciliation();
     }
   }
@@ -405,7 +400,10 @@ class DispatcherMapViewModel extends Cubit<DispatcherMapState> {
       final result = await getLiveMonitoringUseCase();
       if (result is ApiSuccessResult<DispatcherLiveMonitoringEntity>) {
         _reconcileSnapshot(result.data);
-        final selectedId = _resolveSelection(result.data, state.selectedDriverId);
+        final selectedId = _resolveSelection(
+          result.data,
+          state.selectedDriverId,
+        );
 
         emit(
           state.copyWith(

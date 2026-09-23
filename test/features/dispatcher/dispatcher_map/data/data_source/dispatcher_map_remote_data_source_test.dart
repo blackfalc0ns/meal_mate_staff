@@ -132,7 +132,7 @@ void main() {
     final events = <DispatcherMapRealtimeEventDto>[];
     final sub = dataSource.realtimeEvents.listen(events.add);
 
-    final eventDto = const LocationUpdatedRealtimeDto(
+    const eventDto = LocationUpdatedRealtimeDto(
       DispatcherDriverLocationEventDto(driverId: 'drv-1'),
     );
     realtimeClient.eventController.add(eventDto);

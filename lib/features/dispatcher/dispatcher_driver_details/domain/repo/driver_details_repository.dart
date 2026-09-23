@@ -5,7 +5,9 @@ import '../entities/driver_details_entity.dart';
 
 abstract interface class DriverDetailsRepository {
   Future<ApiResult<DriverDetailsEntity>> getDetails(String driverId);
-  Future<ApiResult<List<DriverActiveBoxEntity>>> getActiveBoxes(String driverId);
+  Future<ApiResult<List<DriverActiveBoxEntity>>> getActiveBoxes(
+    String driverId,
+  );
   Future<ApiResult<DriverCurrentLocationEntity>> getCurrentLocation(
     String driverId,
   );

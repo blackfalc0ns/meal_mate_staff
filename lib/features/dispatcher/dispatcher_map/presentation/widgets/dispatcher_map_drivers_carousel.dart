@@ -54,12 +54,15 @@ class _DispatcherMapDriversCarouselState
   }
 
   void _scrollToSelected({required bool animate}) {
-    if (!mounted || !_controller.hasClients || widget.selectedDriverId == null) {
+    if (!mounted ||
+        !_controller.hasClients ||
+        widget.selectedDriverId == null) {
       return;
     }
 
-    final index =
-        widget.drivers.indexWhere((d) => d.id == widget.selectedDriverId);
+    final index = widget.drivers.indexWhere(
+      (d) => d.id == widget.selectedDriverId,
+    );
     if (index == -1) return;
 
     final targetOffset =

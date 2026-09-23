@@ -153,17 +153,15 @@ class _DispatcherMapBackgroundState extends State<DispatcherMapBackground>
       }
     }
     // Default fallback (e.g. Riyadh center)
-    return const CameraPosition(
-      target: LatLng(24.7136, 46.6753),
-      zoom: 12.0,
-    );
+    return const CameraPosition(target: LatLng(24.7136, 46.6753), zoom: 12.0);
   }
 
   void _handleMapCreated(GoogleMapController controller) {
     _rawController = controller;
     if (widget.cameraController is GoogleMapCameraControllerImpl) {
-      (widget.cameraController! as GoogleMapCameraControllerImpl)
-          .attach(controller);
+      (widget.cameraController! as GoogleMapCameraControllerImpl).attach(
+        controller,
+      );
     }
     widget.onMapCreated?.call(controller);
 
@@ -211,17 +209,15 @@ class _DriverMarkerAnimator {
     required TickerProvider vsync,
     required LatLng initialPosition,
     required this.onPositionUpdate,
-  })  : _start = initialPosition,
-        _target = initialPosition,
-        _current = initialPosition {
+  }) : _start = initialPosition,
+       _target = initialPosition,
+       _current = initialPosition {
     _controller = AnimationController(
       vsync: vsync,
       duration: const Duration(milliseconds: 250),
     );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    )..addListener(_handleTick);
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut)
+      ..addListener(_handleTick);
   }
 
   final String driverId;
@@ -249,8 +245,11 @@ class _DriverMarkerAnimator {
 
   void _handleTick() {
     final t = _animation.value;
-    final lat = ui.lerpDouble(_start.latitude, _target.latitude, t) ?? _target.latitude;
-    final lng = ui.lerpDouble(_start.longitude, _target.longitude, t) ?? _target.longitude;
+    final lat =
+        ui.lerpDouble(_start.latitude, _target.latitude, t) ?? _target.latitude;
+    final lng =
+        ui.lerpDouble(_start.longitude, _target.longitude, t) ??
+        _target.longitude;
     _current = LatLng(lat, lng);
     onPositionUpdate();
   }

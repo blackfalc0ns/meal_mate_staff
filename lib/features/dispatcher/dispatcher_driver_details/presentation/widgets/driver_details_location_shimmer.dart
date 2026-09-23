@@ -39,10 +39,7 @@ class DriverDetailsLocationShimmer extends StatelessWidget {
           SizedBox(width: Spacing.sm),
           Expanded(
             flex: 4,
-            child: ShimmerWidget(
-              height: 130,
-              borderRadius: 12,
-            ),
+            child: ShimmerWidget(height: 130, borderRadius: 12),
           ),
         ],
       ),

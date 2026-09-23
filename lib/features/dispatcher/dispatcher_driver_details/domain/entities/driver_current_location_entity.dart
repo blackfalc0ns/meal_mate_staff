@@ -50,16 +50,16 @@ class DriverCurrentLocationEntity {
 
   @override
   int get hashCode => Object.hash(
-        latitude,
-        longitude,
-        heading,
-        speed,
-        destinationLatitude,
-        destinationLongitude,
-        statusBadgeText,
-        timeAgoText,
-        streetName,
-        areaName,
-        recordedAt,
-      );
+    latitude,
+    longitude,
+    heading,
+    speed,
+    destinationLatitude,
+    destinationLongitude,
+    statusBadgeText,
+    timeAgoText,
+    streetName,
+    areaName,
+    recordedAt,
+  );
 }

@@ -27,9 +27,15 @@ void main() {
 
   group('URI Formatting & Cleaning', () {
     test('phoneUri formats tel: with cleaned digits and leading plus', () {
-      expect(launcher.phoneUri('+965 50 123 4567')?.toString(), 'tel:+965501234567');
+      expect(
+        launcher.phoneUri('+965 50 123 4567')?.toString(),
+        'tel:+965501234567',
+      );
       expect(launcher.phoneUri('965501234567')?.toString(), 'tel:965501234567');
-      expect(launcher.phoneUri('  +965-50-123-4567  ')?.toString(), 'tel:+965501234567');
+      expect(
+        launcher.phoneUri('  +965-50-123-4567  ')?.toString(),
+        'tel:+965501234567',
+      );
       expect(launcher.phoneUri(null), isNull);
       expect(launcher.phoneUri(''), isNull);
       expect(launcher.phoneUri('   '), isNull);
@@ -37,23 +43,29 @@ void main() {
     });
 
     test('smsUri formats sms: with cleaned digits', () {
-      expect(launcher.smsUri('+965 50 123 4567')?.toString(), 'sms:+965501234567');
+      expect(
+        launcher.smsUri('+965 50 123 4567')?.toString(),
+        'sms:+965501234567',
+      );
       expect(launcher.smsUri(null), isNull);
       expect(launcher.smsUri(''), isNull);
     });
 
-    test('whatsAppUri formats https://wa.me/ with digits only and NO leading plus', () {
-      expect(
-        launcher.whatsAppUri('+965 50 123 4567')?.toString(),
-        'https://wa.me/965501234567',
-      );
-      expect(
-        launcher.whatsAppUri('965501234567')?.toString(),
-        'https://wa.me/965501234567',
-      );
-      expect(launcher.whatsAppUri(null), isNull);
-      expect(launcher.whatsAppUri(''), isNull);
-    });
+    test(
+      'whatsAppUri formats https://wa.me/ with digits only and NO leading plus',
+      () {
+        expect(
+          launcher.whatsAppUri('+965 50 123 4567')?.toString(),
+          'https://wa.me/965501234567',
+        );
+        expect(
+          launcher.whatsAppUri('965501234567')?.toString(),
+          'https://wa.me/965501234567',
+        );
+        expect(launcher.whatsAppUri(null), isNull);
+        expect(launcher.whatsAppUri(''), isNull);
+      },
+    );
   });
 
   group('Launch Execution', () {
@@ -71,24 +83,30 @@ void main() {
       expect(launchedUri.toString(), 'sms:+965501234567');
     });
 
-    test('launchWhatsApp launches wa.me URI with externalApplication mode', () async {
-      final success = await launcher.launchWhatsApp('+965 50 123 4567');
+    test(
+      'launchWhatsApp launches wa.me URI with externalApplication mode',
+      () async {
+        final success = await launcher.launchWhatsApp('+965 50 123 4567');
 
-      expect(success, isTrue);
-      expect(launchedUri.toString(), 'https://wa.me/965501234567');
-      expect(launchedMode, LaunchMode.externalApplication);
-    });
+        expect(success, isTrue);
+        expect(launchedUri.toString(), 'https://wa.me/965501234567');
+        expect(launchedMode, LaunchMode.externalApplication);
+      },
+    );
 
-    test('returns false when phone is null or invalid without attempting launch', () async {
-      final resultNull = await launcher.launchPhone(null);
-      final resultEmpty = await launcher.launchSms('');
-      final resultInvalid = await launcher.launchWhatsApp('no-digits');
+    test(
+      'returns false when phone is null or invalid without attempting launch',
+      () async {
+        final resultNull = await launcher.launchPhone(null);
+        final resultEmpty = await launcher.launchSms('');
+        final resultInvalid = await launcher.launchWhatsApp('no-digits');
 
-      expect(resultNull, isFalse);
-      expect(resultEmpty, isFalse);
-      expect(resultInvalid, isFalse);
-      expect(launchedUri, isNull);
-    });
+        expect(resultNull, isFalse);
+        expect(resultEmpty, isFalse);
+        expect(resultInvalid, isFalse);
+        expect(launchedUri, isNull);
+      },
+    );
 
     test('returns false when canLaunchUrl returns false', () async {
       canLaunchResult = false;

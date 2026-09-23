@@ -23,9 +23,9 @@ class DriverDailySummaryEntity {
 
   @override
   int get hashCode => Object.hash(
-        approxKm,
-        avgDelayMinutes,
-        failedDeliveryCount,
-        deliveredCount,
-      );
+    approxKm,
+    avgDelayMinutes,
+    failedDeliveryCount,
+    deliveredCount,
+  );
 }

@@ -36,43 +36,50 @@ void main() {
       expect(callTapped, isTrue);
     });
 
-    testWidgets('shows modal bottom sheet with SMS and WhatsApp choices when message tapped', (
+    testWidgets(
+      'shows modal bottom sheet with SMS and WhatsApp choices when message tapped',
+      (tester) async {
+        var smsSelected = false;
+        var whatsAppSelected = false;
+
+        await tester.pumpWidget(
+          createLocalizedApp(
+            DriverDetailsActionButtons(
+              onCall: () {},
+              onSelectSms: () => smsSelected = true,
+              onSelectWhatsApp: () => whatsAppSelected = true,
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Send Message'));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Choose Messaging App'), findsOneWidget);
+        expect(find.text('SMS'), findsOneWidget);
+        expect(find.text('WhatsApp'), findsOneWidget);
+        // No internal chat
+        expect(find.text('Internal Chat'), findsNothing);
+
+        await tester.tap(find.text('SMS'));
+        await tester.pumpAndSettle();
+        expect(smsSelected, isTrue);
+        expect(whatsAppSelected, isFalse);
+
+        await tester.tap(find.text('Send Message'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('WhatsApp'));
+        await tester.pumpAndSettle();
+        expect(whatsAppSelected, isTrue);
+      },
+    );
+
+    testWidgets('disables both buttons when callbacks/phone is not provided', (
       tester,
     ) async {
-      var smsSelected = false;
-      var whatsAppSelected = false;
-
       await tester.pumpWidget(
         createLocalizedApp(
-          DriverDetailsActionButtons(
-            onCall: () {},
-            onSelectSms: () => smsSelected = true,
-            onSelectWhatsApp: () => whatsAppSelected = true,
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Send Message'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Choose Messaging App'), findsOneWidget);
-      expect(find.text('SMS'), findsOneWidget);
-      expect(find.text('WhatsApp'), findsOneWidget);
-      // No internal chat
-      expect(find.text('Internal Chat'), findsNothing);
-
-      await tester.tap(find.text('SMS'));
-      await tester.pumpAndSettle();
-      expect(smsSelected, isTrue);
-    });
-
-    testWidgets('disables both buttons when callbacks/phone is not provided', (tester) async {
-      await tester.pumpWidget(
-        createLocalizedApp(
-          const DriverDetailsActionButtons(
-            onCall: null,
-            onSendMessage: null,
-          ),
+          const DriverDetailsActionButtons(onCall: null, onSendMessage: null),
         ),
       );
 

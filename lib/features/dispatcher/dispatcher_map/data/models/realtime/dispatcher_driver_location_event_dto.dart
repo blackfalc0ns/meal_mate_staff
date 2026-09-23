@@ -39,6 +39,5 @@ class DispatcherDriverLocationEventDto {
 
   factory DispatcherDriverLocationEventDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DispatcherDriverLocationEventDtoFromJson(json);
+  ) => _$DispatcherDriverLocationEventDtoFromJson(json);
 }

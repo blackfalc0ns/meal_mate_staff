@@ -7,7 +7,6 @@ import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_button.dart';
 import '../../../../../core/widget/app_cached_network_image.dart';
@@ -167,7 +166,8 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
                       ),
                     ),
                     child: ClipOval(
-                      child: driver.avatarUrl != null &&
+                      child:
+                          driver.avatarUrl != null &&
                               driver.avatarUrl!.startsWith('http')
                           ? AppCachedNetworkImage(
                               imageUrl: driver.avatarUrl!,
@@ -233,8 +233,9 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: color.primary.withValues(alpha: 0.1),
-                              borderRadius:
-                                  BorderRadius.circular(Spacing.radiusSm),
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusSm,
+                              ),
                             ),
                             child: Text(
                               driver.driverCode!,
@@ -253,8 +254,9 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: color.surfaceContainerHighest,
-                              borderRadius:
-                                  BorderRadius.circular(Spacing.radiusSm),
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusSm,
+                              ),
                             ),
                             child: Text(
                               driver.plateNumber!,
@@ -271,8 +273,9 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: statusBgColor,
-                            borderRadius:
-                                BorderRadius.circular(Spacing.radiusPill),
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusPill,
+                            ),
                           ),
                           child: Text(
                             statusText,
@@ -300,9 +303,7 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color.error.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                border: Border.all(
-                  color: color.error.withValues(alpha: 0.25),
-                ),
+                border: Border.all(color: color.error.withValues(alpha: 0.25)),
               ),
               child: Row(
                 children: [
@@ -361,7 +362,8 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
                 child: _InfoCard(
                   icon: Icons.speed_outlined,
                   title: isAr ? 'السرعة' : 'Speed',
-                  value: '${(driver.speed ?? 0).toInt()} ${isAr ? 'كم/س' : 'km/h'}',
+                  value:
+                      '${(driver.speed ?? 0).toInt()} ${isAr ? 'كم/س' : 'km/h'}',
                   color: color,
                 ),
               ),
@@ -375,14 +377,14 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
             icon: Icons.badge_outlined,
             onPressed: () => _handleNavigateToDetails(context),
           ),
-          if (driver.phoneNumber != null &&
-              driver.phoneNumber!.isNotEmpty) ...[
+          if (driver.phoneNumber != null && driver.phoneNumber!.isNotEmpty) ...[
             const SizedBox(height: Spacing.sm),
             AppButton(
               text: isAr ? 'اتصال بالسائق' : 'Call Driver',
               variant: AppButtonVariant.outlined,
               icon: Icons.phone_outlined,
-              onPressed: onCall ??
+              onPressed:
+                  onCall ??
                   () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -425,9 +427,7 @@ class _InfoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.4),
-        ),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.4)),
       ),
       child: Column(
         children: [

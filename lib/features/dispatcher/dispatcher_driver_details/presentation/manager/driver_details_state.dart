@@ -81,15 +81,17 @@ class DriverDetailsState {
       profileFailure: clearProfileFailure
           ? null
           : (profileFailure ?? this.profileFailure),
-      boxesFailure:
-          clearBoxesFailure ? null : (boxesFailure ?? this.boxesFailure),
+      boxesFailure: clearBoxesFailure
+          ? null
+          : (boxesFailure ?? this.boxesFailure),
       locationFailure: clearLocationFailure
           ? null
           : (locationFailure ?? this.locationFailure),
       connectionStatus: connectionStatus ?? this.connectionStatus,
       noticeId: noticeId ?? this.noticeId,
-      noticeFailure:
-          clearNoticeFailure ? null : (noticeFailure ?? this.noticeFailure),
+      noticeFailure: clearNoticeFailure
+          ? null
+          : (noticeFailure ?? this.noticeFailure),
     );
   }
 }

@@ -15,7 +15,9 @@ void main() {
       );
 
       expect(markers.length, 1);
-      final driverMarker = markers.firstWhere((m) => m.markerId.value == 'driver');
+      final driverMarker = markers.firstWhere(
+        (m) => m.markerId.value == 'driver',
+      );
       expect(driverMarker.position.latitude, 29.3375);
       expect(driverMarker.position.longitude, 48.0211);
       expect(driverMarker.rotation, 90.0);
@@ -33,7 +35,9 @@ void main() {
       expect(markers.any((m) => m.markerId.value == 'driver'), isTrue);
       expect(markers.any((m) => m.markerId.value == 'destination'), isTrue);
 
-      final destMarker = markers.firstWhere((m) => m.markerId.value == 'destination');
+      final destMarker = markers.firstWhere(
+        (m) => m.markerId.value == 'destination',
+      );
       expect(destMarker.position.latitude, 29.3500);
       expect(destMarker.position.longitude, 48.0300);
     });
@@ -45,22 +49,20 @@ void main() {
       );
       expect(emptyResult, isEmpty);
 
-      final singlePointResult = DriverDetailsMapPresentationHelper.buildPolylines(
-        const [DriverLocationPointEntity(latitude: 29.0, longitude: 48.0)],
-        polylineColor: Colors.blue,
-      );
+      final singlePointResult =
+          DriverDetailsMapPresentationHelper.buildPolylines(const [
+            DriverLocationPointEntity(latitude: 29.0, longitude: 48.0),
+          ], polylineColor: Colors.blue);
       expect(singlePointResult, isEmpty);
     });
 
     test('buildPolylines returns polyline with two or more points', () {
-      final polylines = DriverDetailsMapPresentationHelper.buildPolylines(
-        const [
-          DriverLocationPointEntity(latitude: 29.3375, longitude: 48.0211),
-          DriverLocationPointEntity(latitude: 29.3400, longitude: 48.0250),
-          DriverLocationPointEntity(latitude: 29.3500, longitude: 48.0300),
-        ],
-        polylineColor: Colors.purple,
-      );
+      final polylines =
+          DriverDetailsMapPresentationHelper.buildPolylines(const [
+            DriverLocationPointEntity(latitude: 29.3375, longitude: 48.0211),
+            DriverLocationPointEntity(latitude: 29.3400, longitude: 48.0250),
+            DriverLocationPointEntity(latitude: 29.3500, longitude: 48.0300),
+          ], polylineColor: Colors.purple);
 
       expect(polylines.length, 1);
       final routePolyline = polylines.first;
@@ -71,27 +73,32 @@ void main() {
       expect(routePolyline.color, Colors.purple);
     });
 
-    test('calculateBounds returns null or single center when points are insufficient', () {
-      final bounds = DriverDetailsMapPresentationHelper.calculateBounds(
-        driverLat: 29.3375,
-        driverLng: 48.0211,
-      );
-      expect(bounds, isNull);
+    test(
+      'calculateBounds returns null or single center when points are insufficient',
+      () {
+        final bounds = DriverDetailsMapPresentationHelper.calculateBounds(
+          driverLat: 29.3375,
+          driverLng: 48.0211,
+        );
+        expect(bounds, isNull);
 
-      final multiBounds = DriverDetailsMapPresentationHelper.calculateBounds(
-        driverLat: 29.3375,
-        driverLng: 48.0211,
-        destLat: 29.3500,
-        destLng: 48.0300,
-      );
-      expect(multiBounds, isNotNull);
-      expect(multiBounds!.southwest.latitude, 29.3375);
-      expect(multiBounds.northeast.latitude, 29.3500);
-    });
+        final multiBounds = DriverDetailsMapPresentationHelper.calculateBounds(
+          driverLat: 29.3375,
+          driverLng: 48.0211,
+          destLat: 29.3500,
+          destLng: 48.0300,
+        );
+        expect(multiBounds, isNotNull);
+        expect(multiBounds!.southwest.latitude, 29.3375);
+        expect(multiBounds.northeast.latitude, 29.3500);
+      },
+    );
   });
 
   group('DriverDetailsMiniMap Widget', () {
-    testWidgets('does not render GoogleMap when location is offline', (tester) async {
+    testWidgets('does not render GoogleMap when location is offline', (
+      tester,
+    ) async {
       const offlineLocation = DriverCurrentLocationEntity(
         latitude: null,
         longitude: null,
@@ -103,9 +110,7 @@ void main() {
 
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DriverDetailsMiniMap(location: offlineLocation),
-          ),
+          home: Scaffold(body: DriverDetailsMiniMap(location: offlineLocation)),
         ),
       );
 

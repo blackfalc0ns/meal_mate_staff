@@ -104,12 +104,15 @@ void main() {
       expect(repository.getCurrentLocationCalls, 0);
     });
 
-    test('rejects non-GUID driverId locally without calling repository', () async {
-      final result = await getDetailsUseCase('not-a-valid-guid');
+    test(
+      'rejects non-GUID driverId locally without calling repository',
+      () async {
+        final result = await getDetailsUseCase('not-a-valid-guid');
 
-      expect(result, isA<ApiErrorResult>());
-      expect(repository.getDetailsCalls, 0);
-    });
+        expect(result, isA<ApiErrorResult>());
+        expect(repository.getDetailsCalls, 0);
+      },
+    );
 
     test('trims and forwards valid GUID to repository', () async {
       final resultDetails = await getDetailsUseCase('  $validDriverId  ');
@@ -122,7 +125,9 @@ void main() {
       expect(repository.getActiveBoxesCalls, 1);
       expect(repository.lastDriverId, validDriverId);
 
-      final resultLocation = await getCurrentLocationUseCase('  $validDriverId  ');
+      final resultLocation = await getCurrentLocationUseCase(
+        '  $validDriverId  ',
+      );
       expect(resultLocation, isA<ApiSuccessResult>());
       expect(repository.getCurrentLocationCalls, 1);
       expect(repository.lastDriverId, validDriverId);

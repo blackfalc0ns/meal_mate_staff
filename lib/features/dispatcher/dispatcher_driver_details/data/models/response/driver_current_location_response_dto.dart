@@ -21,8 +21,7 @@ class DriverCurrentLocationResponseDto {
 
   factory DriverCurrentLocationResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DriverCurrentLocationResponseDtoFromJson(json);
+  ) => _$DriverCurrentLocationResponseDtoFromJson(json);
 
   final num? latitude;
   final num? longitude;

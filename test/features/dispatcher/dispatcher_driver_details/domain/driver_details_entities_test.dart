@@ -18,7 +18,9 @@ void main() {
         isFalse,
       );
       expect(
-        const DispatcherDriverDetailsRouteArgs(driverId: 'invalid-guid').isValid,
+        const DispatcherDriverDetailsRouteArgs(
+          driverId: 'invalid-guid',
+        ).isValid,
         isFalse,
       );
       expect(
@@ -84,7 +86,10 @@ void main() {
         DriverDetailsStatusX.fromApi('InBreak'),
         DriverDetailsStatus.inBreak,
       );
-      expect(DriverDetailsStatusX.fromApi('Break'), DriverDetailsStatus.inBreak);
+      expect(
+        DriverDetailsStatusX.fromApi('Break'),
+        DriverDetailsStatus.inBreak,
+      );
       expect(
         DriverDetailsStatusX.fromApi('new-value'),
         DriverDetailsStatus.unknown,
@@ -150,36 +155,39 @@ void main() {
       expect(box.boxCode, 'BX-10256');
     });
 
-    test('DriverCurrentLocationEntity handles offline state and route points', () {
-      const offline = DriverCurrentLocationEntity(
-        latitude: null,
-        longitude: null,
-        statusBadgeText: 'غير متصل',
-        timeAgoText: 'منذ 15 دقيقة',
-        streetName: 'شارع الملك فهد',
-        areaName: 'حي العليا، الرياض',
-      );
-      expect(offline.isOffline, isTrue);
+    test(
+      'DriverCurrentLocationEntity handles offline state and route points',
+      () {
+        const offline = DriverCurrentLocationEntity(
+          latitude: null,
+          longitude: null,
+          statusBadgeText: 'غير متصل',
+          timeAgoText: 'منذ 15 دقيقة',
+          streetName: 'شارع الملك فهد',
+          areaName: 'حي العليا، الرياض',
+        );
+        expect(offline.isOffline, isTrue);
 
-      const online = DriverCurrentLocationEntity(
-        latitude: 29.3375,
-        longitude: 47.9784,
-        heading: 180.0,
-        speed: 45.0,
-        destinationLatitude: 29.3400,
-        destinationLongitude: 47.9800,
-        statusBadgeText: 'مباشر',
-        timeAgoText: 'الآن',
-        streetName: 'شارع جمال عبد الناصر',
-        areaName: 'الشويخ',
-        routePoints: [
-          DriverLocationPointEntity(latitude: 29.3375, longitude: 47.9784),
-          DriverLocationPointEntity(latitude: 29.3400, longitude: 47.9800),
-        ],
-      );
-      expect(online.isOffline, isFalse);
-      expect(online.routePoints, hasLength(2));
-      expect(online.routePoints.first.latitude, 29.3375);
-    });
+        const online = DriverCurrentLocationEntity(
+          latitude: 29.3375,
+          longitude: 47.9784,
+          heading: 180.0,
+          speed: 45.0,
+          destinationLatitude: 29.3400,
+          destinationLongitude: 47.9800,
+          statusBadgeText: 'مباشر',
+          timeAgoText: 'الآن',
+          streetName: 'شارع جمال عبد الناصر',
+          areaName: 'الشويخ',
+          routePoints: [
+            DriverLocationPointEntity(latitude: 29.3375, longitude: 47.9784),
+            DriverLocationPointEntity(latitude: 29.3400, longitude: 47.9800),
+          ],
+        );
+        expect(online.isOffline, isFalse);
+        expect(online.routePoints, hasLength(2));
+        expect(online.routePoints.first.latitude, 29.3375);
+      },
+    );
   });
 }

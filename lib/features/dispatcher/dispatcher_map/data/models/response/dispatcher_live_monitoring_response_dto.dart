@@ -4,18 +4,14 @@ part 'dispatcher_live_monitoring_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class DispatcherLiveMonitoringResponseDto {
-  const DispatcherLiveMonitoringResponseDto({
-    this.kpis,
-    this.drivers,
-  });
+  const DispatcherLiveMonitoringResponseDto({this.kpis, this.drivers});
 
   final DispatcherMapKpiResponseDto? kpis;
   final List<DispatcherMapDriverResponseDto>? drivers;
 
   factory DispatcherLiveMonitoringResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DispatcherLiveMonitoringResponseDtoFromJson(json);
+  ) => _$DispatcherLiveMonitoringResponseDtoFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)

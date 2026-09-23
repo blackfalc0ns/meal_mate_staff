@@ -40,14 +40,14 @@ class DriverProfileEntity {
 
   @override
   int get hashCode => Object.hash(
-        driverId,
-        driverCode,
-        fullName,
-        phoneNumber,
-        avatarUrl,
-        status,
-        statusText,
-        statusDotColor,
-        lastUpdatedText,
-      );
+    driverId,
+    driverCode,
+    fullName,
+    phoneNumber,
+    avatarUrl,
+    status,
+    statusText,
+    statusDotColor,
+    lastUpdatedText,
+  );
 }

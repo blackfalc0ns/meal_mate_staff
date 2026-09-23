@@ -52,8 +52,9 @@ class DriverDetailsViewModel extends Cubit<DriverDetailsState> {
     _eventsSubscription = _observeUpdatesUseCase.events.listen((event) {
       doIntent(RealtimeDriverDetailsEventReceived(event));
     });
-    _statusSubscription =
-        _observeUpdatesUseCase.connectionStatuses.listen((status) {
+    _statusSubscription = _observeUpdatesUseCase.connectionStatuses.listen((
+      status,
+    ) {
       doIntent(DriverDetailsConnectionStatusReceived(status));
     });
   }
@@ -120,16 +121,9 @@ class DriverDetailsViewModel extends Cubit<DriverDetailsState> {
 
   Future<void> _handleRetryProfile() async {
     final gen = ++_loadGeneration;
-    emit(
-      state.copyWith(
-        isProfileLoading: true,
-        clearProfileFailure: true,
-      ),
-    );
+    emit(state.copyWith(isProfileLoading: true, clearProfileFailure: true));
 
-    final futures = <Future<void>>[
-      _fetchProfile(gen, isRefresh: false),
-    ];
+    final futures = <Future<void>>[_fetchProfile(gen, isRefresh: false)];
 
     if (state.activeBoxes == null) {
       emit(state.copyWith(isBoxesLoading: true, clearBoxesFailure: true));
@@ -145,23 +139,13 @@ class DriverDetailsViewModel extends Cubit<DriverDetailsState> {
 
   Future<void> _handleRetryBoxes() async {
     final gen = ++_loadGeneration;
-    emit(
-      state.copyWith(
-        isBoxesLoading: true,
-        clearBoxesFailure: true,
-      ),
-    );
+    emit(state.copyWith(isBoxesLoading: true, clearBoxesFailure: true));
     await _fetchBoxes(gen, isRefresh: false);
   }
 
   Future<void> _handleRetryLocation() async {
     final gen = ++_loadGeneration;
-    emit(
-      state.copyWith(
-        isLocationLoading: true,
-        clearLocationFailure: true,
-      ),
-    );
+    emit(state.copyWith(isLocationLoading: true, clearLocationFailure: true));
     await _fetchLocation(gen, isRefresh: false);
   }
 
@@ -189,10 +173,7 @@ class DriverDetailsViewModel extends Cubit<DriverDetailsState> {
           );
         } else {
           emit(
-            state.copyWith(
-              isProfileLoading: false,
-              profileFailure: failure,
-            ),
+            state.copyWith(isProfileLoading: false, profileFailure: failure),
           );
         }
     }
@@ -221,12 +202,7 @@ class DriverDetailsViewModel extends Cubit<DriverDetailsState> {
             ),
           );
         } else {
-          emit(
-            state.copyWith(
-              isBoxesLoading: false,
-              boxesFailure: failure,
-            ),
-          );
+          emit(state.copyWith(isBoxesLoading: false, boxesFailure: failure));
         }
     }
   }
@@ -255,10 +231,7 @@ class DriverDetailsViewModel extends Cubit<DriverDetailsState> {
           );
         } else {
           emit(
-            state.copyWith(
-              isLocationLoading: false,
-              locationFailure: failure,
-            ),
+            state.copyWith(isLocationLoading: false, locationFailure: failure),
           );
         }
     }

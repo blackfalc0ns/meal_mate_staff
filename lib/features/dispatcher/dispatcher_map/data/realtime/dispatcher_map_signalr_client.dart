@@ -301,7 +301,9 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
   Future<void> acquire(String ownerId) {
     if (_isDisposed) return Future.value();
     _owners.add(ownerId);
-    _log('👥 [OWNER] Owner acquired: $ownerId (total owners: ${_owners.length})');
+    _log(
+      '👥 [OWNER] Owner acquired: $ownerId (total owners: ${_owners.length})',
+    );
     return connect();
   }
 
@@ -309,7 +311,9 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
   Future<void> release(String ownerId) {
     if (_isDisposed) return Future.value();
     _owners.remove(ownerId);
-    _log('👥 [OWNER] Owner released: $ownerId (remaining owners: ${_owners.length})');
+    _log(
+      '👥 [OWNER] Owner released: $ownerId (remaining owners: ${_owners.length})',
+    );
     if (_owners.isEmpty) {
       return disconnect();
     }

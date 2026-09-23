@@ -16,11 +16,7 @@ class DriverDetailsProfileShimmer extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ShimmerWidget(
-            width: 56,
-            height: 56,
-            borderRadius: 100,
-          ),
+          ShimmerWidget(width: 56, height: 56, borderRadius: 100),
           SizedBox(width: Spacing.sm),
           Expanded(
             child: Column(

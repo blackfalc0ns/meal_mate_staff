@@ -5,7 +5,7 @@ enum DriverDetailsStatus {
   onDelivery,
   offline,
   inBreak,
-  unknown;
+  unknown,
 }
 
 extension DriverDetailsStatusX on DriverDetailsStatus {

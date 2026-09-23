@@ -28,13 +28,11 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/services/driver_contact_launcher.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/widgets/driver_details_boxes_card.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/widgets/driver_details_boxes_shimmer.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/widgets/driver_details_location_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/widgets/driver_details_location_shimmer.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/widgets/driver_details_shimmer.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/data/realtime/dispatcher_map_realtime_client.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/data/realtime/dispatcher_map_realtime_event_dto.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/entities/dispatcher_live_monitoring_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/entities/dispatcher_map_connection_status.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/entities/dispatcher_map_realtime_event.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/domain/repo/dispatcher_map_repository.dart';
@@ -48,13 +46,15 @@ class StubContactLauncher implements DriverContactLauncher {
   String? lastLaunchedWhatsApp;
 
   @override
-  Uri? phoneUri(String? phone) => phone != null ? Uri.parse('tel:$phone') : null;
+  Uri? phoneUri(String? phone) =>
+      phone != null ? Uri.parse('tel:$phone') : null;
 
   @override
   Uri? smsUri(String? phone) => phone != null ? Uri.parse('sms:$phone') : null;
 
   @override
-  Uri? whatsAppUri(String? phone) => phone != null ? Uri.parse('https://wa.me/$phone') : null;
+  Uri? whatsAppUri(String? phone) =>
+      phone != null ? Uri.parse('https://wa.me/$phone') : null;
 
   @override
   Future<bool> launchPhone(String? phone) async {
@@ -80,14 +80,14 @@ class FakeDriverDetailsViewModel extends DriverDetailsViewModel {
     required String driverId,
     DriverDetailsState initialState = const DriverDetailsState(),
   }) : super(
-          driverId,
-          _FakeGetDetailsUseCase(),
-          _FakeGetActiveBoxesUseCase(),
-          _FakeGetCurrentLocationUseCase(),
-          _FakeObserveUpdatesUseCase(),
-          _FakeAcquireRealtimeUseCase(),
-          _FakeReleaseRealtimeUseCase(),
-        ) {
+         driverId,
+         _FakeGetDetailsUseCase(),
+         _FakeGetActiveBoxesUseCase(),
+         _FakeGetCurrentLocationUseCase(),
+         _FakeObserveUpdatesUseCase(),
+         _FakeAcquireRealtimeUseCase(),
+         _FakeReleaseRealtimeUseCase(),
+       ) {
     emit(initialState);
   }
 
@@ -133,12 +133,14 @@ class _StubRepo implements DriverDetailsRepository {
       throw UnimplementedError();
 
   @override
-  Future<ApiResult<List<DriverActiveBoxEntity>>> getActiveBoxes(String driverId) =>
-      throw UnimplementedError();
+  Future<ApiResult<List<DriverActiveBoxEntity>>> getActiveBoxes(
+    String driverId,
+  ) => throw UnimplementedError();
 
   @override
-  Future<ApiResult<DriverCurrentLocationEntity>> getCurrentLocation(String driverId) =>
-      throw UnimplementedError();
+  Future<ApiResult<DriverCurrentLocationEntity>> getCurrentLocation(
+    String driverId,
+  ) => throw UnimplementedError();
 }
 
 class _StubMapRepo implements DispatcherMapRepository {
@@ -146,7 +148,8 @@ class _StubMapRepo implements DispatcherMapRepository {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 
   @override
-  Stream<DispatcherMapConnectionStatus> get connectionStatuses => const Stream.empty();
+  Stream<DispatcherMapConnectionStatus> get connectionStatuses =>
+      const Stream.empty();
 
   @override
   Stream<DispatcherMapRealtimeEvent> get realtimeEvents => const Stream.empty();
@@ -169,7 +172,8 @@ class _StubRealtimeClient implements DispatcherMapRealtimeClient {
   Future<void> dispose() async {}
 
   @override
-  Stream<DispatcherMapConnectionStatus> get connectionStatuses => const Stream.empty();
+  Stream<DispatcherMapConnectionStatus> get connectionStatuses =>
+      const Stream.empty();
 
   @override
   Stream<DispatcherMapRealtimeEventDto> get events => const Stream.empty();
@@ -252,24 +256,29 @@ void main() {
   );
 
   group('DispatcherDriverDetailsScreen State Rendering', () {
-    testWidgets('renders full DriverDetailsShimmer on initial profile loading', (
+    testWidgets(
+      'renders full DriverDetailsShimmer on initial profile loading',
+      (tester) async {
+        final vm = FakeDriverDetailsViewModel(
+          driverId: driverId,
+          initialState: const DriverDetailsState(
+            isProfileLoading: true,
+            details: null,
+          ),
+        );
+
+        await tester.pumpWidget(
+          createTestScreen(driverId: driverId, viewModel: vm),
+        );
+
+        expect(find.byType(DriverDetailsShimmer), findsOneWidget);
+        expect(find.text('Ahmed Al-Saeed'), findsNothing);
+      },
+    );
+
+    testWidgets('renders ApiErrorWidget on initial profile failure', (
       tester,
     ) async {
-      final vm = FakeDriverDetailsViewModel(
-        driverId: driverId,
-        initialState: const DriverDetailsState(
-          isProfileLoading: true,
-          details: null,
-        ),
-      );
-
-      await tester.pumpWidget(createTestScreen(driverId: driverId, viewModel: vm));
-
-      expect(find.byType(DriverDetailsShimmer), findsOneWidget);
-      expect(find.text('Ahmed Al-Saeed'), findsNothing);
-    });
-
-    testWidgets('renders ApiErrorWidget on initial profile failure', (tester) async {
       final vm = FakeDriverDetailsViewModel(
         driverId: driverId,
         initialState: DriverDetailsState(
@@ -285,12 +294,16 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(createTestScreen(driverId: driverId, viewModel: vm));
+      await tester.pumpWidget(
+        createTestScreen(driverId: driverId, viewModel: vm),
+      );
 
       expect(find.byType(ApiErrorWidget), findsOneWidget);
     });
 
-    testWidgets('renders independent section shimmers and inline errors', (tester) async {
+    testWidgets('renders independent section shimmers and inline errors', (
+      tester,
+    ) async {
       final vm = FakeDriverDetailsViewModel(
         driverId: driverId,
         initialState: DriverDetailsState(
@@ -308,14 +321,18 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(createTestScreen(driverId: driverId, viewModel: vm));
+      await tester.pumpWidget(
+        createTestScreen(driverId: driverId, viewModel: vm),
+      );
 
       expect(find.text('Ahmed Al-Saeed'), findsOneWidget);
       expect(find.byType(DriverDetailsLocationShimmer), findsOneWidget);
       expect(find.byType(InlineApiErrorWidget), findsOneWidget);
     });
 
-    testWidgets('renders complete success state with all cards', (tester) async {
+    testWidgets('renders complete success state with all cards', (
+      tester,
+    ) async {
       final vm = FakeDriverDetailsViewModel(
         driverId: driverId,
         initialState: const DriverDetailsState(
@@ -325,7 +342,9 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(createTestScreen(driverId: driverId, viewModel: vm));
+      await tester.pumpWidget(
+        createTestScreen(driverId: driverId, viewModel: vm),
+      );
 
       expect(find.text('Ahmed Al-Saeed'), findsOneWidget);
       expect(find.text('DR-1025'), findsOneWidget);
@@ -334,7 +353,9 @@ void main() {
       expect(find.text('BX-2041'), findsOneWidget);
     });
 
-    testWidgets('triggers onSelectBox when an active box is tapped', (tester) async {
+    testWidgets('triggers onSelectBox when an active box is tapped', (
+      tester,
+    ) async {
       DriverActiveBoxEntity? tappedBox;
       final vm = FakeDriverDetailsViewModel(
         driverId: driverId,
@@ -358,7 +379,9 @@ void main() {
       expect(tappedBox!.boxId, testBox.boxId);
     });
 
-    testWidgets('triggers onOpenMap when Open on Map is tapped', (tester) async {
+    testWidgets('triggers onOpenMap when Open on Map is tapped', (
+      tester,
+    ) async {
       var mapTapped = false;
       final vm = FakeDriverDetailsViewModel(
         driverId: driverId,
@@ -381,7 +404,9 @@ void main() {
       expect(mapTapped, isTrue);
     });
 
-    testWidgets('launches contact calls when Call button is tapped', (tester) async {
+    testWidgets('launches contact calls when Call button is tapped', (
+      tester,
+    ) async {
       final launcher = StubContactLauncher(shouldSucceed: true);
       final vm = FakeDriverDetailsViewModel(
         driverId: driverId,
@@ -406,7 +431,9 @@ void main() {
       expect(launcher.lastLaunchedPhone, '+96550123456');
     });
 
-    testWidgets('does not overflow on 320x640 small screen viewport', (tester) async {
+    testWidgets('does not overflow on 320x640 small screen viewport', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(320, 640);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -420,7 +447,9 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(createTestScreen(driverId: driverId, viewModel: vm));
+      await tester.pumpWidget(
+        createTestScreen(driverId: driverId, viewModel: vm),
+      );
 
       expect(tester.takeException(), isNull);
     });

@@ -38,14 +38,14 @@ class DriverActiveBoxEntity {
 
   @override
   int get hashCode => Object.hash(
-        boxId,
-        boxCode,
-        customerName,
-        deliveryAddress,
-        status,
-        statusText,
-        statusColor,
-        scheduledTimeText,
-        isDelivering,
-      );
+    boxId,
+    boxCode,
+    customerName,
+    deliveryAddress,
+    status,
+    statusText,
+    statusColor,
+    scheduledTimeText,
+    isDelivering,
+  );
 }

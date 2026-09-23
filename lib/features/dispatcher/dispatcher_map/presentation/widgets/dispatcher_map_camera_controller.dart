@@ -68,15 +68,19 @@ class GoogleMapCameraControllerImpl implements DispatcherMapCameraController {
     final c = _controller;
     if (c == null) return;
 
-    final validDrivers = drivers.where((d) =>
-        d.latitude != null &&
-        d.longitude != null &&
-        d.latitude!.isFinite &&
-        d.longitude!.isFinite &&
-        d.latitude! >= -90 &&
-        d.latitude! <= 90 &&
-        d.longitude! >= -180 &&
-        d.longitude! <= 180).toList();
+    final validDrivers = drivers
+        .where(
+          (d) =>
+              d.latitude != null &&
+              d.longitude != null &&
+              d.latitude!.isFinite &&
+              d.longitude!.isFinite &&
+              d.latitude! >= -90 &&
+              d.latitude! <= 90 &&
+              d.longitude! >= -180 &&
+              d.longitude! <= 180,
+        )
+        .toList();
 
     if (validDrivers.isEmpty) {
       return;

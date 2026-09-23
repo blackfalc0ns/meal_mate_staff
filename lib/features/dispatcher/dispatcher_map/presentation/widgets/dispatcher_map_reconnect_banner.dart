@@ -26,7 +26,8 @@ class DispatcherMapReconnectBanner extends StatelessWidget {
     final color = context.colorScheme;
     final isAr = Localizations.localeOf(context).languageCode == 'ar';
 
-    final bool isReconnecting = status == DispatcherMapConnectionStatus.reconnecting;
+    final bool isReconnecting =
+        status == DispatcherMapConnectionStatus.reconnecting;
     final String message;
     final Color bannerColor;
     final Color textColor;
@@ -38,15 +39,11 @@ class DispatcherMapReconnectBanner extends StatelessWidget {
       bannerColor = color.warning.withValues(alpha: 0.15);
       textColor = color.warning;
     } else if (status == DispatcherMapConnectionStatus.unauthorized) {
-      message = isAr
-          ? 'انتهت صلاحية الجلسة'
-          : 'Session expired';
+      message = isAr ? 'انتهت صلاحية الجلسة' : 'Session expired';
       bannerColor = color.error.withValues(alpha: 0.15);
       textColor = color.error;
     } else {
-      message = isAr
-          ? 'البث المباشر متوقف'
-          : 'Live stream disconnected';
+      message = isAr ? 'البث المباشر متوقف' : 'Live stream disconnected';
       bannerColor = color.onSurfaceVariant.withValues(alpha: 0.15);
       textColor = color.onSurfaceVariant;
     }
@@ -85,10 +82,7 @@ class DispatcherMapReconnectBanner extends StatelessWidget {
           const SizedBox(width: Spacing.xs),
           Text(
             message,
-            style: getMediumStyle(
-              fontSize: FontSize.size10,
-              color: textColor,
-            ),
+            style: getMediumStyle(fontSize: FontSize.size10, color: textColor),
           ),
           if (!isReconnecting && onRetry != null) ...[
             const SizedBox(width: Spacing.xs),

@@ -75,7 +75,8 @@ class _DispatcherDriverDetailsScreenState
       _ownsViewModel = true;
     }
 
-    _contactLauncher = widget.contactLauncher ??
+    _contactLauncher =
+        widget.contactLauncher ??
         (getIt.isRegistered<DriverContactLauncher>()
             ? getIt<DriverContactLauncher>()
             : const DriverContactLauncherImpl());
@@ -158,12 +159,9 @@ class _DispatcherDriverDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
-
     return BlocConsumer<DriverDetailsViewModel, DriverDetailsState>(
       bloc: _viewModel,
-      listenWhen: (previous, current) =>
-          current.noticeId != null && current.noticeId != _lastNoticeId,
+      listenWhen: (previous, current) => current.noticeId != _lastNoticeId,
       listener: (context, state) {
         _lastNoticeId = state.noticeId;
         if (state.noticeFailure != null) {
@@ -181,10 +179,7 @@ class _DispatcherDriverDetailsScreenState
               onBack: widget.onBack,
               onMore: widget.onMore,
             ),
-            body: const SafeArea(
-              bottom: false,
-              child: DriverDetailsShimmer(),
-            ),
+            body: const SafeArea(bottom: false, child: DriverDetailsShimmer()),
           );
         }
 
@@ -253,16 +248,18 @@ class _DispatcherDriverDetailsScreenState
                         ),
                         child: InlineApiErrorWidget(
                           failure: state.locationFailure!,
-                          onRetry: () =>
-                              _viewModel.doIntent(const RetryDriverLocationEvent()),
+                          onRetry: () => _viewModel.doIntent(
+                            const RetryDriverLocationEvent(),
+                          ),
                         ),
                       )
                     else if (state.location != null)
                       DriverDetailsLocationCard(
                         location: state.location!,
                         onOpenMap: _handleOpenOnMap,
-                        onRetryLocation: () =>
-                            _viewModel.doIntent(const RetryDriverLocationEvent()),
+                        onRetryLocation: () => _viewModel.doIntent(
+                          const RetryDriverLocationEvent(),
+                        ),
                       ),
                     const SizedBox(height: Spacing.xs),
                     // Active Boxes Section
@@ -277,8 +274,9 @@ class _DispatcherDriverDetailsScreenState
                         ),
                         child: InlineApiErrorWidget(
                           failure: state.boxesFailure!,
-                          onRetry: () =>
-                              _viewModel.doIntent(const RetryDriverBoxesEvent()),
+                          onRetry: () => _viewModel.doIntent(
+                            const RetryDriverBoxesEvent(),
+                          ),
                         ),
                       )
                     else

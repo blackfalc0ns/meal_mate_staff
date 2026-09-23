@@ -66,47 +66,54 @@ void main() {
       expect(entity.kpis.activeBoxesCount, 2);
     });
 
-    test('getDetails returns ApiErrorResult when remote throws DioException', () async {
-      remoteDataSource.errorToThrow = DioException(
-        requestOptions: RequestOptions(path: '/details'),
-        type: DioExceptionType.connectionTimeout,
-        error: 'Connection timeout',
-      );
+    test(
+      'getDetails returns ApiErrorResult when remote throws DioException',
+      () async {
+        remoteDataSource.errorToThrow = DioException(
+          requestOptions: RequestOptions(path: '/details'),
+          type: DioExceptionType.connectionTimeout,
+          error: 'Connection timeout',
+        );
 
-      final result = await repository.getDetails(driverId);
+        final result = await repository.getDetails(driverId);
 
-      expect(result, isA<ApiErrorResult>());
-      final error = result as ApiErrorResult;
-      expect(error.failure, isNotNull);
-    });
+        expect(result, isA<ApiErrorResult>());
+        final error = result as ApiErrorResult;
+        expect(error.failure, isNotNull);
+      },
+    );
 
-    test('getActiveBoxes returns ApiSuccessResult with empty list when boxes is null', () async {
-      remoteDataSource.activeBoxesResponse = const DriverActiveBoxesResponseDto(
-        totalCount: 0,
-        boxes: null,
-      );
+    test(
+      'getActiveBoxes returns ApiSuccessResult with empty list when boxes is null',
+      () async {
+        remoteDataSource.activeBoxesResponse =
+            const DriverActiveBoxesResponseDto(totalCount: 0, boxes: null);
 
-      final result = await repository.getActiveBoxes(driverId);
+        final result = await repository.getActiveBoxes(driverId);
 
-      expect(result, isA<ApiSuccessResult>());
-      final list = (result as ApiSuccessResult).data;
-      expect(list, isEmpty);
-    });
+        expect(result, isA<ApiSuccessResult>());
+        final list = (result as ApiSuccessResult).data;
+        expect(list, isEmpty);
+      },
+    );
 
-    test('getCurrentLocation returns ApiSuccessResult with offline coordinates', () async {
-      remoteDataSource.currentLocationResponse =
-          const DriverCurrentLocationResponseDto(
-        latitude: null,
-        longitude: null,
-        statusBadgeText: 'غير متصل',
-      );
+    test(
+      'getCurrentLocation returns ApiSuccessResult with offline coordinates',
+      () async {
+        remoteDataSource.currentLocationResponse =
+            const DriverCurrentLocationResponseDto(
+              latitude: null,
+              longitude: null,
+              statusBadgeText: 'غير متصل',
+            );
 
-      final result = await repository.getCurrentLocation(driverId);
+        final result = await repository.getCurrentLocation(driverId);
 
-      expect(result, isA<ApiSuccessResult>());
-      final entity = (result as ApiSuccessResult).data;
-      expect(entity.isOffline, isTrue);
-      expect(entity.latitude, isNull);
-    });
+        expect(result, isA<ApiSuccessResult>());
+        final entity = (result as ApiSuccessResult).data;
+        expect(entity.isOffline, isTrue);
+        expect(entity.latitude, isNull);
+      },
+    );
   });
 }

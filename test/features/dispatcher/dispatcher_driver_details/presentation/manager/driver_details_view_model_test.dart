@@ -61,8 +61,10 @@ class FakeRealtimeClient implements DispatcherMapRealtimeClient {
 }
 
 class FakeMapRepository implements DispatcherMapRepository {
+  // ignore: close_sinks
   final eventController =
       StreamController<DispatcherMapRealtimeEvent>.broadcast();
+  // ignore: close_sinks
   final statusController =
       StreamController<DispatcherMapConnectionStatus>.broadcast();
 
@@ -82,8 +84,10 @@ class FakeMapRepository implements DispatcherMapRepository {
   Future<void> disposeRealtime() async {}
 
   @override
-  Future<ApiResult<DispatcherLiveMonitoringEntity>> getLiveMonitoring(
-      {String? restaurantId, String? status}) async {
+  Future<ApiResult<DispatcherLiveMonitoringEntity>> getLiveMonitoring({
+    String? restaurantId,
+    String? status,
+  }) async {
     throw UnimplementedError();
   }
 
@@ -121,7 +125,8 @@ class FakeDetailsRepo implements DriverDetailsRepository {
 
   @override
   Future<ApiResult<List<DriverActiveBoxEntity>>> getActiveBoxes(
-      String driverId) async {
+    String driverId,
+  ) async {
     boxesCalls++;
     if (delayCompleter != null) await delayCompleter!.future;
     if (boxesError != null) {
@@ -132,7 +137,8 @@ class FakeDetailsRepo implements DriverDetailsRepository {
 
   @override
   Future<ApiResult<DriverCurrentLocationEntity>> getCurrentLocation(
-      String driverId) async {
+    String driverId,
+  ) async {
     locationCalls++;
     if (delayCompleter != null) await delayCompleter!.future;
     if (locationError != null) {
@@ -142,28 +148,28 @@ class FakeDetailsRepo implements DriverDetailsRepository {
   }
 
   static DriverDetailsEntity _defaultDetails(String id) => DriverDetailsEntity(
-        driver: DriverProfileEntity(
-          driverId: id,
-          driverCode: 'DR-1025',
-          fullName: 'أحمد السعيد',
-          phoneNumber: '+965501234567',
-          status: DriverDetailsStatus.available,
-          statusText: 'متاح',
-          lastUpdatedText: 'الآن',
-        ),
-        kpis: const DriverKpisEntity(
-          performanceRating: 4.8,
-          avgDelayMinutes: 12,
-          deliveredTodayCount: 28,
-          activeBoxesCount: 2,
-        ),
-        dailySummary: const DriverDailySummaryEntity(
-          approxKm: 120,
-          avgDelayMinutes: 12,
-          failedDeliveryCount: 1,
-          deliveredCount: 28,
-        ),
-      );
+    driver: DriverProfileEntity(
+      driverId: id,
+      driverCode: 'DR-1025',
+      fullName: 'أحمد السعيد',
+      phoneNumber: '+965501234567',
+      status: DriverDetailsStatus.available,
+      statusText: 'متاح',
+      lastUpdatedText: 'الآن',
+    ),
+    kpis: const DriverKpisEntity(
+      performanceRating: 4.8,
+      avgDelayMinutes: 12,
+      deliveredTodayCount: 28,
+      activeBoxesCount: 2,
+    ),
+    dailySummary: const DriverDailySummaryEntity(
+      approxKm: 120,
+      avgDelayMinutes: 12,
+      failedDeliveryCount: 1,
+      deliveredCount: 28,
+    ),
+  );
 
   static DriverCurrentLocationEntity _defaultLocation() =>
       const DriverCurrentLocationEntity(
@@ -208,90 +214,106 @@ void main() {
   });
 
   group('DriverDetailsViewModel State Machine', () {
-    test('concurrent initial loads populates all sections independently',
-        () async {
-      expect(viewModel.state.isProfileLoading, isFalse);
+    test(
+      'concurrent initial loads populates all sections independently',
+      () async {
+        expect(viewModel.state.isProfileLoading, isFalse);
 
-      final loadFuture = viewModel.doIntent(const LoadDriverDetailsEvent());
-      expect(viewModel.state.isProfileLoading, isTrue);
-      expect(viewModel.state.isBoxesLoading, isTrue);
-      expect(viewModel.state.isLocationLoading, isTrue);
+        final loadFuture = viewModel.doIntent(const LoadDriverDetailsEvent());
+        expect(viewModel.state.isProfileLoading, isTrue);
+        expect(viewModel.state.isBoxesLoading, isTrue);
+        expect(viewModel.state.isLocationLoading, isTrue);
 
-      await loadFuture;
+        await loadFuture;
 
-      expect(viewModel.state.isProfileLoading, isFalse);
-      expect(viewModel.state.isBoxesLoading, isFalse);
-      expect(viewModel.state.isLocationLoading, isFalse);
-      expect(viewModel.state.details, isNotNull);
-      expect(viewModel.state.activeBoxes, isNotNull);
-      expect(viewModel.state.location, isNotNull);
-      expect(realtimeClient.acquiredOwners, contains('driver-details:$driverId'));
-    });
+        expect(viewModel.state.isProfileLoading, isFalse);
+        expect(viewModel.state.isBoxesLoading, isFalse);
+        expect(viewModel.state.isLocationLoading, isFalse);
+        expect(viewModel.state.details, isNotNull);
+        expect(viewModel.state.activeBoxes, isNotNull);
+        expect(viewModel.state.location, isNotNull);
+        expect(
+          realtimeClient.acquiredOwners,
+          contains('driver-details:$driverId'),
+        );
+      },
+    );
 
-    test('profile initial failure keeps error in state without clearing partial successes',
-        () async {
-      repo.detailsError = ServerFailure(
-        errorMessage: 'Profile load failed',
-        exception: const ApiException(
-          errorType: ApiErrorType.serverError,
-          message: 'Profile load failed',
-        ),
-      );
+    test(
+      'profile initial failure keeps error in state without clearing partial successes',
+      () async {
+        repo.detailsError = ServerFailure(
+          errorMessage: 'Profile load failed',
+          exception: const ApiException(
+            errorType: ApiErrorType.serverError,
+            message: 'Profile load failed',
+          ),
+        );
 
-      await viewModel.doIntent(const LoadDriverDetailsEvent());
+        await viewModel.doIntent(const LoadDriverDetailsEvent());
 
-      expect(viewModel.state.details, isNull);
-      expect(viewModel.state.profileFailure, isNotNull);
-      expect(viewModel.state.profileFailure?.errorMessage, 'Profile load failed');
-      // Boxes and location succeeded
-      expect(viewModel.state.activeBoxes, isNotNull);
-      expect(viewModel.state.location, isNotNull);
-      expect(viewModel.state.boxesFailure, isNull);
-    });
+        expect(viewModel.state.details, isNull);
+        expect(viewModel.state.profileFailure, isNotNull);
+        expect(
+          viewModel.state.profileFailure?.errorMessage,
+          'Profile load failed',
+        );
+        // Boxes and location succeeded
+        expect(viewModel.state.activeBoxes, isNotNull);
+        expect(viewModel.state.location, isNotNull);
+        expect(viewModel.state.boxesFailure, isNull);
+      },
+    );
 
-    test('boxes failure produces inline error state while profile remains visible',
-        () async {
-      repo.boxesError = ServerFailure(
-        errorMessage: 'Boxes load failed',
-        exception: const ApiException(
-          errorType: ApiErrorType.serverError,
-          message: 'Boxes load failed',
-        ),
-      );
+    test(
+      'boxes failure produces inline error state while profile remains visible',
+      () async {
+        repo.boxesError = ServerFailure(
+          errorMessage: 'Boxes load failed',
+          exception: const ApiException(
+            errorType: ApiErrorType.serverError,
+            message: 'Boxes load failed',
+          ),
+        );
 
-      await viewModel.doIntent(const LoadDriverDetailsEvent());
+        await viewModel.doIntent(const LoadDriverDetailsEvent());
 
-      expect(viewModel.state.details, isNotNull);
-      expect(viewModel.state.activeBoxes, isNull);
-      expect(viewModel.state.boxesFailure, isNotNull);
-      expect(viewModel.state.boxesFailure?.errorMessage, 'Boxes load failed');
-    });
+        expect(viewModel.state.details, isNotNull);
+        expect(viewModel.state.activeBoxes, isNull);
+        expect(viewModel.state.boxesFailure, isNotNull);
+        expect(viewModel.state.boxesFailure?.errorMessage, 'Boxes load failed');
+      },
+    );
 
-    test('pull-to-refresh preserves existing data and notifies error via noticeId',
-        () async {
-      await viewModel.doIntent(const LoadDriverDetailsEvent());
-      expect(viewModel.state.details, isNotNull);
+    test(
+      'pull-to-refresh preserves existing data and notifies error via noticeId',
+      () async {
+        await viewModel.doIntent(const LoadDriverDetailsEvent());
+        expect(viewModel.state.details, isNotNull);
 
-      // Now simulate boxes error on refresh
-      repo.boxesError = ServerFailure(
-        errorMessage: 'Network glitch on refresh',
-        exception: const ApiException(
-          errorType: ApiErrorType.serverError,
-          message: 'Network glitch on refresh',
-        ),
-      );
+        // Now simulate boxes error on refresh
+        repo.boxesError = ServerFailure(
+          errorMessage: 'Network glitch on refresh',
+          exception: const ApiException(
+            errorType: ApiErrorType.serverError,
+            message: 'Network glitch on refresh',
+          ),
+        );
 
-      await viewModel.doIntent(const RefreshDriverDetailsEvent());
+        await viewModel.doIntent(const RefreshDriverDetailsEvent());
 
-      // Data is preserved!
-      expect(viewModel.state.details, isNotNull);
-      expect(viewModel.state.activeBoxes, isNotNull);
-      // Non-fatal notice emitted
-      expect(viewModel.state.noticeFailure, isNotNull);
-      expect(viewModel.state.noticeFailure?.errorMessage,
-          'Network glitch on refresh');
-      expect(viewModel.state.noticeId, 1);
-    });
+        // Data is preserved!
+        expect(viewModel.state.details, isNotNull);
+        expect(viewModel.state.activeBoxes, isNotNull);
+        // Non-fatal notice emitted
+        expect(viewModel.state.noticeFailure, isNotNull);
+        expect(
+          viewModel.state.noticeFailure?.errorMessage,
+          'Network glitch on refresh',
+        );
+        expect(viewModel.state.noticeId, 1);
+      },
+    );
 
     test('ignores realtime location events for other drivers', () async {
       await viewModel.doIntent(const LoadDriverDetailsEvent());
@@ -352,79 +374,104 @@ void main() {
       expect(viewModel.state.location, initialLocation);
     });
 
-    test('driver-status-updated patches status text and triggers reconciliation when count changes',
-        () async {
-      await viewModel.doIntent(const LoadDriverDetailsEvent());
-      final completer = Completer<void>();
-      repo.delayCompleter = completer;
+    test(
+      'driver-status-updated patches status text and triggers reconciliation when count changes',
+      () async {
+        await viewModel.doIntent(const LoadDriverDetailsEvent());
+        final completer = Completer<void>();
+        repo.delayCompleter = completer;
 
-      await viewModel.doIntent(
-        RealtimeDriverDetailsEventReceived(
-          DriverStatusUpdated(
-            driverId: driverId,
-            status: DispatcherMapDriverStatus.inDelivery,
-            statusText: 'في الطريق',
-            activeBoxesCount: 5,
-            timestamp: DateTime.now().toUtc(),
+        await viewModel.doIntent(
+          RealtimeDriverDetailsEventReceived(
+            DriverStatusUpdated(
+              driverId: driverId,
+              status: DispatcherMapDriverStatus.inDelivery,
+              statusText: 'في الطريق',
+              activeBoxesCount: 5,
+              timestamp: DateTime.now().toUtc(),
+            ),
           ),
-        ),
-      );
+        );
 
-      expect(viewModel.state.details?.driver.statusText, 'في الطريق');
-      expect(viewModel.state.details?.driver.status,
-          DriverDetailsStatus.delivering);
+        expect(viewModel.state.details?.driver.statusText, 'في الطريق');
+        expect(
+          viewModel.state.details?.driver.status,
+          DriverDetailsStatus.delivering,
+        );
 
-      completer.complete();
-      await pumpEventQueue();
+        completer.complete();
+        await pumpEventQueue();
 
-      // Triggers reconciliation for details and boxes
-      expect(repo.detailsCalls, 2);
-      expect(repo.boxesCalls, 2);
-      // Does not refetch current location
-      expect(repo.locationCalls, 1);
-    });
+        // Triggers reconciliation for details and boxes
+        expect(repo.detailsCalls, 2);
+        expect(repo.boxesCalls, 2);
+        // Does not refetch current location
+        expect(repo.locationCalls, 1);
+      },
+    );
 
-    test('matching box-assigned triggers reconciliation of details and boxes',
-        () async {
-      await viewModel.doIntent(const LoadDriverDetailsEvent());
-      expect(repo.detailsCalls, 1);
-      expect(repo.boxesCalls, 1);
+    test(
+      'matching box-assigned triggers reconciliation of details and boxes',
+      () async {
+        await viewModel.doIntent(const LoadDriverDetailsEvent());
+        expect(repo.detailsCalls, 1);
+        expect(repo.boxesCalls, 1);
 
-      await viewModel.doIntent(
-        RealtimeDriverDetailsEventReceived(
-          DriverBoxAssigned(
-            driverId: driverId,
-            boxId: '3c19356d-f432-47d5-89f5-7e82845c8531',
-            boxCode: 'BX-10256',
-            timestamp: DateTime.now().toUtc(),
+        await viewModel.doIntent(
+          RealtimeDriverDetailsEventReceived(
+            DriverBoxAssigned(
+              driverId: driverId,
+              boxId: '3c19356d-f432-47d5-89f5-7e82845c8531',
+              boxCode: 'BX-10256',
+              timestamp: DateTime.now().toUtc(),
+            ),
           ),
-        ),
-      );
+        );
 
-      expect(repo.detailsCalls, 2);
-      expect(repo.boxesCalls, 2);
-    });
+        expect(repo.detailsCalls, 2);
+        expect(repo.boxesCalls, 2);
+      },
+    );
 
-    test('lifecycle pause releases lease; resume re-acquires and reconciles',
-        () async {
-      await viewModel.doIntent(const LoadDriverDetailsEvent());
-      expect(realtimeClient.acquiredOwners, contains('driver-details:$driverId'));
+    test(
+      'lifecycle pause releases lease; resume re-acquires and reconciles',
+      () async {
+        await viewModel.doIntent(const LoadDriverDetailsEvent());
+        expect(
+          realtimeClient.acquiredOwners,
+          contains('driver-details:$driverId'),
+        );
 
-      await viewModel.doIntent(const DriverDetailsLifecyclePaused());
-      expect(realtimeClient.releasedOwners, contains('driver-details:$driverId'));
+        await viewModel.doIntent(const DriverDetailsLifecyclePaused());
+        expect(
+          realtimeClient.releasedOwners,
+          contains('driver-details:$driverId'),
+        );
 
-      await viewModel.doIntent(const DriverDetailsLifecycleResumed());
-      expect(realtimeClient.acquiredOwners.where((o) => o == 'driver-details:$driverId').length, 2);
-      expect(repo.detailsCalls, 2);
-      expect(repo.boxesCalls, 2);
-      expect(repo.locationCalls, 2);
-    });
+        await viewModel.doIntent(const DriverDetailsLifecycleResumed());
+        expect(
+          realtimeClient.acquiredOwners
+              .where((o) => o == 'driver-details:$driverId')
+              .length,
+          2,
+        );
+        expect(repo.detailsCalls, 2);
+        expect(repo.boxesCalls, 2);
+        expect(repo.locationCalls, 2);
+      },
+    );
 
-    test('close releases realtime owner without disposing shared client', () async {
-      await viewModel.doIntent(const LoadDriverDetailsEvent());
-      await viewModel.close();
+    test(
+      'close releases realtime owner without disposing shared client',
+      () async {
+        await viewModel.doIntent(const LoadDriverDetailsEvent());
+        await viewModel.close();
 
-      expect(realtimeClient.releasedOwners, contains('driver-details:$driverId'));
-    });
+        expect(
+          realtimeClient.releasedOwners,
+          contains('driver-details:$driverId'),
+        );
+      },
+    );
   });
 }

@@ -37,7 +37,9 @@ class DriverDetailsActionButtons extends StatelessWidget {
     showModalBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(Spacing.radiusLg)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Spacing.radiusLg),
+        ),
       ),
       builder: (sheetContext) {
         return SafeArea(
@@ -117,7 +119,9 @@ class DriverDetailsActionButtons extends StatelessWidget {
     final locale = context.localization;
 
     final hasMessageAction =
-        onSelectSms != null || onSelectWhatsApp != null || onSendMessage != null;
+        onSelectSms != null ||
+        onSelectWhatsApp != null ||
+        onSendMessage != null;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -130,7 +134,9 @@ class DriverDetailsActionButtons extends StatelessWidget {
           Expanded(
             child: AppButton(
               text: locale.driverDetailsSendMessage,
-              onPressed: hasMessageAction ? () => _handleMessageTap(context) : null,
+              onPressed: hasMessageAction
+                  ? () => _handleMessageTap(context)
+                  : null,
               variant: AppButtonVariant.filled,
               color: color.primary,
               textColor: color.onPrimary,

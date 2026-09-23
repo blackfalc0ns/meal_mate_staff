@@ -65,9 +65,7 @@ class DriverDetailsMapPresentationHelper {
     double? destLng,
     List<DriverLocationPointEntity> routePoints = const [],
   }) {
-    final points = <LatLng>[
-      LatLng(driverLat, driverLng),
-    ];
+    final points = <LatLng>[LatLng(driverLat, driverLng)];
 
     if (destLat != null && destLng != null) {
       points.add(LatLng(destLat, destLng));
@@ -144,9 +142,7 @@ class _DriverDetailsMiniMapState extends State<DriverDetailsMiniMap> {
     );
 
     if (bounds != null) {
-      _mapController?.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, 24.0),
-      );
+      _mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 24.0));
     } else {
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.5),

@@ -14,7 +14,10 @@ class DispatcherMapMarkerBitmapFactory {
 
   static final Map<String, BitmapDescriptor> _cache = {};
 
-  static String cacheKey(DispatcherMapDriverEntity driver, {required bool isSelected}) {
+  static String cacheKey(
+    DispatcherMapDriverEntity driver, {
+    required bool isSelected,
+  }) {
     return '${driver.id}|${driver.boxId}|${driver.status.name}|'
         '${driver.statusText ?? ''}|${driver.avatarUrl ?? ''}|$isSelected';
   }
@@ -34,7 +37,8 @@ class DispatcherMapMarkerBitmapFactory {
       return cached;
     }
 
-    final pixelRatio = MediaQuery.maybeDevicePixelRatioOf(context)?.clamp(1.5, 3.0) ?? 2.0;
+    final pixelRatio =
+        MediaQuery.maybeDevicePixelRatioOf(context)?.clamp(1.5, 3.0) ?? 2.0;
     final boundaryKey = GlobalKey();
     final avatarResolved = Completer<void>();
     final overlay = Overlay.maybeOf(context);

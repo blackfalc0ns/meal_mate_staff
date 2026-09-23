@@ -4,11 +4,7 @@ part 'driver_details_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class DriverDetailsResponseDto {
-  const DriverDetailsResponseDto({
-    this.driver,
-    this.kpis,
-    this.dailySummary,
-  });
+  const DriverDetailsResponseDto({this.driver, this.kpis, this.dailySummary});
 
   factory DriverDetailsResponseDto.fromJson(Map<String, dynamic> json) =>
       _$DriverDetailsResponseDtoFromJson(json);

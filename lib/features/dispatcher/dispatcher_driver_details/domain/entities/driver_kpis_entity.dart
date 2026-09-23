@@ -23,9 +23,9 @@ class DriverKpisEntity {
 
   @override
   int get hashCode => Object.hash(
-        performanceRating,
-        avgDelayMinutes,
-        deliveredTodayCount,
-        activeBoxesCount,
-      );
+    performanceRating,
+    avgDelayMinutes,
+    deliveredTodayCount,
+    activeBoxesCount,
+  );
 }

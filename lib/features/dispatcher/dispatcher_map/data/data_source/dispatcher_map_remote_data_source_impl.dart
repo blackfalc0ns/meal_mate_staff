@@ -7,10 +7,7 @@ import 'dispatcher_map_remote_data_source.dart';
 
 class DispatcherMapRemoteDataSourceImpl
     implements DispatcherMapRemoteDataSource {
-  DispatcherMapRemoteDataSourceImpl(
-    this._apiServices,
-    this._realtimeClient,
-  );
+  DispatcherMapRemoteDataSourceImpl(this._apiServices, this._realtimeClient);
 
   final ApiServices _apiServices;
   final DispatcherMapRealtimeClient _realtimeClient;

@@ -83,32 +83,35 @@ void main() {
       expect(entity.dailySummary.deliveredCount, 0);
     });
 
-    test('handles numeric types gracefully when int comes as double or vice-versa', () {
-      final jsonWithAlteredNumbers = {
-        'driver': null,
-        'kpis': {
-          'performanceRating': 4,
-          'avgDelayMinutes': 12.0,
-          'deliveredTodayCount': 28.0,
-          'activeBoxesCount': 2.0,
-        },
-        'dailySummary': {
-          'approxKm': 120.5,
-          'avgDelayMinutes': 12.0,
-          'failedDeliveryCount': 1.0,
-          'deliveredCount': 28.0,
-        },
-      };
+    test(
+      'handles numeric types gracefully when int comes as double or vice-versa',
+      () {
+        final jsonWithAlteredNumbers = {
+          'driver': null,
+          'kpis': {
+            'performanceRating': 4,
+            'avgDelayMinutes': 12.0,
+            'deliveredTodayCount': 28.0,
+            'activeBoxesCount': 2.0,
+          },
+          'dailySummary': {
+            'approxKm': 120.5,
+            'avgDelayMinutes': 12.0,
+            'failedDeliveryCount': 1.0,
+            'deliveredCount': 28.0,
+          },
+        };
 
-      final dto = DriverDetailsResponseDto.fromJson(jsonWithAlteredNumbers);
-      final entity = dto.toEntity();
+        final dto = DriverDetailsResponseDto.fromJson(jsonWithAlteredNumbers);
+        final entity = dto.toEntity();
 
-      expect(entity.kpis.performanceRating, 4.0);
-      expect(entity.kpis.avgDelayMinutes, 12);
-      expect(entity.kpis.deliveredTodayCount, 28);
-      expect(entity.kpis.activeBoxesCount, 2);
-      expect(entity.dailySummary.approxKm, 120);
-    });
+        expect(entity.kpis.performanceRating, 4.0);
+        expect(entity.kpis.avgDelayMinutes, 12);
+        expect(entity.kpis.deliveredTodayCount, 28);
+        expect(entity.kpis.activeBoxesCount, 2);
+        expect(entity.dailySummary.approxKm, 120);
+      },
+    );
   });
 
   group('DriverActiveBoxesResponseDto & Mapper', () {
@@ -136,7 +139,7 @@ void main() {
           'statusColor': '#10B981',
           'scheduledTimeText': '01:00 م',
           'isDelivering': false,
-        }
+        },
       ],
     };
 

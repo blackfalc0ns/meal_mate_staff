@@ -4,10 +4,7 @@ part 'driver_active_boxes_response_dto.g.dart';
 
 @JsonSerializable(createToJson: false)
 class DriverActiveBoxesResponseDto {
-  const DriverActiveBoxesResponseDto({
-    this.totalCount,
-    this.boxes,
-  });
+  const DriverActiveBoxesResponseDto({this.totalCount, this.boxes});
 
   factory DriverActiveBoxesResponseDto.fromJson(Map<String, dynamic> json) =>
       _$DriverActiveBoxesResponseDtoFromJson(json);

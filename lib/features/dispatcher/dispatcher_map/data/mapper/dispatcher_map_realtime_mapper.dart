@@ -35,7 +35,8 @@ extension DispatcherDriverLocationEventDtoMapper
   }
 }
 
-extension DispatcherDriverStatusEventDtoMapper on DispatcherDriverStatusEventDto {
+extension DispatcherDriverStatusEventDtoMapper
+    on DispatcherDriverStatusEventDto {
   DriverStatusUpdated toDomain() {
     return DriverStatusUpdated(
       driverId: driverId ?? '',

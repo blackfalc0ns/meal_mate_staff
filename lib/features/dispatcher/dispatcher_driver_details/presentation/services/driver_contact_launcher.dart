@@ -18,8 +18,8 @@ class DriverContactLauncherImpl implements DriverContactLauncher {
   const DriverContactLauncherImpl({
     CanLaunchUrlFn? canLaunchFn,
     LaunchUrlFn? launchFn,
-  })  : _canLaunchFn = canLaunchFn ?? ul.canLaunchUrl,
-        _launchFn = launchFn ?? ul.launchUrl;
+  }) : _canLaunchFn = canLaunchFn ?? ul.canLaunchUrl,
+       _launchFn = launchFn ?? ul.launchUrl;
 
   final CanLaunchUrlFn _canLaunchFn;
   final LaunchUrlFn _launchFn;

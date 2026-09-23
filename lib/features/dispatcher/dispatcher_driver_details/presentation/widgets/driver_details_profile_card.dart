@@ -26,7 +26,11 @@ class DriverDetailsProfileCard extends StatelessWidget {
   }
 
   static String getInitials(String fullName) {
-    final parts = fullName.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty).toList();
+    final parts = fullName
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((p) => p.isNotEmpty)
+        .toList();
     if (parts.isEmpty) return '';
     if (parts.length == 1) {
       final runes = parts[0].runes.toList();
@@ -52,9 +56,13 @@ class DriverDetailsProfileCard extends StatelessWidget {
       DriverDetailsStatus.unknown => color.outline,
     };
 
-    final statusColor = parseHexColor(profile.statusDotColor, defaultStatusColor);
+    final statusColor = parseHexColor(
+      profile.statusDotColor,
+      defaultStatusColor,
+    );
     final initials = getInitials(profile.fullName);
-    final hasAvatar = profile.avatarUrl != null && profile.avatarUrl!.trim().isNotEmpty;
+    final hasAvatar =
+        profile.avatarUrl != null && profile.avatarUrl!.trim().isNotEmpty;
     final lastUpdated = profile.lastUpdatedText.isNotEmpty
         ? profile.lastUpdatedText
         : locale.driverDetailsLastUpdatedNow;
@@ -120,7 +128,9 @@ class DriverDetailsProfileCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  profile.fullName.isNotEmpty ? profile.fullName : profile.driverCode,
+                  profile.fullName.isNotEmpty
+                      ? profile.fullName
+                      : profile.driverCode,
                   style: getBoldStyle(
                     color: color.onSurface,
                     fontSize: FontSize.size16,
@@ -136,7 +146,8 @@ class DriverDetailsProfileCard extends StatelessWidget {
                     fontSize: FontSize.size13,
                   ),
                 ),
-                if (profile.phoneNumber != null && profile.phoneNumber!.trim().isNotEmpty) ...[
+                if (profile.phoneNumber != null &&
+                    profile.phoneNumber!.trim().isNotEmpty) ...[
                   const SizedBox(height: Spacing.xs / 2),
                   FittedBox(
                     fit: BoxFit.scaleDown,
@@ -228,10 +239,7 @@ class DriverDetailsProfileCard extends StatelessWidget {
                     AppAssets.driverLiveSignal,
                     width: Spacing.iconXs,
                     height: Spacing.iconXs,
-                    colorFilter: ColorFilter.mode(
-                      statusColor,
-                      BlendMode.srcIn,
-                    ),
+                    colorFilter: ColorFilter.mode(statusColor, BlendMode.srcIn),
                   ),
                 ],
               ),
@@ -249,10 +257,7 @@ class DriverDetailsProfileCard extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           initials,
-          style: getBoldStyle(
-            color: color.primary,
-            fontSize: FontSize.size16,
-          ),
+          style: getBoldStyle(color: color.primary, fontSize: FontSize.size16),
         ),
       );
     }

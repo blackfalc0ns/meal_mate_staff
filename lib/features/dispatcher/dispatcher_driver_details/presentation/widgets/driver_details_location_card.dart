@@ -186,7 +186,9 @@ class DriverDetailsLocationCard extends StatelessWidget {
                   ? Container(
                       height: 130,
                       decoration: BoxDecoration(
-                        color: color.surfaceContainerHighest.withValues(alpha: 0.5),
+                        color: color.surfaceContainerHighest.withValues(
+                          alpha: 0.5,
+                        ),
                         border: Border.all(
                           color: color.outlineVariant,
                           width: Spacing.border,
@@ -201,7 +203,9 @@ class DriverDetailsLocationCard extends StatelessWidget {
                           Icon(
                             Icons.location_off_rounded,
                             size: Spacing.iconLg,
-                            color: color.onSurfaceVariant.withValues(alpha: 0.7),
+                            color: color.onSurfaceVariant.withValues(
+                              alpha: 0.7,
+                            ),
                           ),
                           const SizedBox(height: Spacing.xs),
                           Text(
@@ -215,8 +219,7 @@ class DriverDetailsLocationCard extends StatelessWidget {
                         ],
                       ),
                     )
-                  : (mapWidget ??
-                      DriverDetailsMiniMap(location: location)),
+                  : (mapWidget ?? DriverDetailsMiniMap(location: location)),
             ),
           ),
         ],

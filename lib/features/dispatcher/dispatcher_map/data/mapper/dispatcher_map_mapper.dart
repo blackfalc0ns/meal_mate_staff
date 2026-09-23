@@ -18,7 +18,6 @@ extension DispatcherMapStatusStringMapper on String? {
   }
 }
 
-
 DateTime? _parseNullableTimestamp(String? timestamp) {
   if (timestamp == null || timestamp.isEmpty) return null;
   return DateTime.tryParse(timestamp)?.toUtc();
@@ -45,7 +44,8 @@ extension DispatcherMapKpiResponseDtoMapper on DispatcherMapKpiResponseDto? {
   }
 }
 
-extension DispatcherMapDriverResponseDtoMapper on DispatcherMapDriverResponseDto {
+extension DispatcherMapDriverResponseDtoMapper
+    on DispatcherMapDriverResponseDto {
   DispatcherMapDriverEntity toEntity() {
     return DispatcherMapDriverEntity(
       id: driverId ?? id ?? '',

@@ -288,9 +288,7 @@ class RouteGenerator {
             : null;
         return _buildRoute(
           settings: settings,
-          page: DispatcherMapScreen(
-            focusDriverId: mapArgs?.focusDriverId,
-          ),
+          page: DispatcherMapScreen(focusDriverId: mapArgs?.focusDriverId),
         );
 
       case AppRoutes.dispatcherSupport:
