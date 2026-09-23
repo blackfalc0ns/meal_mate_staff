@@ -401,5 +401,20 @@ void main() {
         'notes': 'إسناد مباشر من قائمة السائقين',
       });
     });
+
+    test('getAssignBoxDetails hits GET EndPoints.dispatcherAssignmentDetails with path substitution', () async {
+      const boxId = 'a1111111-1111-1111-1111-111111111111';
+      await apiServices.getAssignBoxDetails(boxId);
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, '/api/v1/dispatcher/orders/$boxId/assignment-details');
+    });
+
+    test('getAssignBoxSummary hits GET EndPoints.dispatcherOrderSummary with path substitution', () async {
+      const boxId = 'a1111111-1111-1111-1111-111111111111';
+      await apiServices.getAssignBoxSummary(boxId);
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, '/api/v1/dispatcher/orders/$boxId/summary');
+    });
   });
 }
+

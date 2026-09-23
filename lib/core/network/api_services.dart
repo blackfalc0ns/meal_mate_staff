@@ -43,6 +43,8 @@ import '../../features/dispatcher/dispatcher_operations/data/models/response/ope
 import '../../features/dispatcher/dispatcher_drivers/data/models/request/assign_driver_request_dto.dart';
 import '../../features/dispatcher/dispatcher_drivers/data/models/response/dispatcher_drivers_roster_response_dto.dart';
 import '../../features/dispatcher/dispatcher_drivers/data/models/response/driver_assignment_response_dto.dart';
+import '../../features/dispatcher/dispatcher_assign_box/data/models/response/assign_box_details_response_dto.dart';
+import '../../features/dispatcher/dispatcher_assign_box/data/models/response/assign_box_summary_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -230,4 +232,15 @@ abstract class ApiServices {
     @Path('boxId') String boxId,
     @Body() AssignDriverRequestDto request,
   );
+
+  @GET(EndPoints.dispatcherAssignmentDetails)
+  Future<AssignBoxDetailsResponseDto> getAssignBoxDetails(
+    @Path('boxId') String boxId,
+  );
+
+  @GET(EndPoints.dispatcherOrderSummary)
+  Future<AssignBoxSummaryResponseDto> getAssignBoxSummary(
+    @Path('boxId') String boxId,
+  );
 }
+

@@ -58,4 +58,9 @@ abstract class EndPoints {
       '/api/v1/dispatcher/drivers/roster';
   static const String dispatcherAssignOrder =
       '/api/v1/dispatcher/orders/{boxId}/assign';
+  static const String dispatcherAssignmentDetails =
+      '/api/v1/dispatcher/orders/{boxId}/assignment-details';
+  static const String dispatcherOrderSummary =
+      '/api/v1/dispatcher/orders/{boxId}/summary';
 }
+
