@@ -25,6 +25,11 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_perform
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_comparison_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_overview_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/presentation/manager/driver_performance_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/data/data_source/assign_box_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/repo/assign_box_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_details_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_summary_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/manager/assign_box_view_model.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/data/data_source/operations_log_remote_data_source.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/domain/repo/operations_log_repository.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/domain/usecase/get_operations_log_usecase.dart';
@@ -210,4 +215,29 @@ void main() {
       expect(identical(vm1, vm2), isFalse); // factory
     },
   );
+
+  test('configureDependencies registers assign box dependencies', () async {
+    await configureDependencies();
+
+    expect(getIt.isRegistered<AssignBoxRemoteDataSource>(), isTrue);
+    expect(getIt.isRegistered<AssignBoxRepository>(), isTrue);
+    expect(getIt.isRegistered<GetAssignBoxDetailsUseCase>(), isTrue);
+    expect(getIt.isRegistered<GetAssignBoxSummaryUseCase>(), isTrue);
+    expect(getIt.isRegistered<AssignBoxViewModel>(), isTrue);
+
+    final remoteDataSource = getIt<AssignBoxRemoteDataSource>();
+    final repository = getIt<AssignBoxRepository>();
+    final detailsUseCase = getIt<GetAssignBoxDetailsUseCase>();
+    final summaryUseCase = getIt<GetAssignBoxSummaryUseCase>();
+    final vm1 = getIt<AssignBoxViewModel>(param1: 'test-box-id');
+    final vm2 = getIt<AssignBoxViewModel>(param1: 'test-box-id');
+
+    expect(remoteDataSource, isNotNull);
+    expect(repository, isNotNull);
+    expect(detailsUseCase, isNotNull);
+    expect(summaryUseCase, isNotNull);
+    expect(vm1, isNotNull);
+    expect(vm1.state.boxId, 'test-box-id');
+    expect(identical(vm1, vm2), isFalse); // factory
+  });
 }

@@ -105,6 +105,13 @@ import '../../features/dispatcher/dispatcher_drivers/domain/repo/dispatcher_driv
 import '../../features/dispatcher/dispatcher_drivers/domain/usecase/assign_driver_to_box_usecase.dart';
 import '../../features/dispatcher/dispatcher_drivers/domain/usecase/get_dispatcher_drivers_roster_usecase.dart';
 import '../../features/dispatcher/dispatcher_drivers/presentation/manager/dispatcher_drivers_view_model.dart';
+import '../../features/dispatcher/dispatcher_assign_box/data/data_source/assign_box_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_assign_box/data/data_source/assign_box_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_assign_box/data/repo/assign_box_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_assign_box/domain/repo/assign_box_repository.dart';
+import '../../features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_details_usecase.dart';
+import '../../features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_summary_usecase.dart';
+import '../../features/dispatcher/dispatcher_assign_box/presentation/manager/assign_box_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -465,6 +472,28 @@ Future<void> configureDependencies() async {
       args: args ?? const DispatcherDriversRouteArgs.browse(),
       getRosterUseCase: getIt<GetDispatcherDriversRosterUseCase>(),
       assignDriverUseCase: getIt<AssignDriverToBoxUseCase>(),
+    ),
+  );
+
+  // Dispatcher Assign Box
+  getIt.registerLazySingleton<AssignBoxRemoteDataSource>(
+    () => AssignBoxRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<AssignBoxRepository>(
+    () => AssignBoxRepositoryImpl(getIt<AssignBoxRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetAssignBoxDetailsUseCase>(
+    () => GetAssignBoxDetailsUseCase(getIt<AssignBoxRepository>()),
+  );
+  getIt.registerFactory<GetAssignBoxSummaryUseCase>(
+    () => GetAssignBoxSummaryUseCase(getIt<AssignBoxRepository>()),
+  );
+  getIt.registerFactoryParam<AssignBoxViewModel, String?, void>(
+    (boxId, _) => AssignBoxViewModel(
+      getIt<GetAssignBoxDetailsUseCase>(),
+      getIt<GetAssignBoxSummaryUseCase>(),
+      getIt<AssignDriverToBoxUseCase>(),
+      boxId: boxId,
     ),
   );
 }
