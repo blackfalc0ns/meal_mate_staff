@@ -1255,6 +1255,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverDetailsCall => 'Call';
 
   @override
+  String get driverDetailsNoActiveBoxes => 'No active boxes currently assigned';
+
+  @override
+  String get driverDetailsLocationOffline =>
+      'Location unavailable (Driver Offline)';
+
+  @override
+  String get driverDetailsRetryLocation => 'Retry Location';
+
+  @override
+  String get driverDetailsChooseMessagingApp => 'Choose Messaging App';
+
+  @override
+  String get driverDetailsSms => 'SMS';
+
+  @override
+  String get driverDetailsWhatsApp => 'WhatsApp';
+
+  @override
+  String get driverDetailsUnableToCall => 'Unable to make phone call';
+
+  @override
+  String get driverDetailsUnableToSms => 'Unable to send SMS';
+
+  @override
+  String get driverDetailsUnableToWhatsApp => 'Unable to open WhatsApp';
+
+  @override
+  String get driverDetailsInvalidPhone => 'Phone number is invalid';
+
+  @override
   String get boxTrackingTitle => 'Box Tracking';
 
   @override

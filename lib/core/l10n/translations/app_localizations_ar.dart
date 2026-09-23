@@ -1254,6 +1254,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverDetailsCall => 'اتصال';
 
   @override
+  String get driverDetailsNoActiveBoxes => 'لا توجد بوكسات نشطة مسندة حالياً';
+
+  @override
+  String get driverDetailsLocationOffline =>
+      'الموقع غير متاح (السائق غير متصل)';
+
+  @override
+  String get driverDetailsRetryLocation => 'إعادة محاولة الموقع';
+
+  @override
+  String get driverDetailsChooseMessagingApp => 'اختر تطبيق المراسلة';
+
+  @override
+  String get driverDetailsSms => 'رسالة نصية (SMS)';
+
+  @override
+  String get driverDetailsWhatsApp => 'واتساب';
+
+  @override
+  String get driverDetailsUnableToCall => 'تعذر إجراء المكالمة';
+
+  @override
+  String get driverDetailsUnableToSms => 'تعذر إرسال الرسالة النصية';
+
+  @override
+  String get driverDetailsUnableToWhatsApp => 'تعذر فتح تطبيق واتساب';
+
+  @override
+  String get driverDetailsInvalidPhone => 'رقم الهاتف غير صالح';
+
+  @override
   String get boxTrackingTitle => 'متابعة البوكس';
 
   @override

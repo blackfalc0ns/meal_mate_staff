@@ -5,13 +5,13 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
-import '../../domain/entities/driver_details_entity.dart';
+import '../../domain/entities/driver_daily_summary_entity.dart';
 import 'driver_details_performance_column.dart';
 
 class DriverDetailsPerformanceCard extends StatelessWidget {
-  const DriverDetailsPerformanceCard({super.key, required this.driver});
+  const DriverDetailsPerformanceCard({super.key, required this.dailySummary});
 
-  final DriverDetailsEntity driver;
+  final DriverDailySummaryEntity dailySummary;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class DriverDetailsPerformanceCard extends StatelessWidget {
                 Expanded(
                   child: DriverDetailsPerformanceColumn(
                     svgAsset: AppAssets.driverPerfPins,
-                    value: driver.approxKm.toString(),
+                    value: dailySummary.approxKm.toStringAsFixed(1),
                     label: locale.driverDetailsApproxKm,
                     iconColor: color.primary,
                   ),
@@ -64,7 +64,7 @@ class DriverDetailsPerformanceCard extends StatelessWidget {
                 Expanded(
                   child: DriverDetailsPerformanceColumn(
                     svgAsset: AppAssets.driverPerfClock,
-                    value: '${driver.avgDelayMinutes} د',
+                    value: '${dailySummary.avgDelayMinutes} د',
                     label: locale.driverDetailsAvgDelayMin,
                     iconColor: color.error,
                   ),
@@ -77,7 +77,7 @@ class DriverDetailsPerformanceCard extends StatelessWidget {
                 Expanded(
                   child: DriverDetailsPerformanceColumn(
                     svgAsset: AppAssets.driverPerfNo,
-                    value: driver.failedDeliveryCount.toString(),
+                    value: dailySummary.failedDeliveryCount.toString(),
                     label: locale.driverDetailsDeliveryFailed,
                     iconColor: color.error,
                   ),
@@ -90,9 +90,9 @@ class DriverDetailsPerformanceCard extends StatelessWidget {
                 Expanded(
                   child: DriverDetailsPerformanceColumn(
                     svgAsset: AppAssets.driverPerfCheck,
-                    value: driver.deliveredTodayCount.toString(),
+                    value: dailySummary.deliveredCount.toString(),
                     label: locale.driverDetailsDelivered,
-                    iconColor: color.tertiary, // Green
+                    iconColor: color.tertiary,
                   ),
                 ),
               ],

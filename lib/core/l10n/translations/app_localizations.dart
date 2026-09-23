@@ -2438,6 +2438,66 @@ abstract class AppLocalizations {
   /// **'Call'**
   String get driverDetailsCall;
 
+  /// No description provided for @driverDetailsNoActiveBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'No active boxes currently assigned'**
+  String get driverDetailsNoActiveBoxes;
+
+  /// No description provided for @driverDetailsLocationOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable (Driver Offline)'**
+  String get driverDetailsLocationOffline;
+
+  /// No description provided for @driverDetailsRetryLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Location'**
+  String get driverDetailsRetryLocation;
+
+  /// No description provided for @driverDetailsChooseMessagingApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Messaging App'**
+  String get driverDetailsChooseMessagingApp;
+
+  /// No description provided for @driverDetailsSms.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS'**
+  String get driverDetailsSms;
+
+  /// No description provided for @driverDetailsWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get driverDetailsWhatsApp;
+
+  /// No description provided for @driverDetailsUnableToCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to make phone call'**
+  String get driverDetailsUnableToCall;
+
+  /// No description provided for @driverDetailsUnableToSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to send SMS'**
+  String get driverDetailsUnableToSms;
+
+  /// No description provided for @driverDetailsUnableToWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to open WhatsApp'**
+  String get driverDetailsUnableToWhatsApp;
+
+  /// No description provided for @driverDetailsInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is invalid'**
+  String get driverDetailsInvalidPhone;
+
   /// No description provided for @boxTrackingTitle.
   ///
   /// In en, this message translates to:

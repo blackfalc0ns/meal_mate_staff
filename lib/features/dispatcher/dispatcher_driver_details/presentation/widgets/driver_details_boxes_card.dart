@@ -54,15 +54,33 @@ class DriverDetailsBoxesCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: Spacing.xs),
-            ...boxes.map(
-              (box) => Padding(
-                padding: const EdgeInsets.only(bottom: Spacing.xs),
-                child: DriverDetailsBoxItem(
-                  box: box,
-                  onTap: () => onSelectBox?.call(box),
+            if (boxes.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Spacing.xs,
+                  vertical: Spacing.md,
+                ),
+                child: Center(
+                  child: Text(
+                    locale.driverDetailsNoActiveBoxes,
+                    style: getRegularStyle(
+                      color: color.onSurfaceVariant,
+                      fontSize: FontSize.size13,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            else
+              ...boxes.map(
+                (box) => Padding(
+                  padding: const EdgeInsets.only(bottom: Spacing.xs),
+                  child: DriverDetailsBoxItem(
+                    box: box,
+                    onTap: () => onSelectBox?.call(box),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
