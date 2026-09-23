@@ -111,6 +111,7 @@ class TokenService {
     await deleteToken();
     await deleteRefreshToken();
     await _sharedPreferences.remove(CoreStorageKeys.userIdKey);
+    await _sharedPreferences.remove(StorageKeys.userId);
     await _sharedPreferences.remove(StorageKeys.userData);
     await _sharedPreferences.remove(userRoleKey);
     await _sharedPreferences.remove(userPhoneKey);

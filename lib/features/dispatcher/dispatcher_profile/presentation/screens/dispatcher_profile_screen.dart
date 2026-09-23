@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/auth_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
+import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/services/token_service.dart';
 import '../../../../../core/widget/custom_app_bar.dart';
 import '../../../../../core/widget/notification_button.dart';
+import '../../../../auth/domain/usecase/logout_usecase.dart';
+import '../../../../auth/domain/user_role.dart';
+import '../../../dispatcher_map/presentation/widgets/dispatcher_map_driver_marker_factory.dart';
 import '../../domain/entities/dispatcher_notification_setting_entity.dart';
 import '../../domain/entities/dispatcher_profile_entity.dart';
 import '../../domain/fake_data/dispatcher_profile_fake_data.dart';
@@ -20,10 +26,16 @@ class DispatcherProfileScreen extends StatefulWidget {
     super.key,
     this.profile,
     this.showBackButton = true,
+    this.logoutUseCase,
+    this.tokenService,
+    this.onLogoutTap,
   });
 
   final DispatcherProfileEntity? profile;
   final bool showBackButton;
+  final LogoutUseCase? logoutUseCase;
+  final TokenService? tokenService;
+  final VoidCallback? onLogoutTap;
 
   @override
   State<DispatcherProfileScreen> createState() =>
@@ -33,6 +45,14 @@ class DispatcherProfileScreen extends StatefulWidget {
 class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
   late final DispatcherProfileEntity _profile;
   late List<DispatcherNotificationSettingEntity> _settings;
+
+  LogoutUseCase? get _logoutUseCase =>
+      widget.logoutUseCase ??
+      (getIt.isRegistered<LogoutUseCase>() ? getIt<LogoutUseCase>() : null);
+
+  TokenService? get _tokenService =>
+      widget.tokenService ??
+      (getIt.isRegistered<TokenService>() ? getIt<TokenService>() : null);
 
   @override
   void initState() {
@@ -52,7 +72,21 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
     });
   }
 
+  Future<void> _performLogout() async {
+    if (_logoutUseCase != null) {
+      await _logoutUseCase!.call();
+    } else if (_tokenService != null) {
+      await _tokenService!.clearTokens();
+    }
+    DispatcherMapMarkerBitmapFactory.clearCache();
+  }
+
   void _onLogoutTap() {
+    if (widget.onLogoutTap != null) {
+      widget.onLogoutTap!();
+      return;
+    }
+
     final locale = context.localization;
 
     showDialog<void>(
@@ -67,9 +101,15 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
               child: Text(locale.profileCancel),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(dialogContext).pop();
-                context.pushReplacementNamed(AppRoutes.login);
+                await _performLogout();
+                if (!context.mounted) return;
+                context.pushNamedAndRemoveUntil(
+                  AppRoutes.login,
+                  (route) => false,
+                  arguments: const LoginRouteArgs(role: UserRole.operations),
+                );
               },
               child: Text(
                 locale.profileLogout,

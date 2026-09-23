@@ -41,6 +41,8 @@ import '../../features/driver/orders/domain/entities/driver_assigned_box_entity.
 import '../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import '../../features/driver/confirm_receipt/presentation/screens/driver_confirm_receipt_screen.dart';
 import '../../features/driver/confirm_receipt/presentation/screens/driver_boxes_received_screen.dart';
+import '../../features/driver/confirm_receipt/presentation/screens/driver_box_received_success_screen.dart';
+import '../../features/driver/confirm_receipt/domain/entities/driver_box_received_success_entity.dart';
 import '../../features/driver/confirm_receipt/domain/entities/driver_received_box_item_entity.dart';
 import '../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
 import '../../features/driver/driver_profile/domain/entities/driver_profile_entity.dart';
@@ -417,6 +419,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverBoxesReceivedScreen(boxes: boxes),
+        );
+
+      case AppRoutes.driverBoxReceivedSuccess:
+        final box = settings.arguments is DriverBoxReceivedSuccessEntity
+            ? settings.arguments! as DriverBoxReceivedSuccessEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverBoxReceivedSuccessScreen(box: box),
         );
 
       case AppRoutes.driverProfile:

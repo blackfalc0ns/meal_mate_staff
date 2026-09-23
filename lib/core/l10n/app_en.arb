@@ -985,6 +985,24 @@
     }
   },
   "assignBoxUnavailable": "Box details unavailable",
-  "assignBoxSuccessMessage": "Box assigned successfully"
+  "assignBoxSuccessMessage": "Box assigned successfully",
+  "driverBoxReceivedSuccessTitle": "Box Received Successfully",
+  "driverBoxReceivedSuccessSubtitle": "The box has been successfully linked to your account and is now ready for delivery",
+  "driverBoxStatusReceivedSuccess": "Received",
+  "driverBoxNumberLabel": "Box Number",
+  "driverRestaurantLabel": "Restaurant",
+  "driverItemCountLabel": "Number of Items",
+  "driverExpectedReceiptTime": "Expected Receipt Time",
+  "driverBoxSafetyCheckTitle": "Check Box Safety",
+  "driverBoxSafetyCheckDesc": "Please verify the condition of the box before starting delivery and report any issues if found",
+  "driverProceedToNextOrder": "Proceed to Next Order",
+  "driverBoxMealsCount": "{count} Meals",
+  "@driverBoxMealsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
 

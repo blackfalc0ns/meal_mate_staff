@@ -2525,4 +2525,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assignBoxSuccessMessage => 'Box assigned successfully';
+
+  @override
+  String get driverBoxReceivedSuccessTitle => 'Box Received Successfully';
+
+  @override
+  String get driverBoxReceivedSuccessSubtitle =>
+      'The box has been successfully linked to your account and is now ready for delivery';
+
+  @override
+  String get driverBoxStatusReceivedSuccess => 'Received';
+
+  @override
+  String get driverBoxNumberLabel => 'Box Number';
+
+  @override
+  String get driverRestaurantLabel => 'Restaurant';
+
+  @override
+  String get driverItemCountLabel => 'Number of Items';
+
+  @override
+  String get driverExpectedReceiptTime => 'Expected Receipt Time';
+
+  @override
+  String get driverBoxSafetyCheckTitle => 'Check Box Safety';
+
+  @override
+  String get driverBoxSafetyCheckDesc =>
+      'Please verify the condition of the box before starting delivery and report any issues if found';
+
+  @override
+  String get driverProceedToNextOrder => 'Proceed to Next Order';
+
+  @override
+  String driverBoxMealsCount(int count) {
+    return '$count Meals';
+  }
 }

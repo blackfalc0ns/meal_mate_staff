@@ -2519,4 +2519,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get assignBoxSuccessMessage => 'تم إسناد البوكس بنجاح';
+
+  @override
+  String get driverBoxReceivedSuccessTitle => 'تم استلام البوكس بنجاح';
+
+  @override
+  String get driverBoxReceivedSuccessSubtitle =>
+      'تم ربط البوكس بنجاح بحسابك وهو الآن جاهز للتوصيل';
+
+  @override
+  String get driverBoxStatusReceivedSuccess => 'تم الاستلام';
+
+  @override
+  String get driverBoxNumberLabel => 'رقم البوكس';
+
+  @override
+  String get driverRestaurantLabel => 'المطعم';
+
+  @override
+  String get driverItemCountLabel => 'عدد الأصناف';
+
+  @override
+  String get driverExpectedReceiptTime => 'وقت الاستلام المتوقع';
+
+  @override
+  String get driverBoxSafetyCheckTitle => 'تأكد من سلامة البوكس';
+
+  @override
+  String get driverBoxSafetyCheckDesc =>
+      'يرجى التحقق من سلامة البوكس قبل بدء التوصيل وأبلغ عن أي مشكلة إن وجدت';
+
+  @override
+  String get driverProceedToNextOrder => 'الانتقال الى الطلب التالي';
+
+  @override
+  String driverBoxMealsCount(int count) {
+    return '$count وجبات';
+  }
 }

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../../config/routing/app_routes.dart';
+import '../../../config/routing/arguments/auth_route_arguments.dart';
+import '../../../features/auth/domain/usecase/logout_usecase.dart';
 import '../../../features/auth/domain/user_role.dart';
 import '../../../features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
 import '../../../features/dispatcher/dispatcher_map/presentation/screens/dispatcher_map_screen.dart';
+import '../../../features/dispatcher/dispatcher_map/presentation/widgets/dispatcher_map_driver_marker_factory.dart';
 import '../../../features/dispatcher/dispatcher_orders/presentation/screens/dispatcher_orders_screen.dart';
 import '../../../features/dispatcher/dispatcher_profile/presentation/screens/dispatcher_profile_screen.dart';
 import '../../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
 import '../../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import '../../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
+import '../../di/di.dart';
 import '../../extensions/extensions.dart';
+import '../../services/token_service.dart';
 import '../widgets/app_bottom_nav_bar.dart';
 import '../widgets/sidebar/app_sidebar.dart';
 
@@ -61,15 +67,15 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   List<Widget> _defaultPages(BuildContext context, int activeIndex) {
-    if (widget.role == UserRole.driver) {
-      return [
-        const Text("Home"),
-        const DriverAssignedBoxesScreen(),
-        const Text("Map"),
-        const Text("Support"),
-        const DriverProfileScreen(),
-      ];
-    }
+    // if (widget.role == UserRole.driver) {
+    //   return [
+    //     const Text("Home"),
+    //     const DriverAssignedBoxesScreen(),
+    //     const Text("Map"),
+    //     const Text("Support"),
+    //     const DriverProfileScreen(),
+    //   ];
+    // }
     return [
       const DispatcherHomeScreen(),
       const DispatcherOrdersScreen(),
@@ -77,6 +83,58 @@ class _AppShellScreenState extends State<AppShellScreen> {
       const DispatcherSupportScreen(),
       const DispatcherProfileScreen(showBackButton: false),
     ];
+  }
+
+  void _handleLogout(BuildContext context) {
+    final locale = context.localization;
+    final color = context.colorScheme;
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(
+            widget.role == UserRole.driver
+                ? locale.driverLogoutConfirmTitle
+                : locale.profileLogout,
+          ),
+          content: Text(
+            widget.role == UserRole.driver
+                ? locale.driverLogoutConfirmMessage
+                : locale.profileLogoutConfirm,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(locale.profileCancel),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(dialogContext).pop();
+                if (getIt.isRegistered<LogoutUseCase>()) {
+                  await getIt<LogoutUseCase>()();
+                } else if (getIt.isRegistered<TokenService>()) {
+                  await getIt<TokenService>().clearTokens();
+                }
+                DispatcherMapMarkerBitmapFactory.clearCache();
+                if (!context.mounted) return;
+                context.pushNamedAndRemoveUntil(
+                  AppRoutes.login,
+                  (route) => false,
+                  arguments: LoginRouteArgs(role: widget.role),
+                );
+              },
+              child: Text(
+                widget.role == UserRole.driver
+                    ? locale.driverSettingsLogout
+                    : locale.profileLogout,
+                style: TextStyle(color: color.error),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -97,6 +155,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
       extendBody: true,
       drawer: AppSidebar(
         role: widget.role,
+        onLogout: () => _handleLogout(context),
         onItemSelected: (item) {
           Navigator.of(context).maybePop();
           const tabMapping = {

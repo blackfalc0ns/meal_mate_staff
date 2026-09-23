@@ -978,6 +978,24 @@
     }
   },
   "assignBoxUnavailable": "بيانات البوكس غير متوفرة",
-  "assignBoxSuccessMessage": "تم إسناد البوكس بنجاح"
+  "assignBoxSuccessMessage": "تم إسناد البوكس بنجاح",
+  "driverBoxReceivedSuccessTitle": "تم استلام البوكس بنجاح",
+  "driverBoxReceivedSuccessSubtitle": "تم ربط البوكس بنجاح بحسابك وهو الآن جاهز للتوصيل",
+  "driverBoxStatusReceivedSuccess": "تم الاستلام",
+  "driverBoxNumberLabel": "رقم البوكس",
+  "driverRestaurantLabel": "المطعم",
+  "driverItemCountLabel": "عدد الأصناف",
+  "driverExpectedReceiptTime": "وقت الاستلام المتوقع",
+  "driverBoxSafetyCheckTitle": "تأكد من سلامة البوكس",
+  "driverBoxSafetyCheckDesc": "يرجى التحقق من سلامة البوكس قبل بدء التوصيل وأبلغ عن أي مشكلة إن وجدت",
+  "driverProceedToNextOrder": "الانتقال الى الطلب التالي",
+  "driverBoxMealsCount": "{count} وجبات",
+  "@driverBoxMealsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
 

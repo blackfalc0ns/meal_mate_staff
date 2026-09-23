@@ -4879,6 +4879,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Box assigned successfully'**
   String get assignBoxSuccessMessage;
+
+  /// No description provided for @driverBoxReceivedSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Received Successfully'**
+  String get driverBoxReceivedSuccessTitle;
+
+  /// No description provided for @driverBoxReceivedSuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The box has been successfully linked to your account and is now ready for delivery'**
+  String get driverBoxReceivedSuccessSubtitle;
+
+  /// No description provided for @driverBoxStatusReceivedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get driverBoxStatusReceivedSuccess;
+
+  /// No description provided for @driverBoxNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Number'**
+  String get driverBoxNumberLabel;
+
+  /// No description provided for @driverRestaurantLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant'**
+  String get driverRestaurantLabel;
+
+  /// No description provided for @driverItemCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Items'**
+  String get driverItemCountLabel;
+
+  /// No description provided for @driverExpectedReceiptTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected Receipt Time'**
+  String get driverExpectedReceiptTime;
+
+  /// No description provided for @driverBoxSafetyCheckTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Box Safety'**
+  String get driverBoxSafetyCheckTitle;
+
+  /// No description provided for @driverBoxSafetyCheckDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify the condition of the box before starting delivery and report any issues if found'**
+  String get driverBoxSafetyCheckDesc;
+
+  /// No description provided for @driverProceedToNextOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed to Next Order'**
+  String get driverProceedToNextOrder;
+
+  /// No description provided for @driverBoxMealsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Meals'**
+  String driverBoxMealsCount(int count);
 }
 
 class _AppLocalizationsDelegate

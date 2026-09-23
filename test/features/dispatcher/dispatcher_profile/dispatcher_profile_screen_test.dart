@@ -144,6 +144,43 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(AlertDialog), findsOneWidget);
+
+      // Verify cancel closes dialog
+      await tester.tap(find.text('إلغاء'));
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsNothing);
+    });
+
+    testWidgets('custom onLogoutTap callback is invoked when provided', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(390 * 2, 870 * 2);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      bool logoutCalled = false;
+      await tester.pumpWidget(
+        _buildTestableWidget(
+          child: DispatcherProfileScreen(
+            onLogoutTap: () {
+              logoutCalled = true;
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.scrollUntilVisible(
+        find.byType(DispatcherProfileLogoutButton),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DispatcherProfileLogoutButton));
+      await tester.pumpAndSettle();
+
+      expect(logoutCalled, isTrue);
     });
 
     testWidgets(

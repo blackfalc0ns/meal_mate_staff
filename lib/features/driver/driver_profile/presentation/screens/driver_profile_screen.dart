@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/auth_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
+import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/services/token_service.dart';
+import '../../../../auth/domain/usecase/logout_usecase.dart';
+import '../../../../auth/domain/user_role.dart';
 import '../../domain/entities/driver_profile_entity.dart';
 import '../../domain/fake_data/driver_profile_fake_data.dart';
 import '../widgets/driver_settings_header.dart';
@@ -70,11 +75,19 @@ class DriverProfileScreen extends StatelessWidget {
               child: Text(locale.profileCancel),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(dialogContext).pop();
-                Navigator.of(
-                  context,
-                ).pushNamedAndRemoveUntil(AppRoutes.login, (route) => false);
+                if (getIt.isRegistered<LogoutUseCase>()) {
+                  await getIt<LogoutUseCase>()();
+                } else if (getIt.isRegistered<TokenService>()) {
+                  await getIt<TokenService>().clearTokens();
+                }
+                if (!context.mounted) return;
+                context.pushNamedAndRemoveUntil(
+                  AppRoutes.login,
+                  (route) => false,
+                  arguments: const LoginRouteArgs(role: UserRole.driver),
+                );
               },
               child: Text(
                 locale.driverSettingsLogout,
