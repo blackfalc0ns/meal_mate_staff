@@ -38,17 +38,22 @@ class DriverComparisonDriverResponseDto {
     this.deliveredCountText,
     this.deliveredPercentage,
     this.deliveredPercentageText,
+    this.deliveredRate,
+    this.deliveredRateText,
     this.onTimePercentage,
     this.onTimePercentageText,
     this.avgDelayMinutes,
     this.avgDelayText,
     this.delayLevel,
+    this.avgDelayLevel,
     this.rating,
     this.ratingText,
     this.failedCount,
     this.failedCountText,
     this.failedPercentage,
     this.failedPercentageText,
+    this.failedRate,
+    this.failedRateText,
     this.totalDistanceKm,
     this.totalDistanceKmText,
   });
@@ -67,17 +72,22 @@ class DriverComparisonDriverResponseDto {
   final String? deliveredCountText;
   final double? deliveredPercentage;
   final String? deliveredPercentageText;
+  final double? deliveredRate;
+  final String? deliveredRateText;
   final double? onTimePercentage;
   final String? onTimePercentageText;
   final int? avgDelayMinutes;
   final String? avgDelayText;
   final String? delayLevel;
+  final String? avgDelayLevel;
   final double? rating;
   final String? ratingText;
   final int? failedCount;
   final String? failedCountText;
   final double? failedPercentage;
   final String? failedPercentageText;
+  final double? failedRate;
+  final String? failedRateText;
   final double? totalDistanceKm;
   final String? totalDistanceKmText;
 }

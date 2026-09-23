@@ -27,6 +27,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
     switch (status) {
       case DriverPerformanceDriverStatus.available:
         return color.success;
+      case DriverPerformanceDriverStatus.busy:
       case DriverPerformanceDriverStatus.onTheWay:
         return color.warning;
       case DriverPerformanceDriverStatus.onBreak:
@@ -66,12 +67,34 @@ class DriverPerformanceDriverRow extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final statusDotColor = _getStatusColor(record.status, color);
-    final delayColor = _getDelayColor(
-      record.delayLevel,
-      record.avgDelayMinutes,
-      color,
-    );
+    final dotKey = record.statusDotColorKey?.trim().toLowerCase();
+    final Color statusDotColor;
+    if (dotKey == 'green' || dotKey == 'success') {
+      statusDotColor = color.success;
+    } else if (dotKey == 'orange' || dotKey == 'warning') {
+      statusDotColor = color.warning;
+    } else if (dotKey == 'red' || dotKey == 'error') {
+      statusDotColor = color.error;
+    } else {
+      statusDotColor = _getStatusColor(record.status, color);
+    }
+
+    final delayColorKey = record.avgDelayColor?.trim().toLowerCase();
+    final Color delayColor;
+    if (delayColorKey == 'green' || delayColorKey == 'success') {
+      delayColor = color.success;
+    } else if (delayColorKey == 'orange' || delayColorKey == 'warning') {
+      delayColor = color.warning;
+    } else if (delayColorKey == 'red' || delayColorKey == 'error') {
+      delayColor = color.error;
+    } else {
+      delayColor = _getDelayColor(
+        record.delayLevel,
+        record.avgDelayMinutes,
+        color,
+      );
+    }
+
     final failColor = _getFailColor(record.failedDeliveryCount, color);
 
     return InkWell(
@@ -145,7 +168,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                             fontSize: FontSize.size11,
                             color: color.onSurface,
                           ),
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
@@ -167,7 +190,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
 
             // Delivered count + %
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Column(
                 children: [
                   Text(

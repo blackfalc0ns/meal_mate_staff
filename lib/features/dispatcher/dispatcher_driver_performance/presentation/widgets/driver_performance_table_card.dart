@@ -41,7 +41,7 @@ class DriverPerformanceTableCard extends StatelessWidget {
           width: Spacing.border,
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: Spacing.md),
+      padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

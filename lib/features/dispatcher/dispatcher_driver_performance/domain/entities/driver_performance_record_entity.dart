@@ -16,6 +16,7 @@ class DriverPerformanceRecordEntity {
     required this.rating,
     this.avatarUrl,
     this.statusDotColorKey,
+    this.avgDelayColor,
     this.deliveredCountText,
     this.deliveredPercentageText,
     this.avgDelayText,
@@ -37,6 +38,7 @@ class DriverPerformanceRecordEntity {
   final double rating;
   final String? avatarUrl;
   final String? statusDotColorKey;
+  final String? avgDelayColor;
 
   final String? deliveredCountText;
   final String? deliveredPercentageText;

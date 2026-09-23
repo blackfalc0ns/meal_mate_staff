@@ -74,7 +74,7 @@ extension DriverPerformanceDistributionResponseDtoMapper
     on DriverPerformanceDistributionResponseDto {
   DriverPerformanceDistributionEntity toEntity() {
     return DriverPerformanceDistributionEntity(
-      totalBoxes: totalBoxes ?? 0,
+      totalBoxes: totalBoxes ?? totalCount ?? 0,
       segments:
           segments?.map((dto) => dto.toEntity()).toList(growable: false) ??
           const <DriverPerformanceDistributionItemEntity>[],
@@ -86,12 +86,12 @@ extension DriverPerformanceDistributionSegmentResponseDtoMapper
     on DriverPerformanceDistributionSegmentResponseDto {
   DriverPerformanceDistributionItemEntity toEntity() {
     return DriverPerformanceDistributionItemEntity(
-      id: id ?? '',
+      id: id ?? key ?? '',
       category: DriverPerformanceDistributionCategory.fromApi(key),
       count: count ?? 0,
       percentage: percentage ?? 0.0,
-      name: name,
-      colorHex: color,
+      name: title ?? name,
+      colorHex: colorHex ?? color,
     );
   }
 }
@@ -103,9 +103,10 @@ extension DriverPerformancePodiumResponseDtoMapper
       rank: rank ?? 0,
       driverId: driverId,
       driverCode: driverCode,
-      name: name ?? '',
+      name: fullName ?? name ?? '',
       rating: rating ?? 0.0,
       avatarUrl: avatarUrl,
+      isHighlighted: isHighlighted ?? false,
     );
   }
 }
@@ -116,21 +117,24 @@ extension DriverPerformanceTableRowResponseDtoMapper
     return DriverPerformanceRecordEntity(
       driverId: driverId ?? '',
       driverCode: driverCode ?? '',
-      fullName: fullName ?? '',
+      fullName: fullName ?? name ?? '',
       avatarUrl: avatarUrl,
       status: DriverPerformanceDriverStatus.fromApi(status),
-      statusDotColorKey: statusDotColorKey,
+      statusDotColorKey: statusDotColor ?? statusDotColorKey,
       deliveredCount: deliveredCount ?? 0,
       deliveredCountText: deliveredCountText,
-      deliveredPercentage: deliveredPercentage ?? 0.0,
-      deliveredPercentageText: deliveredPercentageText,
+      deliveredPercentage: deliveredRate ?? deliveredPercentage ?? 0.0,
+      deliveredPercentageText: deliveredRateText ?? deliveredPercentageText,
       avgDelayMinutes: avgDelayMinutes ?? 0,
       avgDelayText: avgDelayText,
-      delayLevel: DriverPerformanceDelayLevelX.fromApi(delayLevel),
-      failedDeliveryCount: failedDeliveryCount ?? 0,
-      failedDeliveryCountText: failedDeliveryCountText,
-      failedDeliveryPercentage: failedDeliveryPercentage ?? 0.0,
-      failedDeliveryPercentageText: failedDeliveryPercentageText,
+      avgDelayColor: avgDelayColor,
+      delayLevel: DriverPerformanceDelayLevelX.fromApi(avgDelayLevel ?? delayLevel),
+      failedDeliveryCount: failedCount ?? failedDeliveryCount ?? 0,
+      failedDeliveryCountText: failedCountText ?? failedDeliveryCountText,
+      failedDeliveryPercentage:
+          failedRate ?? failedDeliveryPercentage ?? 0.0,
+      failedDeliveryPercentageText:
+          failedRateText ?? failedDeliveryPercentageText,
       rating: rating ?? 0.0,
       ratingText: ratingText,
     );
@@ -165,19 +169,21 @@ extension DriverComparisonDriverResponseDtoMapper
       totalAssignedText: totalAssignedText,
       deliveredCount: deliveredCount ?? 0,
       deliveredCountText: deliveredCountText,
-      deliveredPercentage: deliveredPercentage ?? 0.0,
-      deliveredPercentageText: deliveredPercentageText,
+      deliveredPercentage: deliveredRate ?? deliveredPercentage ?? 0.0,
+      deliveredPercentageText:
+          deliveredRateText ?? deliveredPercentageText,
       onTimePercentage: onTimePercentage ?? 0.0,
       onTimePercentageText: onTimePercentageText,
       avgDelayMinutes: avgDelayMinutes ?? 0,
       avgDelayText: avgDelayText,
-      delayLevel: DriverPerformanceDelayLevelX.fromApi(delayLevel),
+      delayLevel:
+          DriverPerformanceDelayLevelX.fromApi(avgDelayLevel ?? delayLevel),
       rating: rating,
       ratingText: ratingText,
       failedCount: failedCount ?? 0,
       failedCountText: failedCountText,
-      failedPercentage: failedPercentage ?? 0.0,
-      failedPercentageText: failedPercentageText,
+      failedPercentage: failedRate ?? failedPercentage ?? 0.0,
+      failedPercentageText: failedRateText ?? failedPercentageText,
       totalDistanceKm: totalDistanceKm,
       totalDistanceKmText: totalDistanceKmText,
     );

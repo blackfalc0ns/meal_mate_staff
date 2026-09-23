@@ -192,8 +192,8 @@ class _DispatcherDriverPerformanceScreenState
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.base,
-          vertical: Spacing.sm,
+          horizontal: Spacing.screenH,
+          vertical: Spacing.screenV,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

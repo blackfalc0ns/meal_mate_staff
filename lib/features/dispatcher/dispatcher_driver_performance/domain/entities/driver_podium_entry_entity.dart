@@ -6,6 +6,7 @@ class DriverPodiumEntryEntity {
     this.driverId,
     this.driverCode,
     this.avatarUrl,
+    this.isHighlighted = false,
   });
 
   final int rank;
@@ -14,4 +15,5 @@ class DriverPodiumEntryEntity {
   final String? driverId;
   final String? driverCode;
   final String? avatarUrl;
+  final bool isHighlighted;
 }

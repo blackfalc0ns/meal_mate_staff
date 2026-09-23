@@ -64,6 +64,7 @@ DriverPerformanceDistributionResponseDto
 _$DriverPerformanceDistributionResponseDtoFromJson(Map<String, dynamic> json) =>
     DriverPerformanceDistributionResponseDto(
       totalBoxes: (json['totalBoxes'] as num?)?.toInt(),
+      totalCount: (json['totalCount'] as num?)?.toInt(),
       segments: (json['segments'] as List<dynamic>?)
           ?.map(
             (e) => DriverPerformanceDistributionSegmentResponseDto.fromJson(
@@ -80,9 +81,11 @@ _$DriverPerformanceDistributionSegmentResponseDtoFromJson(
   id: json['id'] as String?,
   key: json['key'] as String?,
   name: json['name'] as String?,
+  title: json['title'] as String?,
   count: (json['count'] as num?)?.toInt(),
   percentage: (json['percentage'] as num?)?.toDouble(),
   color: json['color'] as String?,
+  colorHex: json['colorHex'] as String?,
 );
 
 DriverPerformancePodiumResponseDto _$DriverPerformancePodiumResponseDtoFromJson(
@@ -92,8 +95,10 @@ DriverPerformancePodiumResponseDto _$DriverPerformancePodiumResponseDtoFromJson(
   driverId: json['driverId'] as String?,
   driverCode: json['driverCode'] as String?,
   name: json['name'] as String?,
+  fullName: json['fullName'] as String?,
   rating: (json['rating'] as num?)?.toDouble(),
   avatarUrl: json['avatarUrl'] as String?,
+  isHighlighted: json['isHighlighted'] as bool?,
 );
 
 DriverPerformanceTableRowResponseDto
@@ -102,22 +107,32 @@ _$DriverPerformanceTableRowResponseDtoFromJson(Map<String, dynamic> json) =>
       driverId: json['driverId'] as String?,
       driverCode: json['driverCode'] as String?,
       fullName: json['fullName'] as String?,
+      name: json['name'] as String?,
       avatarUrl: json['avatarUrl'] as String?,
       status: json['status'] as String?,
+      statusDotColor: json['statusDotColor'] as String?,
       statusDotColorKey: json['statusDotColorKey'] as String?,
       deliveredCount: (json['deliveredCount'] as num?)?.toInt(),
       deliveredCountText: json['deliveredCountText'] as String?,
       deliveredPercentage: (json['deliveredPercentage'] as num?)?.toDouble(),
       deliveredPercentageText: json['deliveredPercentageText'] as String?,
+      deliveredRate: (json['deliveredRate'] as num?)?.toDouble(),
+      deliveredRateText: json['deliveredRateText'] as String?,
       avgDelayMinutes: (json['avgDelayMinutes'] as num?)?.toInt(),
       avgDelayText: json['avgDelayText'] as String?,
+      avgDelayColor: json['avgDelayColor'] as String?,
       delayLevel: json['delayLevel'] as String?,
+      avgDelayLevel: json['avgDelayLevel'] as String?,
       failedDeliveryCount: (json['failedDeliveryCount'] as num?)?.toInt(),
       failedDeliveryCountText: json['failedDeliveryCountText'] as String?,
+      failedCount: (json['failedCount'] as num?)?.toInt(),
+      failedCountText: json['failedCountText'] as String?,
       failedDeliveryPercentage: (json['failedDeliveryPercentage'] as num?)
           ?.toDouble(),
       failedDeliveryPercentageText:
           json['failedDeliveryPercentageText'] as String?,
+      failedRate: (json['failedRate'] as num?)?.toDouble(),
+      failedRateText: json['failedRateText'] as String?,
       rating: (json['rating'] as num?)?.toDouble(),
       ratingText: json['ratingText'] as String?,
     );

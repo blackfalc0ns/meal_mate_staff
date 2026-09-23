@@ -213,15 +213,138 @@ void main() {
     );
 
     test(
-      'Comparison empty json handles null lists and null optional metrics',
+      'Overview real live API payload maps correctly without losing fields',
       () {
-        final json = <String, dynamic>{'drivers': null};
+        final json = {
+          "period": "Last7Days",
+          "periodText": "آخر 7 أيام",
+          "dateRangeText": "16 سبتمبر - 23 سبتمبر 2026",
+          "kpis": {
+            "totalBoxes": 308,
+            "deliveredCount": 88,
+            "deliveredPercentage": 28.6,
+            "avgDelayMinutes": 0,
+            "overallRating": 4.7,
+            "failedCount": 88,
+            "failedPercentage": 28.6,
+          },
+          "distribution": {
+            "totalCount": 308,
+            "segments": [
+              {
+                "key": "OnTime",
+                "title": "تم في الوقت",
+                "count": 88,
+                "percentage": 28.6,
+                "colorHex": "#10B981",
+              },
+              {
+                "key": "Delayed",
+                "title": "متأخر",
+                "count": 0,
+                "percentage": 0,
+                "colorHex": "#F59E0B",
+              },
+              {
+                "key": "Failed",
+                "title": "فشل التسليم",
+                "count": 88,
+                "percentage": 28.6,
+                "colorHex": "#EF4444",
+              },
+              {
+                "key": "Cancelled",
+                "title": "ملغي",
+                "count": 0,
+                "percentage": 0,
+                "colorHex": "#9CA3AF",
+              },
+            ],
+          },
+          "topDrivers": [
+            {
+              "rank": 1,
+              "driverId": "97c9a81f-d3f6-4312-86ed-3e8244c81d38",
+              "driverCode": "L-10254",
+              "fullName": "أحمد السعيد",
+              "rating": 4.8,
+              "avatarUrl": "https://cdn.mealmate.app/avatars/97c9a81f.jpg",
+              "isHighlighted": true,
+            },
+          ],
+          "driversTable": [
+            {
+              "driverId": "97c9a81f-d3f6-4312-86ed-3e8244c81d38",
+              "driverCode": "L-10254",
+              "fullName": "أحمد السعيد",
+              "avatarUrl": "https://cdn.mealmate.app/avatars/97c9a81f.jpg",
+              "status": "Available",
+              "statusDotColor": "Green",
+              "deliveredCount": 22,
+              "deliveredRate": 20.0,
+              "deliveredRateText": "20٫0%",
+              "avgDelayMinutes": 0,
+              "avgDelayText": "0 د",
+              "avgDelayColor": "Green",
+              "failedCount": 44,
+              "failedRate": 40.0,
+              "failedRateText": "40٫0%",
+              "rating": 4.8,
+              "avgDelayLevel": "Good",
+            },
+            {
+              "driverId": "a30817de-4920-4028-ba23-76316f41cda3",
+              "driverCode": "L-30819",
+              "fullName": "محمد العنزي",
+              "avatarUrl": "https://cdn.mealmate.app/avatars/a30817de.jpg",
+              "status": "Busy",
+              "statusDotColor": "Orange",
+              "deliveredCount": 22,
+              "deliveredRate": 33.3,
+              "deliveredRateText": "33٫3%",
+              "avgDelayMinutes": 0,
+              "avgDelayText": "0 د",
+              "avgDelayColor": "Green",
+              "failedCount": 0,
+              "failedRate": 0,
+              "failedRateText": "0%",
+              "rating": 4.5,
+              "avgDelayLevel": "Good",
+            },
+          ],
+          "fromDate": "2026-09-16",
+          "toDate": "2026-09-23",
+        };
 
-        final entity = DriverPerformanceComparisonResponseDto.fromJson(
+        final entity = DriverPerformanceOverviewResponseDto.fromJson(
           json,
         ).toEntity();
-        expect(entity.drivers, isEmpty);
-        expect(entity.period, DriverPerformancePeriod.unknown);
+
+        expect(entity.period, DriverPerformancePeriod.last7Days);
+        expect(entity.periodText, "آخر 7 أيام");
+        expect(entity.distribution.totalBoxes, 308);
+        expect(entity.distribution.segments.first.name, "تم في الوقت");
+        expect(entity.distribution.segments.first.colorHex, "#10B981");
+
+        expect(entity.topDrivers.first.name, "أحمد السعيد");
+        expect(entity.topDrivers.first.isHighlighted, isTrue);
+
+        final row1 = entity.driversTable.first;
+        expect(row1.fullName, "أحمد السعيد");
+        expect(row1.status, DriverPerformanceDriverStatus.available);
+        expect(row1.statusDotColorKey, "Green");
+        expect(row1.deliveredPercentage, 20.0);
+        expect(row1.deliveredPercentageText, "20٫0%");
+        expect(row1.failedDeliveryCount, 44);
+        expect(row1.failedDeliveryPercentage, 40.0);
+        expect(row1.failedDeliveryPercentageText, "40٫0%");
+        expect(row1.delayLevel, DriverPerformanceDelayLevel.good);
+        expect(row1.avgDelayColor, "Green");
+
+        final row2 = entity.driversTable[1];
+        expect(row2.status, DriverPerformanceDriverStatus.busy);
+        expect(row2.statusDotColorKey, "Orange");
+        expect(row2.deliveredPercentage, 33.3);
       },
     );
   });

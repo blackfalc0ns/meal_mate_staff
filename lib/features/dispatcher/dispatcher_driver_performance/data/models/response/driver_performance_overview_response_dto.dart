@@ -74,6 +74,7 @@ class DriverPerformanceKpisResponseDto {
 class DriverPerformanceDistributionResponseDto {
   const DriverPerformanceDistributionResponseDto({
     this.totalBoxes,
+    this.totalCount,
     this.segments,
   });
 
@@ -82,6 +83,7 @@ class DriverPerformanceDistributionResponseDto {
   ) => _$DriverPerformanceDistributionResponseDtoFromJson(json);
 
   final int? totalBoxes;
+  final int? totalCount;
   final List<DriverPerformanceDistributionSegmentResponseDto>? segments;
 }
 
@@ -91,9 +93,11 @@ class DriverPerformanceDistributionSegmentResponseDto {
     this.id,
     this.key,
     this.name,
+    this.title,
     this.count,
     this.percentage,
     this.color,
+    this.colorHex,
   });
 
   factory DriverPerformanceDistributionSegmentResponseDto.fromJson(
@@ -103,9 +107,11 @@ class DriverPerformanceDistributionSegmentResponseDto {
   final String? id;
   final String? key;
   final String? name;
+  final String? title;
   final int? count;
   final double? percentage;
   final String? color;
+  final String? colorHex;
 }
 
 @JsonSerializable(createToJson: false)
@@ -115,8 +121,10 @@ class DriverPerformancePodiumResponseDto {
     this.driverId,
     this.driverCode,
     this.name,
+    this.fullName,
     this.rating,
     this.avatarUrl,
+    this.isHighlighted,
   });
 
   factory DriverPerformancePodiumResponseDto.fromJson(
@@ -127,8 +135,10 @@ class DriverPerformancePodiumResponseDto {
   final String? driverId;
   final String? driverCode;
   final String? name;
+  final String? fullName;
   final double? rating;
   final String? avatarUrl;
+  final bool? isHighlighted;
 }
 
 @JsonSerializable(createToJson: false)
@@ -137,20 +147,30 @@ class DriverPerformanceTableRowResponseDto {
     this.driverId,
     this.driverCode,
     this.fullName,
+    this.name,
     this.avatarUrl,
     this.status,
+    this.statusDotColor,
     this.statusDotColorKey,
     this.deliveredCount,
     this.deliveredCountText,
     this.deliveredPercentage,
     this.deliveredPercentageText,
+    this.deliveredRate,
+    this.deliveredRateText,
     this.avgDelayMinutes,
     this.avgDelayText,
+    this.avgDelayColor,
     this.delayLevel,
+    this.avgDelayLevel,
     this.failedDeliveryCount,
     this.failedDeliveryCountText,
+    this.failedCount,
+    this.failedCountText,
     this.failedDeliveryPercentage,
     this.failedDeliveryPercentageText,
+    this.failedRate,
+    this.failedRateText,
     this.rating,
     this.ratingText,
   });
@@ -162,20 +182,30 @@ class DriverPerformanceTableRowResponseDto {
   final String? driverId;
   final String? driverCode;
   final String? fullName;
+  final String? name;
   final String? avatarUrl;
   final String? status;
+  final String? statusDotColor;
   final String? statusDotColorKey;
   final int? deliveredCount;
   final String? deliveredCountText;
   final double? deliveredPercentage;
   final String? deliveredPercentageText;
+  final double? deliveredRate;
+  final String? deliveredRateText;
   final int? avgDelayMinutes;
   final String? avgDelayText;
+  final String? avgDelayColor;
   final String? delayLevel;
+  final String? avgDelayLevel;
   final int? failedDeliveryCount;
   final String? failedDeliveryCountText;
+  final int? failedCount;
+  final String? failedCountText;
   final double? failedDeliveryPercentage;
   final String? failedDeliveryPercentageText;
+  final double? failedRate;
+  final String? failedRateText;
   final double? rating;
   final String? ratingText;
 }

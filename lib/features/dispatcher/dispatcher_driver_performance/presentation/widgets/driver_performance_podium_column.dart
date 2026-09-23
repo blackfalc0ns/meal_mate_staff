@@ -16,7 +16,7 @@ class DriverPerformancePodiumColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final isRank1 = entry.rank == 1;
+    final isRank1 = entry.isHighlighted || entry.rank == 1;
 
     return Container(
       padding: const EdgeInsets.symmetric(

@@ -79,7 +79,7 @@ class DriverPerformanceKpiCard extends StatelessWidget {
           ),
           Text(
             label,
-            style: getRegularStyle(
+            style: getSemiBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size9,
               color: isHighlighted
