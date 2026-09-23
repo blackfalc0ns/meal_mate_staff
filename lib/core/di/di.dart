@@ -13,6 +13,9 @@ import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
 import '../services/token_interceptor.dart';
 import '../services/token_service.dart';
+import '../../features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
+import '../../features/driver/active_delivery/domain/repositories/active_delivery_repository.dart';
+import '../../features/driver/active_delivery/presentation/manager/active_delivery_view_model.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repo/auth_repository_impl.dart';
@@ -521,6 +524,12 @@ Future<void> configureDependencies() async {
       getIt<ReportBoxIssueUseCase>(),
       boxId: boxId,
     ),
+  );
+  getIt.registerLazySingleton<ActiveDeliveryRepository>(
+    ActiveDeliveryFakeRepositoryImpl.new,
+  );
+  getIt.registerFactory<ActiveDeliveryViewModel>(
+    () => ActiveDeliveryViewModel(repository: getIt<ActiveDeliveryRepository>()),
   );
 }
 

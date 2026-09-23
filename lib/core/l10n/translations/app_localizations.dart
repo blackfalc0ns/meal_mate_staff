@@ -4945,6 +4945,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} Meals'**
   String driverBoxMealsCount(int count);
+
+  /// No description provided for @driverStartDeliveryRouteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Delivery Route'**
+  String get driverStartDeliveryRouteTitle;
+
+  /// No description provided for @driverStartDeliveryRouteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review order details and start route'**
+  String get driverStartDeliveryRouteSubtitle;
+
+  /// No description provided for @driverStartRouteActionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Delivery Route'**
+  String get driverStartRouteActionButton;
+
+  /// No description provided for @driverCustomerNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Notes'**
+  String get driverCustomerNotesLabel;
+
+  /// No description provided for @driverDeliveryAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Address'**
+  String get driverDeliveryAddressLabel;
+
+  /// No description provided for @driverEstimatedEtaDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min • {distance} km'**
+  String driverEstimatedEtaDistance(int minutes, double distance);
+
+  /// No description provided for @driverMealsCountFormatted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Meals'**
+  String driverMealsCountFormatted(int count);
+
+  /// No description provided for @driverActiveTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Tracking'**
+  String get driverActiveTrackingTitle;
+
+  /// No description provided for @driverTripStepStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Route'**
+  String get driverTripStepStart;
+
+  /// No description provided for @driverTripStepEnRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'On the Way'**
+  String get driverTripStepEnRoute;
+
+  /// No description provided for @driverTripStepArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrived'**
+  String get driverTripStepArrived;
+
+  /// No description provided for @driverConfirmArrivalAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Arrival & Delivery'**
+  String get driverConfirmArrivalAction;
+
+  /// No description provided for @driverReportDelayButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delay'**
+  String get driverReportDelayButton;
+
+  /// No description provided for @driverReportFailedButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Failed'**
+  String get driverReportFailedButton;
+
+  /// No description provided for @driverCallCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get driverCallCustomer;
+
+  /// No description provided for @driverMessageCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get driverMessageCustomer;
+
+  /// No description provided for @driverDeliveryDelayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Delay'**
+  String get driverDeliveryDelayTitle;
+
+  /// No description provided for @driverDeliveryDelaySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please inform support or continue if on your way'**
+  String get driverDeliveryDelaySubtitle;
+
+  /// No description provided for @driverContinueDeliveryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Delivery'**
+  String get driverContinueDeliveryAction;
+
+  /// No description provided for @driverContactSupportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get driverContactSupportAction;
+
+  /// No description provided for @driverDelayNoticeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated delivery time exceeded schedule'**
+  String get driverDelayNoticeTime;
+
+  /// No description provided for @driverFailedDeliveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed Delivery'**
+  String get driverFailedDeliveryTitle;
+
+  /// No description provided for @driverFailedDeliverySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the reason for inability to deliver order'**
+  String get driverFailedDeliverySubtitle;
+
+  /// No description provided for @driverFailureReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Failure Reason'**
+  String get driverFailureReasonLabel;
+
+  /// No description provided for @driverAdditionalNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional notes (optional)'**
+  String get driverAdditionalNotesLabel;
+
+  /// No description provided for @driverAdditionalNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter any other details here...'**
+  String get driverAdditionalNotesHint;
+
+  /// No description provided for @driverSendReportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Report & Return Box'**
+  String get driverSendReportAction;
+
+  /// No description provided for @driverRetryDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Delivery'**
+  String get driverRetryDelivery;
+
+  /// No description provided for @driverReturnBoxTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Box to Restaurant'**
+  String get driverReturnBoxTitle;
+
+  /// No description provided for @driverReturnBoxSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Head to restaurant to return box and confirm receipt'**
+  String get driverReturnBoxSubtitle;
+
+  /// No description provided for @driverBoxStatusReturning.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Delivered - Returning'**
+  String get driverBoxStatusReturning;
+
+  /// No description provided for @driverAttachImageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach verification photo (optional)'**
+  String get driverAttachImageLabel;
+
+  /// No description provided for @driverConfirmRestaurantReturnAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Restaurant Receipt'**
+  String get driverConfirmRestaurantReturnAction;
+
+  /// No description provided for @driverDeliverySuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Delivered Successfully'**
+  String get driverDeliverySuccessTitle;
+
+  /// No description provided for @driverDeliverySuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip completed and box delivered to customer successfully'**
+  String get driverDeliverySuccessSubtitle;
+
+  /// No description provided for @driverOrderSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Summary'**
+  String get driverOrderSummaryTitle;
+
+  /// No description provided for @driverOrderNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Number'**
+  String get driverOrderNumberLabel;
+
+  /// No description provided for @driverCustomerNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name'**
+  String get driverCustomerNameLabel;
+
+  /// No description provided for @driverDeliveredAtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered At'**
+  String get driverDeliveredAtLabel;
+
+  /// No description provided for @driverPaymentMethodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get driverPaymentMethodLabel;
+
+  /// No description provided for @driverReceiptConfirmedAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt Confirmed'**
+  String get driverReceiptConfirmedAction;
+
+  /// No description provided for @driverNextOrderAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed to Next Order'**
+  String get driverNextOrderAction;
+
+  /// No description provided for @driverBackToOrdersAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Orders'**
+  String get driverBackToOrdersAction;
 }
 
 class _AppLocalizationsDelegate

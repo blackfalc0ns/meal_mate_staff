@@ -996,6 +996,66 @@
         "type": "int"
       }
     }
-  }
+  },
+  "driverStartDeliveryRouteTitle": "بدء مسار التوصيل",
+  "driverStartDeliveryRouteSubtitle": "راجع بيانات الطلب وابدأ المسار",
+  "driverStartRouteActionButton": "بدء مسار التوصيل",
+  "driverCustomerNotesLabel": "ملاحظات العميل",
+  "driverDeliveryAddressLabel": "عنوان التوصيل",
+  "driverEstimatedEtaDistance": "{minutes} دقيقة • {distance} كم",
+  "@driverEstimatedEtaDistance": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "double"
+      }
+    }
+  },
+  "driverMealsCountFormatted": "{count} وجبات",
+  "@driverMealsCountFormatted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverActiveTrackingTitle": "تتبع التوصيل",
+  "driverTripStepStart": "بدء المسار",
+  "driverTripStepEnRoute": "في الطريق",
+  "driverTripStepArrived": "تم الوصول",
+  "driverConfirmArrivalAction": "تأكيد الوصول والتسليم",
+  "driverReportDelayButton": "تأخير",
+  "driverReportFailedButton": "تعذر التسليم",
+  "driverCallCustomer": "اتصال",
+  "driverMessageCustomer": "محادثة",
+  "driverDeliveryDelayTitle": "تأخير في التوصيل",
+  "driverDeliveryDelaySubtitle": "يرجى إبلاغ الدعم أو المتابعة إذا كنت في طريقك",
+  "driverContinueDeliveryAction": "متابعة التوصيل",
+  "driverContactSupportAction": "الاتصال بالدعم",
+  "driverDelayNoticeTime": "الوقت المقدر تجاوز الموعد المحدد للتسليم",
+  "driverFailedDeliveryTitle": "تعذر تسليم الطلب",
+  "driverFailedDeliverySubtitle": "حدد سبب عدم التمكن من تسليم الطلب للعميل",
+  "driverFailureReasonLabel": "سبب التعذر",
+  "driverAdditionalNotesLabel": "ملاحظات إضافية (اختياري)",
+  "driverAdditionalNotesHint": "اكتب أي تفاصيل أخرى هنا...",
+  "driverSendReportAction": "إرسال البلاغ وإرجاع الصندوق",
+  "driverRetryDelivery": "إعادة المحاولة",
+  "driverReturnBoxTitle": "إعادة الصندوق للمطعم",
+  "driverReturnBoxSubtitle": "توجه إلى المطعم لإعادة الصندوق وتأكيد الاستلام",
+  "driverBoxStatusReturning": "لم يتم التسليم - جاري الإرجاع",
+  "driverAttachImageLabel": "إرفاق صورة توثيقية (اختياري)",
+  "driverConfirmRestaurantReturnAction": "تأكيد استلام المطعم للصندوق",
+  "driverDeliverySuccessTitle": "تم تسليم الطلب بنجاح",
+  "driverDeliverySuccessSubtitle": "تم إنهاء الرحلة وتسليم الصندوق للعميل بنجاح",
+  "driverOrderSummaryTitle": "ملخص الطلب",
+  "driverOrderNumberLabel": "رقم الطلب",
+  "driverCustomerNameLabel": "اسم العميل",
+  "driverDeliveredAtLabel": "وقت التسليم",
+  "driverPaymentMethodLabel": "طريقة الدفع",
+  "driverReceiptConfirmedAction": "تم تأكيد الاستلام",
+  "driverNextOrderAction": "الانتقال إلى الطلب التالي",
+  "driverBackToOrdersAction": "العودة للطلبات"
 }
 

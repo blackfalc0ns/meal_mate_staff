@@ -2556,4 +2556,144 @@ class AppLocalizationsAr extends AppLocalizations {
   String driverBoxMealsCount(int count) {
     return '$count وجبات';
   }
+
+  @override
+  String get driverStartDeliveryRouteTitle => 'بدء مسار التوصيل';
+
+  @override
+  String get driverStartDeliveryRouteSubtitle =>
+      'راجع بيانات الطلب وابدأ المسار';
+
+  @override
+  String get driverStartRouteActionButton => 'بدء مسار التوصيل';
+
+  @override
+  String get driverCustomerNotesLabel => 'ملاحظات العميل';
+
+  @override
+  String get driverDeliveryAddressLabel => 'عنوان التوصيل';
+
+  @override
+  String driverEstimatedEtaDistance(int minutes, double distance) {
+    return '$minutes دقيقة • $distance كم';
+  }
+
+  @override
+  String driverMealsCountFormatted(int count) {
+    return '$count وجبات';
+  }
+
+  @override
+  String get driverActiveTrackingTitle => 'تتبع التوصيل';
+
+  @override
+  String get driverTripStepStart => 'بدء المسار';
+
+  @override
+  String get driverTripStepEnRoute => 'في الطريق';
+
+  @override
+  String get driverTripStepArrived => 'تم الوصول';
+
+  @override
+  String get driverConfirmArrivalAction => 'تأكيد الوصول والتسليم';
+
+  @override
+  String get driverReportDelayButton => 'تأخير';
+
+  @override
+  String get driverReportFailedButton => 'تعذر التسليم';
+
+  @override
+  String get driverCallCustomer => 'اتصال';
+
+  @override
+  String get driverMessageCustomer => 'محادثة';
+
+  @override
+  String get driverDeliveryDelayTitle => 'تأخير في التوصيل';
+
+  @override
+  String get driverDeliveryDelaySubtitle =>
+      'يرجى إبلاغ الدعم أو المتابعة إذا كنت في طريقك';
+
+  @override
+  String get driverContinueDeliveryAction => 'متابعة التوصيل';
+
+  @override
+  String get driverContactSupportAction => 'الاتصال بالدعم';
+
+  @override
+  String get driverDelayNoticeTime =>
+      'الوقت المقدر تجاوز الموعد المحدد للتسليم';
+
+  @override
+  String get driverFailedDeliveryTitle => 'تعذر تسليم الطلب';
+
+  @override
+  String get driverFailedDeliverySubtitle =>
+      'حدد سبب عدم التمكن من تسليم الطلب للعميل';
+
+  @override
+  String get driverFailureReasonLabel => 'سبب التعذر';
+
+  @override
+  String get driverAdditionalNotesLabel => 'ملاحظات إضافية (اختياري)';
+
+  @override
+  String get driverAdditionalNotesHint => 'اكتب أي تفاصيل أخرى هنا...';
+
+  @override
+  String get driverSendReportAction => 'إرسال البلاغ وإرجاع الصندوق';
+
+  @override
+  String get driverRetryDelivery => 'إعادة المحاولة';
+
+  @override
+  String get driverReturnBoxTitle => 'إعادة الصندوق للمطعم';
+
+  @override
+  String get driverReturnBoxSubtitle =>
+      'توجه إلى المطعم لإعادة الصندوق وتأكيد الاستلام';
+
+  @override
+  String get driverBoxStatusReturning => 'لم يتم التسليم - جاري الإرجاع';
+
+  @override
+  String get driverAttachImageLabel => 'إرفاق صورة توثيقية (اختياري)';
+
+  @override
+  String get driverConfirmRestaurantReturnAction =>
+      'تأكيد استلام المطعم للصندوق';
+
+  @override
+  String get driverDeliverySuccessTitle => 'تم تسليم الطلب بنجاح';
+
+  @override
+  String get driverDeliverySuccessSubtitle =>
+      'تم إنهاء الرحلة وتسليم الصندوق للعميل بنجاح';
+
+  @override
+  String get driverOrderSummaryTitle => 'ملخص الطلب';
+
+  @override
+  String get driverOrderNumberLabel => 'رقم الطلب';
+
+  @override
+  String get driverCustomerNameLabel => 'اسم العميل';
+
+  @override
+  String get driverDeliveredAtLabel => 'وقت التسليم';
+
+  @override
+  String get driverPaymentMethodLabel => 'طريقة الدفع';
+
+  @override
+  String get driverReceiptConfirmedAction => 'تم تأكيد الاستلام';
+
+  @override
+  String get driverNextOrderAction => 'الانتقال إلى الطلب التالي';
+
+  @override
+  String get driverBackToOrdersAction => 'العودة للطلبات';
 }

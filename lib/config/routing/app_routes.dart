@@ -43,4 +43,12 @@ class AppRoutes {
   static const String driverVehicleDetails = '/driver-vehicle-details';
   static const String driverEditVehicleDetails = '/driver-edit-vehicle-details';
   static const String driverSupport = '/driver-support';
+  static const String driverStartDeliveryRoute = '/driver-start-delivery-route';
+  static const String driverActiveDeliveryTracking =
+      '/driver-active-delivery-tracking';
+  static const String driverDeliveryDelay = '/driver-delivery-delay';
+  static const String driverFailedDelivery = '/driver-failed-delivery';
+  static const String driverReturnBoxToRestaurant =
+      '/driver-return-box-to-restaurant';
+  static const String driverDeliverySuccess = '/driver-delivery-success';
 }

@@ -2562,4 +2562,144 @@ class AppLocalizationsEn extends AppLocalizations {
   String driverBoxMealsCount(int count) {
     return '$count Meals';
   }
+
+  @override
+  String get driverStartDeliveryRouteTitle => 'Start Delivery Route';
+
+  @override
+  String get driverStartDeliveryRouteSubtitle =>
+      'Review order details and start route';
+
+  @override
+  String get driverStartRouteActionButton => 'Start Delivery Route';
+
+  @override
+  String get driverCustomerNotesLabel => 'Customer Notes';
+
+  @override
+  String get driverDeliveryAddressLabel => 'Delivery Address';
+
+  @override
+  String driverEstimatedEtaDistance(int minutes, double distance) {
+    return '$minutes min • $distance km';
+  }
+
+  @override
+  String driverMealsCountFormatted(int count) {
+    return '$count Meals';
+  }
+
+  @override
+  String get driverActiveTrackingTitle => 'Delivery Tracking';
+
+  @override
+  String get driverTripStepStart => 'Start Route';
+
+  @override
+  String get driverTripStepEnRoute => 'On the Way';
+
+  @override
+  String get driverTripStepArrived => 'Arrived';
+
+  @override
+  String get driverConfirmArrivalAction => 'Confirm Arrival & Delivery';
+
+  @override
+  String get driverReportDelayButton => 'Delay';
+
+  @override
+  String get driverReportFailedButton => 'Delivery Failed';
+
+  @override
+  String get driverCallCustomer => 'Call';
+
+  @override
+  String get driverMessageCustomer => 'Chat';
+
+  @override
+  String get driverDeliveryDelayTitle => 'Delivery Delay';
+
+  @override
+  String get driverDeliveryDelaySubtitle =>
+      'Please inform support or continue if on your way';
+
+  @override
+  String get driverContinueDeliveryAction => 'Continue Delivery';
+
+  @override
+  String get driverContactSupportAction => 'Contact Support';
+
+  @override
+  String get driverDelayNoticeTime =>
+      'Estimated delivery time exceeded schedule';
+
+  @override
+  String get driverFailedDeliveryTitle => 'Failed Delivery';
+
+  @override
+  String get driverFailedDeliverySubtitle =>
+      'Select the reason for inability to deliver order';
+
+  @override
+  String get driverFailureReasonLabel => 'Failure Reason';
+
+  @override
+  String get driverAdditionalNotesLabel => 'Additional notes (optional)';
+
+  @override
+  String get driverAdditionalNotesHint => 'Enter any other details here...';
+
+  @override
+  String get driverSendReportAction => 'Send Report & Return Box';
+
+  @override
+  String get driverRetryDelivery => 'Retry Delivery';
+
+  @override
+  String get driverReturnBoxTitle => 'Return Box to Restaurant';
+
+  @override
+  String get driverReturnBoxSubtitle =>
+      'Head to restaurant to return box and confirm receipt';
+
+  @override
+  String get driverBoxStatusReturning => 'Not Delivered - Returning';
+
+  @override
+  String get driverAttachImageLabel => 'Attach verification photo (optional)';
+
+  @override
+  String get driverConfirmRestaurantReturnAction =>
+      'Confirm Restaurant Receipt';
+
+  @override
+  String get driverDeliverySuccessTitle => 'Order Delivered Successfully';
+
+  @override
+  String get driverDeliverySuccessSubtitle =>
+      'Trip completed and box delivered to customer successfully';
+
+  @override
+  String get driverOrderSummaryTitle => 'Order Summary';
+
+  @override
+  String get driverOrderNumberLabel => 'Order Number';
+
+  @override
+  String get driverCustomerNameLabel => 'Customer Name';
+
+  @override
+  String get driverDeliveredAtLabel => 'Delivered At';
+
+  @override
+  String get driverPaymentMethodLabel => 'Payment Method';
+
+  @override
+  String get driverReceiptConfirmedAction => 'Receipt Confirmed';
+
+  @override
+  String get driverNextOrderAction => 'Proceed to Next Order';
+
+  @override
+  String get driverBackToOrdersAction => 'Back to Orders';
 }

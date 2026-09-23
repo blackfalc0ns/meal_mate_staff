@@ -30,7 +30,7 @@ class DriverBoxesReceivedScreen extends StatelessWidget {
     }
     Navigator.of(
       context,
-    ).pushNamedAndRemoveUntil(AppRoutes.driverAssignedBoxes, (route) => false);
+    ).pushNamedAndRemoveUntil(AppRoutes.driverStartDeliveryRoute, (route) => false);
   }
 
   @override

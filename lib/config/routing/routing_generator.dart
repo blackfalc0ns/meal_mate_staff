@@ -52,6 +52,14 @@ import '../../features/driver/driver_vehicle/domain/entities/driver_vehicle_enti
 import '../../features/driver/driver_vehicle/presentation/screens/driver_edit_vehicle_details_screen.dart';
 import '../../features/driver/driver_vehicle/presentation/screens/driver_vehicle_details_screen.dart';
 import '../../features/driver/driver_profile/presentation/screens/driver_support_screen.dart';
+import '../../features/driver/active_delivery/domain/entities/active_delivery_trip_entity.dart';
+import '../../features/driver/active_delivery/domain/entities/return_box_entity.dart';
+import '../../features/driver/active_delivery/presentation/screens/driver_start_delivery_route_screen.dart';
+import '../../features/driver/active_delivery/presentation/screens/driver_active_delivery_tracking_screen.dart';
+import '../../features/driver/active_delivery/presentation/screens/driver_delivery_delay_screen.dart';
+import '../../features/driver/active_delivery/presentation/screens/driver_failed_delivery_screen.dart';
+import '../../features/driver/active_delivery/presentation/screens/driver_return_box_to_restaurant_screen.dart';
+import '../../features/driver/active_delivery/presentation/screens/driver_delivery_success_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 
@@ -471,6 +479,66 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DriverSupportScreen(),
+        );
+
+      case AppRoutes.driverStartDeliveryRoute:
+        final trip = settings.arguments is ActiveDeliveryTripEntity
+            ? settings.arguments! as ActiveDeliveryTripEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverStartDeliveryRouteScreen(trip: trip),
+        );
+
+      case AppRoutes.driverActiveDeliveryTracking:
+        final trip = settings.arguments is ActiveDeliveryTripEntity
+            ? settings.arguments! as ActiveDeliveryTripEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverActiveDeliveryTrackingScreen(trip: trip),
+        );
+
+      case AppRoutes.driverDeliveryDelay:
+        final trip = settings.arguments is ActiveDeliveryTripEntity
+            ? settings.arguments! as ActiveDeliveryTripEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverDeliveryDelayScreen(trip: trip),
+        );
+
+      case AppRoutes.driverFailedDelivery:
+        final trip = settings.arguments is ActiveDeliveryTripEntity
+            ? settings.arguments! as ActiveDeliveryTripEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverFailedDeliveryScreen(trip: trip),
+        );
+
+      case AppRoutes.driverReturnBoxToRestaurant:
+        final trip = settings.arguments is ActiveDeliveryTripEntity
+            ? settings.arguments! as ActiveDeliveryTripEntity
+            : null;
+        final returnBox = settings.arguments is ReturnBoxEntity
+            ? settings.arguments! as ReturnBoxEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverReturnBoxToRestaurantScreen(
+            trip: trip,
+            returnBox: returnBox,
+          ),
+        );
+
+      case AppRoutes.driverDeliverySuccess:
+        final trip = settings.arguments is ActiveDeliveryTripEntity
+            ? settings.arguments! as ActiveDeliveryTripEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverDeliverySuccessScreen(trip: trip),
         );
 
       default:

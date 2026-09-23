@@ -1003,6 +1003,66 @@
         "type": "int"
       }
     }
-  }
+  },
+  "driverStartDeliveryRouteTitle": "Start Delivery Route",
+  "driverStartDeliveryRouteSubtitle": "Review order details and start route",
+  "driverStartRouteActionButton": "Start Delivery Route",
+  "driverCustomerNotesLabel": "Customer Notes",
+  "driverDeliveryAddressLabel": "Delivery Address",
+  "driverEstimatedEtaDistance": "{minutes} min • {distance} km",
+  "@driverEstimatedEtaDistance": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "double"
+      }
+    }
+  },
+  "driverMealsCountFormatted": "{count} Meals",
+  "@driverMealsCountFormatted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverActiveTrackingTitle": "Delivery Tracking",
+  "driverTripStepStart": "Start Route",
+  "driverTripStepEnRoute": "On the Way",
+  "driverTripStepArrived": "Arrived",
+  "driverConfirmArrivalAction": "Confirm Arrival & Delivery",
+  "driverReportDelayButton": "Delay",
+  "driverReportFailedButton": "Delivery Failed",
+  "driverCallCustomer": "Call",
+  "driverMessageCustomer": "Chat",
+  "driverDeliveryDelayTitle": "Delivery Delay",
+  "driverDeliveryDelaySubtitle": "Please inform support or continue if on your way",
+  "driverContinueDeliveryAction": "Continue Delivery",
+  "driverContactSupportAction": "Contact Support",
+  "driverDelayNoticeTime": "Estimated delivery time exceeded schedule",
+  "driverFailedDeliveryTitle": "Failed Delivery",
+  "driverFailedDeliverySubtitle": "Select the reason for inability to deliver order",
+  "driverFailureReasonLabel": "Failure Reason",
+  "driverAdditionalNotesLabel": "Additional notes (optional)",
+  "driverAdditionalNotesHint": "Enter any other details here...",
+  "driverSendReportAction": "Send Report & Return Box",
+  "driverRetryDelivery": "Retry Delivery",
+  "driverReturnBoxTitle": "Return Box to Restaurant",
+  "driverReturnBoxSubtitle": "Head to restaurant to return box and confirm receipt",
+  "driverBoxStatusReturning": "Not Delivered - Returning",
+  "driverAttachImageLabel": "Attach verification photo (optional)",
+  "driverConfirmRestaurantReturnAction": "Confirm Restaurant Receipt",
+  "driverDeliverySuccessTitle": "Order Delivered Successfully",
+  "driverDeliverySuccessSubtitle": "Trip completed and box delivered to customer successfully",
+  "driverOrderSummaryTitle": "Order Summary",
+  "driverOrderNumberLabel": "Order Number",
+  "driverCustomerNameLabel": "Customer Name",
+  "driverDeliveredAtLabel": "Delivered At",
+  "driverPaymentMethodLabel": "Payment Method",
+  "driverReceiptConfirmedAction": "Receipt Confirmed",
+  "driverNextOrderAction": "Proceed to Next Order",
+  "driverBackToOrdersAction": "Back to Orders"
 }
 
