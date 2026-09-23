@@ -38,6 +38,10 @@ class _FakeRealtimeClient implements DispatcherMapRealtimeClient {
   bool isConnected = false;
   int connectCalls = 0;
   int disconnectCalls = 0;
+  int acquireCalls = 0;
+  int releaseCalls = 0;
+  String? lastAcquiredOwner;
+  String? lastReleasedOwner;
 
   @override
   Stream<DispatcherMapRealtimeEventDto> get events => eventController.stream;
@@ -45,6 +49,20 @@ class _FakeRealtimeClient implements DispatcherMapRealtimeClient {
   @override
   Stream<DispatcherMapConnectionStatus> get connectionStatuses =>
       connectionController.stream;
+
+  @override
+  Future<void> acquire(String ownerId) async {
+    acquireCalls++;
+    lastAcquiredOwner = ownerId;
+    await connect();
+  }
+
+  @override
+  Future<void> release(String ownerId) async {
+    releaseCalls++;
+    lastReleasedOwner = ownerId;
+    await disconnect();
+  }
 
   @override
   Future<void> connect() async {
@@ -96,12 +114,18 @@ void main() {
 
   test('startRealtime and stopRealtime delegate to realtime client', () async {
     expect(realtimeClient.connectCalls, 0);
+    expect(realtimeClient.acquireCalls, 0);
     await dataSource.startRealtime();
     expect(realtimeClient.connectCalls, 1);
+    expect(realtimeClient.acquireCalls, 1);
+    expect(realtimeClient.lastAcquiredOwner, 'dispatcher-map');
 
     expect(realtimeClient.disconnectCalls, 0);
+    expect(realtimeClient.releaseCalls, 0);
     await dataSource.stopRealtime();
     expect(realtimeClient.disconnectCalls, 1);
+    expect(realtimeClient.releaseCalls, 1);
+    expect(realtimeClient.lastReleasedOwner, 'dispatcher-map');
   });
 
   test('realtimeEvents and connectionStatuses streams forward correctly', () async {

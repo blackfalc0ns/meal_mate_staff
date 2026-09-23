@@ -11,8 +11,7 @@ import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_button.dart';
 import '../../../../../core/widget/app_cached_network_image.dart';
-import '../../../dispatcher_driver_details/domain/entities/driver_active_box_entity.dart';
-import '../../../dispatcher_driver_details/domain/entities/driver_details_entity.dart';
+import '../../../../../config/routing/arguments/dispatcher_driver_details_route_arguments.dart';
 import '../../domain/entities/dispatcher_map_driver_entity.dart';
 import '../../domain/entities/dispatcher_map_driver_status.dart';
 
@@ -54,46 +53,10 @@ class DispatcherMapDriverBottomSheet extends StatelessWidget {
 
     Navigator.of(context).pop();
 
-    final detailsEntity = DriverDetailsEntity(
-      id: driver.id,
-      name: driver.name.isNotEmpty
-          ? driver.name
-          : (driver.driverCode ?? 'سائق'),
-      phone: driver.phoneNumber ?? '+966 50 123 4567',
-      isAvailable: driver.status != DispatcherMapDriverStatus.paused,
-      lastUpdate: 'الآن',
-      currentBoxesCount: driver.boxId.isNotEmpty ? 1 : 0,
-      deliveredTodayCount: 28,
-      avgDelayMinutes: 12,
-      performanceRating: 4.8,
-      locationStatus: driver.statusText ??
-          (driver.status == DispatcherMapDriverStatus.inDelivery
-              ? 'خارج للتوصيل'
-              : 'متوقف'),
-      locationTimeAgoMinutes: 15,
-      locationStreet: driver.locationZone ?? 'شارع الملك فهد',
-      locationArea: driver.locationZone ?? 'الرياض',
-      approxKm: driver.remainingDistanceKm?.round() ?? 120,
-      failedDeliveryCount: driver.hasIssue ? 1 : 0,
-      activeBoxes: driver.boxId.isNotEmpty
-          ? [
-              DriverActiveBoxEntity(
-                boxId: driver.boxId,
-                customerName: driver.name,
-                area: driver.locationZone ?? 'الرياض',
-                status: driver.statusText ?? 'خارج للتوصيل',
-                time: '12:30 م',
-                imageAsset: AppAssets.driverBox3d,
-                isDelivering: true,
-              ),
-            ]
-          : const [],
-    );
-
     unawaited(
       Navigator.of(context).pushNamed(
         AppRoutes.dispatcherDriverDetails,
-        arguments: detailsEntity,
+        arguments: DispatcherDriverDetailsRouteArgs(driverId: driver.id),
       ),
     );
   }

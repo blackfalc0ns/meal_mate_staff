@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/routing/arguments/dispatcher_drivers_route_arguments.dart';
+import '../../../../../config/routing/arguments/dispatcher_driver_details_route_arguments.dart';
 import '../../../../../config/routing/arguments/dispatcher_map_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
@@ -91,7 +92,10 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
         return;
       }
       unawaited(
-        Navigator.of(context).pushNamed(AppRoutes.dispatcherDriverDetails),
+        Navigator.of(context).pushNamed(
+          AppRoutes.dispatcherDriverDetails,
+          arguments: DispatcherDriverDetailsRouteArgs(driverId: driver.driverId),
+        ),
       );
     } else {
       if (!driver.isAvailableForSelection || _viewModel.state.isAssigning) {

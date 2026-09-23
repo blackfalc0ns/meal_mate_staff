@@ -21,8 +21,8 @@ import 'arguments/dispatcher_support_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
 import 'arguments/box_tracking_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/presentation/screens/dispatcher_box_tracking_screen.dart';
-import '../../features/dispatcher/dispatcher_driver_details/domain/entities/driver_details_entity.dart';
-import '../../features/dispatcher/dispatcher_driver_details/domain/fake_data/driver_details_fake_data.dart';
+import 'arguments/dispatcher_driver_details_route_arguments.dart';
+import 'arguments/dispatcher_map_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/presentation/screens/dispatcher_driver_performance_screen.dart';
 import '../../features/dispatcher/dispatcher_drivers/presentation/screens/dispatcher_drivers_screen.dart';
@@ -283,9 +283,14 @@ class RouteGenerator {
         );
 
       case AppRoutes.dispatcherMap:
+        final mapArgs = settings.arguments is DispatcherMapRouteArgs
+            ? settings.arguments! as DispatcherMapRouteArgs
+            : null;
         return _buildRoute(
           settings: settings,
-          page: const DispatcherMapScreen(),
+          page: DispatcherMapScreen(
+            focusDriverId: mapArgs?.focusDriverId,
+          ),
         );
 
       case AppRoutes.dispatcherSupport:
@@ -374,12 +379,25 @@ class RouteGenerator {
         );
 
       case AppRoutes.dispatcherDriverDetails:
-        final driver = settings.arguments is DriverDetailsEntity
-            ? settings.arguments! as DriverDetailsEntity
-            : DriverDetailsFakeData.defaultDriver;
+        final driverDetailsArgs = switch (settings.arguments) {
+          final DispatcherDriverDetailsRouteArgs args => args,
+          final String id when id.trim().isNotEmpty =>
+            DispatcherDriverDetailsRouteArgs(driverId: id.trim()),
+          _ => null,
+        };
+        if (driverDetailsArgs == null || !driverDetailsArgs.isValid) {
+          return _buildRoute(
+            settings: settings,
+            page: const Scaffold(
+              body: Center(child: Text('Invalid route arguments')),
+            ),
+          );
+        }
         return _buildRoute(
           settings: settings,
-          page: DispatcherDriverDetailsScreen(driver: driver),
+          page: DispatcherDriverDetailsScreen(
+            driverId: driverDetailsArgs.driverId,
+          ),
         );
 
       case AppRoutes.boxTracking:

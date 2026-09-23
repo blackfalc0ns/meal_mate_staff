@@ -123,6 +123,19 @@ import '../../features/dispatcher/dispatcher_box_tracking/domain/usecase/get_box
 import '../../features/dispatcher/dispatcher_box_tracking/domain/usecase/report_box_issue_usecase.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/presentation/manager/box_tracking_view_model.dart';
 
+import '../../features/dispatcher/dispatcher_driver_details/data/data_source/driver_details_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_driver_details/data/data_source/driver_details_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_driver_details/data/repo/driver_details_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_driver_details/domain/repo/driver_details_repository.dart';
+import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/acquire_driver_details_realtime_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/get_driver_active_boxes_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/get_driver_current_location_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/get_driver_details_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/observe_driver_details_updates_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/release_driver_details_realtime_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_details/presentation/manager/driver_details_view_model.dart';
+import '../../features/dispatcher/dispatcher_driver_details/presentation/services/driver_contact_launcher.dart';
+
 final GetIt getIt = GetIt.instance;
 
 Future<void> configureDependencies() async {
@@ -528,8 +541,43 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<ActiveDeliveryRepository>(
     ActiveDeliveryFakeRepositoryImpl.new,
   );
-  getIt.registerFactory<ActiveDeliveryViewModel>(
-    () => ActiveDeliveryViewModel(repository: getIt<ActiveDeliveryRepository>()),
+  getIt.registerLazySingleton<DriverDetailsRemoteDataSource>(
+    () => DriverDetailsRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverDetailsRepository>(
+    () => DriverDetailsRepositoryImpl(getIt<DriverDetailsRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetDriverDetailsUseCase>(
+    () => GetDriverDetailsUseCase(getIt<DriverDetailsRepository>()),
+  );
+  getIt.registerFactory<GetDriverActiveBoxesUseCase>(
+    () => GetDriverActiveBoxesUseCase(getIt<DriverDetailsRepository>()),
+  );
+  getIt.registerFactory<GetDriverCurrentLocationUseCase>(
+    () => GetDriverCurrentLocationUseCase(getIt<DriverDetailsRepository>()),
+  );
+  getIt.registerFactory<ObserveDriverDetailsUpdatesUseCase>(
+    () => ObserveDriverDetailsUpdatesUseCase(getIt<DispatcherMapRepository>()),
+  );
+  getIt.registerFactory<AcquireDriverDetailsRealtimeUseCase>(
+    () => AcquireDriverDetailsRealtimeUseCase(getIt<DispatcherMapRealtimeClient>()),
+  );
+  getIt.registerFactory<ReleaseDriverDetailsRealtimeUseCase>(
+    () => ReleaseDriverDetailsRealtimeUseCase(getIt<DispatcherMapRealtimeClient>()),
+  );
+  getIt.registerLazySingleton<DriverContactLauncher>(
+    () => const DriverContactLauncherImpl(),
+  );
+  getIt.registerFactoryParam<DriverDetailsViewModel, String, void>(
+    (driverId, _) => DriverDetailsViewModel(
+      driverId,
+      getIt<GetDriverDetailsUseCase>(),
+      getIt<GetDriverActiveBoxesUseCase>(),
+      getIt<GetDriverCurrentLocationUseCase>(),
+      getIt<ObserveDriverDetailsUpdatesUseCase>(),
+      getIt<AcquireDriverDetailsRealtimeUseCase>(),
+      getIt<ReleaseDriverDetailsRealtimeUseCase>(),
+    ),
   );
 }
 

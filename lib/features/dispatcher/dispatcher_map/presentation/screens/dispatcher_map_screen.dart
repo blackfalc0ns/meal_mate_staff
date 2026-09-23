@@ -25,6 +25,7 @@ import '../widgets/dispatcher_map_header.dart';
 import '../widgets/dispatcher_map_kpi_bar.dart';
 import '../widgets/dispatcher_map_reconnect_banner.dart';
 import '../widgets/dispatcher_map_shimmer.dart';
+import '../../../../../core/widget/custom_snak_bar.dart';
 
 class DispatcherMapScreen extends StatefulWidget {
   const DispatcherMapScreen({
@@ -33,12 +34,14 @@ class DispatcherMapScreen extends StatefulWidget {
     this.isActive = true,
     this.viewModel,
     this.cameraController,
+    this.focusDriverId,
   });
 
   final VoidCallback? onBack;
   final bool isActive;
   final DispatcherMapViewModel? viewModel;
   final DispatcherMapCameraController? cameraController;
+  final String? focusDriverId;
 
   @override
   State<DispatcherMapScreen> createState() => _DispatcherMapScreenState();
@@ -50,6 +53,7 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
   late final DispatcherMapCameraController _cameraController;
   late final ScrollController _carouselScrollController;
   bool _ownsViewModel = false;
+  bool _hasHandledInitialFocus = false;
 
   @override
   void initState() {
@@ -148,7 +152,38 @@ class _DispatcherMapScreenState extends State<DispatcherMapScreen>
 
     return BlocProvider.value(
       value: _viewModel,
-      child: BlocBuilder<DispatcherMapViewModel, DispatcherMapState>(
+      child: BlocConsumer<DispatcherMapViewModel, DispatcherMapState>(
+        listener: (context, state) {
+          if (widget.focusDriverId != null &&
+              !_hasHandledInitialFocus &&
+              state.snapshot != null) {
+            _hasHandledInitialFocus = true;
+            final driver = state.drivers
+                .where((d) => d.id == widget.focusDriverId)
+                .firstOrNull;
+            if (driver != null) {
+              _viewModel.doIntent(SelectDriverDispatcherMapEvent(driver.id));
+              if (driver.latitude != null &&
+                  driver.longitude != null &&
+                  driver.latitude!.isFinite &&
+                  driver.longitude!.isFinite) {
+                _cameraController.centerOn(
+                  LatLng(driver.latitude!, driver.longitude!),
+                );
+              } else {
+                CustomSnackbar.showError(
+                  context: context,
+                  message: 'Driver location unavailable',
+                );
+              }
+            } else {
+              CustomSnackbar.showError(
+                context: context,
+                message: 'Driver not found',
+              );
+            }
+          }
+        },
         builder: (context, state) {
           // Initial Loading / Failure states
           if (state.snapshot == null) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/dispatcher_driver_details_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/errors/error_widgets/api_error_widget.dart';
@@ -245,7 +246,8 @@ class _DispatcherDriverPerformanceScreenState
             unawaited(
               context.pushNamed(
                 AppRoutes.dispatcherDriverDetails,
-                arguments: driverId,
+                arguments:
+                    DispatcherDriverDetailsRouteArgs(driverId: driverId),
               ),
             );
           }
