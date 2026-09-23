@@ -1,27 +1,68 @@
-import 'assign_box_candidate_driver_entity.dart';
+import 'assign_box_priority.dart';
+import 'assign_box_status.dart';
 
 class AssignBoxOrderEntity {
   const AssignBoxOrderEntity({
     required this.boxId,
     required this.boxCode,
-    required this.statusText,
-    required this.areaText,
-    required this.distanceText,
+    required this.zoneName,
     required this.deliveryTimeWindow,
-    required this.priorityText,
+    required this.mealsCount,
     required this.mealsCountText,
-    required this.recommendedDriver,
-    required this.candidates,
+    this.distanceKm,
+    required this.distanceText,
+    required this.priority,
+    required this.priorityText,
+    required this.status,
+    required this.statusText,
   });
 
   final String boxId;
   final String boxCode;
-  final String statusText;
-  final String areaText;
-  final String distanceText;
+  final String zoneName;
   final String deliveryTimeWindow;
-  final String priorityText;
+  final int mealsCount;
   final String mealsCountText;
-  final AssignBoxCandidateDriverEntity recommendedDriver;
-  final List<AssignBoxCandidateDriverEntity> candidates;
+  final double? distanceKm;
+  final String distanceText;
+  final AssignBoxPriority priority;
+  final String priorityText;
+  final AssignBoxStatus status;
+  final String statusText;
+
+  /// Compatibility getter for staged widget migration.
+  String get areaText => zoneName;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AssignBoxOrderEntity &&
+          runtimeType == other.runtimeType &&
+          boxId == other.boxId &&
+          boxCode == other.boxCode &&
+          zoneName == other.zoneName &&
+          deliveryTimeWindow == other.deliveryTimeWindow &&
+          mealsCount == other.mealsCount &&
+          mealsCountText == other.mealsCountText &&
+          distanceKm == other.distanceKm &&
+          distanceText == other.distanceText &&
+          priority == other.priority &&
+          priorityText == other.priorityText &&
+          status == other.status &&
+          statusText == other.statusText;
+
+  @override
+  int get hashCode =>
+      boxId.hashCode ^
+      boxCode.hashCode ^
+      zoneName.hashCode ^
+      deliveryTimeWindow.hashCode ^
+      mealsCount.hashCode ^
+      mealsCountText.hashCode ^
+      distanceKm.hashCode ^
+      distanceText.hashCode ^
+      priority.hashCode ^
+      priorityText.hashCode ^
+      status.hashCode ^
+      statusText.hashCode;
 }
