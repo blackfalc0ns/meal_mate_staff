@@ -6,6 +6,7 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/box_tracking_step_entity.dart';
+import '../../domain/entities/box_tracking_step_icon_kind.dart';
 
 class BoxTrackingTimelineStepItem extends StatelessWidget {
   const BoxTrackingTimelineStepItem({
@@ -117,7 +118,7 @@ class BoxTrackingTimelineStepItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(Spacing.radiusSm),
             ),
             child: Icon(
-              step.icon ?? _fallbackIcon(step.title),
+              _iconForKind(step.iconKind, step.title),
               size: Spacing.iconMd,
               color: iconColor,
             ),
@@ -209,6 +210,16 @@ class BoxTrackingTimelineStepItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  IconData _iconForKind(BoxTrackingStepIconKind kind, String title) {
+    return switch (kind) {
+      BoxTrackingStepIconKind.restaurant => Icons.storefront_rounded,
+      BoxTrackingStepIconKind.driver => Icons.person_rounded,
+      BoxTrackingStepIconKind.truck => Icons.local_shipping_rounded,
+      BoxTrackingStepIconKind.receipt => Icons.assignment_turned_in_outlined,
+      BoxTrackingStepIconKind.unknown => _fallbackIcon(title),
+    };
   }
 
   IconData _fallbackIcon(String title) {

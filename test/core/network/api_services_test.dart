@@ -15,6 +15,7 @@ import 'package:meal_mate_delivery/features/register/data/models/request/driver_
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/reassign_driver_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/resolve_issue_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/data/models/request/assign_driver_request_dto.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/data/models/request/report_box_issue_request_dto.dart';
 
 void main() {
   late Dio dio;
@@ -414,6 +415,32 @@ void main() {
       await apiServices.getAssignBoxSummary(boxId);
       expect(capturedOptions.method, 'GET');
       expect(capturedOptions.path, '/api/v1/dispatcher/orders/$boxId/summary');
+    });
+
+    test('getBoxTracking hits GET EndPoints.dispatcherOrderTracking with path substitution', () async {
+      const boxId = '4f8a3c21-9b12-42e7-90c1-872f2316e110';
+      await apiServices.getBoxTracking(boxId);
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, '/api/v1/dispatcher/orders/$boxId/tracking');
+    });
+
+    test('reportBoxIssue hits POST EndPoints.dispatcherOrderIssues with path substitution and request body', () async {
+      const boxId = '4f8a3c21-9b12-42e7-90c1-872f2316e110';
+      await apiServices.reportBoxIssue(
+        boxId,
+        const ReportBoxIssueRequestDto(
+          issueType: 'DelayedDelivery',
+          description: 'Traffic delay',
+          severity: 'Medium',
+        ),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/dispatcher/orders/$boxId/issues');
+      expect(capturedOptions.data, {
+        'issueType': 'DelayedDelivery',
+        'description': 'Traffic delay',
+        'severity': 'Medium',
+      });
     });
   });
 }

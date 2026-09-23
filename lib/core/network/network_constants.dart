@@ -62,5 +62,9 @@ abstract class EndPoints {
       '/api/v1/dispatcher/orders/{boxId}/assignment-details';
   static const String dispatcherOrderSummary =
       '/api/v1/dispatcher/orders/{boxId}/summary';
+  static const String dispatcherOrderTracking =
+      '/api/v1/dispatcher/orders/{boxId}/tracking';
+  static const String dispatcherOrderIssues =
+      '/api/v1/dispatcher/orders/{boxId}/issues';
 }
 

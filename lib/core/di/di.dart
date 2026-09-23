@@ -112,6 +112,13 @@ import '../../features/dispatcher/dispatcher_assign_box/domain/repo/assign_box_r
 import '../../features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_details_usecase.dart';
 import '../../features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_summary_usecase.dart';
 import '../../features/dispatcher/dispatcher_assign_box/presentation/manager/assign_box_view_model.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/data/data_source/box_tracking_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/data/data_source/box_tracking_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/data/repo/box_tracking_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/domain/repo/box_tracking_repository.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/domain/usecase/get_box_tracking_usecase.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/domain/usecase/report_box_issue_usecase.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/presentation/manager/box_tracking_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -493,6 +500,25 @@ Future<void> configureDependencies() async {
       getIt<GetAssignBoxDetailsUseCase>(),
       getIt<GetAssignBoxSummaryUseCase>(),
       getIt<AssignDriverToBoxUseCase>(),
+      boxId: boxId,
+    ),
+  );
+  getIt.registerLazySingleton<BoxTrackingRemoteDataSource>(
+    () => BoxTrackingRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<BoxTrackingRepository>(
+    () => BoxTrackingRepositoryImpl(getIt<BoxTrackingRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetBoxTrackingUseCase>(
+    () => GetBoxTrackingUseCase(getIt<BoxTrackingRepository>()),
+  );
+  getIt.registerFactory<ReportBoxIssueUseCase>(
+    () => ReportBoxIssueUseCase(getIt<BoxTrackingRepository>()),
+  );
+  getIt.registerFactoryParam<BoxTrackingViewModel, String, void>(
+    (boxId, _) => BoxTrackingViewModel(
+      getIt<GetBoxTrackingUseCase>(),
+      getIt<ReportBoxIssueUseCase>(),
       boxId: boxId,
     ),
   );

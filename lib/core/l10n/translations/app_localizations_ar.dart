@@ -1307,6 +1307,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get boxTrackingDriverRole => 'السائق';
 
   @override
+  String get boxTrackingReportIssueTitle => 'الإبلاغ عن مشكلة في الصندوق';
+
+  @override
+  String get boxTrackingIssueTypeDamaged => 'صندوق تالف';
+
+  @override
+  String get boxTrackingIssueTypeLateDelivery => 'تأخر في التوصيل';
+
+  @override
+  String get boxTrackingIssueTypeWrongAddress => 'عنوان خاطئ';
+
+  @override
+  String get boxTrackingIssueTypeCustomerUnavailable => 'العميل غير متاح';
+
+  @override
+  String get boxTrackingIssueTypeOther => 'أخرى';
+
+  @override
+  String get boxTrackingIssueNotesLabel => 'وصف المشكلة';
+
+  @override
+  String get boxTrackingIssueNotesHint =>
+      'اكتب تفاصيل المشكلة (3 أحرف على الأقل)...';
+
+  @override
+  String get boxTrackingIssueSubmit => 'إرسال البلاغ';
+
+  @override
+  String get boxTrackingIssueSubmitting => 'جاري الإرسال...';
+
+  @override
+  String get boxTrackingIssueSuccess => 'تم تسجيل البلاغ بنجاح';
+
+  @override
+  String get boxTrackingDriverUnassigned => 'غير مسند';
+
+  @override
   String get reassignDriverTitle => 'تعيين سائق بديل';
 
   @override

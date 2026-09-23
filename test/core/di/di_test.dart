@@ -34,6 +34,11 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/dat
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/domain/repo/operations_log_repository.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/domain/usecase/get_operations_log_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/presentation/manager/operations_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/data/data_source/box_tracking_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/repo/box_tracking_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/get_box_tracking_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/report_box_issue_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/manager/box_tracking_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -238,6 +243,31 @@ void main() {
     expect(summaryUseCase, isNotNull);
     expect(vm1, isNotNull);
     expect(vm1.state.boxId, 'test-box-id');
+    expect(identical(vm1, vm2), isFalse); // factory
+  });
+
+  test('configureDependencies registers box tracking dependencies', () async {
+    await configureDependencies();
+
+    expect(getIt.isRegistered<BoxTrackingRemoteDataSource>(), isTrue);
+    expect(getIt.isRegistered<BoxTrackingRepository>(), isTrue);
+    expect(getIt.isRegistered<GetBoxTrackingUseCase>(), isTrue);
+    expect(getIt.isRegistered<ReportBoxIssueUseCase>(), isTrue);
+    expect(getIt.isRegistered<BoxTrackingViewModel>(), isTrue);
+
+    final remoteDataSource = getIt<BoxTrackingRemoteDataSource>();
+    final repository = getIt<BoxTrackingRepository>();
+    final trackingUseCase = getIt<GetBoxTrackingUseCase>();
+    final issueUseCase = getIt<ReportBoxIssueUseCase>();
+    final vm1 = getIt<BoxTrackingViewModel>(param1: '4f8a3c21-9b12-42e7-90c1-872f2316e110');
+    final vm2 = getIt<BoxTrackingViewModel>(param1: '4f8a3c21-9b12-42e7-90c1-872f2316e110');
+
+    expect(remoteDataSource, isNotNull);
+    expect(repository, isNotNull);
+    expect(trackingUseCase, isNotNull);
+    expect(issueUseCase, isNotNull);
+    expect(vm1, isNotNull);
+    expect(vm1.state.boxId, '4f8a3c21-9b12-42e7-90c1-872f2316e110');
     expect(identical(vm1, vm2), isFalse); // factory
   });
 }

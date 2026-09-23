@@ -45,6 +45,9 @@ import '../../features/dispatcher/dispatcher_drivers/data/models/response/dispat
 import '../../features/dispatcher/dispatcher_drivers/data/models/response/driver_assignment_response_dto.dart';
 import '../../features/dispatcher/dispatcher_assign_box/data/models/response/assign_box_details_response_dto.dart';
 import '../../features/dispatcher/dispatcher_assign_box/data/models/response/assign_box_summary_response_dto.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/data/models/request/report_box_issue_request_dto.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/data/models/response/box_tracking_response_dto.dart';
+import '../../features/dispatcher/dispatcher_box_tracking/data/models/response/report_box_issue_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -241,6 +244,15 @@ abstract class ApiServices {
   @GET(EndPoints.dispatcherOrderSummary)
   Future<AssignBoxSummaryResponseDto> getAssignBoxSummary(
     @Path('boxId') String boxId,
+  );
+
+  @GET(EndPoints.dispatcherOrderTracking)
+  Future<BoxTrackingResponseDto> getBoxTracking(@Path('boxId') String boxId);
+
+  @POST(EndPoints.dispatcherOrderIssues)
+  Future<ReportBoxIssueResponseDto> reportBoxIssue(
+    @Path('boxId') String boxId,
+    @Body() ReportBoxIssueRequestDto request,
   );
 }
 

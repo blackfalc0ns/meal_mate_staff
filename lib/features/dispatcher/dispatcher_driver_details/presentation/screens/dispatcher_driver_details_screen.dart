@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
-import '../../../dispatcher_box_tracking/domain/entities/box_tracking_driver_entity.dart';
-import '../../../dispatcher_box_tracking/domain/entities/box_tracking_entity.dart';
-import '../../../dispatcher_box_tracking/domain/fake_data/box_tracking_fake_data.dart';
+import '../../../../../config/routing/arguments/box_tracking_route_arguments.dart';
 import '../../domain/entities/driver_active_box_entity.dart';
 import '../../domain/entities/driver_details_entity.dart';
 import '../../domain/fake_data/driver_details_fake_data.dart';
@@ -44,30 +42,12 @@ class DispatcherDriverDetailsScreen extends StatelessWidget {
       return;
     }
 
-    final trackingEntity = BoxTrackingEntity(
-      boxId: box.boxId.replaceAll('#', ''),
-      customerName: box.customerName,
-      deliveryAddress: box.area,
-      deliveryTime: box.time,
-      status: box.isDelivering
-          ? BoxTrackingStatus.onTheWay
-          : BoxTrackingStatus.pickedUpByDriver,
-      driver: BoxTrackingDriverEntity(
-        id: driver.id,
-        name: driver.name,
-        phone: driver.phone,
-        isOnline: driver.isAvailable,
+    Navigator.of(context).pushNamed(
+      AppRoutes.boxTracking,
+      arguments: BoxTrackingRouteArguments(
+        boxId: box.boxId.replaceAll('#', ''),
       ),
-      planType: 'دايت متوازن',
-      orderDate: 'اليوم 09:50 ص',
-      mealCount: '3 وجبات (يوم كامل)',
-      customerNotes: 'يرجى الاتصال قبل الوصول',
-      steps: BoxTrackingFakeData.defaultSteps,
     );
-
-    Navigator.of(
-      context,
-    ).pushNamed(AppRoutes.boxTracking, arguments: trackingEntity);
   }
 
   @override

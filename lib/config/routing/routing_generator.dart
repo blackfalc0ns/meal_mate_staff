@@ -17,11 +17,9 @@ import '../../features/auth/presentation/screens/splash_screen.dart';
 import 'arguments/assign_box_route_arguments.dart';
 import 'arguments/auth_route_arguments.dart';
 import 'arguments/dispatcher_drivers_route_arguments.dart';
-import 'arguments/dispatcher_map_route_arguments.dart';
 import 'arguments/dispatcher_support_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
-import '../../features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_entity.dart';
-import '../../features/dispatcher/dispatcher_box_tracking/domain/fake_data/box_tracking_fake_data.dart';
+import 'arguments/box_tracking_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/presentation/screens/dispatcher_box_tracking_screen.dart';
 import '../../features/dispatcher/dispatcher_driver_details/domain/entities/driver_details_entity.dart';
 import '../../features/dispatcher/dispatcher_driver_details/domain/fake_data/driver_details_fake_data.dart';
@@ -335,8 +333,8 @@ class RouteGenerator {
       case AppRoutes.assignBox:
         final args = settings.arguments;
         final assignBoxArgs = switch (args) {
-          AssignBoxRouteArgs args when args.isValid => args,
-          String boxId when AssignBoxRouteArgs(boxId: boxId).isValid =>
+          final AssignBoxRouteArgs args when args.isValid => args,
+          final String boxId when AssignBoxRouteArgs(boxId: boxId).isValid =>
             AssignBoxRouteArgs(boxId: boxId),
           _ => null,
         };
@@ -375,12 +373,23 @@ class RouteGenerator {
         );
 
       case AppRoutes.boxTracking:
-        final box = settings.arguments is BoxTrackingEntity
-            ? settings.arguments! as BoxTrackingEntity
-            : BoxTrackingFakeData.defaultBox;
+        final trackingArgs = switch (settings.arguments) {
+          final BoxTrackingRouteArguments args => args,
+          final String boxId when boxId.trim().isNotEmpty =>
+            BoxTrackingRouteArguments(boxId: boxId),
+          _ => null,
+        };
+        if (trackingArgs == null || !trackingArgs.isValid) {
+          return _buildRoute(
+            settings: settings,
+            page: const Scaffold(
+              body: Center(child: Text('Invalid route arguments')),
+            ),
+          );
+        }
         return _buildRoute(
           settings: settings,
-          page: DispatcherBoxTrackingScreen(box: box),
+          page: DispatcherBoxTrackingScreen(boxId: trackingArgs.boxId),
         );
 
       case AppRoutes.driverAssignedBoxes:

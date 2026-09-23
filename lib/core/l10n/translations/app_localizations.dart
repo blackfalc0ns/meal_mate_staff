@@ -2540,6 +2540,78 @@ abstract class AppLocalizations {
   /// **'Driver'**
   String get boxTrackingDriverRole;
 
+  /// No description provided for @boxTrackingReportIssueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Box Issue'**
+  String get boxTrackingReportIssueTitle;
+
+  /// No description provided for @boxTrackingIssueTypeDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Damaged Box'**
+  String get boxTrackingIssueTypeDamaged;
+
+  /// No description provided for @boxTrackingIssueTypeLateDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delayed Delivery'**
+  String get boxTrackingIssueTypeLateDelivery;
+
+  /// No description provided for @boxTrackingIssueTypeWrongAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong Address'**
+  String get boxTrackingIssueTypeWrongAddress;
+
+  /// No description provided for @boxTrackingIssueTypeCustomerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Unreachable'**
+  String get boxTrackingIssueTypeCustomerUnavailable;
+
+  /// No description provided for @boxTrackingIssueTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get boxTrackingIssueTypeOther;
+
+  /// No description provided for @boxTrackingIssueNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Description'**
+  String get boxTrackingIssueNotesLabel;
+
+  /// No description provided for @boxTrackingIssueNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the issue in detail (at least 3 characters)...'**
+  String get boxTrackingIssueNotesHint;
+
+  /// No description provided for @boxTrackingIssueSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Report'**
+  String get boxTrackingIssueSubmit;
+
+  /// No description provided for @boxTrackingIssueSubmitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting...'**
+  String get boxTrackingIssueSubmitting;
+
+  /// No description provided for @boxTrackingIssueSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue reported successfully'**
+  String get boxTrackingIssueSuccess;
+
+  /// No description provided for @boxTrackingDriverUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Unassigned'**
+  String get boxTrackingDriverUnassigned;
+
   /// No description provided for @reassignDriverTitle.
   ///
   /// In en, this message translates to:

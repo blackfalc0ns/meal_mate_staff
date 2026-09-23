@@ -1308,6 +1308,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxTrackingDriverRole => 'Driver';
 
   @override
+  String get boxTrackingReportIssueTitle => 'Report Box Issue';
+
+  @override
+  String get boxTrackingIssueTypeDamaged => 'Damaged Box';
+
+  @override
+  String get boxTrackingIssueTypeLateDelivery => 'Delayed Delivery';
+
+  @override
+  String get boxTrackingIssueTypeWrongAddress => 'Wrong Address';
+
+  @override
+  String get boxTrackingIssueTypeCustomerUnavailable => 'Customer Unreachable';
+
+  @override
+  String get boxTrackingIssueTypeOther => 'Other';
+
+  @override
+  String get boxTrackingIssueNotesLabel => 'Issue Description';
+
+  @override
+  String get boxTrackingIssueNotesHint =>
+      'Describe the issue in detail (at least 3 characters)...';
+
+  @override
+  String get boxTrackingIssueSubmit => 'Submit Report';
+
+  @override
+  String get boxTrackingIssueSubmitting => 'Submitting...';
+
+  @override
+  String get boxTrackingIssueSuccess => 'Issue reported successfully';
+
+  @override
+  String get boxTrackingDriverUnassigned => 'Unassigned';
+
+  @override
   String get reassignDriverTitle => 'Assign Replacement Driver';
 
   @override

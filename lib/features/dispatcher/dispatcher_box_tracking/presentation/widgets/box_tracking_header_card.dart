@@ -8,6 +8,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/box_tracking_entity.dart';
+import '../../domain/entities/box_tracking_status.dart';
 
 class BoxTrackingHeaderCard extends StatelessWidget {
   const BoxTrackingHeaderCard({super.key, required this.box});
@@ -54,11 +55,17 @@ class BoxTrackingHeaderCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '#${box.boxId}',
+                        box.boxCode.isNotEmpty
+                            ? (box.boxCode.startsWith('#')
+                                  ? box.boxCode
+                                  : '#${box.boxCode}')
+                            : '#${box.boxId}',
                         style: getBoldStyle(
                           color: color.onSurface,
                           fontSize: FontSize.size16,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: Spacing.xs / 2),
                       Text(
@@ -72,7 +79,6 @@ class BoxTrackingHeaderCard extends StatelessWidget {
                       ),
                       const SizedBox(height: Spacing.xs / 2),
                       Row(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           SvgPicture.asset(
                             AppAssets.driverLocationPin,
@@ -84,7 +90,7 @@ class BoxTrackingHeaderCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: Spacing.xs / 2),
-                          Flexible(
+                          Expanded(
                             child: Text(
                               box.deliveryAddress,
                               style: getRegularStyle(
@@ -102,57 +108,71 @@ class BoxTrackingHeaderCard extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.xs),
                 // Status badge & appointment time (End in directionality)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                        vertical: Spacing.xs / 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: color.infoSurface,
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: Spacing.xs + Spacing.border,
-                            height: Spacing.xs + Spacing.border,
-                            decoration: BoxDecoration(
-                              color: color.info,
-                              shape: BoxShape.circle,
-                            ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.sm,
+                          vertical: Spacing.xs / 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.infoSurface,
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusPill,
                           ),
-                          const SizedBox(width: Spacing.xs),
-                          Text(
-                            locale.boxTrackingStatusOnTheWay,
-                            style: getSemiBoldStyle(
-                              color: color.info,
-                              fontSize: FontSize.size11,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: Spacing.xs + Spacing.border,
+                              height: Spacing.xs + Spacing.border,
+                              decoration: BoxDecoration(
+                                color: color.info,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: Spacing.xs),
+                            Flexible(
+                              child: Text(
+                                box.statusText.isNotEmpty
+                                    ? box.statusText
+                                    : _statusLabel(box.status, locale),
+                                style: getSemiBoldStyle(
+                                  color: color.info,
+                                  fontSize: FontSize.size11,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Text(
-                      locale.driverDetailsAppointment,
-                      style: getRegularStyle(
-                        color: color.onSurfaceVariant,
-                        fontSize: FontSize.size10,
+                      const SizedBox(height: Spacing.xs),
+                      Text(
+                        locale.driverDetailsAppointment,
+                        style: getRegularStyle(
+                          color: color.onSurfaceVariant,
+                          fontSize: FontSize.size10,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    Text(
-                      box.deliveryTime,
-                      style: getBoldStyle(
-                        color: color.onSurface,
-                        fontSize: FontSize.size13,
+                      Text(
+                        box.deliveryTime,
+                        style: getBoldStyle(
+                          color: color.onSurface,
+                          fontSize: FontSize.size13,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -160,5 +180,15 @@ class BoxTrackingHeaderCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _statusLabel(BoxTrackingStatus status, dynamic locale) {
+    return switch (status) {
+      BoxTrackingStatus.readyAtRestaurant => locale.boxTrackingStatusReady,
+      BoxTrackingStatus.pickedUpByDriver => locale.boxTrackingStatusPickedUp,
+      BoxTrackingStatus.onTheWay => locale.boxTrackingStatusOnTheWay,
+      BoxTrackingStatus.delivered => locale.boxTrackingStatusDelivered,
+      _ => locale.boxTrackingStatusOnTheWay,
+    };
   }
 }

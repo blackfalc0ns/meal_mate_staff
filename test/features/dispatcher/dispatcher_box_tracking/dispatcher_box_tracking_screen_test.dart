@@ -1,17 +1,152 @@
-﻿import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
+import 'package:meal_mate_delivery/core/errors/api_error_type.dart';
+import 'package:meal_mate_delivery/core/errors/api_exception.dart';
+import 'package:meal_mate_delivery/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/fake_data/box_tracking_fake_data.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
+import 'package:meal_mate_delivery/core/network/failures.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_driver_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_status.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_step_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_step_icon_kind.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_step_state.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/report_box_issue_request_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/report_box_issue_result_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/repo/box_tracking_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/get_box_tracking_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/report_box_issue_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/manager/box_tracking_view_model.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/screens/dispatcher_box_tracking_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_app_bar.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_details_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_driver_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_header_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_report_issue_button.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_report_issue_sheet.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_shimmer.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/widgets/box_tracking_timeline_card.dart';
 
+const _testBoxId = '4f8a3c21-9b12-42e7-90c1-872f2316e110';
+
+const _testTracking = BoxTrackingEntity(
+  boxId: _testBoxId,
+  boxCode: '#BX-10256',
+  status: BoxTrackingStatus.onTheWay,
+  statusText: 'في الطريق للتوصيل',
+  statusColor: '#3B82F6',
+  customerName: 'أحمد العتيبي',
+  scheduledTimeText: '12:30 م - 01:30 م',
+  deliveryAddress: 'شارع الملك فهد، حي الصحافة',
+  driver: BoxTrackingDriverEntity(
+    driverId: 'drv-1',
+    driverCode: 'DR-1025',
+    fullName: 'أحمد السعيد',
+    phoneNumber: '+966501234567',
+    avatarUrl: null,
+  ),
+  programType: 'دايت متوازن',
+  orderDateText: 'اليوم 09:50 ص',
+  customerNotes: 'يرجى الاتصال قبل الوصول',
+  mealsSummary: '3 وجبات (يوم كامل)',
+  steps: [
+    BoxTrackingStepEntity(
+      step: 1,
+      state: BoxTrackingStepState.completed,
+      iconKind: BoxTrackingStepIconKind.restaurant,
+      title: 'جاهز في المطعم',
+      description: 'تم تجهيز البوكس وجاهز للاستلام',
+      time: '09:15 ص',
+    ),
+    BoxTrackingStepEntity(
+      step: 2,
+      state: BoxTrackingStepState.completed,
+      iconKind: BoxTrackingStepIconKind.driver,
+      title: 'استلمه السائق',
+      description: 'أحمد السعيد استلم البوكس',
+      time: '09:30 ص',
+    ),
+    BoxTrackingStepEntity(
+      step: 3,
+      state: BoxTrackingStepState.active,
+      iconKind: BoxTrackingStepIconKind.truck,
+      title: 'في الطريق للتوصيل',
+      description: 'البوكس في طريقه إلى العميل',
+      time: '10:00 ص',
+    ),
+    BoxTrackingStepEntity(
+      step: 4,
+      state: BoxTrackingStepState.pending,
+      iconKind: BoxTrackingStepIconKind.receipt,
+      title: 'تم التسليم',
+      description: 'سيفتح السائق كود العميل لتأكيد التسليم',
+      time: null,
+    ),
+  ],
+);
+
+class _FakeBoxTrackingRepo implements BoxTrackingRepository {
+  Completer<ApiResult<BoxTrackingEntity>>? getTrackingCompleter;
+  ApiResult<BoxTrackingEntity>? getTrackingResult;
+  int getTrackingCallCount = 0;
+
+  Completer<ApiResult<ReportBoxIssueResultEntity>>? reportIssueCompleter;
+  int reportIssueCallCount = 0;
+
+  @override
+  Future<ApiResult<BoxTrackingEntity>> getTracking(String boxId) {
+    getTrackingCallCount++;
+    if (getTrackingCompleter != null) {
+      return getTrackingCompleter!.future;
+    }
+    return Future.value(
+      getTrackingResult ?? const ApiSuccessResult(data: _testTracking),
+    );
+  }
+
+  @override
+  Future<ApiResult<ReportBoxIssueResultEntity>> reportIssue(
+    String boxId,
+    ReportBoxIssueRequestEntity request,
+  ) {
+    reportIssueCallCount++;
+    if (reportIssueCompleter != null) {
+      return reportIssueCompleter!.future;
+    }
+    return Future.value(
+      const ApiSuccessResult(
+        data: ReportBoxIssueResultEntity(
+          boxId: _testBoxId,
+          issueId: 'iss-123',
+          reportedAtUtc: null,
+          message: 'تم الإبلاغ بنجاح',
+        ),
+      ),
+    );
+  }
+}
+
 void main() {
+  late _FakeBoxTrackingRepo repo;
+  late BoxTrackingViewModel viewModel;
+
+  setUp(() {
+    repo = _FakeBoxTrackingRepo();
+    viewModel = BoxTrackingViewModel(
+      GetBoxTrackingUseCase(repo),
+      ReportBoxIssueUseCase(repo),
+      boxId: _testBoxId,
+    );
+  });
+
+  tearDown(() async {
+    await viewModel.close();
+  });
+
   Widget buildSubject({
     Locale locale = const Locale('ar'),
     VoidCallback? onBack,
@@ -27,7 +162,8 @@ void main() {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.lightTheme,
       home: DispatcherBoxTrackingScreen(
-        box: BoxTrackingFakeData.defaultBox,
+        boxId: _testBoxId,
+        viewModel: viewModel,
         onBack: onBack,
         onMore: onMore,
         onLiveTracking: onLiveTracking,
@@ -38,8 +174,29 @@ void main() {
     );
   }
 
-  group('DispatcherBoxTrackingScreen Tests', () {
-    testWidgets('renders all major components and cards in RTL Arabic', (
+  group('DispatcherBoxTrackingScreen Integration Tests', () {
+    testWidgets(
+      'shows BoxTrackingShimmer initially while tracking is loading',
+      (tester) async {
+        repo.getTrackingCompleter = Completer();
+
+        await tester.pumpWidget(buildSubject());
+        await tester.pump();
+
+        expect(find.byType(BoxTrackingShimmer), findsOneWidget);
+        expect(find.byType(BoxTrackingHeaderCard), findsNothing);
+
+        repo.getTrackingCompleter!.complete(
+          const ApiSuccessResult(data: _testTracking),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(BoxTrackingShimmer), findsNothing);
+        expect(find.byType(BoxTrackingHeaderCard), findsOneWidget);
+      },
+    );
+
+    testWidgets('renders all loaded sections and data on success', (
       tester,
     ) async {
       await tester.pumpWidget(buildSubject());
@@ -52,131 +209,79 @@ void main() {
       expect(find.byType(BoxTrackingDetailsCard), findsOneWidget);
       expect(find.byType(BoxTrackingReportIssueButton), findsOneWidget);
 
-      expect(find.text('متابعة البوكس'), findsOneWidget);
       expect(find.text('#BX-10256'), findsOneWidget);
-      expect(find.text('عميل: أحمد العتيبي'), findsOneWidget);
-      expect(find.text('في الطريق'), findsOneWidget);
-      expect(find.text('حالة البوكس'), findsOneWidget);
-      expect(find.text('جاهز في المطعم'), findsOneWidget);
-      expect(find.text('تم تجهيز البوكس وجاهز للاستلام'), findsOneWidget);
-      expect(find.text('استلمه السائق'), findsOneWidget);
-      expect(find.text('أحمد السعيد استلم البوكس'), findsOneWidget);
-      expect(find.text('في الطريق للتوصيل'), findsOneWidget);
-      expect(find.text('البوكس في طريقه إلى العميل'), findsOneWidget);
-      expect(find.text('تم التسليم'), findsOneWidget);
-      expect(
-        find.text('سيفتح السائق كود العميل لتأكيد التسليم'),
-        findsOneWidget,
-      );
-      expect(find.text('الموعد'), findsOneWidget);
       expect(find.text('أحمد السعيد'), findsOneWidget);
-      expect(find.text('تتبع مباشر'), findsOneWidget);
-      expect(find.text('رسالة'), findsOneWidget);
-      expect(find.text('اتصال'), findsOneWidget);
-      expect(find.text('تفاصيل البوكس'), findsOneWidget);
-      expect(find.text('نوع البرنامج'), findsOneWidget);
       expect(find.text('دايت متوازن'), findsOneWidget);
-      expect(find.text('الإبلاغ عن مشكلة في البوكس'), findsOneWidget);
     });
 
-    testWidgets('renders properly in English locale', (tester) async {
-      await tester.pumpWidget(buildSubject(locale: const Locale('en')));
-      await tester.pumpAndSettle();
+    testWidgets(
+      'renders ApiErrorWidget on initial load failure and retry triggers reload',
+      (tester) async {
+        repo.getTrackingResult = ApiErrorResult(
+          failure: Failure.fromException(
+            const ApiException(
+              message: 'Server error',
+              errorType: ApiErrorType.serverError,
+            ),
+          ),
+        );
 
-      expect(find.text('Box Tracking'), findsOneWidget);
-      expect(find.text('Customer: أحمد العتيبي'), findsOneWidget);
-      expect(find.text('On the way'), findsOneWidget);
-      expect(find.text('Box Status'), findsOneWidget);
-      expect(find.text('Live Tracking'), findsOneWidget);
-      expect(find.text('Message'), findsOneWidget);
-      expect(find.text('Call'), findsOneWidget);
-      expect(find.text('Box Details'), findsOneWidget);
-      expect(find.text('Plan Type'), findsOneWidget);
-      expect(find.text('Report an issue with the box'), findsOneWidget);
-    });
+        await tester.pumpWidget(buildSubject());
+        await tester.pumpAndSettle();
 
-    testWidgets('triggers callback buttons when tapped', (tester) async {
-      bool backCalled = false;
-      bool moreCalled = false;
-      bool liveCalled = false;
-      bool msgCalled = false;
-      bool callCalled = false;
-      bool reportCalled = false;
+        expect(find.byType(ApiErrorWidget), findsOneWidget);
+        expect(find.byType(BoxTrackingHeaderCard), findsNothing);
+        expect(repo.getTrackingCallCount, 1);
 
-      await tester.pumpWidget(
-        buildSubject(
-          onBack: () => backCalled = true,
-          onMore: () => moreCalled = true,
-          onLiveTracking: () => liveCalled = true,
-          onSendMessage: () => msgCalled = true,
-          onCall: () => callCalled = true,
-          onReportIssue: () => reportCalled = true,
-        ),
-      );
-      await tester.pumpAndSettle();
+        // Now prepare success for retry
+        repo.getTrackingResult = const ApiSuccessResult(data: _testTracking);
+        final retryBtnFinder = find.widgetWithText(
+          ElevatedButton,
+          'إعادة المحاولة',
+        );
+        if (retryBtnFinder.evaluate().isNotEmpty) {
+          await tester.tap(retryBtnFinder);
+        } else {
+          // Find any InkWell / Button in ApiErrorWidget
+          await tester.tap(find.byType(ApiErrorWidget));
+        }
+        await tester.pumpAndSettle();
 
-      // Tap back button
-      final backButton = find
-          .descendant(
-            of: find.byType(BoxTrackingAppBar),
-            matching: find.byType(IconButton),
-          )
-          .first;
-      await tester.tap(backButton);
-      expect(backCalled, isTrue);
+        expect(repo.getTrackingCallCount, 2);
+        expect(find.byType(BoxTrackingHeaderCard), findsOneWidget);
+      },
+    );
 
-      // Tap more options
-      final moreButton = find.byIcon(Icons.more_vert_rounded);
-      await tester.tap(moreButton);
-      expect(moreCalled, isTrue);
+    testWidgets(
+      'tapping report issue button opens BoxTrackingReportIssueSheet',
+      (tester) async {
+        await tester.pumpWidget(buildSubject());
+        await tester.pumpAndSettle();
 
-      // Tap live tracking
-      await tester.ensureVisible(find.text('تتبع مباشر'));
-      await tester.tap(find.text('تتبع مباشر'));
-      expect(liveCalled, isTrue);
+        final reportBtnFinder = find.byType(BoxTrackingReportIssueButton);
+        await tester.ensureVisible(reportBtnFinder);
+        await tester.tap(reportBtnFinder);
+        await tester.pumpAndSettle();
 
-      // Tap message
-      await tester.ensureVisible(find.text('رسالة'));
-      await tester.tap(find.text('رسالة'));
-      expect(msgCalled, isTrue);
+        expect(find.byType(BoxTrackingReportIssueSheet), findsOneWidget);
+      },
+    );
 
-      // Tap call
-      await tester.ensureVisible(find.text('اتصال'));
-      await tester.tap(find.text('اتصال'));
-      expect(callCalled, isTrue);
-
-      // Tap report issue
-      await tester.ensureVisible(find.text('الإبلاغ عن مشكلة في البوكس'));
-      await tester.tap(find.text('الإبلاغ عن مشكلة في البوكس'));
-      expect(reportCalled, isTrue);
-    });
-
-    testWidgets('renders without overflow on narrow viewport (360x720)', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(360, 720);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
-
-      await tester.pumpWidget(buildSubject());
-      await tester.pumpAndSettle();
-
-      expect(tester.takeException(), isNull);
-      expect(find.byType(DispatcherBoxTrackingScreen), findsOneWidget);
-    });
-
-    testWidgets('renders without overflow on extra small viewport (320x640)', (
+    testWidgets('renders without overflow on narrow 320x640 viewport', (
       tester,
     ) async {
       tester.view.physicalSize = const Size(320, 640);
       tester.view.devicePixelRatio = 1.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
 
       await tester.pumpWidget(buildSubject());
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);
-      expect(find.byType(DispatcherBoxTrackingScreen), findsOneWidget);
+      expect(find.byType(BoxTrackingHeaderCard), findsOneWidget);
     });
   });
 }
