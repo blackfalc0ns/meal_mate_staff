@@ -20,6 +20,11 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/d
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/repo/dispatcher_support_repository.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/usecase/get_dispatcher_support_issues_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/manager/dispatcher_support_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/data/data_source/driver_performance_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/domain/repo/driver_performance_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_comparison_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_overview_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/presentation/manager/driver_performance_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -146,6 +151,33 @@ void main() {
       expect(remoteDataSource, isNotNull);
       expect(repository, isNotNull);
       expect(useCase, isNotNull);
+      expect(vm1, isNotNull);
+      expect(identical(vm1, vm2), isFalse); // factory
+    },
+  );
+
+  test(
+    'configureDependencies registers driver performance dependencies',
+    () async {
+      await configureDependencies();
+
+      expect(getIt.isRegistered<DriverPerformanceRemoteDataSource>(), isTrue);
+      expect(getIt.isRegistered<DriverPerformanceRepository>(), isTrue);
+      expect(getIt.isRegistered<GetDriverPerformanceOverviewUseCase>(), isTrue);
+      expect(getIt.isRegistered<GetDriverPerformanceComparisonUseCase>(), isTrue);
+      expect(getIt.isRegistered<DriverPerformanceViewModel>(), isTrue);
+
+      final remoteDataSource = getIt<DriverPerformanceRemoteDataSource>();
+      final repository = getIt<DriverPerformanceRepository>();
+      final overviewUseCase = getIt<GetDriverPerformanceOverviewUseCase>();
+      final comparisonUseCase = getIt<GetDriverPerformanceComparisonUseCase>();
+      final vm1 = getIt<DriverPerformanceViewModel>();
+      final vm2 = getIt<DriverPerformanceViewModel>();
+
+      expect(remoteDataSource, isNotNull);
+      expect(repository, isNotNull);
+      expect(overviewUseCase, isNotNull);
+      expect(comparisonUseCase, isNotNull);
       expect(vm1, isNotNull);
       expect(identical(vm1, vm2), isFalse); // factory
     },

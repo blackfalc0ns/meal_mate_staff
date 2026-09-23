@@ -84,6 +84,13 @@ import '../../features/dispatcher/dispatcher_support/domain/usecase/reassign_dis
 import '../../features/dispatcher/dispatcher_support/presentation/manager/dispatcher_support_view_model.dart';
 import '../../features/dispatcher/dispatcher_support/presentation/manager/issue_details/dispatcher_issue_details_view_model.dart';
 import '../../features/dispatcher/dispatcher_support/presentation/manager/reassignment/dispatcher_reassignment_view_model.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/data/data_source/driver_performance_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/data/data_source/driver_performance_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/data/repo/driver_performance_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/domain/repo/driver_performance_repository.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_comparison_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_overview_usecase.dart';
+import '../../features/dispatcher/dispatcher_driver_performance/presentation/manager/driver_performance_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -379,6 +386,34 @@ Future<void> configureDependencies() async {
       issueId: issueId,
       getCandidatesUseCase: getIt<GetReplacementDriverCandidatesUseCase>(),
       reassignUseCase: getIt<ReassignDispatcherIssueUseCase>(),
+    ),
+  );
+
+  // Dispatcher Driver Performance
+  getIt.registerLazySingleton<DriverPerformanceRemoteDataSource>(
+    () => DriverPerformanceRemoteDataSourceImpl(
+      getIt<ApiServices>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverPerformanceRepository>(
+    () => DriverPerformanceRepositoryImpl(
+      getIt<DriverPerformanceRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDriverPerformanceOverviewUseCase>(
+    () => GetDriverPerformanceOverviewUseCase(
+      getIt<DriverPerformanceRepository>(),
+    ),
+  );
+  getIt.registerFactory<GetDriverPerformanceComparisonUseCase>(
+    () => GetDriverPerformanceComparisonUseCase(
+      getIt<DriverPerformanceRepository>(),
+    ),
+  );
+  getIt.registerFactory<DriverPerformanceViewModel>(
+    () => DriverPerformanceViewModel(
+      getOverviewUseCase: getIt<GetDriverPerformanceOverviewUseCase>(),
+      getComparisonUseCase: getIt<GetDriverPerformanceComparisonUseCase>(),
     ),
   );
 }
