@@ -23,9 +23,9 @@ extension DriverDetailsStatusX on DriverDetailsStatus {
       case 'busy':
         return DriverDetailsStatus.busy;
       case 'delivering':
-        return DriverDetailsStatus.delivering;
       case 'ondelivery':
-        return DriverDetailsStatus.onDelivery;
+      case 'indelivery':
+        return DriverDetailsStatus.delivering;
       case 'offline':
         return DriverDetailsStatus.offline;
       case 'inbreak':
