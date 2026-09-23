@@ -26,4 +26,6 @@ class DriverPerformanceOverviewEntity {
   final DriverPerformanceDistributionEntity distribution;
   final List<DriverPodiumEntryEntity> topDrivers;
   final List<DriverPerformanceRecordEntity> driversTable;
+
+  bool get isEmpty => driversTable.isEmpty && kpis.totalBoxes == 0;
 }

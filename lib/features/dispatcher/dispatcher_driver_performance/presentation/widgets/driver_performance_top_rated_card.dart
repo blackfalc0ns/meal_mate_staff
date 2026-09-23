@@ -55,14 +55,14 @@ class DriverPerformanceTopRatedCard extends StatelessWidget {
             children: [
               if (rank2 != null)
                 Expanded(child: DriverPerformancePodiumColumn(entry: rank2)),
-              if (rank1 != null) ...[
+              if (rank2 != null && rank1 != null)
                 const SizedBox(width: Spacing.sm),
+              if (rank1 != null)
                 Expanded(child: DriverPerformancePodiumColumn(entry: rank1)),
-              ],
-              if (rank3 != null) ...[
+              if ((rank2 != null || rank1 != null) && rank3 != null)
                 const SizedBox(width: Spacing.sm),
+              if (rank3 != null)
                 Expanded(child: DriverPerformancePodiumColumn(entry: rank3)),
-              ],
             ],
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../network/failures.dart';
 import '../api_error_type.dart';
 import '../api_exception.dart';
 import 'client_error_widget.dart';
@@ -17,6 +18,24 @@ class ApiErrorWidget extends StatelessWidget {
     this.onContactSupport,
     this.onCheckConnection,
   });
+
+  factory ApiErrorWidget.fromTypedFailure({
+    Key? key,
+    required Failure failure,
+    VoidCallback? onRetry,
+    VoidCallback? onGoBack,
+    VoidCallback? onContactSupport,
+    VoidCallback? onCheckConnection,
+  }) {
+    return ApiErrorWidget(
+      key: key,
+      exception: failure.exception,
+      onRetry: onRetry,
+      onGoBack: onGoBack,
+      onContactSupport: onContactSupport,
+      onCheckConnection: onCheckConnection,
+    );
+  }
 
   final ApiException exception;
   final VoidCallback? onRetry;

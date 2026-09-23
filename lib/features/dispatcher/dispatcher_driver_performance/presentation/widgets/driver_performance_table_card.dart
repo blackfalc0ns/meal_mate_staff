@@ -5,6 +5,7 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_performance_record_entity.dart';
+import '../../domain/entities/driver_performance_sort_field.dart';
 import 'driver_performance_driver_row.dart';
 import 'driver_performance_table_header.dart';
 
@@ -13,10 +14,18 @@ class DriverPerformanceTableCard extends StatelessWidget {
     super.key,
     required this.drivers,
     this.onSelectDriver,
+    this.onSelectDriverId,
+    this.sortField,
+    this.sortAscending = false,
+    this.onSort,
   });
 
   final List<DriverPerformanceRecordEntity> drivers;
   final ValueChanged<DriverPerformanceRecordEntity>? onSelectDriver;
+  final ValueChanged<String>? onSelectDriverId;
+  final DriverPerformanceSortField? sortField;
+  final bool sortAscending;
+  final ValueChanged<DriverPerformanceSortField>? onSort;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +57,11 @@ class DriverPerformanceTableCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.sm),
-          const DriverPerformanceTableHeader(),
+          DriverPerformanceTableHeader(
+            sortField: sortField,
+            sortAscending: sortAscending,
+            onSort: onSort,
+          ),
           Divider(
             color: color.outlineVariant.withValues(alpha: 0.4),
             height: Spacing.sm,
@@ -57,9 +70,13 @@ class DriverPerformanceTableCard extends StatelessWidget {
           ...drivers.map(
             (record) => DriverPerformanceDriverRow(
               record: record,
-              onTap: onSelectDriver != null
-                  ? () => onSelectDriver!(record)
-                  : null,
+              onTap: () {
+                if (onSelectDriverId != null) {
+                  onSelectDriverId!(record.driverId);
+                } else if (onSelectDriver != null) {
+                  onSelectDriver!(record);
+                }
+              },
             ),
           ),
         ],

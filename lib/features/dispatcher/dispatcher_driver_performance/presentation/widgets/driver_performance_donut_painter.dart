@@ -35,6 +35,15 @@ class DriverPerformanceDonutPainter extends CustomPainter {
     final strokeWidth = size.width * 0.16;
     final radius = (size.width - strokeWidth) / 2;
 
+    if (items.isEmpty) {
+      final basePaint = Paint()
+        ..color = colorScheme.outlineVariant.withValues(alpha: 0.3)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth;
+      canvas.drawCircle(center, radius, basePaint);
+      return;
+    }
+
     double startAngle = -pi / 2;
 
     for (final item in items) {

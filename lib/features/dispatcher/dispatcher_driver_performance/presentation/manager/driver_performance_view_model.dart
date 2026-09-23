@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../../../../core/network/api_results.dart';
 import '../../domain/entities/driver_performance_period.dart';
 import '../../domain/entities/driver_performance_query_entity.dart';
@@ -24,28 +25,31 @@ class DriverPerformanceViewModel extends Cubit<DriverPerformanceState> {
   int _overviewGeneration = 0;
   int _comparisonGeneration = 0;
 
-  void add(DriverPerformanceEvent event) => doIntent(event);
+  void add(DriverPerformanceEvent event) => unawaited(doIntent(event));
 
-  void doIntent(DriverPerformanceEvent event) {
+  Future<void> doIntent(DriverPerformanceEvent event) async {
     switch (event) {
       case LoadDriverPerformanceOverviewEvent():
-        _loadOverview();
+        await _loadOverview();
       case SelectDriverPerformanceTabEvent(:final tab):
-        _selectTab(tab);
+        await _selectTab(tab);
       case SelectDriverPerformancePeriodEvent(:final period):
-        _selectPeriod(period);
-      case SelectDriverPerformanceCustomRangeEvent(:final fromDate, :final toDate):
-        _selectCustomRange(fromDate, toDate);
+        await _selectPeriod(period);
+      case SelectDriverPerformanceCustomRangeEvent(
+        :final fromDate,
+        :final toDate,
+      ):
+        await _selectCustomRange(fromDate, toDate);
       case RefreshDriverPerformanceEvent():
-        _refresh();
+        await _refresh();
       case RetryDriverPerformanceEvent():
-        _retry();
+        await _retry();
       case SortDriverPerformanceTableEvent(:final field):
         _sortTable(field);
     }
   }
 
-  void _selectTab(DriverPerformanceTabType tab) {
+  Future<void> _selectTab(DriverPerformanceTabType tab) async {
     if (state.selectedTab == tab) return;
 
     emit(state.copyWith(selectedTab: tab));
@@ -53,15 +57,15 @@ class DriverPerformanceViewModel extends Cubit<DriverPerformanceState> {
     if (tab == DriverPerformanceTabType.compareDrivers &&
         !state.hasLoadedComparison &&
         !state.isComparisonInitialLoading) {
-      _loadComparison();
+      await _loadComparison();
     } else if (tab == DriverPerformanceTabType.overview &&
         !state.hasLoadedOverview &&
         !state.isOverviewInitialLoading) {
-      _loadOverview();
+      await _loadOverview();
     }
   }
 
-  void _selectPeriod(DriverPerformancePeriod period) {
+  Future<void> _selectPeriod(DriverPerformancePeriod period) async {
     if (state.selectedPeriod == period &&
         period != DriverPerformancePeriod.custom &&
         (state.overview != null || state.comparison != null)) {
@@ -69,19 +73,21 @@ class DriverPerformanceViewModel extends Cubit<DriverPerformanceState> {
     }
 
     final newQuery = DriverPerformanceQueryEntity(period: period);
-    _applyNewPeriodQuery(newQuery);
+    await _applyNewPeriodQuery(newQuery);
   }
 
-  void _selectCustomRange(DateTime fromDate, DateTime toDate) {
+  Future<void> _selectCustomRange(DateTime fromDate, DateTime toDate) async {
     final newQuery = DriverPerformanceQueryEntity(
       period: DriverPerformancePeriod.custom,
       fromDate: fromDate,
       toDate: toDate,
     );
-    _applyNewPeriodQuery(newQuery);
+    await _applyNewPeriodQuery(newQuery);
   }
 
-  void _applyNewPeriodQuery(DriverPerformanceQueryEntity newQuery) {
+  Future<void> _applyNewPeriodQuery(
+    DriverPerformanceQueryEntity newQuery,
+  ) async {
     // Clear old-period data and failures so stale data from a previous period is not shown
     emit(
       state.copyWith(
@@ -98,9 +104,9 @@ class DriverPerformanceViewModel extends Cubit<DriverPerformanceState> {
 
     // Trigger load for the currently active tab
     if (state.selectedTab == DriverPerformanceTabType.overview) {
-      _loadOverview();
+      await _loadOverview();
     } else {
-      _loadComparison();
+      await _loadComparison();
     }
   }
 
@@ -175,12 +181,7 @@ class DriverPerformanceViewModel extends Cubit<DriverPerformanceState> {
   Future<void> _refresh() async {
     if (state.isRefreshing) return;
 
-    emit(
-      state.copyWith(
-        isRefreshing: true,
-        clearRefreshFailure: true,
-      ),
-    );
+    emit(state.copyWith(isRefreshing: true, clearRefreshFailure: true));
 
     if (state.selectedTab == DriverPerformanceTabType.overview) {
       final currentGen = ++_overviewGeneration;
@@ -199,12 +200,7 @@ class DriverPerformanceViewModel extends Cubit<DriverPerformanceState> {
             ),
           );
         case ApiErrorResult(:final failure):
-          emit(
-            state.copyWith(
-              isRefreshing: false,
-              refreshFailure: failure,
-            ),
-          );
+          emit(state.copyWith(isRefreshing: false, refreshFailure: failure));
       }
     } else {
       final currentGen = ++_comparisonGeneration;
@@ -223,21 +219,16 @@ class DriverPerformanceViewModel extends Cubit<DriverPerformanceState> {
             ),
           );
         case ApiErrorResult(:final failure):
-          emit(
-            state.copyWith(
-              isRefreshing: false,
-              refreshFailure: failure,
-            ),
-          );
+          emit(state.copyWith(isRefreshing: false, refreshFailure: failure));
       }
     }
   }
 
-  void _retry() {
+  Future<void> _retry() async {
     if (state.selectedTab == DriverPerformanceTabType.overview) {
-      _loadOverview();
+      await _loadOverview();
     } else {
-      _loadComparison();
+      await _loadComparison();
     }
   }
 

@@ -21,7 +21,7 @@ class DriverPerformanceComparisonShimmer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Segmented tabs placeholder
-          ShimmerWidget(
+          const ShimmerWidget(
             height: 44,
             borderRadius: Spacing.radiusMd,
           ),

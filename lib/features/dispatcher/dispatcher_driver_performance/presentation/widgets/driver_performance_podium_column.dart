@@ -4,6 +4,7 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
 import '../../domain/entities/driver_podium_entry_entity.dart';
 import 'driver_performance_podium_badge.dart';
 
@@ -49,10 +50,18 @@ class DriverPerformancePodiumColumn extends StatelessWidget {
                     width: 1.5,
                   ),
                 ),
-                child: Icon(
-                  Icons.person,
-                  size: 24,
-                  color: color.onSurfaceVariant,
+                child: ClipOval(
+                  child: AppCachedNetworkImage(
+                    imageUrl: entry.avatarUrl,
+                    width: 42,
+                    height: 42,
+                    shape: BoxShape.circle,
+                    errorWidget: Icon(
+                      Icons.person,
+                      size: 24,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
                 ),
               ),
               PositionedDirectional(

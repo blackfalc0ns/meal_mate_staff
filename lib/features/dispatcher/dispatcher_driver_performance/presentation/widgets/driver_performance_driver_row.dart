@@ -1,11 +1,11 @@
-import '../../../../../config/theme/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/theme/colors.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
 import '../../domain/entities/driver_performance_delay_level.dart';
 import '../../domain/entities/driver_performance_driver_status.dart';
 import '../../domain/entities/driver_performance_record_entity.dart';
@@ -64,8 +64,7 @@ class DriverPerformanceDriverRow extends StatelessWidget {
     final failColor = _getFailColor(record.failedDeliveryCount, color);
 
     return InkWell(
-      onTap:
-          onTap ?? () => context.pushNamed(AppRoutes.dispatcherDriverDetails),
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.sm,
@@ -91,10 +90,18 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                           ),
                           color: color.surfaceContainerHighest,
                         ),
-                        child: Icon(
-                          Icons.person,
-                          size: 20,
-                          color: color.onSurfaceVariant,
+                        child: ClipOval(
+                          child: AppCachedNetworkImage(
+                            imageUrl: record.avatarUrl,
+                            width: 34,
+                            height: 34,
+                            shape: BoxShape.circle,
+                            errorWidget: Icon(
+                              Icons.person,
+                              size: 20,
+                              color: color.onSurfaceVariant,
+                            ),
+                          ),
                         ),
                       ),
                       PositionedDirectional(

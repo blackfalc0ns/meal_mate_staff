@@ -21,7 +21,7 @@ class DriverPerformanceOverviewShimmer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Segmented tabs placeholder
-          ShimmerWidget(
+          const ShimmerWidget(
             height: 44,
             borderRadius: Spacing.radiusMd,
           ),
@@ -126,15 +126,15 @@ class DriverPerformanceOverviewShimmer extends StatelessWidget {
               ),
             ),
             padding: const EdgeInsets.all(Spacing.md),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const ShimmerWidget(width: 150, height: 18, borderRadius: 4),
-                const SizedBox(height: Spacing.lg),
+                ShimmerWidget(width: 150, height: 18, borderRadius: 4),
+                SizedBox(height: Spacing.lg),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
+                  children: [
                     ShimmerWidget(width: 75, height: 120, borderRadius: 8),
                     ShimmerWidget(width: 85, height: 150, borderRadius: 8),
                     ShimmerWidget(width: 75, height: 100, borderRadius: 8),

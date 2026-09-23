@@ -70,4 +70,6 @@ class DriverPerformanceComparisonEntity {
   final DateTime? fromDate;
   final DateTime? toDate;
   final List<DriverComparisonRecordEntity> drivers;
+
+  bool get isEmpty => drivers.isEmpty;
 }
