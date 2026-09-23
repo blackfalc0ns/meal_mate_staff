@@ -25,6 +25,10 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_perform
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_comparison_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_overview_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_performance/presentation/manager/driver_performance_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/data/data_source/operations_log_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/domain/repo/operations_log_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/domain/usecase/get_operations_log_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_operations/presentation/manager/operations_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -178,6 +182,30 @@ void main() {
       expect(repository, isNotNull);
       expect(overviewUseCase, isNotNull);
       expect(comparisonUseCase, isNotNull);
+      expect(vm1, isNotNull);
+      expect(identical(vm1, vm2), isFalse); // factory
+    },
+  );
+
+  test(
+    'configureDependencies registers operations log dependencies',
+    () async {
+      await configureDependencies();
+
+      expect(getIt.isRegistered<OperationsLogRemoteDataSource>(), isTrue);
+      expect(getIt.isRegistered<OperationsLogRepository>(), isTrue);
+      expect(getIt.isRegistered<GetOperationsLogUseCase>(), isTrue);
+      expect(getIt.isRegistered<OperationsViewModel>(), isTrue);
+
+      final remoteDataSource = getIt<OperationsLogRemoteDataSource>();
+      final repository = getIt<OperationsLogRepository>();
+      final useCase = getIt<GetOperationsLogUseCase>();
+      final vm1 = getIt<OperationsViewModel>();
+      final vm2 = getIt<OperationsViewModel>();
+
+      expect(remoteDataSource, isNotNull);
+      expect(repository, isNotNull);
+      expect(useCase, isNotNull);
       expect(vm1, isNotNull);
       expect(identical(vm1, vm2), isFalse); // factory
     },

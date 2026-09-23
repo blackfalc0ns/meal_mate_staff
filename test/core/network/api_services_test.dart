@@ -341,5 +341,33 @@ void main() {
         });
       },
     );
+
+    test(
+      'getDispatcherOperationsLog hits GET EndPoints.dispatcherOperationsLog with query parameters',
+      () async {
+        await apiServices.getDispatcherOperationsLog(
+          status: 'Reassigned',
+          datePreset: 'Last7Days',
+          pageNumber: 2,
+          pageSize: 10,
+        );
+        expect(capturedOptions.method, 'GET');
+        expect(capturedOptions.path, '/api/v1/dispatcher/operations/log');
+        expect(
+          capturedOptions.queryParameters,
+          containsPair('status', 'Reassigned'),
+        );
+        expect(
+          capturedOptions.queryParameters,
+          containsPair('datePreset', 'Last7Days'),
+        );
+        expect(capturedOptions.queryParameters, containsPair('pageNumber', 2));
+        expect(capturedOptions.queryParameters, containsPair('pageSize', 10));
+        expect(
+          capturedOptions.queryParameters.containsKey('restaurantId'),
+          isFalse,
+        );
+      },
+    );
   });
 }

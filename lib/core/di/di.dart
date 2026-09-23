@@ -91,6 +91,12 @@ import '../../features/dispatcher/dispatcher_driver_performance/domain/repo/driv
 import '../../features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_comparison_usecase.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/domain/usecase/get_driver_performance_overview_usecase.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/presentation/manager/driver_performance_view_model.dart';
+import '../../features/dispatcher/dispatcher_operations/data/data_source/operations_log_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_operations/data/data_source/operations_log_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_operations/data/repo/operations_log_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_operations/domain/repo/operations_log_repository.dart';
+import '../../features/dispatcher/dispatcher_operations/domain/usecase/get_operations_log_usecase.dart';
+import '../../features/dispatcher/dispatcher_operations/presentation/manager/operations_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -404,6 +410,26 @@ Future<void> configureDependencies() async {
     () => DriverPerformanceViewModel(
       getOverviewUseCase: getIt<GetDriverPerformanceOverviewUseCase>(),
       getComparisonUseCase: getIt<GetDriverPerformanceComparisonUseCase>(),
+    ),
+  );
+
+  // Dispatcher Operations Log
+  getIt.registerLazySingleton<OperationsLogRemoteDataSource>(
+    () => OperationsLogRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<OperationsLogRepository>(
+    () => OperationsLogRepositoryImpl(
+      getIt<OperationsLogRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetOperationsLogUseCase>(
+    () => GetOperationsLogUseCase(
+      getIt<OperationsLogRepository>(),
+    ),
+  );
+  getIt.registerFactory<OperationsViewModel>(
+    () => OperationsViewModel(
+      getOperationsLogUseCase: getIt<GetOperationsLogUseCase>(),
     ),
   );
 }

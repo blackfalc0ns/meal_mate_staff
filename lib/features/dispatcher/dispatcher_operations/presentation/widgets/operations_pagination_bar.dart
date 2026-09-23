@@ -4,18 +4,39 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../domain/entities/operations_pagination_entity.dart';
 
 class OperationsPaginationBar extends StatelessWidget {
   const OperationsPaginationBar({
     super.key,
-    required this.currentPage,
-    required this.totalPages,
+    required this.pagination,
+    this.isLoading = false,
     this.onPreviousTap,
     this.onNextTap,
   });
 
-  final int currentPage;
-  final int totalPages;
+  factory OperationsPaginationBar.legacy({
+    Key? key,
+    required int currentPage,
+    required int totalPages,
+    VoidCallback? onPreviousTap,
+    VoidCallback? onNextTap,
+  }) {
+    return OperationsPaginationBar(
+      key: key,
+      pagination: OperationsPaginationEntity(
+        pageNumber: currentPage,
+        totalPages: totalPages,
+        hasPreviousPage: currentPage > 1,
+        hasNextPage: currentPage < totalPages,
+      ),
+      onPreviousTap: onPreviousTap,
+      onNextTap: onNextTap,
+    );
+  }
+
+  final OperationsPaginationEntity pagination;
+  final bool isLoading;
   final VoidCallback? onPreviousTap;
   final VoidCallback? onNextTap;
 
@@ -24,8 +45,11 @@ class OperationsPaginationBar extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final canGoPrev = currentPage > 1;
-    final canGoNext = currentPage < totalPages;
+    final canGoPrev = !isLoading && pagination.hasPreviousPage;
+    final canGoNext = !isLoading && pagination.hasNextPage;
+    final displayTotalPages = pagination.totalPages == 0
+        ? 1
+        : pagination.totalPages;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -79,7 +103,7 @@ class OperationsPaginationBar extends StatelessWidget {
 
           // Page Indicator
           Text(
-            '$currentPage ${locale.operationsPageOf} $totalPages',
+            '${pagination.pageNumber} ${locale.operationsPageOf} $displayTotalPages',
             style: getBoldStyle(
               fontFamily: FontConstant.alexandria,
               fontSize: FontSize.size12,

@@ -42,6 +42,11 @@ class OperationsStatusBadge extends StatelessWidget {
         color.onSurfaceVariant,
         Icons.cancel_outlined,
       ),
+      _ => (
+        locale.operationsTabAll,
+        color.onSurfaceVariant,
+        Icons.info_outline_rounded,
+      ),
     };
 
     return Column(

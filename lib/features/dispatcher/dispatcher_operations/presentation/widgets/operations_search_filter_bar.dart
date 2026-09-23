@@ -12,12 +12,16 @@ class OperationsSearchFilterBar extends StatelessWidget {
     this.onChanged,
     this.onDateFilterTap,
     this.dateLabel,
+    this.isEnabled = true,
+    this.onClearSearch,
   });
 
   final TextEditingController searchController;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onDateFilterTap;
   final String? dateLabel;
+  final bool isEnabled;
+  final VoidCallback? onClearSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +57,7 @@ class OperationsSearchFilterBar extends StatelessWidget {
                       textDirection: TextDirection.rtl,
                       child: TextField(
                         controller: searchController,
+                        enabled: isEnabled,
                         onChanged: onChanged,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
@@ -73,9 +78,29 @@ class OperationsSearchFilterBar extends StatelessWidget {
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                         ),
                       ),
                     ),
+                  ),
+                  ValueListenableBuilder<TextEditingValue>(
+                    valueListenable: searchController,
+                    builder: (context, value, _) {
+                      if (value.text.isEmpty || !isEnabled) {
+                        return const SizedBox.shrink();
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          searchController.clear();
+                          onClearSearch?.call();
+                        },
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 16,
+                          color: color.onSurfaceVariant,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -84,7 +109,7 @@ class OperationsSearchFilterBar extends StatelessWidget {
           const SizedBox(width: Spacing.sm),
           // 2. Date filter on the RIGHT: [ v  آخر 7 أيام  📅 ]
           InkWell(
-            onTap: onDateFilterTap,
+            onTap: isEnabled ? onDateFilterTap : null,
             borderRadius: BorderRadius.circular(10),
             child: Container(
               height: 38,
@@ -102,7 +127,9 @@ class OperationsSearchFilterBar extends StatelessWidget {
                   Icon(
                     Icons.keyboard_arrow_down_rounded,
                     size: 18,
-                    color: color.primary,
+                    color: isEnabled
+                        ? color.primary
+                        : color.onSurfaceVariant.withValues(alpha: 0.4),
                   ),
                   const SizedBox(width: 4),
                   Text(
@@ -110,14 +137,18 @@ class OperationsSearchFilterBar extends StatelessWidget {
                     style: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
                       fontSize: FontSize.size11,
-                      color: color.primary,
+                      color: isEnabled
+                          ? color.primary
+                          : color.onSurfaceVariant.withValues(alpha: 0.4),
                     ),
                   ),
                   const SizedBox(width: 4),
                   Icon(
                     Icons.calendar_today_outlined,
                     size: 15,
-                    color: color.primary,
+                    color: isEnabled
+                        ? color.primary
+                        : color.onSurfaceVariant.withValues(alpha: 0.4),
                   ),
                 ],
               ),

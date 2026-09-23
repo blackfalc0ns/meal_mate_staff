@@ -4,6 +4,7 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
 
 class OperationsReassignedInfo extends StatelessWidget {
   const OperationsReassignedInfo({
@@ -27,19 +28,31 @@ class OperationsReassignedInfo extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // From driver avatar
-        CircleAvatar(
-          radius: 13,
-          backgroundColor: color.surfaceContainerHigh,
-          backgroundImage: fromAvatarUrl != null
-              ? AssetImage(fromAvatarUrl!)
-              : null,
-          child: fromAvatarUrl == null
-              ? Icon(
+        Container(
+          width: 26,
+          height: 26,
+          decoration: BoxDecoration(
+            color: color.surfaceContainerHigh,
+            shape: BoxShape.circle,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: fromAvatarUrl != null && fromAvatarUrl!.trim().isNotEmpty
+              ? AppCachedNetworkImage(
+                  imageUrl: fromAvatarUrl!,
+                  width: 26,
+                  height: 26,
+                  shape: BoxShape.circle,
+                  errorWidget: Icon(
+                    Icons.person_outline_rounded,
+                    size: 13,
+                    color: color.onSurfaceVariant,
+                  ),
+                )
+              : Icon(
                   Icons.person_outline_rounded,
                   size: 13,
                   color: color.onSurfaceVariant,
-                )
-              : null,
+                ),
         ),
         const SizedBox(width: Spacing.xs / 2),
         ConstrainedBox(
@@ -59,19 +72,31 @@ class OperationsReassignedInfo extends StatelessWidget {
         Icon(Icons.arrow_forward_rounded, size: 11, color: color.primary),
         const SizedBox(width: Spacing.xs / 2),
         // To driver avatar
-        CircleAvatar(
-          radius: 13,
-          backgroundColor: color.surfaceContainerHigh,
-          backgroundImage: toAvatarUrl != null
-              ? AssetImage(toAvatarUrl!)
-              : null,
-          child: toAvatarUrl == null
-              ? Icon(
+        Container(
+          width: 26,
+          height: 26,
+          decoration: BoxDecoration(
+            color: color.surfaceContainerHigh,
+            shape: BoxShape.circle,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: toAvatarUrl != null && toAvatarUrl!.trim().isNotEmpty
+              ? AppCachedNetworkImage(
+                  imageUrl: toAvatarUrl!,
+                  width: 26,
+                  height: 26,
+                  shape: BoxShape.circle,
+                  errorWidget: Icon(
+                    Icons.person_rounded,
+                    size: 13,
+                    color: color.onSurfaceVariant,
+                  ),
+                )
+              : Icon(
                   Icons.person_rounded,
                   size: 13,
                   color: color.onSurfaceVariant,
-                )
-              : null,
+                ),
         ),
         const SizedBox(width: Spacing.xs / 2),
         ConstrainedBox(

@@ -4,20 +4,49 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
+import '../../domain/entities/operations_indicator_color.dart';
 
 class OperationsDriverInfo extends StatelessWidget {
   const OperationsDriverInfo({
     super.key,
     required this.name,
-    required this.orderId,
+    this.boxCode,
+    String? orderId,
     this.avatarUrl,
-    this.isOnline = true,
-  });
+    this.indicatorColor = OperationsIndicatorColor.unknown,
+    bool? isOnline,
+  }) : resolvedBoxCode = boxCode ?? orderId ?? '',
+       resolvedIndicatorColor =
+           indicatorColor != OperationsIndicatorColor.unknown
+           ? indicatorColor
+           : (isOnline == true
+                 ? OperationsIndicatorColor.green
+                 : OperationsIndicatorColor.unknown);
 
   final String name;
-  final String orderId;
+  final String? boxCode;
+  final String resolvedBoxCode;
   final String? avatarUrl;
-  final bool isOnline;
+  final OperationsIndicatorColor indicatorColor;
+  final OperationsIndicatorColor resolvedIndicatorColor;
+
+  Color _resolveIndicatorColor(
+    ColorScheme color,
+    OperationsIndicatorColor indicator,
+  ) {
+    switch (indicator) {
+      case OperationsIndicatorColor.green:
+        return color.primary;
+      case OperationsIndicatorColor.orange:
+        return color.tertiary;
+      case OperationsIndicatorColor.red:
+        return color.error;
+      case OperationsIndicatorColor.grey:
+      case OperationsIndicatorColor.unknown:
+        return color.onSurfaceVariant;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +58,33 @@ class OperationsDriverInfo extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            CircleAvatar(
-              radius: 17,
-              backgroundColor: color.surfaceContainerHigh,
-              backgroundImage: avatarUrl != null
-                  ? AssetImage(avatarUrl!)
-                  : null,
-              child: avatarUrl == null
-                  ? Icon(
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: color.surfaceContainerHigh,
+                shape: BoxShape.circle,
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: avatarUrl != null && avatarUrl!.trim().isNotEmpty
+                  ? AppCachedNetworkImage(
+                      imageUrl: avatarUrl!,
+                      width: 34,
+                      height: 34,
+                      shape: BoxShape.circle,
+                      errorWidget: Icon(
+                        Icons.person_rounded,
+                        size: 18,
+                        color: color.onSurfaceVariant,
+                      ),
+                    )
+                  : Icon(
                       Icons.person_rounded,
                       size: 18,
                       color: color.onSurfaceVariant,
-                    )
-                  : null,
+                    ),
             ),
-            if (isOnline)
+            if (resolvedIndicatorColor != OperationsIndicatorColor.unknown)
               PositionedDirectional(
                 bottom: 0,
                 end: 0,
@@ -51,7 +92,10 @@ class OperationsDriverInfo extends StatelessWidget {
                   width: 7,
                   height: 7,
                   decoration: BoxDecoration(
-                    color: color.primary,
+                    color: _resolveIndicatorColor(
+                      color,
+                      resolvedIndicatorColor,
+                    ),
                     shape: BoxShape.circle,
                     border: Border.all(color: color.surface, width: 1.5),
                   ),
@@ -78,7 +122,7 @@ class OperationsDriverInfo extends StatelessWidget {
               ),
               const SizedBox(height: Spacing.xs / 2),
               Text(
-                orderId,
+                resolvedBoxCode,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: getRegularStyle(

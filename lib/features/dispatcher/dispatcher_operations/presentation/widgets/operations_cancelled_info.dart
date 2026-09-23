@@ -9,11 +9,13 @@ class OperationsCancelledInfo extends StatelessWidget {
   const OperationsCancelledInfo({
     super.key,
     required this.reason,
-    required this.orderId,
-  });
+    this.boxCode,
+    String? orderId,
+  }) : resolvedBoxCode = boxCode ?? orderId ?? '';
 
   final String reason;
-  final String orderId;
+  final String? boxCode;
+  final String resolvedBoxCode;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class OperationsCancelledInfo extends StatelessWidget {
               ),
               const SizedBox(height: Spacing.xs / 2),
               Text(
-                orderId,
+                resolvedBoxCode,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: getRegularStyle(

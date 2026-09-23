@@ -39,6 +39,7 @@ import '../../features/dispatcher/dispatcher_support/data/models/response/resolv
 import '../../features/dispatcher/dispatcher_support/data/models/response/dispatcher_support_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/data/models/response/driver_performance_comparison_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/data/models/response/driver_performance_overview_response_dto.dart';
+import '../../features/dispatcher/dispatcher_operations/data/models/response/operations_log_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -200,5 +201,17 @@ abstract class ApiServices {
     @Query('driverIds') List<String>? driverIds,
     @Query('fromDate') String? fromDate,
     @Query('toDate') String? toDate,
+  });
+
+  @GET(EndPoints.dispatcherOperationsLog)
+  Future<OperationsLogResponseDto> getDispatcherOperationsLog({
+    @Query('restaurantId') String? restaurantId,
+    @Query('status') String? status,
+    @Query('search') String? search,
+    @Query('datePreset') String? datePreset,
+    @Query('fromDateUtc') String? fromDateUtc,
+    @Query('toDateUtc') String? toDateUtc,
+    @Query('pageNumber') int? pageNumber,
+    @Query('pageSize') int? pageSize,
   });
 }
