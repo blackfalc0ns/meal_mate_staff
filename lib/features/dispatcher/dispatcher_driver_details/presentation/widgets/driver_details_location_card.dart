@@ -8,6 +8,7 @@ import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_button.dart';
 import '../../domain/entities/driver_current_location_entity.dart';
+import 'driver_details_mini_map.dart';
 
 class DriverDetailsLocationCard extends StatelessWidget {
   const DriverDetailsLocationCard({
@@ -215,11 +216,7 @@ class DriverDetailsLocationCard extends StatelessWidget {
                       ),
                     )
                   : (mapWidget ??
-                      Image.asset(
-                        AppAssets.driverMapPreview,
-                        height: 130,
-                        fit: BoxFit.cover,
-                      )),
+                      DriverDetailsMiniMap(location: location)),
             ),
           ),
         ],
