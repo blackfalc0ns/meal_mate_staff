@@ -81,7 +81,7 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
       widget.onSelectDriver!(driver);
       return;
     }
-    Navigator.of(context).pushNamed(AppRoutes.dispatcherDriverDetails);
+    context.pushNamed(AppRoutes.dispatcherDriverDetails);
   }
 
   @override
@@ -95,7 +95,7 @@ class _DispatcherDriversScreenState extends State<DispatcherDriversScreen> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: DispatcherDriversHeader(),
+        appBar: const DispatcherDriversHeader(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(

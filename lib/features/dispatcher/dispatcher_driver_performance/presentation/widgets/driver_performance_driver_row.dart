@@ -130,11 +130,11 @@ class DriverPerformanceDriverRow extends StatelessWidget {
                             width: 34,
                             height: 34,
                             shape: BoxShape.circle,
-                            errorWidget: Icon(
-                              Icons.person,
-                              size: 20,
-                              color: color.onSurfaceVariant,
-                            ),
+                            //   errorWidget: Icon(
+                            //     Icons.person,
+                            //     size: 20,
+                            //     color: color.onSurfaceVariant,
+                            //   ),
                           ),
                         ),
                       ),

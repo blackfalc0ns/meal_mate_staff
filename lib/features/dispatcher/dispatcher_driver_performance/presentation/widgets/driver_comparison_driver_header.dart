@@ -44,11 +44,6 @@ class DriverComparisonDriverHeader extends StatelessWidget {
                 width: 44,
                 height: 44,
                 shape: BoxShape.circle,
-                errorWidget: Icon(
-                  Icons.person,
-                  size: 24,
-                  color: color.onSurfaceVariant,
-                ),
               ),
             ),
           ),

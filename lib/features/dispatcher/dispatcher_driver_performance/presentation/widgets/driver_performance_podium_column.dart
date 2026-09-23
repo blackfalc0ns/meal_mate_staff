@@ -56,11 +56,6 @@ class DriverPerformancePodiumColumn extends StatelessWidget {
                     width: 42,
                     height: 42,
                     shape: BoxShape.circle,
-                    errorWidget: Icon(
-                      Icons.person,
-                      size: 24,
-                      color: color.onSurfaceVariant,
-                    ),
                   ),
                 ),
               ),
