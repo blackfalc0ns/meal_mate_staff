@@ -15,6 +15,7 @@ import '../../domain/entities/driver_performance_tab_type.dart';
 import '../manager/driver_performance_event.dart';
 import '../manager/driver_performance_state.dart';
 import '../manager/driver_performance_view_model.dart';
+import '../widgets/driver_performance_comparison_content.dart';
 import '../widgets/driver_performance_comparison_shimmer.dart';
 import '../widgets/driver_performance_distribution_card.dart';
 import '../widgets/driver_performance_header.dart';
@@ -269,6 +270,11 @@ class _DispatcherDriverPerformanceScreenState
     BuildContext context,
     DriverPerformanceState state,
   ) {
-    return const [];
+    final comparison = state.comparison;
+    if (comparison == null) return const [];
+
+    return [
+      DriverPerformanceComparisonContent(comparison: comparison),
+    ];
   }
 }
