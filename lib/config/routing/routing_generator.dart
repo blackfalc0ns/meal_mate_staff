@@ -14,11 +14,11 @@ import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/role_selection_screen.dart';
 import '../../features/auth/presentation/screens/set_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import 'arguments/assign_box_route_arguments.dart';
 import 'arguments/auth_route_arguments.dart';
 import 'arguments/dispatcher_drivers_route_arguments.dart';
 import 'arguments/dispatcher_map_route_arguments.dart';
 import 'arguments/dispatcher_support_route_arguments.dart';
-import '../../features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_order_entity.dart';
 import '../../features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_entity.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/domain/fake_data/box_tracking_fake_data.dart';
@@ -333,12 +333,24 @@ class RouteGenerator {
         );
 
       case AppRoutes.assignBox:
-        final order = settings.arguments is AssignBoxOrderEntity
-            ? settings.arguments! as AssignBoxOrderEntity
-            : null;
+        final args = settings.arguments;
+        final assignBoxArgs = switch (args) {
+          AssignBoxRouteArgs args when args.isValid => args,
+          String boxId when AssignBoxRouteArgs(boxId: boxId).isValid =>
+            AssignBoxRouteArgs(boxId: boxId),
+          _ => null,
+        };
+        if (assignBoxArgs == null) {
+          return _buildRoute(
+            settings: settings,
+            page: const Scaffold(
+              body: Center(child: Text('Invalid route arguments')),
+            ),
+          );
+        }
         return _buildRoute(
           settings: settings,
-          page: AssignBoxScreen(order: order),
+          page: AssignBoxScreen(args: assignBoxArgs),
         );
 
       case AppRoutes.dispatcherNotifications || AppRoutes.notifications:

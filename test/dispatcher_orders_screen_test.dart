@@ -30,6 +30,21 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/present
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/presentation/widgets/dispatcher_order_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/presentation/widgets/dispatcher_orders_list.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_orders/presentation/widgets/dispatcher_orders_shimmer.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_candidate_driver_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_details_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_driver_status_type.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_order_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_priority.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_status.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_summary_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/repo/assign_box_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_details_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/domain/usecase/get_assign_box_summary_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/manager/assign_box_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/assign_driver_request_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/driver_assignment_result_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/repo/dispatcher_drivers_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/usecase/assign_driver_to_box_usecase.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -276,6 +291,17 @@ void main() {
         () => _viewModel(repository),
       );
 
+      final boxRepo = _FakeAssignBoxRepository();
+      final driversRepo = _FakeDriversRepository();
+      getIt.registerFactoryParam<AssignBoxViewModel, String?, void>(
+        (boxId, _) => AssignBoxViewModel(
+          GetAssignBoxDetailsUseCase(boxRepo),
+          GetAssignBoxSummaryUseCase(boxRepo),
+          AssignDriverToBoxUseCase(driversRepo),
+          boxId: boxId ?? 'a1111111-1111-1111-1111-111111111111',
+        ),
+      );
+
       await tester.pumpWidget(
         MaterialApp(
           locale: const Locale('ar'),
@@ -367,7 +393,7 @@ class _OrdersRepository implements DispatcherOrdersRepository {
             ? const []
             : const [
                 DispatcherOrderEntity(
-                  id: '1',
+                  id: 'a1111111-1111-1111-1111-111111111111',
                   boxCode: '#BX-1256',
                   priority: DispatcherOrderPriority.newOrder,
                   status: DispatcherOrderStatus.pending,
@@ -388,4 +414,97 @@ class _OrdersRepository implements DispatcherOrdersRepository {
       ),
     );
   }
+}
+
+class _FakeAssignBoxRepository implements AssignBoxRepository {
+  @override
+  Future<ApiResult<AssignBoxDetailsEntity>> getDetails(String boxId) async {
+    return const ApiSuccessResult(
+      data: AssignBoxDetailsEntity(
+        box: AssignBoxOrderEntity(
+          boxId: 'a1111111-1111-1111-1111-111111111111',
+          boxCode: '#BX-1256',
+          zoneName: 'منطقة السالمية',
+          deliveryTimeWindow: '09:30-10:30 ص',
+          mealsCount: 8,
+          mealsCountText: '8 وجبات',
+          distanceKm: 6.2,
+          distanceText: '6.2 كم',
+          priority: AssignBoxPriority.high,
+          priorityText: 'عالية',
+          status: AssignBoxStatus.pending,
+          statusText: 'جديد',
+        ),
+        bestSuggestion: AssignBoxCandidateDriverEntity(
+          driverId: 'driver-1',
+          fullName: 'سالم الحربي',
+          distanceText: '1.2 كم',
+          activeOrdersCount: 2,
+          currentLoadBoxes: 4,
+          currentLoadLabel: '4 بوكسات',
+          status: AssignBoxDriverStatusType.available,
+          driverStatusText: 'متاح',
+          statusTag: 'الأقرب',
+          estimatedFinishTimeText: '10:20 ص',
+          rank: 1,
+          isRecommended: true,
+        ),
+        candidates: [
+          AssignBoxCandidateDriverEntity(
+            driverId: 'driver-2',
+            fullName: 'أحمد إبراهيم',
+            distanceText: '2.5 كم',
+            activeOrdersCount: 1,
+            currentLoadBoxes: 2,
+            currentLoadLabel: '2 بوكسات',
+            status: AssignBoxDriverStatusType.available,
+            driverStatusText: 'متاح',
+            statusTag: 'متاح',
+            estimatedFinishTimeText: '10:30 ص',
+            rank: 2,
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Future<ApiResult<AssignBoxSummaryEntity>> getSummary(String boxId) async {
+    return const ApiSuccessResult(
+      data: AssignBoxSummaryEntity(
+        boxId: 'a1111111-1111-1111-1111-111111111111',
+        boxCode: '#BX-1256',
+        zoneName: 'منطقة السالمية',
+        address: 'شارع سالم المبارك',
+        deliveryTimeWindow: '09:30-10:30 ص',
+        boxCount: 1,
+        customerMaskedId: 'CUST-***-12',
+        customerNameMasked: 'خالد ***',
+        customerPhoneMasked: '+965 9****123',
+        barcode: 'MM-BX-1256-KWT',
+        deliveryNotes: null,
+        allergies: [],
+        meals: [],
+      ),
+    );
+  }
+}
+
+class _FakeDriversRepository implements DispatcherDriversRepository {
+  @override
+  Future<ApiResult<DriverAssignmentResultEntity>> assignDriver(
+    AssignDriverRequestEntity request,
+  ) async {
+    return ApiSuccessResult(
+      data: DriverAssignmentResultEntity(
+        success: true,
+        message: 'تم الإسناد بنجاح',
+        boxId: request.boxId,
+        driverId: request.driverId,
+      ),
+    );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

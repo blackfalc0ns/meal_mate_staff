@@ -4735,6 +4735,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'There is nothing to show right now.'**
   String get emptyNoDataDesc;
+
+  /// No description provided for @assignBoxSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Box Content Details'**
+  String get assignBoxSummaryTitle;
+
+  /// No description provided for @assignBoxCustomerInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Details'**
+  String get assignBoxCustomerInfo;
+
+  /// No description provided for @assignBoxDeliveryInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Details'**
+  String get assignBoxDeliveryInfo;
+
+  /// No description provided for @assignBoxBarcode.
+  ///
+  /// In en, this message translates to:
+  /// **'Barcode'**
+  String get assignBoxBarcode;
+
+  /// No description provided for @assignBoxDeliveryNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Notes'**
+  String get assignBoxDeliveryNotes;
+
+  /// No description provided for @assignBoxAllergiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies'**
+  String get assignBoxAllergiesTitle;
+
+  /// No description provided for @assignBoxNoAllergies.
+  ///
+  /// In en, this message translates to:
+  /// **'No recorded allergies'**
+  String get assignBoxNoAllergies;
+
+  /// No description provided for @assignBoxMealsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals in Box'**
+  String get assignBoxMealsTitle;
+
+  /// No description provided for @assignBoxNoMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals recorded'**
+  String get assignBoxNoMeals;
+
+  /// No description provided for @assignBoxFastAssignNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick assignment for box {boxCode}'**
+  String assignBoxFastAssignNotes(String boxCode);
+
+  /// No description provided for @assignBoxUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Box details unavailable'**
+  String get assignBoxUnavailable;
+
+  /// No description provided for @assignBoxSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Box assigned successfully'**
+  String get assignBoxSuccessMessage;
 }
 
 class _AppLocalizationsDelegate

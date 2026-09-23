@@ -2444,4 +2444,42 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get emptyNoDataDesc => 'لا يوجد شيء لعرضه في الوقت الحالي.';
+
+  @override
+  String get assignBoxSummaryTitle => 'تفاصيل محتويات البوكس';
+
+  @override
+  String get assignBoxCustomerInfo => 'بيانات العميل';
+
+  @override
+  String get assignBoxDeliveryInfo => 'بيانات التوصيل';
+
+  @override
+  String get assignBoxBarcode => 'الباركود';
+
+  @override
+  String get assignBoxDeliveryNotes => 'ملاحظات التوصيل';
+
+  @override
+  String get assignBoxAllergiesTitle => 'الحساسيات';
+
+  @override
+  String get assignBoxNoAllergies => 'لا توجد حساسيات مسجلة';
+
+  @override
+  String get assignBoxMealsTitle => 'الوجبات في البوكس';
+
+  @override
+  String get assignBoxNoMeals => 'لا توجد وجبات مسجلة';
+
+  @override
+  String assignBoxFastAssignNotes(String boxCode) {
+    return 'إسناد سريع للبوكس $boxCode';
+  }
+
+  @override
+  String get assignBoxUnavailable => 'بيانات البوكس غير متوفرة';
+
+  @override
+  String get assignBoxSuccessMessage => 'تم إسناد البوكس بنجاح';
 }

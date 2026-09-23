@@ -954,5 +954,25 @@
   "cancelled": "Request cancelled",
   "unknownError": "Unknown error",
   "emptyNoDataTitle": "No data found",
-  "emptyNoDataDesc": "There is nothing to show right now."
+  "emptyNoDataDesc": "There is nothing to show right now.",
+  "assignBoxSummaryTitle": "Box Content Details",
+  "assignBoxCustomerInfo": "Customer Details",
+  "assignBoxDeliveryInfo": "Delivery Details",
+  "assignBoxBarcode": "Barcode",
+  "assignBoxDeliveryNotes": "Delivery Notes",
+  "assignBoxAllergiesTitle": "Allergies",
+  "assignBoxNoAllergies": "No recorded allergies",
+  "assignBoxMealsTitle": "Meals in Box",
+  "assignBoxNoMeals": "No meals recorded",
+  "assignBoxFastAssignNotes": "Quick assignment for box {boxCode}",
+  "@assignBoxFastAssignNotes": {
+    "placeholders": {
+      "boxCode": {
+        "type": "String"
+      }
+    }
+  },
+  "assignBoxUnavailable": "Box details unavailable",
+  "assignBoxSuccessMessage": "Box assigned successfully"
 }
+

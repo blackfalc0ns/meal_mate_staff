@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/assign_box_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/errors/error_widgets/api_error_widget.dart';
@@ -190,7 +191,17 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
                   orders: queue.boxes,
                   onAssignOrder:
                       widget.onAssignOrder ??
-                      (_) => context.pushNamed(AppRoutes.assignBox),
+                      (order) async {
+                        final assigned = await context.pushNamed(
+                          AppRoutes.assignBox,
+                          arguments: AssignBoxRouteArgs(boxId: order.boxId),
+                        );
+                        if (assigned == true && context.mounted) {
+                          await viewModel.doIntent(
+                            const RefreshDispatcherOrdersEvent(),
+                          );
+                        }
+                      },
                   onOrderDetails: widget.onOrderDetails,
                 ),
               const SliverToBoxAdapter(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/assign_box_route_arguments.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_order_entity.dart';
 import 'dispatcher_order_card.dart';
@@ -31,7 +32,10 @@ class DispatcherOrdersList extends StatelessWidget {
                 if (onAssignOrder != null) {
                   onAssignOrder!(order);
                 } else {
-                  context.pushNamed(AppRoutes.assignBox);
+                  context.pushNamed(
+                    AppRoutes.assignBox,
+                    arguments: AssignBoxRouteArgs(boxId: order.boxId),
+                  );
                 }
               },
               onDetailsPressed: onOrderDetails != null

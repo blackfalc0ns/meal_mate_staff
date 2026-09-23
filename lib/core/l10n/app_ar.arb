@@ -947,5 +947,25 @@
   "cancelled": "تم إلغاء الطلب",
   "unknownError": "خطأ غير معروف",
   "emptyNoDataTitle": "لا توجد بيانات",
-  "emptyNoDataDesc": "لا يوجد شيء لعرضه في الوقت الحالي."
+  "emptyNoDataDesc": "لا يوجد شيء لعرضه في الوقت الحالي.",
+  "assignBoxSummaryTitle": "تفاصيل محتويات البوكس",
+  "assignBoxCustomerInfo": "بيانات العميل",
+  "assignBoxDeliveryInfo": "بيانات التوصيل",
+  "assignBoxBarcode": "الباركود",
+  "assignBoxDeliveryNotes": "ملاحظات التوصيل",
+  "assignBoxAllergiesTitle": "الحساسيات",
+  "assignBoxNoAllergies": "لا توجد حساسيات مسجلة",
+  "assignBoxMealsTitle": "الوجبات في البوكس",
+  "assignBoxNoMeals": "لا توجد وجبات مسجلة",
+  "assignBoxFastAssignNotes": "إسناد سريع للبوكس {boxCode}",
+  "@assignBoxFastAssignNotes": {
+    "placeholders": {
+      "boxCode": {
+        "type": "String"
+      }
+    }
+  },
+  "assignBoxUnavailable": "بيانات البوكس غير متوفرة",
+  "assignBoxSuccessMessage": "تم إسناد البوكس بنجاح"
 }
+

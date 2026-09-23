@@ -2450,4 +2450,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyNoDataDesc => 'There is nothing to show right now.';
+
+  @override
+  String get assignBoxSummaryTitle => 'Box Content Details';
+
+  @override
+  String get assignBoxCustomerInfo => 'Customer Details';
+
+  @override
+  String get assignBoxDeliveryInfo => 'Delivery Details';
+
+  @override
+  String get assignBoxBarcode => 'Barcode';
+
+  @override
+  String get assignBoxDeliveryNotes => 'Delivery Notes';
+
+  @override
+  String get assignBoxAllergiesTitle => 'Allergies';
+
+  @override
+  String get assignBoxNoAllergies => 'No recorded allergies';
+
+  @override
+  String get assignBoxMealsTitle => 'Meals in Box';
+
+  @override
+  String get assignBoxNoMeals => 'No meals recorded';
+
+  @override
+  String assignBoxFastAssignNotes(String boxCode) {
+    return 'Quick assignment for box $boxCode';
+  }
+
+  @override
+  String get assignBoxUnavailable => 'Box details unavailable';
+
+  @override
+  String get assignBoxSuccessMessage => 'Box assigned successfully';
 }
