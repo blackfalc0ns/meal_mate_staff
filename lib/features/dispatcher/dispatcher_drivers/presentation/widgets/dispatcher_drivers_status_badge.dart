@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/colors.dart';
-
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
@@ -9,9 +8,14 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_driver_status.dart';
 
 class DispatcherDriversStatusBadge extends StatelessWidget {
-  const DispatcherDriversStatusBadge({super.key, required this.status});
+  const DispatcherDriversStatusBadge({
+    super.key,
+    required this.status,
+    this.statusText,
+  });
 
   final DispatcherDriverStatus status;
+  final String? statusText;
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +30,20 @@ class DispatcherDriversStatusBadge extends StatelessWidget {
       case DispatcherDriverStatus.available:
         bgColor = color.tertiaryContainer;
         textColor = color.tertiary;
-        label = locale.driversStatusAvailable;
+        label = statusText ?? locale.driversStatusAvailable;
+      case DispatcherDriverStatus.busy:
       case DispatcherDriverStatus.onTheWay:
         bgColor = color.secondaryContainer;
         textColor = color.secondary;
-        label = locale.driversStatusOnTheWay;
+        label = statusText ?? locale.driversStatusOnTheWay;
       case DispatcherDriverStatus.onBreak:
         bgColor = color.dispatcherBadgeNormalSurface;
         textColor = color.dispatcherBadgeNormal;
-        label = locale.driversStatusOnBreak;
+        label = statusText ?? locale.driversStatusOnBreak;
+      case DispatcherDriverStatus.unknown:
+        bgColor = color.surfaceContainerHighest;
+        textColor = color.onSurfaceVariant;
+        label = statusText ?? 'غير معروف';
     }
 
     return Container(

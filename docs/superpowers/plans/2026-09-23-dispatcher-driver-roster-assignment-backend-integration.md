@@ -20,7 +20,7 @@
 - UI must consume domain entities/state only. DTOs never enter domain or presentation.
 - Do not manually add `Authorization` or `Accept-Language`; existing interceptors own both.
 - Do not create a second Dio/Retrofit client or a new result/error abstraction.
-- Initial roster load uses `DispatcherDriversShimmer`; view/area replacement uses roster-content shimmer. Never use a centered `CircularProgressIndicator` for page loading.
+- Initial roster load uses `DispatcherDriversShimmer`. Every switch between `ByArea` and `All`, and every area-chip change inside `ByArea`, must immediately set `isReplacementLoading=true` and render `DispatcherDriversContentShimmer` until that request succeeds or fails. Never keep the old cards visible as if they belong to the newly selected tab/area, and never use a centered `CircularProgressIndicator` for roster loading.
 - Assignment uses an in-button/card blocking state and prevents duplicate taps. Existing data remains visible during assignment.
 - Initial failure uses `ApiErrorWidget.fromTypedFailure`; replacement failure retains prior data and uses the existing Snackbar/inline error presentation; a successful empty list uses `EmptyStateWidget`.
 - Use `AppCachedNetworkImage` for avatar URLs; do not pass HTTP URLs to `AssetImage`.
@@ -39,7 +39,6 @@
 - Counts, section title, areas, eligibility, status text, and driver metrics come from the server response. The app does not recompute global counts from the currently returned driver subset.
 - `isAvailableForSelection` is the final assignment gate. Typed status controls visual state but cannot override a false eligibility flag.
 - List sorting by distance, rating, and active load is local and stable because all three numeric fields are already returned and the documented roster endpoint has no sort parameters.
-- Vehicle-type filtering is not implemented from guessed data. It remains unavailable until the backend adds a stable vehicle field/filter contract.
 - A roster request may include `boxId` in assignment mode and omits it in browse mode. This lets the backend calculate box-specific distance/eligibility if supported.
 - Assignment notes default to the localized equivalent of `إسناد مباشر من قائمة السائقين`; the ViewModel sends the domain request, not a DTO created by UI.
 - On assignment success, show the server message and invoke a typed completion callback. The production route returns to/refetches the Orders Queue; tests inject the callback and never depend on global navigation.
@@ -48,23 +47,21 @@
 
 ## What Is Missing or Ambiguous in the Backend Contract
 
-These items must be answered before production sign-off. Items 1–4 block the corresponding UI behavior; the executor must not invent values.
+These items must be answered before production sign-off. The executor must not invent values or expand the screen beyond the supplied design.
 
 1. **Stable area query:** the sample sends `area=السالمية` but returns `areaKey=salmiya`. The API should accept `areaKey` (recommended) or explicitly guarantee localized `name` as the query value for both `ar` and `en`.
-2. **Advanced vehicle filter:** the UI promises filtering by vehicle type, but the roster driver payload has no `vehicleType`/`vehicleTypeKey`, and the endpoint documents no filter query parameters.
-3. **Filter/sort contract:** confirm whether rating, vehicle, distance, and load filtering/sorting are server-side. If server-side, document exact keys such as `minimumRating`, `vehicleType`, `sortBy`, and `sortDirection`. This plan keeps only numeric sorting local.
-4. **Map area preservation:** `/drivers/live-monitoring` currently has no documented `area`/`areaKey` query. Add/confirm a stable area filter or confirm that every live-map driver returns the same stable `currentZoneKey` so filtering can be safely local.
-5. **Pagination/scale:** roster has no `pageNumber`, `pageSize`, `totalItems`, or `hasNextPage`. Confirm that the endpoint intentionally returns the complete restaurant fleet and document the maximum expected driver count.
-6. **Distance meaning:** define whether `distanceKm` is from the restaurant, the box delivery location, or another point, and whether passing `boxId` changes it.
-7. **Counts semantics:** clarify whether `busyCount` includes `OnBreak` and whether `totalCount = availableCount + busyCount` must always hold.
-8. **All-mode selection:** `selectedView=All` still returns `selectedArea=السالمية` and an area with `isSelected=true`. Confirm that clients must ignore these fields in All mode or return them as null/false.
-9. **Status vocabulary:** document every possible `status`, `statusDotColor`, and eligibility combination. Unknown values must be expected without crashing clients.
-10. **Assignment conflict rules:** document HTTP/error codes for already-assigned box, unavailable driver, driver capacity reached, invalid/foreign box, invalid/foreign driver, and concurrent assignments. Recommended: `409` for state conflicts and `403` for restaurant ownership violations.
-11. **Idempotency:** confirm whether repeated identical POSTs are idempotent or support an idempotency key. Mobile will block duplicate taps but cannot prevent transport retries or concurrent devices.
-12. **Notes contract:** state whether `notes` is optional, its maximum length, accepted characters, and whether a localized default is permitted.
-13. **Authorization:** confirm both endpoints derive restaurant ownership from JWT and reject cross-restaurant `boxId`/`driverId`.
-14. **Error envelope:** document localized `400`, `401`, `403`, `404`, `409`, `422`, and `500` bodies using the project's supported `{code, message, errors}` shape.
-15. **Source box identity:** the upstream Assign Box/Order Queue contract must supply the real GUID `boxId`. The current `AssignBoxOrderEntity` only has `boxCode`, which cannot be used in the POST path.
+2. **Map area preservation:** `/drivers/live-monitoring` currently has no documented `area`/`areaKey` query. Add/confirm a stable area filter or confirm that every live-map driver returns the same stable `currentZoneKey` so filtering can be safely local.
+3. **Pagination/scale:** roster has no `pageNumber`, `pageSize`, `totalItems`, or `hasNextPage`. Confirm that the endpoint intentionally returns the complete restaurant fleet and document the maximum expected driver count.
+4. **Distance meaning:** define whether `distanceKm` is from the restaurant, the box delivery location, or another point, and whether passing `boxId` changes it.
+5. **Counts semantics:** clarify whether `busyCount` includes `OnBreak` and whether `totalCount = availableCount + busyCount` must always hold.
+6. **All-mode selection:** `selectedView=All` still returns `selectedArea=السالمية` and an area with `isSelected=true`. Confirm that clients must ignore these fields in All mode or return them as null/false.
+7. **Status vocabulary:** document every possible `status`, `statusDotColor`, and eligibility combination. Unknown values must be expected without crashing clients.
+8. **Assignment conflict rules:** document HTTP/error codes for already-assigned box, unavailable driver, driver capacity reached, invalid/foreign box, invalid/foreign driver, and concurrent assignments. Recommended: `409` for state conflicts and `403` for restaurant ownership violations.
+9. **Idempotency:** confirm whether repeated identical POSTs are idempotent or support an idempotency key. Mobile will block duplicate taps but cannot prevent transport retries or concurrent devices.
+10. **Notes contract:** state whether `notes` is optional, its maximum length, accepted characters, and whether a localized default is permitted.
+11. **Authorization:** confirm both endpoints derive restaurant ownership from JWT and reject cross-restaurant `boxId`/`driverId`.
+12. **Error envelope:** document localized `400`, `401`, `403`, `404`, `409`, `422`, and `500` bodies using the project's supported `{code, message, errors}` shape.
+13. **Source box identity:** the upstream Assign Box/Order Queue contract must supply the real GUID `boxId`. The current `AssignBoxOrderEntity` only has `boxCode`, which cannot be used in the POST path.
 
 ---
 
@@ -393,7 +390,7 @@ git commit -m "feat: connect driver roster and assignment APIs"
 
 - [ ] **Step 1: Write failing state-machine tests**
 
-Cover initial query construction, first load, ByArea/All switching, server-selected initial area, area replacement, stale-response suppression, local sort cycles, retry, empty success, initial/nonfatal failure, assignment eligibility, browse-mode rejection, duplicate-submit guard, success, and 409-triggered refresh.
+Cover initial query construction, first load, ByArea/All switching, server-selected initial area, area replacement, replacement-loading emissions for every tab/area request, stale-response suppression, local sort cycles, retry, empty success, initial/nonfatal failure, assignment eligibility, browse-mode rejection, duplicate-submit guard, success, and 409-triggered refresh.
 
 ```dart
 await vm.doIntent(const ChangeDispatcherDriversViewEvent(
@@ -401,6 +398,7 @@ await vm.doIntent(const ChangeDispatcherDriversViewEvent(
 ));
 expect(vm.state.query.view, DispatcherDriverViewMode.allDrivers);
 expect(vm.state.query.areaKey, isNull);
+expect(vm.state.isReplacementLoading, isTrue);
 
 await vm.doIntent(AssignRosterDriverEvent(availableDriver));
 verify(() => assignUseCase(any())).called(1);
@@ -427,7 +425,7 @@ State fields include route args, query, nullable roster, selected sort, initial/
 
 - [ ] **Step 3: Implement deterministic roster loading**
 
-Use `_requestGeneration` so slow area/view responses cannot overwrite the latest selection. First load uses route initial area if provided; otherwise make the contract-default By Area request only if backend confirms a default area is allowed. If not, use a separate initial `view=ByArea` request with no area only when backend explicitly supports it. All-mode request clears area query but retains the last selected area in private/UI state for restoring By Area.
+Use `_requestGeneration` so slow area/view responses cannot overwrite the latest selection. First load uses route initial area if provided; otherwise make the contract-default By Area request only if backend confirms a default area is allowed. If not, use a separate initial `view=ByArea` request with no area only when backend explicitly supports it. All-mode request clears area query but retains the last selected area in private/UI state for restoring By Area. Before firing every view-tab or area-chip request, emit the new selected query with `isReplacementLoading=true`; clear it only after the matching latest request succeeds or fails.
 
 - [ ] **Step 4: Implement local stable sorting**
 
@@ -472,7 +470,7 @@ git commit -m "feat: manage driver roster and assignment state"
 
 - [ ] **Step 1: Write failing widget tests**
 
-Verify full/content shimmer uses `ShimmerWidget`, successful empty uses `EmptyStateWidget`, area chips show server names/counts, HTTP avatars use `AppCachedNetworkImage`, three sorts are selectable, unavailable buttons are disabled, and only the submitted driver's button is loading/disabled.
+Verify full/content shimmer uses `ShimmerWidget`, successful empty uses `EmptyStateWidget`, area chips show server names/counts, HTTP avatars use `AppCachedNetworkImage`, three sorts are selectable, unavailable buttons are disabled, and only the submitted driver's button is loading/disabled. Add explicit tests that selecting `All`, returning to `ByArea`, and selecting another area each replaces the data region with `DispatcherDriversContentShimmer` before the mocked request completes.
 
 ```dart
 expect(find.byType(ShimmerWidget), findsWidgets);
@@ -484,7 +482,7 @@ expect(find.byType(AppCachedNetworkImage), findsOneWidget);
 
 - [ ] **Step 2: Implement loading and empty widgets**
 
-`DispatcherDriversShimmer` mirrors the view switcher, area chips, KPI card, section header, three driver cards, and map button. `DispatcherDriversContentShimmer` mirrors KPI/list cards while view/area data is replacing. Both reuse `ShimmerWidget` and existing spacing/radii. Empty state wraps shared `EmptyStateWidget` with refresh.
+`DispatcherDriversShimmer` mirrors the view switcher, area chips, KPI card, section header, three driver cards, and map button. `DispatcherDriversContentShimmer` mirrors the KPI, section header, and driver cards while every view-tab or area-chip request is in flight; keep the newly selected tab visible so the user understands what is loading. Both reuse `ShimmerWidget` and existing spacing/radii. Empty state wraps shared `EmptyStateWidget` with refresh.
 
 - [ ] **Step 3: Bind server area/count data**
 
@@ -496,7 +494,7 @@ Render `driverCode`, `fullName`, numeric rating, typed status, active/completed 
 
 - [ ] **Step 5: Implement the sort sheet**
 
-The existing Sort button opens a three-option bottom sheet: nearest distance, highest rating, and least active load. It returns `DispatcherDriverSort`; it has no vehicle option and no guessed backend queries.
+The existing Sort button opens a three-option bottom sheet: nearest distance, highest rating, and least active load. It returns `DispatcherDriverSort` and sorts the complete returned roster locally.
 
 - [ ] **Step 6: Run widget tests**
 
@@ -528,7 +526,7 @@ git commit -m "feat: render backend driver roster states"
 
 - [ ] **Step 1: Write failing screen integration tests**
 
-Cover initial shimmer/load, initial typed error/retry, ByArea/All requests, area chips hidden in All, replacement shimmer, nonfatal failure with retained roster, empty response, sorting, browse callback, unavailable driver no-op, assignment call/loading/success, and conflict refresh.
+Cover initial shimmer/load, initial typed error/retry, ByArea/All requests, area chips hidden in All, mandatory replacement shimmer on `ByArea → All`, `All → ByArea`, and every area change, nonfatal failure with retained roster, empty response, sorting, browse callback, unavailable driver no-op, assignment call/loading/success, and conflict refresh.
 
 ```dart
 await tester.tap(find.text('كل السائقين'));
@@ -560,7 +558,7 @@ Resolve/close an internally owned injected ViewModel using the established Suppo
 
 - [ ] **Step 3: Use core errors and shimmer by state**
 
-No roster plus loading → full shimmer. No roster plus failure → `ApiErrorWidget.fromTypedFailure`. Existing roster plus replacement loading → content shimmer. Existing roster plus nonfatal/assignment failure → retain roster and show existing localized error Snackbar. Empty 200 → empty state.
+No roster plus loading → full shimmer. No roster plus failure → `ApiErrorWidget.fromTypedFailure`. Existing roster plus any tab/area replacement loading → content shimmer instead of old KPI/cards. Existing roster plus nonfatal/assignment failure → restore/retain the last successful roster and show the existing localized error Snackbar. Empty 200 → empty state.
 
 - [ ] **Step 4: Handle assignment success once**
 

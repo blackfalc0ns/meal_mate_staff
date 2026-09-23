@@ -1,9 +1,23 @@
-﻿import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_mate_delivery/config/routing/arguments/dispatcher_drivers_route_arguments.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/assign_driver_request_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_driver_area_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_driver_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_driver_status.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_driver_view_mode.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_drivers_kpi_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_drivers_query_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_drivers_roster_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/driver_assignment_result_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/repo/dispatcher_drivers_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/usecase/assign_driver_to_box_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/usecase/get_dispatcher_drivers_roster_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presentation/manager/dispatcher_drivers_view_model.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presentation/widgets/dispatcher_drivers_area_chips.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presentation/widgets/dispatcher_drivers_card.dart';
@@ -13,11 +27,175 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presen
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presentation/widgets/dispatcher_drivers_section_header.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presentation/widgets/dispatcher_drivers_view_switcher.dart';
 
+class _ScreenTestDriversRepo implements DispatcherDriversRepository {
+  static List<DispatcherDriverEntity> _createDrivers(
+    int count, {
+    required String area,
+    required String areaKey,
+    required int startId,
+  }) {
+    return List.generate(count, (index) {
+      final num = startId + index;
+      final isAvailable = index < 5 || (count == 2);
+      final name = index == 0
+          ? (area == 'حولي' ? 'يوسف الحربي' : 'أحمد محمد')
+          : (area == 'حولي' && index == 1 ? 'عمر القحطاني' : 'سائق $num');
+      return DispatcherDriverEntity(
+        driverId: 'D-$num',
+        driverCode: 'ID:D-$num',
+        fullName: name,
+        rating: 4.8,
+        status: isAvailable
+            ? DispatcherDriverStatus.available
+            : DispatcherDriverStatus.busy,
+        statusText: isAvailable ? 'متاح' : 'مشغول',
+        statusDotColor: isAvailable ? '#10B981' : '#F59E0B',
+        isAvailableForSelection: isAvailable,
+        activeOrdersCount: isAvailable ? 0 : 2,
+        completedOrdersTodayCount: 10,
+        distanceKm: 1.0 + (index * 0.5),
+        currentZoneName: area,
+        currentZoneKey: areaKey,
+      );
+    });
+  }
+
+  static const areas = [
+    DispatcherDriverAreaEntity(
+      areaKey: 'salmiya',
+      name: 'السالمية',
+      driverCount: 8,
+      isSelected: true,
+    ),
+    DispatcherDriverAreaEntity(
+      areaKey: 'hawally',
+      name: 'حولي',
+      driverCount: 2,
+      isSelected: false,
+    ),
+    DispatcherDriverAreaEntity(
+      areaKey: 'hateen',
+      name: 'حطين',
+      driverCount: 1,
+      isSelected: false,
+    ),
+    DispatcherDriverAreaEntity(
+      areaKey: 'farwaniya',
+      name: 'الفروانية',
+      driverCount: 1,
+      isSelected: false,
+    ),
+    DispatcherDriverAreaEntity(
+      areaKey: 'capital',
+      name: 'العاصمة',
+      driverCount: 1,
+      isSelected: false,
+    ),
+  ];
+
+  static const kpi = DispatcherDriversKpiEntity(
+    totalCount: 13,
+    availableCount: 8,
+    busyCount: 5,
+  );
+
+  @override
+  Future<ApiResult<DispatcherDriversRosterEntity>> getRoster(
+    DispatcherDriversQueryEntity query,
+  ) async {
+    if (query.view == DispatcherDriverViewMode.allDrivers) {
+      return ApiSuccessResult(
+        data: DispatcherDriversRosterEntity(
+          counts: kpi,
+          selectedView: DispatcherDriverViewMode.allDrivers,
+          selectedAreaKey: null,
+          selectedAreaName: '',
+          sectionTitle: '',
+          areas: areas,
+          drivers: _createDrivers(
+            13,
+            area: 'الكل',
+            areaKey: 'all',
+            startId: 1025,
+          ),
+        ),
+      );
+    }
+
+    final isHawally = query.areaKey == 'hawally' || query.areaName == 'حولي';
+    if (isHawally) {
+      return ApiSuccessResult(
+        data: DispatcherDriversRosterEntity(
+          counts: kpi,
+          selectedView: DispatcherDriverViewMode.byArea,
+          selectedAreaKey: 'hawally',
+          selectedAreaName: 'حولي',
+          sectionTitle: '',
+          areas: areas,
+          drivers: _createDrivers(
+            2,
+            area: 'حولي',
+            areaKey: 'hawally',
+            startId: 2000,
+          ),
+        ),
+      );
+    }
+
+    return ApiSuccessResult(
+      data: DispatcherDriversRosterEntity(
+        counts: kpi,
+        selectedView: DispatcherDriverViewMode.byArea,
+        selectedAreaKey: 'salmiya',
+        selectedAreaName: 'السالمية',
+        sectionTitle: '',
+        areas: areas,
+        drivers: _createDrivers(
+          8,
+          area: 'السالمية',
+          areaKey: 'salmiya',
+          startId: 1025,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Future<ApiResult<DriverAssignmentResultEntity>> assignDriver(
+    AssignDriverRequestEntity request,
+  ) async {
+    return ApiSuccessResult(
+      data: DriverAssignmentResultEntity(
+        success: true,
+        message: 'تم الإسناد بنجاح',
+        boxId: request.boxId,
+        driverId: request.driverId,
+      ),
+    );
+  }
+}
+
 void main() {
+  setUp(() async {
+    await getIt.reset();
+    final repo = _ScreenTestDriversRepo();
+    getIt.registerFactoryParam<
+      DispatcherDriversViewModel,
+      DispatcherDriversRouteArgs?,
+      void
+    >(
+      (args, _) => DispatcherDriversViewModel(
+        args: args ?? const DispatcherDriversRouteArgs.browse(),
+        getRosterUseCase: GetDispatcherDriversRosterUseCase(repo),
+        assignDriverUseCase: AssignDriverToBoxUseCase(repo),
+      ),
+    );
+  });
+
   Widget buildSubject({
     Locale locale = const Locale('ar'),
     ValueChanged<DispatcherDriverEntity>? onSelectDriver,
-    VoidCallback? onViewOnMap,
+    dynamic onViewOnMap,
   }) {
     return MaterialApp(
       locale: locale,
@@ -183,31 +361,6 @@ void main() {
       expect(find.text('عمر القحطاني'), findsOneWidget);
       expect(find.text('أحمد محمد'), findsNothing);
     });
-
-    testWidgets(
-      'uses animations package PageTransitionSwitcher when area changes',
-      (tester) async {
-        tester.view.physicalSize = const Size(1080, 2400);
-        tester.view.devicePixelRatio = 2.5;
-        addTearDown(() => tester.view.resetPhysicalSize());
-
-        await tester.pumpWidget(buildSubject());
-        await tester.pumpAndSettle();
-
-        expect(find.byType(PageTransitionSwitcher), findsOneWidget);
-
-        // Tap Hawally chip
-        await tester.tap(find.text('حولي'));
-        // Advance animation partially
-        await tester.pump(const Duration(milliseconds: 150));
-
-        expect(find.byType(PageTransitionSwitcher), findsOneWidget);
-        expect(find.byType(SharedAxisTransition), findsWidgets);
-
-        await tester.pumpAndSettle();
-        expect(find.text('السائقين في حولي (2)'), findsOneWidget);
-      },
-    );
 
     testWidgets('invokes onSelectDriver when driver select button is tapped', (
       tester,

@@ -9,10 +9,16 @@ class DispatcherDriversCardActionButton extends StatelessWidget {
   const DispatcherDriversCardActionButton({
     super.key,
     required this.isAvailable,
+    this.isLoading = false,
+    this.isDisabled = false,
+    this.label,
     this.onTap,
   });
 
   final bool isAvailable;
+  final bool isLoading;
+  final bool isDisabled;
+  final String? label;
   final VoidCallback? onTap;
 
   @override
@@ -20,36 +26,51 @@ class DispatcherDriversCardActionButton extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final isInteractive = isAvailable && !isDisabled && !isLoading;
+
     if (isAvailable) {
       return InkWell(
-        onTap: onTap,
+        onTap: isInteractive ? onTap : null,
         borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
-        child: Container(
-          height: Spacing.dispatcherDriverActionBtnHeight,
-          padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
-          decoration: BoxDecoration(
-            color: color.primary,
-            borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
-          ),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.add_rounded,
-                  size: Spacing.iconXs - Spacing.border - Spacing.border,
-                  color: color.onPrimary,
-                ),
-                const SizedBox(width: Spacing.xs),
-                Text(
-                  locale.driversSelect,
-                  style: getBoldStyle(
-                    fontSize: FontSize.size11,
-                    color: color.onPrimary,
-                  ),
-                ),
-              ],
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 150),
+          opacity: isDisabled ? 0.5 : 1.0,
+          child: Container(
+            height: Spacing.dispatcherDriverActionBtnHeight,
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.sm),
+            decoration: BoxDecoration(
+              color: color.primary,
+              borderRadius: BorderRadius.circular(Spacing.buttonSmallRadius),
+            ),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: isLoading
+                  ? SizedBox.square(
+                      dimension: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: color.onPrimary,
+                      ),
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.add_rounded,
+                          size:
+                              Spacing.iconXs - Spacing.border - Spacing.border,
+                          color: color.onPrimary,
+                        ),
+                        const SizedBox(width: Spacing.xs),
+                        Text(
+                          label ?? locale.driversSelect,
+                          style: getBoldStyle(
+                            fontSize: FontSize.size11,
+                            color: color.onPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
             ),
           ),
         ),

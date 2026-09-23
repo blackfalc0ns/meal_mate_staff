@@ -97,6 +97,14 @@ import '../../features/dispatcher/dispatcher_operations/data/repo/operations_log
 import '../../features/dispatcher/dispatcher_operations/domain/repo/operations_log_repository.dart';
 import '../../features/dispatcher/dispatcher_operations/domain/usecase/get_operations_log_usecase.dart';
 import '../../features/dispatcher/dispatcher_operations/presentation/manager/operations_view_model.dart';
+import '../../config/routing/arguments/dispatcher_drivers_route_arguments.dart';
+import '../../features/dispatcher/dispatcher_drivers/data/data_source/dispatcher_drivers_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_drivers/data/data_source/dispatcher_drivers_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_drivers/data/repo/dispatcher_drivers_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_drivers/domain/repo/dispatcher_drivers_repository.dart';
+import '../../features/dispatcher/dispatcher_drivers/domain/usecase/assign_driver_to_box_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers/domain/usecase/get_dispatcher_drivers_roster_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers/presentation/manager/dispatcher_drivers_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -430,6 +438,33 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<OperationsViewModel>(
     () => OperationsViewModel(
       getOperationsLogUseCase: getIt<GetOperationsLogUseCase>(),
+    ),
+  );
+
+  // Dispatcher Drivers
+  getIt.registerLazySingleton<DispatcherDriversRemoteDataSource>(
+    () => DispatcherDriversRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DispatcherDriversRepository>(
+    () => DispatcherDriversRepositoryImpl(
+      getIt<DispatcherDriversRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDispatcherDriversRosterUseCase>(
+    () => GetDispatcherDriversRosterUseCase(
+      getIt<DispatcherDriversRepository>(),
+    ),
+  );
+  getIt.registerFactory<AssignDriverToBoxUseCase>(
+    () => AssignDriverToBoxUseCase(
+      getIt<DispatcherDriversRepository>(),
+    ),
+  );
+  getIt.registerFactoryParam<DispatcherDriversViewModel, DispatcherDriversRouteArgs?, void>(
+    (args, _) => DispatcherDriversViewModel(
+      args: args ?? const DispatcherDriversRouteArgs.browse(),
+      getRosterUseCase: getIt<GetDispatcherDriversRosterUseCase>(),
+      assignDriverUseCase: getIt<AssignDriverToBoxUseCase>(),
     ),
   );
 }

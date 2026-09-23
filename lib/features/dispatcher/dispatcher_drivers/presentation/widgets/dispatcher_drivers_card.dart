@@ -8,9 +8,19 @@ import 'dispatcher_drivers_card_metrics_row.dart';
 import 'dispatcher_drivers_card_top_row.dart';
 
 class DispatcherDriversCard extends StatelessWidget {
-  const DispatcherDriversCard({super.key, required this.driver, this.onSelect});
+  const DispatcherDriversCard({
+    super.key,
+    required this.driver,
+    this.isLoading = false,
+    this.isDisabled = false,
+    this.actionLabel,
+    this.onSelect,
+  });
 
   final DispatcherDriverEntity driver;
+  final bool isLoading;
+  final bool isDisabled;
+  final String? actionLabel;
   final ValueChanged<DispatcherDriverEntity>? onSelect;
 
   @override
@@ -31,7 +41,9 @@ class DispatcherDriversCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(Spacing.dispatcherCardRadius),
-          onTap: () => onSelect?.call(driver),
+          onTap: driver.isAvailableForSelection && !isDisabled && !isLoading
+              ? () => onSelect?.call(driver)
+              : null,
           child: Padding(
             padding: const EdgeInsets.all(Spacing.sm),
             child: Row(
@@ -39,6 +51,7 @@ class DispatcherDriversCard extends StatelessWidget {
               children: [
                 DispatcherDriversAvatarWithStatus(
                   status: driver.status,
+                  statusDotColor: driver.statusDotColor,
                   avatarUrl: driver.avatarUrl,
                 ),
                 const SizedBox(width: Spacing.sm),
@@ -55,6 +68,9 @@ class DispatcherDriversCard extends StatelessWidget {
                     children: [
                       DispatcherDriversCardTopRow(
                         driver: driver,
+                        isLoading: isLoading,
+                        isDisabled: isDisabled,
+                        actionLabel: actionLabel,
                         onSelect: onSelect,
                       ),
                       const SizedBox(height: Spacing.sm),

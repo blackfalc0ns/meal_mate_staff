@@ -15,6 +15,8 @@ class DispatcherDriversContentList extends StatelessWidget {
     required this.sectionTitle,
     required this.drivers,
     required this.onSort,
+    this.assigningDriverId,
+    this.actionLabel,
     this.onSelectDriver,
   });
 
@@ -23,11 +25,14 @@ class DispatcherDriversContentList extends StatelessWidget {
   final String sectionTitle;
   final List<DispatcherDriverEntity> drivers;
   final VoidCallback onSort;
+  final String? assigningDriverId;
+  final String? actionLabel;
   final ValueChanged<DispatcherDriverEntity>? onSelectDriver;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final isAssigningAny = assigningDriverId != null;
 
     return PageTransitionSwitcher(
       duration: const Duration(milliseconds: 300),
@@ -53,13 +58,21 @@ class DispatcherDriversContentList extends StatelessWidget {
         children: [
           DispatcherDriversSectionHeader(title: sectionTitle, onSort: onSort),
           const SizedBox(height: Spacing.xs),
-          ...drivers.map(
-            (driver) => DispatcherDriversCard(
-              key: ValueKey(driver.id),
+          ...drivers.map((driver) {
+            final isCurrentDriverAssigning =
+                assigningDriverId == driver.driverId;
+            final isOtherDriverAssigning =
+                isAssigningAny && !isCurrentDriverAssigning;
+
+            return DispatcherDriversCard(
+              key: ValueKey(driver.driverId),
               driver: driver,
+              isLoading: isCurrentDriverAssigning,
+              isDisabled: isOtherDriverAssigning,
+              actionLabel: actionLabel,
               onSelect: onSelectDriver,
-            ),
-          ),
+            );
+          }),
         ],
       ),
     );

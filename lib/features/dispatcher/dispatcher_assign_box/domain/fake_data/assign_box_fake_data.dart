@@ -6,6 +6,7 @@ class AssignBoxFakeData {
   const AssignBoxFakeData._();
 
   static const AssignBoxOrderEntity sampleOrder = AssignBoxOrderEntity(
+    boxId: 'a1111111-1111-1111-1111-111111111111',
     boxCode: '#BX-1256',
     statusText: 'جديد',
     areaText: 'منطقة السالمية',

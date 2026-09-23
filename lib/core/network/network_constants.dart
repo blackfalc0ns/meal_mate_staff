@@ -54,4 +54,8 @@ abstract class EndPoints {
       '/api/v1/dispatcher/performance/comparison';
   static const String dispatcherOperationsLog =
       '/api/v1/dispatcher/operations/log';
+  static const String dispatcherDriversRoster =
+      '/api/v1/dispatcher/drivers/roster';
+  static const String dispatcherAssignOrder =
+      '/api/v1/dispatcher/orders/{boxId}/assign';
 }

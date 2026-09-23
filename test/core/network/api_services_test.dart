@@ -14,6 +14,7 @@ import 'package:meal_mate_delivery/features/register/data/models/request/driver_
 import 'package:meal_mate_delivery/features/register/data/models/request/driver_resubmit_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/reassign_driver_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/resolve_issue_request_dto.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/data/models/request/assign_driver_request_dto.dart';
 
 void main() {
   late Dio dio;
@@ -369,5 +370,36 @@ void main() {
         );
       },
     );
+
+    test('getDispatcherDriversRoster hits GET EndPoints.dispatcherDriversRoster', () async {
+      await apiServices.getDispatcherDriversRoster(
+        view: 'ByArea',
+        area: 'salmiya',
+        boxId: 'a1111111-1111-1111-1111-111111111111',
+      );
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, EndPoints.dispatcherDriversRoster);
+      expect(capturedOptions.queryParameters['view'], 'ByArea');
+      expect(capturedOptions.queryParameters['area'], 'salmiya');
+      expect(capturedOptions.queryParameters['boxId'], 'a1111111-1111-1111-1111-111111111111');
+    });
+
+    test('assignDriverToBox hits POST EndPoints.dispatcherAssignOrder with path substitution', () async {
+      const boxId = 'a1111111-1111-1111-1111-111111111111';
+      const driverId = '11111111-1111-1111-1111-111111111111';
+      await apiServices.assignDriverToBox(
+        boxId,
+        const AssignDriverRequestDto(
+          driverId: driverId,
+          notes: 'إسناد مباشر من قائمة السائقين',
+        ),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/dispatcher/orders/$boxId/assign');
+      expect(capturedOptions.data, {
+        'driverId': driverId,
+        'notes': 'إسناد مباشر من قائمة السائقين',
+      });
+    });
   });
 }

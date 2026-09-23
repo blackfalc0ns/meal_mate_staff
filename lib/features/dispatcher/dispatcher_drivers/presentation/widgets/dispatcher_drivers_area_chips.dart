@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
+import '../../domain/entities/dispatcher_driver_area_entity.dart';
 import 'dispatcher_drivers_area_chip.dart';
 
 class DispatcherDriversAreaChips extends StatelessWidget {
   const DispatcherDriversAreaChips({
     super.key,
     required this.areas,
-    required this.selectedArea,
+    this.selectedAreaKey,
     required this.onAreaSelected,
   });
 
-  final List<String> areas;
-  final String selectedArea;
-  final ValueChanged<String> onAreaSelected;
+  final List<DispatcherDriverAreaEntity> areas;
+  final String? selectedAreaKey;
+  final ValueChanged<DispatcherDriverAreaEntity> onAreaSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,10 @@ class DispatcherDriversAreaChips extends StatelessWidget {
         separatorBuilder: (_, _) => const SizedBox(width: Spacing.xs),
         itemBuilder: (context, index) {
           final area = areas[index];
-          final isSelected = area == selectedArea;
+          final isSelected =
+              selectedAreaKey != null && selectedAreaKey!.isNotEmpty
+              ? area.areaKey == selectedAreaKey
+              : area.isSelected;
 
           return DispatcherDriversAreaChip(
             area: area,

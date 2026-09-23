@@ -12,15 +12,25 @@ class DispatcherDriversCardTopRow extends StatelessWidget {
   const DispatcherDriversCardTopRow({
     super.key,
     required this.driver,
+    this.isLoading = false,
+    this.isDisabled = false,
+    this.actionLabel,
     this.onSelect,
   });
 
   final DispatcherDriverEntity driver;
+  final bool isLoading;
+  final bool isDisabled;
+  final String? actionLabel;
   final ValueChanged<DispatcherDriverEntity>? onSelect;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+
+    final codeText = driver.driverCode.isNotEmpty
+        ? driver.driverCode
+        : 'ID:${driver.driverId}';
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +51,9 @@ class DispatcherDriversCardTopRow extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            driver.name,
+                            driver.fullName.isNotEmpty
+                                ? driver.fullName
+                                : driver.name,
                             style: getBoldStyle(
                               fontSize: FontSize.size10,
                               color: color.onSurface,
@@ -69,7 +81,7 @@ class DispatcherDriversCardTopRow extends StatelessWidget {
                     ),
                     const SizedBox(height: Spacing.border),
                     Text(
-                      'ID:${driver.id}',
+                      codeText,
                       style: getBoldStyle(
                         fontSize: FontSize.size9,
                         color: color.onSurfaceVariant,
@@ -79,14 +91,22 @@ class DispatcherDriversCardTopRow extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-              DispatcherDriversStatusBadge(status: driver.status),
+              DispatcherDriversStatusBadge(
+                status: driver.status,
+                statusText: driver.statusText,
+              ),
             ],
           ),
         ),
         const SizedBox(width: Spacing.xs),
         DispatcherDriversCardActionButton(
-          isAvailable: driver.isAvailable,
-          onTap: driver.isAvailable ? () => onSelect?.call(driver) : null,
+          isAvailable: driver.isAvailableForSelection,
+          isLoading: isLoading,
+          isDisabled: isDisabled,
+          label: actionLabel,
+          onTap: driver.isAvailableForSelection
+              ? () => onSelect?.call(driver)
+              : null,
         ),
       ],
     );

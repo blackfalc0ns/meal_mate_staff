@@ -5,13 +5,80 @@ import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/widget/app_button.dart';
 import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
+import 'package:meal_mate_delivery/config/routing/arguments/dispatcher_drivers_route_arguments.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/assign_driver_request_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_driver_view_mode.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_drivers_kpi_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_drivers_query_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/dispatcher_drivers_roster_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/driver_assignment_result_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/repo/dispatcher_drivers_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/usecase/assign_driver_to_box_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/usecase/get_dispatcher_drivers_roster_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/presentation/manager/dispatcher_drivers_view_model.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_bottom_actions.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_driver_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_recommended_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_assign_box/presentation/widgets/assign_box_summary_card.dart';
 
+class _FakeDriversRepository implements DispatcherDriversRepository {
+  @override
+  Future<ApiResult<DispatcherDriversRosterEntity>> getRoster(
+    DispatcherDriversQueryEntity query,
+  ) async {
+    return const ApiSuccessResult(
+      data: DispatcherDriversRosterEntity(
+        counts: DispatcherDriversKpiEntity(
+          totalCount: 1,
+          availableCount: 1,
+          busyCount: 0,
+        ),
+        selectedView: DispatcherDriverViewMode.byArea,
+        selectedAreaKey: 'salmiya',
+        selectedAreaName: 'السالمية',
+        sectionTitle: 'السائقين في السالمية (1)',
+        areas: [],
+        drivers: [],
+      ),
+    );
+  }
+
+  @override
+  Future<ApiResult<DriverAssignmentResultEntity>> assignDriver(
+    AssignDriverRequestEntity request,
+  ) async {
+    return ApiSuccessResult(
+      data: DriverAssignmentResultEntity(
+        success: true,
+        message: 'تم الإسناد بنجاح',
+        boxId: request.boxId,
+        driverId: request.driverId,
+      ),
+    );
+  }
+}
+
 void main() {
+  setUp(() {
+    if (!getIt.isRegistered<DispatcherDriversViewModel>()) {
+      final repo = _FakeDriversRepository();
+      getIt.registerFactoryParam<
+        DispatcherDriversViewModel,
+        DispatcherDriversRouteArgs?,
+        void
+      >(
+        (args, _) => DispatcherDriversViewModel(
+          args: args ?? const DispatcherDriversRouteArgs.browse(),
+          getRosterUseCase: GetDispatcherDriversRosterUseCase(repo),
+          assignDriverUseCase: AssignDriverToBoxUseCase(repo),
+        ),
+      );
+    }
+  });
+
   Widget buildSubject({Locale locale = const Locale('ar')}) {
     return MaterialApp(
       locale: locale,

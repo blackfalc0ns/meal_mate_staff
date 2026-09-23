@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/dispatcher_drivers_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/custom_app_bar.dart';
@@ -10,6 +11,7 @@ import '../../domain/entities/assign_box_driver_status_type.dart';
 import '../../domain/entities/assign_box_order_entity.dart';
 import '../../domain/fake_data/assign_box_fake_data.dart';
 import '../../../dispatcher_drivers/domain/entities/dispatcher_driver_entity.dart';
+import '../../../dispatcher_drivers/domain/entities/driver_assignment_result_entity.dart';
 import '../widgets/assign_box_bottom_actions.dart';
 import '../widgets/assign_box_driver_card.dart';
 import '../widgets/assign_box_drivers_header.dart';
@@ -48,8 +50,14 @@ class _AssignBoxScreenState extends State<AssignBoxScreen> {
   Future<void> _onViewAllDrivers() async {
     final selected = await context.pushNamed<dynamic>(
       AppRoutes.dispatcherDrivers,
+      arguments: DispatcherDriversRouteArgs.assignment(boxId: _order.boxId),
     );
-    if (selected is DispatcherDriverEntity && mounted) {
+    if (!mounted) return;
+    if (selected is DriverAssignmentResultEntity) {
+      context.pop(selected);
+      return;
+    }
+    if (selected is DispatcherDriverEntity) {
       final existingIndex = _candidates.indexWhere((c) => c.id == selected.id);
       if (existingIndex == -1 && selected.id != _order.recommendedDriver.id) {
         final newCandidate = AssignBoxCandidateDriverEntity(

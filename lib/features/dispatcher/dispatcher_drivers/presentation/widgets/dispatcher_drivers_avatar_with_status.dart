@@ -2,33 +2,46 @@ import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/app_cached_network_image.dart';
 import '../../domain/entities/dispatcher_driver_status.dart';
 
 class DispatcherDriversAvatarWithStatus extends StatelessWidget {
   const DispatcherDriversAvatarWithStatus({
     super.key,
     required this.status,
+    this.statusDotColor,
     this.avatarUrl,
   });
 
   final DispatcherDriverStatus status;
+  final String? statusDotColor;
   final String? avatarUrl;
+
+  Color _resolveStatusColor(ColorScheme color) {
+    if (statusDotColor != null && statusDotColor!.isNotEmpty) {
+      final hex = statusDotColor!.replaceFirst('#', '');
+      if (hex.length == 6) {
+        final parsed = int.tryParse('FF$hex', radix: 16);
+        if (parsed != null) return Color(parsed);
+      }
+    }
+    switch (status) {
+      case DispatcherDriverStatus.available:
+        return color.tertiary;
+      case DispatcherDriverStatus.busy:
+      case DispatcherDriverStatus.onTheWay:
+        return color.secondary;
+      case DispatcherDriverStatus.onBreak:
+        return color.outline;
+      case DispatcherDriverStatus.unknown:
+        return color.onSurfaceVariant;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-
-    final Color statusColor;
-    switch (status) {
-      case DispatcherDriverStatus.available:
-        statusColor = color.tertiary;
-      case DispatcherDriverStatus.onTheWay:
-        statusColor = color.secondary;
-      case DispatcherDriverStatus.onBreak:
-        statusColor = color.outline;
-    }
-
-    final hasAvatar = avatarUrl != null && avatarUrl!.isNotEmpty;
+    final statusColor = _resolveStatusColor(color);
 
     return SizedBox(
       width: Spacing.dispatcherDriverAvatarSize,
@@ -43,36 +56,17 @@ class DispatcherDriversAvatarWithStatus extends StatelessWidget {
               shape: BoxShape.circle,
               color: color.primaryContainer,
             ),
-            child: ClipOval(
-              child: hasAvatar
-                  ? (avatarUrl!.startsWith('http')
-                        ? Image.network(
-                            avatarUrl!,
-                            fit: BoxFit.cover,
-                            width: Spacing.dispatcherDriverAvatarSize,
-                            height: Spacing.dispatcherDriverAvatarSize,
-                            errorBuilder: (_, _, _) => Icon(
-                              Icons.person_rounded,
-                              size: Spacing.iconMd,
-                              color: color.primary,
-                            ),
-                          )
-                        : Image.asset(
-                            avatarUrl!,
-                            fit: BoxFit.cover,
-                            width: Spacing.dispatcherDriverAvatarSize,
-                            height: Spacing.dispatcherDriverAvatarSize,
-                            errorBuilder: (_, _, _) => Icon(
-                              Icons.person_rounded,
-                              size: Spacing.iconMd,
-                              color: color.primary,
-                            ),
-                          ))
-                  : Icon(
-                      Icons.person_rounded,
-                      size: Spacing.iconMd,
-                      color: color.primary,
-                    ),
+            child: AppCachedNetworkImage(
+              imageUrl: avatarUrl,
+              width: Spacing.dispatcherDriverAvatarSize,
+              height: Spacing.dispatcherDriverAvatarSize,
+              shape: BoxShape.circle,
+              fit: BoxFit.cover,
+              errorWidget: Icon(
+                Icons.person_rounded,
+                size: Spacing.iconMd,
+                color: color.primary,
+              ),
             ),
           ),
           PositionedDirectional(

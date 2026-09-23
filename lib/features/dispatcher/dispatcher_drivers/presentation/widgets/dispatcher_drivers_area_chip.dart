@@ -4,6 +4,7 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../domain/entities/dispatcher_driver_area_entity.dart';
 
 class DispatcherDriversAreaChip extends StatelessWidget {
   const DispatcherDriversAreaChip({
@@ -13,7 +14,7 @@ class DispatcherDriversAreaChip extends StatelessWidget {
     required this.onTap,
   });
 
-  final String area;
+  final DispatcherDriverAreaEntity area;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -51,7 +52,7 @@ class DispatcherDriversAreaChip extends StatelessWidget {
             ),
             const SizedBox(width: Spacing.xs),
             Text(
-              area,
+              area.name,
               style: isSelected
                   ? getSemiBoldStyle(
                       fontSize: FontSize.size12,
@@ -61,6 +62,26 @@ class DispatcherDriversAreaChip extends StatelessWidget {
                       fontSize: FontSize.size12,
                       color: color.onSurface,
                     ),
+            ),
+            const SizedBox(width: Spacing.xs),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.xs,
+                vertical: 1,
+              ),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? color.onPrimary.withValues(alpha: 0.25)
+                    : color.primaryContainer,
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              ),
+              child: Text(
+                '${area.driverCount}',
+                style: getSemiBoldStyle(
+                  fontSize: FontSize.size10,
+                  color: isSelected ? color.onPrimary : color.primary,
+                ),
+              ),
             ),
           ],
         ),

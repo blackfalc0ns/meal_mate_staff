@@ -15,16 +15,21 @@ class DispatcherDriversCardMetricsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.localization;
 
-    final currentOrdersAsset = driver.currentOrdersCount > 0
+    final currentOrdersAsset = driver.activeOrdersCount > 0
         ? AppAssets.dispatcherMetricBoxActive
         : AppAssets.dispatcherMetricBoxInactive;
+
+    final distanceDisplay =
+        (driver.distanceText != null && driver.distanceText!.isNotEmpty)
+        ? driver.distanceText!
+        : locale.driversDistanceKm(driver.distanceKm.toStringAsFixed(1));
 
     return Row(
       children: [
         Expanded(
           child: DispatcherDriversCardMetricItem(
             assetPath: currentOrdersAsset,
-            value: driver.currentOrdersCount.toString(),
+            value: driver.activeOrdersCount.toString(),
             label: locale.driversCurrentOrders,
           ),
         ),
@@ -40,9 +45,7 @@ class DispatcherDriversCardMetricsRow extends StatelessWidget {
         Expanded(
           child: DispatcherDriversCardMetricItem(
             assetPath: AppAssets.dispatcherMetricCar,
-            value: locale.driversDistanceKm(
-              driver.distanceKm.toStringAsFixed(0),
-            ),
+            value: distanceDisplay,
             label: locale.driversDistanceFromYou,
           ),
         ),

@@ -40,6 +40,9 @@ import '../../features/dispatcher/dispatcher_support/data/models/response/dispat
 import '../../features/dispatcher/dispatcher_driver_performance/data/models/response/driver_performance_comparison_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/data/models/response/driver_performance_overview_response_dto.dart';
 import '../../features/dispatcher/dispatcher_operations/data/models/response/operations_log_response_dto.dart';
+import '../../features/dispatcher/dispatcher_drivers/data/models/request/assign_driver_request_dto.dart';
+import '../../features/dispatcher/dispatcher_drivers/data/models/response/dispatcher_drivers_roster_response_dto.dart';
+import '../../features/dispatcher/dispatcher_drivers/data/models/response/driver_assignment_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -214,4 +217,17 @@ abstract class ApiServices {
     @Query('pageNumber') int? pageNumber,
     @Query('pageSize') int? pageSize,
   });
+
+  @GET(EndPoints.dispatcherDriversRoster)
+  Future<DispatcherDriversRosterResponseDto> getDispatcherDriversRoster({
+    @Query('view') required String view,
+    @Query('area') String? area,
+    @Query('boxId') String? boxId,
+  });
+
+  @POST(EndPoints.dispatcherAssignOrder)
+  Future<DriverAssignmentResponseDto> assignDriverToBox(
+    @Path('boxId') String boxId,
+    @Body() AssignDriverRequestDto request,
+  );
 }

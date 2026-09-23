@@ -15,6 +15,8 @@ import '../../features/auth/presentation/screens/role_selection_screen.dart';
 import '../../features/auth/presentation/screens/set_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import 'arguments/auth_route_arguments.dart';
+import 'arguments/dispatcher_drivers_route_arguments.dart';
+import 'arguments/dispatcher_map_route_arguments.dart';
 import 'arguments/dispatcher_support_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_assign_box/domain/entities/assign_box_order_entity.dart';
 import '../../features/dispatcher/dispatcher_assign_box/presentation/screens/assign_box_screen.dart';
@@ -258,9 +260,12 @@ class RouteGenerator {
         );
 
       case AppRoutes.dispatcherDrivers:
+        final args = settings.arguments is DispatcherDriversRouteArgs
+            ? settings.arguments! as DispatcherDriversRouteArgs
+            : const DispatcherDriversRouteArgs.browse();
         return _buildRoute(
           settings: settings,
-          page: const DispatcherDriversScreen(),
+          page: DispatcherDriversScreen(args: args),
         );
 
       case AppRoutes.dispatcherDriverPerformance:

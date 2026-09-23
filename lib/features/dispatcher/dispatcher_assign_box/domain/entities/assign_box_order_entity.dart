@@ -2,6 +2,7 @@ import 'assign_box_candidate_driver_entity.dart';
 
 class AssignBoxOrderEntity {
   const AssignBoxOrderEntity({
+    required this.boxId,
     required this.boxCode,
     required this.statusText,
     required this.areaText,
@@ -13,6 +14,7 @@ class AssignBoxOrderEntity {
     required this.candidates,
   });
 
+  final String boxId;
   final String boxCode;
   final String statusText;
   final String areaText;
