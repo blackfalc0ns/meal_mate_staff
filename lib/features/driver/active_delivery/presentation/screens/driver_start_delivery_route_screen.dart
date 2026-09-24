@@ -11,6 +11,7 @@ import '../widgets/start_route_action_button.dart';
 import '../widgets/start_route_customer_card.dart';
 import '../widgets/start_route_header.dart';
 import '../widgets/start_route_map_preview.dart';
+import '../widgets/start_route_title_section.dart';
 
 class DriverStartDeliveryRouteScreen extends StatelessWidget {
   const DriverStartDeliveryRouteScreen({
@@ -43,28 +44,31 @@ class DriverStartDeliveryRouteScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.base,
-            vertical: Spacing.sm,
+            horizontal: Spacing.md,
+            vertical: Spacing.xs,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: Spacing.xs),
+              const StartRouteTitleSection(),
+              const SizedBox(height: Spacing.base),
               StartRouteMapPreview(
                 driverLocation: currentTrip.driverLocation,
                 customerLocation: currentTrip.customerLocation,
                 routePoints: currentTrip.routePoints,
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
               StartRouteCustomerCard(
                 order: currentTrip.order,
                 estimatedMinutes: currentTrip.estimatedMinutes,
                 distanceKm: currentTrip.distanceKm,
               ),
-              const SizedBox(height: Spacing.lg),
+              const SizedBox(height: Spacing.base),
               StartRouteActionButton(
                 onPressed: () => _handleStartRoute(context),
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
             ],
           ),
         ),

@@ -1016,6 +1016,23 @@
   },
   "driverStartDeliveryRouteTitle": "Start Delivery Route",
   "driverStartDeliveryRouteSubtitle": "Review order details and start route",
+  "driverStartDeliveryRouteReadyTitle": "Ready to start the delivery route?",
+  "driverStartDeliveryRouteHeadToCustomerSubtitle": "Head to the customer's location to start delivery",
+  "driverStartRouteCustomerLabel": "Customer",
+  "driverStartRouteExpectedDeliveryTimeLabel": "Expected Delivery Time",
+  "driverStartRouteBoxesCountLabel": "Number of Boxes",
+  "driverStartRouteBoxesCountValue": "{count} boxes",
+  "@driverStartRouteBoxesCountValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverStartRouteExpectedDeliveryWindow": "Between 9 - 12 AM",
+  "driverStartRouteCustomerNotesTitle": "Notes from Customer",
+  "driverStartRouteCurrentLocation": "Current Location",
+  "driverStartRouteCustomerLocation": "Customer Location",
   "driverStartRouteActionButton": "Start Delivery Route",
   "driverCustomerNotesLabel": "Customer Notes",
   "driverDeliveryAddressLabel": "Delivery Address",
@@ -1039,6 +1056,12 @@
     }
   },
   "driverActiveTrackingTitle": "Delivery Tracking",
+  "driverActiveTrackingReadyTitle": "Active Delivery Tracking",
+  "driverActiveTrackingEnRouteSubtitle": "You are now on your way to the customer",
+  "driverStatusEnRouteBadge": "Delivering",
+  "driverCustomerAddressLabel": "Customer Address",
+  "driverDeliveryTimeLabel": "Delivery Time",
+  "driverConfirmArrivalToCustomerAction": "Confirm Arrival to Customer",
   "driverTripStepStart": "Start Route",
   "driverTripStepEnRoute": "On the Way",
   "driverTripStepArrived": "Arrived",

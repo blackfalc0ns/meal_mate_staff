@@ -6,11 +6,13 @@ import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart
 import 'package:meal_mate_delivery/features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/domain/fake_data/driver_active_delivery_fake_data.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/screens/driver_active_delivery_tracking_screen.dart';
+import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_address_card.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_app_bar.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_bottom_actions.dart';
-import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_customer_card.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_map_view.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_stepper.dart';
+import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_summary_card.dart';
+import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_title_section.dart';
 
 Widget _buildTestApp({
   required Widget child,
@@ -63,16 +65,21 @@ void main() {
         await tester.pump();
 
         expect(find.byType(DriverTrackingAppBar), findsOneWidget);
+        expect(find.byType(DriverTrackingTitleSection), findsOneWidget);
+        expect(find.text('متابعة التوصيل'), findsOneWidget);
+        expect(find.text('أنت الآن في طريقك إلى العميل'), findsOneWidget);
+        expect(find.byType(DriverTrackingSummaryCard), findsOneWidget);
+        expect(find.text('عبدالله العتيبي'), findsOneWidget);
+        expect(find.text('جاري التوصيل'), findsOneWidget);
         expect(find.byType(DriverTrackingMapView), findsOneWidget);
         expect(find.byType(GoogleMap), findsOneWidget);
+        expect(find.byType(DriverTrackingAddressCard), findsOneWidget);
         expect(find.byType(DriverTrackingStepper), findsOneWidget);
-        expect(find.byType(DriverTrackingCustomerCard), findsOneWidget);
-        expect(find.text('عبدالله العتيبي'), findsOneWidget);
         expect(find.byType(DriverTrackingBottomActions), findsOneWidget);
 
         // Tap Confirm Arrival
-        await tester.ensureVisible(find.text('تأكيد الوصول والتسليم'));
-        await tester.tap(find.text('تأكيد الوصول والتسليم'));
+        await tester.ensureVisible(find.text('تأكيد الوصول للعميل'));
+        await tester.tap(find.text('تأكيد الوصول للعميل'));
         await tester.pump();
         expect(arrivalCalled, isTrue);
 
@@ -108,8 +115,8 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.text('Delivery Tracking'), findsOneWidget);
-      expect(find.text('Confirm Arrival & Delivery'), findsOneWidget);
+      expect(find.text('Active Delivery Tracking'), findsOneWidget);
+      expect(find.text('Confirm Arrival to Customer'), findsOneWidget);
       expect(find.text('Delay'), findsOneWidget);
       expect(find.text('Delivery Failed'), findsOneWidget);
     });

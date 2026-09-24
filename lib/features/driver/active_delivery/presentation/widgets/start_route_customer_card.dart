@@ -10,13 +10,15 @@ class StartRouteCustomerCard extends StatelessWidget {
   const StartRouteCustomerCard({
     super.key,
     required this.order,
-    required this.estimatedMinutes,
-    required this.distanceKm,
+    this.estimatedMinutes = 15,
+    this.distanceKm = 4.2,
+    this.onCallCustomer,
   });
 
   final ActiveDeliveryOrderEntity order;
   final int estimatedMinutes;
   final double distanceKm;
+  final VoidCallback? onCallCustomer;
 
   @override
   Widget build(BuildContext context) {
@@ -24,143 +26,37 @@ class StartRouteCustomerCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.base),
+      padding: const EdgeInsets.all(Spacing.md),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(color: color.outline),
+        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        border: Border.all(color: color.outlineVariant),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                child: Image.asset(
-                  order.customerAvatar,
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => CircleAvatar(
-                    radius: 24,
-                    backgroundColor: color.primaryContainer,
-                    child: Icon(Icons.person, color: color.primary),
-                  ),
-                ),
-              ),
-              const SizedBox(width: Spacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      order.customerName,
-                      style: getBoldStyle(
-                        fontSize: FontSize.size16,
-                        color: color.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                        vertical: Spacing.xs,
-                      ),
-                      decoration: BoxDecoration(
-                        color: color.primaryContainer,
-                        borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                      ),
-                      child: Text(
-                        order.boxCode,
-                        style: getSemiBoldStyle(
-                          fontSize: FontSize.size12,
-                          color: color.primary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.base),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.md,
-                    vertical: Spacing.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    color: color.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.access_time_filled,
-                        size: Spacing.iconSm,
-                        color: color.primary,
-                      ),
-                      const SizedBox(width: Spacing.xs),
-                      Expanded(
-                        child: Text(
-                          locale.driverEstimatedEtaDistance(
-                            estimatedMinutes,
-                            distanceKm,
-                          ),
-                          style: getMediumStyle(
-                            fontSize: FontSize.size12,
-                            color: color.onSurface,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: Spacing.sm),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.md,
-                  vertical: Spacing.sm,
-                ),
-                decoration: BoxDecoration(
-                  color: color.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.inventory_2,
-                      size: Spacing.iconSm,
-                      color: color.primary,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      locale.driverMealsCountFormatted(order.mealsCount),
-                      style: getMediumStyle(
-                        fontSize: FontSize.size12,
-                        color: color.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.base),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.location_on,
-                size: Spacing.iconMd,
-                color: color.primary,
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: color.primaryContainer,
+                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                ),
+                child: Icon(
+                  Icons.person,
+                  color: color.primary,
+                  size: Spacing.iconMd,
+                ),
               ),
               const SizedBox(width: Spacing.sm),
               Expanded(
@@ -168,70 +64,198 @@ class StartRouteCustomerCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      locale.driverDeliveryAddressLabel,
-                      style: getMediumStyle(
-                        fontSize: FontSize.size12,
+                      locale.driverStartRouteCustomerLabel,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size10,
                         color: color.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: Spacing.border),
                     Text(
-                      order.address,
-                      style: getSemiBoldStyle(
+                      order.customerName,
+                      style: getBoldStyle(
                         fontSize: FontSize.size14,
                         color: color.onSurface,
                       ),
                     ),
+                    const SizedBox(height: Spacing.border),
+                    Text(
+                      order.address,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: Spacing.sm),
+              InkWell(
+                onTap: onCallCustomer,
+                borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: color.primaryContainer,
+                    borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                  ),
+                  child: Icon(
+                    Icons.call,
+                    color: color.primary,
+                    size: Spacing.iconSm,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.sm),
+          Divider(
+            height: Spacing.md,
+            thickness: 1,
+            color: color.outlineVariant.withValues(alpha: 0.6),
+          ),
+          const SizedBox(height: Spacing.xs),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      locale.driverOrderNumberLabel,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    Text(
+                      order.orderId,
+                      style: getSemiBoldStyle(
+                        fontSize: FontSize.size12,
+                        color: color.onSurface,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 28,
+                width: 1,
+                color: color.outlineVariant.withValues(alpha: 0.6),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      locale.driverStartRouteBoxesCountLabel,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    Text(
+                      locale.driverStartRouteBoxesCountValue(order.mealsCount),
+                      style: getSemiBoldStyle(
+                        fontSize: FontSize.size12,
+                        color: color.onSurface,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 28,
+                width: 1,
+                color: color.outlineVariant.withValues(alpha: 0.6),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      locale.driverStartRouteExpectedDeliveryTimeLabel,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size10,
+                        color: color.onSurfaceVariant,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    Text(
+                      locale.driverStartRouteExpectedDeliveryWindow,
+                      style: getSemiBoldStyle(
+                        fontSize: FontSize.size12,
+                        color: color.onSurface,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-          if (order.customerNote.isNotEmpty) ...[
-            const SizedBox(height: Spacing.base),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(Spacing.md),
-              decoration: BoxDecoration(
-                color: color.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                border: Border.all(color: color.outline),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    size: Spacing.iconSm,
-                    color: color.primary,
-                  ),
-                  const SizedBox(width: Spacing.sm),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          locale.driverCustomerNotesLabel,
-                          style: getSemiBoldStyle(
-                            fontSize: FontSize.size12,
-                            color: color.primary,
-                          ),
-                        ),
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          order.customerNote,
-                          style: getRegularStyle(
-                            fontSize: FontSize.size12,
-                            color: color.onSurface,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+          const SizedBox(height: Spacing.xs),
+          Divider(
+            height: Spacing.md,
+            thickness: 1,
+            color: color.outlineVariant.withValues(alpha: 0.6),
+          ),
+          const SizedBox(height: Spacing.xs),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.md,
+              vertical: Spacing.sm,
             ),
-          ],
+            decoration: BoxDecoration(
+              color: color.surfaceContainerHighest.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(Spacing.radiusSm),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.description_outlined,
+                  size: Spacing.iconSm,
+                  color: color.primary,
+                ),
+                const SizedBox(width: Spacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        locale.driverStartRouteCustomerNotesTitle,
+                        style: getSemiBoldStyle(
+                          fontSize: FontSize.size10,
+                          color: color.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.border),
+                      Text(
+                        order.customerNote.isNotEmpty
+                            ? order.customerNote
+                            : locale.driverCustomerNotesLabel,
+                        style: getRegularStyle(
+                          fontSize: FontSize.size10,
+                          color: color.onSurfaceVariant,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -5018,6 +5018,66 @@ abstract class AppLocalizations {
   /// **'Review order details and start route'**
   String get driverStartDeliveryRouteSubtitle;
 
+  /// No description provided for @driverStartDeliveryRouteReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to start the delivery route?'**
+  String get driverStartDeliveryRouteReadyTitle;
+
+  /// No description provided for @driverStartDeliveryRouteHeadToCustomerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Head to the customer\'s location to start delivery'**
+  String get driverStartDeliveryRouteHeadToCustomerSubtitle;
+
+  /// No description provided for @driverStartRouteCustomerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get driverStartRouteCustomerLabel;
+
+  /// No description provided for @driverStartRouteExpectedDeliveryTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected Delivery Time'**
+  String get driverStartRouteExpectedDeliveryTimeLabel;
+
+  /// No description provided for @driverStartRouteBoxesCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Boxes'**
+  String get driverStartRouteBoxesCountLabel;
+
+  /// No description provided for @driverStartRouteBoxesCountValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} boxes'**
+  String driverStartRouteBoxesCountValue(int count);
+
+  /// No description provided for @driverStartRouteExpectedDeliveryWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Between 9 - 12 AM'**
+  String get driverStartRouteExpectedDeliveryWindow;
+
+  /// No description provided for @driverStartRouteCustomerNotesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes from Customer'**
+  String get driverStartRouteCustomerNotesTitle;
+
+  /// No description provided for @driverStartRouteCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Location'**
+  String get driverStartRouteCurrentLocation;
+
+  /// No description provided for @driverStartRouteCustomerLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Location'**
+  String get driverStartRouteCustomerLocation;
+
   /// No description provided for @driverStartRouteActionButton.
   ///
   /// In en, this message translates to:
@@ -5053,6 +5113,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delivery Tracking'**
   String get driverActiveTrackingTitle;
+
+  /// No description provided for @driverActiveTrackingReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Delivery Tracking'**
+  String get driverActiveTrackingReadyTitle;
+
+  /// No description provided for @driverActiveTrackingEnRouteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You are now on your way to the customer'**
+  String get driverActiveTrackingEnRouteSubtitle;
+
+  /// No description provided for @driverStatusEnRouteBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivering'**
+  String get driverStatusEnRouteBadge;
+
+  /// No description provided for @driverCustomerAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Address'**
+  String get driverCustomerAddressLabel;
+
+  /// No description provided for @driverDeliveryTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Time'**
+  String get driverDeliveryTimeLabel;
+
+  /// No description provided for @driverConfirmArrivalToCustomerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Arrival to Customer'**
+  String get driverConfirmArrivalToCustomerAction;
 
   /// No description provided for @driverTripStepStart.
   ///

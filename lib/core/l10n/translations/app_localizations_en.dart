@@ -2602,6 +2602,41 @@ class AppLocalizationsEn extends AppLocalizations {
       'Review order details and start route';
 
   @override
+  String get driverStartDeliveryRouteReadyTitle =>
+      'Ready to start the delivery route?';
+
+  @override
+  String get driverStartDeliveryRouteHeadToCustomerSubtitle =>
+      'Head to the customer\'s location to start delivery';
+
+  @override
+  String get driverStartRouteCustomerLabel => 'Customer';
+
+  @override
+  String get driverStartRouteExpectedDeliveryTimeLabel =>
+      'Expected Delivery Time';
+
+  @override
+  String get driverStartRouteBoxesCountLabel => 'Number of Boxes';
+
+  @override
+  String driverStartRouteBoxesCountValue(int count) {
+    return '$count boxes';
+  }
+
+  @override
+  String get driverStartRouteExpectedDeliveryWindow => 'Between 9 - 12 AM';
+
+  @override
+  String get driverStartRouteCustomerNotesTitle => 'Notes from Customer';
+
+  @override
+  String get driverStartRouteCurrentLocation => 'Current Location';
+
+  @override
+  String get driverStartRouteCustomerLocation => 'Customer Location';
+
+  @override
   String get driverStartRouteActionButton => 'Start Delivery Route';
 
   @override
@@ -2622,6 +2657,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverActiveTrackingTitle => 'Delivery Tracking';
+
+  @override
+  String get driverActiveTrackingReadyTitle => 'Active Delivery Tracking';
+
+  @override
+  String get driverActiveTrackingEnRouteSubtitle =>
+      'You are now on your way to the customer';
+
+  @override
+  String get driverStatusEnRouteBadge => 'Delivering';
+
+  @override
+  String get driverCustomerAddressLabel => 'Customer Address';
+
+  @override
+  String get driverDeliveryTimeLabel => 'Delivery Time';
+
+  @override
+  String get driverConfirmArrivalToCustomerAction =>
+      'Confirm Arrival to Customer';
 
   @override
   String get driverTripStepStart => 'Start Route';

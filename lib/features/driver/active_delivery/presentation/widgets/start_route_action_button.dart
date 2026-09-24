@@ -15,6 +15,8 @@ class StartRouteActionButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
 
+  static const double _buttonHeight = 46.0;
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -22,23 +24,23 @@ class StartRouteActionButton extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: Spacing.buttonHeight,
+      height: _buttonHeight,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: color.primary,
           foregroundColor: color.onPrimary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Spacing.buttonRadius),
+            borderRadius: BorderRadius.circular(Spacing.radiusMd),
           ),
           elevation: 0,
         ),
         child: isLoading
             ? SizedBox(
-                width: 24,
-                height: 24,
+                width: 20,
+                height: 20,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
+                  strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(color.onPrimary),
                 ),
               )
@@ -46,22 +48,22 @@ class StartRouteActionButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.navigation,
-                    size: Spacing.iconMd,
-                    color: color.onPrimary,
-                  ),
-                  const SizedBox(width: Spacing.sm),
                   Flexible(
                     child: Text(
                       locale.driverStartRouteActionButton,
-                      style: getSemiBoldStyle(
-                        fontSize: FontSize.size16,
+                      style: getBoldStyle(
+                        fontSize: FontSize.size14,
                         color: color.onPrimary,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Icon(
+                    Icons.near_me_rounded,
+                    size: Spacing.iconSm,
+                    color: color.onPrimary,
                   ),
                 ],
               ),

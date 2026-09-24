@@ -2596,6 +2596,39 @@ class AppLocalizationsAr extends AppLocalizations {
       'راجع بيانات الطلب وابدأ المسار';
 
   @override
+  String get driverStartDeliveryRouteReadyTitle => 'جاهز لبدأ مسار التوصيل؟';
+
+  @override
+  String get driverStartDeliveryRouteHeadToCustomerSubtitle =>
+      'توجه إلى موقع العميل لبدء التوصيل';
+
+  @override
+  String get driverStartRouteCustomerLabel => 'العميل';
+
+  @override
+  String get driverStartRouteExpectedDeliveryTimeLabel => 'وقت التسليم المتوقع';
+
+  @override
+  String get driverStartRouteBoxesCountLabel => 'عدد البوكسات';
+
+  @override
+  String driverStartRouteBoxesCountValue(int count) {
+    return '$count بوكسات';
+  }
+
+  @override
+  String get driverStartRouteExpectedDeliveryWindow => 'بين 9 - 12 ص';
+
+  @override
+  String get driverStartRouteCustomerNotesTitle => 'ملاحظات من العميل';
+
+  @override
+  String get driverStartRouteCurrentLocation => 'موقعك الحالي';
+
+  @override
+  String get driverStartRouteCustomerLocation => 'موقع العميل';
+
+  @override
   String get driverStartRouteActionButton => 'بدء مسار التوصيل';
 
   @override
@@ -2616,6 +2649,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverActiveTrackingTitle => 'تتبع التوصيل';
+
+  @override
+  String get driverActiveTrackingReadyTitle => 'متابعة التوصيل';
+
+  @override
+  String get driverActiveTrackingEnRouteSubtitle =>
+      'أنت الآن في طريقك إلى العميل';
+
+  @override
+  String get driverStatusEnRouteBadge => 'جاري التوصيل';
+
+  @override
+  String get driverCustomerAddressLabel => 'عنوان العميل';
+
+  @override
+  String get driverDeliveryTimeLabel => 'وقت التسليم';
+
+  @override
+  String get driverConfirmArrivalToCustomerAction => 'تأكيد الوصول للعميل';
 
   @override
   String get driverTripStepStart => 'بدء المسار';

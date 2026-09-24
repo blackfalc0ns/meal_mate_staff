@@ -28,15 +28,23 @@ class DriverTrackingStepper extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.base,
-        vertical: Spacing.md,
+        horizontal: Spacing.md,
+        vertical: Spacing.sm,
       ),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(color: color.outline),
+        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        border: Border.all(color: color.outlineVariant),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Step 1: Start
           _buildStepItem(
@@ -48,14 +56,20 @@ class DriverTrackingStepper extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              height: 2,
-              color: isEnRouteOrBeyond ? color.primary : color.outline,
+              height: 4,
+              margin: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+              decoration: BoxDecoration(
+                color: isEnRouteOrBeyond
+                    ? color.primary
+                    : color.primaryContainer,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
           // Step 2: En Route
           _buildStepItem(
             color: color,
-            icon: Icons.directions_car,
+            icon: Icons.local_shipping,
             isCompleted: isArrivedOrBeyond,
             isActive:
                 status == DeliveryTripStatus.enRoute ||
@@ -64,14 +78,20 @@ class DriverTrackingStepper extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              height: 2,
-              color: isArrivedOrBeyond ? color.primary : color.outline,
+              height: 4,
+              margin: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+              decoration: BoxDecoration(
+                color: isArrivedOrBeyond
+                    ? color.primary
+                    : color.primaryContainer,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
           // Step 3: Arrived
           _buildStepItem(
             color: color,
-            icon: Icons.place,
+            icon: Icons.check,
             isCompleted: status == DeliveryTripStatus.delivered,
             isActive: status == DeliveryTripStatus.arrived,
             label: locale.driverTripStepArrived,
@@ -88,44 +108,61 @@ class DriverTrackingStepper extends StatelessWidget {
     required bool isActive,
     required String label,
   }) {
-    final Color bgColor;
-    final Color iconColor;
-    final Color textColor;
-
-    if (isCompleted) {
-      bgColor = color.primary;
-      iconColor = color.onPrimary;
-      textColor = color.primary;
-    } else if (isActive) {
-      bgColor = color.primaryContainer;
-      iconColor = color.primary;
-      textColor = color.primary;
-    } else {
-      bgColor = color.surfaceContainerHighest;
-      iconColor = color.onSurfaceVariant;
-      textColor = color.onSurfaceVariant;
+    if (isActive) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: color.primaryContainer,
+              shape: BoxShape.circle,
+            ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: color.primary,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: Spacing.iconSm, color: color.onPrimary),
+            ),
+          ),
+          const SizedBox(height: Spacing.xs),
+          Text(
+            label,
+            style: getSemiBoldStyle(
+              fontSize: FontSize.size10,
+              color: color.primary,
+            ),
+          ),
+        ],
+      );
     }
+
+    final Color iconColor = isCompleted
+        ? color.primary
+        : color.onSurfaceVariant.withValues(alpha: 0.5);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 32,
-          height: 32,
+          width: 28,
+          height: 28,
           decoration: BoxDecoration(
-            color: bgColor,
+            color: color.primaryContainer,
             shape: BoxShape.circle,
-            border: Border.all(
-              color: isActive ? color.primary : color.outline,
-              width: isActive ? 2 : 1,
-            ),
           ),
-          child: Icon(icon, size: Spacing.iconSm, color: iconColor),
+          child: Icon(icon, size: Spacing.iconXs, color: iconColor),
         ),
         const SizedBox(height: Spacing.xs),
         Text(
           label,
-          style: getMediumStyle(fontSize: FontSize.size11, color: textColor),
+          style: getRegularStyle(
+            fontSize: FontSize.size10,
+            color: isCompleted ? color.onSurface : color.onSurfaceVariant,
+          ),
         ),
       ],
     );

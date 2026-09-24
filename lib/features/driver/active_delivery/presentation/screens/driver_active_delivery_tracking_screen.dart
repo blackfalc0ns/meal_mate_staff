@@ -10,11 +10,13 @@ import '../../domain/entities/active_delivery_location_entity.dart';
 import '../../domain/entities/active_delivery_trip_entity.dart';
 import '../../domain/fake_data/driver_active_delivery_fake_data.dart';
 import '../../domain/repositories/active_delivery_repository.dart';
+import '../widgets/driver_tracking_address_card.dart';
 import '../widgets/driver_tracking_app_bar.dart';
 import '../widgets/driver_tracking_bottom_actions.dart';
-import '../widgets/driver_tracking_customer_card.dart';
 import '../widgets/driver_tracking_map_view.dart';
 import '../widgets/driver_tracking_stepper.dart';
+import '../widgets/driver_tracking_summary_card.dart';
+import '../widgets/driver_tracking_title_section.dart';
 
 class DriverActiveDeliveryTrackingScreen extends StatefulWidget {
   const DriverActiveDeliveryTrackingScreen({
@@ -112,11 +114,24 @@ class _DriverActiveDeliveryTrackingScreenState
         onBackPressed: () => context.maybePopRoute(),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: DriverTrackingMapView(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.md,
+            vertical: Spacing.xs,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: Spacing.xs),
+              const DriverTrackingTitleSection(),
+              const SizedBox(height: Spacing.base),
+              DriverTrackingSummaryCard(
+                order: _trip.order,
+                onCallPressed: () {},
+                onNavigatePressed: () {},
+              ),
+              const SizedBox(height: Spacing.base),
+              DriverTrackingMapView(
                 initialDriverLocation: _trip.driverLocation,
                 customerLocation: _trip.customerLocation,
                 routePoints: _trip.routePoints,
@@ -124,48 +139,19 @@ class _DriverActiveDeliveryTrackingScreenState
                 onCallCustomer: () {},
                 onMessageCustomer: () {},
               ),
-            ),
-            Expanded(
-              flex: 5,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: color.surface,
-                  boxShadow: [
-                    BoxShadow(
-                      color: color.shadow,
-                      blurRadius: 10,
-                      offset: const Offset(0, -2),
-                    ),
-                  ],
-                ),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Spacing.base,
-                    vertical: Spacing.md,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      DriverTrackingStepper(status: _trip.status),
-                      const SizedBox(height: Spacing.sm),
-                      DriverTrackingCustomerCard(
-                        order: _trip.order,
-                        onCallPressed: () {},
-                        onMessagePressed: () {},
-                      ),
-                      const SizedBox(height: Spacing.md),
-                      DriverTrackingBottomActions(
-                        onConfirmArrival: _handleConfirmArrival,
-                        onReportDelay: _handleReportDelay,
-                        onReportFailed: _handleReportFailed,
-                      ),
-                      const SizedBox(height: Spacing.base),
-                    ],
-                  ),
-                ),
+              const SizedBox(height: Spacing.base),
+              DriverTrackingAddressCard(order: _trip.order),
+              const SizedBox(height: Spacing.base),
+              DriverTrackingStepper(status: _trip.status),
+              const SizedBox(height: Spacing.base),
+              DriverTrackingBottomActions(
+                onConfirmArrival: _handleConfirmArrival,
+                onReportDelay: _handleReportDelay,
+                onReportFailed: _handleReportFailed,
               ),
-            ),
-          ],
+              const SizedBox(height: Spacing.md),
+            ],
+          ),
         ),
       ),
     );

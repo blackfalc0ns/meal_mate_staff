@@ -1009,6 +1009,23 @@
   },
   "driverStartDeliveryRouteTitle": "بدء مسار التوصيل",
   "driverStartDeliveryRouteSubtitle": "راجع بيانات الطلب وابدأ المسار",
+  "driverStartDeliveryRouteReadyTitle": "جاهز لبدأ مسار التوصيل؟",
+  "driverStartDeliveryRouteHeadToCustomerSubtitle": "توجه إلى موقع العميل لبدء التوصيل",
+  "driverStartRouteCustomerLabel": "العميل",
+  "driverStartRouteExpectedDeliveryTimeLabel": "وقت التسليم المتوقع",
+  "driverStartRouteBoxesCountLabel": "عدد البوكسات",
+  "driverStartRouteBoxesCountValue": "{count} بوكسات",
+  "@driverStartRouteBoxesCountValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverStartRouteExpectedDeliveryWindow": "بين 9 - 12 ص",
+  "driverStartRouteCustomerNotesTitle": "ملاحظات من العميل",
+  "driverStartRouteCurrentLocation": "موقعك الحالي",
+  "driverStartRouteCustomerLocation": "موقع العميل",
   "driverStartRouteActionButton": "بدء مسار التوصيل",
   "driverCustomerNotesLabel": "ملاحظات العميل",
   "driverDeliveryAddressLabel": "عنوان التوصيل",
@@ -1032,6 +1049,12 @@
     }
   },
   "driverActiveTrackingTitle": "تتبع التوصيل",
+  "driverActiveTrackingReadyTitle": "متابعة التوصيل",
+  "driverActiveTrackingEnRouteSubtitle": "أنت الآن في طريقك إلى العميل",
+  "driverStatusEnRouteBadge": "جاري التوصيل",
+  "driverCustomerAddressLabel": "عنوان العميل",
+  "driverDeliveryTimeLabel": "وقت التسليم",
+  "driverConfirmArrivalToCustomerAction": "تأكيد الوصول للعميل",
   "driverTripStepStart": "بدء المسار",
   "driverTripStepEnRoute": "في الطريق",
   "driverTripStepArrived": "تم الوصول",

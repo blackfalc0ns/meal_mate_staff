@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
+import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/active_delivery_location_entity.dart';
-
 import 'map_floating_action_button.dart';
 
 class DriverTrackingMapView extends StatefulWidget {
@@ -77,6 +78,7 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
 
     final markers = <Marker>{
       Marker(
@@ -84,13 +86,11 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
         position: _driverLocation.toLatLng,
         rotation: _driverLocation.heading,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-        infoWindow: const InfoWindow(title: 'السائق'),
       ),
       Marker(
         markerId: const MarkerId('customer'),
         position: widget.customerLocation.toLatLng,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        infoWindow: const InfoWindow(title: 'العميل'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       ),
     };
 
@@ -99,58 +99,129 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
         polylineId: const PolylineId('tracking_route'),
         points: widget.routePoints.map((p) => p.toLatLng).toList(),
         color: color.primary,
-        width: 5,
+        width: 4,
+        patterns: [PatternItem.dash(16), PatternItem.gap(8)],
       ),
     };
 
-    return Stack(
-      children: [
-        GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: _driverLocation.toLatLng,
-            zoom: 15.0,
-          ),
-          onMapCreated: (controller) => _mapController = controller,
-          markers: markers,
-          polylines: polylines,
-          zoomControlsEnabled: false,
-          myLocationButtonEnabled: false,
-          compassEnabled: false,
-          mapToolbarEnabled: false,
-        ),
-        PositionedDirectional(
-          top: Spacing.base,
-          end: Spacing.base,
-          child: Column(
-            children: [
-              MapFloatingActionButton(
-                icon: Icons.my_location,
-                onPressed: _centerOnDriver,
-                backgroundColor: color.surface,
-                iconColor: color.primary,
+    return Container(
+      height: 260,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: color.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        border: Border.all(color: color.outlineVariant),
+      ),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: _driverLocation.toLatLng,
+                zoom: 14.5,
               ),
-              if (widget.onCallCustomer != null) ...[
-                const SizedBox(height: Spacing.sm),
-                MapFloatingActionButton(
-                  icon: Icons.phone,
-                  onPressed: widget.onCallCustomer!,
-                  backgroundColor: color.surface,
-                  iconColor: color.tertiary,
-                ),
-              ],
-              if (widget.onMessageCustomer != null) ...[
-                const SizedBox(height: Spacing.sm),
-                MapFloatingActionButton(
-                  icon: Icons.chat_bubble_outline,
-                  onPressed: widget.onMessageCustomer!,
-                  backgroundColor: color.surface,
-                  iconColor: color.primary,
-                ),
-              ],
-            ],
+              onMapCreated: (controller) => _mapController = controller,
+              markers: markers,
+              polylines: polylines,
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
+              compassEnabled: false,
+              mapToolbarEnabled: false,
+            ),
           ),
-        ),
-      ],
+          PositionedDirectional(
+            top: Spacing.sm,
+            start: Spacing.sm,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.sm,
+                vertical: Spacing.xs,
+              ),
+              decoration: BoxDecoration(
+                color: color.surface,
+                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.shadow.withValues(alpha: 0.08),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: color.primary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    locale.driverStartRouteCurrentLocation,
+                    style: getMediumStyle(
+                      fontSize: FontSize.size10,
+                      color: color.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          PositionedDirectional(
+            top: Spacing.sm,
+            end: Spacing.sm,
+            child: MapFloatingActionButton(
+              icon: Icons.my_location,
+              onPressed: _centerOnDriver,
+              backgroundColor: color.surface,
+              iconColor: color.primary,
+            ),
+          ),
+          PositionedDirectional(
+            bottom: Spacing.sm,
+            end: Spacing.sm,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.sm,
+                vertical: Spacing.xs,
+              ),
+              decoration: BoxDecoration(
+                color: color.surface,
+                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.shadow.withValues(alpha: 0.08),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.home_rounded,
+                    size: Spacing.iconXs,
+                    color: color.primary,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    locale.driverStartRouteCustomerLocation,
+                    style: getMediumStyle(
+                      fontSize: FontSize.size10,
+                      color: color.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -19,6 +19,8 @@ class DriverTrackingBottomActions extends StatelessWidget {
   final VoidCallback onReportFailed;
   final bool isLoading;
 
+  static const double _buttonHeight = 46.0;
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -29,23 +31,23 @@ class DriverTrackingBottomActions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SizedBox(
-          height: Spacing.buttonHeight,
+          height: _buttonHeight,
           child: ElevatedButton(
             onPressed: isLoading ? null : onConfirmArrival,
             style: ElevatedButton.styleFrom(
               backgroundColor: color.primary,
               foregroundColor: color.onPrimary,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Spacing.buttonRadius),
+                borderRadius: BorderRadius.circular(Spacing.radiusMd),
               ),
               elevation: 0,
             ),
             child: isLoading
                 ? SizedBox(
-                    width: 24,
-                    height: 24,
+                    width: 20,
+                    height: 20,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
+                      strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(
                         color.onPrimary,
                       ),
@@ -55,88 +57,64 @@ class DriverTrackingBottomActions extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.check_circle_outline,
-                        size: Spacing.iconMd,
-                        color: color.onPrimary,
-                      ),
-                      const SizedBox(width: Spacing.sm),
                       Flexible(
                         child: Text(
-                          locale.driverConfirmArrivalAction,
-                          style: getSemiBoldStyle(
-                            fontSize: FontSize.size16,
+                          locale.driverConfirmArrivalToCustomerAction,
+                          style: getBoldStyle(
+                            fontSize: FontSize.size14,
                             color: color.onPrimary,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      const SizedBox(width: Spacing.sm),
+                      Icon(
+                        Icons.check_circle_outline_rounded,
+                        size: Spacing.iconSm,
+                        color: color.onPrimary,
+                      ),
                     ],
                   ),
           ),
         ),
-        const SizedBox(height: Spacing.sm),
+        const SizedBox(height: Spacing.xs),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: SizedBox(
-                height: Spacing.buttonSmallHeight,
-                child: OutlinedButton.icon(
-                  onPressed: onReportDelay,
-                  icon: Icon(
-                    Icons.access_time,
-                    size: Spacing.iconSm,
-                    color: color.secondary,
-                  ),
-                  label: Text(
-                    locale.driverReportDelayButton,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size13,
-                      color: color.secondary,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: color.secondary),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Spacing.buttonSmallRadius,
-                      ),
-                    ),
-                  ),
+            TextButton.icon(
+              onPressed: onReportDelay,
+              icon: Icon(
+                Icons.access_time,
+                size: Spacing.iconXs,
+                color: color.onSurfaceVariant,
+              ),
+              label: Text(
+                locale.driverReportDelayButton,
+                style: getRegularStyle(
+                  fontSize: FontSize.size11,
+                  color: color.onSurfaceVariant,
                 ),
               ),
             ),
-            const SizedBox(width: Spacing.sm),
-            Expanded(
-              child: SizedBox(
-                height: Spacing.buttonSmallHeight,
-                child: OutlinedButton.icon(
-                  onPressed: onReportFailed,
-                  icon: Icon(
-                    Icons.cancel_outlined,
-                    size: Spacing.iconSm,
-                    color: color.error,
-                  ),
-                  label: Text(
-                    locale.driverReportFailedButton,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size13,
-                      color: color.error,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: color.error),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Spacing.buttonSmallRadius,
-                      ),
-                    ),
-                  ),
+            Container(
+              height: 12,
+              width: 1,
+              margin: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+              color: color.outlineVariant,
+            ),
+            TextButton.icon(
+              onPressed: onReportFailed,
+              icon: Icon(
+                Icons.cancel_outlined,
+                size: Spacing.iconXs,
+                color: color.error,
+              ),
+              label: Text(
+                locale.driverReportFailedButton,
+                style: getRegularStyle(
+                  fontSize: FontSize.size11,
+                  color: color.error,
                 ),
               ),
             ),

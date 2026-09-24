@@ -9,6 +9,7 @@ import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_customer_card.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_header.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_map_preview.dart';
+import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_title_section.dart';
 
 Widget _buildTestApp({
   required Widget child,
@@ -53,11 +54,16 @@ void main() {
       await tester.pump();
 
       expect(find.byType(StartRouteHeader), findsOneWidget);
+      expect(find.byType(StartRouteTitleSection), findsOneWidget);
+      expect(find.text('جاهز لبدأ مسار التوصيل؟'), findsOneWidget);
+      expect(find.text('توجه إلى موقع العميل لبدء التوصيل'), findsOneWidget);
       expect(find.byType(StartRouteMapPreview), findsOneWidget);
       expect(find.byType(GoogleMap), findsOneWidget);
       expect(find.byType(StartRouteCustomerCard), findsOneWidget);
       expect(find.text('عبدالله العتيبي'), findsOneWidget);
-      expect(find.text('#BX-1256'), findsOneWidget);
+      expect(find.text('#MM-987654'), findsOneWidget);
+      expect(find.text('3 بوكسات'), findsOneWidget);
+      expect(find.text('بين 9 - 12 ص'), findsOneWidget);
       expect(find.byType(StartRouteActionButton), findsOneWidget);
 
       await tester.tap(find.byType(StartRouteActionButton));
@@ -79,6 +85,8 @@ void main() {
       );
       await tester.pump();
 
+      expect(find.byType(StartRouteTitleSection), findsOneWidget);
+      expect(find.text('Ready to start the delivery route?'), findsOneWidget);
       expect(find.text('Start Delivery Route'), findsWidgets);
       expect(find.byType(StartRouteCustomerCard), findsOneWidget);
     });
