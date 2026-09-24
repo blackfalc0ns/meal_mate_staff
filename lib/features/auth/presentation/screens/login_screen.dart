@@ -30,7 +30,11 @@ import '../widgets/auth_primary_button.dart';
 import '../widgets/auth_secondary_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, this.role = UserRole.driver, this.viewModel});
+  const LoginScreen({
+    super.key,
+    this.role = UserRole.operations,
+    this.viewModel,
+  });
 
   final UserRole role;
   final AuthViewModel? viewModel;
@@ -65,10 +69,28 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _submit() {
-    context.pushReplacementNamed(
-      AppRoutes.appShell,
-      arguments: widget.role,
-    );
+    final phone = _phoneController.text.trim();
+    final password = _passwordController.text;
+    if (phone.isEmpty) return;
+
+    final formattedPhone = phone.startsWith('+') ? phone : '+965$phone';
+
+    if (password.isNotEmpty) {
+      _viewModel.doIntent(
+        AuthLoginEvent(
+          phone: formattedPhone,
+          role: widget.role,
+          password: password,
+        ),
+      );
+    } else {
+      _viewModel.doIntent(
+        AuthPhoneLookupEvent(
+          phone: formattedPhone,
+          role: widget.role,
+        ),
+      );
+    }
   }
 
   @override
@@ -241,20 +263,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             AuthSecondaryButton(
                               text: locale.createAccount,
                               leadingIcon: Icons.person_add_alt_1_outlined,
-                              onPressed:
-                                  // state.isLoading
-                                  //     ? null
-                                  //     :
-                                  () {
-                                    context.pushReplacementNamed(
-                                      AppRoutes.appShell,
-                                      arguments: widget.role,
-                                    );
-                                    // context.pushNamed(
-                                    //   AppRoutes.register,
-                                    //   arguments: widget.role,
-                                    // );
-                                  },
+                              onPressed: state.isLoading
+                                  ? null
+                                  : () {
+                                      context.pushNamed(
+                                        AppRoutes.register,
+                                        arguments: widget.role,
+                                      );
+                                    },
                             ),
                           ],
                           const SizedBox(height: Spacing.sm),

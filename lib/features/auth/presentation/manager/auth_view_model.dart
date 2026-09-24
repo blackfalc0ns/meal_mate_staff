@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/network/api_results.dart';
+import '../../../../core/services/push_notification_coordinator.dart';
+import '../../../device_token/domain/entities/device_token_sync_context.dart';
+import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/forgot_password_request_entity.dart';
 import '../../domain/entities/phone_lookup_request_entity.dart';
 import '../../domain/entities/resend_otp_request_entity.dart';
@@ -20,6 +23,7 @@ import '../../domain/usecase/reset_password_usecase.dart';
 import '../../domain/usecase/restore_session_usecase.dart';
 import '../../domain/usecase/set_password_usecase.dart';
 import '../../domain/usecase/verify_first_time_otp_usecase.dart';
+import '../../domain/user_role.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -36,9 +40,12 @@ class AuthViewModel extends Cubit<AuthState> {
     required this.restoreSessionUseCase,
     required this.logoutUseCase,
     GetStaffRolesUseCase? getStaffRolesUseCase,
+    this.pushNotificationCoordinator,
   }) : getStaffRolesUseCase =
            getStaffRolesUseCase ?? const GetStaffRolesUseCase(),
        super(const AuthState());
+
+  final PushNotificationCoordinator? pushNotificationCoordinator;
 
   final LookupPhoneUseCase lookupPhoneUseCase;
   final VerifyFirstTimeOtpUseCase verifyFirstTimeOtpUseCase;
@@ -243,6 +250,7 @@ class AuthViewModel extends Cubit<AuthState> {
             session: result.data,
           ),
         );
+        _syncPushTokenForSession(result.data);
 
       case ApiErrorResult():
         emit(
@@ -289,6 +297,7 @@ class AuthViewModel extends Cubit<AuthState> {
             session: result.data,
           ),
         );
+        _syncPushTokenForSession(result.data);
 
       case ApiErrorResult():
         emit(
@@ -455,6 +464,7 @@ class AuthViewModel extends Cubit<AuthState> {
               role: result.data!.role,
             ),
           );
+          _syncPushTokenForSession(result.data!);
         } else {
           emit(
             state.copyWith(
@@ -478,6 +488,11 @@ class AuthViewModel extends Cubit<AuthState> {
 
   Future<void> _logout() async {
     _cancelTimer();
+    try {
+      await pushNotificationCoordinator?.clearSyncContextAndDeactivate();
+    } catch (_) {
+      // Best-effort token deactivation; never block local logout
+    }
     await logoutUseCase();
     emit(
       state.copyWith(
@@ -487,6 +502,25 @@ class AuthViewModel extends Cubit<AuthState> {
         clearSession: true,
       ),
     );
+  }
+
+  void _syncPushTokenForSession(AuthSessionEntity session) {
+    final coordinator = pushNotificationCoordinator;
+    if (coordinator == null) return;
+    final DeviceTokenSyncContext context;
+    switch (session.role) {
+      case UserRole.driver:
+        context = DeviceTokenSyncContext.driverAuthenticated(
+          userId: session.userId,
+        );
+      case UserRole.operations:
+        context = DeviceTokenSyncContext.deliveryManagerAuthenticated(
+          userId: session.userId,
+        );
+    }
+    try {
+      unawaited(coordinator.updateSyncContext(context).catchError((_) {}));
+    } catch (_) {}
   }
 
   void _startResendCountdown() {

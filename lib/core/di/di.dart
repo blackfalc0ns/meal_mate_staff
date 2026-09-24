@@ -1,8 +1,26 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../services/push_messaging_gateway.dart';
+import '../services/firebase_push_messaging_gateway.dart';
+import '../services/local_notification_service.dart';
+import '../services/notification_payload_parser.dart';
+import '../services/notification_router.dart';
+import '../services/push_notification_coordinator.dart';
+import '../../features/device_token/data/data_source/device_token_remote_data_source.dart';
+import '../../features/device_token/data/data_source/device_token_remote_data_source_impl.dart';
+import '../../features/device_token/data/repo/device_token_repository_impl.dart';
+import '../../features/device_token/domain/repo/device_token_repository.dart';
+import '../../features/device_token/domain/usecase/upsert_driver_device_token_usecase.dart';
+import '../../features/device_token/domain/usecase/deactivate_driver_device_token_usecase.dart';
+import '../../features/device_token/domain/usecase/upsert_restaurant_device_token_usecase.dart';
+import '../../features/device_token/domain/usecase/deactivate_restaurant_device_token_usecase.dart';
 
 import '../helpers/shared_pref.dart';
 import '../network/api_services.dart';
@@ -15,7 +33,6 @@ import '../services/token_interceptor.dart';
 import '../services/token_service.dart';
 import '../../features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../features/driver/active_delivery/domain/repositories/active_delivery_repository.dart';
-import '../../features/driver/active_delivery/presentation/manager/active_delivery_view_model.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repo/auth_repository_impl.dart';
@@ -176,6 +193,58 @@ Future<void> configureDependencies() async {
   );
   getIt.registerLazySingleton<ApiServices>(() => ApiServices(getIt<Dio>()));
 
+  // Device Token & Push Notification feature
+  getIt.registerLazySingleton<PushMessagingGateway>(() {
+    if (Firebase.apps.isEmpty) {
+      return const NoOpPushMessagingGateway();
+    }
+    return FirebasePushMessagingGateway(messaging: FirebaseMessaging.instance);
+  });
+  getIt.registerLazySingleton<LocalNotificationService>(
+    () => FlutterLocalNotificationServiceImpl(
+      plugin: FlutterLocalNotificationsPlugin(),
+    ),
+  );
+  getIt.registerLazySingleton<NotificationPayloadParser>(
+    () => const NotificationPayloadParser(),
+  );
+  getIt.registerLazySingleton<NotificationRouter>(NotificationRouter.new);
+  getIt.registerLazySingleton<DeviceTokenRemoteDataSource>(
+    () => DeviceTokenRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DeviceTokenRepository>(
+    () => DeviceTokenRepositoryImpl(getIt<DeviceTokenRemoteDataSource>()),
+  );
+  getIt.registerFactory<UpsertDriverDeviceTokenUseCase>(
+    () => UpsertDriverDeviceTokenUseCase(getIt<DeviceTokenRepository>()),
+  );
+  getIt.registerFactory<DeactivateDriverDeviceTokenUseCase>(
+    () => DeactivateDriverDeviceTokenUseCase(getIt<DeviceTokenRepository>()),
+  );
+  getIt.registerFactory<UpsertRestaurantDeviceTokenUseCase>(
+    () => UpsertRestaurantDeviceTokenUseCase(getIt<DeviceTokenRepository>()),
+  );
+  getIt.registerFactory<DeactivateRestaurantDeviceTokenUseCase>(
+    () =>
+        DeactivateRestaurantDeviceTokenUseCase(getIt<DeviceTokenRepository>()),
+  );
+  getIt.registerLazySingleton<PushNotificationCoordinator>(
+    () => PushNotificationCoordinator(
+      gateway: getIt<PushMessagingGateway>(),
+      localNotificationService: getIt<LocalNotificationService>(),
+      deviceIdService: getIt<DeviceIdService>(),
+      upsertDriverTokenUseCase: getIt<UpsertDriverDeviceTokenUseCase>(),
+      deactivateDriverTokenUseCase: getIt<DeactivateDriverDeviceTokenUseCase>(),
+      upsertRestaurantTokenUseCase: getIt<UpsertRestaurantDeviceTokenUseCase>(),
+      deactivateRestaurantTokenUseCase:
+          getIt<DeactivateRestaurantDeviceTokenUseCase>(),
+      parser: getIt<NotificationPayloadParser>(),
+      router: getIt<NotificationRouter>(),
+      sharedPreferences: getIt<SharedPreferences>(),
+      secureStorage: getIt<FlutterSecureStorage>(),
+    ),
+  );
+
   // Auth feature dependencies
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(getIt<ApiServices>()),
@@ -228,6 +297,7 @@ Future<void> configureDependencies() async {
       restoreSessionUseCase: getIt<RestoreSessionUseCase>(),
       logoutUseCase: getIt<LogoutUseCase>(),
       getStaffRolesUseCase: getIt<GetStaffRolesUseCase>(),
+      pushNotificationCoordinator: getIt<PushNotificationCoordinator>(),
     ),
   );
   // Driver Registration feature dependencies
@@ -277,6 +347,7 @@ Future<void> configureDependencies() async {
       uploadDocumentUseCase: getIt<UploadDriverDocumentUseCase>(),
       submitRegistrationUseCase: getIt<SubmitDriverRegistrationUseCase>(),
       resubmitRegistrationUseCase: getIt<ResubmitDriverRegistrationUseCase>(),
+      pushNotificationCoordinator: getIt<PushNotificationCoordinator>(),
     ),
   );
   // Account Status feature dependencies
@@ -456,14 +527,10 @@ Future<void> configureDependencies() async {
     () => OperationsLogRemoteDataSourceImpl(getIt<ApiServices>()),
   );
   getIt.registerLazySingleton<OperationsLogRepository>(
-    () => OperationsLogRepositoryImpl(
-      getIt<OperationsLogRemoteDataSource>(),
-    ),
+    () => OperationsLogRepositoryImpl(getIt<OperationsLogRemoteDataSource>()),
   );
   getIt.registerFactory<GetOperationsLogUseCase>(
-    () => GetOperationsLogUseCase(
-      getIt<OperationsLogRepository>(),
-    ),
+    () => GetOperationsLogUseCase(getIt<OperationsLogRepository>()),
   );
   getIt.registerFactory<OperationsViewModel>(
     () => OperationsViewModel(
@@ -481,16 +548,17 @@ Future<void> configureDependencies() async {
     ),
   );
   getIt.registerFactory<GetDispatcherDriversRosterUseCase>(
-    () => GetDispatcherDriversRosterUseCase(
-      getIt<DispatcherDriversRepository>(),
-    ),
+    () =>
+        GetDispatcherDriversRosterUseCase(getIt<DispatcherDriversRepository>()),
   );
   getIt.registerFactory<AssignDriverToBoxUseCase>(
-    () => AssignDriverToBoxUseCase(
-      getIt<DispatcherDriversRepository>(),
-    ),
+    () => AssignDriverToBoxUseCase(getIt<DispatcherDriversRepository>()),
   );
-  getIt.registerFactoryParam<DispatcherDriversViewModel, DispatcherDriversRouteArgs?, void>(
+  getIt.registerFactoryParam<
+    DispatcherDriversViewModel,
+    DispatcherDriversRouteArgs?,
+    void
+  >(
     (args, _) => DispatcherDriversViewModel(
       args: args ?? const DispatcherDriversRouteArgs.browse(),
       getRosterUseCase: getIt<GetDispatcherDriversRosterUseCase>(),
@@ -560,10 +628,14 @@ Future<void> configureDependencies() async {
     () => ObserveDriverDetailsUpdatesUseCase(getIt<DispatcherMapRepository>()),
   );
   getIt.registerFactory<AcquireDriverDetailsRealtimeUseCase>(
-    () => AcquireDriverDetailsRealtimeUseCase(getIt<DispatcherMapRealtimeClient>()),
+    () => AcquireDriverDetailsRealtimeUseCase(
+      getIt<DispatcherMapRealtimeClient>(),
+    ),
   );
   getIt.registerFactory<ReleaseDriverDetailsRealtimeUseCase>(
-    () => ReleaseDriverDetailsRealtimeUseCase(getIt<DispatcherMapRealtimeClient>()),
+    () => ReleaseDriverDetailsRealtimeUseCase(
+      getIt<DispatcherMapRealtimeClient>(),
+    ),
   );
   getIt.registerLazySingleton<DriverContactLauncher>(
     () => const DriverContactLauncherImpl(),

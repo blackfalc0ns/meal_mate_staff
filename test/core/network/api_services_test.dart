@@ -10,6 +10,8 @@ import 'package:meal_mate_delivery/features/auth/data/models/request/reset_passw
 import 'package:meal_mate_delivery/features/auth/data/models/request/set_password_request_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/request/staff_login_request_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/request/verify_first_time_otp_request_dto.dart';
+import 'package:meal_mate_delivery/features/device_token/data/models/request/driver_device_token_request_dto.dart';
+import 'package:meal_mate_delivery/features/device_token/data/models/request/restaurant_device_token_request_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/request/driver_registration_request_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/request/driver_resubmit_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/reassign_driver_request_dto.dart';
@@ -239,6 +241,68 @@ void main() {
             'reg-123',
           ),
         );
+      },
+    );
+
+    test(
+      'upsertDriverDeviceToken hits POST EndPoints.driverDeviceToken with registrationId',
+      () async {
+        await apiServices.upsertDriverDeviceToken(
+          const DriverDeviceTokenRequestDto(
+            token: 'fcm-driver-token',
+            platform: 'Android',
+            deviceId: 'device-123',
+            registrationId: 'reg-456',
+          ),
+        );
+        expect(capturedOptions.method, 'POST');
+        expect(capturedOptions.path, EndPoints.driverDeviceToken);
+        expect(capturedOptions.data, {
+          'token': 'fcm-driver-token',
+          'platform': 'Android',
+          'deviceId': 'device-123',
+          'registrationId': 'reg-456',
+        });
+      },
+    );
+
+    test(
+      'deactivateDriverDeviceToken hits DELETE EndPoints.driverDeviceToken with query token',
+      () async {
+        await apiServices.deactivateDriverDeviceToken('fcm-driver-token');
+        expect(capturedOptions.method, 'DELETE');
+        expect(capturedOptions.path, EndPoints.driverDeviceToken);
+        expect(capturedOptions.queryParameters['token'], 'fcm-driver-token');
+      },
+    );
+
+    test(
+      'upsertRestaurantDeviceTokens hits PUT EndPoints.restaurantDeviceTokens',
+      () async {
+        await apiServices.upsertRestaurantDeviceTokens(
+          const RestaurantDeviceTokenRequestDto(
+            token: 'fcm-manager-token',
+            platform: 'iOS',
+            deviceId: 'device-789',
+          ),
+        );
+        expect(capturedOptions.method, 'PUT');
+        expect(capturedOptions.path, EndPoints.restaurantDeviceTokens);
+        expect(capturedOptions.data, {
+          'token': 'fcm-manager-token',
+          'platform': 'iOS',
+          'deviceId': 'device-789',
+        });
+      },
+    );
+
+    test(
+      'deactivateRestaurantDeviceTokens hits DELETE EndPoints.restaurantDeviceTokens with query token',
+      () async {
+        await apiServices.deactivateRestaurantDeviceTokens('fcm-manager-token');
+        expect(capturedOptions.method, 'DELETE');
+        expect(capturedOptions.path, EndPoints.restaurantDeviceTokens);
+        expect(capturedOptions.queryParameters['token'], 'fcm-manager-token');
       },
     );
 

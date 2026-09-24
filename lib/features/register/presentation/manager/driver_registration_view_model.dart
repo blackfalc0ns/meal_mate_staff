@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/network/api_results.dart';
 import '../../../../core/network/failures.dart';
+import '../../../../core/services/push_notification_coordinator.dart';
+import '../../../device_token/domain/entities/device_token_sync_context.dart';
 import '../../domain/usecase/get_driver_restaurants_usecase.dart';
 import '../../domain/usecase/get_driver_nationalities_usecase.dart';
 import '../../domain/usecase/get_driver_vehicle_colors_usecase.dart';
@@ -28,7 +32,10 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
     required this.uploadDocumentUseCase,
     required this.submitRegistrationUseCase,
     required this.resubmitRegistrationUseCase,
+    this.pushNotificationCoordinator,
   }) : super(const DriverRegistrationState());
+
+  final PushNotificationCoordinator? pushNotificationCoordinator;
 
   final GetDriverRestaurantsUseCase getRestaurantsUseCase;
   final GetDriverNationalitiesUseCase getNationalitiesUseCase;
@@ -600,6 +607,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             submissionResult: data,
           ),
         );
+        _syncDeviceToken(data.registrationId);
       case ApiErrorResult(:final failure):
         emit(
           state.copyWith(
@@ -632,6 +640,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             submissionResult: data,
           ),
         );
+        _syncDeviceToken(data.registrationId);
       case ApiErrorResult(:final failure):
         emit(
           state.copyWith(
@@ -640,6 +649,25 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             errorMessage: failure.errorMessage,
           ),
         );
+    }
+  }
+
+  void _syncDeviceToken(String registrationId) {
+    final coordinator = pushNotificationCoordinator;
+    if (registrationId.isNotEmpty && coordinator != null) {
+      try {
+        unawaited(
+          coordinator
+              .updateSyncContext(
+                DeviceTokenSyncContext.driverPreLogin(
+                  registrationId: registrationId,
+                ),
+              )
+              .catchError((_) {}),
+        );
+      } catch (_) {
+        // FCM token sync is best-effort and never fails registration
+      }
     }
   }
 }

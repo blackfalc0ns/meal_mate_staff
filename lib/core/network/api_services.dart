@@ -17,6 +17,8 @@ import '../../features/auth/data/models/response/staff_auth_response_dto.dart';
 import '../../features/auth/data/models/response/staff_message_response_dto.dart';
 import '../../features/auth/data/models/response/staff_role_response_dto.dart';
 import '../../features/auth/data/models/response/verify_first_time_otp_response_dto.dart';
+import '../../features/device_token/data/models/request/driver_device_token_request_dto.dart';
+import '../../features/device_token/data/models/request/restaurant_device_token_request_dto.dart';
 import '../../features/register/data/models/request/driver_registration_request_dto.dart';
 import '../../features/register/data/models/request/driver_resubmit_request_dto.dart';
 import '../../features/register/data/models/response/driver_file_upload_response_dto.dart';
@@ -143,6 +145,22 @@ abstract class ApiServices {
     @Path('registrationId') String registrationId,
     @Body() DriverResubmitRequestDto request,
   );
+
+  @POST(EndPoints.driverDeviceToken)
+  Future<void> upsertDriverDeviceToken(
+    @Body() DriverDeviceTokenRequestDto request,
+  );
+
+  @DELETE(EndPoints.driverDeviceToken)
+  Future<void> deactivateDriverDeviceToken(@Query('token') String token);
+
+  @PUT(EndPoints.restaurantDeviceTokens)
+  Future<void> upsertRestaurantDeviceTokens(
+    @Body() RestaurantDeviceTokenRequestDto request,
+  );
+
+  @DELETE(EndPoints.restaurantDeviceTokens)
+  Future<void> deactivateRestaurantDeviceTokens(@Query('token') String token);
 
   @GET(EndPoints.dispatcherDashboardOverview)
   Future<DispatcherDashboardOverviewResponseDto>
@@ -273,4 +291,3 @@ abstract class ApiServices {
     @Path('driverId') String driverId,
   );
 }
-

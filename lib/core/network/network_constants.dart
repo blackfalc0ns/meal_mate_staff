@@ -38,6 +38,11 @@ abstract class EndPoints {
   static const String driverRegistrationResubmit =
       '/api/v1/auth/staff/driver-registration/{registrationId}/resubmit';
 
+  // Device token endpoints
+  static const String driverDeviceToken = '/api/v1/driver/device-token';
+  static const String restaurantDeviceTokens =
+      '/api/v1/restaurants/device-tokens';
+
   static const String dispatcherDashboardOverview =
       '/api/v1/dispatcher/dashboard/overview';
   static const String dispatcherLiveLocations =
@@ -73,4 +78,3 @@ abstract class EndPoints {
   static const String dispatcherDriverCurrentLocation =
       '/api/v1/dispatcher/drivers/{driverId}/current-location';
 }
-
