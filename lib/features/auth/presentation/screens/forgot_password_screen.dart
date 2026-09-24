@@ -86,6 +86,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return BlocProvider.value(
       value: _viewModel,
       child: BlocConsumer<AuthViewModel, AuthState>(
+        listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           if (state.status == AuthStatus.error && state.errorMessage != null) {
             CustomSnackbar.showError(

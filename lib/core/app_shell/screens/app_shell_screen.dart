@@ -21,7 +21,7 @@ import '../widgets/sidebar/app_sidebar.dart';
 class AppShellScreen extends StatefulWidget {
   const AppShellScreen({
     super.key,
-    this.role = UserRole.operations,
+    this.role = UserRole.driver,
     this.pages = const [],
     this.body,
     this.initialIndex = 0,
@@ -67,15 +67,15 @@ class _AppShellScreenState extends State<AppShellScreen> {
   }
 
   List<Widget> _defaultPages(BuildContext context, int activeIndex) {
-    // if (widget.role == UserRole.driver) {
-    //   return [
-    //     const Text("Home"),
-    //     const DriverAssignedBoxesScreen(),
-    //     const Text("Map"),
-    //     const Text("Support"),
-    //     const DriverProfileScreen(),
-    //   ];
-    // }
+    if (widget.role == UserRole.driver) {
+      return [
+        const Text("Home"),
+        const DriverAssignedBoxesScreen(),
+        const Text("Map"),
+        const Text("Support"),
+        const DriverProfileScreen(),
+      ];
+    }
     return [
       const DispatcherHomeScreen(),
       const DispatcherOrdersScreen(),

@@ -7,7 +7,6 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_kpi_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_query_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/entities/dispatcher_support_response_entity.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/fake_data/dispatcher_support_fake_data.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/repo/dispatcher_support_repository.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/domain/usecase/get_dispatcher_support_issues_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/presentation/manager/dispatcher_support_view_model.dart';

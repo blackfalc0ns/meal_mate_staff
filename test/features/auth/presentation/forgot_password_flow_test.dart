@@ -304,18 +304,23 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        expect(find.text('إعادة تعيين كلمة المرور'), findsOneWidget);
+        expect(find.text('رمز التحقق'), findsOneWidget);
         expect(find.text('+96599777222'), findsOneWidget);
 
-        // Enter OTP
+        // Enter OTP in step 1
         await tester.enterText(find.byType(Pinput), '123456');
+        await tester.tap(find.text('متابعة'));
+        await tester.pumpAndSettle();
+
+        // Step 2: Set New Password
+        expect(find.text('تعيين كلمة المرور الجديدة'), findsOneWidget);
 
         // Enter New Password & Confirm Password
         await tester.enterText(find.byType(TextField).at(0), 'Yahya123!');
         await tester.enterText(find.byType(TextField).at(1), 'Yahya123!');
         await tester.pump();
 
-        await tester.tap(find.byType(AuthPrimaryButton));
+        await tester.tap(find.text('تأكيد وتغيير كلمة المرور'));
         await tester.pumpAndSettle();
 
         expect(repo.lastResetPasswordRequest?.phone, '+96599777222');

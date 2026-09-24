@@ -334,7 +334,6 @@ class AuthViewModel extends Cubit<AuthState> {
             message: result.data,
           ),
         );
-        _startResendCountdown();
 
       case ApiErrorResult():
         emit(
@@ -492,18 +491,42 @@ class AuthViewModel extends Cubit<AuthState> {
 
   void _startResendCountdown() {
     _cancelTimer();
-    emit(state.copyWith(resendCountdown: 60, canResendOtp: false));
+    if (state.resendCountdown <= 0) {
+      emit(
+        state.copyWith(
+          resendCountdown: 60,
+          canResendOtp: false,
+          status: AuthStatus.initial,
+        ),
+      );
+    }
 
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final current = state.resendCountdown - 1;
       if (current <= 0) {
         timer.cancel();
-        emit(state.copyWith(resendCountdown: 0, canResendOtp: true));
+        emit(
+          state.copyWith(
+            resendCountdown: 0,
+            canResendOtp: true,
+            status: AuthStatus.initial,
+          ),
+        );
       } else {
-        emit(state.copyWith(resendCountdown: current, canResendOtp: false));
+        emit(
+          state.copyWith(
+            resendCountdown: current,
+            canResendOtp: false,
+            status: AuthStatus.initial,
+          ),
+        );
       }
     });
   }
+
+  void startResendCountdown() => _startResendCountdown();
+
+  void cancelTimer() => _cancelTimer();
 
   void _cancelTimer() {
     _countdownTimer?.cancel();

@@ -37,6 +37,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   late final TextEditingController _confirmPasswordController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  int _currentStep = 0;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
 
@@ -44,6 +45,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   void initState() {
     super.initState();
     _viewModel = widget.viewModel ?? getIt<AuthViewModel>();
+    if (widget.viewModel == null) {
+      _viewModel.startResendCountdown();
+    }
     _otpController = TextEditingController();
     _otpFocusNode = FocusNode();
     _newPasswordController = TextEditingController();
@@ -68,11 +72,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
+  void _goToPasswordStep([String? code]) {
+    final otp = (code ?? _otpController.text).trim();
+    final otpError = Validations.validOtp(context, otp);
+    if (otpError != null) {
+      CustomSnackbar.showWarning(context: context, message: otpError);
+      return;
+    }
+    setState(() {
+      _currentStep = 1;
+    });
+  }
+
   void _submit() {
     final otp = _otpController.text.trim();
     final otpError = Validations.validOtp(context, otp);
     if (otpError != null) {
       CustomSnackbar.showWarning(context: context, message: otpError);
+      setState(() {
+        _currentStep = 0;
+      });
       return;
     }
 
@@ -96,13 +115,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final color = context.colorScheme;
     final isAr = Localizations.localeOf(context).languageCode == 'ar';
 
-    final title = isAr ? 'إعادة تعيين كلمة المرور' : 'Reset Password';
-    final subtitle = isAr
-        ? 'أدخل رمز التحقق المرسل وكلمة المرور الجديدة'
-        : 'Enter the verification code and your new password';
+    final otpTitle = isAr ? 'رمز التحقق' : 'Verification Code';
+    final otpSubtitle = isAr
+        ? 'أدخل رمز التحقق (OTP) المكون من 6 أرقام المرسل إلى'
+        : 'Enter the 6-digit verification code sent to';
     final otpHint = isAr
         ? 'رمز التحقق (OTP) المكون من 6 أرقام'
         : '6-digit verification code';
+    final continueButtonText = isAr ? 'متابعة' : 'Continue';
+
+    final passwordTitle = isAr
+        ? 'تعيين كلمة المرور الجديدة'
+        : 'Set New Password';
+    final passwordSubtitle = isAr
+        ? 'أدخل كلمة المرور الجديدة وتأكيدها لحسابك'
+        : 'Enter and confirm your new password';
     final newPasswordLabel = isAr ? 'كلمة المرور الجديدة' : 'New Password';
     final newPasswordHint = isAr
         ? 'أدخل كلمة المرور الجديدة'
@@ -117,202 +144,316 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ? 'تأكيد وتغيير كلمة المرور'
         : 'Confirm & Reset Password';
 
-    return BlocProvider.value(
-      value: _viewModel,
-      child: BlocConsumer<AuthViewModel, AuthState>(
-        listener: (context, state) {
-          if (state.status == AuthStatus.error && state.errorMessage != null) {
-            CustomSnackbar.showError(
-              context: context,
-              message: state.errorMessage!,
-            );
-          } else if (state.status == AuthStatus.otpResentSuccess) {
-            CustomSnackbar.showSuccess(
-              context: context,
-              message:
-                  state.message ??
-                  (isAr
-                      ? 'تم إعادة إرسال رمز التحقق'
-                      : 'Verification code resent successfully'),
-            );
-          } else if (state.status == AuthStatus.resetPasswordSuccess) {
-            CustomSnackbar.showSuccess(
-              context: context,
-              message:
-                  state.message ??
-                  (isAr
-                      ? 'تم تعيين كلمة المرور بنجاح'
-                      : 'Password reset successfully'),
-            );
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.login,
-              (route) => false,
-              arguments: LoginRouteArgs(role: widget.args.role),
-            );
-          }
-        },
-        builder: (context, state) {
-          final resendLabel = state.canResendOtp
-              ? (isAr ? 'إعادة إرسال الرمز' : 'Resend Code')
-              : (isAr
-                    ? 'إعادة الإرسال بعد (${state.resendCountdown} ث)'
-                    : 'Resend in (${state.resendCountdown}s)');
+    return PopScope(
+      canPop: _currentStep == 0,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (_currentStep > 0) {
+          setState(() {
+            _currentStep = 0;
+          });
+        }
+      },
+      child: BlocProvider.value(
+        value: _viewModel,
+        child: BlocConsumer<AuthViewModel, AuthState>(
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (context, state) {
+            if (state.status == AuthStatus.error && state.errorMessage != null) {
+              CustomSnackbar.showError(
+                context: context,
+                message: state.errorMessage!,
+              );
+            } else if (state.status == AuthStatus.otpResentSuccess) {
+              CustomSnackbar.showSuccess(
+                context: context,
+                message:
+                    state.message ??
+                    (isAr
+                        ? 'تم إعادة إرسال رمز التحقق'
+                        : 'Verification code resent successfully'),
+              );
+            } else if (state.status == AuthStatus.resetPasswordSuccess) {
+              CustomSnackbar.showSuccess(
+                context: context,
+                message:
+                    state.message ??
+                    (isAr
+                        ? 'تم تعيين كلمة المرور بنجاح'
+                        : 'Password reset successfully'),
+              );
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.login,
+                (route) => false,
+                arguments: LoginRouteArgs(role: widget.args.role),
+              );
+            }
+          },
+          builder: (context, state) {
+            final resendLabel = state.canResendOtp
+                ? (isAr ? 'إعادة إرسال الرمز' : 'Resend Code')
+                : (isAr
+                      ? 'إعادة الإرسال بعد (${state.resendCountdown} ث)'
+                      : 'Resend in (${state.resendCountdown}s)');
 
-          return Scaffold(
-            resizeToAvoidBottomInset: true,
-            body: AuthBackground(
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.manual,
-                  padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional.centerStart,
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back_ios_new),
-                            color: color.onSurface,
-                            onPressed: () => Navigator.of(context).maybePop(),
-                          ),
-                        ),
-                        const SizedBox(height: Spacing.sm),
-                        const AuthHeaderLogo.compact(),
-                        const SizedBox(height: Spacing.md),
-                        Text(
-                          title,
-                          style: getSemiBoldStyle(
-                            color: color.onSurface,
-                            fontSize: FontSize.size20,
-                            height: 1.3,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          subtitle,
-                          style: getRegularStyle(
-                            color: color.onSurfaceVariant,
-                            fontSize: FontSize.size12,
-                            height: 1.4,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          widget.args.phone,
-                          style: getSemiBoldStyle(
-                            color: color.primary,
-                            fontSize: FontSize.size14,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: Spacing.lg),
-                        Text(
-                          otpHint,
-                          style: getRegularStyle(
-                            color: color.onSurfaceVariant,
-                            fontSize: FontSize.size11,
-                            height: 1.4,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: Spacing.sm),
-                        OtpCodeField(
-                          controller: _otpController,
-                          focusNode: _otpFocusNode,
-                          enabled: !state.isLoading,
-                        ),
-                        const SizedBox(height: Spacing.xs),
-                        Center(
-                          child: TextButton(
-                            onPressed: state.canResendOtp && !state.isLoading
-                                ? _resend
-                                : null,
-                            child: Text(
-                              resendLabel,
-                              style: getMediumStyle(
-                                color: state.canResendOtp && !state.isLoading
-                                    ? color.primary
-                                    : color.onSurfaceVariant,
-                                fontSize: FontSize.size12,
-                              ),
+            return Scaffold(
+              resizeToAvoidBottomInset: true,
+              body: AuthBackground(
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.manual,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.base,
+                    ),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: _currentStep == 0
+                          ? _buildOtpStep(
+                              key: const ValueKey('step_otp'),
+                              context: context,
+                              state: state,
+                              color: color,
+                              title: otpTitle,
+                              subtitle: otpSubtitle,
+                              otpHint: otpHint,
+                              resendLabel: resendLabel,
+                              continueButtonText: continueButtonText,
+                            )
+                          : _buildPasswordStep(
+                              key: const ValueKey('step_password'),
+                              context: context,
+                              state: state,
+                              color: color,
+                              title: passwordTitle,
+                              subtitle: passwordSubtitle,
+                              newPasswordLabel: newPasswordLabel,
+                              newPasswordHint: newPasswordHint,
+                              confirmPasswordLabel: confirmPasswordLabel,
+                              confirmPasswordHint: confirmPasswordHint,
+                              submitButtonText: submitButtonText,
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: Spacing.md),
-                        AuthInputField(
-                          label: newPasswordLabel,
-                          hint: newPasswordHint,
-                          icon: Icons.lock,
-                          obscureText: _obscureNewPassword,
-                          controller: _newPasswordController,
-                          enabled: !state.isLoading,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureNewPassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: color.onSurfaceVariant,
-                              size: 22,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureNewPassword = !_obscureNewPassword;
-                              });
-                            },
-                          ),
-                          validator: (value) =>
-                              Validations.validatePassword(context, value),
-                        ),
-                        const SizedBox(height: Spacing.md),
-                        AuthInputField(
-                          label: confirmPasswordLabel,
-                          hint: confirmPasswordHint,
-                          icon: Icons.lock,
-                          obscureText: _obscureConfirmPassword,
-                          controller: _confirmPasswordController,
-                          enabled: !state.isLoading,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureConfirmPassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: color.onSurfaceVariant,
-                              size: 22,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureConfirmPassword =
-                                    !_obscureConfirmPassword;
-                              });
-                            },
-                          ),
-                          validator: (value) =>
-                              Validations.validateConfirmPassword(
-                                context,
-                                _newPasswordController.text,
-                                value,
-                              ),
-                        ),
-                        const SizedBox(height: Spacing.xl),
-                        AuthPrimaryButton(
-                          text: submitButtonText,
-                          isLoading: state.isLoading,
-                          onPressed: _submit,
-                        ),
-                        const SizedBox(height: Spacing.xl),
-                      ],
                     ),
                   ),
                 ),
               ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOtpStep({
+    required Key key,
+    required BuildContext context,
+    required AuthState state,
+    required ColorScheme color,
+    required String title,
+    required String subtitle,
+    required String otpHint,
+    required String resendLabel,
+    required String continueButtonText,
+  }) {
+    return Column(
+      key: key,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new),
+            color: color.onSurface,
+            onPressed: () => Navigator.of(context).maybePop(),
+          ),
+        ),
+        const SizedBox(height: Spacing.sm),
+        const AuthHeaderLogo.compact(),
+        const SizedBox(height: Spacing.md),
+        Text(
+          title,
+          style: getSemiBoldStyle(
+            color: color.onSurface,
+            fontSize: FontSize.size20,
+            height: 1.3,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: Spacing.xs),
+        Text(
+          subtitle,
+          style: getRegularStyle(
+            color: color.onSurfaceVariant,
+            fontSize: FontSize.size12,
+            height: 1.4,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: Spacing.xs),
+        Text(
+          widget.args.phone,
+          style: getSemiBoldStyle(
+            color: color.primary,
+            fontSize: FontSize.size14,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: Spacing.lg),
+        Text(
+          otpHint,
+          style: getRegularStyle(
+            color: color.onSurfaceVariant,
+            fontSize: FontSize.size11,
+            height: 1.4,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: Spacing.sm),
+        OtpCodeField(
+          controller: _otpController,
+          focusNode: _otpFocusNode,
+          enabled: !state.isLoading,
+          onCompleted: _goToPasswordStep,
+        ),
+        const SizedBox(height: Spacing.xs),
+        Center(
+          child: TextButton(
+            onPressed: state.canResendOtp && !state.isLoading ? _resend : null,
+            child: Text(
+              resendLabel,
+              style: getMediumStyle(
+                color: state.canResendOtp && !state.isLoading
+                    ? color.primary
+                    : color.onSurfaceVariant,
+                fontSize: FontSize.size12,
+              ),
             ),
-          );
-        },
+          ),
+        ),
+        const SizedBox(height: Spacing.xl),
+        AuthPrimaryButton(
+          text: continueButtonText,
+          isLoading: false,
+          onPressed: _goToPasswordStep,
+        ),
+        const SizedBox(height: Spacing.xl),
+      ],
+    );
+  }
+
+  Widget _buildPasswordStep({
+    required Key key,
+    required BuildContext context,
+    required AuthState state,
+    required ColorScheme color,
+    required String title,
+    required String subtitle,
+    required String newPasswordLabel,
+    required String newPasswordHint,
+    required String confirmPasswordLabel,
+    required String confirmPasswordHint,
+    required String submitButtonText,
+  }) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        key: key,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new),
+              color: color.onSurface,
+              onPressed: () {
+                setState(() {
+                  _currentStep = 0;
+                });
+              },
+            ),
+          ),
+          const SizedBox(height: Spacing.sm),
+          const AuthHeaderLogo.compact(),
+          const SizedBox(height: Spacing.md),
+          Text(
+            title,
+            style: getSemiBoldStyle(
+              color: color.onSurface,
+              fontSize: FontSize.size20,
+              height: 1.3,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: Spacing.xs),
+          Text(
+            subtitle,
+            style: getRegularStyle(
+              color: color.onSurfaceVariant,
+              fontSize: FontSize.size12,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: Spacing.xl),
+          AuthInputField(
+            label: newPasswordLabel,
+            hint: newPasswordHint,
+            icon: Icons.lock,
+            obscureText: _obscureNewPassword,
+            controller: _newPasswordController,
+            enabled: !state.isLoading,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureNewPassword
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
+                color: color.onSurfaceVariant,
+                size: 22,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscureNewPassword = !_obscureNewPassword;
+                });
+              },
+            ),
+            validator: (value) => Validations.validatePassword(context, value),
+          ),
+          const SizedBox(height: Spacing.md),
+          AuthInputField(
+            label: confirmPasswordLabel,
+            hint: confirmPasswordHint,
+            icon: Icons.lock,
+            obscureText: _obscureConfirmPassword,
+            controller: _confirmPasswordController,
+            enabled: !state.isLoading,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureConfirmPassword
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
+                color: color.onSurfaceVariant,
+                size: 22,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscureConfirmPassword = !_obscureConfirmPassword;
+                });
+              },
+            ),
+            validator: (value) => Validations.validateConfirmPassword(
+              context,
+              _newPasswordController.text,
+              value,
+            ),
+          ),
+          const SizedBox(height: Spacing.xl),
+          AuthPrimaryButton(
+            text: submitButtonText,
+            isLoading: state.isLoading,
+            onPressed: _submit,
+          ),
+          const SizedBox(height: Spacing.xl),
+        ],
       ),
     );
   }
