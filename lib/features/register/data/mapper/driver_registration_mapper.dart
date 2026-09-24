@@ -141,6 +141,7 @@ extension DriverRegistrationDraftEntityMapper on DriverRegistrationDraftEntity {
       fullNameAr: fullNameAr,
       fullNameEn: fullNameEn,
       phone: phone,
+      password: password,
       email: (email != null && email!.trim().isNotEmpty) ? email!.trim() : null,
       nationalId: nationalId,
       nationalIdExpiry: nationalIdExpiry,

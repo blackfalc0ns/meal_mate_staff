@@ -12,6 +12,7 @@ class RegisterPersonalData {
     this.fullNameAr = '',
     this.fullNameEn = '',
     this.nationalIdExpiry = '',
+    this.password = '',
   });
 
   static const empty = RegisterPersonalData(
@@ -36,6 +37,7 @@ class RegisterPersonalData {
   final String fullNameAr;
   final String fullNameEn;
   final String nationalIdExpiry;
+  final String password;
 
   String get resolvedFullNameAr =>
       fullNameAr.isNotEmpty ? fullNameAr : '$firstName $lastName'.trim();
@@ -56,6 +58,7 @@ class RegisterPersonalData {
     String? fullNameAr,
     String? fullNameEn,
     String? nationalIdExpiry,
+    String? password,
   }) {
     return RegisterPersonalData(
       firstName: firstName ?? this.firstName,
@@ -70,6 +73,7 @@ class RegisterPersonalData {
       fullNameAr: fullNameAr ?? this.fullNameAr,
       fullNameEn: fullNameEn ?? this.fullNameEn,
       nationalIdExpiry: nationalIdExpiry ?? this.nationalIdExpiry,
+      password: password ?? this.password,
     );
   }
 }

@@ -105,6 +105,7 @@ void main() {
           fullNameAr: 'أحمد الشمري',
           fullNameEn: 'Ahmed Al-Shammari',
           phone: '+966501234567',
+          password: 'Password123!',
           email: null,
           nationalId: '1098765432',
           nationalIdExpiry: '2029-01-01T00:00:00Z',
@@ -136,6 +137,8 @@ void main() {
         final json = dto.toJson();
         expect(json['restaurantId'], 'res-1');
         expect(json['fullNameAr'], 'أحمد الشمري');
+        expect(json['password'], 'Password123!');
+        expect(json.keys.where((key) => key == 'password'), hasLength(1));
         expect(json['email'], isNull);
         expect(
           json['nationalIdFrontStorageKey'],
@@ -215,6 +218,7 @@ void main() {
           fullNameAr: 'سائق تجريبي',
           fullNameEn: 'Test Driver',
           phone: '+966555555555',
+          password: 'Password123!',
           email: '  test@driver.com  ',
           nationalId: '9876543210',
           nationalIdExpiry: '2030-01-01T00:00:00Z',
@@ -241,6 +245,8 @@ void main() {
         final dto = draft.toDto();
         expect(dto.restaurantId, 'res-99');
         expect(dto.fullNameAr, 'سائق تجريبي');
+        expect(dto.password, 'Password123!');
+        expect(dto.toJson()['password'], 'Password123!');
         expect(dto.email, 'test@driver.com'); // Trimmed
         expect(dto.dateOfBirth, '2000-01-01');
         expect(dto.nationalIdFrontStorageKey, 'nid-f-key');

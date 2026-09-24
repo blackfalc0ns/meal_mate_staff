@@ -9,6 +9,7 @@ class DriverRegistrationRequestDto {
     required this.fullNameAr,
     required this.fullNameEn,
     required this.phone,
+    required this.password,
     this.email,
     required this.nationalId,
     required this.nationalIdExpiry,
@@ -41,6 +42,7 @@ class DriverRegistrationRequestDto {
   final String fullNameAr;
   final String fullNameEn;
   final String phone;
+  final String password;
   final String? email;
   final String nationalId;
   final String nationalIdExpiry;

@@ -9,6 +9,7 @@ class DriverRegistrationDraftEntity {
     this.fullNameAr = '',
     this.fullNameEn = '',
     this.phone = '',
+    this.password = '',
     this.email,
     this.nationalId = '',
     this.nationalIdExpiry = '',
@@ -39,6 +40,7 @@ class DriverRegistrationDraftEntity {
   final String fullNameAr;
   final String fullNameEn;
   final String phone;
+  final String password;
   final String? email;
   final String nationalId;
   final String nationalIdExpiry;
@@ -68,6 +70,7 @@ class DriverRegistrationDraftEntity {
       fullNameAr.trim().isNotEmpty &&
       fullNameEn.trim().isNotEmpty &&
       phone.trim().isNotEmpty &&
+      password.trim().isNotEmpty &&
       nationalId.trim().isNotEmpty &&
       nationalIdExpiry.trim().isNotEmpty &&
       nationality.trim().isNotEmpty;
@@ -108,6 +111,7 @@ class DriverRegistrationDraftEntity {
       fullNameAr: fullNameAr,
       fullNameEn: fullNameEn,
       nationalIdExpiry: nationalIdExpiry,
+      password: password,
     );
   }
 
@@ -177,6 +181,7 @@ class DriverRegistrationDraftEntity {
     String? fullNameAr,
     String? fullNameEn,
     String? phone,
+    String? password,
     String? email,
     String? nationalId,
     String? nationalIdExpiry,
@@ -208,6 +213,7 @@ class DriverRegistrationDraftEntity {
       fullNameAr: fullNameAr ?? this.fullNameAr,
       fullNameEn: fullNameEn ?? this.fullNameEn,
       phone: phone ?? this.phone,
+      password: password ?? this.password,
       email: email ?? this.email,
       nationalId: nationalId ?? this.nationalId,
       nationalIdExpiry: nationalIdExpiry ?? this.nationalIdExpiry,
