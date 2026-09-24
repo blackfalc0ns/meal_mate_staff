@@ -160,6 +160,7 @@ void main() {
       expect(json['vehicleLicenseExpiry'], '2029-12-01T00:00:00Z');
       expect(json.containsKey('fullNameAr'), isFalse);
       expect(json.containsKey('nationalId'), isFalse);
+      expect(json.containsKey('password'), isFalse);
     });
   });
 

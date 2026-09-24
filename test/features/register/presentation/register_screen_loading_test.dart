@@ -23,9 +23,7 @@ class FakeDriverRegistrationViewModel extends Cubit<DriverRegistrationState>
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-Widget _app({
-  required DriverRegistrationViewModel viewModel,
-}) {
+Widget _app({required DriverRegistrationViewModel viewModel}) {
   return MaterialApp(
     locale: const Locale('en'),
     supportedLocales: AppLocalizations.supportedLocales,

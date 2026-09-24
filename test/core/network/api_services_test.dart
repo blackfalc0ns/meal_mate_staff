@@ -154,17 +154,18 @@ void main() {
     );
 
     test(
-      'submitDriverRegistration hits POST EndPoints.driverRegistration',
+      'submitDriverRegistration hits POST EndPoints.driverRegistration with required contract and password',
       () async {
         await apiServices.submitDriverRegistration(
           const DriverRegistrationRequestDto(
-            restaurantId: 'rest-1',
+            restaurantId: '898259c1-4064-434e-ad20-be885987d8cb',
             fullNameAr: 'أحمد',
             fullNameEn: 'Ahmed',
-            phone: '+966501234567',
+            phone: '+96551234001',
+            password: 'Password123!',
             nationalId: '1234567890',
             nationalIdExpiry: '2029-01-01T00:00:00Z',
-            nationality: 'Saudi',
+            nationality: 'Kuwaiti',
             vehicleType: 'Car',
             vehicleModel: 'Camry',
             vehiclePlate: '1234',
@@ -173,15 +174,37 @@ void main() {
             licenseNumber: 'LIC-1',
             licenseExpiry: '2029-01-01T00:00:00Z',
             vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
-            nationalIdFrontStorageKey: 'key1',
-            nationalIdBackStorageKey: 'key2',
-            drivingLicenseFrontStorageKey: 'key3',
-            drivingLicenseBackStorageKey: 'key4',
-            vehicleRegistrationStorageKey: 'key5',
+            nationalIdFrontStorageKey: 'drivers/temp/civil_id_front.jpg',
+            nationalIdBackStorageKey: 'drivers/temp/civil_id_back.jpg',
+            drivingLicenseFrontStorageKey:
+                'drivers/temp/driving_license_front.jpg',
+            drivingLicenseBackStorageKey:
+                'drivers/temp/driving_license_back.jpg',
+            vehicleRegistrationStorageKey:
+                'drivers/temp/vehicle_registration.jpg',
           ),
         );
         expect(capturedOptions.method, 'POST');
         expect(capturedOptions.path, EndPoints.driverRegistration);
+
+        final body = capturedOptions.data as Map<String, dynamic>;
+        expect(
+          body,
+          containsPair('restaurantId', '898259c1-4064-434e-ad20-be885987d8cb'),
+        );
+        expect(body, containsPair('phone', '+96551234001'));
+        expect(body, containsPair('password', 'Password123!'));
+        expect(body, containsPair('vehicleType', 'Car'));
+        expect(body['email'], isNull);
+        expect(body['contractExpiry'], isNull);
+        expect(
+          body['nationalIdFrontStorageKey'],
+          'drivers/temp/civil_id_front.jpg',
+        );
+        expect(
+          body['drivingLicenseFrontStorageKey'],
+          'drivers/temp/driving_license_front.jpg',
+        );
       },
     );
 

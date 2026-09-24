@@ -135,10 +135,7 @@ void main() {
       await tester.pump();
 
       var passwordField = tester.widget<TextField>(
-        find.descendant(
-          of: passwordFinder,
-          matching: find.byType(TextField),
-        ),
+        find.descendant(of: passwordFinder, matching: find.byType(TextField)),
       );
       expect(passwordField.obscureText, isTrue);
 
@@ -148,10 +145,7 @@ void main() {
       await tester.pump();
 
       passwordField = tester.widget<TextField>(
-        find.descendant(
-          of: passwordFinder,
-          matching: find.byType(TextField),
-        ),
+        find.descendant(of: passwordFinder, matching: find.byType(TextField)),
       );
       expect(passwordField.obscureText, isFalse);
       expect(passwordField.controller?.text, 'Password123!');

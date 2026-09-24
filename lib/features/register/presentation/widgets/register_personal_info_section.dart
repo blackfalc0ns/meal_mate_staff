@@ -98,8 +98,10 @@ class _RegisterPersonalInfoSectionState
           hint: locale.registrationNationalityHint,
           isPicker: true,
           controller: widget.formController.nationality,
-          onTap: () =>
-              widget.formController.pickNationality(context, widget.nationalities),
+          onTap: () => widget.formController.pickNationality(
+            context,
+            widget.nationalities,
+          ),
           validator: (v) => context.validateRequired(v),
         ),
       ],

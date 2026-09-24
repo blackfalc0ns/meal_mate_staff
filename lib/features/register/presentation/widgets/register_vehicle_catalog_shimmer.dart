@@ -25,9 +25,7 @@ class RegisterVehicleCatalogShimmer extends StatelessWidget {
         children: [
           ShimmerWidget(width: 20, height: 20, borderRadius: 4),
           SizedBox(width: Spacing.sm),
-          Expanded(
-            child: ShimmerWidget(height: 12, borderRadius: 4),
-          ),
+          Expanded(child: ShimmerWidget(height: 12, borderRadius: 4)),
           SizedBox(width: Spacing.md),
           ShimmerWidget(width: 60, height: 12, borderRadius: 4),
         ],

@@ -7,6 +7,7 @@ import 'package:meal_mate_delivery/core/errors/api_exception.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
 import 'package:meal_mate_delivery/features/register/data/data_source/driver_registration_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/register/data/mapper/driver_registration_mapper.dart';
 import 'package:meal_mate_delivery/features/register/data/models/request/driver_registration_request_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/request/driver_resubmit_request_dto.dart';
 import 'package:meal_mate_delivery/features/register/data/models/response/driver_file_upload_response_dto.dart';
@@ -218,6 +219,22 @@ void main() {
         expect(resubmit.drivingLicenseFrontStorageKey, 'license_front_key');
         expect(resubmit.drivingLicenseBackStorageKey, 'license_back_key');
         expect(resubmit.vehicleRegistrationStorageKey, 'veh_reg_key');
+      },
+    );
+
+    test(
+      'DriverRegistrationDraftEntity does not leak password to resubmission DTO or JSON',
+      () {
+        const draft = DriverRegistrationDraftEntity(
+          password: 'Password123!',
+          phone: '+966501234567',
+        );
+
+        final resubmit = draft.toResubmitEntity();
+        final dto = resubmit.toDto();
+        final body = dto.toJson();
+
+        expect(body.containsKey('password'), isFalse);
       },
     );
 

@@ -159,8 +159,7 @@ class DriverRegistrationState {
       vehicleTypes: vehicleTypes ?? this.vehicleTypes,
       vehicleColors: vehicleColors ?? this.vehicleColors,
       vehicleModels: vehicleModels ?? this.vehicleModels,
-      isLoadingRestaurants:
-          isLoadingRestaurants ?? this.isLoadingRestaurants,
+      isLoadingRestaurants: isLoadingRestaurants ?? this.isLoadingRestaurants,
       isLoadingNationalities:
           isLoadingNationalities ?? this.isLoadingNationalities,
       isLoadingVehicleTypes:

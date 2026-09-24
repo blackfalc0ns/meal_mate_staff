@@ -126,10 +126,22 @@ Widget _app({
 
 void main() {
   setUp(() {
-    TestWidgetsFlutterBinding.instance.platformDispatcher.views.first.physicalSize =
-        const Size(1080, 2400);
-    TestWidgetsFlutterBinding.instance.platformDispatcher.views.first
-        .devicePixelRatio = 1.0;
+    TestWidgetsFlutterBinding
+        .instance
+        .platformDispatcher
+        .views
+        .first
+        .physicalSize = const Size(
+      1080,
+      2400,
+    );
+    TestWidgetsFlutterBinding
+            .instance
+            .platformDispatcher
+            .views
+            .first
+            .devicePixelRatio =
+        1.0;
   });
 
   tearDown(() {
@@ -143,10 +155,7 @@ void main() {
     'renders RegisterVehicleCatalogShimmer and no linear indicator when catalogs loading',
     (tester) async {
       await tester.pumpWidget(
-        _app(
-          isLoadingVehicleTypes: true,
-          isLoadingVehicleColors: false,
-        ),
+        _app(isLoadingVehicleTypes: true, isLoadingVehicleColors: false),
       );
       await tester.pump();
 
@@ -159,9 +168,7 @@ void main() {
   testWidgets(
     'renders compact ShimmerWidget and no linear indicator when searching models',
     (tester) async {
-      await tester.pumpWidget(
-        _app(isSearchingVehicleModels: true),
-      );
+      await tester.pumpWidget(_app(isSearchingVehicleModels: true));
       await tester.pump();
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
@@ -428,10 +435,7 @@ void main() {
         120,
         scrollable: find.byType(Scrollable).first,
       );
-      await tester.drag(
-        find.byType(CustomScrollView),
-        const Offset(0, -100),
-      );
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -100));
       await tester.pump();
       await tester.tap(find.text('No'));
       await tester.pump();
