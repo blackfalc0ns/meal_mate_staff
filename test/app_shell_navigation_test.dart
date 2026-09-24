@@ -8,6 +8,27 @@ import 'package:meal_mate_delivery/core/app_shell/widgets/app_bottom_nav_item.da
 import 'package:meal_mate_delivery/core/app_shell/widgets/meal_mate_nav_logo.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 
+class _InitCountingPage extends StatefulWidget {
+  const _InitCountingPage({required this.index, required this.initCounts});
+
+  final int index;
+  final List<int> initCounts;
+
+  @override
+  State<_InitCountingPage> createState() => _InitCountingPageState();
+}
+
+class _InitCountingPageState extends State<_InitCountingPage> {
+  @override
+  void initState() {
+    super.initState();
+    widget.initCounts[widget.index]++;
+  }
+
+  @override
+  Widget build(BuildContext context) => Text('Lazy Page ${widget.index}');
+}
+
 void main() {
   Widget buildSubject({
     Locale locale = const Locale('ar'),
@@ -104,6 +125,42 @@ void main() {
   });
 
   group('AppShellScreen Widget Tests', () {
+    testWidgets('initializes each tab only after its first selection', (
+      tester,
+    ) async {
+      final initCounts = List<int>.filled(5, 0);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('en'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          theme: AppTheme.lightTheme,
+          home: AppShellScreen(
+            pages: List.generate(
+              5,
+              (index) =>
+                  _InitCountingPage(index: index, initCounts: initCounts),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(initCounts, [1, 0, 0, 0, 0]);
+
+      await tester.tap(find.text('Orders'));
+      await tester.pumpAndSettle();
+      expect(initCounts, [1, 1, 0, 0, 0]);
+
+      await tester.tap(find.text('Home'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Orders'));
+      await tester.pumpAndSettle();
+
+      expect(initCounts, [1, 1, 0, 0, 0]);
+    });
+
     testWidgets('switches active page when tab is tapped', (tester) async {
       await tester.pumpWidget(buildAppShellSubject());
       await tester.pumpAndSettle();

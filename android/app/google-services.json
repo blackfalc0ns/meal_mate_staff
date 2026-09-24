@@ -26,25 +26,6 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:993522349228:android:30b2a4cadb1add9d525b09",
-        "android_client_info": {
-          "package_name": "com.example.meal_mate_delivery"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAZu4YzdZzk2JM2uFyBBuqe2l7FQqLza-E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:993522349228:android:c7b2f30ce5a5b74a525b09",
         "android_client_info": {
           "package_name": "com.example.meal_meat_user"

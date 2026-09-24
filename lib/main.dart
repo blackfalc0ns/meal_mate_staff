@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +12,10 @@ import 'core/di/di.dart';
 import 'core/l10n/translations/app_localizations.dart';
 import 'core/services/app_locale_notifier.dart';
 import 'core/services/app_navigator_service.dart';
+import 'core/services/background_notification_content.dart';
+import 'core/services/fcm_token_debug_logger.dart';
 import 'core/services/local_notification_service.dart';
+import 'core/services/push_messaging_gateway.dart';
 import 'core/services/push_notification_coordinator.dart';
 import 'firebase_options.dart';
 
@@ -21,7 +26,21 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
-  // OS handles notification payload display; no local notification needed here.
+
+  final content = resolveBackgroundNotificationContent(
+    hasSystemNotification: message.notification != null,
+    data: message.data,
+  );
+  if (content == null) return;
+
+  final localNotifications = FlutterLocalNotificationServiceImpl();
+  await localNotifications.initialize(onNotificationTap: (_) {});
+  await localNotifications.showNotification(
+    id: message.messageId?.hashCode ?? DateTime.now().millisecondsSinceEpoch,
+    title: content.title,
+    body: content.body,
+    payload: jsonEncode(message.data),
+  );
 }
 
 void main() async {
@@ -48,6 +67,11 @@ void main() async {
       onNotificationTap: coordinator.handleLocalNotificationTap,
     );
     await coordinator.initialize();
+    await logFcmTokenForDebug(
+      enabled: kDebugMode,
+      loadToken: getIt<PushMessagingGateway>().getToken,
+      writeLog: debugPrint,
+    );
   } catch (_) {}
 
   runApp(const MyApp(initialRoute: AppRoutes.splash));

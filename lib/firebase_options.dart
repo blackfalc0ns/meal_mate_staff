@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAZu4YzdZzk2JM2uFyBBuqe2l7FQqLza-E',
-    appId: '1:993522349228:android:30b2a4cadb1add9d525b09',
+    appId: '1:993522349228:android:5f726d958441dcd9525b09',
     messagingSenderId: '993522349228',
     projectId: 'mealmate-bd5b3',
     storageBucket: 'mealmate-bd5b3.firebasestorage.app',
@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB2Cg5b8GOQKWbVjEyOjXRs77fgWzGO4fc',
-    appId: '1:993522349228:ios:4d259d1d870fd5ec525b09',
+    appId: '1:993522349228:ios:ad3334a22bbe9100525b09',
     messagingSenderId: '993522349228',
     projectId: 'mealmate-bd5b3',
     storageBucket: 'mealmate-bd5b3.firebasestorage.app',
-    iosBundleId: 'com.example.mealMateDelivery',
+    iosBundleId: 'MealMate.Staff',
   );
 }

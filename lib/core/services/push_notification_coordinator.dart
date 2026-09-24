@@ -15,7 +15,6 @@ import '../network/api_results.dart';
 import '../network/failures.dart';
 import 'device_id_service.dart';
 import 'local_notification_service.dart';
-import 'notification_payload.dart';
 import 'notification_payload_parser.dart';
 import 'notification_router.dart';
 import 'push_messaging_gateway.dart';
@@ -200,12 +199,6 @@ class PushNotificationCoordinator {
   }
 
   Future<void> _handleForegroundMessage(PushNotificationMessage message) async {
-    final payload = parser.parse(message.data);
-    if (payload is UnsupportedNotificationPayload ||
-        payload is IncomingCallPayload) {
-      return;
-    }
-
     final title = message.title ?? 'MealMate';
     final body = message.body ?? '';
     final encodedData = jsonEncode(message.data);

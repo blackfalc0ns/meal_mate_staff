@@ -528,32 +528,53 @@ void main() {
     );
 
     test(
-      'foreground message ignores unsupported or incoming_call event',
+      'foreground message shows notification payload without a known event',
       () async {
         await coordinator.initialize();
 
         gateway.emitMessageReceived(
           const PushNotificationMessage(
             messageId: 'msg-unsupported',
-            title: 'Unknown',
-            body: 'Unknown event',
-            data: {'event': 'unknown.event'},
-          ),
-        );
-        gateway.emitMessageReceived(
-          const PushNotificationMessage(
-            messageId: 'msg-call',
-            title: 'Call',
-            body: 'Incoming call',
-            data: {'event': 'incoming_call', 'channelId': 'chan-1'},
+            title: 'Firebase test',
+            body: 'Foreground notification',
           ),
         );
 
         await Future<void>.delayed(Duration.zero);
 
-        expect(localNotifications.shownNotifications, isEmpty);
+        expect(localNotifications.shownNotifications, hasLength(1));
+        expect(
+          localNotifications.shownNotifications.single['title'],
+          'Firebase test',
+        );
+        expect(
+          localNotifications.shownNotifications.single['body'],
+          'Foreground notification',
+        );
       },
     );
+
+    test('foreground message shows incoming_call event', () async {
+      await coordinator.initialize();
+
+      gateway.emitMessageReceived(
+        const PushNotificationMessage(
+          messageId: 'msg-call',
+          title: 'Call',
+          body: 'Incoming call',
+          data: {'event': 'incoming_call', 'channelId': 'chan-1'},
+        ),
+      );
+
+      await Future<void>.delayed(Duration.zero);
+
+      expect(localNotifications.shownNotifications, hasLength(1));
+      expect(localNotifications.shownNotifications.single['title'], 'Call');
+      expect(
+        localNotifications.shownNotifications.single['body'],
+        'Incoming call',
+      );
+    });
 
     test('onMessageOpenedApp routes tap to NotificationRouter', () async {
       await coordinator.initialize();
