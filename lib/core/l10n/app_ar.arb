@@ -17,6 +17,8 @@
   "phoneHint": "أدخل رقم الجوال",
   "passwordLabel": "كلمة المرور",
   "passwordHint": "أدخل كلمة المرور",
+  "showPassword": "إظهار كلمة المرور",
+  "hidePassword": "إخفاء كلمة المرور",
   "forgotPassword": "نسيت كلمة المرور؟",
   "login": "تسجيل الدخول",
   "or": "أو",

@@ -66,6 +66,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordHint => 'أدخل كلمة المرور';
 
   @override
+  String get showPassword => 'إظهار كلمة المرور';
+
+  @override
+  String get hidePassword => 'إخفاء كلمة المرور';
+
+  @override
   String get forgotPassword => 'نسيت كلمة المرور؟';
 
   @override

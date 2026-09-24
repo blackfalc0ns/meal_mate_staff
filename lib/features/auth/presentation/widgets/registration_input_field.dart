@@ -25,6 +25,8 @@ class RegistrationInputField extends StatelessWidget {
     this.autovalidateMode,
     this.keyboardType,
     this.focusNode,
+    this.obscureText = false,
+    this.fieldKey,
   });
 
   final String label;
@@ -44,6 +46,8 @@ class RegistrationInputField extends StatelessWidget {
   final AutovalidateMode? autovalidateMode;
   final TextInputType? keyboardType;
   final FocusNode? focusNode;
+  final bool obscureText;
+  final Key? fieldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +78,14 @@ class RegistrationInputField extends StatelessWidget {
                   label: label,
                   textField: true,
                   child: TextFormField(
+                    key: fieldKey,
                     focusNode: focusNode,
                     controller: controller,
                     initialValue: controller == null ? initialValue : null,
                     readOnly: isPicker,
                     canRequestFocus: !isPicker,
                     enableInteractiveSelection: !isPicker,
+                    obscureText: obscureText,
                     onTap: isPicker
                         ? () {
                             FocusManager.instance.primaryFocus?.unfocus();

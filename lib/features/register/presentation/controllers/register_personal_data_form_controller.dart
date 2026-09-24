@@ -18,6 +18,7 @@ class RegisterPersonalDataFormController {
     );
     restaurant = TextEditingController(text: initialData?.restaurantName ?? '');
     phone = TextEditingController(text: initialData?.phone ?? '');
+    password = TextEditingController(text: initialData?.password ?? '');
     email = TextEditingController(text: initialData?.email ?? '');
     birthDate = TextEditingController(text: initialData?.birthDate ?? '');
     nationality = TextEditingController(text: initialData?.nationality ?? '');
@@ -34,6 +35,7 @@ class RegisterPersonalDataFormController {
   late final TextEditingController fullNameEn;
   late final TextEditingController restaurant;
   late final TextEditingController phone;
+  late final TextEditingController password;
   late final TextEditingController email;
   late final TextEditingController birthDate;
   late final TextEditingController nationality;
@@ -48,6 +50,7 @@ class RegisterPersonalDataFormController {
     fullNameEn.dispose();
     restaurant.dispose();
     phone.dispose();
+    password.dispose();
     email.dispose();
     birthDate.dispose();
     nationality.dispose();
@@ -163,6 +166,7 @@ class RegisterPersonalDataFormController {
       fullNameAr: fullNameAr.text.trim(),
       fullNameEn: fullNameEn.text.trim(),
       nationalIdExpiry: nationalIdExpiry.text.trim(),
+      password: password.text,
     );
   }
 }

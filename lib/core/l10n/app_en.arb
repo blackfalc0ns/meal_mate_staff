@@ -17,6 +17,8 @@
   "phoneHint": "Enter mobile number",
   "passwordLabel": "Password",
   "passwordHint": "Enter password",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
   "forgotPassword": "Forgot password?",
   "login": "Sign in",
   "or": "or",

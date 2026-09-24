@@ -8,7 +8,7 @@ import '../../domain/entities/driver_nationality_entity.dart';
 import '../controllers/register_personal_data_form_controller.dart';
 import 'register_section_card.dart';
 
-class RegisterPersonalInfoSection extends StatelessWidget {
+class RegisterPersonalInfoSection extends StatefulWidget {
   const RegisterPersonalInfoSection({
     super.key,
     required this.formController,
@@ -17,6 +17,15 @@ class RegisterPersonalInfoSection extends StatelessWidget {
 
   final RegisterPersonalDataFormController formController;
   final List<DriverNationalityEntity> nationalities;
+
+  @override
+  State<RegisterPersonalInfoSection> createState() =>
+      _RegisterPersonalInfoSectionState();
+}
+
+class _RegisterPersonalInfoSectionState
+    extends State<RegisterPersonalInfoSection> {
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,29 +38,47 @@ class RegisterPersonalInfoSection extends StatelessWidget {
         RegistrationInputField(
           label: locale.registrationFullNameAr,
           hint: locale.registrationFullNameArHint,
-          controller: formController.fullNameAr,
+          controller: widget.formController.fullNameAr,
           validator: (v) => context.validateName(v),
         ),
         const SizedBox(height: Spacing.registrationFieldGap),
         RegistrationInputField(
           label: locale.registrationFullNameEn,
           hint: locale.registrationFullNameEnHint,
-          controller: formController.fullNameEn,
+          controller: widget.formController.fullNameEn,
           validator: (v) => context.validateName(v),
         ),
         const SizedBox(height: Spacing.registrationFieldGap),
         RegistrationInputField(
           label: locale.registrationPhone,
           hint: locale.registrationPhoneHint,
-          controller: formController.phone,
+          controller: widget.formController.phone,
           keyboardType: TextInputType.phone,
           validator: (v) => context.validatePhoneNumber(v),
         ),
         const SizedBox(height: Spacing.registrationFieldGap),
         RegistrationInputField(
+          fieldKey: const Key('driver_registration_password_field'),
+          label: locale.passwordLabel,
+          hint: locale.passwordHint,
+          controller: widget.formController.password,
+          obscureText: _obscurePassword,
+          suffixIcon: _obscurePassword
+              ? Icons.visibility_off_outlined
+              : Icons.visibility_outlined,
+          suffixTooltip: _obscurePassword
+              ? locale.showPassword
+              : locale.hidePassword,
+          onSuffixTap: () {
+            setState(() => _obscurePassword = !_obscurePassword);
+          },
+          validator: context.validatePassword,
+        ),
+        const SizedBox(height: Spacing.registrationFieldGap),
+        RegistrationInputField(
           label: locale.registrationEmail,
           hint: locale.registrationEmailHint,
-          controller: formController.email,
+          controller: widget.formController.email,
           keyboardType: TextInputType.emailAddress,
           validator: (v) => context.validateOptionalEmail(v),
         ),
@@ -62,16 +89,17 @@ class RegisterPersonalInfoSection extends StatelessWidget {
           isPicker: true,
           prefixIcon: Icons.calendar_month_rounded,
           showPickerArrow: false,
-          controller: formController.birthDate,
-          onTap: () => formController.pickBirthDate(context),
+          controller: widget.formController.birthDate,
+          onTap: () => widget.formController.pickBirthDate(context),
         ),
         const SizedBox(height: Spacing.registrationFieldGap),
         RegistrationInputField(
           label: locale.registrationNationality,
           hint: locale.registrationNationalityHint,
           isPicker: true,
-          controller: formController.nationality,
-          onTap: () => formController.pickNationality(context, nationalities),
+          controller: widget.formController.nationality,
+          onTap: () =>
+              widget.formController.pickNationality(context, widget.nationalities),
           validator: (v) => context.validateRequired(v),
         ),
       ],
