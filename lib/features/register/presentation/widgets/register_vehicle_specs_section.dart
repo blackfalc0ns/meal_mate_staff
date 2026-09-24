@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/helpers/validators.dart';
+import '../../../../core/widget/shimmer_widget.dart';
 import '../../../auth/presentation/widgets/registration_input_field.dart';
 import '../../domain/entities/driver_vehicle_model_entity.dart';
 import '../../domain/entities/driver_vehicle_type_entity.dart';
@@ -76,7 +77,7 @@ class RegisterVehicleSpecsSection extends StatelessWidget {
             if (isSearchingVehicleModels || isPending) {
               return const Padding(
                 padding: EdgeInsets.only(top: Spacing.xs),
-                child: LinearProgressIndicator(),
+                child: ShimmerWidget(height: 4, borderRadius: 2),
               );
             }
             return const SizedBox.shrink();

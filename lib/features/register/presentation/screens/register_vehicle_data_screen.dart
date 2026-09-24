@@ -11,6 +11,7 @@ import '../../domain/entities/driver_vehicle_model_entity.dart';
 import '../../domain/entities/driver_vehicle_type_entity.dart';
 import '../../domain/register_vehicle_data.dart';
 import '../controllers/register_vehicle_data_form_controller.dart';
+import '../widgets/register_vehicle_catalog_shimmer.dart';
 import '../widgets/register_vehicle_license_section.dart';
 import '../widgets/register_vehicle_ownership_section.dart';
 import '../widgets/register_vehicle_specs_section.dart';
@@ -126,7 +127,7 @@ class _RegisterVehicleDataScreenState extends State<RegisterVehicleDataScreen> {
           children: [
             if (widget.isLoadingVehicleTypes ||
                 widget.isLoadingVehicleColors) ...[
-              const LinearProgressIndicator(),
+              const RegisterVehicleCatalogShimmer(),
               const SizedBox(height: Spacing.md),
             ],
             RegisterVehicleSpecsSection(

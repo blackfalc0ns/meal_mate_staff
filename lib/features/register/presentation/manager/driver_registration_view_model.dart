@@ -116,7 +116,12 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
   }
 
   Future<void> _handleLoadRestaurants() async {
-    emit(state.copyWith(status: DriverRegistrationStatus.loadingRestaurants));
+    emit(
+      state.copyWith(
+        status: DriverRegistrationStatus.loadingRestaurants,
+        isLoadingRestaurants: true,
+      ),
+    );
 
     final result = await getRestaurantsUseCase();
     switch (result) {
@@ -125,6 +130,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
           state.copyWith(
             status: DriverRegistrationStatus.restaurantsLoaded,
             restaurants: data,
+            isLoadingRestaurants: false,
           ),
         );
       case ApiErrorResult(:final failure):
@@ -133,13 +139,19 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             status: DriverRegistrationStatus.error,
             failure: failure,
             errorMessage: failure.errorMessage,
+            isLoadingRestaurants: false,
           ),
         );
     }
   }
 
   Future<void> _handleLoadNationalities() async {
-    emit(state.copyWith(status: DriverRegistrationStatus.loadingNationalities));
+    emit(
+      state.copyWith(
+        status: DriverRegistrationStatus.loadingNationalities,
+        isLoadingNationalities: true,
+      ),
+    );
     final result = await getNationalitiesUseCase();
     switch (result) {
       case ApiSuccessResult(:final data):
@@ -147,6 +159,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
           state.copyWith(
             status: DriverRegistrationStatus.nationalitiesLoaded,
             nationalities: data,
+            isLoadingNationalities: false,
           ),
         );
       case ApiErrorResult(:final failure):
@@ -155,6 +168,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             status: DriverRegistrationStatus.error,
             failure: failure,
             errorMessage: failure.errorMessage,
+            isLoadingNationalities: false,
           ),
         );
     }

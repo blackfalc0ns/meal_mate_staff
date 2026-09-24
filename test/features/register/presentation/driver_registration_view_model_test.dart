@@ -246,6 +246,100 @@ void main() {
       },
     );
 
+    test(
+      'represents restaurant and nationality loading independently and preserves failure',
+      () async {
+        final restaurantsCompleter =
+            Completer<ApiResult<List<DriverRestaurantEntity>>>();
+        final nationalitiesCompleter =
+            Completer<ApiResult<List<DriverNationalityEntity>>>();
+
+        mockRepo.restaurantsCompleter = restaurantsCompleter;
+        mockRepo.nationalitiesCompleter = nationalitiesCompleter;
+
+        viewModel.doIntent(const DriverRegistrationLoadRestaurantsEvent());
+        viewModel.doIntent(const DriverRegistrationLoadNationalitiesEvent());
+
+        expect(viewModel.state.isLoadingRestaurants, isTrue);
+        expect(viewModel.state.isLoadingNationalities, isTrue);
+
+        restaurantsCompleter.complete(
+          ApiSuccessResult(
+            data: const [
+              DriverRestaurantEntity(
+                id: 'res-1',
+                tradeName: 'Burger King',
+                tradeNameAr: 'برجر كنج',
+                tradeNameEn: 'Burger King',
+              ),
+            ],
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isLoadingRestaurants, isFalse);
+        expect(viewModel.state.isLoadingNationalities, isTrue);
+
+        nationalitiesCompleter.complete(
+          ApiSuccessResult(
+            data: const [
+              DriverNationalityEntity(
+                code: 'KW',
+                name: 'Kuwaiti',
+                nameAr: 'كويتي',
+                nameEn: 'Kuwaiti',
+                countryName: 'Kuwait',
+                countryNameAr: 'الكويت',
+                countryNameEn: 'Kuwait',
+                flagEmoji: '🇰🇼',
+              ),
+            ],
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isLoadingRestaurants, isFalse);
+        expect(viewModel.state.isLoadingNationalities, isFalse);
+      },
+    );
+
+    test(
+      'restaurant and nationality error clears loading and retains failure',
+      () async {
+        final errorCompleter =
+            Completer<ApiResult<List<DriverRestaurantEntity>>>();
+        mockRepo.restaurantsCompleter = errorCompleter;
+
+        viewModel.doIntent(const DriverRegistrationLoadRestaurantsEvent());
+        expect(viewModel.state.isLoadingRestaurants, isTrue);
+
+        final expectedFailure = Failure(errorMessage: 'Restaurant load failed');
+        errorCompleter.complete(ApiErrorResult(failure: expectedFailure));
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isLoadingRestaurants, isFalse);
+        expect(viewModel.state.failure, equals(expectedFailure));
+
+        final nationalityErrorCompleter =
+            Completer<ApiResult<List<DriverNationalityEntity>>>();
+        mockRepo.nationalitiesCompleter = nationalityErrorCompleter;
+
+        viewModel.doIntent(const DriverRegistrationLoadNationalitiesEvent());
+        expect(viewModel.state.isLoadingNationalities, isTrue);
+
+        final expectedNatFailure = Failure(
+          errorMessage: 'Nationality load failed',
+        );
+        nationalityErrorCompleter.complete(
+          ApiErrorResult(failure: expectedNatFailure),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        expect(viewModel.state.isLoadingNationalities, isFalse);
+        expect(viewModel.state.failure, equals(expectedNatFailure));
+      },
+    );
+
     test('loads nationalities into state', () async {
       mockRepo.nationalities = const [
         DriverNationalityEntity(

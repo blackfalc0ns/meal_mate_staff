@@ -5,11 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/widget/app_button.dart';
+import 'package:meal_mate_delivery/core/widget/shimmer_widget.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_color_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_model_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_vehicle_type_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/register_vehicle_data.dart';
 import 'package:meal_mate_delivery/features/register/presentation/screens/register_vehicle_data_screen.dart';
+import 'package:meal_mate_delivery/features/register/presentation/widgets/register_vehicle_catalog_shimmer.dart';
 import 'package:meal_mate_delivery/features/register/presentation/widgets/register_vehicle_color_picker.dart';
 
 const _types = [
@@ -90,6 +92,9 @@ Widget _app({
   List<DriverVehicleTypeEntity> types = _types,
   List<DriverVehicleColorEntity> colors = _colors,
   List<DriverVehicleModelEntity> models = const [],
+  bool isLoadingVehicleTypes = false,
+  bool isLoadingVehicleColors = false,
+  bool isSearchingVehicleModels = false,
   ValueChanged<RegisterVehicleData>? onVehicleDataChanged,
   void Function(String search, String? vehicleType)? onModelSearch,
   void Function(String search, String? vehicleType)? onModelQueryChanged,
@@ -104,6 +109,9 @@ Widget _app({
       vehicleTypes: types,
       vehicleColors: colors,
       vehicleModels: models,
+      isLoadingVehicleTypes: isLoadingVehicleTypes,
+      isLoadingVehicleColors: isLoadingVehicleColors,
+      isSearchingVehicleModels: isSearchingVehicleModels,
       selectedVehicleColor: const Color(0xFF112233),
       ownsVehicle: initialData.isOwned,
       onColorSelected: (_) {},
@@ -117,6 +125,49 @@ Widget _app({
 }
 
 void main() {
+  setUp(() {
+    TestWidgetsFlutterBinding.instance.platformDispatcher.views.first.physicalSize =
+        const Size(1080, 2400);
+    TestWidgetsFlutterBinding.instance.platformDispatcher.views.first
+        .devicePixelRatio = 1.0;
+  });
+
+  tearDown(() {
+    TestWidgetsFlutterBinding.instance.platformDispatcher.views.first
+        .resetPhysicalSize();
+    TestWidgetsFlutterBinding.instance.platformDispatcher.views.first
+        .resetDevicePixelRatio();
+  });
+
+  testWidgets(
+    'renders RegisterVehicleCatalogShimmer and no linear indicator when catalogs loading',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(
+          isLoadingVehicleTypes: true,
+          isLoadingVehicleColors: false,
+        ),
+      );
+      await tester.pump();
+
+      expect(find.byType(RegisterVehicleCatalogShimmer), findsOneWidget);
+      expect(find.byType(LinearProgressIndicator), findsNothing);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'renders compact ShimmerWidget and no linear indicator when searching models',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(isSearchingVehicleModels: true),
+      );
+      await tester.pump();
+
+      expect(find.byType(LinearProgressIndicator), findsNothing);
+      expect(find.byType(ShimmerWidget), findsWidgets);
+    },
+  );
   testWidgets(
     'vehicle type displays localized label and submits backend code',
     (tester) async {
@@ -378,7 +429,7 @@ void main() {
         scrollable: find.byType(Scrollable).first,
       );
       await tester.drag(
-        find.byType(SingleChildScrollView),
+        find.byType(CustomScrollView),
         const Offset(0, -100),
       );
       await tester.pump();

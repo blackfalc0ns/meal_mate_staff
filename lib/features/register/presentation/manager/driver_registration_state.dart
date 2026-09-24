@@ -42,6 +42,8 @@ class DriverRegistrationState {
     this.vehicleTypes = const [],
     this.vehicleColors = const [],
     this.vehicleModels = const [],
+    this.isLoadingRestaurants = false,
+    this.isLoadingNationalities = false,
     this.isLoadingVehicleTypes = false,
     this.isLoadingVehicleColors = false,
     this.isSearchingVehicleModels = false,
@@ -84,6 +86,8 @@ class DriverRegistrationState {
   final List<DriverVehicleTypeEntity> vehicleTypes;
   final List<DriverVehicleColorEntity> vehicleColors;
   final List<DriverVehicleModelEntity> vehicleModels;
+  final bool isLoadingRestaurants;
+  final bool isLoadingNationalities;
   final bool isLoadingVehicleTypes;
   final bool isLoadingVehicleColors;
   final bool isSearchingVehicleModels;
@@ -96,8 +100,6 @@ class DriverRegistrationState {
   final String? errorMessage;
   final String? uploadingDocumentId;
 
-  bool get isLoadingRestaurants =>
-      status == DriverRegistrationStatus.loadingRestaurants;
   bool get isSubmitting =>
       status == DriverRegistrationStatus.submitting ||
       status == DriverRegistrationStatus.resubmitting;
@@ -132,6 +134,8 @@ class DriverRegistrationState {
     List<DriverVehicleTypeEntity>? vehicleTypes,
     List<DriverVehicleColorEntity>? vehicleColors,
     List<DriverVehicleModelEntity>? vehicleModels,
+    bool? isLoadingRestaurants,
+    bool? isLoadingNationalities,
     bool? isLoadingVehicleTypes,
     bool? isLoadingVehicleColors,
     bool? isSearchingVehicleModels,
@@ -155,6 +159,10 @@ class DriverRegistrationState {
       vehicleTypes: vehicleTypes ?? this.vehicleTypes,
       vehicleColors: vehicleColors ?? this.vehicleColors,
       vehicleModels: vehicleModels ?? this.vehicleModels,
+      isLoadingRestaurants:
+          isLoadingRestaurants ?? this.isLoadingRestaurants,
+      isLoadingNationalities:
+          isLoadingNationalities ?? this.isLoadingNationalities,
       isLoadingVehicleTypes:
           isLoadingVehicleTypes ?? this.isLoadingVehicleTypes,
       isLoadingVehicleColors:

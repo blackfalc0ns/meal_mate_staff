@@ -11,6 +11,7 @@ import '../../domain/entities/driver_restaurant_entity.dart';
 import '../../domain/register_personal_data.dart';
 import '../controllers/register_personal_data_form_controller.dart';
 import '../widgets/register_identity_section.dart';
+import '../widgets/register_personal_data_shimmer.dart';
 import '../widgets/register_personal_info_section.dart';
 import '../widgets/register_workplace_section.dart';
 
@@ -22,6 +23,7 @@ class RegisterPersonalDataScreen extends StatefulWidget {
     this.initialData,
     this.restaurants = const [],
     this.nationalities = const [],
+    this.isLoadingCatalogs = false,
     this.onPersonalDataChanged,
     this.failure,
   });
@@ -31,6 +33,7 @@ class RegisterPersonalDataScreen extends StatefulWidget {
   final RegisterPersonalData? initialData;
   final List<DriverRestaurantEntity> restaurants;
   final List<DriverNationalityEntity> nationalities;
+  final bool isLoadingCatalogs;
   final ValueChanged<RegisterPersonalData>? onPersonalDataChanged;
   final Failure? failure;
 
@@ -70,36 +73,38 @@ class _RegisterPersonalDataScreenState
       title: locale.registrationPersonalData,
       currentStep: 1,
       onBackPressed: widget.onBackPressed,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            RegisterWorkplaceSection(
-              formController: _formController,
-              restaurants: widget.restaurants,
+      child: widget.isLoadingCatalogs
+          ? const RegisterPersonalDataShimmer()
+          : Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  RegisterWorkplaceSection(
+                    formController: _formController,
+                    restaurants: widget.restaurants,
+                  ),
+                  RegisterPersonalInfoSection(
+                    formController: _formController,
+                    nationalities: widget.nationalities,
+                  ),
+                  RegisterIdentitySection(formController: _formController),
+                  if (widget.failure != null) ...[
+                    const SizedBox(height: Spacing.xs),
+                    InlineApiErrorWidget(failure: widget.failure!),
+                    const SizedBox(height: Spacing.sm),
+                  ],
+                  const SizedBox(height: Spacing.sm),
+                  AppButton(
+                    text: locale.registrationContinue,
+                    onPressed: _handleContinue,
+                    height: Spacing.registrationButtonHeight,
+                    borderRadius: Spacing.registrationRadius,
+                  ),
+                  const SizedBox(height: Spacing.screenV),
+                ],
+              ),
             ),
-            RegisterPersonalInfoSection(
-              formController: _formController,
-              nationalities: widget.nationalities,
-            ),
-            RegisterIdentitySection(formController: _formController),
-            if (widget.failure != null) ...[
-              const SizedBox(height: Spacing.xs),
-              InlineApiErrorWidget(failure: widget.failure!),
-              const SizedBox(height: Spacing.sm),
-            ],
-            const SizedBox(height: Spacing.sm),
-            AppButton(
-              text: locale.registrationContinue,
-              onPressed: _handleContinue,
-              height: Spacing.registrationButtonHeight,
-              borderRadius: Spacing.registrationRadius,
-            ),
-            const SizedBox(height: Spacing.screenV),
-          ],
-        ),
-      ),
     );
   }
 }

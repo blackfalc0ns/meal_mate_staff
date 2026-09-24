@@ -6,8 +6,8 @@ import '../../../../config/routing/app_routes.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/helpers/image_picker_helper.dart';
-import '../../../../core/widget/custom_progress_indecator.dart';
 import '../../../../core/widget/custom_snak_bar.dart';
+import '../widgets/register_submission_shimmer.dart';
 import '../../../account_status/domain/account_status_kind.dart';
 import '../../domain/register_document.dart';
 import '../../domain/register_review_data.dart';
@@ -130,6 +130,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               initialData: state.draft.toPersonalData(),
               restaurants: state.restaurants,
               nationalities: state.nationalities,
+              isLoadingCatalogs:
+                  state.isLoadingRestaurants || state.isLoadingNationalities,
               failure: stepFailure,
               onPersonalDataChanged: (data) {
                 _viewModel.doIntent(
@@ -258,7 +260,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 content,
                 const ModalBarrier(dismissible: false, color: Colors.black26),
-                const Center(child: CustomProgressIndicator()),
+                const RegisterSubmissionShimmer(),
               ],
             );
           }
