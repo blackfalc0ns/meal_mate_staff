@@ -651,6 +651,7 @@ void main() {
         firstName: 'Ahmed',
         lastName: 'Mohamed',
         phone: '+966501234567',
+        password: 'Password123!',
         email: 'ahmed@test.com',
         birthDate: '1994/05/20',
         nationality: 'Saudi',
@@ -666,6 +667,7 @@ void main() {
       expect(viewModel.state.draft.fullNameAr, 'Ahmed Mohamed');
       expect(viewModel.state.draft.fullNameEn, 'Ahmed Mohamed');
       expect(viewModel.state.draft.phone, '+966501234567');
+      expect(viewModel.state.draft.password, 'Password123!');
       expect(viewModel.state.draft.nationalId, '1098765432');
 
       const vehicleData = RegisterVehicleData(
@@ -830,31 +832,36 @@ void main() {
     test(
       'submits registration successfully and emits submissionSuccess',
       () async {
-        viewModel.doIntent(
-          const DriverRegistrationSetDraftEvent(
-            DriverRegistrationDraftEntity(
-              restaurantId: 'res-1',
-              fullNameAr: 'أحمد',
-              fullNameEn: 'Ahmed',
-              phone: '+966501234567',
-              nationalId: '1234567890',
-              nationalIdExpiry: '2029-01-01T00:00:00Z',
-              nationality: 'Saudi',
-              vehicleType: 'Car',
-              vehicleModel: 'Camry',
-              vehiclePlate: 'ABC 1234',
-              vehicleYear: 2023,
-              licenseNumber: 'LIC-1',
-              licenseExpiry: '2029-01-01T00:00:00Z',
-              vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
-              nationalIdFrontStorageKey: 'nid-f',
-              nationalIdBackStorageKey: 'nid-b',
-              drivingLicenseFrontStorageKey: 'lic-f',
-              drivingLicenseBackStorageKey: 'lic-b',
-              vehicleRegistrationStorageKey: 'veh-r',
-            ),
-          ),
+        const draftWithoutPassword = DriverRegistrationDraftEntity(
+          restaurantId: 'res-1',
+          fullNameAr: 'أحمد',
+          fullNameEn: 'Ahmed',
+          phone: '+966501234567',
+          password: '',
+          nationalId: '1234567890',
+          nationalIdExpiry: '2029-01-01T00:00:00Z',
+          nationality: 'Saudi',
+          vehicleType: 'Car',
+          vehicleModel: 'Camry',
+          vehiclePlate: 'ABC 1234',
+          vehicleYear: 2023,
+          licenseNumber: 'LIC-1',
+          licenseExpiry: '2029-01-01T00:00:00Z',
+          vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
+          nationalIdFrontStorageKey: 'nid-f',
+          nationalIdBackStorageKey: 'nid-b',
+          drivingLicenseFrontStorageKey: 'lic-f',
+          drivingLicenseBackStorageKey: 'lic-b',
+          vehicleRegistrationStorageKey: 'veh-r',
         );
+        expect(draftWithoutPassword.isReadyForSubmission, isFalse);
+
+        final readyDraft = draftWithoutPassword.copyWith(
+          password: 'Password123!',
+        );
+        expect(readyDraft.isReadyForSubmission, isTrue);
+
+        viewModel.doIntent(DriverRegistrationSetDraftEvent(readyDraft));
 
         viewModel.doIntent(const DriverRegistrationSubmitEvent());
         await Future<void>.delayed(Duration.zero);
@@ -864,6 +871,7 @@ void main() {
           DriverRegistrationStatus.submissionSuccess,
         );
         expect(viewModel.state.submissionResult?.registrationId, 'reg-100');
+        expect(mockRepo.lastSubmittedDraft?.password, 'Password123!');
       },
     );
 

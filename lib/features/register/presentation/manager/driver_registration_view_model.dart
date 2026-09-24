@@ -11,6 +11,7 @@ import '../../domain/usecase/resubmit_driver_registration_usecase.dart';
 import '../../domain/usecase/search_driver_vehicle_models_usecase.dart';
 import '../../domain/usecase/submit_driver_registration_usecase.dart';
 import '../../domain/usecase/upload_driver_document_usecase.dart';
+import '../../domain/register_personal_data.dart';
 import 'driver_registration_event.dart';
 import 'driver_registration_state.dart';
 
@@ -341,7 +342,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
     emit(state.copyWith(currentStep: step));
   }
 
-  void _handlePersonalDataUpdated(dynamic personalData) {
+  void _handlePersonalDataUpdated(RegisterPersonalData personalData) {
     final updatedDraft = state.draft.copyWith(
       restaurantId: personalData.restaurantId.isNotEmpty
           ? personalData.restaurantId
@@ -358,6 +359,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
       phone: personalData.phone.isNotEmpty
           ? personalData.phone
           : state.draft.phone,
+      password: personalData.password,
       email: personalData.email,
       nationalId: personalData.civilId.isNotEmpty
           ? personalData.civilId
