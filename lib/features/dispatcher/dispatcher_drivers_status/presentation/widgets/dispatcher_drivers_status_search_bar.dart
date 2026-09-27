@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherDriversStatusSearchBar extends StatefulWidget {
-  const DispatcherDriversStatusSearchBar({
-    super.key,
-    required this.onChanged,
-  });
+  const DispatcherDriversStatusSearchBar({super.key, required this.onChanged});
 
   final ValueChanged<String> onChanged;
 
@@ -43,9 +40,7 @@ class _DispatcherDriversStatusSearchBarState
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.5),
-        ),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.5)),
       ),
       child: TextField(
         controller: _controller,

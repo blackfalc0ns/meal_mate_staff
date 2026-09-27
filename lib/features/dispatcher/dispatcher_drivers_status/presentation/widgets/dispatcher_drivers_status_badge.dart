@@ -8,10 +8,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_driver_status_type.dart';
 
 class DispatcherDriversStatusBadge extends StatelessWidget {
-  const DispatcherDriversStatusBadge({
-    super.key,
-    required this.status,
-  });
+  const DispatcherDriversStatusBadge({super.key, required this.status});
 
   final DispatcherDriverStatusType status;
 
@@ -27,12 +24,15 @@ class DispatcherDriversStatusBadge extends StatelessWidget {
       case DispatcherDriverStatusType.available:
         dotColor = color.success;
         label = locale.driversStatusBadgeAvailable;
-      case DispatcherDriverStatusType.offline:
+      case DispatcherDriverStatusType.inDelivery:
+        dotColor = color.primary;
+        label = locale.driversStatusBadgeInDelivery;
+      case DispatcherDriverStatusType.unavailable:
         dotColor = color.error;
-        label = locale.driversStatusBadgeOffline;
-      case DispatcherDriverStatusType.connected:
-        dotColor = color.success;
-        label = locale.driversStatusBadgeOnline;
+        label = locale.driversStatusBadgeUnavailable;
+      case DispatcherDriverStatusType.unknown:
+        dotColor = color.onSurfaceVariant;
+        label = locale.driversStatusBadgeUnknown;
     }
 
     return Container(
@@ -54,10 +54,7 @@ class DispatcherDriversStatusBadge extends StatelessWidget {
           Container(
             width: Spacing.xs + Spacing.border,
             height: Spacing.xs + Spacing.border,
-            decoration: BoxDecoration(
-              color: dotColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
           ),
           const SizedBox(width: Spacing.xs),
           Text(

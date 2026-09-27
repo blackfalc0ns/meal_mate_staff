@@ -2803,6 +2803,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driversStatusOfflineCount => 'غير متصلين';
 
   @override
+  String get driversStatusTotalCount => 'إجمالي السائقين';
+
+  @override
+  String get driversStatusAvailableCount => 'متاحين';
+
+  @override
+  String get driversStatusUnavailableCount => 'غير متاحين';
+
+  @override
   String get driversStatusFilter => 'تصفية';
 
   @override
@@ -2931,4 +2940,79 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverDetailsCopiedToClipboard => 'تم النسخ إلى الحافظة';
+
+  @override
+  String get driversStatusBadgeInDelivery => 'في التوصيل';
+
+  @override
+  String get driversStatusBadgeUnavailable => 'غير متاح';
+
+  @override
+  String get driversStatusBadgeUnknown => 'غير معروف';
+
+  @override
+  String get driversStatusSortName => 'الاسم';
+
+  @override
+  String get driversStatusSortRatingDesc => 'الأعلى تقييماً';
+
+  @override
+  String get driversStatusSortNewest => 'الأحدث';
+
+  @override
+  String get driversStatusSortStatus => 'الحالة';
+
+  @override
+  String get driversStatusSortTitle => 'الترتيب حسب';
+
+  @override
+  String get driversStatusNewRating => 'جديد';
+
+  @override
+  String get driversStatusPhoneNotRegistered => 'رقم الهاتف غير مسجل';
+
+  @override
+  String get driversStatusCallAction => 'اتصال';
+
+  @override
+  String get driversStatusDetailsAction => 'التفاصيل';
+
+  @override
+  String get driversStatusAvailability => 'الإتاحة';
+
+  @override
+  String driversStatusPaginationPage(int page, int total) {
+    return 'صفحة $page من $total';
+  }
+
+  @override
+  String get driversStatusPrevPage => 'السابق';
+
+  @override
+  String get driversStatusNextPage => 'التالي';
+
+  @override
+  String get driversStatusFleetEmptyTitle => 'لا يوجد سائقين';
+
+  @override
+  String get driversStatusFleetEmptyDesc =>
+      'لم يتم العثور على سائقين يطابقون معايير البحث.';
+
+  @override
+  String get driverDetailsNoLocation => 'لا تتوفر بيانات الموقع';
+
+  @override
+  String get driverDetailsNoVehicle => 'لا توجد بيانات للمركبة';
+
+  @override
+  String get driverDetailsDocumentValid => 'ساري';
+
+  @override
+  String get driverDetailsDocumentExpiringSoon => 'ينتهي قريباً';
+
+  @override
+  String get driverDetailsDocumentExpired => 'منتهي';
+
+  @override
+  String get driverDetailsDocumentMissing => 'غير متوفر';
 }

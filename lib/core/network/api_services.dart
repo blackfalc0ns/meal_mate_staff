@@ -64,6 +64,10 @@ import '../../features/driver/confirm_receipt/data/models/response/driver_condit
 import '../../features/driver/confirm_receipt/data/models/response/driver_pickup_confirmation_response_dto.dart';
 import '../../features/driver/confirm_receipt/data/models/response/driver_pickup_summary_response_dto.dart';
 import '../../features/driver/confirm_receipt/data/models/response/driver_trip_start_response_dto.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/models/request/update_driver_availability_request_dto.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/dispatcher_driver_details_response_dto.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/dispatcher_drivers_status_response_dto.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/update_driver_availability_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -261,6 +265,27 @@ abstract class ApiServices {
     @Query('area') String? area,
     @Query('boxId') String? boxId,
   });
+
+  @GET(EndPoints.dispatcherDriversStatus)
+  Future<DispatcherDriversStatusResponseDto> getDispatcherDriversStatus({
+    @Query('search') String? search,
+    @Query('status') String status = 'All',
+    @Query('sortBy') String sortBy = 'Name',
+    @Query('pageNumber') int pageNumber = 1,
+    @Query('pageSize') int pageSize = 15,
+  });
+
+  @PATCH(EndPoints.dispatcherDriverAvailability)
+  Future<UpdateDriverAvailabilityResponseDto>
+  updateDispatcherDriverAvailability(
+    @Path('driverId') String driverId,
+    @Body() UpdateDriverAvailabilityRequestDto request,
+  );
+
+  @GET(EndPoints.dispatcherDriverStatusDetails)
+  Future<DispatcherDriverDetailsResponseDto> getDispatcherDriverStatusDetails(
+    @Path('driverId') String driverId,
+  );
 
   @POST(EndPoints.dispatcherAssignOrder)
   Future<DriverAssignmentResponseDto> assignDriverToBox(

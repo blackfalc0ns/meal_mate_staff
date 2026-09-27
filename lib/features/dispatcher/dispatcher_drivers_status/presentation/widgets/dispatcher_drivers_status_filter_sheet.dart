@@ -24,7 +24,9 @@ class DispatcherDriversStatusFilterSheet extends StatelessWidget {
       context: context,
       backgroundColor: context.colorScheme.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(Spacing.radiusLg)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(Spacing.radiusLg),
+        ),
       ),
       builder: (ctx) => DispatcherDriversStatusFilterSheet(
         selectedFilter: currentFilter,
@@ -77,20 +79,25 @@ class DispatcherDriversStatusFilterSheet extends StatelessWidget {
             _filterTile(
               context: context,
               label: locale.driversStatusBadgeAvailable,
-              isSelected: selectedFilter == DispatcherDriverStatusType.available,
+              isSelected:
+                  selectedFilter == DispatcherDriverStatusType.available,
               onTap: () => onSelectFilter(DispatcherDriverStatusType.available),
             ),
             _filterTile(
               context: context,
-              label: locale.driversStatusBadgeOnline,
-              isSelected: selectedFilter == DispatcherDriverStatusType.connected,
-              onTap: () => onSelectFilter(DispatcherDriverStatusType.connected),
+              label: locale.driversStatusBadgeInDelivery,
+              isSelected:
+                  selectedFilter == DispatcherDriverStatusType.inDelivery,
+              onTap: () =>
+                  onSelectFilter(DispatcherDriverStatusType.inDelivery),
             ),
             _filterTile(
               context: context,
-              label: locale.driversStatusBadgeOffline,
-              isSelected: selectedFilter == DispatcherDriverStatusType.offline,
-              onTap: () => onSelectFilter(DispatcherDriverStatusType.offline),
+              label: locale.driversStatusBadgeUnavailable,
+              isSelected:
+                  selectedFilter == DispatcherDriverStatusType.unavailable,
+              onTap: () =>
+                  onSelectFilter(DispatcherDriverStatusType.unavailable),
             ),
           ],
         ),

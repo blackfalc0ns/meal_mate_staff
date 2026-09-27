@@ -4,12 +4,9 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherDriversStatusAvatar extends StatelessWidget {
-  const DispatcherDriversStatusAvatar({
-    super.key,
-    required this.avatarUrl,
-  });
+  const DispatcherDriversStatusAvatar({super.key, this.avatarUrl});
 
-  final String avatarUrl;
+  final String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +21,18 @@ class DispatcherDriversStatusAvatar extends StatelessWidget {
           CircleAvatar(
             radius: (Spacing.xxl + Spacing.sm) / 2,
             backgroundColor: color.outlineVariant.withValues(alpha: 0.3),
-            backgroundImage: AssetImage(avatarUrl),
+            backgroundImage: avatarUrl != null && avatarUrl!.isNotEmpty
+                ? (avatarUrl!.startsWith('http')
+                      ? NetworkImage(avatarUrl!) as ImageProvider
+                      : AssetImage(avatarUrl!))
+                : null,
+            child: avatarUrl == null || avatarUrl!.isEmpty
+                ? Icon(
+                    Icons.person_rounded,
+                    size: Spacing.iconMd,
+                    color: color.onSurfaceVariant,
+                  )
+                : null,
           ),
           PositionedDirectional(
             bottom: Spacing.zero,
@@ -34,10 +42,7 @@ class DispatcherDriversStatusAvatar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color.primary,
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: color.surface,
-                  width: Spacing.border,
-                ),
+                border: Border.all(color: color.surface, width: Spacing.border),
               ),
               child: Icon(
                 Icons.directions_bike_rounded,

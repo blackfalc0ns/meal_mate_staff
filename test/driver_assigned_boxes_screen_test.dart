@@ -1,13 +1,17 @@
-import 'package:animations/animations.dart';
-import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_assigned_box_entity.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_box_delivery_status.dart';
+import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_boxes_filter_type.dart';
+import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_pickup_manifest_entity.dart';
+import 'package:meal_mate_delivery/features/driver/orders/domain/repo/driver_pickup_manifest_repository.dart';
+import 'package:meal_mate_delivery/features/driver/orders/domain/usecase/get_driver_pickup_manifest_usecase.dart';
+import 'package:meal_mate_delivery/features/driver/orders/presentation/manager/driver_pickup_manifest_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_assigned_box_card.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_boxes_delivery_mode_chip.dart';
@@ -26,21 +30,80 @@ class _MockImagePickerPlatform extends ImagePickerPlatform {
   }
 }
 
+class _FakeManifestRepo implements DriverPickupManifestRepository {
+  _FakeManifestRepo(this.manifest);
+  final DriverPickupManifestEntity manifest;
+
+  @override
+  Future<ApiResult<DriverPickupManifestEntity>> getDriverPickupManifest({
+    DriverBoxesFilterType filter = DriverBoxesFilterType.all,
+  }) async {
+    return ApiSuccessResult(data: manifest);
+  }
+}
+
 void main() {
   setUp(() {
     ImagePickerPlatform.instance = _MockImagePickerPlatform();
   });
+
+  const sampleBoxes = [
+    DriverAssignedBoxEntity(
+      boxId: 'box-1',
+      boxCode: '#BOX-1256',
+      customerName: 'Ahmad Ali',
+      deliveryZone: 'حي النرجس',
+      mealsCount: 3,
+      mealsSummary: '3 وجبات',
+      deliveryTimeSlot: '12:00 - 14:00',
+      status: DriverBoxDeliveryStatus.pendingScan,
+      statusText: 'لم يتم التحميل',
+      isPickedUp: false,
+    ),
+    DriverAssignedBoxEntity(
+      boxId: 'box-2',
+      boxCode: '#BOX-1257',
+      customerName: 'Sara Ali',
+      deliveryZone: 'حي الياسمين',
+      mealsCount: 4,
+      mealsSummary: '4 وجبات',
+      deliveryTimeSlot: '14:00 - 16:00',
+      status: DriverBoxDeliveryStatus.pickedUp,
+      statusText: 'تم الاستلام',
+      isPickedUp: true,
+    ),
+  ];
+
+  const sampleManifest = DriverPickupManifestEntity(
+    tripId: 'trip-1',
+    tripCode: 'TRIP-1',
+    driverId: 'drv-1',
+    driverName: 'Driver Name',
+    totalBoxesCount: 15,
+    totalMealsCount: 53,
+    pendingScanBoxesCount: 14,
+    pickedUpBoxesCount: 1,
+    allBoxesPickedUp: false,
+    canStartTrip: false,
+    boxes: sampleBoxes,
+  );
+
   Widget buildSubject({
     Locale locale = const Locale('ar'),
-    List<DriverAssignedBoxEntity>? initialBoxes,
+    DriverPickupManifestEntity manifest = sampleManifest,
   }) {
+    final repo = _FakeManifestRepo(manifest);
+    final vm = DriverPickupManifestViewModel(
+      getManifestUseCase: GetDriverPickupManifestUseCase(repo),
+    );
+
     return MaterialApp(
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.lightTheme,
       onGenerateRoute: RouteGenerator.getRoute,
-      home: DriverAssignedBoxesScreen(initialBoxes: initialBoxes),
+      home: DriverAssignedBoxesScreen(viewModel: vm),
     );
   }
 
@@ -52,7 +115,8 @@ void main() {
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(buildSubject());
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
 
       // Top Header Logo
       expect(find.byType(DriverBoxesHeaderLogo), findsOneWidget);
@@ -74,79 +138,15 @@ void main() {
       // Filter Bar
       expect(find.byType(DriverBoxesFilterBar), findsOneWidget);
       expect(find.text('الكل'), findsOneWidget);
-      expect(find.text('جاهز للتوصيل'), findsWidgets);
-      expect(find.text('تم التوصيل'), findsWidgets);
+      expect(find.text('لم يتم التحميل'), findsWidgets);
 
       // Cards
       expect(find.byType(DriverAssignedBoxCard), findsWidgets);
-      expect(find.text('#BOX-1256'), findsWidgets);
-      expect(find.text('#MM-1256'), findsWidgets);
-      expect(find.text('لم يتم التحميل'), findsWidgets);
-      expect(find.text('استكمال\nالاجراء'), findsWidgets);
-      expect(find.text('ابدأ التوصيل'), findsWidgets);
-      expect(find.text('فشل التوصيل'), findsWidgets);
-      expect(find.text('حدثت مشكلة'), findsWidgets);
+      expect(find.text('#BOX-1256'), findsOneWidget);
+      expect(find.text('#BOX-1257'), findsOneWidget);
+      expect(find.text('استكمال\nالاجراء'), findsOneWidget);
     },
   );
-
-  testWidgets('filters boxes correctly when selecting filter tabs', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(1080, 2400);
-    tester.view.devicePixelRatio = 2.5;
-    addTearDown(() => tester.view.resetPhysicalSize());
-
-    const testBoxes = [
-      DriverAssignedBoxEntity(
-        boxId: '#BOX-TEST-1',
-        orderCode: '#MM-TEST-1',
-        mealCount: 3,
-        area: 'حي النرجس',
-        status: DriverBoxDeliveryStatus.ready,
-      ),
-      DriverAssignedBoxEntity(
-        boxId: '#BOX-TEST-2',
-        orderCode: '#MM-TEST-2',
-        mealCount: 4,
-        area: 'حي الياسمين',
-        status: DriverBoxDeliveryStatus.delivered,
-      ),
-    ];
-
-    await tester.pumpWidget(buildSubject(initialBoxes: testBoxes));
-    await tester.pumpAndSettle();
-
-    // Initially All boxes are present
-    expect(find.text('#BOX-TEST-1'), findsOneWidget);
-    expect(find.text('#BOX-TEST-2'), findsOneWidget);
-
-    // Tap "جاهز للتوصيل" tab in filter bar
-    final readyTab = find.descendant(
-      of: find.byType(DriverBoxesFilterBar),
-      matching: find.text('جاهز للتوصيل'),
-    );
-    await tester.tap(readyTab);
-    await tester.pumpAndSettle();
-
-    // Ready box is present, delivered box is filtered out
-    expect(find.text('#BOX-TEST-1'), findsOneWidget);
-    expect(find.text('#BOX-TEST-2'), findsNothing);
-
-    // Tap "تم التوصيل" tab in filter bar
-    final deliveredTab = find.descendant(
-      of: find.byType(DriverBoxesFilterBar),
-      matching: find.text('تم التوصيل'),
-    );
-    await tester.tap(deliveredTab);
-    await tester.pumpAndSettle();
-
-    // Verify PageTransitionSwitcher is used for animated tab switching
-    expect(find.byType(PageTransitionSwitcher), findsOneWidget);
-
-    // Delivered box is present, ready box is filtered out
-    expect(find.text('#BOX-TEST-2'), findsOneWidget);
-    expect(find.text('#BOX-TEST-1'), findsNothing);
-  });
 
   testWidgets('renders correctly in English', (tester) async {
     tester.view.physicalSize = const Size(1080, 2400);
@@ -154,7 +154,8 @@ void main() {
     addTearDown(() => tester.view.resetPhysicalSize());
 
     await tester.pumpWidget(buildSubject(locale: const Locale('en')));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.text('Boxes List'), findsOneWidget);
     expect(find.text('Assigned boxes before delivery'), findsOneWidget);
@@ -162,86 +163,5 @@ void main() {
     expect(find.text('Total Meals'), findsOneWidget);
     expect(find.text('Total boxes assigned today'), findsOneWidget);
     expect(find.text('All'), findsOneWidget);
-    expect(find.text('Ready for delivery'), findsWidgets);
-    expect(find.text('Delivered'), findsWidgets);
   });
-
-  testWidgets(
-    'shows CustomSnackbar and transitions status when action button is tapped',
-    (tester) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 2.5;
-      addTearDown(() => tester.view.resetPhysicalSize());
-
-      const testBoxes = [
-        DriverAssignedBoxEntity(
-          boxId: '#BOX-ACT-1',
-          orderCode: '#MM-ACT-1',
-          mealCount: 2,
-          area: 'حي النرجس',
-          status: DriverBoxDeliveryStatus.notLoaded,
-        ),
-      ];
-
-      await tester.pumpWidget(buildSubject(initialBoxes: testBoxes));
-      await tester.pumpAndSettle();
-
-      // Tap "استكمال الاجراء" -> Opens DriverConfirmReceiptScreen
-      final completeActionButton = find.text('استكمال\nالاجراء');
-      expect(completeActionButton, findsOneWidget);
-      await tester.tap(completeActionButton);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-
-      // Confirm receipt on DriverConfirmReceiptScreen
-      expect(find.text('تأكيد استلام الطلب'), findsOneWidget);
-
-      // Step 1: Scan / Enter Code
-      await tester.tap(find.text('إدخال الرمز يدوياً'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-
-      // Enter code in text field
-      await tester.enterText(find.byType(TextField), '#BOX-1256');
-      await tester.pump();
-
-      // Confirm manual code in the modal sheet
-      final confirmCodeBtn = find.text('تأكيد');
-      expect(confirmCodeBtn, findsOneWidget);
-      await tester.tap(confirmCodeBtn);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-
-      // Move to Step 2
-      await tester.tap(find.text('متابعة إلى تصوير البوكس'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-
-      // Step 2: Capture Photo
-      await tester.tap(find.text('أخذ صورة'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-
-      // Confirm receipt and pop
-      await tester.tap(find.text('تأكيد التسليم'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
-
-      // Box has transitioned to ready with "ابدأ التوصيل"
-      final startDeliveryButton = find.text('ابدأ التوصيل');
-      expect(startDeliveryButton, findsOneWidget);
-
-      // Tap "ابدأ التوصيل"
-      await tester.tap(startDeliveryButton);
-      await tester.pump(const Duration(milliseconds: 300));
-
-      // Verify CustomSnackbar (CherryToast) appears for starting delivery
-      expect(find.byType(CherryToast), findsWidgets);
-
-      await tester.pump(const Duration(seconds: 4));
-
-      // Box has transitioned to delivered with "تم التوصيل"
-      expect(find.text('تم التوصيل'), findsWidgets);
-    },
-  );
 }

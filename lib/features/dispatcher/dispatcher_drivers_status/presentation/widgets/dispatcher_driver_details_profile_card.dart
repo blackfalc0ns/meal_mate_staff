@@ -16,11 +16,13 @@ class DispatcherDriverDetailsProfileCard extends StatelessWidget {
     required this.details,
     this.onToggleAvailable,
     this.onCopyCode,
+    this.isUpdatingAvailability = false,
   });
 
   final DispatcherDriverDetailsEntity details;
   final ValueChanged<bool>? onToggleAvailable;
   final VoidCallback? onCopyCode;
+  final bool isUpdatingAvailability;
 
   void _handleCopyCode(BuildContext context) {
     if (onCopyCode != null) {
@@ -71,18 +73,39 @@ class DispatcherDriverDetailsProfileCard extends StatelessWidget {
                       ),
                     ),
                     child: ClipOval(
-                      child: Image.asset(
-                        details.avatarUrl,
-                        width: 52,
-                        height: 52,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Icon(
-                          Icons.person_rounded,
-                          size: Spacing.iconLg,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
+                      child:
+                          details.avatarUrl != null &&
+                              details.avatarUrl!.isNotEmpty
+                          ? (details.avatarUrl!.startsWith('http')
+                                ? Image.network(
+                                    details.avatarUrl!,
+                                    width: 52,
+                                    height: 52,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) => Icon(
+                                          Icons.person_rounded,
+                                          size: Spacing.iconLg,
+                                          color: color.onSurfaceVariant,
+                                        ),
+                                  )
+                                : Image.asset(
+                                    details.avatarUrl!,
+                                    width: 52,
+                                    height: 52,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) => Icon(
+                                          Icons.person_rounded,
+                                          size: Spacing.iconLg,
+                                          color: color.onSurfaceVariant,
+                                        ),
+                                  ))
+                          : Icon(
+                              Icons.person_rounded,
+                              size: Spacing.iconLg,
+                              color: color.onSurfaceVariant,
+                            ),
                     ),
                   ),
                   PositionedDirectional(
@@ -92,7 +115,9 @@ class DispatcherDriverDetailsProfileCard extends StatelessWidget {
                       width: 12,
                       height: 12,
                       decoration: BoxDecoration(
-                        color: details.isOnline ? color.tertiary : color.outline,
+                        color: details.isOnline
+                            ? color.tertiary
+                            : color.outline,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: color.surface,
@@ -145,32 +170,44 @@ class DispatcherDriverDetailsProfileCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: Spacing.xs / 2),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          size: Spacing.iconSm,
-                          color: color.secondary,
-                        ),
-                        const SizedBox(width: Spacing.xs / 4),
-                        Text(
-                          details.rating.toStringAsFixed(1),
-                          style: getBoldStyle(
-                            color: color.onSurface,
-                            fontSize: FontSize.size12,
+                    if (details.rating != null) ...[
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.star_rounded,
+                            size: Spacing.iconSm,
+                            color: color.secondary,
                           ),
-                        ),
-                        const SizedBox(width: Spacing.xs / 2),
-                        Text(
-                          locale.driverDetailsReviewsCount(details.reviewCount),
-                          style: getRegularStyle(
-                            color: color.onSurfaceVariant,
-                            fontSize: FontSize.size11,
+                          const SizedBox(width: Spacing.xs / 4),
+                          Text(
+                            details.rating!.toStringAsFixed(1),
+                            style: getBoldStyle(
+                              color: color.onSurface,
+                              fontSize: FontSize.size12,
+                            ),
                           ),
+                          const SizedBox(width: Spacing.xs / 2),
+                          Text(
+                            locale.driverDetailsReviewsCount(
+                              details.reviewCount ?? 0,
+                            ),
+                            style: getRegularStyle(
+                              color: color.onSurfaceVariant,
+                              fontSize: FontSize.size11,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ] else ...[
+                      Text(
+                        locale.driversStatusNewRating,
+                        style: getBoldStyle(
+                          color: color.primary,
+                          fontSize: FontSize.size12,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -178,15 +215,28 @@ class DispatcherDriverDetailsProfileCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Transform.scale(
-                    scale: 0.85,
-                    child: Switch.adaptive(
-                      value: details.isAvailable,
-                      onChanged: onToggleAvailable,
-                      activeThumbColor: color.primary,
-                      activeTrackColor: color.primary.withValues(alpha: 0.5),
+                  if (isUpdatingAvailability)
+                    const SizedBox(
+                      width: 48,
+                      height: 32,
+                      child: Center(
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                    )
+                  else
+                    Transform.scale(
+                      scale: 0.85,
+                      child: Switch.adaptive(
+                        value: details.isAvailable,
+                        onChanged: onToggleAvailable,
+                        activeThumbColor: color.primary,
+                        activeTrackColor: color.primary.withValues(alpha: 0.5),
+                      ),
                     ),
-                  ),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Spacing.xs * 1.5,

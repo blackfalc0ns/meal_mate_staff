@@ -61,6 +61,12 @@ abstract class EndPoints {
       '/api/v1/dispatcher/operations/log';
   static const String dispatcherDriversRoster =
       '/api/v1/dispatcher/drivers/roster';
+  static const String dispatcherDriversStatus = '/api/v1/dispatcher/drivers';
+  static const String dispatcherDriverAvailability =
+      '/api/v1/dispatcher/drivers/{driverId}/availability';
+  static const String dispatcherDriverStatusDetails =
+      '/api/v1/dispatcher/drivers/{driverId}';
+  static const String dispatcherDriversStatusHub = '/hubs/dispatcher-hub';
   static const String dispatcherAssignOrder =
       '/api/v1/dispatcher/orders/{boxId}/assign';
   static const String dispatcherAssignmentDetails =
@@ -79,8 +85,7 @@ abstract class EndPoints {
       '/api/v1/dispatcher/drivers/{driverId}/current-location';
 
   // Driver pickup flow endpoints
-  static const String driverPickupManifest =
-      '/api/v1/driver/pickup/manifest';
+  static const String driverPickupManifest = '/api/v1/driver/pickup/manifest';
   static const String driverPickupValidateBarcode =
       '/api/v1/driver/pickup/boxes/validate-barcode';
   static const String driverPickupConditionPhoto =
@@ -89,8 +94,7 @@ abstract class EndPoints {
       '/api/v1/driver/pickup/boxes/{boxId}/confirm';
   static const String driverPickupSummary =
       '/api/v1/driver/trips/{tripId}/pickup-summary';
-  static const String driverTripStart =
-      '/api/v1/driver/trips/{tripId}/start';
+  static const String driverTripStart = '/api/v1/driver/trips/{tripId}/start';
 
   // Driver orders (Screen 05.05) & realtime endpoints
   static const String driverOrders = '/api/v1/driver/orders';

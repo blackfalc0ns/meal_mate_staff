@@ -40,11 +40,7 @@ class DispatcherDriverDetailsMetricCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: Spacing.iconSm,
-            color: iconColor ?? color.primary,
-          ),
+          Icon(icon, size: Spacing.iconSm, color: iconColor ?? color.primary),
           const SizedBox(height: Spacing.xs / 2),
           Text(
             value,

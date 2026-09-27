@@ -90,11 +90,7 @@ class DispatcherDriversStatusHeader extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.person,
-                size: Spacing.iconLg,
-                color: color.onSurface,
-              ),
+              Icon(Icons.person, size: Spacing.iconLg, color: color.onSurface),
               const SizedBox(width: Spacing.xs),
               Text(
                 locale.driversStatusTitle,

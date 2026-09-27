@@ -2812,6 +2812,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driversStatusOfflineCount => 'Offline';
 
   @override
+  String get driversStatusTotalCount => 'Total';
+
+  @override
+  String get driversStatusAvailableCount => 'Available';
+
+  @override
+  String get driversStatusUnavailableCount => 'Unavailable';
+
+  @override
   String get driversStatusFilter => 'Filter';
 
   @override
@@ -2943,4 +2952,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverDetailsCopiedToClipboard => 'Copied to clipboard';
+
+  @override
+  String get driversStatusBadgeInDelivery => 'In Delivery';
+
+  @override
+  String get driversStatusBadgeUnavailable => 'Unavailable';
+
+  @override
+  String get driversStatusBadgeUnknown => 'Unknown';
+
+  @override
+  String get driversStatusSortName => 'Name';
+
+  @override
+  String get driversStatusSortRatingDesc => 'Highest Rated';
+
+  @override
+  String get driversStatusSortNewest => 'Newest';
+
+  @override
+  String get driversStatusSortStatus => 'Status';
+
+  @override
+  String get driversStatusSortTitle => 'Sort By';
+
+  @override
+  String get driversStatusNewRating => 'New';
+
+  @override
+  String get driversStatusPhoneNotRegistered => 'Phone not registered';
+
+  @override
+  String get driversStatusCallAction => 'Call';
+
+  @override
+  String get driversStatusDetailsAction => 'Details';
+
+  @override
+  String get driversStatusAvailability => 'Availability';
+
+  @override
+  String driversStatusPaginationPage(int page, int total) {
+    return 'Page $page of $total';
+  }
+
+  @override
+  String get driversStatusPrevPage => 'Previous';
+
+  @override
+  String get driversStatusNextPage => 'Next';
+
+  @override
+  String get driversStatusFleetEmptyTitle => 'No Drivers Found';
+
+  @override
+  String get driversStatusFleetEmptyDesc =>
+      'No drivers match your search criteria.';
+
+  @override
+  String get driverDetailsNoLocation => 'No location data available';
+
+  @override
+  String get driverDetailsNoVehicle => 'No vehicle data available';
+
+  @override
+  String get driverDetailsDocumentValid => 'Valid';
+
+  @override
+  String get driverDetailsDocumentExpiringSoon => 'Expiring Soon';
+
+  @override
+  String get driverDetailsDocumentExpired => 'Expired';
+
+  @override
+  String get driverDetailsDocumentMissing => 'Missing';
 }

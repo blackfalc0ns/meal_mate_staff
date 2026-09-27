@@ -66,16 +66,16 @@ class DispatcherDriversStatusShimmer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.lg),
-          // 3 KPI cards
+          // 4 KPI cards
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
             child: Row(
               children: List.generate(
-                3,
+                4,
                 (index) => Expanded(
                   child: Container(
                     margin: EdgeInsetsDirectional.only(
-                      end: index < 2 ? Spacing.sm : Spacing.zero,
+                      end: index < 3 ? Spacing.xs : Spacing.zero,
                     ),
                     height: 70,
                     decoration: BoxDecoration(
@@ -88,20 +88,20 @@ class DispatcherDriversStatusShimmer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.lg),
-          // Search & Filter
+          // Search & Filter & Sort
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
             child: Row(
               children: [
                 Container(
-                  width: 84,
+                  width: 80,
                   height: 48,
                   decoration: BoxDecoration(
                     color: shimmerColor,
                     borderRadius: BorderRadius.circular(Spacing.radiusMd),
                   ),
                 ),
-                const SizedBox(width: Spacing.sm),
+                const SizedBox(width: Spacing.xs),
                 Expanded(
                   child: Container(
                     height: 48,
@@ -109,6 +109,15 @@ class DispatcherDriversStatusShimmer extends StatelessWidget {
                       color: shimmerColor,
                       borderRadius: BorderRadius.circular(Spacing.radiusMd),
                     ),
+                  ),
+                ),
+                const SizedBox(width: Spacing.xs),
+                Container(
+                  width: 80,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: shimmerColor,
+                    borderRadius: BorderRadius.circular(Spacing.radiusMd),
                   ),
                 ),
               ],
@@ -123,7 +132,7 @@ class DispatcherDriversStatusShimmer extends StatelessWidget {
                 horizontal: Spacing.base,
                 vertical: Spacing.xs,
               ),
-              height: 64,
+              height: 120,
               decoration: BoxDecoration(
                 color: shimmerColor,
                 borderRadius: BorderRadius.circular(Spacing.radiusMd),

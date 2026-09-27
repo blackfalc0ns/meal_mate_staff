@@ -7,10 +7,7 @@ import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherDriverDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const DispatcherDriverDetailsAppBar({
-    super.key,
-    this.onBack,
-  });
+  const DispatcherDriverDetailsAppBar({super.key, this.onBack});
 
   final VoidCallback? onBack;
 
@@ -37,10 +34,7 @@ class DispatcherDriverDetailsAppBar extends StatelessWidget
       ),
       title: Text(
         locale.driverDetailsTitle,
-        style: getBoldStyle(
-          color: color.onSurface,
-          fontSize: FontSize.size16,
-        ),
+        style: getBoldStyle(color: color.onSurface, fontSize: FontSize.size16),
       ),
     );
   }

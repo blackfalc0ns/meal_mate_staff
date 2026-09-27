@@ -5402,6 +5402,24 @@ abstract class AppLocalizations {
   /// **'Offline'**
   String get driversStatusOfflineCount;
 
+  /// No description provided for @driversStatusTotalCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get driversStatusTotalCount;
+
+  /// No description provided for @driversStatusAvailableCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get driversStatusAvailableCount;
+
+  /// No description provided for @driversStatusUnavailableCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get driversStatusUnavailableCount;
+
   /// No description provided for @driversStatusFilter.
   ///
   /// In en, this message translates to:
@@ -5641,6 +5659,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copied to clipboard'**
   String get driverDetailsCopiedToClipboard;
+
+  /// No description provided for @driversStatusBadgeInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get driversStatusBadgeInDelivery;
+
+  /// No description provided for @driversStatusBadgeUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get driversStatusBadgeUnavailable;
+
+  /// No description provided for @driversStatusBadgeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get driversStatusBadgeUnknown;
+
+  /// No description provided for @driversStatusSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get driversStatusSortName;
+
+  /// No description provided for @driversStatusSortRatingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Rated'**
+  String get driversStatusSortRatingDesc;
+
+  /// No description provided for @driversStatusSortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get driversStatusSortNewest;
+
+  /// No description provided for @driversStatusSortStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get driversStatusSortStatus;
+
+  /// No description provided for @driversStatusSortTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort By'**
+  String get driversStatusSortTitle;
+
+  /// No description provided for @driversStatusNewRating.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get driversStatusNewRating;
+
+  /// No description provided for @driversStatusPhoneNotRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone not registered'**
+  String get driversStatusPhoneNotRegistered;
+
+  /// No description provided for @driversStatusCallAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get driversStatusCallAction;
+
+  /// No description provided for @driversStatusDetailsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get driversStatusDetailsAction;
+
+  /// No description provided for @driversStatusAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get driversStatusAvailability;
+
+  /// No description provided for @driversStatusPaginationPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
+  String driversStatusPaginationPage(int page, int total);
+
+  /// No description provided for @driversStatusPrevPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get driversStatusPrevPage;
+
+  /// No description provided for @driversStatusNextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get driversStatusNextPage;
+
+  /// No description provided for @driversStatusFleetEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Drivers Found'**
+  String get driversStatusFleetEmptyTitle;
+
+  /// No description provided for @driversStatusFleetEmptyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No drivers match your search criteria.'**
+  String get driversStatusFleetEmptyDesc;
+
+  /// No description provided for @driverDetailsNoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'No location data available'**
+  String get driverDetailsNoLocation;
+
+  /// No description provided for @driverDetailsNoVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicle data available'**
+  String get driverDetailsNoVehicle;
+
+  /// No description provided for @driverDetailsDocumentValid.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid'**
+  String get driverDetailsDocumentValid;
+
+  /// No description provided for @driverDetailsDocumentExpiringSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiring Soon'**
+  String get driverDetailsDocumentExpiringSoon;
+
+  /// No description provided for @driverDetailsDocumentExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get driverDetailsDocumentExpired;
+
+  /// No description provided for @driverDetailsDocumentMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get driverDetailsDocumentMissing;
 }
 
 class _AppLocalizationsDelegate

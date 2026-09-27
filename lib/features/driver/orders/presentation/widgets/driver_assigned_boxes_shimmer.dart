@@ -8,9 +8,9 @@ class DriverAssignedBoxesShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(
+    return const SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(
         horizontal: Spacing.screenH,
         vertical: Spacing.xs,
       ),
@@ -18,17 +18,17 @@ class DriverAssignedBoxesShimmer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header Logo
-          const Center(
+          Center(
             child: ShimmerWidget(
               width: 120,
               height: 36,
               borderRadius: Spacing.radiusSm,
             ),
           ),
-          const SizedBox(height: Spacing.md),
+          SizedBox(height: Spacing.md),
 
           // Title & Delivery Mode Chip
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
@@ -54,17 +54,14 @@ class DriverAssignedBoxesShimmer extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Spacing.md),
+          SizedBox(height: Spacing.md),
 
           // Stats Banner
-          const ShimmerWidget(
-            height: 96,
-            borderRadius: Spacing.radiusMd,
-          ),
-          const SizedBox(height: Spacing.md),
+          ShimmerWidget(height: 96, borderRadius: Spacing.radiusMd),
+          SizedBox(height: Spacing.md),
 
           // Filter Bar
-          const Row(
+          Row(
             children: [
               Expanded(
                 child: ShimmerWidget(
@@ -80,10 +77,10 @@ class DriverAssignedBoxesShimmer extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Spacing.md),
+          SizedBox(height: Spacing.md),
 
           // 4 Box Cards Shimmer
-          const DriverAssignedBoxesCardsShimmer(),
+          DriverAssignedBoxesCardsShimmer(),
         ],
       ),
     );
@@ -91,10 +88,7 @@ class DriverAssignedBoxesShimmer extends StatelessWidget {
 }
 
 class DriverAssignedBoxesCardsShimmer extends StatelessWidget {
-  const DriverAssignedBoxesCardsShimmer({
-    super.key,
-    this.itemCount = 4,
-  });
+  const DriverAssignedBoxesCardsShimmer({super.key, this.itemCount = 4});
 
   final int itemCount;
 

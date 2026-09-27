@@ -1,17 +1,21 @@
 class DispatcherDriverLocationEntity {
   const DispatcherDriverLocationEntity({
-    required this.areaName,
-    required this.updatedMinutesAgo,
-    required this.mapPreviewAsset,
-    required this.latitude,
-    required this.longitude,
+    this.areaName = '',
+    this.updatedMinutesAgo = 0,
+    this.mapPreviewAsset = '',
+    this.latitude,
+    this.longitude,
+    this.updatedAtUtc,
   });
 
   final String areaName;
   final int updatedMinutesAgo;
   final String mapPreviewAsset;
-  final double latitude;
-  final double longitude;
+  final double? latitude;
+  final double? longitude;
+  final DateTime? updatedAtUtc;
+
+  bool get hasCoordinates => latitude != null && longitude != null;
 
   @override
   bool operator ==(Object other) =>
@@ -22,7 +26,8 @@ class DispatcherDriverLocationEntity {
           updatedMinutesAgo == other.updatedMinutesAgo &&
           mapPreviewAsset == other.mapPreviewAsset &&
           latitude == other.latitude &&
-          longitude == other.longitude;
+          longitude == other.longitude &&
+          updatedAtUtc == other.updatedAtUtc;
 
   @override
   int get hashCode => Object.hash(
@@ -31,5 +36,6 @@ class DispatcherDriverLocationEntity {
     mapPreviewAsset,
     latitude,
     longitude,
+    updatedAtUtc,
   );
 }

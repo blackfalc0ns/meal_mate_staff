@@ -1097,6 +1097,9 @@
   "driversStatusConnectedCount": "متصلين",
   "driversStatusInDeliveryCount": "في التوصيل",
   "driversStatusOfflineCount": "غير متصلين",
+  "driversStatusTotalCount": "إجمالي السائقين",
+  "driversStatusAvailableCount": "متاحين",
+  "driversStatusUnavailableCount": "غير متاحين",
   "driversStatusFilter": "تصفية",
   "driversStatusSearchHint": "البحث عن سائق بالإسم أو رقم الهاتف...",
   "driversStatusCount": "{count} سائق",
@@ -1171,6 +1174,40 @@
     }
   },
   "driverDetailsValid": "ساري",
-  "driverDetailsCopiedToClipboard": "تم النسخ إلى الحافظة"
+  "driverDetailsCopiedToClipboard": "تم النسخ إلى الحافظة",
+  "driversStatusBadgeInDelivery": "في التوصيل",
+  "driversStatusBadgeUnavailable": "غير متاح",
+  "driversStatusBadgeUnknown": "غير معروف",
+  "driversStatusSortName": "الاسم",
+  "driversStatusSortRatingDesc": "الأعلى تقييماً",
+  "driversStatusSortNewest": "الأحدث",
+  "driversStatusSortStatus": "الحالة",
+  "driversStatusSortTitle": "الترتيب حسب",
+  "driversStatusNewRating": "جديد",
+  "driversStatusPhoneNotRegistered": "رقم الهاتف غير مسجل",
+  "driversStatusCallAction": "اتصال",
+  "driversStatusDetailsAction": "التفاصيل",
+  "driversStatusAvailability": "الإتاحة",
+  "driversStatusPaginationPage": "صفحة {page} من {total}",
+  "@driversStatusPaginationPage": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "driversStatusPrevPage": "السابق",
+  "driversStatusNextPage": "التالي",
+  "driversStatusFleetEmptyTitle": "لا يوجد سائقين",
+  "driversStatusFleetEmptyDesc": "لم يتم العثور على سائقين يطابقون معايير البحث.",
+  "driverDetailsNoLocation": "لا تتوفر بيانات الموقع",
+  "driverDetailsNoVehicle": "لا توجد بيانات للمركبة",
+  "driverDetailsDocumentValid": "ساري",
+  "driverDetailsDocumentExpiringSoon": "ينتهي قريباً",
+  "driverDetailsDocumentExpired": "منتهي",
+  "driverDetailsDocumentMissing": "غير متوفر"
 }
 

@@ -34,7 +34,9 @@ class DispatcherDriversStatusFilterButton extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Spacing.radiusMd),
             border: Border.all(
-              color: isActive ? color.primary : color.outlineVariant.withValues(alpha: 0.5),
+              color: isActive
+                  ? color.primary
+                  : color.outlineVariant.withValues(alpha: 0.5),
             ),
           ),
           child: Row(

@@ -1,5 +1,7 @@
 import 'package:injectable/injectable.dart';
+
 import '../../../../../core/network/api_results.dart';
+import '../entities/dispatcher_drivers_status_query_entity.dart';
 import '../entities/dispatcher_drivers_status_summary_entity.dart';
 import '../repo/dispatcher_drivers_status_repository.dart';
 
@@ -9,7 +11,10 @@ class GetDriversStatusUseCase {
 
   final DispatcherDriversStatusRepository _repository;
 
-  Future<ApiResult<DispatcherDriversStatusSummaryEntity>> call() {
-    return _repository.getDriversStatus();
+  Future<ApiResult<DispatcherDriversStatusSummaryEntity>> call([
+    DispatcherDriversStatusQueryEntity query =
+        const DispatcherDriversStatusQueryEntity(),
+  ]) {
+    return _repository.getDriversStatus(query);
   }
 }

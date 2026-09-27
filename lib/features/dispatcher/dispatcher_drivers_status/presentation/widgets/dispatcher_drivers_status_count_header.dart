@@ -6,10 +6,7 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DispatcherDriversStatusCountHeader extends StatelessWidget {
-  const DispatcherDriversStatusCountHeader({
-    super.key,
-    required this.count,
-  });
+  const DispatcherDriversStatusCountHeader({super.key, required this.count});
 
   final int count;
 

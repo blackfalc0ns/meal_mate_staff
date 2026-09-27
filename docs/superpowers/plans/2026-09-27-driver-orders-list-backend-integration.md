@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build Screen 05.05 as the driver's production orders and delivery-task list, backed only by the authenticated active trip, with searchable/filterable route-ordered stops, delivery actions, SignalR updates, resilient offline reads, Core error states, screen-shaped shimmer, and measured list performance.
+**Goal:** Build Screen 05.05 as the driver's production orders and delivery-task list, backed only by the authenticated active trip, with searchable/filterable route-ordered stops, delivery actions, SignalR updates, Core error states, screen-shaped shimmer, and measured list performance.
 
-**Architecture:** Preserve Feature-Based Clean Architecture and the existing `lib/features/driver/orders` UI where it is reusable, but separate pickup-manifest semantics from delivery-manifest semantics. Data flows through `UI -> Event -> ViewModel -> UseCase -> Repository -> RemoteDataSource -> ApiServices`; REST is authoritative, SignalR patches fresh state, and a SQLite cache is a read-only operational fallback when REST is unavailable. The ViewModel owns query state, request-generation suppression, realtime subscriptions, and immutable list patching; widgets never parse wire strings or call services directly.
+**Architecture:** Preserve Feature-Based Clean Architecture and the existing `lib/features/driver/orders` UI where it is reusable, but separate pickup-manifest semantics from delivery-manifest semantics. Data flows through `UI -> Event -> ViewModel -> UseCase -> Repository -> RemoteDataSource -> ApiServices`; REST is authoritative and SignalR patches fresh in-memory state. The ViewModel owns query state, request-generation suppression, realtime subscriptions, and immutable list patching; widgets never parse wire strings or call services directly.
 
-**Tech Stack:** Flutter 3 / Dart 3.12, flutter_bloc, Dio, Retrofit, json_serializable, GetIt, Injectable annotations with existing manual registrations, signalr_netcore, url_launcher, sqflite, path, flutter_test.
+**Tech Stack:** Flutter 3 / Dart 3.12, flutter_bloc, Dio, Retrofit, json_serializable, GetIt, Injectable annotations with existing manual registrations, signalr_netcore, url_launcher, flutter_test.
 
 **Spec:** `D:/yahya/meal meat/newww/screen-05.05-driver-orders-list.md`
 
@@ -14,20 +14,20 @@
 
 - Read and follow `rules/rules_backend.md` before every implementation task.
 - Preserve the current visual identity, theme tokens, localization, shared bottom navigation, routes, and unrelated pickup/confirmation behavior.
-- Keep the existing architecture flow; never call `ApiServices`, SignalR, SQLite, or URL launchers from widgets.
+- Keep the existing architecture flow; never call `ApiServices`, SignalR, or URL launchers from widgets.
 - Use the existing injected `Dio`, token/language interceptors, `ApiResult`, `safeApiCall`, GetIt container, and `NetworkConstants.baseUrl`.
 - Response DTO fields are nullable and defensive; request/query values follow the exact backend contract; never force-unwrap API data.
 - Production code must contain zero mock orders, customers, addresses, phones, coordinates, counts, timestamps, or statuses.
-- Initial loading with no usable cache uses a screen-shaped shimmer built with the existing `ShimmerWidget`.
-- Initial REST failure with no cache uses `lib/core/errors/error_widgets/api_error_widget.dart`; action/realtime/refresh failures with usable content use `InlineApiErrorWidget`; successful empty responses use `EmptyStateWidget` or a feature wrapper around it.
+- Initial loading uses a screen-shaped shimmer built with the existing `ShimmerWidget`.
+- Initial REST failure uses `lib/core/errors/error_widgets/api_error_widget.dart`; action/realtime/refresh failures with usable in-memory content use `InlineApiErrorWidget`; successful empty responses use `EmptyStateWidget` or a feature wrapper around it.
 - Preserve usable data during refresh, search, filter, SignalR reconnect, and action failures.
 - Do not manually edit generated `*.g.dart` or generated localization files; regenerate them.
 - Do not delete the existing pickup-manifest implementation while Screens 06.02-06.05 still consume it.
 - Route order is always `sequenceNumber` ascending with `boxId` as a deterministic tie-breaker; search/filter must never silently reorder stops.
-- Never expose a customer phone number in logs, analytics, exceptions, cache keys, or SignalR diagnostics.
+- Never expose a customer phone number in logs, analytics, exceptions, or SignalR diagnostics.
 - Masked calling is preferred. Direct `tel:` calling is allowed only when the backend explicitly returns a callable number and product policy permits it.
-- Do not enqueue delivery mutations offline in this feature. Offline mode is read-only for cached trip/stop data; completion and issue mutations remain server-authoritative.
-- Performance budgets: one REST request per settled query, at most one active SignalR connection owner for this screen, no full-list rebuild for a single realtime stop update, search debounce 300 ms, cache write off the critical render path, and smooth scrolling for at least 100 stops on a mid-range Android device.
+- Do not add SQLite, Hive, SharedPreferences order persistence, offline queues, or background synchronization. If the app loses connectivity after content is loaded, retain the current in-memory state and show an inline Core error; a cold offline launch shows the full-page Core no-internet error.
+- Performance budgets: one REST request per settled query, at most one active SignalR connection owner for this screen, no full-list rebuild for a single realtime stop update, search debounce 300 ms, and smooth scrolling for at least 100 stops on a mid-range Android device.
 - Existing uncommitted user changes must be preserved; do not overwrite or reformat unrelated files.
 
 ---
@@ -114,9 +114,6 @@ Stop implementation after Task 1 if these backend requirements are not present i
 - `lib/features/driver/orders/data/mapper/driver_delivery_manifest_mapper.dart`
 - `lib/features/driver/orders/data/data_source/driver_orders_remote_data_source.dart`
 - `lib/features/driver/orders/data/data_source/driver_orders_remote_data_source_impl.dart`
-- `lib/features/driver/orders/data/data_source/driver_orders_local_data_source.dart`
-- `lib/features/driver/orders/data/data_source/driver_orders_sqlite_data_source.dart`
-- `lib/features/driver/orders/data/cache/driver_orders_cache_database.dart`
 - `lib/features/driver/orders/data/realtime/driver_orders_realtime_client.dart`
 - `lib/features/driver/orders/data/realtime/driver_orders_signalr_client.dart`
 - `lib/features/driver/orders/data/repo/driver_orders_repository_impl.dart`
@@ -144,13 +141,11 @@ Stop implementation after Task 1 if these backend requirements are not present i
 - `lib/features/driver/orders/presentation/widgets/driver_orders_filter_bar.dart`
 - `lib/features/driver/orders/presentation/widgets/driver_order_card.dart`
 - `lib/features/driver/orders/presentation/widgets/driver_order_status_badge.dart`
-- `lib/features/driver/orders/presentation/widgets/driver_orders_offline_banner.dart`
 - `lib/features/driver/orders/presentation/widgets/driver_orders_empty_state.dart`
 - Focused tests under `test/features/driver/orders/` matching each layer.
 
 ### Modify
 
-- `pubspec.yaml`
 - `lib/core/network/network_constants.dart`
 - `lib/core/network/api_services.dart`
 - `lib/core/di/di.dart`
@@ -216,7 +211,7 @@ git commit -m "test: lock driver orders delivery contract"
 - `DriverOrdersQueryEntity(search, filter)` with default `search: ''`, `filter: DriverOrdersFilter.all`.
 - `DriverOrdersFilter.wireValue`: `All`, `InProgress`, `Delivered`, `Failed`.
 - `DriverDeliveryStatus`: `pending`, `inProgress`, `arrivedAtCustomer`, `delivered`, `failed`, `reassignmentRequested`, `unknown`.
-- `DriverDeliveryManifestEntity` owns trip metadata, full-trip counts, `isFromCache`, `cachedAtUtc`, and immutable `List<DriverDeliveryStopEntity>`.
+- `DriverDeliveryManifestEntity` owns trip metadata, full-trip counts, and immutable `List<DriverDeliveryStopEntity>`.
 
 - [ ] **Step 1: Write failing full and sparse DTO tests**
 
@@ -304,53 +299,7 @@ git commit -m "feat: integrate driver orders rest api"
 
 ---
 
-### Task 4: Add SQLite Read-Through Cache and Offline Semantics
-
-**Files:**
-- Modify: `pubspec.yaml`
-- Create: local data source and cache database files listed above.
-- Modify: `driver_orders_repository_impl.dart`
-- Test: `test/features/driver/orders/data/driver_orders_cache_test.dart`
-- Test: `test/features/driver/orders/data/driver_orders_offline_repository_test.dart`
-
-**Interfaces:**
-- Add `sqflite: ^2.4.2` and `path: ^1.9.1` unless the project adopts another already-approved SQLite adapter before execution.
-- `DriverOrdersLocalDataSource.readLatest(String driverId) -> Future<DriverDeliveryManifestEntity?>`.
-- `DriverOrdersLocalDataSource.replaceManifest(String driverId, DriverDeliveryManifestEntity manifest) -> Future<void>`.
-- `DriverOrdersLocalDataSource.clearDriver(String driverId) -> Future<void>`.
-
-- [ ] **Step 1: Write cache schema and round-trip tests**
-
-Use two normalized tables: one manifest row per driver and one stop row keyed by `(driver_id, trip_stop_id)`, with indexes on `(driver_id, sequence_number)` and `(driver_id, status)`. Assert replacement removes stale stops, preserves nullable fields, and reads sorted stops.
-
-- [ ] **Step 2: Write repository offline-policy tests**
-
-Assert REST success returns fresh data and schedules cache replacement; network failure returns cache with `isFromCache == true`; authentication/authorization failures never fall back to cached customer data; trip identity mismatch clears the old cache; no cache returns the original typed `Failure`.
-
-- [ ] **Step 3: Run RED tests**
-
-Run: `flutter test test/features/driver/orders/data/driver_orders_cache_test.dart test/features/driver/orders/data/driver_orders_offline_repository_test.dart`
-
-- [ ] **Step 4: Add dependencies and implement versioned database**
-
-Database version 1 stores only fields needed by Screen 05.05. Never store direct customer phone numbers; store only the backend-provided masked display value if required.
-
-- [ ] **Step 5: Implement read-through repository behavior**
-
-Await cache reads only on REST network failure. After REST success, return mapped data immediately and perform one guarded cache transaction without blocking the first frame; log only trip/stop counts and opaque IDs.
-
-- [ ] **Step 6: Run tests and commit**
-
-```bash
-flutter pub get
-flutter test test/features/driver/orders/data/driver_orders_cache_test.dart test/features/driver/orders/data/driver_orders_offline_repository_test.dart
-git add pubspec.yaml pubspec.lock lib/features/driver/orders/data test/features/driver/orders/data
-git commit -m "feat: cache driver orders for offline reads"
-```
-
----
-
-### Task 5: Implement Authenticated SignalR and Deterministic Event Mapping
+### Task 4: Implement Authenticated SignalR and Deterministic Event Mapping
 
 **Files:**
 - Create realtime DTO/client/domain/use-case files listed above.
@@ -388,7 +337,7 @@ git commit -m "feat: stream driver order updates"
 
 ---
 
-### Task 6: Build the Orders ViewModel With Search, Filters, Refresh, and Realtime Patching
+### Task 5: Build the Orders ViewModel With Search, Filters, Refresh, and Realtime Patching
 
 **Files:**
 - Create: `driver_orders_event.dart`, `driver_orders_state.dart`, `driver_orders_view_model.dart`.
@@ -400,7 +349,7 @@ git commit -m "feat: stream driver order updates"
 
 - [ ] **Step 1: Write load/query race tests**
 
-Cover initial success, initial Core failure, cached success, refresh retaining content, 300 ms debounced search, duplicate query suppression, filter values, reset, and stale-response rejection with a request-generation integer.
+Cover initial success, initial Core failure, refresh retaining already loaded in-memory content, 300 ms debounced search, duplicate query suppression, filter values, reset, and stale-response rejection with a request-generation integer.
 
 - [ ] **Step 2: Write realtime reducer tests**
 
@@ -428,7 +377,7 @@ git commit -m "feat: manage driver orders state"
 
 ---
 
-### Task 7: Build Screen 05.05 UI, Shimmer, Core Errors, and Empty States
+### Task 6: Build Screen 05.05 UI, Shimmer, Core Errors, and Empty States
 
 **Files:**
 - Create the screen and widgets listed in Planned File Structure.
@@ -445,11 +394,10 @@ git commit -m "feat: manage driver orders state"
 Assert:
 
 ```text
-initial loading + no cache -> DriverOrdersShimmer
-initial failure + no cache -> ApiErrorWidget with retry
+initial loading -> DriverOrdersShimmer
+initial failure -> ApiErrorWidget with retry
 success + no active trip -> no-active-trip EmptyStateWidget wrapper
 query success + zero matches -> no-results state with reset button
-cached data -> cards + orange offline banner
 refresh/action failure + content -> cards retained + InlineApiErrorWidget
 content -> trip banner, counts, route-ordered virtualized cards
 ```
@@ -484,7 +432,7 @@ git commit -m "feat: build driver orders list screen"
 
 ---
 
-### Task 8: Implement Call, Navigation, Completion, and Issue Actions
+### Task 7: Implement Call, Navigation, Completion, and Issue Actions
 
 **Files:**
 - Create: `lib/features/driver/orders/presentation/services/driver_order_action_launcher.dart`
@@ -511,7 +459,7 @@ Run: `flutter test test/features/driver/orders/presentation/driver_order_actions
 
 - [ ] **Step 4: Implement launchers and navigation**
 
-Use `url_launcher` with encoded `geo:`/HTTPS maps fallbacks selected by platform conventions. Do not construct `tel:` from cached/private customer data; use only authoritative proxy output.
+Use `url_launcher` with encoded `geo:`/HTTPS maps fallbacks selected by platform conventions. Do not construct `tel:` from private customer data; use only authoritative proxy output.
 
 - [ ] **Step 5: Refresh after child-flow completion**
 
@@ -527,7 +475,7 @@ git commit -m "feat: connect driver order actions"
 
 ---
 
-### Task 9: Register Dependencies and Add Localization
+### Task 8: Register Dependencies and Add Localization
 
 **Files:**
 - Modify: `lib/core/di/di.dart`
@@ -543,11 +491,11 @@ git commit -m "feat: connect driver order actions"
 
 - [ ] **Step 1: Write DI resolution test**
 
-Assert `getIt<DriverOrdersViewModel>()` resolves and that two ViewModels share the singleton repository/client without either constructing Dio or SQLite directly.
+Assert `getIt<DriverOrdersViewModel>()` resolves and that two ViewModels share the singleton repository/client without either constructing Dio directly.
 
 - [ ] **Step 2: Add Arabic and English keys**
 
-Include screen title, trip status labels, search hint, four filters/count labels, status fallbacks, no-active-trip, no-results/reset, offline banner, call/navigation/complete/problem actions, proxy/map failures, and accessibility labels. Do not rely on backend text as the only localized UX.
+Include screen title, trip status labels, search hint, four filters/count labels, status fallbacks, no-active-trip, no-results/reset, no-internet behavior, call/navigation/complete/problem actions, proxy/map failures, and accessibility labels. Do not rely on backend text as the only localized UX.
 
 - [ ] **Step 3: Register dependencies using current manual GetIt style**
 
@@ -570,7 +518,7 @@ git commit -m "feat: wire and localize driver orders"
 
 ---
 
-### Task 10: Accessibility, Security, and Privacy Regression Coverage
+### Task 9: Accessibility, Security, and Privacy Regression Coverage
 
 **Files:**
 - Modify order widgets only where tests reveal missing semantics/focus behavior.
@@ -586,7 +534,7 @@ Assert 48x48 minimum action targets, semantic labels containing box/status/custo
 
 - [ ] **Step 2: Write privacy tests**
 
-Assert direct phone numbers are absent from cache rows and diagnostic strings, authorization failures do not expose cached manifests, logout/driver identity change clears the correct cache, and SignalR logs redact payloads/tokens.
+Assert direct phone numbers are absent from diagnostic strings, no order data is persisted by this feature, and SignalR logs redact payloads/tokens.
 
 - [ ] **Step 3: Run tests and fix only verified failures**
 
@@ -601,12 +549,12 @@ git commit -m "test: protect driver orders accessibility and privacy"
 
 ---
 
-### Task 11: Performance Verification and Optimization
+### Task 10: Performance Verification and Optimization
 
 **Files:**
 - Test: `test/features/driver/orders/presentation/driver_orders_performance_test.dart`
 - Add: `integration_test/driver_orders_scroll_performance_test.dart` if integration tests are enabled in the execution environment.
-- Modify only proven hotspots in screen/ViewModel/cache code.
+- Modify only proven hotspots in screen/ViewModel code.
 
 **Interfaces:**
 - Performance budgets from Global Constraints are acceptance criteria.
@@ -619,19 +567,15 @@ Pump 100 domain stops and assert only viewport-visible cards are built, search f
 
 Rapidly type five search updates inside 300 ms and assert one use-case call. Re-select the current filter and assert zero network calls. Trigger reconnect notifications repeatedly and assert a single active connection/start call.
 
-- [ ] **Step 3: Profile cache work**
-
-Seed 100 stops, measure release/profile-mode cache replace/read on an Android emulator or device, and record median values. Acceptance target: cache read under 50 ms and write under 100 ms on the selected mid-range test device, without blocking first content emission.
-
-- [ ] **Step 4: Profile scroll frames**
+- [ ] **Step 3: Profile scroll frames**
 
 Run the integration test in profile mode and inspect Flutter DevTools frame chart. Acceptance: no repeated build/layout shader work caused by the screen, no sustained frames over 16.7 ms at 60 Hz, and no list-wide rebuild when one stop changes.
 
-- [ ] **Step 5: Apply evidence-based optimizations only**
+- [ ] **Step 4: Apply evidence-based optimizations only**
 
 Allowed fixes include const widgets, narrower Bloc selectors, cached formatter output, map-indexed event patching, `RepaintBoundary`, and reduced animation scope. Do not add speculative memoization or isolates without a measured bottleneck.
 
-- [ ] **Step 6: Run performance tests and commit**
+- [ ] **Step 5: Run performance tests and commit**
 
 ```bash
 flutter test test/features/driver/orders/presentation/driver_orders_performance_test.dart
@@ -641,7 +585,7 @@ git commit -m "perf: verify driver orders list performance"
 
 ---
 
-### Task 12: Full Verification and Production Cleanup
+### Task 11: Full Verification and Production Cleanup
 
 **Files:**
 - Modify tests or production references revealed by verification only.
@@ -688,7 +632,7 @@ Expected: no new analyzer errors and all tests pass. Record exact unrelated pre-
 
 - [ ] **Step 5: Run manual QA matrix**
 
-Verify Arabic/English, RTL/LTR, 320x640 and 430x932, 200% text scale, active trip, no trip, all four filters, no results/reset, rapid search, pull-to-refresh, airplane-mode cached read, reconnect, duplicate/out-of-order SignalR events, call proxy success/failure, no maps app, missing coordinates, delivered timestamp, failed reason, route preservation, logout cache clearing, and app resume.
+Verify Arabic/English, RTL/LTR, 320x640 and 430x932, 200% text scale, active trip, no trip, all four filters, no results/reset, rapid search, pull-to-refresh, cold airplane-mode Core error, connection loss with already loaded content retained in memory, reconnect, duplicate/out-of-order SignalR events, call proxy success/failure, no maps app, missing coordinates, delivered timestamp, failed reason, route preservation, and app resume.
 
 - [ ] **Step 6: Confirm zero production mock data**
 
@@ -703,7 +647,7 @@ Expected: no production fixture/customer/order data. Test fixtures may remain un
 - [ ] **Step 7: Commit final verification**
 
 ```bash
-git add lib test integration_test pubspec.yaml pubspec.lock
+git add lib test integration_test
 git commit -m "test: verify driver orders list integration"
 ```
 
@@ -712,12 +656,12 @@ git commit -m "test: verify driver orders list integration"
 ## Final Acceptance Criteria
 
 - The Orders bottom-navigation tab opens Screen 05.05 and never displays pickup-only or fake data as delivery orders.
-- The active trip and all stop cards come from the authenticated backend or a clearly marked same-driver cached snapshot.
+- The active trip and all stop cards come from the authenticated backend; this feature does not persist order data locally.
 - Cards are sorted by server `sequenceNumber` and retain that order through search, filters, refresh, and realtime updates.
 - Search covers box code, customer name, zone, and formatted address with a 300 ms debounce and stale-response protection.
 - Counts represent the full active trip and remain correct after REST and deduplicated SignalR updates.
 - Initial loading uses a screen-shaped shimmer; Core full-page, inline, and empty error widgets are used according to the state decision table.
-- Offline mode is read-only, visibly marked, privacy-safe, and cannot expose another driver's cached trip.
+- A cold launch without internet uses the Core no-internet error; losing connectivity after load retains only the current in-memory content with an inline error.
 - Call proxy and external navigation are capability-gated, URI-safe, and failure-aware.
 - Delivery completion/problem navigation passes stable IDs and refreshes only after authoritative child-flow success.
 - Exactly one screen-owned SignalR connection/subscription lifecycle is active; handlers, timers, and subscriptions are disposed.

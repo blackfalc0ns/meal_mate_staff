@@ -1,11 +1,29 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
+import 'package:meal_mate_delivery/core/errors/error_widgets/api_error_widget.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/services/driver_contact_launcher.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/data/data_source/dispatcher_driver_details_fake_data.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
+import 'package:meal_mate_delivery/core/network/failures.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_driver_details_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_driver_document_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_driver_location_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_driver_performance_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_driver_status_type.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_driver_vehicle_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_drivers_status_query_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/dispatcher_drivers_status_summary_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/update_driver_availability_request_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/entities/update_driver_availability_result_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/repo/dispatcher_drivers_status_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/usecase/get_dispatcher_driver_details_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/domain/usecase/toggle_driver_availability_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/manager/dispatcher_driver_details_view_model.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/screens/dispatcher_driver_status_details_screen.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/services/driver_contact_launcher.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_app_bar.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_contact_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_documents_card.dart';
@@ -13,6 +31,7 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_metrics_row.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_performance_card.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_profile_card.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_shimmer.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/widgets/dispatcher_driver_details_vehicle_card.dart';
 
 class _FakeContactLauncher implements DriverContactLauncher {
@@ -20,7 +39,8 @@ class _FakeContactLauncher implements DriverContactLauncher {
   bool calledWhatsApp = false;
 
   @override
-  Uri? phoneUri(String? phone) => phone != null ? Uri.parse('tel:$phone') : null;
+  Uri? phoneUri(String? phone) =>
+      phone != null ? Uri.parse('tel:$phone') : null;
 
   @override
   Uri? smsUri(String? phone) => phone != null ? Uri.parse('sms:$phone') : null;
@@ -36,9 +56,7 @@ class _FakeContactLauncher implements DriverContactLauncher {
   }
 
   @override
-  Future<bool> launchSms(String? phoneNumber) async {
-    return true;
-  }
+  Future<bool> launchSms(String? phoneNumber) async => true;
 
   @override
   Future<bool> launchWhatsApp(String? phoneNumber) async {
@@ -47,8 +65,123 @@ class _FakeContactLauncher implements DriverContactLauncher {
   }
 }
 
+class _FakeDriversRepo implements DispatcherDriversStatusRepository {
+  ApiResult<DispatcherDriverDetailsEntity>? detailsResult;
+  ApiResult<UpdateDriverAvailabilityResultEntity>? toggleResult;
+  Completer<ApiResult<DispatcherDriverDetailsEntity>>? delayCompleter;
+
+  static const defaultDetails = DispatcherDriverDetailsEntity(
+    driverId: '4a6f235e-c04d-45db-9c3f-c39775c96da1',
+    name: 'أحمد محمد',
+    code: '#KD-4582',
+    phoneNumber: '+965 5012 3456',
+    rating: 4.8,
+    reviewCount: 128,
+    isOnline: true,
+    isAvailable: true,
+    operationalStatus: DispatcherDriverStatusType.available,
+    totalOrdersToday: 12,
+    workTimeMinutesToday: 345,
+    distanceKmToday: 68.5,
+    activeOrdersToday: 2,
+    vehicle: DispatcherDriverVehicleEntity(
+      model: 'تويوتا كورولا',
+      colorName: 'أبيض',
+      plateNumber: '#KU-7319',
+      vehicleType: 'Car',
+    ),
+    location: DispatcherDriverLocationEntity(
+      areaName: 'المنطقة السالمية',
+      latitude: 29.3375,
+      longitude: 48.0233,
+      updatedMinutesAgo: 2,
+    ),
+    performance: DispatcherDriverPerformanceEntity(
+      totalOrders: 450,
+      averageRating: 4.8,
+      commitmentRatePercent: 98,
+      violationsCount: 0,
+    ),
+    documents: [
+      DispatcherDriverDocumentEntity(
+        type: DispatcherDriverDocumentType.drivingLicense,
+        status: DispatcherDriverDocumentStatus.valid,
+        validUntil: '2027/12/31',
+      ),
+      DispatcherDriverDocumentEntity(
+        type: DispatcherDriverDocumentType.vehicleRegistration,
+        status: DispatcherDriverDocumentStatus.valid,
+        validUntil: '2026/06/30',
+      ),
+      DispatcherDriverDocumentEntity(
+        type: DispatcherDriverDocumentType.insurance,
+        status: DispatcherDriverDocumentStatus.valid,
+        validUntil: '2025/11/15',
+      ),
+    ],
+  );
+
+  @override
+  Future<ApiResult<DispatcherDriverDetailsEntity>> getDriverDetails(
+    String driverId,
+  ) async {
+    if (delayCompleter != null) return delayCompleter!.future;
+    return detailsResult ?? const ApiSuccessResult(data: defaultDetails);
+  }
+
+  @override
+  Future<ApiResult<UpdateDriverAvailabilityResultEntity>>
+  toggleDriverAvailability(
+    UpdateDriverAvailabilityRequestEntity request,
+  ) async {
+    return toggleResult ??
+        ApiSuccessResult(
+          data: UpdateDriverAvailabilityResultEntity(
+            driverId: request.driverId,
+            isAvailable: request.isAvailable,
+            operationalStatus: request.isAvailable
+                ? DispatcherDriverStatusType.available
+                : DispatcherDriverStatusType.unavailable,
+            updatedAtUtc: DateTime.now().toUtc(),
+          ),
+        );
+  }
+
+  @override
+  Stream<UpdateDriverAvailabilityResultEntity> get driverAvailabilityUpdates =>
+      const Stream.empty();
+
+  @override
+  Future<void> acquireRealtime(String ownerId) async {}
+
+  @override
+  Future<void> releaseRealtime(String ownerId) async {}
+
+  @override
+  Future<ApiResult<DispatcherDriversStatusSummaryEntity>> getDriversStatus([
+    DispatcherDriversStatusQueryEntity query =
+        const DispatcherDriversStatusQueryEntity(),
+  ]) async => throw UnimplementedError();
+}
+
 void main() {
-  Widget buildTestableWidget({
+  late _FakeDriversRepo repo;
+  late DispatcherDriverDetailsViewModel viewModel;
+
+  setUp(() {
+    repo = _FakeDriversRepo();
+    viewModel = DispatcherDriverDetailsViewModel(
+      driverId: '4a6f235e-c04d-45db-9c3f-c39775c96da1',
+      getDriverDetailsUseCase: GetDispatcherDriverDetailsUseCase(repo),
+      toggleDriverAvailabilityUseCase: ToggleDriverAvailabilityUseCase(repo),
+    );
+  });
+
+  tearDown(() async {
+    await viewModel.close();
+  });
+
+  Widget buildWidget({
     Locale locale = const Locale('ar'),
     DriverContactLauncher? contactLauncher,
     VoidCallback? onBack,
@@ -66,7 +199,7 @@ void main() {
       theme: AppTheme.lightTheme,
       home: DispatcherDriverStatusDetailsScreen(
         driverId: '4a6f235e-c04d-45db-9c3f-c39775c96da1',
-        initialDetails: DispatcherDriverDetailsFakeData.getSampleDriverDetails(),
+        viewModel: viewModel,
         contactLauncher: contactLauncher ?? _FakeContactLauncher(),
         onBack: onBack,
         onOpenMap: onOpenMap,
@@ -74,9 +207,54 @@ void main() {
     );
   }
 
-  testWidgets('renders DispatcherDriverStatusDetailsScreen with all sections',
-      (tester) async {
-    await tester.pumpWidget(buildTestableWidget());
+  testWidgets('renders shimmer during initial load', (tester) async {
+    repo.delayCompleter = Completer();
+    viewModel = DispatcherDriverDetailsViewModel(
+      driverId: '4a6f235e-c04d-45db-9c3f-c39775c96da1',
+      getDriverDetailsUseCase: GetDispatcherDriverDetailsUseCase(repo),
+      toggleDriverAvailabilityUseCase: ToggleDriverAvailabilityUseCase(repo),
+    );
+
+    await tester.pumpWidget(buildWidget());
+    await tester.pump();
+
+    expect(find.byType(DispatcherDriverDetailsShimmer), findsOneWidget);
+
+    repo.delayCompleter!.complete(
+      const ApiSuccessResult(data: _FakeDriversRepo.defaultDetails),
+    );
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('renders ApiErrorWidget on load failure with retry', (
+    tester,
+  ) async {
+    repo.detailsResult = ApiErrorResult(
+      failure: Failure(errorMessage: 'Not Found'),
+    );
+    viewModel = DispatcherDriverDetailsViewModel(
+      driverId: '4a6f235e-c04d-45db-9c3f-c39775c96da1',
+      getDriverDetailsUseCase: GetDispatcherDriverDetailsUseCase(repo),
+      toggleDriverAvailabilityUseCase: ToggleDriverAvailabilityUseCase(repo),
+    );
+
+    await tester.pumpWidget(buildWidget());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ApiErrorWidget), findsOneWidget);
+
+    repo.detailsResult = null; // succeeds on retry
+    await tester.tap(find.text('إعادة المحاولة'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ApiErrorWidget), findsNothing);
+    expect(find.byType(DispatcherDriverDetailsProfileCard), findsOneWidget);
+  });
+
+  testWidgets('renders all details cards with authentic domain content', (
+    tester,
+  ) async {
+    await tester.pumpWidget(buildWidget());
     await tester.pumpAndSettle();
 
     // Verify AppBar
@@ -130,13 +308,14 @@ void main() {
     expect(find.text('التأمين'), findsOneWidget);
   });
 
-  testWidgets('toggle switch changes availability text', (tester) async {
-    await tester.pumpWidget(buildTestableWidget());
+  testWidgets('toggle switch changes availability optimistically', (
+    tester,
+  ) async {
+    await tester.pumpWidget(buildWidget());
     await tester.pumpAndSettle();
 
     expect(find.text('السائق متاح لإستقبال الطلبات'), findsOneWidget);
 
-    // Find and tap switch
     final switchFinder = find.byType(Switch);
     expect(switchFinder, findsOneWidget);
 
@@ -146,10 +325,11 @@ void main() {
     expect(find.text('السائق غير متاح حالياً'), findsOneWidget);
   });
 
-  testWidgets('calls contact launcher on phone and chat buttons tap',
-      (tester) async {
+  testWidgets('calls contact launcher on phone and chat buttons tap', (
+    tester,
+  ) async {
     final launcher = _FakeContactLauncher();
-    await tester.pumpWidget(buildTestableWidget(contactLauncher: launcher));
+    await tester.pumpWidget(buildWidget(contactLauncher: launcher));
     await tester.pumpAndSettle();
 
     // Tap call button
@@ -165,5 +345,33 @@ void main() {
     await tester.tap(chatButton);
     await tester.pumpAndSettle();
     expect(launcher.calledWhatsApp, isTrue);
+  });
+
+  testWidgets('missing location shows no-location label and hides map', (
+    tester,
+  ) async {
+    repo.detailsResult = const ApiSuccessResult(
+      data: DispatcherDriverDetailsEntity(
+        driverId: '4a6f235e-c04d-45db-9c3f-c39775c96da1',
+        name: 'أحمد محمد',
+        code: '#KD-4582',
+        location: DispatcherDriverLocationEntity(
+          areaName: '',
+          latitude: null,
+          longitude: null,
+        ),
+      ),
+    );
+    viewModel = DispatcherDriverDetailsViewModel(
+      driverId: '4a6f235e-c04d-45db-9c3f-c39775c96da1',
+      getDriverDetailsUseCase: GetDispatcherDriverDetailsUseCase(repo),
+      toggleDriverAvailabilityUseCase: ToggleDriverAvailabilityUseCase(repo),
+    );
+
+    await tester.pumpWidget(buildWidget());
+    await tester.pumpAndSettle();
+
+    expect(find.text('لا تتوفر بيانات الموقع'), findsOneWidget);
+    expect(find.text('عرض على الخريطة'), findsNothing);
   });
 }

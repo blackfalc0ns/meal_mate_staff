@@ -1,15 +1,17 @@
 class DispatcherDriverVehicleEntity {
   const DispatcherDriverVehicleEntity({
-    required this.model,
-    required this.colorName,
-    required this.plateNumber,
-    required this.imageAsset,
+    this.model = '',
+    this.colorName = '',
+    this.plateNumber = '',
+    this.imageAsset = '',
+    this.vehicleType = '',
   });
 
   final String model;
   final String colorName;
   final String plateNumber;
   final String imageAsset;
+  final String vehicleType;
 
   @override
   bool operator ==(Object other) =>
@@ -19,8 +21,10 @@ class DispatcherDriverVehicleEntity {
           model == other.model &&
           colorName == other.colorName &&
           plateNumber == other.plateNumber &&
-          imageAsset == other.imageAsset;
+          imageAsset == other.imageAsset &&
+          vehicleType == other.vehicleType;
 
   @override
-  int get hashCode => Object.hash(model, colorName, plateNumber, imageAsset);
+  int get hashCode =>
+      Object.hash(model, colorName, plateNumber, imageAsset, vehicleType);
 }

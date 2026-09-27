@@ -12,10 +12,12 @@ class DispatcherDriversStatusKpiSection extends StatelessWidget {
     super.key,
     required this.kpis,
     this.onSelectFilter,
+    this.selectedFilter,
   });
 
   final DispatcherDriversStatusKpisEntity kpis;
   final ValueChanged<DispatcherDriverStatusType?>? onSelectFilter;
+  final DispatcherDriverStatusType? selectedFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -26,46 +28,77 @@ class DispatcherDriversStatusKpiSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
       child: Row(
         children: [
+          // 1. Total KPI
           DispatcherDriversStatusKpiItem(
-            title: locale.driversStatusOfflineCount,
-            count: kpis.offlineCount,
+            title: locale.driversStatusTotalCount,
+            count: kpis.total,
             icon: Icon(
-              Icons.notifications_active_outlined,
+              Icons.people_outline_rounded,
               size: Spacing.iconXs,
-              color: color.error,
+              color: color.primary,
             ),
-            iconColor: color.error,
-            backgroundColor: color.errorSurface,
-            onTap: () => onSelectFilter?.call(DispatcherDriverStatusType.offline),
+            iconColor: color.primary,
+            backgroundColor: selectedFilter == null
+                ? color.primary.withValues(alpha: 0.12)
+                : color.surfaceContainerHighest.withValues(alpha: 0.3),
+            onTap: () => onSelectFilter?.call(null),
           ),
-          const SizedBox(width: Spacing.sm),
+          const SizedBox(width: Spacing.xs),
+          // 2. Available KPI
           DispatcherDriversStatusKpiItem(
-            title: locale.driversStatusInDeliveryCount,
-            count: kpis.inDeliveryCount,
-            icon: Icon(
-              Icons.access_time_rounded,
-              size: Spacing.iconXs,
-              color: color.info,
-            ),
-            iconColor: color.info,
-            backgroundColor: color.infoSurface,
-            onTap: () => onSelectFilter?.call(DispatcherDriverStatusType.available),
-          ),
-          const SizedBox(width: Spacing.sm),
-          DispatcherDriversStatusKpiItem(
-            title: locale.driversStatusConnectedCount,
-            count: kpis.connectedCount,
+            title: locale.driversStatusAvailableCount,
+            count: kpis.available,
             icon: Container(
-              width: Spacing.sm,
-              height: Spacing.sm,
+              width: Spacing.xs + Spacing.border,
+              height: Spacing.xs + Spacing.border,
               decoration: BoxDecoration(
                 color: color.success,
                 shape: BoxShape.circle,
               ),
             ),
             iconColor: color.success,
-            backgroundColor: color.successSurface,
-            onTap: () => onSelectFilter?.call(DispatcherDriverStatusType.connected),
+            backgroundColor:
+                selectedFilter == DispatcherDriverStatusType.available
+                ? color.success.withValues(alpha: 0.15)
+                : color.successSurface,
+            onTap: () =>
+                onSelectFilter?.call(DispatcherDriverStatusType.available),
+          ),
+          const SizedBox(width: Spacing.xs),
+          // 3. In Delivery KPI
+          DispatcherDriversStatusKpiItem(
+            title: locale.driversStatusInDeliveryCount,
+            count: kpis.inDelivery,
+            icon: Icon(
+              Icons.access_time_rounded,
+              size: Spacing.iconXs,
+              color: color.info,
+            ),
+            iconColor: color.info,
+            backgroundColor:
+                selectedFilter == DispatcherDriverStatusType.inDelivery
+                ? color.info.withValues(alpha: 0.15)
+                : color.infoSurface,
+            onTap: () =>
+                onSelectFilter?.call(DispatcherDriverStatusType.inDelivery),
+          ),
+          const SizedBox(width: Spacing.xs),
+          // 4. Unavailable KPI
+          DispatcherDriversStatusKpiItem(
+            title: locale.driversStatusUnavailableCount,
+            count: kpis.unavailable,
+            icon: Icon(
+              Icons.notifications_active_outlined,
+              size: Spacing.iconXs,
+              color: color.error,
+            ),
+            iconColor: color.error,
+            backgroundColor:
+                selectedFilter == DispatcherDriverStatusType.unavailable
+                ? color.error.withValues(alpha: 0.15)
+                : color.errorSurface,
+            onTap: () =>
+                onSelectFilter?.call(DispatcherDriverStatusType.unavailable),
           ),
         ],
       ),

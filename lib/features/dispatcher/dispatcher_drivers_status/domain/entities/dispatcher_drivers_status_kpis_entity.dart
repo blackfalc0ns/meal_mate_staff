@@ -1,31 +1,32 @@
 class DispatcherDriversStatusKpisEntity {
   const DispatcherDriversStatusKpisEntity({
-    required this.connectedCount,
-    required this.inDeliveryCount,
-    required this.offlineCount,
-    required this.totalCount,
+    required this.total,
+    required this.available,
+    required this.inDelivery,
+    required this.unavailable,
   });
 
-  final int connectedCount;
-  final int inDeliveryCount;
-  final int offlineCount;
-  final int totalCount;
+  final int total;
+  final int available;
+  final int inDelivery;
+  final int unavailable;
+
+  // Backward compatibility getters
+  int get totalCount => total;
+  int get connectedCount => available;
+  int get inDeliveryCount => inDelivery;
+  int get offlineCount => unavailable;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is DispatcherDriversStatusKpisEntity &&
           runtimeType == other.runtimeType &&
-          connectedCount == other.connectedCount &&
-          inDeliveryCount == other.inDeliveryCount &&
-          offlineCount == other.offlineCount &&
-          totalCount == other.totalCount;
+          total == other.total &&
+          available == other.available &&
+          inDelivery == other.inDelivery &&
+          unavailable == other.unavailable;
 
   @override
-  int get hashCode => Object.hash(
-    connectedCount,
-    inDeliveryCount,
-    offlineCount,
-    totalCount,
-  );
+  int get hashCode => Object.hash(total, available, inDelivery, unavailable);
 }

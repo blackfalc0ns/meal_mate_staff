@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_wi
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
-import 'package:meal_mate_delivery/core/services/driver_pickup_location_provider.dart';
 import 'package:meal_mate_delivery/core/services/idempotency_key_factory.dart';
 import 'package:meal_mate_delivery/core/widget/app_button.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/confirm_driver_pickup_request_entity.dart';
@@ -23,7 +21,6 @@ import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/usecas
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/usecase/upload_driver_box_condition_photo_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/usecase/validate_driver_pickup_barcode_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_flow_event.dart';
-import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_flow_state.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_flow_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/screens/driver_confirm_receipt_screen.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_camera_viewfinder.dart';

@@ -13,7 +13,7 @@ class DispatcherDriverDetailsContactCard extends StatelessWidget {
     this.onChat,
   });
 
-  final String phoneNumber;
+  final String? phoneNumber;
   final VoidCallback? onCall;
   final VoidCallback? onChat;
 
@@ -21,6 +21,7 @@ class DispatcherDriverDetailsContactCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final hasPhone = phoneNumber != null && phoneNumber!.trim().isNotEmpty;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Spacing.base),
@@ -61,12 +62,16 @@ class DispatcherDriverDetailsContactCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      phoneNumber,
+                      hasPhone
+                          ? phoneNumber!
+                          : locale.driversStatusPhoneNotRegistered,
                       style: getBoldStyle(
-                        color: color.onSurface,
+                        color: hasPhone
+                            ? color.onSurface
+                            : color.onSurfaceVariant,
                         fontSize: FontSize.size14,
                       ),
-                      textDirection: TextDirection.ltr,
+                      textDirection: hasPhone ? TextDirection.ltr : null,
                     ),
                     const SizedBox(height: Spacing.xs / 4),
                     Text(
@@ -80,37 +85,45 @@ class DispatcherDriverDetailsContactCard extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: onChat,
+                onTap: hasPhone ? onChat : null,
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 child: Container(
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: color.surfaceContainerHighest,
+                    color: hasPhone
+                        ? color.surfaceContainerHighest
+                        : color.surfaceContainerHighest.withValues(alpha: 0.4),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.chat_bubble_outline_rounded,
                     size: Spacing.iconSm,
-                    color: color.onSurfaceVariant,
+                    color: hasPhone
+                        ? color.onSurfaceVariant
+                        : color.onSurfaceVariant.withValues(alpha: 0.3),
                   ),
                 ),
               ),
               const SizedBox(width: Spacing.xs * 1.5),
               InkWell(
-                onTap: onCall,
+                onTap: hasPhone ? onCall : null,
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 child: Container(
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: color.primary.withValues(alpha: 0.12),
+                    color: hasPhone
+                        ? color.primary.withValues(alpha: 0.12)
+                        : color.onSurfaceVariant.withValues(alpha: 0.08),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.phone_rounded,
                     size: Spacing.iconSm,
-                    color: color.primary,
+                    color: hasPhone
+                        ? color.primary
+                        : color.onSurfaceVariant.withValues(alpha: 0.3),
                   ),
                 ),
               ),

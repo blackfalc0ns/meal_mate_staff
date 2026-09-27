@@ -6,10 +6,7 @@ import '../../domain/entities/dispatcher_driver_details_entity.dart';
 import 'dispatcher_driver_details_metric_card.dart';
 
 class DispatcherDriverDetailsMetricsRow extends StatelessWidget {
-  const DispatcherDriverDetailsMetricsRow({
-    super.key,
-    required this.details,
-  });
+  const DispatcherDriverDetailsMetricsRow({super.key, required this.details});
 
   final DispatcherDriverDetailsEntity details;
 
@@ -34,7 +31,9 @@ class DispatcherDriverDetailsMetricsRow extends StatelessWidget {
           Expanded(
             child: DispatcherDriverDetailsMetricCard(
               icon: Icons.access_time_rounded,
-              value: locale.driverDetailsMinutesShort(details.workTimeMinutesToday),
+              value: locale.driverDetailsMinutesShort(
+                details.workTimeMinutesToday,
+              ),
               label: locale.driverDetailsWorkTimeToday,
               iconColor: color.primary,
             ),
@@ -43,7 +42,9 @@ class DispatcherDriverDetailsMetricsRow extends StatelessWidget {
           Expanded(
             child: DispatcherDriverDetailsMetricCard(
               icon: Icons.directions_car_outlined,
-              value: locale.driverDetailsKmShort(details.distanceKmToday.toString()),
+              value: locale.driverDetailsKmShort(
+                details.distanceKmToday.toString(),
+              ),
               label: locale.driverDetailsDistanceToday,
               iconColor: color.primary,
             ),

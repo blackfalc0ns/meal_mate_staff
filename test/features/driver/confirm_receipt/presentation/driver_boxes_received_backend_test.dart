@@ -9,7 +9,6 @@ import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_wi
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
-import 'package:meal_mate_delivery/core/services/driver_pickup_location_provider.dart';
 import 'package:meal_mate_delivery/core/services/idempotency_key_factory.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_pickup_summary_entity.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_trip_start_entity.dart';

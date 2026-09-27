@@ -1104,6 +1104,9 @@
   "driversStatusConnectedCount": "Connected",
   "driversStatusInDeliveryCount": "In Delivery",
   "driversStatusOfflineCount": "Offline",
+  "driversStatusTotalCount": "Total",
+  "driversStatusAvailableCount": "Available",
+  "driversStatusUnavailableCount": "Unavailable",
   "driversStatusFilter": "Filter",
   "driversStatusSearchHint": "Search driver by name or phone...",
   "driversStatusCount": "{count} Drivers",
@@ -1178,6 +1181,40 @@
     }
   },
   "driverDetailsValid": "Valid",
-  "driverDetailsCopiedToClipboard": "Copied to clipboard"
+  "driverDetailsCopiedToClipboard": "Copied to clipboard",
+  "driversStatusBadgeInDelivery": "In Delivery",
+  "driversStatusBadgeUnavailable": "Unavailable",
+  "driversStatusBadgeUnknown": "Unknown",
+  "driversStatusSortName": "Name",
+  "driversStatusSortRatingDesc": "Highest Rated",
+  "driversStatusSortNewest": "Newest",
+  "driversStatusSortStatus": "Status",
+  "driversStatusSortTitle": "Sort By",
+  "driversStatusNewRating": "New",
+  "driversStatusPhoneNotRegistered": "Phone not registered",
+  "driversStatusCallAction": "Call",
+  "driversStatusDetailsAction": "Details",
+  "driversStatusAvailability": "Availability",
+  "driversStatusPaginationPage": "Page {page} of {total}",
+  "@driversStatusPaginationPage": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "driversStatusPrevPage": "Previous",
+  "driversStatusNextPage": "Next",
+  "driversStatusFleetEmptyTitle": "No Drivers Found",
+  "driversStatusFleetEmptyDesc": "No drivers match your search criteria.",
+  "driverDetailsNoLocation": "No location data available",
+  "driverDetailsNoVehicle": "No vehicle data available",
+  "driverDetailsDocumentValid": "Valid",
+  "driverDetailsDocumentExpiringSoon": "Expiring Soon",
+  "driverDetailsDocumentExpired": "Expired",
+  "driverDetailsDocumentMissing": "Missing"
 }
 

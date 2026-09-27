@@ -27,6 +27,7 @@ import '../network/api_services.dart';
 import '../network/network_constants.dart';
 import '../services/auth_refresh_service.dart';
 import '../services/device_id_service.dart';
+import '../services/driver_pickup_location_provider.dart';
 import '../services/idempotency_key_factory.dart';
 import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
@@ -38,6 +39,17 @@ import '../../features/driver/orders/data/repo/driver_pickup_manifest_repository
 import '../../features/driver/orders/domain/repo/driver_pickup_manifest_repository.dart';
 import '../../features/driver/orders/domain/usecase/get_driver_pickup_manifest_usecase.dart';
 import '../../features/driver/orders/presentation/manager/driver_pickup_manifest_view_model.dart';
+import '../../features/driver/confirm_receipt/data/data_source/driver_pickup_remote_data_source.dart';
+import '../../features/driver/confirm_receipt/data/data_source/driver_pickup_remote_data_source_impl.dart';
+import '../../features/driver/confirm_receipt/data/repo/driver_pickup_repository_impl.dart';
+import '../../features/driver/confirm_receipt/domain/repo/driver_pickup_repository.dart';
+import '../../features/driver/confirm_receipt/domain/usecase/confirm_driver_box_pickup_usecase.dart';
+import '../../features/driver/confirm_receipt/domain/usecase/get_driver_pickup_summary_usecase.dart';
+import '../../features/driver/confirm_receipt/domain/usecase/start_driver_trip_usecase.dart';
+import '../../features/driver/confirm_receipt/domain/usecase/upload_driver_box_condition_photo_usecase.dart';
+import '../../features/driver/confirm_receipt/domain/usecase/validate_driver_pickup_barcode_usecase.dart';
+import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup_flow_view_model.dart';
+import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_view_model.dart';
 import '../../features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../features/driver/active_delivery/domain/repositories/active_delivery_repository.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
@@ -134,10 +146,18 @@ import '../../features/dispatcher/dispatcher_drivers/domain/usecase/get_dispatch
 import '../../features/dispatcher/dispatcher_drivers/presentation/manager/dispatcher_drivers_view_model.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/data/data_source/dispatcher_drivers_status_remote_data_source.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/data/data_source/dispatcher_drivers_status_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/realtime/dispatcher_drivers_status_realtime_client.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/realtime/dispatcher_drivers_status_signalr_client.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/data/repo/dispatcher_drivers_status_repository_impl.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/domain/repo/dispatcher_drivers_status_repository.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/get_dispatcher_driver_details_usecase.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/get_drivers_status_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/observe_dispatcher_driver_availability_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/observe_driver_availability_updates_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/start_dispatcher_drivers_status_updates_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/stop_dispatcher_drivers_status_updates_usecase.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/toggle_driver_availability_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/presentation/manager/dispatcher_driver_details_view_model.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/presentation/manager/dispatcher_drivers_status_view_model.dart';
 import '../../features/dispatcher/dispatcher_assign_box/data/data_source/assign_box_remote_data_source.dart';
 import '../../features/dispatcher/dispatcher_assign_box/data/data_source/assign_box_remote_data_source_impl.dart';
@@ -580,25 +600,71 @@ Future<void> configureDependencies() async {
     ),
   );
 
-  // Dispatcher Drivers Status
+  // Dispatcher Drivers Status & Details
+  getIt.registerLazySingleton<DispatcherDriversStatusRealtimeClient>(
+    () => DispatcherDriversStatusSignalRClient(getIt<TokenService>()),
+  );
   getIt.registerLazySingleton<DispatcherDriversStatusRemoteDataSource>(
-    () => const DispatcherDriversStatusRemoteDataSourceImpl(),
+    () => DispatcherDriversStatusRemoteDataSourceImpl(getIt<ApiServices>()),
   );
   getIt.registerLazySingleton<DispatcherDriversStatusRepository>(
     () => DispatcherDriversStatusRepositoryImpl(
       getIt<DispatcherDriversStatusRemoteDataSource>(),
+      getIt<DispatcherDriversStatusRealtimeClient>(),
     ),
   );
   getIt.registerFactory<GetDriversStatusUseCase>(
     () => GetDriversStatusUseCase(getIt<DispatcherDriversStatusRepository>()),
   );
   getIt.registerFactory<ToggleDriverAvailabilityUseCase>(
-    () => ToggleDriverAvailabilityUseCase(getIt<DispatcherDriversStatusRepository>()),
+    () => ToggleDriverAvailabilityUseCase(
+      getIt<DispatcherDriversStatusRepository>(),
+    ),
+  );
+  getIt.registerFactory<ObserveDriverAvailabilityUpdatesUseCase>(
+    () => ObserveDriverAvailabilityUpdatesUseCase(
+      getIt<DispatcherDriversStatusRepository>(),
+    ),
+  );
+  getIt.registerFactory<StartDispatcherDriversStatusUpdatesUseCase>(
+    () => StartDispatcherDriversStatusUpdatesUseCase(
+      getIt<DispatcherDriversStatusRepository>(),
+    ),
+  );
+  getIt.registerFactory<StopDispatcherDriversStatusUpdatesUseCase>(
+    () => StopDispatcherDriversStatusUpdatesUseCase(
+      getIt<DispatcherDriversStatusRepository>(),
+    ),
+  );
+  getIt.registerFactory<GetDispatcherDriverDetailsUseCase>(
+    () => GetDispatcherDriverDetailsUseCase(
+      getIt<DispatcherDriversStatusRepository>(),
+    ),
+  );
+  getIt.registerFactory<ObserveDispatcherDriverAvailabilityUseCase>(
+    () => ObserveDispatcherDriverAvailabilityUseCase(
+      getIt<DispatcherDriversStatusRepository>(),
+    ),
   );
   getIt.registerFactory<DispatcherDriversStatusViewModel>(
     () => DispatcherDriversStatusViewModel(
       getDriversStatusUseCase: getIt<GetDriversStatusUseCase>(),
       toggleDriverAvailabilityUseCase: getIt<ToggleDriverAvailabilityUseCase>(),
+      observeDriverAvailabilityUpdatesUseCase:
+          getIt<ObserveDriverAvailabilityUpdatesUseCase>(),
+      startUpdatesUseCase: getIt<StartDispatcherDriversStatusUpdatesUseCase>(),
+      stopUpdatesUseCase: getIt<StopDispatcherDriversStatusUpdatesUseCase>(),
+    ),
+  );
+  getIt.registerFactoryParam<DispatcherDriverDetailsViewModel, String, void>(
+    (driverId, _) => DispatcherDriverDetailsViewModel(
+      driverId: driverId,
+      getDriverDetailsUseCase: getIt<GetDispatcherDriverDetailsUseCase>(),
+      toggleDriverAvailabilityUseCase: getIt<ToggleDriverAvailabilityUseCase>(),
+      observeDriverAvailabilityUseCase:
+          getIt<ObserveDispatcherDriverAvailabilityUseCase>(),
+      startUpdatesUseCase: getIt<StartDispatcherDriversStatusUpdatesUseCase>(),
+      stopUpdatesUseCase: getIt<StopDispatcherDriversStatusUpdatesUseCase>(),
     ),
   );
 
@@ -690,6 +756,7 @@ Future<void> configureDependencies() async {
 
   // Driver pickup flow
   getIt.registerLazySingleton<IdempotencyKeyFactory>(IdempotencyKeyFactory.new);
+  getIt.registerLazySingleton<DriverPickupLocationProvider>(DefaultDriverPickupLocationProvider.new);
   getIt.registerLazySingleton<DriverPickupManifestRemoteDataSource>(
     () => DriverPickupManifestRemoteDataSourceImpl(getIt<ApiServices>()),
   );
@@ -699,13 +766,52 @@ Future<void> configureDependencies() async {
     ),
   );
   getIt.registerFactory<GetDriverPickupManifestUseCase>(
-    () => GetDriverPickupManifestUseCase(
-      getIt<DriverPickupManifestRepository>(),
-    ),
+    () =>
+        GetDriverPickupManifestUseCase(getIt<DriverPickupManifestRepository>()),
   );
   getIt.registerFactory<DriverPickupManifestViewModel>(
     () => DriverPickupManifestViewModel(
       getManifestUseCase: getIt<GetDriverPickupManifestUseCase>(),
+    ),
+  );
+
+  // Confirm receipt and summary
+  getIt.registerLazySingleton<DriverPickupRemoteDataSource>(
+    () => DriverPickupRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverPickupRepository>(
+    () => DriverPickupRepositoryImpl(getIt<DriverPickupRemoteDataSource>()),
+  );
+  getIt.registerFactory<ValidateDriverPickupBarcodeUseCase>(
+    () => ValidateDriverPickupBarcodeUseCase(getIt<DriverPickupRepository>()),
+  );
+  getIt.registerFactory<UploadDriverBoxConditionPhotoUseCase>(
+    () => UploadDriverBoxConditionPhotoUseCase(getIt<DriverPickupRepository>()),
+  );
+  getIt.registerFactory<ConfirmDriverBoxPickupUseCase>(
+    () => ConfirmDriverBoxPickupUseCase(getIt<DriverPickupRepository>()),
+  );
+  getIt.registerFactory<GetDriverPickupSummaryUseCase>(
+    () => GetDriverPickupSummaryUseCase(getIt<DriverPickupRepository>()),
+  );
+  getIt.registerFactory<StartDriverTripUseCase>(
+    () => StartDriverTripUseCase(getIt<DriverPickupRepository>()),
+  );
+  getIt.registerFactory<DriverPickupFlowViewModel>(
+    () => DriverPickupFlowViewModel(
+      validateBarcodeUseCase: getIt<ValidateDriverPickupBarcodeUseCase>(),
+      uploadPhotoUseCase: getIt<UploadDriverBoxConditionPhotoUseCase>(),
+      confirmPickupUseCase: getIt<ConfirmDriverBoxPickupUseCase>(),
+      locationProvider: getIt<DriverPickupLocationProvider>(),
+      idempotencyKeyFactory: getIt<IdempotencyKeyFactory>(),
+    ),
+  );
+  getIt.registerFactory<DriverPickupSummaryViewModel>(
+    () => DriverPickupSummaryViewModel(
+      getSummaryUseCase: getIt<GetDriverPickupSummaryUseCase>(),
+      startTripUseCase: getIt<StartDriverTripUseCase>(),
+      locationProvider: getIt<DriverPickupLocationProvider>(),
+      idempotencyKeyFactory: getIt<IdempotencyKeyFactory>(),
     ),
   );
 }

@@ -2,48 +2,73 @@ import 'dispatcher_driver_status_type.dart';
 
 class DispatcherDriverStatusItemEntity {
   const DispatcherDriverStatusItemEntity({
-    required this.id,
-    required this.name,
-    required this.code,
-    required this.avatarUrl,
-    required this.rating,
-    required this.vehicleType,
-    required this.plateNumber,
-    required this.status,
+    required this.driverId,
+    required this.driverCode,
+    required this.fullName,
+    this.phoneNumber,
+    this.avatarUrl,
     required this.isAvailable,
+    required this.operationalStatus,
+    this.rating,
+    this.ratingsCount,
+    this.vehicleType,
+    this.vehicleModel,
+    this.vehiclePlate,
   });
 
-  final String id;
-  final String name;
-  final String code;
-  final String avatarUrl;
-  final double rating;
-  final String vehicleType;
-  final String plateNumber;
-  final DispatcherDriverStatusType status;
+  final String driverId;
+  final String driverCode;
+  final String fullName;
+  final String? phoneNumber;
+  final String? avatarUrl;
   final bool isAvailable;
+  final DispatcherDriverStatusType operationalStatus;
+  final double? rating;
+  final int? ratingsCount;
+  final String? vehicleType;
+  final String? vehicleModel;
+  final String? vehiclePlate;
+
+  // Backward compatibility convenience getters
+  String get id => driverId;
+  String get name => fullName;
+  String get code => driverCode;
+  String get plateNumber => vehiclePlate ?? '';
+  DispatcherDriverStatusType get status => operationalStatus;
 
   DispatcherDriverStatusItemEntity copyWith({
-    String? id,
-    String? name,
-    String? code,
+    String? driverId,
+    String? driverCode,
+    String? fullName,
+    String? phoneNumber,
+    bool clearPhoneNumber = false,
     String? avatarUrl,
-    double? rating,
-    String? vehicleType,
-    String? plateNumber,
-    DispatcherDriverStatusType? status,
+    bool clearAvatarUrl = false,
     bool? isAvailable,
+    DispatcherDriverStatusType? operationalStatus,
+    double? rating,
+    bool clearRating = false,
+    int? ratingsCount,
+    bool clearRatingsCount = false,
+    String? vehicleType,
+    String? vehicleModel,
+    String? vehiclePlate,
   }) {
     return DispatcherDriverStatusItemEntity(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      code: code ?? this.code,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      rating: rating ?? this.rating,
-      vehicleType: vehicleType ?? this.vehicleType,
-      plateNumber: plateNumber ?? this.plateNumber,
-      status: status ?? this.status,
+      driverId: driverId ?? this.driverId,
+      driverCode: driverCode ?? this.driverCode,
+      fullName: fullName ?? this.fullName,
+      phoneNumber: clearPhoneNumber ? null : (phoneNumber ?? this.phoneNumber),
+      avatarUrl: clearAvatarUrl ? null : (avatarUrl ?? this.avatarUrl),
       isAvailable: isAvailable ?? this.isAvailable,
+      operationalStatus: operationalStatus ?? this.operationalStatus,
+      rating: clearRating ? null : (rating ?? this.rating),
+      ratingsCount: clearRatingsCount
+          ? null
+          : (ratingsCount ?? this.ratingsCount),
+      vehicleType: vehicleType ?? this.vehicleType,
+      vehicleModel: vehicleModel ?? this.vehicleModel,
+      vehiclePlate: vehiclePlate ?? this.vehiclePlate,
     );
   }
 
@@ -52,26 +77,32 @@ class DispatcherDriverStatusItemEntity {
       identical(this, other) ||
       other is DispatcherDriverStatusItemEntity &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          code == other.code &&
+          driverId == other.driverId &&
+          driverCode == other.driverCode &&
+          fullName == other.fullName &&
+          phoneNumber == other.phoneNumber &&
           avatarUrl == other.avatarUrl &&
+          isAvailable == other.isAvailable &&
+          operationalStatus == other.operationalStatus &&
           rating == other.rating &&
+          ratingsCount == other.ratingsCount &&
           vehicleType == other.vehicleType &&
-          plateNumber == other.plateNumber &&
-          status == other.status &&
-          isAvailable == other.isAvailable;
+          vehicleModel == other.vehicleModel &&
+          vehiclePlate == other.vehiclePlate;
 
   @override
   int get hashCode => Object.hash(
-    id,
-    name,
-    code,
+    driverId,
+    driverCode,
+    fullName,
+    phoneNumber,
     avatarUrl,
-    rating,
-    vehicleType,
-    plateNumber,
-    status,
     isAvailable,
+    operationalStatus,
+    rating,
+    ratingsCount,
+    vehicleType,
+    vehicleModel,
+    vehiclePlate,
   );
 }

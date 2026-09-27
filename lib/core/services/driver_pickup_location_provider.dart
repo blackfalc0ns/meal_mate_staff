@@ -33,3 +33,12 @@ class DriverPickupCoordinates {
 abstract interface class DriverPickupLocationProvider {
   Future<DriverPickupCoordinates> getCurrentCoordinates();
 }
+
+class DefaultDriverPickupLocationProvider implements DriverPickupLocationProvider {
+  const DefaultDriverPickupLocationProvider();
+
+  @override
+  Future<DriverPickupCoordinates> getCurrentCoordinates() async {
+    return DriverPickupCoordinates(latitude: 29.3375, longitude: 48.0280);
+  }
+}

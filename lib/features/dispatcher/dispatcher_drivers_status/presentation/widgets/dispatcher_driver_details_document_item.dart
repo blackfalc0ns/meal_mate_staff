@@ -26,8 +26,7 @@ class DispatcherDriverDetailsDocumentItem extends StatelessWidget {
         locale.driverDetailsDrivingLicense,
       DispatcherDriverDocumentType.vehicleRegistration =>
         locale.driverDetailsVehicleRegistration,
-      DispatcherDriverDocumentType.insurance =>
-        locale.driverDetailsInsurance,
+      DispatcherDriverDocumentType.insurance => locale.driverDetailsInsurance,
     };
   }
 
@@ -37,9 +36,35 @@ class DispatcherDriverDetailsDocumentItem extends StatelessWidget {
     final locale = context.localization;
 
     final title = _getDocumentTitle(context, document.type);
-    final statusText = document.validUntil != null
-        ? locale.driverDetailsValidUntil(document.validUntil!)
-        : locale.driverDetailsValid;
+    final String statusText;
+    final Color statusColor;
+    final IconData statusIcon;
+
+    switch (document.status) {
+      case DispatcherDriverDocumentStatus.valid:
+        statusColor = color.tertiary;
+        statusIcon = Icons.check_circle_rounded;
+        statusText =
+            document.validUntil != null && document.validUntil!.isNotEmpty
+            ? locale.driverDetailsValidUntil(document.validUntil!)
+            : locale.driverDetailsDocumentValid;
+      case DispatcherDriverDocumentStatus.expiringSoon:
+        statusColor = color.secondary;
+        statusIcon = Icons.warning_amber_rounded;
+        statusText =
+            document.validUntil != null && document.validUntil!.isNotEmpty
+            ? locale.driverDetailsValidUntil(document.validUntil!)
+            : locale.driverDetailsDocumentExpiringSoon;
+      case DispatcherDriverDocumentStatus.expired:
+        statusColor = color.error;
+        statusIcon = Icons.cancel_outlined;
+        statusText = locale.driverDetailsDocumentExpired;
+      case DispatcherDriverDocumentStatus.missing:
+      case DispatcherDriverDocumentStatus.unknown:
+        statusColor = color.onSurfaceVariant;
+        statusIcon = Icons.help_outline_rounded;
+        statusText = locale.driverDetailsDocumentMissing;
+    }
 
     return InkWell(
       onTap: onTap,
@@ -85,17 +110,13 @@ class DispatcherDriverDetailsDocumentItem extends StatelessWidget {
             const SizedBox(height: Spacing.xs / 2),
             Row(
               children: [
-                Icon(
-                  Icons.check_circle_rounded,
-                  size: Spacing.iconXs,
-                  color: color.tertiary,
-                ),
+                Icon(statusIcon, size: Spacing.iconXs, color: statusColor),
                 const SizedBox(width: Spacing.xs / 4),
                 Expanded(
                   child: Text(
                     statusText,
                     style: getRegularStyle(
-                      color: color.tertiary,
+                      color: statusColor,
                       fontSize: FontSize.size10,
                     ),
                     maxLines: 1,

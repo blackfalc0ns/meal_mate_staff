@@ -72,17 +72,37 @@ class DispatcherDriverDetailsVehicleCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(Spacing.radiusXs),
-                  child: Image.asset(
-                    vehicle.imageAsset,
-                    width: 76,
-                    height: 48,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.directions_car_rounded,
-                      size: Spacing.iconLg,
-                      color: color.onSurfaceVariant,
-                    ),
-                  ),
+                  child: vehicle.imageAsset.isNotEmpty
+                      ? (vehicle.imageAsset.startsWith('http')
+                            ? Image.network(
+                                vehicle.imageAsset,
+                                width: 76,
+                                height: 48,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Icon(
+                                      Icons.directions_car_rounded,
+                                      size: Spacing.iconLg,
+                                      color: color.onSurfaceVariant,
+                                    ),
+                              )
+                            : Image.asset(
+                                vehicle.imageAsset,
+                                width: 76,
+                                height: 48,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Icon(
+                                      Icons.directions_car_rounded,
+                                      size: Spacing.iconLg,
+                                      color: color.onSurfaceVariant,
+                                    ),
+                              ))
+                      : Icon(
+                          Icons.directions_car_rounded,
+                          size: Spacing.iconLg,
+                          color: color.onSurfaceVariant,
+                        ),
                 ),
                 const SizedBox(width: Spacing.sm),
                 Expanded(
@@ -127,8 +147,9 @@ class DispatcherDriverDetailsVehicleCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: color.surfaceContainerHighest,
-                              borderRadius:
-                                  BorderRadius.circular(Spacing.radiusXs),
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusXs,
+                              ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
