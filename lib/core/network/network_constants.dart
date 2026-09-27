@@ -81,4 +81,14 @@ abstract class EndPoints {
   // Driver pickup flow endpoints
   static const String driverPickupManifest =
       '/api/v1/driver/pickup/manifest';
+  static const String driverPickupValidateBarcode =
+      '/api/v1/driver/pickup/boxes/validate-barcode';
+  static const String driverPickupConditionPhoto =
+      '/api/v1/driver/pickup/boxes/{boxId}/condition-photo';
+  static const String driverPickupConfirm =
+      '/api/v1/driver/pickup/boxes/{boxId}/confirm';
+  static const String driverPickupSummary =
+      '/api/v1/driver/trips/{tripId}/pickup-summary';
+  static const String driverTripStart =
+      '/api/v1/driver/trips/{tripId}/start';
 }

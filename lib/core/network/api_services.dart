@@ -54,6 +54,14 @@ import '../../features/dispatcher/dispatcher_driver_details/data/models/response
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_current_location_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_details_response_dto.dart';
 import '../../features/driver/orders/data/models/response/driver_pickup_manifest_response_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/request/confirm_driver_pickup_request_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/request/start_driver_trip_request_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/request/validate_driver_barcode_request_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/response/driver_barcode_validation_response_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/response/driver_condition_photo_upload_response_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/response/driver_pickup_confirmation_response_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/response/driver_pickup_summary_response_dto.dart';
+import '../../features/driver/confirm_receipt/data/models/response/driver_trip_start_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -295,5 +303,37 @@ abstract class ApiServices {
   @GET(EndPoints.driverPickupManifest)
   Future<DriverPickupManifestResponseDto> getDriverPickupManifest(
     @Query('statusFilter') String statusFilter,
+  );
+
+  @POST(EndPoints.driverPickupValidateBarcode)
+  Future<DriverBarcodeValidationResponseDto> validateDriverPickupBarcode(
+    @Body() ValidateDriverBarcodeRequestDto request,
+  );
+
+  @MultiPart()
+  @POST(EndPoints.driverPickupConditionPhoto)
+  Future<DriverConditionPhotoUploadResponseDto> uploadDriverBoxConditionPhoto(
+    @Path('boxId') String boxId,
+    @Part(name: 'file') File file,
+    @Part(name: 'validationToken') String validationToken,
+  );
+
+  @POST(EndPoints.driverPickupConfirm)
+  Future<DriverPickupConfirmationResponseDto> confirmDriverBoxPickup(
+    @Path('boxId') String boxId,
+    @Header('Idempotency-Key') String idempotencyKey,
+    @Body() ConfirmDriverPickupRequestDto request,
+  );
+
+  @GET(EndPoints.driverPickupSummary)
+  Future<DriverPickupSummaryResponseDto> getDriverPickupSummary(
+    @Path('tripId') String tripId,
+  );
+
+  @POST(EndPoints.driverTripStart)
+  Future<DriverTripStartResponseDto> startDriverTrip(
+    @Path('tripId') String tripId,
+    @Header('Idempotency-Key') String idempotencyKey,
+    @Body() StartDriverTripRequestDto request,
   );
 }
