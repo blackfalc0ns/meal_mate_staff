@@ -27,10 +27,17 @@ import '../network/api_services.dart';
 import '../network/network_constants.dart';
 import '../services/auth_refresh_service.dart';
 import '../services/device_id_service.dart';
+import '../services/idempotency_key_factory.dart';
 import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
 import '../services/token_interceptor.dart';
 import '../services/token_service.dart';
+import '../../features/driver/orders/data/data_source/driver_pickup_manifest_remote_data_source.dart';
+import '../../features/driver/orders/data/data_source/driver_pickup_manifest_remote_data_source_impl.dart';
+import '../../features/driver/orders/data/repo/driver_pickup_manifest_repository_impl.dart';
+import '../../features/driver/orders/domain/repo/driver_pickup_manifest_repository.dart';
+import '../../features/driver/orders/domain/usecase/get_driver_pickup_manifest_usecase.dart';
+import '../../features/driver/orders/presentation/manager/driver_pickup_manifest_view_model.dart';
 import '../../features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../features/driver/active_delivery/domain/repositories/active_delivery_repository.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
@@ -678,6 +685,27 @@ Future<void> configureDependencies() async {
       getIt<ObserveDriverDetailsUpdatesUseCase>(),
       getIt<AcquireDriverDetailsRealtimeUseCase>(),
       getIt<ReleaseDriverDetailsRealtimeUseCase>(),
+    ),
+  );
+
+  // Driver pickup flow
+  getIt.registerLazySingleton<IdempotencyKeyFactory>(IdempotencyKeyFactory.new);
+  getIt.registerLazySingleton<DriverPickupManifestRemoteDataSource>(
+    () => DriverPickupManifestRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverPickupManifestRepository>(
+    () => DriverPickupManifestRepositoryImpl(
+      getIt<DriverPickupManifestRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDriverPickupManifestUseCase>(
+    () => GetDriverPickupManifestUseCase(
+      getIt<DriverPickupManifestRepository>(),
+    ),
+  );
+  getIt.registerFactory<DriverPickupManifestViewModel>(
+    () => DriverPickupManifestViewModel(
+      getManifestUseCase: getIt<GetDriverPickupManifestUseCase>(),
     ),
   );
 }

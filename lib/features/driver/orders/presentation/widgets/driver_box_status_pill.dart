@@ -9,7 +9,7 @@ import '../../domain/entities/driver_box_delivery_status.dart';
 class DriverBoxStatusPill extends StatelessWidget {
   const DriverBoxStatusPill({
     super.key,
-    this.status = DriverBoxDeliveryStatus.ready,
+    this.status = DriverBoxDeliveryStatus.pendingScan,
     this.isLoaded,
   });
 
@@ -21,9 +21,9 @@ class DriverBoxStatusPill extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final effectiveStatus = status;
+    final isPickedUp = (isLoaded ?? false) || status == DriverBoxDeliveryStatus.pickedUp;
 
-    if (effectiveStatus == DriverBoxDeliveryStatus.notLoaded) {
+    if (!isPickedUp) {
       return Container(
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.sm,
@@ -44,22 +44,13 @@ class DriverBoxStatusPill extends StatelessWidget {
       );
     }
 
-    final bool isIssue = effectiveStatus == DriverBoxDeliveryStatus.failed;
-    final Color bgColor = isIssue
-        ? color.errorContainer
-        : color.tertiaryContainer;
-    final Color contentColor = isIssue ? color.error : color.tertiary;
-    final String label = isIssue
-        ? locale.driverStatusIssueOccurred
-        : locale.driverStatusReadyForDelivery;
-
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.sm,
         vertical: Spacing.xs,
       ),
       decoration: BoxDecoration(
-        color: bgColor,
+        color: color.tertiaryContainer,
         borderRadius: BorderRadius.circular(Spacing.radiusPill),
       ),
       child: Row(
@@ -69,15 +60,15 @@ class DriverBoxStatusPill extends StatelessWidget {
             width: Spacing.accountStatusReasonBullet,
             height: Spacing.accountStatusReasonBullet,
             decoration: BoxDecoration(
-              color: contentColor,
+              color: color.tertiary,
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: Spacing.xs),
           Text(
-            label,
+            locale.driverStatusLoaded,
             style: getMediumStyle(
-              color: contentColor,
+              color: color.tertiary,
               fontSize: FontSize.size10,
             ),
             textAlign: TextAlign.center,

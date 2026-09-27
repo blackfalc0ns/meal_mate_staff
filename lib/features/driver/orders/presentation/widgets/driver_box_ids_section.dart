@@ -17,8 +17,9 @@ class DriverBoxIdsSection extends StatelessWidget {
   final String boxId;
   final String orderCode;
 
-  void _handleCopy(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: boxId));
+  Future<void> _handleCopy(BuildContext context) async {
+    await Clipboard.setData(ClipboardData(text: boxId));
+    if (!context.mounted) return;
     final locale = context.localization;
     CustomSnackbar.showSuccess(
       context: context,

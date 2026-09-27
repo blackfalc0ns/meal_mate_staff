@@ -22,9 +22,9 @@ class DriverBoxesFilterBar extends StatelessWidget {
     switch (filter) {
       case DriverBoxesFilterType.all:
         return AlignmentDirectional.centerStart;
-      case DriverBoxesFilterType.readyForDelivery:
+      case DriverBoxesFilterType.pendingScan:
         return AlignmentDirectional.center;
-      case DriverBoxesFilterType.delivered:
+      case DriverBoxesFilterType.pickedUp:
         return AlignmentDirectional.centerEnd;
     }
   }
@@ -75,20 +75,18 @@ class DriverBoxesFilterBar extends StatelessWidget {
                       onTap: () => onFilterChanged(DriverBoxesFilterType.all),
                     ),
                     DriverBoxesFilterTabItem(
-                      title: locale.driverBoxesFilterReadyForDelivery,
+                      title: locale.driverBoxesFilterNotLoaded,
                       isSelected:
-                          selectedFilter ==
-                          DriverBoxesFilterType.readyForDelivery,
-                      onTap: () => onFilterChanged(
-                        DriverBoxesFilterType.readyForDelivery,
-                      ),
+                          selectedFilter == DriverBoxesFilterType.pendingScan,
+                      onTap: () =>
+                          onFilterChanged(DriverBoxesFilterType.pendingScan),
                     ),
                     DriverBoxesFilterTabItem(
-                      title: locale.driverBoxesFilterDelivered,
+                      title: locale.driverBoxesFilterLoaded,
                       isSelected:
-                          selectedFilter == DriverBoxesFilterType.delivered,
+                          selectedFilter == DriverBoxesFilterType.pickedUp,
                       onTap: () =>
-                          onFilterChanged(DriverBoxesFilterType.delivered),
+                          onFilterChanged(DriverBoxesFilterType.pickedUp),
                     ),
                   ],
                 ),

@@ -9,7 +9,7 @@ import '../../domain/entities/driver_box_delivery_status.dart';
 class DriverBoxIconBadge extends StatelessWidget {
   const DriverBoxIconBadge({
     super.key,
-    this.status = DriverBoxDeliveryStatus.ready,
+    this.status = DriverBoxDeliveryStatus.pendingScan,
     this.isLoaded,
   });
 
@@ -21,52 +21,33 @@ class DriverBoxIconBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final effectiveStatus = status;
+    final isPickedUp = (isLoaded ?? false) || status == DriverBoxDeliveryStatus.pickedUp;
 
     final Color bgColor;
     final Color iconColor;
     Widget? badge;
 
-    switch (effectiveStatus) {
-      case DriverBoxDeliveryStatus.notLoaded:
-      case DriverBoxDeliveryStatus.ready:
-        bgColor = color.primaryContainer;
-        iconColor = color.primary;
-        badge = null;
-        break;
-      case DriverBoxDeliveryStatus.delivered:
-        bgColor = color.tertiaryContainer;
-        iconColor = color.tertiary;
-        badge = Container(
-          width: Spacing.iconSm,
-          height: Spacing.iconSm,
-          decoration: BoxDecoration(
-            color: color.tertiary,
-            shape: BoxShape.circle,
-          ),
-          alignment: Alignment.center,
-          child: Icon(
-            Icons.check,
-            size: Spacing.iconXs - 3,
-            color: color.surface,
-          ),
-        );
-        break;
-      case DriverBoxDeliveryStatus.failed:
-        bgColor = color.errorContainer;
-        iconColor = color.error;
-        badge = Container(
-          width: Spacing.iconSm,
-          height: Spacing.iconSm,
-          decoration: BoxDecoration(color: color.error, shape: BoxShape.circle),
-          alignment: Alignment.center,
-          child: Icon(
-            Icons.close,
-            size: Spacing.iconXs - 3,
-            color: color.surface,
-          ),
-        );
-        break;
+    if (isPickedUp) {
+      bgColor = color.tertiaryContainer;
+      iconColor = color.tertiary;
+      badge = Container(
+        width: Spacing.iconSm,
+        height: Spacing.iconSm,
+        decoration: BoxDecoration(
+          color: color.tertiary,
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: Icon(
+          Icons.check,
+          size: Spacing.iconXs - 3,
+          color: color.surface,
+        ),
+      );
+    } else {
+      bgColor = color.primaryContainer;
+      iconColor = color.primary;
+      badge = null;
     }
 
     return Container(
