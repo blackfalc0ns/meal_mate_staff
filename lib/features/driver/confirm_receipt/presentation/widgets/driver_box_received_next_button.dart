@@ -5,10 +5,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/app_button.dart';
 
 class DriverBoxReceivedNextButton extends StatelessWidget {
-  const DriverBoxReceivedNextButton({
-    super.key,
-    required this.onPressed,
-  });
+  const DriverBoxReceivedNextButton({super.key, required this.onPressed});
 
   final VoidCallback? onPressed;
 

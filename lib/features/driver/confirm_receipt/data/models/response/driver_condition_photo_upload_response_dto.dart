@@ -16,8 +16,7 @@ class DriverConditionPhotoUploadResponseDto {
 
   factory DriverConditionPhotoUploadResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DriverConditionPhotoUploadResponseDtoFromJson(json);
+  ) => _$DriverConditionPhotoUploadResponseDtoFromJson(json);
 
   final String? boxId;
   final String? conditionPhotoStorageKey;

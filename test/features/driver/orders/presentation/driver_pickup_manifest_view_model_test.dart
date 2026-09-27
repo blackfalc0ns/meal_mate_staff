@@ -17,7 +17,8 @@ import 'package:meal_mate_delivery/features/driver/orders/presentation/manager/d
 class _MockManifestRepository implements DriverPickupManifestRepository {
   Future<ApiResult<DriverPickupManifestEntity>> Function(
     DriverBoxesFilterType filter,
-  )? onGetManifest;
+  )?
+  onGetManifest;
 
   @override
   Future<ApiResult<DriverPickupManifestEntity>> getDriverPickupManifest({
@@ -91,7 +92,9 @@ void main() {
       final expectation = expectLater(
         viewModel.stream,
         emitsInOrder([
-          predicate<dynamic>((s) => s.isInitialLoading == true && s.manifest == null),
+          predicate<dynamic>(
+            (s) => s.isInitialLoading == true && s.manifest == null,
+          ),
           predicate<dynamic>(
             (s) =>
                 s.isInitialLoading == false &&
@@ -168,42 +171,43 @@ void main() {
       expect(viewModel.state.manifest, sampleManifest);
     });
 
-    test('refresh failure retains existing manifest with inline failure', () async {
-      mockRepo.onGetManifest = (_) async =>
-          const ApiSuccessResult(data: sampleManifest);
+    test(
+      'refresh failure retains existing manifest with inline failure',
+      () async {
+        mockRepo.onGetManifest = (_) async =>
+            const ApiSuccessResult(data: sampleManifest);
 
-      await viewModel.doIntent(const LoadDriverPickupManifestEvent());
-      expect(viewModel.state.manifest, sampleManifest);
+        await viewModel.doIntent(const LoadDriverPickupManifestEvent());
+        expect(viewModel.state.manifest, sampleManifest);
 
-      mockRepo.onGetManifest = (_) async =>
-          ApiErrorResult(
-            failure: ServerFailure(
-              errorMessage: 'Network error',
-              exception: const ApiException(
-                errorType: ApiErrorType.serverError,
-                message: 'Network error',
-              ),
+        mockRepo.onGetManifest = (_) async => ApiErrorResult(
+          failure: ServerFailure(
+            errorMessage: 'Network error',
+            exception: const ApiException(
+              errorType: ApiErrorType.serverError,
+              message: 'Network error',
             ),
-          );
+          ),
+        );
 
-      await viewModel.doIntent(const RefreshDriverPickupManifestEvent());
+        await viewModel.doIntent(const RefreshDriverPickupManifestEvent());
 
-      expect(viewModel.state.manifest, sampleManifest);
-      expect(viewModel.state.isRefreshLoading, false);
-      expect(viewModel.state.failure, isNotNull);
-    });
+        expect(viewModel.state.manifest, sampleManifest);
+        expect(viewModel.state.isRefreshLoading, false);
+        expect(viewModel.state.failure, isNotNull);
+      },
+    );
 
     test('retry loads data again', () async {
-      mockRepo.onGetManifest = (_) async =>
-          ApiErrorResult(
-            failure: ServerFailure(
-              errorMessage: 'Initial error',
-              exception: const ApiException(
-                errorType: ApiErrorType.serverError,
-                message: 'Initial error',
-              ),
-            ),
-          );
+      mockRepo.onGetManifest = (_) async => ApiErrorResult(
+        failure: ServerFailure(
+          errorMessage: 'Initial error',
+          exception: const ApiException(
+            errorType: ApiErrorType.serverError,
+            message: 'Initial error',
+          ),
+        ),
+      );
 
       await viewModel.doIntent(const LoadDriverPickupManifestEvent());
       expect(viewModel.state.failure, isNotNull);

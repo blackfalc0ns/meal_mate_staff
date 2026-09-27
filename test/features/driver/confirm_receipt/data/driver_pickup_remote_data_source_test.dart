@@ -101,38 +101,44 @@ void main() {
       expect(result.boxId, 'box-101');
     });
 
-    test('uploadDriverBoxConditionPhoto forwards boxId, file, and validationToken', () async {
-      final file = File('test.jpg');
-      final result = await dataSource.uploadDriverBoxConditionPhoto(
-        boxId: 'box-101',
-        file: file,
-        validationToken: 'token-abc',
-      );
+    test(
+      'uploadDriverBoxConditionPhoto forwards boxId, file, and validationToken',
+      () async {
+        final file = File('test.jpg');
+        final result = await dataSource.uploadDriverBoxConditionPhoto(
+          boxId: 'box-101',
+          file: file,
+          validationToken: 'token-abc',
+        );
 
-      expect(fakeApi.uploadBoxId, 'box-101');
-      expect(fakeApi.uploadFile, file);
-      expect(fakeApi.uploadToken, 'token-abc');
-      expect(result.conditionPhotoStorageKey, 'key-123');
-    });
+        expect(fakeApi.uploadBoxId, 'box-101');
+        expect(fakeApi.uploadFile, file);
+        expect(fakeApi.uploadToken, 'token-abc');
+        expect(result.conditionPhotoStorageKey, 'key-123');
+      },
+    );
 
-    test('confirmDriverBoxPickup forwards boxId, idempotencyKey, and body', () async {
-      const request = ConfirmDriverPickupRequestDto(
-        validationToken: 'token-abc',
-        conditionPhotoStorageKey: 'key-123',
-        latitude: 29.3375,
-        longitude: 48.0280,
-      );
-      final result = await dataSource.confirmDriverBoxPickup(
-        boxId: 'box-101',
-        idempotencyKey: 'idem-key-1',
-        request: request,
-      );
+    test(
+      'confirmDriverBoxPickup forwards boxId, idempotencyKey, and body',
+      () async {
+        const request = ConfirmDriverPickupRequestDto(
+          validationToken: 'token-abc',
+          conditionPhotoStorageKey: 'key-123',
+          latitude: 29.3375,
+          longitude: 48.0280,
+        );
+        final result = await dataSource.confirmDriverBoxPickup(
+          boxId: 'box-101',
+          idempotencyKey: 'idem-key-1',
+          request: request,
+        );
 
-      expect(fakeApi.confirmBoxId, 'box-101');
-      expect(fakeApi.confirmIdempotencyKey, 'idem-key-1');
-      expect(fakeApi.confirmRequest, request);
-      expect(result.boxId, 'box-101');
-    });
+        expect(fakeApi.confirmBoxId, 'box-101');
+        expect(fakeApi.confirmIdempotencyKey, 'idem-key-1');
+        expect(fakeApi.confirmRequest, request);
+        expect(result.boxId, 'box-101');
+      },
+    );
 
     test('getDriverPickupSummary forwards tripId', () async {
       final result = await dataSource.getDriverPickupSummary('trip-101');
@@ -140,21 +146,24 @@ void main() {
       expect(result.tripId, 'trip-101');
     });
 
-    test('startDriverTrip forwards tripId, idempotencyKey, and request', () async {
-      const request = StartDriverTripRequestDto(
-        latitude: 29.3375,
-        longitude: 48.0280,
-      );
-      final result = await dataSource.startDriverTrip(
-        tripId: 'trip-101',
-        idempotencyKey: 'idem-key-2',
-        request: request,
-      );
+    test(
+      'startDriverTrip forwards tripId, idempotencyKey, and request',
+      () async {
+        const request = StartDriverTripRequestDto(
+          latitude: 29.3375,
+          longitude: 48.0280,
+        );
+        final result = await dataSource.startDriverTrip(
+          tripId: 'trip-101',
+          idempotencyKey: 'idem-key-2',
+          request: request,
+        );
 
-      expect(fakeApi.startTripId, 'trip-101');
-      expect(fakeApi.startIdempotencyKey, 'idem-key-2');
-      expect(fakeApi.startRequest, request);
-      expect(result.tripId, 'trip-101');
-    });
+        expect(fakeApi.startTripId, 'trip-101');
+        expect(fakeApi.startIdempotencyKey, 'idem-key-2');
+        expect(fakeApi.startRequest, request);
+        expect(result.tripId, 'trip-101');
+      },
+    );
   });
 }

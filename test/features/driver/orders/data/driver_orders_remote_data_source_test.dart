@@ -13,7 +13,10 @@ class _FakeApiServices implements ApiServices {
   DriverDeliveryManifestResponseDto ordersResponse =
       const DriverDeliveryManifestResponseDto(tripId: 'trip-1');
   DriverCallProxyResponseDto callProxyResponse =
-      const DriverCallProxyResponseDto(boxId: 'box-999', callableUri: 'tel:+96512345678');
+      const DriverCallProxyResponseDto(
+        boxId: 'box-999',
+        callableUri: 'tel:+96512345678',
+      );
 
   @override
   Future<DriverDeliveryManifestResponseDto> getDriverOrders({

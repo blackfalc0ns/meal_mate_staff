@@ -1,4 +1,5 @@
 import '../../domain/entities/driver_boxes_filter_type.dart';
+import '../../domain/entities/driver_pickup_manifest_entity.dart';
 
 sealed class DriverPickupManifestEvent {
   const DriverPickupManifestEvent();
@@ -20,4 +21,10 @@ class SelectDriverBoxesFilterEvent extends DriverPickupManifestEvent {
 
 class RetryDriverPickupManifestEvent extends DriverPickupManifestEvent {
   const RetryDriverPickupManifestEvent();
+}
+
+class SeedDriverPickupManifestEvent extends DriverPickupManifestEvent {
+  const SeedDriverPickupManifestEvent(this.manifest);
+
+  final DriverPickupManifestEntity manifest;
 }

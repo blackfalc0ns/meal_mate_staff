@@ -80,7 +80,6 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final locale = context.localization;
 
     return BlocConsumer<DriverPickupSummaryViewModel, DriverPickupSummaryState>(
       bloc: _viewModel,
@@ -101,7 +100,8 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
       },
       builder: (context, state) {
         // Initial loading without content
-        final isInitial = (state.isInitialLoading && state.summary == null) ||
+        final isInitial =
+            (state.isInitialLoading && state.summary == null) ||
             (!state.hasLoadedOnce && state.failure == null);
         if (isInitial && widget.boxes == null) {
           return Scaffold(
@@ -150,7 +150,8 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
           );
         }
 
-        final List<DriverReceivedBoxItemEntity> displayBoxes = widget.boxes ??
+        final List<DriverReceivedBoxItemEntity> displayBoxes =
+            widget.boxes ??
             (state.summary != null
                 ? state.summary!.boxes.asMap().entries.map((entry) {
                     final box = entry.value;
@@ -165,8 +166,7 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
                   }).toList()
                 : DriverBoxesReceivedFakeData.defaultReceivedBoxes);
 
-        final canStart =
-            (state.canStartTrip) || (widget.boxes != null);
+        final canStart = (state.canStartTrip) || (widget.boxes != null);
 
         return Scaffold(
           backgroundColor: color.surface,

@@ -1,8 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/data/mapper/driver_pickup_mapper.dart';
-import 'package:meal_mate_delivery/features/driver/confirm_receipt/data/models/request/confirm_driver_pickup_request_dto.dart';
-import 'package:meal_mate_delivery/features/driver/confirm_receipt/data/models/request/start_driver_trip_request_dto.dart';
-import 'package:meal_mate_delivery/features/driver/confirm_receipt/data/models/request/validate_driver_barcode_request_dto.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/data/models/response/driver_barcode_validation_response_dto.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/data/models/response/driver_condition_photo_upload_response_dto.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/data/models/response/driver_pickup_confirmation_response_dto.dart';
@@ -16,7 +13,9 @@ import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entiti
 void main() {
   group('Request Entity -> DTO Mappers', () {
     test('ValidateDriverBarcodeRequestEntity maps to DTO', () {
-      const entity = ValidateDriverBarcodeRequestEntity(barcodeValue: 'BOX-1256');
+      const entity = ValidateDriverBarcodeRequestEntity(
+        barcodeValue: 'BOX-1256',
+      );
       final dto = entity.toDto();
       expect(dto.barcodeValue, 'BOX-1256');
     });
@@ -180,7 +179,7 @@ void main() {
           'statusText': 'تم الاستلام',
           'isReceived': true,
           'conditionPhotoStorageKey': 'photos/box-101.jpg',
-        }
+        },
       ],
       'message': 'Summary loaded',
     };

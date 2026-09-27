@@ -3,7 +3,8 @@ import '../../domain/entities/driver_box_delivery_status.dart';
 import '../../domain/entities/driver_pickup_manifest_entity.dart';
 import '../models/response/driver_pickup_manifest_response_dto.dart';
 
-extension DriverPickupManifestResponseDtoMapper on DriverPickupManifestResponseDto {
+extension DriverPickupManifestResponseDtoMapper
+    on DriverPickupManifestResponseDto {
   DriverPickupManifestEntity toEntity() {
     final rawTotalBoxes = totalBoxesCount ?? 0;
     final rawTotalMeals = totalMealsCount ?? 0;
@@ -44,7 +45,9 @@ extension DriverAssignedBoxResponseDtoMapper on DriverAssignedBoxResponseDto {
     }
 
     final rawMeals = mealsCount ?? 0;
-    final isPickedUp = resolvedStatus == DriverBoxDeliveryStatus.pickedUp || (this.isScanned == true);
+    final isPickedUp =
+        resolvedStatus == DriverBoxDeliveryStatus.pickedUp ||
+        (this.isScanned == true);
 
     DateTime? parsedDate;
     if (scannedAtUtc != null && scannedAtUtc!.trim().isNotEmpty) {

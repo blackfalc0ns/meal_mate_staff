@@ -21,8 +21,7 @@ class DriverBarcodeValidationResponseDto {
 
   factory DriverBarcodeValidationResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DriverBarcodeValidationResponseDtoFromJson(json);
+  ) => _$DriverBarcodeValidationResponseDtoFromJson(json);
 
   final String? boxId;
   final String? boxCode;

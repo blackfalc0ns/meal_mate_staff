@@ -25,12 +25,12 @@ class DriverOrdersViewModel extends Bloc<DriverOrdersEvent, DriverOrdersState> {
     required StartDriverOrdersUpdatesUseCase startUpdatesUseCase,
     required StopDriverOrdersUpdatesUseCase stopUpdatesUseCase,
     required DriverOrdersRealtimeClient realtimeClient,
-  })  : _getOrdersUseCase = getOrdersUseCase,
-        _observeUpdatesUseCase = observeUpdatesUseCase,
-        _startUpdatesUseCase = startUpdatesUseCase,
-        _stopUpdatesUseCase = stopUpdatesUseCase,
-        _realtimeClient = realtimeClient,
-        super(const DriverOrdersState.initial()) {
+  }) : _getOrdersUseCase = getOrdersUseCase,
+       _observeUpdatesUseCase = observeUpdatesUseCase,
+       _startUpdatesUseCase = startUpdatesUseCase,
+       _stopUpdatesUseCase = stopUpdatesUseCase,
+       _realtimeClient = realtimeClient,
+       super(const DriverOrdersState.initial()) {
     on<LoadDriverOrdersEvent>(_onLoadOrders);
     on<RefreshDriverOrdersEvent>(_onRefreshOrders);
     on<SearchDriverOrdersEvent>(_onSearchOrders);
@@ -127,12 +127,7 @@ class DriverOrdersViewModel extends Bloc<DriverOrdersEvent, DriverOrdersState> {
   ) async {
     final currentGen = ++_requestGeneration;
 
-    emit(
-      state.copyWith(
-        isRefreshing: true,
-        clearActionFailure: true,
-      ),
-    );
+    emit(state.copyWith(isRefreshing: true, clearActionFailure: true));
 
     final result = await _getOrdersUseCase(state.query);
     if (currentGen != _requestGeneration || isClosed) return;
@@ -151,12 +146,7 @@ class DriverOrdersViewModel extends Bloc<DriverOrdersEvent, DriverOrdersState> {
         _rebuildBoxIndex();
 
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isRefreshing: false,
-            actionFailure: failure,
-          ),
-        );
+        emit(state.copyWith(isRefreshing: false, actionFailure: failure));
     }
   }
 
@@ -289,7 +279,8 @@ class DriverOrdersViewModel extends Bloc<DriverOrdersEvent, DriverOrdersState> {
       status: newStatus,
       statusText: statusText ?? currentStop.statusText,
       deliveredAtUtc: deliveredAtUtc ?? currentStop.deliveredAtUtc,
-      failureReasonCategory: failureCategory ?? currentStop.failureReasonCategory,
+      failureReasonCategory:
+          failureCategory ?? currentStop.failureReasonCategory,
       failureReasonText: failureText ?? currentStop.failureReasonText,
     );
 
@@ -320,8 +311,9 @@ class DriverOrdersViewModel extends Bloc<DriverOrdersEvent, DriverOrdersState> {
       }
     }
 
-    final updatedStops =
-        List<DriverDeliveryStopEntity>.from(state.manifest.stops);
+    final updatedStops = List<DriverDeliveryStopEntity>.from(
+      state.manifest.stops,
+    );
     updatedStops[index] = updatedStop;
 
     final updatedManifest = state.manifest.copyWith(

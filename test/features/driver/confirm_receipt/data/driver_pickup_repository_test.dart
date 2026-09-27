@@ -104,16 +104,19 @@ void main() {
   });
 
   group('DriverPickupRepositoryImpl', () {
-    test('validateDriverPickupBarcode maps entity to DTO and returns success entity', () async {
-      final result = await repository.validateDriverPickupBarcode(
-        const ValidateDriverBarcodeRequestEntity(barcodeValue: 'BOX-101'),
-      );
+    test(
+      'validateDriverPickupBarcode maps entity to DTO and returns success entity',
+      () async {
+        final result = await repository.validateDriverPickupBarcode(
+          const ValidateDriverBarcodeRequestEntity(barcodeValue: 'BOX-101'),
+        );
 
-      expect(result, isA<ApiSuccessResult>());
-      final data = (result as ApiSuccessResult).data;
-      expect(data.boxId, 'box-101');
-      expect(data.validationToken, 'token-val');
-    });
+        expect(result, isA<ApiSuccessResult>());
+        final data = (result as ApiSuccessResult).data;
+        expect(data.boxId, 'box-101');
+        expect(data.validationToken, 'token-val');
+      },
+    );
 
     test('uploadDriverBoxConditionPhoto wraps call with safeApiCall', () async {
       final result = await repository.uploadDriverBoxConditionPhoto(

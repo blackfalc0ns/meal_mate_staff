@@ -45,7 +45,8 @@ class _FakePickupRepo implements DriverPickupRepository {
   }
 
   @override
-  Future<ApiResult<DriverConditionPhotoUploadEntity>> uploadDriverBoxConditionPhoto({
+  Future<ApiResult<DriverConditionPhotoUploadEntity>>
+  uploadDriverBoxConditionPhoto({
     required String boxId,
     required File file,
     required String validationToken,
@@ -121,12 +122,14 @@ void main() {
       onGenerateRoute: (settings) {
         if (settings.name == AppRoutes.driverBoxReceivedSuccess) {
           return MaterialPageRoute(
-            builder: (_) => const Scaffold(body: Text('Box Received Success Screen')),
+            builder: (_) =>
+                const Scaffold(body: Text('Box Received Success Screen')),
           );
         }
         if (settings.name == AppRoutes.driverBoxesReceived) {
           return MaterialPageRoute(
-            builder: (_) => const Scaffold(body: Text('Boxes Received Summary Screen')),
+            builder: (_) =>
+                const Scaffold(body: Text('Boxes Received Summary Screen')),
           );
         }
         return MaterialPageRoute(
@@ -146,7 +149,10 @@ void main() {
     }
   }
 
-  Future<void> sendIntent(WidgetTester tester, DriverPickupFlowEvent event) async {
+  Future<void> sendIntent(
+    WidgetTester tester,
+    DriverPickupFlowEvent event,
+  ) async {
     await tester.runAsync(() async {
       viewModel.doIntent(event);
       await pumpEventQueue();
@@ -155,17 +161,25 @@ void main() {
   }
 
   group('DriverConfirmReceiptScreen Backend Integration', () {
-    testWidgets('renders Step 1 initially without full-screen loading spinner', (tester) async {
-      await tester.pumpWidget(buildScreen());
-      await pumpScreen(tester);
+    testWidgets(
+      'renders Step 1 initially without full-screen loading spinner',
+      (tester) async {
+        await tester.pumpWidget(buildScreen());
+        await pumpScreen(tester);
 
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-      expect(find.byType(DriverQrViewfinder), findsOneWidget);
-    });
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+        expect(find.byType(DriverQrViewfinder), findsOneWidget);
+      },
+    );
 
-    testWidgets('shows InlineApiErrorWidget when barcode validation fails', (tester) async {
+    testWidgets('shows InlineApiErrorWidget when barcode validation fails', (
+      tester,
+    ) async {
       fakeRepo.validateResult = ApiErrorResult(
-        failure: Failure(errorMessage: 'Invalid barcode from server', code: 'invalid_code'),
+        failure: Failure(
+          errorMessage: 'Invalid barcode from server',
+          code: 'invalid_code',
+        ),
       );
 
       await tester.pumpWidget(buildScreen());
@@ -177,189 +191,209 @@ void main() {
       expect(find.text('Invalid barcode from server'), findsOneWidget);
     });
 
-    testWidgets('transitions to Step 2 when barcode is validated and user continues', (tester) async {
-      fakeRepo.validateResult = const ApiSuccessResult(
-        data: DriverBarcodeValidationEntity(
-          boxId: 'box-101',
-          boxCode: 'BOX-101',
-          customerName: 'Ahmad Ali',
-          deliveryZone: 'Hawalli',
-          mealsCount: 2,
-          deliveryTimeSlot: '12:00 - 14:00',
-          validationToken: 'valid-token-123',
-          expiresAtUtc: null,
-          status: 'Validated',
-          statusText: 'Validated',
-          nextAction: 'TakeConditionPhoto',
-        ),
-      );
+    testWidgets(
+      'transitions to Step 2 when barcode is validated and user continues',
+      (tester) async {
+        fakeRepo.validateResult = const ApiSuccessResult(
+          data: DriverBarcodeValidationEntity(
+            boxId: 'box-101',
+            boxCode: 'BOX-101',
+            customerName: 'Ahmad Ali',
+            deliveryZone: 'Hawalli',
+            mealsCount: 2,
+            deliveryTimeSlot: '12:00 - 14:00',
+            validationToken: 'valid-token-123',
+            expiresAtUtc: null,
+            status: 'Validated',
+            statusText: 'Validated',
+            nextAction: 'TakeConditionPhoto',
+          ),
+        );
 
-      await tester.pumpWidget(buildScreen());
-      await pumpScreen(tester);
+        await tester.pumpWidget(buildScreen());
+        await pumpScreen(tester);
 
-      await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
+        await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
 
-      // Tap continue to photograph box button
-      final continueButton = find.widgetWithText(AppButton, 'Continue to Photograph Box');
-      expect(continueButton, findsOneWidget);
-      await tester.ensureVisible(continueButton);
-      await tester.tap(continueButton);
-      await tester.runAsync(() async {
-        await pumpEventQueue();
-      });
-      await tester.pump(const Duration(milliseconds: 100));
+        // Tap continue to photograph box button
+        final continueButton = find.widgetWithText(
+          AppButton,
+          'Continue to Photograph Box',
+        );
+        expect(continueButton, findsOneWidget);
+        await tester.ensureVisible(continueButton);
+        await tester.tap(continueButton);
+        await tester.runAsync(() async {
+          await pumpEventQueue();
+        });
+        await tester.pump(const Duration(milliseconds: 100));
 
-      // Now at Step 2
-      expect(find.byType(DriverCameraViewfinder), findsOneWidget);
-    });
+        // Now at Step 2
+        expect(find.byType(DriverCameraViewfinder), findsOneWidget);
+      },
+    );
 
-    testWidgets('shows InlineApiErrorWidget and retains image when photo upload fails', (tester) async {
-      fakeRepo.validateResult = const ApiSuccessResult(
-        data: DriverBarcodeValidationEntity(
-          boxId: 'box-101',
-          boxCode: 'BOX-101',
-          customerName: 'Ahmad Ali',
-          deliveryZone: 'Hawalli',
-          mealsCount: 2,
-          deliveryTimeSlot: '12:00 - 14:00',
-          validationToken: 'valid-token-123',
-          expiresAtUtc: null,
-          status: 'Validated',
-          statusText: 'Validated',
-          nextAction: 'TakeConditionPhoto',
-        ),
-      );
+    testWidgets(
+      'shows InlineApiErrorWidget and retains image when photo upload fails',
+      (tester) async {
+        fakeRepo.validateResult = const ApiSuccessResult(
+          data: DriverBarcodeValidationEntity(
+            boxId: 'box-101',
+            boxCode: 'BOX-101',
+            customerName: 'Ahmad Ali',
+            deliveryZone: 'Hawalli',
+            mealsCount: 2,
+            deliveryTimeSlot: '12:00 - 14:00',
+            validationToken: 'valid-token-123',
+            expiresAtUtc: null,
+            status: 'Validated',
+            statusText: 'Validated',
+            nextAction: 'TakeConditionPhoto',
+          ),
+        );
 
-      await tester.pumpWidget(buildScreen());
-      await pumpScreen(tester);
+        await tester.pumpWidget(buildScreen());
+        await pumpScreen(tester);
 
-      await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
-      await sendIntent(tester, const StepChangedEvent(2));
-      await sendIntent(tester, const PhotoSelectedEvent('dummy_photo.jpg'));
+        await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
+        await sendIntent(tester, const StepChangedEvent(2));
+        await sendIntent(tester, const PhotoSelectedEvent('dummy_photo.jpg'));
 
-      fakeRepo.uploadResult = ApiErrorResult(
-        failure: Failure(errorMessage: 'Photo upload failed', code: 'upload_error'),
-      );
+        fakeRepo.uploadResult = ApiErrorResult(
+          failure: Failure(
+            errorMessage: 'Photo upload failed',
+            code: 'upload_error',
+          ),
+        );
 
-      await sendIntent(tester, const ConfirmPickupEvent());
+        await sendIntent(tester, const ConfirmPickupEvent());
 
-      expect(find.byType(InlineApiErrorWidget), findsOneWidget);
-      expect(find.text('Photo upload failed'), findsOneWidget);
-      expect(viewModel.state.localPhotoPath, 'dummy_photo.jpg');
-    });
+        expect(find.byType(InlineApiErrorWidget), findsOneWidget);
+        expect(find.text('Photo upload failed'), findsOneWidget);
+        expect(viewModel.state.localPhotoPath, 'dummy_photo.jpg');
+      },
+    );
 
-    testWidgets('navigates to driverBoxReceivedSuccess when nextAction is ShowBoxSuccess', (tester) async {
-      fakeRepo.validateResult = const ApiSuccessResult(
-        data: DriverBarcodeValidationEntity(
-          boxId: 'box-101',
-          boxCode: 'BOX-101',
-          customerName: 'Ahmad Ali',
-          deliveryZone: 'Hawalli',
-          mealsCount: 2,
-          deliveryTimeSlot: '12:00 - 14:00',
-          validationToken: 'valid-token-123',
-          expiresAtUtc: null,
-          status: 'Validated',
-          statusText: 'Validated',
-          nextAction: 'TakeConditionPhoto',
-        ),
-      );
+    testWidgets(
+      'navigates to driverBoxReceivedSuccess when nextAction is ShowBoxSuccess',
+      (tester) async {
+        fakeRepo.validateResult = const ApiSuccessResult(
+          data: DriverBarcodeValidationEntity(
+            boxId: 'box-101',
+            boxCode: 'BOX-101',
+            customerName: 'Ahmad Ali',
+            deliveryZone: 'Hawalli',
+            mealsCount: 2,
+            deliveryTimeSlot: '12:00 - 14:00',
+            validationToken: 'valid-token-123',
+            expiresAtUtc: null,
+            status: 'Validated',
+            statusText: 'Validated',
+            nextAction: 'TakeConditionPhoto',
+          ),
+        );
 
-      fakeRepo.uploadResult = const ApiSuccessResult(
-        data: DriverConditionPhotoUploadEntity(
-          boxId: 'box-101',
-          conditionPhotoStorageKey: 'uploaded-key-1',
-          uploadedAtUtc: null,
-          status: 'Uploaded',
-          statusText: 'Uploaded',
-          nextAction: 'ConfirmPickup',
-        ),
-      );
+        fakeRepo.uploadResult = const ApiSuccessResult(
+          data: DriverConditionPhotoUploadEntity(
+            boxId: 'box-101',
+            conditionPhotoStorageKey: 'uploaded-key-1',
+            uploadedAtUtc: null,
+            status: 'Uploaded',
+            statusText: 'Uploaded',
+            nextAction: 'ConfirmPickup',
+          ),
+        );
 
-      fakeRepo.confirmResult = const ApiSuccessResult(
-        data: DriverPickupConfirmationEntity(
-          boxId: 'box-101',
-          boxCode: 'BOX-101',
-          tripId: 'trip-101',
-          confirmedAtUtc: null,
-          status: 'PickedUp',
-          statusText: 'PickedUp',
-          nextAction: DriverPickupNextAction.showBoxSuccess,
-          pickedUpBoxesCount: 1,
-          totalBoxesCount: 5,
-          allBoxesPickedUp: false,
-        ),
-      );
+        fakeRepo.confirmResult = const ApiSuccessResult(
+          data: DriverPickupConfirmationEntity(
+            boxId: 'box-101',
+            boxCode: 'BOX-101',
+            tripId: 'trip-101',
+            confirmedAtUtc: null,
+            status: 'PickedUp',
+            statusText: 'PickedUp',
+            nextAction: DriverPickupNextAction.showBoxSuccess,
+            pickedUpBoxesCount: 1,
+            totalBoxesCount: 5,
+            allBoxesPickedUp: false,
+          ),
+        );
 
-      await tester.pumpWidget(buildScreen());
-      await pumpScreen(tester);
+        await tester.pumpWidget(buildScreen());
+        await pumpScreen(tester);
 
-      await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
-      await sendIntent(tester, const StepChangedEvent(2));
-      await sendIntent(tester, const PhotoSelectedEvent('photo.jpg'));
-      await sendIntent(tester, const ConfirmPickupEvent());
-      await tester.pump(const Duration(milliseconds: 400));
+        await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
+        await sendIntent(tester, const StepChangedEvent(2));
+        await sendIntent(tester, const PhotoSelectedEvent('photo.jpg'));
+        await sendIntent(tester, const ConfirmPickupEvent());
+        await tester.pump(const Duration(milliseconds: 400));
 
-      expect(find.text('Box Received Success Screen'), findsOneWidget);
-    });
+        expect(find.text('Box Received Success Screen'), findsOneWidget);
+      },
+    );
 
-    testWidgets('navigates to driverBoxesReceived when nextAction is ShowPickupSummary', (tester) async {
-      fakeRepo.validateResult = const ApiSuccessResult(
-        data: DriverBarcodeValidationEntity(
-          boxId: 'box-105',
-          boxCode: 'BOX-105',
-          customerName: 'Sara Ali',
-          deliveryZone: 'Salmiya',
-          mealsCount: 1,
-          deliveryTimeSlot: '12:00 - 14:00',
-          validationToken: 'valid-token-105',
-          expiresAtUtc: null,
-          status: 'Validated',
-          statusText: 'Validated',
-          nextAction: 'TakeConditionPhoto',
-        ),
-      );
+    testWidgets(
+      'navigates to driverBoxesReceived when nextAction is ShowPickupSummary',
+      (tester) async {
+        fakeRepo.validateResult = const ApiSuccessResult(
+          data: DriverBarcodeValidationEntity(
+            boxId: 'box-105',
+            boxCode: 'BOX-105',
+            customerName: 'Sara Ali',
+            deliveryZone: 'Salmiya',
+            mealsCount: 1,
+            deliveryTimeSlot: '12:00 - 14:00',
+            validationToken: 'valid-token-105',
+            expiresAtUtc: null,
+            status: 'Validated',
+            statusText: 'Validated',
+            nextAction: 'TakeConditionPhoto',
+          ),
+        );
 
-      fakeRepo.uploadResult = const ApiSuccessResult(
-        data: DriverConditionPhotoUploadEntity(
-          boxId: 'box-105',
-          conditionPhotoStorageKey: 'uploaded-key-5',
-          uploadedAtUtc: null,
-          status: 'Uploaded',
-          statusText: 'Uploaded',
-          nextAction: 'ConfirmPickup',
-        ),
-      );
+        fakeRepo.uploadResult = const ApiSuccessResult(
+          data: DriverConditionPhotoUploadEntity(
+            boxId: 'box-105',
+            conditionPhotoStorageKey: 'uploaded-key-5',
+            uploadedAtUtc: null,
+            status: 'Uploaded',
+            statusText: 'Uploaded',
+            nextAction: 'ConfirmPickup',
+          ),
+        );
 
-      fakeRepo.confirmResult = const ApiSuccessResult(
-        data: DriverPickupConfirmationEntity(
-          boxId: 'box-105',
-          boxCode: 'BOX-105',
-          tripId: 'trip-101',
-          confirmedAtUtc: null,
-          status: 'PickedUp',
-          statusText: 'PickedUp',
-          nextAction: DriverPickupNextAction.showPickupSummary,
-          pickedUpBoxesCount: 5,
-          totalBoxesCount: 5,
-          allBoxesPickedUp: true,
-        ),
-      );
+        fakeRepo.confirmResult = const ApiSuccessResult(
+          data: DriverPickupConfirmationEntity(
+            boxId: 'box-105',
+            boxCode: 'BOX-105',
+            tripId: 'trip-101',
+            confirmedAtUtc: null,
+            status: 'PickedUp',
+            statusText: 'PickedUp',
+            nextAction: DriverPickupNextAction.showPickupSummary,
+            pickedUpBoxesCount: 5,
+            totalBoxesCount: 5,
+            allBoxesPickedUp: true,
+          ),
+        );
 
-      await tester.pumpWidget(buildScreen());
-      await pumpScreen(tester);
+        await tester.pumpWidget(buildScreen());
+        await pumpScreen(tester);
 
-      await sendIntent(tester, const ValidateBarcodeEvent('BOX-105'));
-      await sendIntent(tester, const StepChangedEvent(2));
-      await sendIntent(tester, const PhotoSelectedEvent('photo5.jpg'));
-      await sendIntent(tester, const ConfirmPickupEvent());
-      await tester.pump(const Duration(milliseconds: 400));
+        await sendIntent(tester, const ValidateBarcodeEvent('BOX-105'));
+        await sendIntent(tester, const StepChangedEvent(2));
+        await sendIntent(tester, const PhotoSelectedEvent('photo5.jpg'));
+        await sendIntent(tester, const ConfirmPickupEvent());
+        await tester.pump(const Duration(milliseconds: 400));
 
-      expect(find.text('Boxes Received Summary Screen'), findsOneWidget);
-    });
+        expect(find.text('Boxes Received Summary Screen'), findsOneWidget);
+      },
+    );
 
     testWidgets('returns to Step 1 when token expires', (tester) async {
-      final expiredDate = DateTime.now().toUtc().subtract(const Duration(minutes: 5));
+      final expiredDate = DateTime.now().toUtc().subtract(
+        const Duration(minutes: 5),
+      );
       fakeRepo.validateResult = ApiSuccessResult(
         data: DriverBarcodeValidationEntity(
           boxId: 'box-101',

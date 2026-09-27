@@ -15,7 +15,8 @@ abstract interface class DriverPickupRepository {
     ValidateDriverBarcodeRequestEntity request,
   );
 
-  Future<ApiResult<DriverConditionPhotoUploadEntity>> uploadDriverBoxConditionPhoto({
+  Future<ApiResult<DriverConditionPhotoUploadEntity>>
+  uploadDriverBoxConditionPhoto({
     required String boxId,
     required File file,
     required String validationToken,

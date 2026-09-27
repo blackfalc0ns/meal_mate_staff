@@ -14,11 +14,7 @@ import '../widgets/driver_box_received_success_header.dart';
 import '../widgets/driver_box_received_success_illustration.dart';
 
 class DriverBoxReceivedSuccessScreen extends StatelessWidget {
-  const DriverBoxReceivedSuccessScreen({
-    super.key,
-    this.box,
-    this.onNextOrder,
-  });
+  const DriverBoxReceivedSuccessScreen({super.key, this.box, this.onNextOrder});
 
   final DriverBoxReceivedSuccessEntity? box;
   final VoidCallback? onNextOrder;
@@ -29,9 +25,10 @@ class DriverBoxReceivedSuccessScreen extends StatelessWidget {
       return;
     }
     unawaited(
-      Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil(AppRoutes.driverAssignedBoxes, (route) => false),
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRoutes.driverAssignedBoxes,
+        (route) => false,
+      ),
     );
   }
 

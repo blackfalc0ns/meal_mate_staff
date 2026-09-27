@@ -45,17 +45,11 @@ class DriverPickupRemoteDataSourceImpl implements DriverPickupRemoteDataSource {
     required String idempotencyKey,
     required ConfirmDriverPickupRequestDto request,
   }) {
-    return _apiServices.confirmDriverBoxPickup(
-      boxId,
-      idempotencyKey,
-      request,
-    );
+    return _apiServices.confirmDriverBoxPickup(boxId, idempotencyKey, request);
   }
 
   @override
-  Future<DriverPickupSummaryResponseDto> getDriverPickupSummary(
-    String tripId,
-  ) {
+  Future<DriverPickupSummaryResponseDto> getDriverPickupSummary(String tripId) {
     return _apiServices.getDriverPickupSummary(tripId);
   }
 
@@ -65,10 +59,6 @@ class DriverPickupRemoteDataSourceImpl implements DriverPickupRemoteDataSource {
     required String idempotencyKey,
     required StartDriverTripRequestDto request,
   }) {
-    return _apiServices.startDriverTrip(
-      tripId,
-      idempotencyKey,
-      request,
-    );
+    return _apiServices.startDriverTrip(tripId, idempotencyKey, request);
   }
 }

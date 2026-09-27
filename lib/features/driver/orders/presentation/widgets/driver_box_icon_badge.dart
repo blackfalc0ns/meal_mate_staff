@@ -21,7 +21,8 @@ class DriverBoxIconBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final isPickedUp = (isLoaded ?? false) || status == DriverBoxDeliveryStatus.pickedUp;
+    final isPickedUp =
+        (isLoaded ?? false) || status == DriverBoxDeliveryStatus.pickedUp;
 
     final Color bgColor;
     final Color iconColor;

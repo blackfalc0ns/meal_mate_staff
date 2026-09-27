@@ -21,7 +21,8 @@ class DriverBoxStatusPill extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final isPickedUp = (isLoaded ?? false) || status == DriverBoxDeliveryStatus.pickedUp;
+    final isPickedUp =
+        (isLoaded ?? false) || status == DriverBoxDeliveryStatus.pickedUp;
 
     if (!isPickedUp) {
       return Container(

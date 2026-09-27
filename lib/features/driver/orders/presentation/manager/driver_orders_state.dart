@@ -17,16 +17,16 @@ class DriverOrdersState {
   });
 
   const DriverOrdersState.initial()
-      : manifest = const DriverDeliveryManifestEntity.empty(),
-        query = const DriverOrdersQueryEntity(),
-        isInitialLoading = true,
-        isRefreshing = false,
-        isQueryLoading = false,
-        failure = null,
-        actionFailure = null,
-        isRealtimeConnected = false,
-        lastAppliedEventAtUtc = null,
-        hasLoadedOnce = false;
+    : manifest = const DriverDeliveryManifestEntity.empty(),
+      query = const DriverOrdersQueryEntity(),
+      isInitialLoading = true,
+      isRefreshing = false,
+      isQueryLoading = false,
+      failure = null,
+      actionFailure = null,
+      isRealtimeConnected = false,
+      lastAppliedEventAtUtc = null,
+      hasLoadedOnce = false;
 
   final DriverDeliveryManifestEntity manifest;
   final DriverOrdersQueryEntity query;
@@ -60,8 +60,9 @@ class DriverOrdersState {
       isRefreshing: isRefreshing ?? this.isRefreshing,
       isQueryLoading: isQueryLoading ?? this.isQueryLoading,
       failure: clearFailure ? null : (failure ?? this.failure),
-      actionFailure:
-          clearActionFailure ? null : (actionFailure ?? this.actionFailure),
+      actionFailure: clearActionFailure
+          ? null
+          : (actionFailure ?? this.actionFailure),
       isRealtimeConnected: isRealtimeConnected ?? this.isRealtimeConnected,
       lastAppliedEventAtUtc:
           lastAppliedEventAtUtc ?? this.lastAppliedEventAtUtc,

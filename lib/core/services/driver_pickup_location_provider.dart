@@ -1,6 +1,7 @@
 class DriverPickupCoordinates {
   DriverPickupCoordinates({required this.latitude, required this.longitude}) {
-    final valid = latitude.isFinite &&
+    final valid =
+        latitude.isFinite &&
         longitude.isFinite &&
         latitude >= -90 &&
         latitude <= 90 &&
@@ -27,14 +28,16 @@ class DriverPickupCoordinates {
   int get hashCode => latitude.hashCode ^ longitude.hashCode;
 
   @override
-  String toString() => 'DriverPickupCoordinates(lat: $latitude, lng: $longitude)';
+  String toString() =>
+      'DriverPickupCoordinates(lat: $latitude, lng: $longitude)';
 }
 
 abstract interface class DriverPickupLocationProvider {
   Future<DriverPickupCoordinates> getCurrentCoordinates();
 }
 
-class DefaultDriverPickupLocationProvider implements DriverPickupLocationProvider {
+class DefaultDriverPickupLocationProvider
+    implements DriverPickupLocationProvider {
   const DefaultDriverPickupLocationProvider();
 
   @override

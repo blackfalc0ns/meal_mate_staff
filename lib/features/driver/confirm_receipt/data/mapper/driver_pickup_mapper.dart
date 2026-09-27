@@ -36,10 +36,7 @@ extension ConfirmDriverPickupRequestEntityMapper
 
 extension StartDriverTripRequestEntityMapper on StartDriverTripRequestEntity {
   StartDriverTripRequestDto toDto() {
-    return StartDriverTripRequestDto(
-      latitude: latitude,
-      longitude: longitude,
-    );
+    return StartDriverTripRequestDto(latitude: latitude, longitude: longitude);
   }
 }
 
@@ -117,7 +114,8 @@ extension DriverPickupConfirmationResponseDtoMapper
   }
 }
 
-extension DriverPickupSummaryResponseDtoMapper on DriverPickupSummaryResponseDto {
+extension DriverPickupSummaryResponseDtoMapper
+    on DriverPickupSummaryResponseDto {
   DriverPickupSummaryEntity toEntity() {
     final rawAssigned = assignedBoxesCount ?? 0;
     final rawValidated = validatedBoxesCount ?? 0;

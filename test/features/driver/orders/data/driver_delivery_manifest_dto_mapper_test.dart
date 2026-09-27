@@ -43,7 +43,7 @@ void main() {
             'latitude': 29, // int instead of double
             'longitude': 48.1,
             'status': 'UNKNOWN_CUSTOM_VALUE',
-          }
+          },
         ],
       };
 
@@ -72,32 +72,35 @@ void main() {
       expect(stopEntity.maskedPhoneNumber, isNull);
     });
 
-    test('maps case-insensitive known statuses and preserves unknown status', () {
-      final statuses = {
-        'pending': DriverDeliveryStatus.pending,
-        'Pending': DriverDeliveryStatus.pending,
-        'inProgress': DriverDeliveryStatus.inProgress,
-        'INPROGRESS': DriverDeliveryStatus.inProgress,
-        'arrivedAtCustomer': DriverDeliveryStatus.arrivedAtCustomer,
-        'ArrivedAtCustomer': DriverDeliveryStatus.arrivedAtCustomer,
-        'delivered': DriverDeliveryStatus.delivered,
-        'Delivered': DriverDeliveryStatus.delivered,
-        'failed': DriverDeliveryStatus.failed,
-        'FAILED': DriverDeliveryStatus.failed,
-        'reassignmentRequested': DriverDeliveryStatus.reassignmentRequested,
-        'ReassignmentRequested': DriverDeliveryStatus.reassignmentRequested,
-        'unsupported_status_xyz': DriverDeliveryStatus.unknown,
-        null: DriverDeliveryStatus.unknown,
-      };
+    test(
+      'maps case-insensitive known statuses and preserves unknown status',
+      () {
+        final statuses = {
+          'pending': DriverDeliveryStatus.pending,
+          'Pending': DriverDeliveryStatus.pending,
+          'inProgress': DriverDeliveryStatus.inProgress,
+          'INPROGRESS': DriverDeliveryStatus.inProgress,
+          'arrivedAtCustomer': DriverDeliveryStatus.arrivedAtCustomer,
+          'ArrivedAtCustomer': DriverDeliveryStatus.arrivedAtCustomer,
+          'delivered': DriverDeliveryStatus.delivered,
+          'Delivered': DriverDeliveryStatus.delivered,
+          'failed': DriverDeliveryStatus.failed,
+          'FAILED': DriverDeliveryStatus.failed,
+          'reassignmentRequested': DriverDeliveryStatus.reassignmentRequested,
+          'ReassignmentRequested': DriverDeliveryStatus.reassignmentRequested,
+          'unsupported_status_xyz': DriverDeliveryStatus.unknown,
+          null: DriverDeliveryStatus.unknown,
+        };
 
-      for (final entry in statuses.entries) {
-        expect(
-          DriverDeliveryStatusX.fromWire(entry.key),
-          entry.value,
-          reason: 'Failed mapping status ${entry.key}',
-        );
-      }
-    });
+        for (final entry in statuses.entries) {
+          expect(
+            DriverDeliveryStatusX.fromWire(entry.key),
+            entry.value,
+            reason: 'Failed mapping status ${entry.key}',
+          );
+        }
+      },
+    );
 
     test('sorts stops deterministically by sequenceNumber and boxId', () {
       final rawStops = [

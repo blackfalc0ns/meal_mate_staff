@@ -98,7 +98,10 @@ void main() {
       expect(fakeHub.handlers.containsKey('box-delivered'), true);
       expect(fakeHub.handlers.containsKey('delivery-failed'), true);
       expect(fakeHub.handlers.containsKey('driver-arrived-at-customer'), true);
-      expect(fakeHub.handlers.containsKey('driver-requested-reassignment'), true);
+      expect(
+        fakeHub.handlers.containsKey('driver-requested-reassignment'),
+        true,
+      );
       expect(fakeHub.handlers.containsKey('trip-in-transit'), true);
     });
 
@@ -148,7 +151,7 @@ void main() {
           'boxId': 'box-1',
           'tripStopId': 'stop-1',
           'occurredAtUtc': '2026-09-27T12:05:00Z',
-        }
+        },
       ]);
 
       await pumpEventQueue();

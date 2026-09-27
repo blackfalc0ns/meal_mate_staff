@@ -49,12 +49,9 @@ class DriverPickupFlowState {
   }
 
   bool get isBarcodeValidated =>
-      validationToken != null &&
-      validationToken!.isNotEmpty &&
-      !isTokenExpired;
+      validationToken != null && validationToken!.isNotEmpty && !isTokenExpired;
 
-  bool get canContinueToPhoto =>
-      isBarcodeValidated && !isValidatingBarcode;
+  bool get canContinueToPhoto => isBarcodeValidated && !isValidatingBarcode;
 
   bool get canConfirmPickup =>
       isBarcodeValidated &&

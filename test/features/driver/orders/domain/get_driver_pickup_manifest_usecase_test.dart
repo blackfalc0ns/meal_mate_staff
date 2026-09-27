@@ -7,8 +7,7 @@ import 'package:meal_mate_delivery/features/driver/orders/domain/usecase/get_dri
 
 class _FakeManifestRepository implements DriverPickupManifestRepository {
   DriverBoxesFilterType? requestedFilter;
-  ApiResult<DriverPickupManifestEntity> result =
-      const ApiSuccessResult(
+  ApiResult<DriverPickupManifestEntity> result = const ApiSuccessResult(
     data: DriverPickupManifestEntity(
       tripId: 'trip-usecase-1',
       tripCode: 'TRIP-1',

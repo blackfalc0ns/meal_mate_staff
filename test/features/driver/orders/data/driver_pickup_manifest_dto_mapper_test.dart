@@ -54,7 +54,7 @@ void main() {
           'isScanned': true,
           'scannedAtUtc': '2026-09-27T10:00:00Z',
           'conditionPhotoStorageKey': 'photos/box-002-photo.jpg',
-        }
+        },
       ],
     };
 
@@ -158,7 +158,10 @@ void main() {
 
       expect(entity.boxes.last.status, DriverBoxDeliveryStatus.pickedUp);
       expect(entity.boxes.last.isPickedUp, isTrue);
-      expect(entity.boxes.last.conditionPhotoStorageKey, 'photos/box-002-photo.jpg');
+      expect(
+        entity.boxes.last.conditionPhotoStorageKey,
+        'photos/box-002-photo.jpg',
+      );
     });
 
     test('uses fallback values for empty/null DTO', () {
@@ -179,9 +182,7 @@ void main() {
     });
 
     test('falls back to scannedBoxesCount if pickedUpBoxesCount is null', () {
-      const legacyDto = DriverPickupManifestResponseDto(
-        scannedBoxesCount: 3,
-      );
+      const legacyDto = DriverPickupManifestResponseDto(scannedBoxesCount: 3);
       final entity = legacyDto.toEntity();
       expect(entity.pickedUpBoxesCount, 3);
     });

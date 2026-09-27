@@ -17,16 +17,16 @@ class DriverDeliveryManifestEntity {
   }) : stops = List.unmodifiable(stops);
 
   const DriverDeliveryManifestEntity.empty()
-      : tripId = null,
-        tripCode = null,
-        tripStatus = null,
-        tripStatusText = null,
-        serverTimeUtc = null,
-        totalCount = 0,
-        inProgressCount = 0,
-        deliveredCount = 0,
-        failedCount = 0,
-        stops = const [];
+    : tripId = null,
+      tripCode = null,
+      tripStatus = null,
+      tripStatusText = null,
+      serverTimeUtc = null,
+      totalCount = 0,
+      inProgressCount = 0,
+      deliveredCount = 0,
+      failedCount = 0,
+      stops = const [];
 
   final String? tripId;
   final String? tripCode;

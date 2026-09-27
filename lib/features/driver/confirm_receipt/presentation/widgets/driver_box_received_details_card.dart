@@ -8,10 +8,7 @@ import '../../domain/entities/driver_box_received_success_entity.dart';
 import 'driver_box_received_detail_row.dart';
 
 class DriverBoxReceivedDetailsCard extends StatelessWidget {
-  const DriverBoxReceivedDetailsCard({
-    super.key,
-    required this.box,
-  });
+  const DriverBoxReceivedDetailsCard({super.key, required this.box});
 
   final DriverBoxReceivedSuccessEntity box;
 
@@ -26,10 +23,7 @@ class DriverBoxReceivedDetailsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(
-          color: color.outlineVariant,
-          width: Spacing.border,
-        ),
+        border: Border.all(color: color.outlineVariant, width: Spacing.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

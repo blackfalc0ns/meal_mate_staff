@@ -152,17 +152,21 @@ class _DriverConfirmReceiptScreenState
             Navigator.of(context).pushReplacementNamed(
               AppRoutes.driverBoxReceivedSuccess,
               arguments: DriverBoxReceivedSuccessEntity(
-                boxCode: state.validatedBox?.boxCode ??
+                boxCode:
+                    state.validatedBox?.boxCode ??
                     state.confirmation?.boxCode ??
                     widget.box?.boxCode ??
                     '',
-                restaurantName: state.validatedBox?.customerName ??
+                restaurantName:
+                    state.validatedBox?.customerName ??
                     widget.box?.customerName ??
                     '',
-                itemsCount: state.validatedBox?.mealsCount ??
+                itemsCount:
+                    state.validatedBox?.mealsCount ??
                     widget.box?.mealsCount ??
                     0,
-                expectedReceiptTime: state.validatedBox?.deliveryTimeSlot ??
+                expectedReceiptTime:
+                    state.validatedBox?.deliveryTimeSlot ??
                     widget.box?.deliveryTimeSlot ??
                     '',
                 isReceived: true,
@@ -205,19 +209,22 @@ class _DriverConfirmReceiptScreenState
                       isQrScanned: state.isBarcodeValidated,
                       onContinueToStep2: _goToStep2,
                       failure: state.failure,
-                      onRetry: () => _viewModel.doIntent(const RetryFailedStageEvent()),
+                      onRetry: () =>
+                          _viewModel.doIntent(const RetryFailedStageEvent()),
                       isLoading: state.isValidatingBarcode,
                     )
                   else
                     DriverConfirmReceiptStep2Section(
                       scannerController: _scannerController,
-                      isPhotoCaptured: state.localPhotoPath != null &&
+                      isPhotoCaptured:
+                          state.localPhotoPath != null &&
                           state.localPhotoPath!.isNotEmpty,
                       onCapturePhoto: _handleCapturePhoto,
                       onConfirmDelivery: _handleConfirmReceipt,
                       capturedPhotoPath: state.localPhotoPath,
                       failure: state.failure,
-                      onRetry: () => _viewModel.doIntent(const RetryFailedStageEvent()),
+                      onRetry: () =>
+                          _viewModel.doIntent(const RetryFailedStageEvent()),
                       isLoading: state.isActionLoading,
                     ),
                   const SizedBox(height: Spacing.xxl),

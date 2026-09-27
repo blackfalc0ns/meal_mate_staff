@@ -33,11 +33,7 @@ class DriverBoxReceivedDetailRow extends StatelessWidget {
             color: color.primaryContainer,
             borderRadius: BorderRadius.circular(Spacing.radiusSm),
           ),
-          child: Icon(
-            icon,
-            size: Spacing.iconSm,
-            color: color.primary,
-          ),
+          child: Icon(icon, size: Spacing.iconSm, color: color.primary),
         ),
         const SizedBox(width: Spacing.md),
         Expanded(

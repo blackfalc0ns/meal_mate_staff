@@ -12,9 +12,7 @@ extension DriverDeliveryManifestMapper on DriverDeliveryManifestResponseDto {
       parsedServerTime = DateTime.tryParse(serverTimeUtc!)?.toUtc();
     }
 
-    final mappedStops = (stops ?? [])
-        .map((s) => s.toEntity())
-        .toList();
+    final mappedStops = (stops ?? []).map((s) => s.toEntity()).toList();
 
     mappedStops.sort((a, b) {
       final cmp = a.sequenceNumber.compareTo(b.sequenceNumber);
@@ -71,8 +69,8 @@ extension DriverDeliveryStopMapper on DriverDeliveryStopResponseDto {
       canCompleteDelivery: canCompleteDelivery ?? false,
       canNavigate: canNavigate ?? false,
       canCallCustomer: canCallCustomer ?? false,
-      maskedPhoneNumber: (maskedPhoneNumber != null &&
-              maskedPhoneNumber!.trim().isNotEmpty)
+      maskedPhoneNumber:
+          (maskedPhoneNumber != null && maskedPhoneNumber!.trim().isNotEmpty)
           ? maskedPhoneNumber!.trim()
           : null,
     );

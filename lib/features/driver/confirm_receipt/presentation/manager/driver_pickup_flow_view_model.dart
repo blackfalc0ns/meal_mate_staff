@@ -25,12 +25,12 @@ class DriverPickupFlowViewModel
     required ConfirmDriverBoxPickupUseCase confirmPickupUseCase,
     required DriverPickupLocationProvider locationProvider,
     required IdempotencyKeyFactory idempotencyKeyFactory,
-  })  : _validateBarcodeUseCase = validateBarcodeUseCase,
-        _uploadPhotoUseCase = uploadPhotoUseCase,
-        _confirmPickupUseCase = confirmPickupUseCase,
-        _locationProvider = locationProvider,
-        _idempotencyKeyFactory = idempotencyKeyFactory,
-        super(const DriverPickupFlowState()) {
+  }) : _validateBarcodeUseCase = validateBarcodeUseCase,
+       _uploadPhotoUseCase = uploadPhotoUseCase,
+       _confirmPickupUseCase = confirmPickupUseCase,
+       _locationProvider = locationProvider,
+       _idempotencyKeyFactory = idempotencyKeyFactory,
+       super(const DriverPickupFlowState()) {
     on<ValidateBarcodeEvent>(_onValidateBarcode);
     on<StepChangedEvent>(_onStepChanged);
     on<PhotoSelectedEvent>(_onPhotoSelected);
@@ -126,9 +126,7 @@ class DriverPickupFlowViewModel
     await _executeUploadPhoto(emit);
   }
 
-  Future<bool> _executeUploadPhoto(
-    Emitter<DriverPickupFlowState> emit,
-  ) async {
+  Future<bool> _executeUploadPhoto(Emitter<DriverPickupFlowState> emit) async {
     final boxId = state.validatedBox?.boxId;
     final token = state.validationToken;
     final photoPath = state.localPhotoPath;
@@ -173,12 +171,7 @@ class DriverPickupFlowViewModel
         );
         return true;
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isUploadingPhoto: false,
-            failure: failure,
-          ),
-        );
+        emit(state.copyWith(isUploadingPhoto: false, failure: failure));
         return false;
     }
   }
@@ -211,7 +204,8 @@ class DriverPickupFlowViewModel
     }
 
     // Reuse or generate idempotency key
-    final idempotencyKey = state.idempotencyKey ?? _idempotencyKeyFactory.create();
+    final idempotencyKey =
+        state.idempotencyKey ?? _idempotencyKeyFactory.create();
     emit(state.copyWith(idempotencyKey: idempotencyKey));
 
     // Acquire GPS location
@@ -233,10 +227,7 @@ class DriverPickupFlowViewModel
       emit(
         state.copyWith(
           isConfirmingPickup: false,
-          failure: Failure(
-            errorMessage: e.toString(),
-            code: 'location_error',
-          ),
+          failure: Failure(errorMessage: e.toString(), code: 'location_error'),
         ),
       );
       return;
@@ -274,12 +265,7 @@ class DriverPickupFlowViewModel
           ),
         );
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isConfirmingPickup: false,
-            failure: failure,
-          ),
-        );
+        emit(state.copyWith(isConfirmingPickup: false, failure: failure));
     }
   }
 
@@ -297,14 +283,14 @@ class DriverPickupFlowViewModel
     } else if (state.localPhotoPath != null && state.validatedBox != null) {
       await _onConfirmPickup(const ConfirmPickupEvent(), emit);
     } else if (_lastAttemptedBarcode != null && state.validatedBox == null) {
-      await _onValidateBarcode(ValidateBarcodeEvent(_lastAttemptedBarcode!), emit);
+      await _onValidateBarcode(
+        ValidateBarcodeEvent(_lastAttemptedBarcode!),
+        emit,
+      );
     }
   }
 
-  void _onResetScan(
-    ResetScanEvent event,
-    Emitter<DriverPickupFlowState> emit,
-  ) {
+  void _onResetScan(ResetScanEvent event, Emitter<DriverPickupFlowState> emit) {
     _lastAttemptedBarcode = null;
     emit(const DriverPickupFlowState());
   }

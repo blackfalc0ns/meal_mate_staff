@@ -10,7 +10,8 @@ import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_orders_query_entity.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/repo/driver_orders_repository.dart';
 
-class _FakeDriverOrdersRemoteDataSource implements DriverOrdersRemoteDataSource {
+class _FakeDriverOrdersRemoteDataSource
+    implements DriverOrdersRemoteDataSource {
   String? lastStatusFilter;
   String? lastSearch;
   String? lastBoxId;
@@ -18,20 +19,19 @@ class _FakeDriverOrdersRemoteDataSource implements DriverOrdersRemoteDataSource 
 
   DriverDeliveryManifestResponseDto ordersResponse =
       const DriverDeliveryManifestResponseDto(
-    tripId: 'trip-abc',
-    tripCode: 'TRP-123',
-    stops: [
-      DriverDeliveryStopResponseDto(
-        tripStopId: 'ts1',
-        boxId: 'b1',
-        boxCode: 'BX-1',
-        sequenceNumber: 1,
-      ),
-    ],
-  );
+        tripId: 'trip-abc',
+        tripCode: 'TRP-123',
+        stops: [
+          DriverDeliveryStopResponseDto(
+            tripStopId: 'ts1',
+            boxId: 'b1',
+            boxCode: 'BX-1',
+            sequenceNumber: 1,
+          ),
+        ],
+      );
 
-  DriverCallProxyResponseDto proxyResponse =
-      const DriverCallProxyResponseDto(
+  DriverCallProxyResponseDto proxyResponse = const DriverCallProxyResponseDto(
     boxId: 'box-1',
     callableUri: 'tel:+96512345678',
     phoneNumber: '+96512345678',
@@ -70,22 +70,26 @@ void main() {
   });
 
   group('DriverOrdersRepositoryImpl', () {
-    test('returns mapped entity wrapped in ApiSuccessResult on success', () async {
-      final result = await repository.getDriverOrders(
-        const DriverOrdersQueryEntity(
-          filter: DriverOrdersFilter.inProgress,
-          search: 'BX-1',
-        ),
-      );
+    test(
+      'returns mapped entity wrapped in ApiSuccessResult on success',
+      () async {
+        final result = await repository.getDriverOrders(
+          const DriverOrdersQueryEntity(
+            filter: DriverOrdersFilter.inProgress,
+            search: 'BX-1',
+          ),
+        );
 
-      expect(result, isA<ApiSuccessResult<DriverDeliveryManifestEntity>>());
-      final entity = (result as ApiSuccessResult<DriverDeliveryManifestEntity>).data;
-      expect(entity.tripId, 'trip-abc');
-      expect(entity.stops.length, 1);
-      expect(entity.stops.first.boxCode, 'BX-1');
-      expect(fakeRemoteDataSource.lastStatusFilter, 'InProgress');
-      expect(fakeRemoteDataSource.lastSearch, 'BX-1');
-    });
+        expect(result, isA<ApiSuccessResult<DriverDeliveryManifestEntity>>());
+        final entity =
+            (result as ApiSuccessResult<DriverDeliveryManifestEntity>).data;
+        expect(entity.tripId, 'trip-abc');
+        expect(entity.stops.length, 1);
+        expect(entity.stops.first.boxCode, 'BX-1');
+        expect(fakeRemoteDataSource.lastStatusFilter, 'InProgress');
+        expect(fakeRemoteDataSource.lastSearch, 'BX-1');
+      },
+    );
 
     test('wraps DioException in ApiErrorResult via safeApiCall', () async {
       fakeRemoteDataSource.shouldThrowDio = true;

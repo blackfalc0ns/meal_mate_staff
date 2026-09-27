@@ -10,7 +10,7 @@ import 'driver_pickup_manifest_state.dart';
 @injectable
 class DriverPickupManifestViewModel extends Cubit<DriverPickupManifestState> {
   DriverPickupManifestViewModel({required this.getManifestUseCase})
-      : super(const DriverPickupManifestState());
+    : super(const DriverPickupManifestState());
 
   final GetDriverPickupManifestUseCase getManifestUseCase;
 
@@ -26,6 +26,14 @@ class DriverPickupManifestViewModel extends Cubit<DriverPickupManifestState> {
         await _changeFilter(filter);
       case RetryDriverPickupManifestEvent():
         await _retry();
+      case SeedDriverPickupManifestEvent(:final manifest):
+        emit(
+          DriverPickupManifestState(
+            manifest: manifest,
+            isInitialLoading: false,
+            hasLoadedOnce: true,
+          ),
+        );
     }
   }
 

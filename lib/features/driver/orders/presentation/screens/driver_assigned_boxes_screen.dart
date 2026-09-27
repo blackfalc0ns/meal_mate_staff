@@ -64,22 +64,19 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
           0,
           (sum, b) => sum + b.mealsCount,
         ),
-        pendingScanBoxesCount:
-            widget.initialBoxes!.where((b) => !b.isPickedUp).length,
-        pickedUpBoxesCount:
-            widget.initialBoxes!.where((b) => b.isPickedUp).length,
+        pendingScanBoxesCount: widget.initialBoxes!
+            .where((b) => !b.isPickedUp)
+            .length,
+        pickedUpBoxesCount: widget.initialBoxes!
+            .where((b) => b.isPickedUp)
+            .length,
         allBoxesPickedUp: widget.initialBoxes!.every((b) => b.isPickedUp),
         canStartTrip: false,
         boxes: widget.initialBoxes!,
       );
-      _viewModel.emit(
-        DriverPickupManifestState(
-          manifest: seededManifest,
-          isInitialLoading: false,
-          hasLoadedOnce: true,
-        ),
-      );
-    } else if (!_viewModel.state.hasLoadedOnce && _viewModel.state.failure == null) {
+      _viewModel.doIntent(SeedDriverPickupManifestEvent(seededManifest));
+    } else if (!_viewModel.state.hasLoadedOnce &&
+        _viewModel.state.failure == null) {
       _viewModel.doIntent(const LoadDriverPickupManifestEvent());
     }
   }
@@ -182,9 +179,9 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
                                 child: DriverAssignedBoxesCardsShimmer(),
                               )
                             : boxes.isEmpty
-                                ? LayoutBuilder(
-                                    builder: (context, constraints) =>
-                                        SingleChildScrollView(
+                            ? LayoutBuilder(
+                                builder: (context, constraints) =>
+                                    SingleChildScrollView(
                                       physics:
                                           const AlwaysScrollableScrollPhysics(),
                                       child: ConstrainedBox(
@@ -198,27 +195,25 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
                                         ),
                                       ),
                                     ),
-                                  )
-                                : ListView.separated(
-                                    key: ValueKey(state.selectedFilter),
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    padding: const EdgeInsets.only(
-                                      bottom:
-                                          Spacing.bottomNavHeight + Spacing.md,
-                                    ),
-                                    itemCount: boxes.length,
-                                    separatorBuilder: (_, _) =>
-                                        const SizedBox(height: Spacing.sm),
-                                    itemBuilder: (context, index) {
-                                      final box = boxes[index];
-                                      return DriverAssignedBoxCard(
-                                        box: box,
-                                        onCompleteAction: () =>
-                                            _handleBoxAction(box),
-                                      );
-                                    },
-                                  ),
+                              )
+                            : ListView.separated(
+                                key: ValueKey(state.selectedFilter),
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                padding: const EdgeInsets.only(
+                                  bottom: Spacing.bottomNavHeight + Spacing.md,
+                                ),
+                                itemCount: boxes.length,
+                                separatorBuilder: (_, _) =>
+                                    const SizedBox(height: Spacing.sm),
+                                itemBuilder: (context, index) {
+                                  final box = boxes[index];
+                                  return DriverAssignedBoxCard(
+                                    box: box,
+                                    onCompleteAction: () =>
+                                        _handleBoxAction(box),
+                                  );
+                                },
+                              ),
                       ),
                     ],
                   ),

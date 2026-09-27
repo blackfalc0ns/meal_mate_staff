@@ -53,7 +53,8 @@ class _FakeDriverPickupRepository implements DriverPickupRepository {
   }
 
   @override
-  Future<ApiResult<DriverConditionPhotoUploadEntity>> uploadDriverBoxConditionPhoto({
+  Future<ApiResult<DriverConditionPhotoUploadEntity>>
+  uploadDriverBoxConditionPhoto({
     required String boxId,
     required File file,
     required String validationToken,
@@ -151,29 +152,40 @@ void main() {
   });
 
   group('Driver pickup use cases', () {
-    test('ValidateDriverPickupBarcodeUseCase delegates to repository', () async {
-      final useCase = ValidateDriverPickupBarcodeUseCase(fakeRepo);
-      const request = ValidateDriverBarcodeRequestEntity(barcodeValue: 'BOX-101');
-      final result = await useCase(request);
+    test(
+      'ValidateDriverPickupBarcodeUseCase delegates to repository',
+      () async {
+        final useCase = ValidateDriverPickupBarcodeUseCase(fakeRepo);
+        const request = ValidateDriverBarcodeRequestEntity(
+          barcodeValue: 'BOX-101',
+        );
+        final result = await useCase(request);
 
-      expect(fakeRepo.lastValidateRequest, request);
-      expect(result, isA<ApiSuccessResult<DriverBarcodeValidationEntity>>());
-    });
+        expect(fakeRepo.lastValidateRequest, request);
+        expect(result, isA<ApiSuccessResult<DriverBarcodeValidationEntity>>());
+      },
+    );
 
-    test('UploadDriverBoxConditionPhotoUseCase delegates to repository', () async {
-      final useCase = UploadDriverBoxConditionPhotoUseCase(fakeRepo);
-      final file = File('test.jpg');
-      final result = await useCase(
-        boxId: 'box-101',
-        file: file,
-        validationToken: 'token-abc',
-      );
+    test(
+      'UploadDriverBoxConditionPhotoUseCase delegates to repository',
+      () async {
+        final useCase = UploadDriverBoxConditionPhotoUseCase(fakeRepo);
+        final file = File('test.jpg');
+        final result = await useCase(
+          boxId: 'box-101',
+          file: file,
+          validationToken: 'token-abc',
+        );
 
-      expect(fakeRepo.lastUploadBoxId, 'box-101');
-      expect(fakeRepo.lastUploadFile, file);
-      expect(fakeRepo.lastUploadToken, 'token-abc');
-      expect(result, isA<ApiSuccessResult<DriverConditionPhotoUploadEntity>>());
-    });
+        expect(fakeRepo.lastUploadBoxId, 'box-101');
+        expect(fakeRepo.lastUploadFile, file);
+        expect(fakeRepo.lastUploadToken, 'token-abc');
+        expect(
+          result,
+          isA<ApiSuccessResult<DriverConditionPhotoUploadEntity>>(),
+        );
+      },
+    );
 
     test('ConfirmDriverBoxPickupUseCase delegates to repository', () async {
       final useCase = ConfirmDriverBoxPickupUseCase(fakeRepo);

@@ -13,9 +13,9 @@ class _FakeManifestRemoteDataSource
   bool shouldThrowDioError = false;
   DriverPickupManifestResponseDto response =
       const DriverPickupManifestResponseDto(
-    tripId: 'trip-repo-1',
-    totalBoxesCount: 5,
-  );
+        tripId: 'trip-repo-1',
+        totalBoxesCount: 5,
+      );
 
   @override
   Future<DriverPickupManifestResponseDto> getDriverPickupManifest({
@@ -34,33 +34,39 @@ class _FakeManifestRemoteDataSource
 
 void main() {
   group('DriverPickupManifestRepositoryImpl', () {
-    test('calls remote data source with wireValue and returns mapped entity on success', () async {
-      final fakeDataSource = _FakeManifestRemoteDataSource();
-      final repository = DriverPickupManifestRepositoryImpl(fakeDataSource);
+    test(
+      'calls remote data source with wireValue and returns mapped entity on success',
+      () async {
+        final fakeDataSource = _FakeManifestRemoteDataSource();
+        final repository = DriverPickupManifestRepositoryImpl(fakeDataSource);
 
-      final result = await repository.getDriverPickupManifest(
-        filter: DriverBoxesFilterType.pendingScan,
-      );
+        final result = await repository.getDriverPickupManifest(
+          filter: DriverBoxesFilterType.pendingScan,
+        );
 
-      expect(fakeDataSource.requestedFilter, 'PendingScan');
-      expect(result, isA<ApiSuccessResult>());
-      final success = result as ApiSuccessResult;
-      expect(success.data.tripId, 'trip-repo-1');
-      expect(success.data.totalBoxesCount, 5);
-    });
+        expect(fakeDataSource.requestedFilter, 'PendingScan');
+        expect(result, isA<ApiSuccessResult>());
+        final success = result as ApiSuccessResult;
+        expect(success.data.tripId, 'trip-repo-1');
+        expect(success.data.totalBoxesCount, 5);
+      },
+    );
 
-    test('wraps exceptions with safeApiCall returning ApiErrorResult', () async {
-      final fakeDataSource = _FakeManifestRemoteDataSource()
-        ..shouldThrowDioError = true;
-      final repository = DriverPickupManifestRepositoryImpl(fakeDataSource);
+    test(
+      'wraps exceptions with safeApiCall returning ApiErrorResult',
+      () async {
+        final fakeDataSource = _FakeManifestRemoteDataSource()
+          ..shouldThrowDioError = true;
+        final repository = DriverPickupManifestRepositoryImpl(fakeDataSource);
 
-      final result = await repository.getDriverPickupManifest(
-        filter: DriverBoxesFilterType.all,
-      );
+        final result = await repository.getDriverPickupManifest(
+          filter: DriverBoxesFilterType.all,
+        );
 
-      expect(result, isA<ApiErrorResult>());
-      final errorResult = result as ApiErrorResult;
-      expect(errorResult.failure, isA<ServerFailure>());
-    });
+        expect(result, isA<ApiErrorResult>());
+        final errorResult = result as ApiErrorResult;
+        expect(errorResult.failure, isA<ServerFailure>());
+      },
+    );
   });
 }

@@ -8,5 +8,6 @@ class ValidateDriverBarcodeRequestDto {
 
   final String barcodeValue;
 
-  Map<String, dynamic> toJson() => _$ValidateDriverBarcodeRequestDtoToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ValidateDriverBarcodeRequestDtoToJson(this);
 }

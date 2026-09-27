@@ -20,8 +20,7 @@ class DriverPickupConfirmationResponseDto {
 
   factory DriverPickupConfirmationResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DriverPickupConfirmationResponseDtoFromJson(json);
+  ) => _$DriverPickupConfirmationResponseDtoFromJson(json);
 
   final String? boxId;
   final String? boxCode;

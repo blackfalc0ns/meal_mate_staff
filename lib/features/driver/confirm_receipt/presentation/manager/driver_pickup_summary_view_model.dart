@@ -20,11 +20,11 @@ class DriverPickupSummaryViewModel
     required StartDriverTripUseCase startTripUseCase,
     required DriverPickupLocationProvider locationProvider,
     required IdempotencyKeyFactory idempotencyKeyFactory,
-  })  : _getSummaryUseCase = getSummaryUseCase,
-        _startTripUseCase = startTripUseCase,
-        _locationProvider = locationProvider,
-        _idempotencyKeyFactory = idempotencyKeyFactory,
-        super(const DriverPickupSummaryState()) {
+  }) : _getSummaryUseCase = getSummaryUseCase,
+       _startTripUseCase = startTripUseCase,
+       _locationProvider = locationProvider,
+       _idempotencyKeyFactory = idempotencyKeyFactory,
+       super(const DriverPickupSummaryState()) {
     on<LoadDriverPickupSummaryEvent>(_onLoadSummary);
     on<RetryDriverPickupSummaryEvent>(_onRetry);
     on<StartDriverTripEvent>(_onStartTrip);
@@ -76,12 +76,7 @@ class DriverPickupSummaryViewModel
           ),
         );
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isInitialLoading: false,
-            failure: failure,
-          ),
-        );
+        emit(state.copyWith(isInitialLoading: false, failure: failure));
     }
   }
 
@@ -114,7 +109,8 @@ class DriverPickupSummaryViewModel
     }
 
     // Reuse persistent idempotency key or create new one
-    final idempotencyKey = state.idempotencyKey ?? _idempotencyKeyFactory.create();
+    final idempotencyKey =
+        state.idempotencyKey ?? _idempotencyKeyFactory.create();
     emit(state.copyWith(idempotencyKey: idempotencyKey, clearFailure: true));
 
     // Acquire GPS location
@@ -136,10 +132,7 @@ class DriverPickupSummaryViewModel
       emit(
         state.copyWith(
           isActionLoading: false,
-          failure: Failure(
-            errorMessage: e.toString(),
-            code: 'location_error',
-          ),
+          failure: Failure(errorMessage: e.toString(), code: 'location_error'),
         ),
       );
       return;
@@ -168,12 +161,7 @@ class DriverPickupSummaryViewModel
           ),
         );
       case ApiErrorResult(:final failure):
-        emit(
-          state.copyWith(
-            isActionLoading: false,
-            failure: failure,
-          ),
-        );
+        emit(state.copyWith(isActionLoading: false, failure: failure));
     }
   }
 }

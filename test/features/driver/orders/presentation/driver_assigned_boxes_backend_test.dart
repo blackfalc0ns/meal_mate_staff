@@ -16,7 +16,6 @@ import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_pickup_manifest_entity.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/repo/driver_pickup_manifest_repository.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/usecase/get_driver_pickup_manifest_usecase.dart';
-import 'package:meal_mate_delivery/features/driver/orders/presentation/manager/driver_pickup_manifest_event.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/manager/driver_pickup_manifest_state.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/manager/driver_pickup_manifest_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
@@ -26,7 +25,8 @@ import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/d
 class _MockRepo implements DriverPickupManifestRepository {
   Future<ApiResult<DriverPickupManifestEntity>> Function(
     DriverBoxesFilterType filter,
-  )? onGetManifest;
+  )?
+  onGetManifest;
 
   @override
   Future<ApiResult<DriverPickupManifestEntity>> getDriverPickupManifest({
@@ -84,7 +84,8 @@ void main() {
 
   setUp(() {
     mockRepo = _MockRepo();
-    mockRepo.onGetManifest = (_) async => const ApiSuccessResult(data: sampleManifest);
+    mockRepo.onGetManifest = (_) async =>
+        const ApiSuccessResult(data: sampleManifest);
     useCase = GetDriverPickupManifestUseCase(mockRepo);
     viewModel = DriverPickupManifestViewModel(getManifestUseCase: useCase);
   });
@@ -109,21 +110,24 @@ void main() {
   }
 
   group('DriverAssignedBoxesScreen backend state decision table', () {
-    testWidgets('initial loading + no data renders DriverAssignedBoxesShimmer', (
-      tester,
-    ) async {
-      mockRepo.onGetManifest = (_) => Future.value(
-            const ApiSuccessResult(data: sampleManifest),
-          );
+    testWidgets(
+      'initial loading + no data renders DriverAssignedBoxesShimmer',
+      (tester) async {
+        mockRepo.onGetManifest = (_) =>
+            Future.value(const ApiSuccessResult(data: sampleManifest));
 
-      // Force initial loading state without completing
-      viewModel.emit(
-        const DriverPickupManifestState(isInitialLoading: true, manifest: null),
-      );
+        // Force initial loading state without completing
+        viewModel.emit(
+          const DriverPickupManifestState(
+            isInitialLoading: true,
+            manifest: null,
+          ),
+        );
 
-      await tester.pumpWidget(buildSubject());
-      expect(find.byType(DriverAssignedBoxesShimmer), findsOneWidget);
-    });
+        await tester.pumpWidget(buildSubject());
+        expect(find.byType(DriverAssignedBoxesShimmer), findsOneWidget);
+      },
+    );
 
     testWidgets('failure + no data renders ApiErrorWidget with retry intent', (
       tester,
@@ -186,28 +190,29 @@ void main() {
       expect(find.byType(DriverAssignedBoxesShimmer), findsNothing);
     });
 
-    testWidgets('refresh failure + existing data retains cards and shows InlineApiErrorWidget', (
-      tester,
-    ) async {
-      viewModel.emit(
-        DriverPickupManifestState(
-          isInitialLoading: false,
-          manifest: sampleManifest,
-          failure: ServerFailure(
-            errorMessage: 'Refresh error',
-            exception: const ApiException(
-              errorType: ApiErrorType.serverError,
-              message: 'Refresh error',
+    testWidgets(
+      'refresh failure + existing data retains cards and shows InlineApiErrorWidget',
+      (tester) async {
+        viewModel.emit(
+          DriverPickupManifestState(
+            isInitialLoading: false,
+            manifest: sampleManifest,
+            failure: ServerFailure(
+              errorMessage: 'Refresh error',
+              exception: const ApiException(
+                errorType: ApiErrorType.serverError,
+                message: 'Refresh error',
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      await tester.pumpWidget(buildSubject());
-      expect(find.byType(InlineApiErrorWidget), findsOneWidget);
-      expect(find.byType(DriverAssignedBoxCard), findsOneWidget);
-      expect(find.text('#BOX-101'), findsOneWidget);
-    });
+        await tester.pumpWidget(buildSubject());
+        expect(find.byType(InlineApiErrorWidget), findsOneWidget);
+        expect(find.byType(DriverAssignedBoxCard), findsOneWidget);
+        expect(find.text('#BOX-101'), findsOneWidget);
+      },
+    );
 
     testWidgets('content renders backend counters and boxes', (tester) async {
       viewModel.emit(

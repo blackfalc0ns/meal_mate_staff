@@ -15,7 +15,10 @@ void main() {
         'deliveredAtUtc': '2026-09-27T09:59:50Z',
       };
 
-      final event = DriverOrdersRealtimeEventDto.fromPayload('box-delivered', json);
+      final event = DriverOrdersRealtimeEventDto.fromPayload(
+        'box-delivered',
+        json,
+      );
 
       expect(event, isA<DriverOrderDeliveredEvent>());
       final delivered = event as DriverOrderDeliveredEvent;
@@ -40,7 +43,10 @@ void main() {
         'occurredAtUtc': '2026-09-27T10:05:00Z',
       };
 
-      final event = DriverOrdersRealtimeEventDto.fromPayload('delivery-failed', json);
+      final event = DriverOrdersRealtimeEventDto.fromPayload(
+        'delivery-failed',
+        json,
+      );
 
       expect(event, isA<DriverDeliveryFailedEvent>());
       final failed = event as DriverDeliveryFailedEvent;
@@ -101,7 +107,10 @@ void main() {
         'occurredAtUtc': '2026-09-27T08:00:00Z',
       };
 
-      final event = DriverOrdersRealtimeEventDto.fromPayload('trip-in-transit', json);
+      final event = DriverOrdersRealtimeEventDto.fromPayload(
+        'trip-in-transit',
+        json,
+      );
 
       expect(event, isA<DriverTripInTransitEvent>());
       final inTransit = event as DriverTripInTransitEvent;
@@ -116,7 +125,10 @@ void main() {
         'occurredAtUtc': '2026-09-27T12:00:00Z',
       };
 
-      final event = DriverOrdersRealtimeEventDto.fromPayload('future-unsupported-event', json);
+      final event = DriverOrdersRealtimeEventDto.fromPayload(
+        'future-unsupported-event',
+        json,
+      );
 
       expect(event, isA<DriverUnknownRealtimeEvent>());
       final unknown = event as DriverUnknownRealtimeEvent;
@@ -133,7 +145,10 @@ void main() {
         'occurredAtUtc': 'not-a-valid-date',
       };
 
-      final event = DriverOrdersRealtimeEventDto.fromPayload('box-delivered', json);
+      final event = DriverOrdersRealtimeEventDto.fromPayload(
+        'box-delivered',
+        json,
+      );
       expect(event, isA<DriverOrderDeliveredEvent>());
       expect(event.eventId, 'evt-7');
       expect(event.occurredAtUtc, isNotNull);

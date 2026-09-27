@@ -17,8 +17,8 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     this._tokenService, {
     String? hubUrl,
     HubConnection? hubConnection,
-  })  : _customHubUrl = hubUrl,
-        _providedHubConnection = hubConnection;
+  }) : _customHubUrl = hubUrl,
+       _providedHubConnection = hubConnection;
 
   final TokenService _tokenService;
   final String? _customHubUrl;
@@ -59,8 +59,8 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     final normalizedPath = uri.path.endsWith('/')
         ? '${uri.path}hubs/driver'
         : uri.path.isEmpty || uri.path == '/'
-            ? '/hubs/driver'
-            : '${uri.path}/hubs/driver';
+        ? '/hubs/driver'
+        : '${uri.path}/hubs/driver';
     return uri.replace(path: normalizedPath).toString();
   }
 

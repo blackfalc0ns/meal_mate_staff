@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
-import 'package:meal_mate_delivery/core/services/driver_pickup_location_provider.dart';
 import 'package:meal_mate_delivery/core/services/idempotency_key_factory.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_pickup_summary_entity.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_trip_start_entity.dart';
@@ -10,7 +9,6 @@ import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/repo/d
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/usecase/get_driver_pickup_summary_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/usecase/start_driver_trip_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_event.dart';
-import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_state.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_view_model.dart';
 
 import '../../../../support/fakes/fake_driver_pickup_location_provider.dart';
@@ -142,51 +140,57 @@ void main() {
       expect(viewModel.state.failure?.errorMessage, 'Network error');
     });
 
-    test('StartDriverTripEvent starts trip with location and idempotency key', () async {
-      fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
-      fakeRepo.startResult = const ApiSuccessResult(data: sampleStartResult);
+    test(
+      'StartDriverTripEvent starts trip with location and idempotency key',
+      () async {
+        fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
+        fakeRepo.startResult = const ApiSuccessResult(data: sampleStartResult);
 
-      viewModel.doIntent(const LoadDriverPickupSummaryEvent('trip-101'));
-      await pumpEventQueue();
+        viewModel.doIntent(const LoadDriverPickupSummaryEvent('trip-101'));
+        await pumpEventQueue();
 
-      viewModel.doIntent(const StartDriverTripEvent());
-      await pumpEventQueue();
+        viewModel.doIntent(const StartDriverTripEvent());
+        await pumpEventQueue();
 
-      expect(fakeRepo.startCalls, 1);
-      expect(fakeRepo.startIdempotencyKeys.first, 'trip-key-1');
-      expect(viewModel.state.startTripResult, sampleStartResult);
-      expect(viewModel.state.isActionLoading, isFalse);
-      expect(viewModel.state.failure, isNull);
-    });
+        expect(fakeRepo.startCalls, 1);
+        expect(fakeRepo.startIdempotencyKeys.first, 'trip-key-1');
+        expect(viewModel.state.startTripResult, sampleStartResult);
+        expect(viewModel.state.isActionLoading, isFalse);
+        expect(viewModel.state.failure, isNull);
+      },
+    );
 
-    test('StartDriverTripEvent retry reuses the same idempotency key', () async {
-      fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
-      fakeRepo.startResult = ApiErrorResult(
-        failure: Failure(errorMessage: 'Server 500', code: 'server_error'),
-      );
+    test(
+      'StartDriverTripEvent retry reuses the same idempotency key',
+      () async {
+        fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
+        fakeRepo.startResult = ApiErrorResult(
+          failure: Failure(errorMessage: 'Server 500', code: 'server_error'),
+        );
 
-      viewModel.doIntent(const LoadDriverPickupSummaryEvent('trip-101'));
-      await pumpEventQueue();
+        viewModel.doIntent(const LoadDriverPickupSummaryEvent('trip-101'));
+        await pumpEventQueue();
 
-      // First attempt
-      viewModel.doIntent(const StartDriverTripEvent());
-      await pumpEventQueue();
+        // First attempt
+        viewModel.doIntent(const StartDriverTripEvent());
+        await pumpEventQueue();
 
-      expect(fakeRepo.startCalls, 1);
-      expect(fakeRepo.startIdempotencyKeys[0], 'trip-key-1');
-      expect(viewModel.state.failure?.errorMessage, 'Server 500');
-      // Content remains visible!
-      expect(viewModel.state.summary, sampleSummary);
+        expect(fakeRepo.startCalls, 1);
+        expect(fakeRepo.startIdempotencyKeys[0], 'trip-key-1');
+        expect(viewModel.state.failure?.errorMessage, 'Server 500');
+        // Content remains visible!
+        expect(viewModel.state.summary, sampleSummary);
 
-      // Retry attempt
-      fakeRepo.startResult = const ApiSuccessResult(data: sampleStartResult);
-      viewModel.doIntent(const StartDriverTripEvent());
-      await pumpEventQueue();
+        // Retry attempt
+        fakeRepo.startResult = const ApiSuccessResult(data: sampleStartResult);
+        viewModel.doIntent(const StartDriverTripEvent());
+        await pumpEventQueue();
 
-      expect(fakeRepo.startCalls, 2);
-      expect(fakeRepo.startIdempotencyKeys[1], 'trip-key-1'); // Reused!
-      expect(viewModel.state.startTripResult, sampleStartResult);
-      expect(viewModel.state.failure, isNull);
-    });
+        expect(fakeRepo.startCalls, 2);
+        expect(fakeRepo.startIdempotencyKeys[1], 'trip-key-1'); // Reused!
+        expect(viewModel.state.startTripResult, sampleStartResult);
+        expect(viewModel.state.failure, isNull);
+      },
+    );
   });
 }

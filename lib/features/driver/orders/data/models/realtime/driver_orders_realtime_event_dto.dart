@@ -24,8 +24,9 @@ class DriverOrdersRealtimeEventDto {
 
     DateTime? deliveredAtUtc;
     if (json['deliveredAtUtc'] != null) {
-      deliveredAtUtc =
-          DateTime.tryParse(json['deliveredAtUtc'].toString())?.toUtc();
+      deliveredAtUtc = DateTime.tryParse(
+        json['deliveredAtUtc'].toString(),
+      )?.toUtc();
     }
 
     switch (eventType) {

@@ -17,34 +17,45 @@ class DriverBoxesReceivedShimmer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: Spacing.base),
+          const SizedBox(height: Spacing.base),
           // Success banner
-          ShimmerWidget(height: 72, borderRadius: Spacing.cardRadius),
-          SizedBox(height: Spacing.sm),
+          const ShimmerWidget(height: 72, borderRadius: Spacing.cardRadius),
+          const SizedBox(height: Spacing.sm),
           // Info summary card with 3 sections
-          ShimmerWidget(height: 84, borderRadius: Spacing.cardRadius),
-          SizedBox(height: Spacing.lg),
+          const ShimmerWidget(height: 84, borderRadius: Spacing.cardRadius),
+          const SizedBox(height: Spacing.lg),
           // Received boxes header bar
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ShimmerWidget(width: 140, height: 20, borderRadius: Spacing.radiusXs),
-              ShimmerWidget(width: 32, height: 20, borderRadius: Spacing.radiusPill),
+              ShimmerWidget(
+                width: 140,
+                height: 20,
+                borderRadius: Spacing.radiusXs,
+              ),
+              ShimmerWidget(
+                width: 32,
+                height: 20,
+                borderRadius: Spacing.radiusPill,
+              ),
             ],
           ),
-          SizedBox(height: Spacing.sm),
+          const SizedBox(height: Spacing.sm),
           // 4-5 received box cards
           for (int i = 0; i < 4; i++) ...[
-            ShimmerWidget(height: 68, borderRadius: Spacing.cardRadius),
-            SizedBox(height: Spacing.sm),
+            const ShimmerWidget(height: 68, borderRadius: Spacing.cardRadius),
+            const SizedBox(height: Spacing.sm),
           ],
-          SizedBox(height: Spacing.xs),
+          const SizedBox(height: Spacing.xs),
           // Safety banner
-          ShimmerWidget(height: 52, borderRadius: Spacing.cardRadius),
-          SizedBox(height: Spacing.lg),
+          const ShimmerWidget(height: 52, borderRadius: Spacing.cardRadius),
+          const SizedBox(height: Spacing.lg),
           // Start delivery action button
-          ShimmerWidget(height: Spacing.buttonHeight, borderRadius: Spacing.buttonRadius),
-          SizedBox(height: Spacing.xxl),
+          const ShimmerWidget(
+            height: Spacing.buttonHeight,
+            borderRadius: Spacing.buttonRadius,
+          ),
+          const SizedBox(height: Spacing.xxl),
         ],
       ),
     );

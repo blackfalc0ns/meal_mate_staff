@@ -16,8 +16,9 @@ class DriverOrdersRemoteDataSourceImpl implements DriverOrdersRemoteDataSource {
     required String statusFilter,
     String? search,
   }) {
-    final trimmedSearch =
-        (search != null && search.trim().isNotEmpty) ? search.trim() : null;
+    final trimmedSearch = (search != null && search.trim().isNotEmpty)
+        ? search.trim()
+        : null;
 
     return _apiServices.getDriverOrders(
       statusFilter: statusFilter,

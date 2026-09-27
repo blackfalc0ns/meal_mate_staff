@@ -54,8 +54,7 @@ class DriverPickupSummaryBoxResponseDto {
 
   factory DriverPickupSummaryBoxResponseDto.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$DriverPickupSummaryBoxResponseDtoFromJson(json);
+  ) => _$DriverPickupSummaryBoxResponseDtoFromJson(json);
 
   final String? boxId;
   final String? boxCode;

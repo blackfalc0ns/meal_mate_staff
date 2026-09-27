@@ -244,64 +244,76 @@ void main() {
       final initialCalls = fakeGetOrders.callCount;
 
       // Current filter is all; selecting all again should do nothing
-      viewModel.add(const SelectDriverOrdersFilterEvent(DriverOrdersFilter.all));
+      viewModel.add(
+        const SelectDriverOrdersFilterEvent(DriverOrdersFilter.all),
+      );
       await pumpEventQueue();
 
       expect(fakeGetOrders.callCount, initialCalls);
 
       // Selecting different filter triggers call
-      viewModel.add(const SelectDriverOrdersFilterEvent(DriverOrdersFilter.delivered));
+      viewModel.add(
+        const SelectDriverOrdersFilterEvent(DriverOrdersFilter.delivered),
+      );
       await pumpEventQueue();
 
       expect(fakeGetOrders.callCount, initialCalls + 1);
       expect(fakeGetOrders.lastQuery?.filter, DriverOrdersFilter.delivered);
     });
 
-    test('ResetDriverOrdersQueryEvent clears search and resets filter', () async {
-      fakeGetOrders.nextResult = ApiSuccessResult(data: sampleManifest);
-      viewModel.add(const LoadDriverOrdersEvent());
-      await pumpEventQueue();
+    test(
+      'ResetDriverOrdersQueryEvent clears search and resets filter',
+      () async {
+        fakeGetOrders.nextResult = ApiSuccessResult(data: sampleManifest);
+        viewModel.add(const LoadDriverOrdersEvent());
+        await pumpEventQueue();
 
-      viewModel.add(const SelectDriverOrdersFilterEvent(DriverOrdersFilter.failed));
-      await pumpEventQueue();
+        viewModel.add(
+          const SelectDriverOrdersFilterEvent(DriverOrdersFilter.failed),
+        );
+        await pumpEventQueue();
 
-      viewModel.add(const ResetDriverOrdersQueryEvent());
-      await pumpEventQueue();
+        viewModel.add(const ResetDriverOrdersQueryEvent());
+        await pumpEventQueue();
 
-      expect(viewModel.state.query.search, '');
-      expect(viewModel.state.query.filter, DriverOrdersFilter.all);
-    });
+        expect(viewModel.state.query.search, '');
+        expect(viewModel.state.query.filter, DriverOrdersFilter.all);
+      },
+    );
   });
 
   group('DriverOrdersViewModel Realtime Reducer Tests', () {
-    test('box-delivered event patches target stop and updates counts', () async {
-      fakeGetOrders.nextResult = ApiSuccessResult(data: sampleManifest);
-      viewModel.add(const LoadDriverOrdersEvent());
-      await pumpEventQueue();
+    test(
+      'box-delivered event patches target stop and updates counts',
+      () async {
+        fakeGetOrders.nextResult = ApiSuccessResult(data: sampleManifest);
+        viewModel.add(const LoadDriverOrdersEvent());
+        await pumpEventQueue();
 
-      expect(viewModel.state.manifest.inProgressCount, 2);
-      expect(viewModel.state.manifest.deliveredCount, 0);
+        expect(viewModel.state.manifest.inProgressCount, 2);
+        expect(viewModel.state.manifest.deliveredCount, 0);
 
-      final deliveredEvent = DriverOrderDeliveredEvent(
-        eventId: 'evt-del-1',
-        occurredAtUtc: DateTime.now().toUtc(),
-        tripId: 'trip-100',
-        boxId: 'box-1',
-        tripStopId: 'ts-1',
-        statusText: 'تم التسليم بنجاح',
-        deliveredAtUtc: DateTime.now().toUtc(),
-      );
+        final deliveredEvent = DriverOrderDeliveredEvent(
+          eventId: 'evt-del-1',
+          occurredAtUtc: DateTime.now().toUtc(),
+          tripId: 'trip-100',
+          boxId: 'box-1',
+          tripStopId: 'ts-1',
+          statusText: 'تم التسليم بنجاح',
+          deliveredAtUtc: DateTime.now().toUtc(),
+        );
 
-      viewModel.add(DriverOrdersRealtimeReceivedEvent(deliveredEvent));
-      await pumpEventQueue();
+        viewModel.add(DriverOrdersRealtimeReceivedEvent(deliveredEvent));
+        await pumpEventQueue();
 
-      final updatedStop = viewModel.state.manifest.stops.first;
-      expect(updatedStop.status, DriverDeliveryStatus.delivered);
-      expect(updatedStop.statusText, 'تم التسليم بنجاح');
-      expect(viewModel.state.manifest.inProgressCount, 1);
-      expect(viewModel.state.manifest.deliveredCount, 1);
-      expect(viewModel.state.manifest.totalCount, 2);
-    });
+        final updatedStop = viewModel.state.manifest.stops.first;
+        expect(updatedStop.status, DriverDeliveryStatus.delivered);
+        expect(updatedStop.statusText, 'تم التسليم بنجاح');
+        expect(viewModel.state.manifest.inProgressCount, 1);
+        expect(viewModel.state.manifest.deliveredCount, 1);
+        expect(viewModel.state.manifest.totalCount, 2);
+      },
+    );
 
     test('stale realtime event is ignored', () async {
       fakeGetOrders.nextResult = ApiSuccessResult(data: sampleManifest);
@@ -365,29 +377,32 @@ void main() {
       expect(viewModel.state.manifest.tripStatusText, 'خارج للتوصيل الآن');
     });
 
-    test('unknown box event triggers a refresh instead of fabricating fake data', () async {
-      fakeGetOrders.nextResult = ApiSuccessResult(data: sampleManifest);
-      viewModel.add(const LoadDriverOrdersEvent());
-      await pumpEventQueue();
+    test(
+      'unknown box event triggers a refresh instead of fabricating fake data',
+      () async {
+        fakeGetOrders.nextResult = ApiSuccessResult(data: sampleManifest);
+        viewModel.add(const LoadDriverOrdersEvent());
+        await pumpEventQueue();
 
-      final callsBefore = fakeGetOrders.callCount;
+        final callsBefore = fakeGetOrders.callCount;
 
-      // Event for an unknown box
-      viewModel.add(
-        DriverOrdersRealtimeReceivedEvent(
-          DriverOrderDeliveredEvent(
-            eventId: 'evt-unknown-box',
-            occurredAtUtc: DateTime.now().toUtc(),
-            tripId: 'trip-100',
-            boxId: 'box-non-existent',
-            tripStopId: 'ts-999',
+        // Event for an unknown box
+        viewModel.add(
+          DriverOrdersRealtimeReceivedEvent(
+            DriverOrderDeliveredEvent(
+              eventId: 'evt-unknown-box',
+              occurredAtUtc: DateTime.now().toUtc(),
+              tripId: 'trip-100',
+              boxId: 'box-non-existent',
+              tripStopId: 'ts-999',
+            ),
           ),
-        ),
-      );
-      await pumpEventQueue();
+        );
+        await pumpEventQueue();
 
-      // Triggered refresh
-      expect(fakeGetOrders.callCount, callsBefore + 1);
-    });
+        // Triggered refresh
+        expect(fakeGetOrders.callCount, callsBefore + 1);
+      },
+    );
   });
 }

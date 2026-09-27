@@ -122,7 +122,10 @@ void main() {
     viewModel.close();
   });
 
-  Widget buildScreen({String tripId = 'trip-101', NavigatorObserver? observer}) {
+  Widget buildScreen({
+    String tripId = 'trip-101',
+    NavigatorObserver? observer,
+  }) {
     return MaterialApp(
       locale: const Locale('en'),
       localizationsDelegates: const [
@@ -136,20 +139,23 @@ void main() {
       onGenerateRoute: (settings) {
         if (settings.name == AppRoutes.driverStartDeliveryRoute) {
           return MaterialPageRoute(
-            builder: (_) => const Scaffold(body: Text('Driver Start Delivery Route Screen')),
+            builder: (_) => const Scaffold(
+              body: Text('Driver Start Delivery Route Screen'),
+            ),
           );
         }
         return MaterialPageRoute(
-          builder: (_) => DriverBoxesReceivedScreen(
-            tripId: tripId,
-            viewModel: viewModel,
-          ),
+          builder: (_) =>
+              DriverBoxesReceivedScreen(tripId: tripId, viewModel: viewModel),
         );
       },
     );
   }
 
-  Future<void> sendIntent(WidgetTester tester, DriverPickupSummaryEvent event) async {
+  Future<void> sendIntent(
+    WidgetTester tester,
+    DriverPickupSummaryEvent event,
+  ) async {
     await tester.runAsync(() async {
       viewModel.doIntent(event);
       await pumpEventQueue();
@@ -158,7 +164,9 @@ void main() {
   }
 
   group('DriverBoxesReceivedScreen Backend Integration', () {
-    testWidgets('shows DriverBoxesReceivedShimmer during initial loading', (tester) async {
+    testWidgets('shows DriverBoxesReceivedShimmer during initial loading', (
+      tester,
+    ) async {
       fakeRepo.summaryCompleter = Completer();
       await tester.pumpWidget(buildScreen());
       await tester.pump(const Duration(milliseconds: 50));
@@ -167,7 +175,9 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
-    testWidgets('shows ApiErrorWidget on initial load failure and retries', (tester) async {
+    testWidgets('shows ApiErrorWidget on initial load failure and retries', (
+      tester,
+    ) async {
       fakeRepo.summaryResult = ApiErrorResult(
         failure: Failure(errorMessage: 'Network timeout', code: 'timeout'),
       );
@@ -195,7 +205,9 @@ void main() {
       expect(find.text('BOX-REAL-1'), findsOneWidget);
     });
 
-    testWidgets('shows EmptyStateWidget when summary boxes list is empty', (tester) async {
+    testWidgets('shows EmptyStateWidget when summary boxes list is empty', (
+      tester,
+    ) async {
       fakeRepo.summaryResult = const ApiSuccessResult(
         data: DriverPickupSummaryEntity(
           tripId: 'trip-empty',
@@ -222,56 +234,68 @@ void main() {
       expect(find.byType(EmptyStateWidget), findsOneWidget);
     });
 
-    testWidgets('renders backend summary boxes and enables action when canStartTrip is true', (tester) async {
-      fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
+    testWidgets(
+      'renders backend summary boxes and enables action when canStartTrip is true',
+      (tester) async {
+        fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
 
-      await tester.pumpWidget(buildScreen());
-      await tester.runAsync(() async {
-        await pumpEventQueue();
-      });
-      await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpWidget(buildScreen());
+        await tester.runAsync(() async {
+          await pumpEventQueue();
+        });
+        await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('BOX-REAL-1'), findsOneWidget);
-      expect(find.text('BOX-REAL-2'), findsOneWidget);
+        expect(find.text('BOX-REAL-1'), findsOneWidget);
+        expect(find.text('BOX-REAL-2'), findsOneWidget);
 
-      final actionButton = find.byType(DriverBoxesReceivedActionButton);
-      expect(actionButton, findsOneWidget);
-    });
+        final actionButton = find.byType(DriverBoxesReceivedActionButton);
+        expect(actionButton, findsOneWidget);
+      },
+    );
 
-    testWidgets('shows InlineApiErrorWidget when start trip fails while retaining content', (tester) async {
-      fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
-      fakeRepo.startResult = ApiErrorResult(
-        failure: Failure(errorMessage: 'Start trip failed 500', code: 'server_error'),
-      );
+    testWidgets(
+      'shows InlineApiErrorWidget when start trip fails while retaining content',
+      (tester) async {
+        fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
+        fakeRepo.startResult = ApiErrorResult(
+          failure: Failure(
+            errorMessage: 'Start trip failed 500',
+            code: 'server_error',
+          ),
+        );
 
-      await tester.pumpWidget(buildScreen());
-      await tester.runAsync(() async {
-        await pumpEventQueue();
-      });
-      await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpWidget(buildScreen());
+        await tester.runAsync(() async {
+          await pumpEventQueue();
+        });
+        await tester.pump(const Duration(milliseconds: 100));
 
-      await sendIntent(tester, const StartDriverTripEvent());
+        await sendIntent(tester, const StartDriverTripEvent());
 
-      expect(find.byType(InlineApiErrorWidget), findsOneWidget);
-      expect(find.text('Start trip failed 500'), findsOneWidget);
-      // Boxes content is still visible!
-      expect(find.text('BOX-REAL-1'), findsOneWidget);
-    });
+        expect(find.byType(InlineApiErrorWidget), findsOneWidget);
+        expect(find.text('Start trip failed 500'), findsOneWidget);
+        // Boxes content is still visible!
+        expect(find.text('BOX-REAL-1'), findsOneWidget);
+      },
+    );
 
-    testWidgets('navigates to driverStartDeliveryRoute on successful start trip', (tester) async {
-      fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
-      fakeRepo.startResult = const ApiSuccessResult(data: sampleStartResult);
+    testWidgets(
+      'navigates to driverStartDeliveryRoute on successful start trip',
+      (tester) async {
+        fakeRepo.summaryResult = const ApiSuccessResult(data: sampleSummary);
+        fakeRepo.startResult = const ApiSuccessResult(data: sampleStartResult);
 
-      await tester.pumpWidget(buildScreen());
-      await tester.runAsync(() async {
-        await pumpEventQueue();
-      });
-      await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpWidget(buildScreen());
+        await tester.runAsync(() async {
+          await pumpEventQueue();
+        });
+        await tester.pump(const Duration(milliseconds: 100));
 
-      await sendIntent(tester, const StartDriverTripEvent());
-      await tester.pump(const Duration(milliseconds: 400));
+        await sendIntent(tester, const StartDriverTripEvent());
+        await tester.pump(const Duration(milliseconds: 400));
 
-      expect(find.text('Driver Start Delivery Route Screen'), findsOneWidget);
-    });
+        expect(find.text('Driver Start Delivery Route Screen'), findsOneWidget);
+      },
+    );
   });
 }

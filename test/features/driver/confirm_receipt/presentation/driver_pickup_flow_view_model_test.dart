@@ -35,7 +35,8 @@ class _FakeRepository implements DriverPickupRepository {
   }
 
   @override
-  Future<ApiResult<DriverConditionPhotoUploadEntity>> uploadDriverBoxConditionPhoto({
+  Future<ApiResult<DriverConditionPhotoUploadEntity>>
+  uploadDriverBoxConditionPhoto({
     required String boxId,
     required File file,
     required String validationToken,
@@ -135,7 +136,10 @@ void main() {
 
     test('invalid barcode -> remains scanner with Failure', () async {
       fakeRepo.validateResult = ApiErrorResult(
-        failure: Failure(errorMessage: 'Invalid barcode value', code: 'invalid_barcode'),
+        failure: Failure(
+          errorMessage: 'Invalid barcode value',
+          code: 'invalid_barcode',
+        ),
       );
 
       viewModel.doIntent(const ValidateBarcodeEvent('INVALID'));
@@ -191,7 +195,9 @@ void main() {
     });
 
     test('expired token -> requiresRescan is true and clears token', () async {
-      final expiredDate = DateTime.now().toUtc().subtract(const Duration(minutes: 10));
+      final expiredDate = DateTime.now().toUtc().subtract(
+        const Duration(minutes: 10),
+      );
       fakeRepo.validateResult = ApiSuccessResult(
         data: DriverBarcodeValidationEntity(
           boxId: 'box-101',
@@ -284,64 +290,73 @@ void main() {
       expect(fakeRepo.confirmCalls, 2);
       expect(fakeRepo.confirmedIdempotencyKeys[1], firstKey);
       expect(viewModel.state.stage, DriverPickupFlowStage.pickedUp);
-      expect(viewModel.state.confirmation?.nextAction, DriverPickupNextAction.showBoxSuccess);
+      expect(
+        viewModel.state.confirmation?.nextAction,
+        DriverPickupNextAction.showBoxSuccess,
+      );
     });
 
-    test('confirmation ShowPickupSummary -> nextAction indicates summary navigation', () async {
-      fakeRepo.validateResult = const ApiSuccessResult(
-        data: DriverBarcodeValidationEntity(
-          boxId: 'box-105',
-          boxCode: 'BOX-105',
-          customerName: 'Sara',
-          deliveryZone: 'Salmiya',
-          mealsCount: 3,
-          deliveryTimeSlot: '12:00 - 14:00',
-          validationToken: 'token-5',
-          expiresAtUtc: null,
-          status: 'Validated',
-          statusText: 'Validated',
-          nextAction: 'TakeConditionPhoto',
-        ),
-      );
-      viewModel.doIntent(const ValidateBarcodeEvent('BOX-105'));
-      await pumpEventQueue();
+    test(
+      'confirmation ShowPickupSummary -> nextAction indicates summary navigation',
+      () async {
+        fakeRepo.validateResult = const ApiSuccessResult(
+          data: DriverBarcodeValidationEntity(
+            boxId: 'box-105',
+            boxCode: 'BOX-105',
+            customerName: 'Sara',
+            deliveryZone: 'Salmiya',
+            mealsCount: 3,
+            deliveryTimeSlot: '12:00 - 14:00',
+            validationToken: 'token-5',
+            expiresAtUtc: null,
+            status: 'Validated',
+            statusText: 'Validated',
+            nextAction: 'TakeConditionPhoto',
+          ),
+        );
+        viewModel.doIntent(const ValidateBarcodeEvent('BOX-105'));
+        await pumpEventQueue();
 
-      viewModel.doIntent(const StepChangedEvent(2));
-      viewModel.doIntent(const PhotoSelectedEvent('path/to/photo5.jpg'));
+        viewModel.doIntent(const StepChangedEvent(2));
+        viewModel.doIntent(const PhotoSelectedEvent('path/to/photo5.jpg'));
 
-      fakeRepo.uploadResult = const ApiSuccessResult(
-        data: DriverConditionPhotoUploadEntity(
-          boxId: 'box-105',
-          conditionPhotoStorageKey: 'key-5',
-          uploadedAtUtc: null,
-          status: 'Uploaded',
-          statusText: 'Uploaded',
-          nextAction: 'ConfirmPickup',
-        ),
-      );
+        fakeRepo.uploadResult = const ApiSuccessResult(
+          data: DriverConditionPhotoUploadEntity(
+            boxId: 'box-105',
+            conditionPhotoStorageKey: 'key-5',
+            uploadedAtUtc: null,
+            status: 'Uploaded',
+            statusText: 'Uploaded',
+            nextAction: 'ConfirmPickup',
+          ),
+        );
 
-      fakeRepo.confirmResult = const ApiSuccessResult(
-        data: DriverPickupConfirmationEntity(
-          boxId: 'box-105',
-          boxCode: 'BOX-105',
-          tripId: 'trip-101',
-          confirmedAtUtc: null,
-          status: 'PickedUp',
-          statusText: 'PickedUp',
-          nextAction: DriverPickupNextAction.showPickupSummary,
-          pickedUpBoxesCount: 5,
-          totalBoxesCount: 5,
-          allBoxesPickedUp: true,
-        ),
-      );
+        fakeRepo.confirmResult = const ApiSuccessResult(
+          data: DriverPickupConfirmationEntity(
+            boxId: 'box-105',
+            boxCode: 'BOX-105',
+            tripId: 'trip-101',
+            confirmedAtUtc: null,
+            status: 'PickedUp',
+            statusText: 'PickedUp',
+            nextAction: DriverPickupNextAction.showPickupSummary,
+            pickedUpBoxesCount: 5,
+            totalBoxesCount: 5,
+            allBoxesPickedUp: true,
+          ),
+        );
 
-      viewModel.doIntent(const ConfirmPickupEvent());
-      await pumpEventQueue();
+        viewModel.doIntent(const ConfirmPickupEvent());
+        await pumpEventQueue();
 
-      expect(viewModel.state.stage, DriverPickupFlowStage.pickedUp);
-      expect(viewModel.state.confirmation?.nextAction, DriverPickupNextAction.showPickupSummary);
-      expect(viewModel.state.confirmation?.allBoxesPickedUp, isTrue);
-    });
+        expect(viewModel.state.stage, DriverPickupFlowStage.pickedUp);
+        expect(
+          viewModel.state.confirmation?.nextAction,
+          DriverPickupNextAction.showPickupSummary,
+        );
+        expect(viewModel.state.confirmation?.allBoxesPickedUp, isTrue);
+      },
+    );
 
     test('resetScan resets all state back to step 1 pendingScan', () async {
       fakeRepo.validateResult = const ApiSuccessResult(
