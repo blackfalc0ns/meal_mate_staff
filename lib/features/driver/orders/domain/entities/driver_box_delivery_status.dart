@@ -1,1 +1,6 @@
-enum DriverBoxDeliveryStatus { notLoaded, ready, delivered, failed }
+enum DriverBoxDeliveryStatus {
+  pendingScan,
+  barcodeValidated,
+  photoUploaded,
+  pickedUp,
+}
