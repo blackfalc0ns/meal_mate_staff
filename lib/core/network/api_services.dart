@@ -53,6 +53,8 @@ import '../../features/dispatcher/dispatcher_box_tracking/data/models/response/r
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_active_boxes_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_current_location_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_details_response_dto.dart';
+import '../../features/driver/orders/data/models/response/driver_call_proxy_response_dto.dart';
+import '../../features/driver/orders/data/models/response/driver_delivery_manifest_response_dto.dart';
 import '../../features/driver/orders/data/models/response/driver_pickup_manifest_response_dto.dart';
 import '../../features/driver/confirm_receipt/data/models/request/confirm_driver_pickup_request_dto.dart';
 import '../../features/driver/confirm_receipt/data/models/request/start_driver_trip_request_dto.dart';
@@ -335,5 +337,16 @@ abstract class ApiServices {
     @Path('tripId') String tripId,
     @Header('Idempotency-Key') String idempotencyKey,
     @Body() StartDriverTripRequestDto request,
+  );
+
+  @GET(EndPoints.driverOrders)
+  Future<DriverDeliveryManifestResponseDto> getDriverOrders({
+    @Query('statusFilter') required String statusFilter,
+    @Query('search') String? search,
+  });
+
+  @GET(EndPoints.driverCallProxy)
+  Future<DriverCallProxyResponseDto> getDriverCallProxy(
+    @Path('boxId') String boxId,
   );
 }

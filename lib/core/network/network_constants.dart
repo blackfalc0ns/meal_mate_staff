@@ -91,4 +91,10 @@ abstract class EndPoints {
       '/api/v1/driver/trips/{tripId}/pickup-summary';
   static const String driverTripStart =
       '/api/v1/driver/trips/{tripId}/start';
+
+  // Driver orders (Screen 05.05) & realtime endpoints
+  static const String driverOrders = '/api/v1/driver/orders';
+  static const String driverCallProxy =
+      '/api/v1/driver/orders/{boxId}/call-proxy';
+  static const String driverHub = '/hubs/driver';
 }
