@@ -77,4 +77,8 @@ abstract class EndPoints {
       '/api/v1/dispatcher/drivers/{driverId}/active-boxes';
   static const String dispatcherDriverCurrentLocation =
       '/api/v1/dispatcher/drivers/{driverId}/current-location';
+
+  // Driver pickup flow endpoints
+  static const String driverPickupManifest =
+      '/api/v1/driver/pickup/manifest';
 }

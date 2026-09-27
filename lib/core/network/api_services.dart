@@ -53,6 +53,7 @@ import '../../features/dispatcher/dispatcher_box_tracking/data/models/response/r
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_active_boxes_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_current_location_response_dto.dart';
 import '../../features/dispatcher/dispatcher_driver_details/data/models/response/driver_details_response_dto.dart';
+import '../../features/driver/orders/data/models/response/driver_pickup_manifest_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -289,5 +290,10 @@ abstract class ApiServices {
   @GET(EndPoints.dispatcherDriverCurrentLocation)
   Future<DriverCurrentLocationResponseDto> getDispatcherDriverCurrentLocation(
     @Path('driverId') String driverId,
+  );
+
+  @GET(EndPoints.driverPickupManifest)
+  Future<DriverPickupManifestResponseDto> getDriverPickupManifest(
+    @Query('statusFilter') String statusFilter,
   );
 }
