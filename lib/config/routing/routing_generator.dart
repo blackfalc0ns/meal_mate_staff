@@ -23,9 +23,10 @@ import 'arguments/box_tracking_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_box_tracking/presentation/screens/dispatcher_box_tracking_screen.dart';
 import 'arguments/dispatcher_driver_details_route_arguments.dart';
 import 'arguments/dispatcher_map_route_arguments.dart';
-import '../../features/dispatcher/dispatcher_driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/presentation/screens/dispatcher_driver_performance_screen.dart';
 import '../../features/dispatcher/dispatcher_drivers/presentation/screens/dispatcher_drivers_screen.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/presentation/screens/dispatcher_driver_status_details_screen.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/presentation/screens/dispatcher_drivers_status_screen.dart';
 import '../../features/dispatcher/dispatcher_home/presentation/screens/dispatcher_home_screen.dart';
 import '../../features/dispatcher/dispatcher_map/presentation/screens/dispatcher_map_screen.dart';
 import '../../features/dispatcher/dispatcher_notifications/presentation/screens/dispatcher_notifications_screen.dart';
@@ -276,6 +277,12 @@ class RouteGenerator {
           page: DispatcherDriversScreen(args: args),
         );
 
+      case AppRoutes.dispatcherDriversStatus:
+        return _buildRoute(
+          settings: settings,
+          page: const DispatcherDriversStatusScreen(),
+        );
+
       case AppRoutes.dispatcherDriverPerformance:
         return _buildRoute(
           settings: settings,
@@ -393,7 +400,7 @@ class RouteGenerator {
         }
         return _buildRoute(
           settings: settings,
-          page: DispatcherDriverDetailsScreen(
+          page: DispatcherDriverStatusDetailsScreen(
             driverId: driverDetailsArgs.driverId,
           ),
         );

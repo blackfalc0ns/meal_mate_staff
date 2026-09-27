@@ -1091,6 +1091,86 @@
   "driverPaymentMethodLabel": "طريقة الدفع",
   "driverReceiptConfirmedAction": "تم تأكيد الاستلام",
   "driverNextOrderAction": "الانتقال إلى الطلب التالي",
-  "driverBackToOrdersAction": "العودة للطلبات"
+  "driverBackToOrdersAction": "العودة للطلبات",
+  "driversStatusTitle": "حالة السائقين",
+  "driversStatusSubtitle": "إدارة حالة اتصال السائقين وتوفرهم للتوصيل",
+  "driversStatusConnectedCount": "متصلين",
+  "driversStatusInDeliveryCount": "في التوصيل",
+  "driversStatusOfflineCount": "غير متصلين",
+  "driversStatusFilter": "تصفية",
+  "driversStatusSearchHint": "البحث عن سائق بالإسم أو رقم الهاتف...",
+  "driversStatusCount": "{count} سائق",
+  "@driversStatusCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driversStatusRating": "التقييم",
+  "driversStatusVehicleCar": "سيارة",
+  "driversStatusBadgeAvailable": "متوفر",
+  "driversStatusBadgeOffline": "غير متصل",
+  "driversStatusBadgeOnline": "متصل",
+  "driversStatusStoreName": "مطعم MealMate الكويت",
+  "driversStatusRoleDispatcher": "Dispatcher",
+  "driversStatusEmpty": "لا يوجد سائقين مطابقين للبحث",
+  "driverDetailsReviewsCount": "({count} تقييم)",
+  "@driverDetailsReviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsAvailableSubtitle": "السائق متاح لإستقبال الطلبات",
+  "driverDetailsUnavailableSubtitle": "السائق غير متاح حالياً",
+  "driverDetailsConnectedNow": "متصل الآن",
+  "driverDetailsNotConnected": "غير متصل",
+  "driverDetailsTotalOrders": "إجمالي الطلبات",
+  "driverDetailsWorkTimeToday": "وقت العمل اليوم",
+  "driverDetailsDistanceToday": "المسافة اليوم",
+  "driverDetailsActiveOrders": "الطلبات النشطة",
+  "driverDetailsMinutesShort": "{count} د",
+  "@driverDetailsMinutesShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsKmShort": "{distance} كم",
+  "@driverDetailsKmShort": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "driverDetailsContactInfoTitle": "معلومات الاتصال",
+  "driverDetailsContactSubtitle": "اتصال عبر الواتساب أو الجوال",
+  "driverDetailsVehicleInfoTitle": "معلومات المركبة",
+  "driverDetailsColorWhite": "أبيض",
+  "driverDetailsAreaSalmiya": "المنطقة السالمية",
+  "driverDetailsUpdatedTwoMinAgo": "آخر تحديث منذ دقيقتين",
+  "driverDetailsShowOnMap": "عرض على الخريطة",
+  "driverDetailsPerformanceAndEvaluationTitle": "الأداء والتقييم",
+  "driverDetailsAverageRating": "متوسط التقييم",
+  "driverDetailsCommitmentRate": "معدل الالتزام",
+  "driverDetailsViolations": "مخالفات",
+  "driverDetailsDocumentsTitle": "المستندات",
+  "driverDetailsDrivingLicense": "رخصة القيادة",
+  "driverDetailsVehicleRegistration": "استمارة المركبة",
+  "driverDetailsInsurance": "التأمين",
+  "driverDetailsValidUntil": "سارية حتى {date}",
+  "@driverDetailsValidUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "driverDetailsValid": "ساري",
+  "driverDetailsCopiedToClipboard": "تم النسخ إلى الحافظة"
 }
 

@@ -1,0 +1,123 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../config/theme/font_manager.dart';
+import '../../../../../config/theme/spacing.dart';
+import '../../../../../config/theme/styles_manager.dart';
+import '../../../../../core/extensions/extensions.dart';
+
+class DispatcherDriverDetailsContactCard extends StatelessWidget {
+  const DispatcherDriverDetailsContactCard({
+    super.key,
+    required this.phoneNumber,
+    this.onCall,
+    this.onChat,
+  });
+
+  final String phoneNumber;
+  final VoidCallback? onCall;
+  final VoidCallback? onChat;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: Spacing.base),
+      padding: const EdgeInsets.all(Spacing.base),
+      decoration: BoxDecoration(
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        border: Border.all(
+          color: color.outlineVariant.withValues(alpha: 0.5),
+          width: Spacing.border,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.phone_outlined,
+                size: Spacing.iconSm,
+                color: color.primary,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Text(
+                locale.driverDetailsContactInfoTitle,
+                style: getBoldStyle(
+                  color: color.onSurface,
+                  fontSize: FontSize.size13,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.sm),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      phoneNumber,
+                      style: getBoldStyle(
+                        color: color.onSurface,
+                        fontSize: FontSize.size14,
+                      ),
+                      textDirection: TextDirection.ltr,
+                    ),
+                    const SizedBox(height: Spacing.xs / 4),
+                    Text(
+                      locale.driverDetailsContactSubtitle,
+                      style: getRegularStyle(
+                        color: color.onSurfaceVariant,
+                        fontSize: FontSize.size11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: onChat,
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: color.surfaceContainerHighest,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.chat_bubble_outline_rounded,
+                    size: Spacing.iconSm,
+                    color: color.onSurfaceVariant,
+                  ),
+                ),
+              ),
+              const SizedBox(width: Spacing.xs * 1.5),
+              InkWell(
+                onTap: onCall,
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: color.primary.withValues(alpha: 0.12),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.phone_rounded,
+                    size: Spacing.iconSm,
+                    color: color.primary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -17,6 +17,7 @@ import '../../domain/fake_data/dispatcher_profile_fake_data.dart';
 import '../widgets/dispatcher_profile_admin_card.dart';
 import '../widgets/dispatcher_profile_app_info_card.dart';
 import '../widgets/dispatcher_profile_driver_performance_card.dart';
+import '../widgets/dispatcher_profile_drivers_status_card.dart';
 import '../widgets/dispatcher_profile_logout_button.dart';
 import '../widgets/dispatcher_profile_notification_settings_card.dart';
 import '../widgets/dispatcher_profile_operations_card.dart';
@@ -153,6 +154,11 @@ class _DispatcherProfileScreenState extends State<DispatcherProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DispatcherProfileAdminCard(profile: _profile),
+              const SizedBox(height: Spacing.md),
+              DispatcherProfileDriversStatusCard(
+                onTap: () =>
+                    context.pushNamed(AppRoutes.dispatcherDriversStatus),
+              ),
               const SizedBox(height: Spacing.md),
               DispatcherProfileOperationsCard(
                 onTap: () => context.pushNamed(AppRoutes.dispatcherOperations),

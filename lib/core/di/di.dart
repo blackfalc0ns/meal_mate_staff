@@ -125,6 +125,13 @@ import '../../features/dispatcher/dispatcher_drivers/domain/repo/dispatcher_driv
 import '../../features/dispatcher/dispatcher_drivers/domain/usecase/assign_driver_to_box_usecase.dart';
 import '../../features/dispatcher/dispatcher_drivers/domain/usecase/get_dispatcher_drivers_roster_usecase.dart';
 import '../../features/dispatcher/dispatcher_drivers/presentation/manager/dispatcher_drivers_view_model.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/data_source/dispatcher_drivers_status_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/data_source/dispatcher_drivers_status_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/data/repo/dispatcher_drivers_status_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/repo/dispatcher_drivers_status_repository.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/get_drivers_status_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/domain/usecase/toggle_driver_availability_usecase.dart';
+import '../../features/dispatcher/dispatcher_drivers_status/presentation/manager/dispatcher_drivers_status_view_model.dart';
 import '../../features/dispatcher/dispatcher_assign_box/data/data_source/assign_box_remote_data_source.dart';
 import '../../features/dispatcher/dispatcher_assign_box/data/data_source/assign_box_remote_data_source_impl.dart';
 import '../../features/dispatcher/dispatcher_assign_box/data/repo/assign_box_repository_impl.dart';
@@ -563,6 +570,28 @@ Future<void> configureDependencies() async {
       args: args ?? const DispatcherDriversRouteArgs.browse(),
       getRosterUseCase: getIt<GetDispatcherDriversRosterUseCase>(),
       assignDriverUseCase: getIt<AssignDriverToBoxUseCase>(),
+    ),
+  );
+
+  // Dispatcher Drivers Status
+  getIt.registerLazySingleton<DispatcherDriversStatusRemoteDataSource>(
+    () => const DispatcherDriversStatusRemoteDataSourceImpl(),
+  );
+  getIt.registerLazySingleton<DispatcherDriversStatusRepository>(
+    () => DispatcherDriversStatusRepositoryImpl(
+      getIt<DispatcherDriversStatusRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDriversStatusUseCase>(
+    () => GetDriversStatusUseCase(getIt<DispatcherDriversStatusRepository>()),
+  );
+  getIt.registerFactory<ToggleDriverAvailabilityUseCase>(
+    () => ToggleDriverAvailabilityUseCase(getIt<DispatcherDriversStatusRepository>()),
+  );
+  getIt.registerFactory<DispatcherDriversStatusViewModel>(
+    () => DispatcherDriversStatusViewModel(
+      getDriversStatusUseCase: getIt<GetDriversStatusUseCase>(),
+      toggleDriverAvailabilityUseCase: getIt<ToggleDriverAvailabilityUseCase>(),
     ),
   );
 

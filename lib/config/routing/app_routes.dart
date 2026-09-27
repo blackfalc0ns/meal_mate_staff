@@ -14,6 +14,7 @@ class AppRoutes {
   static const String accountStatusPreview = '/account-status-preview';
   static const String dispatcherOrders = '/dispatcher-orders';
   static const String dispatcherDrivers = '/dispatcher-drivers';
+  static const String dispatcherDriversStatus = '/dispatcher-drivers-status';
   static const String assignBox = '/assign-box';
   static const String dispatcherMap = '/dispatcher-map';
   static const String dispatcherSupport = '/dispatcher-support';

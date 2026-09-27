@@ -1098,6 +1098,86 @@
   "driverPaymentMethodLabel": "Payment Method",
   "driverReceiptConfirmedAction": "Receipt Confirmed",
   "driverNextOrderAction": "Proceed to Next Order",
-  "driverBackToOrdersAction": "Back to Orders"
+  "driverBackToOrdersAction": "Back to Orders",
+  "driversStatusTitle": "Drivers' Status",
+  "driversStatusSubtitle": "Manage driver connectivity and delivery availability",
+  "driversStatusConnectedCount": "Connected",
+  "driversStatusInDeliveryCount": "In Delivery",
+  "driversStatusOfflineCount": "Offline",
+  "driversStatusFilter": "Filter",
+  "driversStatusSearchHint": "Search driver by name or phone...",
+  "driversStatusCount": "{count} Drivers",
+  "@driversStatusCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driversStatusRating": "Rating",
+  "driversStatusVehicleCar": "Car",
+  "driversStatusBadgeAvailable": "Available",
+  "driversStatusBadgeOffline": "Offline",
+  "driversStatusBadgeOnline": "Online",
+  "driversStatusStoreName": "MealMate Restaurant Kuwait",
+  "driversStatusRoleDispatcher": "Dispatcher",
+  "driversStatusEmpty": "No matching drivers found",
+  "driverDetailsReviewsCount": "({count} reviews)",
+  "@driverDetailsReviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsAvailableSubtitle": "Driver is available to receive orders",
+  "driverDetailsUnavailableSubtitle": "Driver is currently unavailable",
+  "driverDetailsConnectedNow": "Online Now",
+  "driverDetailsNotConnected": "Offline",
+  "driverDetailsTotalOrders": "Total Orders",
+  "driverDetailsWorkTimeToday": "Work Time Today",
+  "driverDetailsDistanceToday": "Distance Today",
+  "driverDetailsActiveOrders": "Active Orders",
+  "driverDetailsMinutesShort": "{count} m",
+  "@driverDetailsMinutesShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDetailsKmShort": "{distance} km",
+  "@driverDetailsKmShort": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "driverDetailsContactInfoTitle": "Contact Information",
+  "driverDetailsContactSubtitle": "Call via WhatsApp or Mobile",
+  "driverDetailsVehicleInfoTitle": "Vehicle Information",
+  "driverDetailsColorWhite": "White",
+  "driverDetailsAreaSalmiya": "Salmiya Area",
+  "driverDetailsUpdatedTwoMinAgo": "Updated 2 minutes ago",
+  "driverDetailsShowOnMap": "View on Map",
+  "driverDetailsPerformanceAndEvaluationTitle": "Performance & Evaluation",
+  "driverDetailsAverageRating": "Average Rating",
+  "driverDetailsCommitmentRate": "Commitment Rate",
+  "driverDetailsViolations": "Violations",
+  "driverDetailsDocumentsTitle": "Documents",
+  "driverDetailsDrivingLicense": "Driving License",
+  "driverDetailsVehicleRegistration": "Vehicle Registration",
+  "driverDetailsInsurance": "Insurance",
+  "driverDetailsValidUntil": "Valid until {date}",
+  "@driverDetailsValidUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "driverDetailsValid": "Valid",
+  "driverDetailsCopiedToClipboard": "Copied to clipboard"
 }
 

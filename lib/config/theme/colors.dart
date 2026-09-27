@@ -133,6 +133,7 @@ extension DispatcherColorScheme on ColorScheme {
   Color get successSurface => AppColors.successSurface;
   Color get warning => AppColors.warning;
   Color get warningSurface => AppColors.warningSurface;
+  Color get errorSurface => AppColors.errorSurface;
   Color get info => AppColors.info;
   Color get infoSurface => AppColors.infoSurface;
   Color get dispatcherBadgeNew => AppColors.dispatcherBadgeNew;

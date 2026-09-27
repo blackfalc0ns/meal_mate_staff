@@ -4,7 +4,7 @@ import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/config/routing/arguments/dispatcher_driver_details_route_arguments.dart';
 import 'package:meal_mate_delivery/config/routing/arguments/dispatcher_map_route_arguments.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers_status/presentation/screens/dispatcher_driver_status_details_screen.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_map/presentation/screens/dispatcher_map_screen.dart';
 
 void main() {
@@ -30,12 +30,12 @@ void main() {
       );
 
       final widget = extractPage(route);
-      expect(widget, isA<DispatcherDriverDetailsScreen>());
-      final screen = widget as DispatcherDriverDetailsScreen;
+      expect(widget, isA<DispatcherDriverStatusDetailsScreen>());
+      final screen = widget as DispatcherDriverStatusDetailsScreen;
       expect(screen.driverId, validGuid);
     });
 
-    test('generates DispatcherDriverDetailsScreen when given valid GUID String directly', () {
+    test('generates DispatcherDriverStatusDetailsScreen when given valid GUID String directly', () {
       final route = RouteGenerator.getRoute(
         const RouteSettings(
           name: AppRoutes.dispatcherDriverDetails,
@@ -44,8 +44,8 @@ void main() {
       );
 
       final widget = extractPage(route);
-      expect(widget, isA<DispatcherDriverDetailsScreen>());
-      final screen = widget as DispatcherDriverDetailsScreen;
+      expect(widget, isA<DispatcherDriverStatusDetailsScreen>());
+      final screen = widget as DispatcherDriverStatusDetailsScreen;
       expect(screen.driverId, validGuid);
     });
 
@@ -58,7 +58,7 @@ void main() {
       );
 
       final widget = extractPage(route);
-      expect(widget, isNot(isA<DispatcherDriverDetailsScreen>()));
+      expect(widget, isNot(isA<DispatcherDriverStatusDetailsScreen>()));
       expect(widget, isA<Scaffold>());
     });
 
@@ -71,7 +71,7 @@ void main() {
       );
 
       final widget = extractPage(route);
-      expect(widget, isNot(isA<DispatcherDriverDetailsScreen>()));
+      expect(widget, isNot(isA<DispatcherDriverStatusDetailsScreen>()));
       expect(widget, isA<Scaffold>());
     });
   });

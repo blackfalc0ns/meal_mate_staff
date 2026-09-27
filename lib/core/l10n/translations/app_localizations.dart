@@ -5371,6 +5371,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Orders'**
   String get driverBackToOrdersAction;
+
+  /// No description provided for @driversStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drivers\' Status'**
+  String get driversStatusTitle;
+
+  /// No description provided for @driversStatusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage driver connectivity and delivery availability'**
+  String get driversStatusSubtitle;
+
+  /// No description provided for @driversStatusConnectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get driversStatusConnectedCount;
+
+  /// No description provided for @driversStatusInDeliveryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get driversStatusInDeliveryCount;
+
+  /// No description provided for @driversStatusOfflineCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get driversStatusOfflineCount;
+
+  /// No description provided for @driversStatusFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get driversStatusFilter;
+
+  /// No description provided for @driversStatusSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search driver by name or phone...'**
+  String get driversStatusSearchHint;
+
+  /// No description provided for @driversStatusCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Drivers'**
+  String driversStatusCount(int count);
+
+  /// No description provided for @driversStatusRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get driversStatusRating;
+
+  /// No description provided for @driversStatusVehicleCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get driversStatusVehicleCar;
+
+  /// No description provided for @driversStatusBadgeAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get driversStatusBadgeAvailable;
+
+  /// No description provided for @driversStatusBadgeOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get driversStatusBadgeOffline;
+
+  /// No description provided for @driversStatusBadgeOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get driversStatusBadgeOnline;
+
+  /// No description provided for @driversStatusStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'MealMate Restaurant Kuwait'**
+  String get driversStatusStoreName;
+
+  /// No description provided for @driversStatusRoleDispatcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatcher'**
+  String get driversStatusRoleDispatcher;
+
+  /// No description provided for @driversStatusEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching drivers found'**
+  String get driversStatusEmpty;
+
+  /// No description provided for @driverDetailsReviewsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'({count} reviews)'**
+  String driverDetailsReviewsCount(int count);
+
+  /// No description provided for @driverDetailsAvailableSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver is available to receive orders'**
+  String get driverDetailsAvailableSubtitle;
+
+  /// No description provided for @driverDetailsUnavailableSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver is currently unavailable'**
+  String get driverDetailsUnavailableSubtitle;
+
+  /// No description provided for @driverDetailsConnectedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Online Now'**
+  String get driverDetailsConnectedNow;
+
+  /// No description provided for @driverDetailsNotConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get driverDetailsNotConnected;
+
+  /// No description provided for @driverDetailsTotalOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Orders'**
+  String get driverDetailsTotalOrders;
+
+  /// No description provided for @driverDetailsWorkTimeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Time Today'**
+  String get driverDetailsWorkTimeToday;
+
+  /// No description provided for @driverDetailsDistanceToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance Today'**
+  String get driverDetailsDistanceToday;
+
+  /// No description provided for @driverDetailsActiveOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Orders'**
+  String get driverDetailsActiveOrders;
+
+  /// No description provided for @driverDetailsMinutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} m'**
+  String driverDetailsMinutesShort(int count);
+
+  /// No description provided for @driverDetailsKmShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{distance} km'**
+  String driverDetailsKmShort(String distance);
+
+  /// No description provided for @driverDetailsContactInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Information'**
+  String get driverDetailsContactInfoTitle;
+
+  /// No description provided for @driverDetailsContactSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Call via WhatsApp or Mobile'**
+  String get driverDetailsContactSubtitle;
+
+  /// No description provided for @driverDetailsVehicleInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Information'**
+  String get driverDetailsVehicleInfoTitle;
+
+  /// No description provided for @driverDetailsColorWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'White'**
+  String get driverDetailsColorWhite;
+
+  /// No description provided for @driverDetailsAreaSalmiya.
+  ///
+  /// In en, this message translates to:
+  /// **'Salmiya Area'**
+  String get driverDetailsAreaSalmiya;
+
+  /// No description provided for @driverDetailsUpdatedTwoMinAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated 2 minutes ago'**
+  String get driverDetailsUpdatedTwoMinAgo;
+
+  /// No description provided for @driverDetailsShowOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View on Map'**
+  String get driverDetailsShowOnMap;
+
+  /// No description provided for @driverDetailsPerformanceAndEvaluationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance & Evaluation'**
+  String get driverDetailsPerformanceAndEvaluationTitle;
+
+  /// No description provided for @driverDetailsAverageRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Rating'**
+  String get driverDetailsAverageRating;
+
+  /// No description provided for @driverDetailsCommitmentRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Commitment Rate'**
+  String get driverDetailsCommitmentRate;
+
+  /// No description provided for @driverDetailsViolations.
+  ///
+  /// In en, this message translates to:
+  /// **'Violations'**
+  String get driverDetailsViolations;
+
+  /// No description provided for @driverDetailsDocumentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get driverDetailsDocumentsTitle;
+
+  /// No description provided for @driverDetailsDrivingLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving License'**
+  String get driverDetailsDrivingLicense;
+
+  /// No description provided for @driverDetailsVehicleRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Registration'**
+  String get driverDetailsVehicleRegistration;
+
+  /// No description provided for @driverDetailsInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance'**
+  String get driverDetailsInsurance;
+
+  /// No description provided for @driverDetailsValidUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {date}'**
+  String driverDetailsValidUntil(String date);
+
+  /// No description provided for @driverDetailsValid.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid'**
+  String get driverDetailsValid;
+
+  /// No description provided for @driverDetailsCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get driverDetailsCopiedToClipboard;
 }
 
 class _AppLocalizationsDelegate

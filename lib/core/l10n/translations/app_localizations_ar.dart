@@ -2785,4 +2785,150 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverBackToOrdersAction => 'العودة للطلبات';
+
+  @override
+  String get driversStatusTitle => 'حالة السائقين';
+
+  @override
+  String get driversStatusSubtitle =>
+      'إدارة حالة اتصال السائقين وتوفرهم للتوصيل';
+
+  @override
+  String get driversStatusConnectedCount => 'متصلين';
+
+  @override
+  String get driversStatusInDeliveryCount => 'في التوصيل';
+
+  @override
+  String get driversStatusOfflineCount => 'غير متصلين';
+
+  @override
+  String get driversStatusFilter => 'تصفية';
+
+  @override
+  String get driversStatusSearchHint => 'البحث عن سائق بالإسم أو رقم الهاتف...';
+
+  @override
+  String driversStatusCount(int count) {
+    return '$count سائق';
+  }
+
+  @override
+  String get driversStatusRating => 'التقييم';
+
+  @override
+  String get driversStatusVehicleCar => 'سيارة';
+
+  @override
+  String get driversStatusBadgeAvailable => 'متوفر';
+
+  @override
+  String get driversStatusBadgeOffline => 'غير متصل';
+
+  @override
+  String get driversStatusBadgeOnline => 'متصل';
+
+  @override
+  String get driversStatusStoreName => 'مطعم MealMate الكويت';
+
+  @override
+  String get driversStatusRoleDispatcher => 'Dispatcher';
+
+  @override
+  String get driversStatusEmpty => 'لا يوجد سائقين مطابقين للبحث';
+
+  @override
+  String driverDetailsReviewsCount(int count) {
+    return '($count تقييم)';
+  }
+
+  @override
+  String get driverDetailsAvailableSubtitle => 'السائق متاح لإستقبال الطلبات';
+
+  @override
+  String get driverDetailsUnavailableSubtitle => 'السائق غير متاح حالياً';
+
+  @override
+  String get driverDetailsConnectedNow => 'متصل الآن';
+
+  @override
+  String get driverDetailsNotConnected => 'غير متصل';
+
+  @override
+  String get driverDetailsTotalOrders => 'إجمالي الطلبات';
+
+  @override
+  String get driverDetailsWorkTimeToday => 'وقت العمل اليوم';
+
+  @override
+  String get driverDetailsDistanceToday => 'المسافة اليوم';
+
+  @override
+  String get driverDetailsActiveOrders => 'الطلبات النشطة';
+
+  @override
+  String driverDetailsMinutesShort(int count) {
+    return '$count د';
+  }
+
+  @override
+  String driverDetailsKmShort(String distance) {
+    return '$distance كم';
+  }
+
+  @override
+  String get driverDetailsContactInfoTitle => 'معلومات الاتصال';
+
+  @override
+  String get driverDetailsContactSubtitle => 'اتصال عبر الواتساب أو الجوال';
+
+  @override
+  String get driverDetailsVehicleInfoTitle => 'معلومات المركبة';
+
+  @override
+  String get driverDetailsColorWhite => 'أبيض';
+
+  @override
+  String get driverDetailsAreaSalmiya => 'المنطقة السالمية';
+
+  @override
+  String get driverDetailsUpdatedTwoMinAgo => 'آخر تحديث منذ دقيقتين';
+
+  @override
+  String get driverDetailsShowOnMap => 'عرض على الخريطة';
+
+  @override
+  String get driverDetailsPerformanceAndEvaluationTitle => 'الأداء والتقييم';
+
+  @override
+  String get driverDetailsAverageRating => 'متوسط التقييم';
+
+  @override
+  String get driverDetailsCommitmentRate => 'معدل الالتزام';
+
+  @override
+  String get driverDetailsViolations => 'مخالفات';
+
+  @override
+  String get driverDetailsDocumentsTitle => 'المستندات';
+
+  @override
+  String get driverDetailsDrivingLicense => 'رخصة القيادة';
+
+  @override
+  String get driverDetailsVehicleRegistration => 'استمارة المركبة';
+
+  @override
+  String get driverDetailsInsurance => 'التأمين';
+
+  @override
+  String driverDetailsValidUntil(String date) {
+    return 'سارية حتى $date';
+  }
+
+  @override
+  String get driverDetailsValid => 'ساري';
+
+  @override
+  String get driverDetailsCopiedToClipboard => 'تم النسخ إلى الحافظة';
 }

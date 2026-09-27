@@ -2794,4 +2794,153 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverBackToOrdersAction => 'Back to Orders';
+
+  @override
+  String get driversStatusTitle => 'Drivers\' Status';
+
+  @override
+  String get driversStatusSubtitle =>
+      'Manage driver connectivity and delivery availability';
+
+  @override
+  String get driversStatusConnectedCount => 'Connected';
+
+  @override
+  String get driversStatusInDeliveryCount => 'In Delivery';
+
+  @override
+  String get driversStatusOfflineCount => 'Offline';
+
+  @override
+  String get driversStatusFilter => 'Filter';
+
+  @override
+  String get driversStatusSearchHint => 'Search driver by name or phone...';
+
+  @override
+  String driversStatusCount(int count) {
+    return '$count Drivers';
+  }
+
+  @override
+  String get driversStatusRating => 'Rating';
+
+  @override
+  String get driversStatusVehicleCar => 'Car';
+
+  @override
+  String get driversStatusBadgeAvailable => 'Available';
+
+  @override
+  String get driversStatusBadgeOffline => 'Offline';
+
+  @override
+  String get driversStatusBadgeOnline => 'Online';
+
+  @override
+  String get driversStatusStoreName => 'MealMate Restaurant Kuwait';
+
+  @override
+  String get driversStatusRoleDispatcher => 'Dispatcher';
+
+  @override
+  String get driversStatusEmpty => 'No matching drivers found';
+
+  @override
+  String driverDetailsReviewsCount(int count) {
+    return '($count reviews)';
+  }
+
+  @override
+  String get driverDetailsAvailableSubtitle =>
+      'Driver is available to receive orders';
+
+  @override
+  String get driverDetailsUnavailableSubtitle =>
+      'Driver is currently unavailable';
+
+  @override
+  String get driverDetailsConnectedNow => 'Online Now';
+
+  @override
+  String get driverDetailsNotConnected => 'Offline';
+
+  @override
+  String get driverDetailsTotalOrders => 'Total Orders';
+
+  @override
+  String get driverDetailsWorkTimeToday => 'Work Time Today';
+
+  @override
+  String get driverDetailsDistanceToday => 'Distance Today';
+
+  @override
+  String get driverDetailsActiveOrders => 'Active Orders';
+
+  @override
+  String driverDetailsMinutesShort(int count) {
+    return '$count m';
+  }
+
+  @override
+  String driverDetailsKmShort(String distance) {
+    return '$distance km';
+  }
+
+  @override
+  String get driverDetailsContactInfoTitle => 'Contact Information';
+
+  @override
+  String get driverDetailsContactSubtitle => 'Call via WhatsApp or Mobile';
+
+  @override
+  String get driverDetailsVehicleInfoTitle => 'Vehicle Information';
+
+  @override
+  String get driverDetailsColorWhite => 'White';
+
+  @override
+  String get driverDetailsAreaSalmiya => 'Salmiya Area';
+
+  @override
+  String get driverDetailsUpdatedTwoMinAgo => 'Updated 2 minutes ago';
+
+  @override
+  String get driverDetailsShowOnMap => 'View on Map';
+
+  @override
+  String get driverDetailsPerformanceAndEvaluationTitle =>
+      'Performance & Evaluation';
+
+  @override
+  String get driverDetailsAverageRating => 'Average Rating';
+
+  @override
+  String get driverDetailsCommitmentRate => 'Commitment Rate';
+
+  @override
+  String get driverDetailsViolations => 'Violations';
+
+  @override
+  String get driverDetailsDocumentsTitle => 'Documents';
+
+  @override
+  String get driverDetailsDrivingLicense => 'Driving License';
+
+  @override
+  String get driverDetailsVehicleRegistration => 'Vehicle Registration';
+
+  @override
+  String get driverDetailsInsurance => 'Insurance';
+
+  @override
+  String driverDetailsValidUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String get driverDetailsValid => 'Valid';
+
+  @override
+  String get driverDetailsCopiedToClipboard => 'Copied to clipboard';
 }
