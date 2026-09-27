@@ -26,9 +26,7 @@ abstract interface class DriverPickupRemoteDataSource {
     required ConfirmDriverPickupRequestDto request,
   });
 
-  Future<DriverPickupSummaryResponseDto> getDriverPickupSummary(
-    String tripId,
-  );
+  Future<DriverPickupSummaryResponseDto> getDriverPickupSummary(String tripId);
 
   Future<DriverTripStartResponseDto> startDriverTrip({
     required String tripId,
