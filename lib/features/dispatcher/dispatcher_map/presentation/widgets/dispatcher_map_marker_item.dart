@@ -5,6 +5,7 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/l10n/translations/app_localizations.dart';
 import '../../../../../core/widget/app_cached_network_image.dart';
 import '../../domain/entities/dispatcher_map_driver_entity.dart';
 import '../../domain/entities/dispatcher_map_driver_status.dart';
@@ -25,8 +26,8 @@ class DispatcherMapMarkerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
-    final locale = context.localization;
+    final color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context);
 
     final Color badgeColor;
     final String statusText;
@@ -35,19 +36,24 @@ class DispatcherMapMarkerItem extends StatelessWidget {
     switch (driver.status) {
       case DispatcherMapDriverStatus.inDelivery:
         badgeColor = color.success;
-        statusText = driver.statusText ?? locale.mapStatusInDelivery;
+        statusText =
+            driver.statusText ?? locale?.mapStatusInDelivery ?? 'في التوصيل';
         statusIcon = Icons.local_shipping_rounded;
       case DispatcherMapDriverStatus.onTheWayToLoad:
         badgeColor = color.warning;
-        statusText = driver.statusText ?? locale.mapStatusOnTheWayToLoad;
+        statusText =
+            driver.statusText ??
+            locale?.mapStatusOnTheWayToLoad ??
+            'في الطريق للتحميل';
         statusIcon = Icons.local_shipping_rounded;
       case DispatcherMapDriverStatus.paused:
         badgeColor = color.onSurfaceVariant;
-        statusText = driver.statusText ?? locale.mapStatusPaused;
+        statusText = driver.statusText ?? locale?.mapStatusPaused ?? 'متوقف';
         statusIcon = Icons.pause_rounded;
       case DispatcherMapDriverStatus.hasIssue:
         badgeColor = color.error;
-        statusText = driver.statusText ?? locale.mapKpiIssues;
+        statusText =
+            driver.statusText ?? locale?.mapKpiIssues ?? 'مشكلة تتطلب انتباه';
         statusIcon = Icons.warning_rounded;
       case DispatcherMapDriverStatus.unknown:
         badgeColor = color.outlineVariant;
@@ -144,48 +150,65 @@ class DispatcherMapMarkerItem extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Spacing.xs),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.xs,
-              vertical: Spacing.border,
-            ),
-            decoration: BoxDecoration(
-              color: color.surface,
-              borderRadius: BorderRadius.circular(Spacing.radiusPill),
-              boxShadow: [
-                BoxShadow(
-                  color: color.shadow.withValues(alpha: 0.1),
-                  blurRadius: Spacing.border * 2,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
-            child: Text(
-              driver.boxId,
-              style: getBoldStyle(
-                fontSize: FontSize.size9,
-                color: color.onSurface,
-              ),
-            ),
-          ),
-          const SizedBox(height: Spacing.border),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.xs,
-              vertical: Spacing.border,
-            ),
-            decoration: BoxDecoration(
-              color: badgeColor,
-              borderRadius: BorderRadius.circular(Spacing.radiusPill),
-            ),
-            child: Text(
-              statusText,
-              style: getBoldStyle(
-                fontSize: FontSize.size8,
-                color: color.onPrimary,
-              ),
-            ),
+          Builder(
+            builder: (context) {
+              final displayCode = driver.boxId.isNotEmpty
+                  ? driver.boxId
+                  : (driver.plateNumber ?? driver.driverCode ?? '');
+
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (displayCode.isNotEmpty) ...[
+                    const SizedBox(height: Spacing.xs),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.xs,
+                        vertical: Spacing.border,
+                      ),
+                      decoration: BoxDecoration(
+                        color: color.surface,
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                        boxShadow: [
+                          BoxShadow(
+                            color: color.shadow.withValues(alpha: 0.1),
+                            blurRadius: Spacing.border * 2,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        displayCode,
+                        style: getBoldStyle(
+                          fontSize: FontSize.size9,
+                          color: color.onSurface,
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (statusText.isNotEmpty) ...[
+                    const SizedBox(height: Spacing.border),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.xs,
+                        vertical: Spacing.border,
+                      ),
+                      decoration: BoxDecoration(
+                        color: badgeColor,
+                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                      ),
+                      child: Text(
+                        statusText,
+                        style: getBoldStyle(
+                          fontSize: FontSize.size8,
+                          color: color.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              );
+            },
           ),
         ],
       ),

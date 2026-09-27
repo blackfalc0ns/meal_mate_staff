@@ -44,11 +44,91 @@ extension DispatcherMapKpiResponseDtoMapper on DispatcherMapKpiResponseDto? {
   }
 }
 
+(double, double)? resolveZoneCoordinates(
+  String? zone, {
+  String driverId = '',
+}) {
+  if (zone == null || zone.trim().isEmpty) return null;
+  final normalized = zone.trim().toLowerCase();
+
+  (double, double)? base;
+  if (normalized.contains('yarmouk') || normalized.contains('يرموك')) {
+    base = const (29.3080, 47.9620);
+  } else if (normalized.contains('capital') ||
+      normalized.contains('عاصمة') ||
+      normalized.contains('مدينة الكويت') ||
+      normalized.contains('kuwait city') ||
+      normalized.contains('downtown')) {
+    base = const (29.3759, 47.9774);
+  } else if (normalized.contains('salmiya') || normalized.contains('سالمية')) {
+    base = const (29.3333, 48.0833);
+  } else if (normalized.contains('hawall') || normalized.contains('حولي')) {
+    base = const (29.3328, 48.0282);
+  } else if (normalized.contains('farwaniya') ||
+      normalized.contains('فروانية')) {
+    base = const (29.2784, 47.9585);
+  } else if (normalized.contains('ahmadi') ||
+      normalized.contains('أحمدي') ||
+      normalized.contains('احمدي')) {
+    base = const (29.0769, 48.0839);
+  } else if (normalized.contains('jahra') || normalized.contains('جهراء')) {
+    base = const (29.3375, 47.6581);
+  } else if (normalized.contains('mubarak') || normalized.contains('مبارك')) {
+    base = const (29.2081, 48.0772);
+  } else if (normalized.contains('shaab') || normalized.contains('شعب')) {
+    base = const (29.3550, 48.0200);
+  } else if (normalized.contains('dasman') || normalized.contains('دسمان')) {
+    base = const (29.3880, 48.0010);
+  } else if (normalized.contains('sharq') || normalized.contains('شرق')) {
+    base = const (29.3850, 47.9890);
+  } else if (normalized.contains('khaitan') || normalized.contains('خيطان')) {
+    base = const (29.2941, 47.9742);
+  } else if (normalized.contains('fahaheel') || normalized.contains('فحيحيل')) {
+    base = const (29.0831, 48.1322);
+  } else if (normalized.contains('shuwaikh') || normalized.contains('شويخ')) {
+    base = const (29.3500, 47.9300);
+  } else if (normalized.contains('sabah al salem') ||
+      normalized.contains('صباح السالم')) {
+    base = const (29.2550, 48.0750);
+  } else if (normalized.contains('mangaf') ||
+      normalized.contains('منقف') ||
+      normalized.contains('المنقف')) {
+    base = const (29.0967, 48.1306);
+  } else if (normalized.contains('mahboula') ||
+      normalized.contains('مهبولة') ||
+      normalized.contains('المهبولة')) {
+    base = const (29.1417, 48.1250);
+  }
+
+  if (base == null) return null;
+  if (driverId.isEmpty) return base;
+
+  final hash = driverId.hashCode.abs();
+  final offsetLat = ((hash % 9) - 4) * 0.0035;
+  final offsetLng = (((hash ~/ 9) % 9) - 4) * 0.0035;
+  return (base.$1 + offsetLat, base.$2 + offsetLng);
+}
+
 extension DispatcherMapDriverResponseDtoMapper
     on DispatcherMapDriverResponseDto {
   DispatcherMapDriverEntity toEntity() {
+    final effectiveDriverId = driverId ?? id ?? '';
+    final hasDirectCoords = latitude != null &&
+        longitude != null &&
+        latitude!.isFinite &&
+        longitude!.isFinite &&
+        latitude! >= -90 &&
+        latitude! <= 90 &&
+        longitude! >= -180 &&
+        longitude! <= 180 &&
+        !(latitude == 0 && longitude == 0);
+
+    final resolvedCoords = hasDirectCoords
+        ? (latitude!, longitude!)
+        : resolveZoneCoordinates(locationZone, driverId: effectiveDriverId);
+
     return DispatcherMapDriverEntity(
-      id: driverId ?? id ?? '',
+      id: effectiveDriverId,
       driverCode: driverCode,
       name: driverName ?? name ?? '',
       phoneNumber: phone ?? phoneNumber,
@@ -56,8 +136,8 @@ extension DispatcherMapDriverResponseDtoMapper
       avatarUrl: avatarUrl,
       boxId: boxCode ?? boxId ?? '',
       tripId: tripId,
-      latitude: latitude,
-      longitude: longitude,
+      latitude: resolvedCoords?.$1,
+      longitude: resolvedCoords?.$2,
       heading: heading,
       speed: speedKmh ?? speed,
       lastLocationTimestamp: _parseNullableTimestamp(

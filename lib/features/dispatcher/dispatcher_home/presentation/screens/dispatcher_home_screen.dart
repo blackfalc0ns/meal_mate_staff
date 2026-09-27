@@ -78,7 +78,9 @@ class _DispatcherHomeScreenState extends State<DispatcherHomeScreen> {
           }
           final overview = state.overview;
           if (overview == null) {
-            return const Scaffold(body: EmptyStateWidget());
+            return const Scaffold(
+              body: SafeArea(child: DispatcherHomeShimmer()),
+            );
           }
           return _content(context, state, overview, viewModel);
         },

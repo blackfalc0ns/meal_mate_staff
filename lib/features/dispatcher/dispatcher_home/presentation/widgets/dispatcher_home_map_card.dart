@@ -49,46 +49,47 @@ class _DispatcherHomeMapCardState extends State<DispatcherHomeMapCard> {
   @override
   void didUpdateWidget(covariant DispatcherHomeMapCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.pins != widget.pins) {
+    if (!listEquals(oldWidget.pins, widget.pins)) {
       _loadMarkerIcons();
       if (!widget.isLoading) _focusDrivers();
     }
   }
 
   Set<Marker> get _markers => widget.pins.map((driver) {
+    final key = DispatcherHomeMarkerBitmapFactory.cacheKey(driver);
+    final displayCode =
+        (driver.activeOrderId != null && driver.activeOrderId!.isNotEmpty)
+            ? driver.activeOrderId!
+            : driver.plateNumber;
     return Marker(
       markerId: MarkerId(driver.id),
       position: LatLng(driver.latitude, driver.longitude),
       infoWindow: InfoWindow(
         title: driver.fullName,
-        snippet: '${driver.plateNumber} • ${driver.statusText}',
+        snippet: '$displayCode • ${driver.statusText}',
       ),
-      icon:
-          _markerIcons[_markerCacheKey(driver)] ??
-          BitmapDescriptor.defaultMarker,
+      icon: _markerIcons[key] ?? BitmapDescriptor.defaultMarker,
       anchor: const Offset(0.5, 0.5),
     );
   }).toSet();
 
-  String _markerCacheKey(DispatcherHomeMapDriverPinEntity driver) =>
-      '${driver.id}|${driver.avatarUrl}|${driver.plateNumber}|'
-      '${driver.status.name}|${driver.statusText}';
-
   Future<void> _loadMarkerIcons() async {
-    if (!mounted) return;
-    final next = <String, BitmapDescriptor>{};
+    if (!mounted || widget.pins.isEmpty) return;
+    final currentKeys = widget.pins
+        .map(DispatcherHomeMarkerBitmapFactory.cacheKey)
+        .toSet();
+    _markerIcons.removeWhere((key, _) => !currentKeys.contains(key));
+
     for (final driver in widget.pins) {
-      final key = _markerCacheKey(driver);
-      next[key] =
-          _markerIcons[key] ??
+      final key = DispatcherHomeMarkerBitmapFactory.cacheKey(driver);
+      if (_markerIcons.containsKey(key)) continue;
+      final descriptor =
           await DispatcherHomeMarkerBitmapFactory.create(context, driver);
       if (!mounted) return;
+      setState(() {
+        _markerIcons[key] = descriptor;
+      });
     }
-    setState(() {
-      _markerIcons
-        ..clear()
-        ..addAll(next);
-    });
   }
 
   Future<void> _focusDrivers() async {

@@ -37,6 +37,8 @@ class _DispatcherMapBackgroundState extends State<DispatcherMapBackground>
   GoogleMapController? _rawController;
   bool _hasInitialFit = false;
 
+  static const LatLng _kuwaitCenter = LatLng(29.3759, 47.9774);
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +52,17 @@ class _DispatcherMapBackgroundState extends State<DispatcherMapBackground>
   @override
   void didUpdateWidget(covariant DispatcherMapBackground oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _syncDrivers(isInitial: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _syncDrivers(isInitial: false);
+        if (!_hasInitialFit &&
+            widget.drivers.isNotEmpty &&
+            _rawController != null) {
+          _hasInitialFit = true;
+          widget.cameraController?.fitDrivers(widget.drivers);
+        }
+      }
+    });
   }
 
   void _syncDrivers({required bool isInitial}) {
@@ -152,8 +164,8 @@ class _DispatcherMapBackgroundState extends State<DispatcherMapBackground>
         );
       }
     }
-    // Default fallback (e.g. Riyadh center)
-    return const CameraPosition(target: LatLng(24.7136, 46.6753), zoom: 12.0);
+    // Default fallback: Kuwait City center
+    return const CameraPosition(target: _kuwaitCenter, zoom: 12.0);
   }
 
   void _handleMapCreated(GoogleMapController controller) {

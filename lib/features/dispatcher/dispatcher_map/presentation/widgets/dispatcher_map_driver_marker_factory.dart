@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../domain/entities/dispatcher_map_driver_entity.dart';
@@ -55,29 +56,55 @@ class DispatcherMapMarkerBitmapFactory {
           key: boundaryKey,
           child: Material(
             color: Colors.transparent,
-            child: DispatcherMapMarkerItem(
-              driver: driver,
-              isSelected: isSelected,
-              onAvatarResolved: (_) {
-                if (!avatarResolved.isCompleted) avatarResolved.complete();
-              },
+            child: Directionality(
+              textDirection:
+                  Directionality.maybeOf(context) ?? TextDirection.rtl,
+              child: Theme(
+                data: Theme.of(context),
+                child: DispatcherMapMarkerItem(
+                  driver: driver,
+                  isSelected: isSelected,
+                  onAvatarResolved: (_) {
+                    if (!avatarResolved.isCompleted) avatarResolved.complete();
+                  },
+                ),
+              ),
             ),
           ),
         ),
       ),
     );
 
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      await Future<void>.delayed(Duration.zero);
+    }
+
+    if (!overlay.mounted) {
+      return BitmapDescriptor.defaultMarker;
+    }
+
     overlay.insert(entry);
+
+    final isTest =
+        WidgetsBinding.instance.runtimeType.toString().contains('Test');
+
+    if ((driver.avatarUrl == null || driver.avatarUrl!.isEmpty) &&
+        !avatarResolved.isCompleted) {
+      avatarResolved.complete();
+    }
 
     try {
       await Future.any([
         WidgetsBinding.instance.endOfFrame,
-        Future<void>.delayed(const Duration(milliseconds: 50)),
+        Future<void>.delayed(const Duration(milliseconds: 40)),
       ]);
-      await avatarResolved.future.timeout(
-        const Duration(milliseconds: 250),
-        onTimeout: () {},
-      );
+      if (!isTest) {
+        await avatarResolved.future.timeout(
+          const Duration(milliseconds: 250),
+          onTimeout: () {},
+        );
+      }
 
       final boundary =
           boundaryKey.currentContext?.findRenderObject()

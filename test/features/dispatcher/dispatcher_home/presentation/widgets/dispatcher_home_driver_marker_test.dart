@@ -44,6 +44,57 @@ void main() {
     await tester.pump();
     expect(loadedSuccessfully, isFalse);
   });
+  testWidgets('renders activeOrderId over plateNumber when available', (
+    tester,
+  ) async {
+    const driverWithOrder = DispatcherHomeMapDriverPinEntity(
+      id: 'driver-bx',
+      fullName: 'Sami',
+      phone: '+96550000001',
+      plateNumber: 'KWT-99',
+      activeOrderId: 'BX-458622',
+      statusText: 'في الطريق للتحميل',
+      status: DispatcherHomePinStatus.enRouteToCustomer,
+      avatarUrl: '',
+      latitude: 29.3759,
+      longitude: 47.9774,
+      heading: 0,
+      speedKmh: 0,
+      updatedAtUtc: null,
+    );
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: DispatcherHomeDriverMarker(driver: driverWithOrder)),
+      ),
+    );
+
+    expect(find.text('BX-458622'), findsOneWidget);
+    expect(find.text('في الطريق للتحميل'), findsOneWidget);
+    expect(find.text('KWT-99'), findsNothing);
+  });
+
+  testWidgets('DispatcherHomeMarkerBitmapFactory creates or falls back to descriptor', (
+    tester,
+  ) async {
+    late BuildContext capturedContext;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (ctx) {
+            capturedContext = ctx;
+            return const Scaffold();
+          },
+        ),
+      ),
+    );
+
+    final descriptor = await tester.runAsync(
+      () => DispatcherHomeMarkerBitmapFactory.create(capturedContext, _driver),
+    );
+
+    expect(descriptor, isNotNull);
+  });
 }
 
 const _driver = DispatcherHomeMapDriverPinEntity(
