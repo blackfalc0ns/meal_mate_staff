@@ -18,10 +18,12 @@ class DriverBoxesReceivedScreen extends StatelessWidget {
     super.key,
     this.boxes,
     this.onStartDelivery,
+    this.tripId,
   });
 
   final List<DriverReceivedBoxItemEntity>? boxes;
   final VoidCallback? onStartDelivery;
+  final String? tripId;
 
   void _handleStartDelivery(BuildContext context) {
     if (onStartDelivery != null) {

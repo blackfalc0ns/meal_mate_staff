@@ -5,6 +5,8 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/errors/error_widgets/inline_api_error_widget.dart';
+import '../../../../../core/network/failures.dart';
 import '../../../../../core/widget/app_button.dart';
 import 'driver_manual_code_button.dart';
 import 'driver_qr_header_section.dart';
@@ -21,6 +23,9 @@ class DriverConfirmReceiptStep1Section extends StatelessWidget {
     required this.onEnterCodeManually,
     required this.isQrScanned,
     required this.onContinueToStep2,
+    this.failure,
+    this.onRetry,
+    this.isLoading = false,
   });
 
   final MobileScannerController scannerController;
@@ -30,6 +35,9 @@ class DriverConfirmReceiptStep1Section extends StatelessWidget {
   final VoidCallback onEnterCodeManually;
   final bool isQrScanned;
   final VoidCallback onContinueToStep2;
+  final Failure? failure;
+  final VoidCallback? onRetry;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +58,18 @@ class DriverConfirmReceiptStep1Section extends StatelessWidget {
           onScanSuccess: onScanSuccess,
         ),
         const SizedBox(height: Spacing.md),
+        if (failure != null) ...[
+          InlineApiErrorWidget(failure: failure!, onRetry: onRetry),
+          const SizedBox(height: Spacing.md),
+        ],
         DriverManualCodeButton(onPressed: onEnterCodeManually),
         const SizedBox(height: Spacing.md),
         DriverStep2PreviewCard(isUnlocked: isQrScanned),
         const SizedBox(height: Spacing.lg),
         AppButton(
           text: locale.driverContinueToPhotographBox,
-          onPressed: isQrScanned ? onContinueToStep2 : null,
+          onPressed: (isQrScanned && !isLoading) ? onContinueToStep2 : null,
+          isLoading: isLoading,
           variant: AppButtonVariant.filled,
           isExpanded: true,
           height: Spacing.buttonHeight,

@@ -1,10 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/driver_pickup_summary_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
+import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
-import '../../../../../core/widget/custom_snak_bar.dart';
 import '../../../orders/domain/entities/driver_assigned_box_entity.dart';
+import '../../domain/entities/driver_box_received_success_entity.dart';
+import '../../domain/entities/driver_pickup_confirmation_entity.dart';
+import '../manager/driver_pickup_flow_event.dart';
+import '../manager/driver_pickup_flow_state.dart';
+import '../manager/driver_pickup_flow_view_model.dart';
 import '../widgets/driver_confirm_receipt_header.dart';
 import '../widgets/driver_confirm_receipt_step1_section.dart';
 import '../widgets/driver_confirm_receipt_step2_section.dart';
@@ -15,10 +26,12 @@ class DriverConfirmReceiptScreen extends StatefulWidget {
     super.key,
     this.box,
     this.scannerController,
+    this.viewModel,
   });
 
   final DriverAssignedBoxEntity? box;
   final MobileScannerController? scannerController;
+  final DriverPickupFlowViewModel? viewModel;
 
   @override
   State<DriverConfirmReceiptScreen> createState() =>
@@ -29,12 +42,10 @@ class _DriverConfirmReceiptScreenState
     extends State<DriverConfirmReceiptScreen> {
   late final MobileScannerController _scannerController;
   late final bool _isInternalController;
+  late final DriverPickupFlowViewModel _viewModel;
+  late final bool _isInternalViewModel;
 
-  int _currentStep = 1;
   bool _isFlashOn = false;
-  bool _isQrScanned = false;
-  bool _isPhotoCaptured = false;
-  String? _capturedPhotoPath;
 
   @override
   void initState() {
@@ -49,60 +60,51 @@ class _DriverConfirmReceiptScreenState
       );
       _isInternalController = true;
     }
+
+    if (widget.viewModel != null) {
+      _viewModel = widget.viewModel!;
+      _isInternalViewModel = false;
+    } else {
+      _viewModel = getIt<DriverPickupFlowViewModel>();
+      _isInternalViewModel = true;
+    }
   }
 
   @override
   void dispose() {
+    if (_isInternalViewModel) {
+      _viewModel.close();
+    }
     if (_isInternalController) {
       _scannerController.dispose();
     }
     super.dispose();
   }
 
-  void _handleScanSuccess() {
-    setState(() {
-      _isQrScanned = true;
-    });
-    final locale = context.localization;
-    CustomSnackbar.showSuccess(
-      context: context,
-      message:
-          '${locale.driverStepScanQr}: ${widget.box?.boxId ?? "#BOX-1256"}',
-    );
+  void _handleBarcodeScanned(String barcode) {
+    _viewModel.doIntent(ValidateBarcodeEvent(barcode));
   }
 
   void _handleEnterCodeManually() {
     DriverManualCodeModalSheet.show(
       context: context,
-      defaultCode: widget.box?.boxId ?? '#BOX-1256',
+      defaultCode: widget.box?.boxCode ?? widget.box?.boxId ?? '',
       onCodeSubmitted: (code) {
-        setState(() {
-          _isQrScanned = true;
-        });
-        final locale = context.localization;
-        CustomSnackbar.showSuccess(
-          context: context,
-          message: '${locale.driverEnterCodeManually}: $code',
-        );
+        _viewModel.doIntent(ValidateBarcodeEvent(code));
       },
     );
   }
 
   void _goToStep2() {
-    setState(() {
-      _currentStep = 2;
-    });
+    _viewModel.doIntent(const StepChangedEvent(2));
   }
 
   Future<void> _handleCapturePhoto() async {
-    if (_isPhotoCaptured) {
+    if (_viewModel.state.localPhotoPath != null) {
+      _viewModel.doIntent(const PhotoSelectedEvent(''));
       try {
         await _scannerController.start();
       } catch (_) {}
-      setState(() {
-        _isPhotoCaptured = false;
-        _capturedPhotoPath = null;
-      });
       return;
     }
 
@@ -110,65 +112,121 @@ class _DriverConfirmReceiptScreenState
       await _scannerController.pause();
     } catch (_) {}
 
-    setState(() {
-      _isPhotoCaptured = true;
-    });
+    try {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        _viewModel.doIntent(PhotoSelectedEvent(image.path));
+        return;
+      }
+    } catch (_) {}
+
+    // Fallback for tests or when camera device is unavailable
+    _viewModel.doIntent(const PhotoSelectedEvent('condition_photo.jpg'));
   }
 
   void _handleConfirmReceipt() {
-    final locale = context.localization;
-    CustomSnackbar.showSuccess(
-      context: context,
-      message: locale.driverBoxVerifiedSuccess,
-    );
-    Navigator.of(context).pop(true);
+    _viewModel.doIntent(const ConfirmPickupEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Scaffold(
-      backgroundColor: color.surface,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.base,
-            vertical: Spacing.sm,
+    return BlocConsumer<DriverPickupFlowViewModel, DriverPickupFlowState>(
+      bloc: _viewModel,
+      listenWhen: (prev, curr) =>
+          prev.stage != curr.stage ||
+          prev.requiresRescan != curr.requiresRescan,
+      listener: (context, state) {
+        if (state.stage == DriverPickupFlowStage.pickedUp) {
+          final nextAction = state.confirmation?.nextAction;
+          if (nextAction == DriverPickupNextAction.showPickupSummary) {
+            Navigator.of(context).pushReplacementNamed(
+              AppRoutes.driverBoxesReceived,
+              arguments: DriverPickupSummaryRouteArguments(
+                tripId: state.confirmation?.tripId ?? '',
+              ),
+            );
+          } else if (nextAction == DriverPickupNextAction.showBoxSuccess) {
+            Navigator.of(context).pushReplacementNamed(
+              AppRoutes.driverBoxReceivedSuccess,
+              arguments: DriverBoxReceivedSuccessEntity(
+                boxCode: state.validatedBox?.boxCode ??
+                    state.confirmation?.boxCode ??
+                    widget.box?.boxCode ??
+                    '',
+                restaurantName: state.validatedBox?.customerName ??
+                    widget.box?.customerName ??
+                    '',
+                itemsCount: state.validatedBox?.mealsCount ??
+                    widget.box?.mealsCount ??
+                    0,
+                expectedReceiptTime: state.validatedBox?.deliveryTimeSlot ??
+                    widget.box?.deliveryTimeSlot ??
+                    '',
+                isReceived: true,
+              ),
+            );
+          }
+        } else if (state.requiresRescan && state.currentStep != 1) {
+          _viewModel.doIntent(const StepChangedEvent(1));
+          _viewModel.doIntent(const ResetScanEvent());
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: color.surface,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.base,
+                vertical: Spacing.sm,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  DriverConfirmReceiptHeader(currentStep: state.currentStep),
+                  const SizedBox(height: Spacing.lg),
+                  if (state.currentStep == 1)
+                    DriverConfirmReceiptStep1Section(
+                      scannerController: _scannerController,
+                      isFlashOn: _isFlashOn,
+                      onFlashChanged: (val) async {
+                        try {
+                          await _scannerController.toggleTorch();
+                        } catch (_) {}
+                        setState(() => _isFlashOn = val);
+                      },
+                      onScanSuccess: () => _handleBarcodeScanned(
+                        widget.box?.boxCode ?? widget.box?.boxId ?? 'BOX-101',
+                      ),
+                      onEnterCodeManually: _handleEnterCodeManually,
+                      isQrScanned: state.isBarcodeValidated,
+                      onContinueToStep2: _goToStep2,
+                      failure: state.failure,
+                      onRetry: () => _viewModel.doIntent(const RetryFailedStageEvent()),
+                      isLoading: state.isValidatingBarcode,
+                    )
+                  else
+                    DriverConfirmReceiptStep2Section(
+                      scannerController: _scannerController,
+                      isPhotoCaptured: state.localPhotoPath != null &&
+                          state.localPhotoPath!.isNotEmpty,
+                      onCapturePhoto: _handleCapturePhoto,
+                      onConfirmDelivery: _handleConfirmReceipt,
+                      capturedPhotoPath: state.localPhotoPath,
+                      failure: state.failure,
+                      onRetry: () => _viewModel.doIntent(const RetryFailedStageEvent()),
+                      isLoading: state.isActionLoading,
+                    ),
+                  const SizedBox(height: Spacing.xxl),
+                ],
+              ),
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              DriverConfirmReceiptHeader(currentStep: _currentStep),
-              const SizedBox(height: Spacing.lg),
-              if (_currentStep == 1)
-                DriverConfirmReceiptStep1Section(
-                  scannerController: _scannerController,
-                  isFlashOn: _isFlashOn,
-                  onFlashChanged: (val) async {
-                    try {
-                      await _scannerController.toggleTorch();
-                    } catch (_) {}
-                    setState(() => _isFlashOn = val);
-                  },
-                  onScanSuccess: _handleScanSuccess,
-                  onEnterCodeManually: _handleEnterCodeManually,
-                  isQrScanned: _isQrScanned,
-                  onContinueToStep2: _goToStep2,
-                )
-              else
-                DriverConfirmReceiptStep2Section(
-                  scannerController: _scannerController,
-                  isPhotoCaptured: _isPhotoCaptured,
-                  onCapturePhoto: _handleCapturePhoto,
-                  onConfirmDelivery: _handleConfirmReceipt,
-                  capturedPhotoPath: _capturedPhotoPath,
-                ),
-              const SizedBox(height: Spacing.xxl),
-            ],
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

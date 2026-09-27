@@ -5,6 +5,8 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/errors/error_widgets/inline_api_error_widget.dart';
+import '../../../../../core/network/failures.dart';
 import '../../../../../core/widget/app_button.dart';
 import 'driver_camera_viewfinder.dart';
 
@@ -16,6 +18,9 @@ class DriverConfirmReceiptStep2Section extends StatelessWidget {
     required this.onCapturePhoto,
     required this.onConfirmDelivery,
     this.capturedPhotoPath,
+    this.failure,
+    this.onRetry,
+    this.isLoading = false,
   });
 
   final MobileScannerController? scannerController;
@@ -23,6 +28,9 @@ class DriverConfirmReceiptStep2Section extends StatelessWidget {
   final VoidCallback onCapturePhoto;
   final VoidCallback onConfirmDelivery;
   final String? capturedPhotoPath;
+  final Failure? failure;
+  final VoidCallback? onRetry;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +70,20 @@ class DriverConfirmReceiptStep2Section extends StatelessWidget {
           onCapturePhoto: onCapturePhoto,
           capturedPhotoPath: capturedPhotoPath,
         ),
-        const SizedBox(height: Spacing.xl),
+        const SizedBox(height: Spacing.md),
+        if (failure != null) ...[
+          InlineApiErrorWidget(failure: failure!, onRetry: onRetry),
+          const SizedBox(height: Spacing.md),
+        ],
+        const SizedBox(height: Spacing.sm),
         AppButton(
           text: isPhotoCaptured
               ? locale.driverConfirmDeliveryAction
               : locale.driverTakePhotoAction,
-          onPressed: isPhotoCaptured ? onConfirmDelivery : onCapturePhoto,
+          onPressed: isLoading
+              ? null
+              : (isPhotoCaptured ? onConfirmDelivery : onCapturePhoto),
+          isLoading: isLoading,
           variant: AppButtonVariant.filled,
           isExpanded: true,
           height: Spacing.buttonHeight,

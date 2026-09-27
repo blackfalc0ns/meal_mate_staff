@@ -63,6 +63,8 @@ import '../../features/driver/active_delivery/presentation/screens/driver_return
 import '../../features/driver/active_delivery/presentation/screens/driver_delivery_success_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
+import 'arguments/driver_confirm_receipt_route_arguments.dart';
+import 'arguments/driver_pickup_summary_route_arguments.dart';
 
 class RouteGenerator {
   const RouteGenerator._();
@@ -435,21 +437,30 @@ class RouteGenerator {
         );
 
       case AppRoutes.driverConfirmReceipt:
-        final box = settings.arguments is DriverAssignedBoxEntity
-            ? settings.arguments! as DriverAssignedBoxEntity
-            : null;
+        DriverAssignedBoxEntity? box;
+        final confirmArgs = settings.arguments;
+        if (confirmArgs is DriverConfirmReceiptRouteArguments) {
+          box = confirmArgs.box;
+        } else if (confirmArgs is DriverAssignedBoxEntity) {
+          box = confirmArgs;
+        }
         return _buildRoute(
           settings: settings,
           page: DriverConfirmReceiptScreen(box: box),
         );
 
       case AppRoutes.driverBoxesReceived:
-        final boxes = settings.arguments is List<DriverReceivedBoxItemEntity>
-            ? settings.arguments! as List<DriverReceivedBoxItemEntity>
-            : null;
+        final receivedArgs = settings.arguments;
+        List<DriverReceivedBoxItemEntity>? boxes;
+        String? tripId;
+        if (receivedArgs is DriverPickupSummaryRouteArguments) {
+          tripId = receivedArgs.tripId;
+        } else if (receivedArgs is List<DriverReceivedBoxItemEntity>) {
+          boxes = receivedArgs;
+        }
         return _buildRoute(
           settings: settings,
-          page: DriverBoxesReceivedScreen(boxes: boxes),
+          page: DriverBoxesReceivedScreen(boxes: boxes, tripId: tripId),
         );
 
       case AppRoutes.driverBoxReceivedSuccess:
