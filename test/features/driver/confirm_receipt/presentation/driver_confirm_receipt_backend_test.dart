@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
@@ -25,6 +26,8 @@ import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_flow_state.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_flow_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/screens/driver_confirm_receipt_screen.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_camera_viewfinder.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_qr_viewfinder.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_assigned_box_entity.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_box_delivery_status.dart';
 
@@ -75,6 +78,7 @@ class _FixedKeyFactory implements IdempotencyKeyFactory {
 void main() {
   late _FakePickupRepo fakeRepo;
   late DriverPickupFlowViewModel viewModel;
+  late MobileScannerController testScannerController;
 
   const testBox = DriverAssignedBoxEntity(
     boxId: 'box-101',
@@ -98,10 +102,12 @@ void main() {
       locationProvider: FakeDriverPickupLocationProvider(),
       idempotencyKeyFactory: _FixedKeyFactory(),
     );
+    testScannerController = MobileScannerController(autoStart: false);
   });
 
   tearDown(() {
     viewModel.close();
+    testScannerController.dispose();
   });
 
   Widget buildScreen({NavigatorObserver? observer}) {
@@ -129,6 +135,7 @@ void main() {
         return MaterialPageRoute(
           builder: (_) => DriverConfirmReceiptScreen(
             box: testBox,
+            scannerController: testScannerController,
             viewModel: viewModel,
           ),
         );
@@ -137,8 +144,16 @@ void main() {
   }
 
   Future<void> pumpScreen(WidgetTester tester) async {
-    await tester.pump(const Duration(milliseconds: 100));
-    await pumpEventQueue();
+    for (var i = 0; i < 4; i++) {
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+  }
+
+  Future<void> sendIntent(WidgetTester tester, DriverPickupFlowEvent event) async {
+    await tester.runAsync(() async {
+      viewModel.doIntent(event);
+      await pumpEventQueue();
+    });
     await tester.pump(const Duration(milliseconds: 100));
   }
 
@@ -148,7 +163,7 @@ void main() {
       await pumpScreen(tester);
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      expect(find.textContaining('BOX-101'), findsWidgets);
+      expect(find.byType(DriverQrViewfinder), findsOneWidget);
     });
 
     testWidgets('shows InlineApiErrorWidget when barcode validation fails', (tester) async {
@@ -159,8 +174,7 @@ void main() {
       await tester.pumpWidget(buildScreen());
       await pumpScreen(tester);
 
-      viewModel.doIntent(const ValidateBarcodeEvent('INVALID-CODE'));
-      await pumpScreen(tester);
+      await sendIntent(tester, const ValidateBarcodeEvent('INVALID-CODE'));
 
       expect(find.byType(InlineApiErrorWidget), findsOneWidget);
       expect(find.text('Invalid barcode from server'), findsOneWidget);
@@ -186,17 +200,20 @@ void main() {
       await tester.pumpWidget(buildScreen());
       await pumpScreen(tester);
 
-      viewModel.doIntent(const ValidateBarcodeEvent('BOX-101'));
-      await pumpScreen(tester);
+      await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
 
       // Tap continue to photograph box button
       final continueButton = find.widgetWithText(AppButton, 'Continue to Photograph Box');
       expect(continueButton, findsOneWidget);
+      await tester.ensureVisible(continueButton);
       await tester.tap(continueButton);
-      await pumpScreen(tester);
+      await tester.runAsync(() async {
+        await pumpEventQueue();
+      });
+      await tester.pump(const Duration(milliseconds: 100));
 
       // Now at Step 2
-      expect(find.text('Photograph Box Condition'), findsOneWidget);
+      expect(find.byType(DriverCameraViewfinder), findsOneWidget);
     });
 
     testWidgets('shows InlineApiErrorWidget and retains image when photo upload fails', (tester) async {
@@ -219,19 +236,15 @@ void main() {
       await tester.pumpWidget(buildScreen());
       await pumpScreen(tester);
 
-      viewModel.doIntent(const ValidateBarcodeEvent('BOX-101'));
-      await pumpScreen(tester);
-
-      viewModel.doIntent(const StepChangedEvent(2));
-      viewModel.doIntent(const PhotoSelectedEvent('dummy_photo.jpg'));
-      await pumpScreen(tester);
+      await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
+      await sendIntent(tester, const StepChangedEvent(2));
+      await sendIntent(tester, const PhotoSelectedEvent('dummy_photo.jpg'));
 
       fakeRepo.uploadResult = ApiErrorResult(
         failure: Failure(errorMessage: 'Photo upload failed', code: 'upload_error'),
       );
 
-      viewModel.doIntent(const ConfirmPickupEvent());
-      await pumpScreen(tester);
+      await sendIntent(tester, const ConfirmPickupEvent());
 
       expect(find.byType(InlineApiErrorWidget), findsOneWidget);
       expect(find.text('Photo upload failed'), findsOneWidget);
@@ -284,15 +297,11 @@ void main() {
       await tester.pumpWidget(buildScreen());
       await pumpScreen(tester);
 
-      viewModel.doIntent(const ValidateBarcodeEvent('BOX-101'));
-      await pumpScreen(tester);
-
-      viewModel.doIntent(const StepChangedEvent(2));
-      viewModel.doIntent(const PhotoSelectedEvent('photo.jpg'));
-      await pumpScreen(tester);
-
-      viewModel.doIntent(const ConfirmPickupEvent());
-      await pumpScreen(tester);
+      await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
+      await sendIntent(tester, const StepChangedEvent(2));
+      await sendIntent(tester, const PhotoSelectedEvent('photo.jpg'));
+      await sendIntent(tester, const ConfirmPickupEvent());
+      await tester.pump(const Duration(milliseconds: 400));
 
       expect(find.text('Box Received Success Screen'), findsOneWidget);
     });
@@ -343,15 +352,11 @@ void main() {
       await tester.pumpWidget(buildScreen());
       await pumpScreen(tester);
 
-      viewModel.doIntent(const ValidateBarcodeEvent('BOX-105'));
-      await pumpScreen(tester);
-
-      viewModel.doIntent(const StepChangedEvent(2));
-      viewModel.doIntent(const PhotoSelectedEvent('photo5.jpg'));
-      await pumpScreen(tester);
-
-      viewModel.doIntent(const ConfirmPickupEvent());
-      await pumpScreen(tester);
+      await sendIntent(tester, const ValidateBarcodeEvent('BOX-105'));
+      await sendIntent(tester, const StepChangedEvent(2));
+      await sendIntent(tester, const PhotoSelectedEvent('photo5.jpg'));
+      await sendIntent(tester, const ConfirmPickupEvent());
+      await tester.pump(const Duration(milliseconds: 400));
 
       expect(find.text('Boxes Received Summary Screen'), findsOneWidget);
     });
@@ -377,8 +382,7 @@ void main() {
       await tester.pumpWidget(buildScreen());
       await pumpScreen(tester);
 
-      viewModel.doIntent(const ValidateBarcodeEvent('BOX-101'));
-      await pumpScreen(tester);
+      await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
 
       // Since token is expired, requiresRescan is true
       expect(viewModel.state.requiresRescan, isTrue);

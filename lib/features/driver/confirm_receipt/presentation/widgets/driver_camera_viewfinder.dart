@@ -74,7 +74,17 @@ class _DriverCameraViewfinderState extends State<DriverCameraViewfinder> {
               // Real live camera feed or captured photo
               if (widget.capturedPhotoPath != null &&
                   widget.capturedPhotoPath!.isNotEmpty)
-                Image.file(File(widget.capturedPhotoPath!), fit: BoxFit.cover)
+                Image.file(
+                  File(widget.capturedPhotoPath!),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Center(
+                    child: Icon(
+                      Icons.image_outlined,
+                      size: Spacing.iconLg,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                )
               else
                 Positioned.fill(
                   child: MobileScanner(
