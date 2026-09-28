@@ -59,8 +59,8 @@ class DriverMapStopCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.md,
-          vertical: 6,
+          horizontal: Spacing.sm,
+          vertical: Spacing.xs,
         ),
         decoration: BoxDecoration(
           color: color.surface,
@@ -69,7 +69,10 @@ class DriverMapStopCard extends StatelessWidget {
           ),
           border: isSelected
               ? Border.all(color: color.primary, width: 2.0)
-              : null,
+              : Border.all(
+                  color: color.outline.withValues(alpha: 0.15),
+                  width: 1.0,
+                ),
           boxShadow: [
             BoxShadow(
               color: color.shadow.withValues(alpha: isSelected ? 0.08 : 0.04),
@@ -92,7 +95,7 @@ class DriverMapStopCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? color.primary
-                      : color.primary.withValues(alpha: 0.10),
+                      : color.primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(Spacing.radiusSm),
                 ),
                 child: Text(
@@ -105,8 +108,8 @@ class DriverMapStopCard extends StatelessWidget {
               ),
             ),
             Container(
-              width: 46,
-              height: 46,
+              width: 48,
+              height: 48,
               padding: const EdgeInsets.all(Spacing.xs),
               decoration: BoxDecoration(
                 color: color.primary.withValues(alpha: 0.08),
@@ -116,13 +119,13 @@ class DriverMapStopCard extends StatelessWidget {
                 child: stop.imageAsset.endsWith('.svg')
                     ? SvgPicture.asset(
                         stop.imageAsset,
-                        width: 24,
-                        height: 24,
+                        width: 26,
+                        height: 26,
                       )
                     : Image.asset(
                         stop.imageAsset,
-                        width: 24,
-                        height: 24,
+                        width: 26,
+                        height: 26,
                         fit: BoxFit.contain,
                       ),
               ),
@@ -133,7 +136,7 @@ class DriverMapStopCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
-                fontSize: isSelected ? FontSize.size15 : FontSize.size14,
+                fontSize: isSelected ? FontSize.size16 : FontSize.size14,
                 color: color.onSurface,
               ),
             ),
@@ -168,7 +171,7 @@ class DriverMapStopCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.sm),
+            const SizedBox(height: Spacing.xs),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: Spacing.md,
@@ -204,49 +207,73 @@ class DriverMapStopCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: Spacing.md),
+            const SizedBox(height: Spacing.xs),
+            Container(
+              height: 0.8,
+              color: color.outline.withValues(alpha: 0.12),
+            ),
+            const SizedBox(height: Spacing.xs),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.calendar_today_outlined,
-                      size: 13,
-                      color: footerColor,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      stop.deliveryTimeSlot,
-                      style: getBoldStyle(
-                        fontSize: isSelected
-                            ? FontSize.size11
-                            : FontSize.size10,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          '${stop.mealsCount} ${locale.driverMealsUnit}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontSize: isSelected
+                                ? FontSize.size11
+                                : FontSize.size10,
+                            color: footerColor,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Icon(
+                        Icons.restaurant_outlined,
+                        size: isSelected ? 14 : 12,
                         color: footerColor,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.restaurant_outlined,
-                      size: 13,
-                      color: footerColor,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      '${stop.mealsCount} ${locale.driverMealsUnit}',
-                      style: getBoldStyle(
-                        fontSize: isSelected
-                            ? FontSize.size11
-                            : FontSize.size10,
+                Container(
+                  width: 1,
+                  height: 12,
+                  color: color.outline.withValues(alpha: 0.25),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          stop.deliveryTimeSlot,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: getBoldStyle(
+                            fontSize: isSelected
+                                ? FontSize.size11
+                                : FontSize.size10,
+                            color: footerColor,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        size: isSelected ? 14 : 12,
                         color: footerColor,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

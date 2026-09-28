@@ -15,7 +15,7 @@ class DriverMapRecenterButton extends StatelessWidget {
     final color = context.colorScheme;
 
     return Material(
-      color: Colors.transparent,
+      color: color.surface.withValues(alpha: 0),
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(Spacing.radiusPill),

@@ -143,5 +143,58 @@ void main() {
       expect(find.byType(DriverMapScreen), findsOneWidget);
       expect(find.byType(DriverMapActiveOrderCard), findsOneWidget);
     });
+
+    testWidgets('DriverMapStopsCarousel displays 3 cards with looping and navigation', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(390 * 2, 844 * 2);
+      tester.view.devicePixelRatio = 2;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(
+        _buildTestApp(
+          child: const DriverMapScreen(),
+        ),
+      );
+      await tester.pump();
+
+      // All 3 cards are present around center:
+      // Stop 1 (1/3, محمد علي) in center
+      // Stop 2 (2/3, مهند أحمد) on right
+      // Stop 3 (3/3, أحمد فيصل) on left
+      expect(find.text('1/3'), findsOneWidget);
+      expect(find.text('2/3'), findsOneWidget);
+      expect(find.text('3/3'), findsOneWidget);
+      expect(find.text('محمد علي'), findsWidgets);
+      expect(find.text('مهند أحمد'), findsOneWidget);
+      expect(find.text('أحمد فيصل'), findsOneWidget);
+
+      // Tap next arrow (right)
+      final nextNavFinder = find.widgetWithIcon(
+        DriverMapCarouselNavButton,
+        Icons.chevron_right_rounded,
+      );
+      expect(nextNavFinder, findsOneWidget);
+      await tester.tap(nextNavFinder);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      // After next, Stop 2 (مهند أحمد) is the active order card in the top card
+      expect(find.byType(DriverMapActiveOrderCard), findsOneWidget);
+      expect(find.text('مهند أحمد'), findsWidgets);
+
+      // Tap previous arrow (left)
+      final prevNavFinder = find.widgetWithIcon(
+        DriverMapCarouselNavButton,
+        Icons.chevron_left_rounded,
+      );
+      expect(prevNavFinder, findsOneWidget);
+      await tester.tap(prevNavFinder);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      // Back to Stop 1 (محمد علي)
+      expect(find.text('محمد علي'), findsWidgets);
+    });
   });
 }

@@ -24,6 +24,8 @@ class DriverMapOrderStatColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -68,16 +70,20 @@ class DriverMapOrderStatColumn extends StatelessWidget {
             if (showArrow) ...[
               const SizedBox(width: Spacing.xs),
               Container(
-                width: 18,
-                height: 18,
+                width: 20,
+                height: 20,
                 decoration: BoxDecoration(
-                  color: color.onPrimary.withValues(alpha: 0.2),
+                  color: color.onPrimary,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 10,
-                  color: color.onPrimary,
+                child: Center(
+                  child: Icon(
+                    isRtl
+                        ? Icons.chevron_left_rounded
+                        : Icons.chevron_right_rounded,
+                    size: 14,
+                    color: color.primary,
+                  ),
                 ),
               ),
             ],

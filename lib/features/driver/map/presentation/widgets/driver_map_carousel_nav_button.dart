@@ -17,16 +17,14 @@ class DriverMapCarouselNavButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    if (!isEnabled) {
-      return const SizedBox(width: 28, height: 28);
-    }
-
     return IconButton(
-      onPressed: onPressed,
+      onPressed: isEnabled ? onPressed : null,
       icon: Icon(
         icon,
-        size: 24,
-        color: color.primary,
+        size: 28,
+        color: isEnabled
+            ? color.primary
+            : color.primary.withValues(alpha: 0.35),
       ),
       padding: EdgeInsets.zero,
       constraints: const BoxConstraints(minWidth: 28, minHeight: 28),

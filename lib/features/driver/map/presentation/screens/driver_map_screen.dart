@@ -53,9 +53,12 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
         DriverMapFakeDataSource.driverInitialLocation;
     _routePoints =
         widget.initialRoutePoints ?? DriverMapFakeDataSource.sampleRoutePoints;
+    final initialPage = _stops.length > 1
+        ? (300 ~/ _stops.length) * _stops.length + _currentIndex
+        : _currentIndex;
     _pageController = PageController(
       viewportFraction: 0.62,
-      initialPage: _currentIndex,
+      initialPage: initialPage,
     );
   }
 
@@ -81,20 +84,58 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
     }
   }
 
+  int _closestPageForIndex(int targetIndex) {
+    if (!_pageController.hasClients) {
+      return _pageController.initialPage;
+    }
+    final currentPage =
+        _pageController.page?.round() ?? _pageController.initialPage;
+    final currentModulo =
+        _stops.isEmpty ? 0 : currentPage % _stops.length;
+    var diff = targetIndex - currentModulo;
+    if (_stops.isNotEmpty) {
+      if (diff > _stops.length / 2) diff -= _stops.length;
+      if (diff < -_stops.length / 2) diff += _stops.length;
+    }
+    return currentPage + diff;
+  }
+
   void _handleStopSelected(int index) {
     if (index < 0 || index >= _stops.length) return;
-    setState(() {
-      _currentIndex = index;
-    });
-    if (_pageController.hasClients &&
-        _pageController.page?.round() != index) {
+    if (_currentIndex != index) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
+    if (_pageController.hasClients) {
+      final targetPage = _closestPageForIndex(index);
+      if (_pageController.page?.round() != targetPage) {
+        unawaited(
+          _pageController.animateToPage(
+            targetPage,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          ),
+        );
+      }
+    }
+    final stop = _stops[index];
+    final controller = _mapController;
+    if (controller != null) {
       unawaited(
-        _pageController.animateToPage(
-          index,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
+        controller.animateCamera(
+          CameraUpdate.newLatLng(LatLng(stop.latitude, stop.longitude)),
         ),
       );
+    }
+  }
+
+  void _handleCarouselPageChanged(int index) {
+    if (index < 0 || index >= _stops.length) return;
+    if (_currentIndex != index) {
+      setState(() {
+        _currentIndex = index;
+      });
     }
     final stop = _stops[index];
     final controller = _mapController;
@@ -108,14 +149,24 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
   }
 
   void _handlePrevious() {
-    if (_currentIndex > 0) {
-      _handleStopSelected(_currentIndex - 1);
+    if (_stops.length > 1 && _pageController.hasClients) {
+      unawaited(
+        _pageController.previousPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        ),
+      );
     }
   }
 
   void _handleNext() {
-    if (_currentIndex < _stops.length - 1) {
-      _handleStopSelected(_currentIndex + 1);
+    if (_stops.length > 1 && _pageController.hasClients) {
+      unawaited(
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        ),
+      );
     }
   }
 
@@ -125,9 +176,7 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
 
     final activeStop = _stops.isNotEmpty ? _stops[_currentIndex] : null;
 
-    final bottomPadding = widget.showBottomNavBar
-        ? Spacing.bottomNavHeight + Spacing.sm
-        : Spacing.bottomNavHeight + Spacing.sm;
+    const bottomPadding = Spacing.bottomNavHeight + Spacing.xs;
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -170,7 +219,7 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
                   ),
                 PositionedDirectional(
                   end: Spacing.screenH,
-                  bottom: bottomPadding + 240,
+                  top: 168,
                   child: DriverMapRecenterButton(
                     onPressed: _handleRecenter,
                   ),
@@ -183,7 +232,7 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
                     stops: _stops,
                     currentIndex: _currentIndex,
                     pageController: _pageController,
-                    onPageChanged: _handleStopSelected,
+                    onPageChanged: _handleCarouselPageChanged,
                     onPrevious: _handlePrevious,
                     onNext: _handleNext,
                   ),

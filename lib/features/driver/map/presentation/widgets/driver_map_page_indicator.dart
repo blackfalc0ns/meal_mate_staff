@@ -18,27 +18,30 @@ class DriverMapPageIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(itemCount, (index) {
-        final isSelected = index == currentIndex;
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(itemCount, (index) {
+          final isSelected = index == currentIndex;
 
-        return GestureDetector(
-          onTap: () => onDotTapped?.call(index),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            margin: const EdgeInsets.symmetric(horizontal: 3),
-            width: 28,
-            height: 4,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? color.primary
-                  : color.primary.withValues(alpha: 0.20),
-              borderRadius: BorderRadius.circular(Spacing.radiusPill),
+          return GestureDetector(
+            onTap: () => onDotTapped?.call(index),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.symmetric(horizontal: 3),
+              width: isSelected ? 32 : 28,
+              height: 4,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? color.primary
+                    : color.primary.withValues(alpha: 0.20),
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

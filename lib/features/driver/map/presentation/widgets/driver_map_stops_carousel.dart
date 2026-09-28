@@ -28,6 +28,9 @@ class DriverMapStopsCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final outerDirection = Directionality.of(context);
+    final isLooping = stops.length > 1;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -36,49 +39,62 @@ class DriverMapStopsCarousel extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              PageView.builder(
-                controller: pageController,
-                itemCount: stops.length,
-                onPageChanged: onPageChanged,
-                clipBehavior: Clip.none,
-                itemBuilder: (context, index) {
-                  final isSelected = index == currentIndex;
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: PageView.builder(
+                  controller: pageController,
+                  itemCount: isLooping ? null : stops.length,
+                  onPageChanged: (page) {
+                    final realIndex =
+                        stops.isEmpty ? 0 : page % stops.length;
+                    onPageChanged(realIndex);
+                  },
+                  clipBehavior: Clip.none,
+                  itemBuilder: (context, index) {
+                    final stopIndex = stops.isEmpty
+                        ? 0
+                        : (isLooping ? index % stops.length : index);
+                    final isSelected = stopIndex == currentIndex;
 
-                  return AnimatedPadding(
-                    duration: const Duration(milliseconds: 200),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: isSelected ? 0 : 10,
-                    ),
-                    child: DriverMapStopCard(
-                      stop: stops[index],
-                      isSelected: isSelected,
-                      onTap: () {
-                        unawaited(
-                          pageController.animateToPage(
-                            index,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
+                    return Directionality(
+                      textDirection: outerDirection,
+                      child: AnimatedPadding(
+                        duration: const Duration(milliseconds: 200),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: isSelected ? 0 : 10,
+                        ),
+                        child: DriverMapStopCard(
+                          stop: stops[stopIndex],
+                          isSelected: isSelected,
+                          onTap: () {
+                            unawaited(
+                              pageController.animateToPage(
+                                index,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-              PositionedDirectional(
-                start: Spacing.xs,
+              Positioned(
+                left: Spacing.xs,
                 child: DriverMapCarouselNavButton(
                   icon: Icons.chevron_left_rounded,
-                  isEnabled: currentIndex > 0,
+                  isEnabled: stops.length > 1,
                   onPressed: onPrevious,
                 ),
               ),
-              PositionedDirectional(
-                end: Spacing.xs,
+              Positioned(
+                right: Spacing.xs,
                 child: DriverMapCarouselNavButton(
                   icon: Icons.chevron_right_rounded,
-                  isEnabled: currentIndex < stops.length - 1,
+                  isEnabled: stops.length > 1,
                   onPressed: onNext,
                 ),
               ),
@@ -89,14 +105,25 @@ class DriverMapStopsCarousel extends StatelessWidget {
         DriverMapPageIndicator(
           itemCount: stops.length,
           currentIndex: currentIndex,
-          onDotTapped: (index) {
-            unawaited(
-              pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              ),
-            );
+          onDotTapped: (targetIndex) {
+            if (pageController.hasClients) {
+              final currentPage =
+                  pageController.page?.round() ?? pageController.initialPage;
+              final currentModulo =
+                  stops.isEmpty ? 0 : currentPage % stops.length;
+              var diff = targetIndex - currentModulo;
+              if (stops.isNotEmpty) {
+                if (diff > stops.length / 2) diff -= stops.length;
+                if (diff < -stops.length / 2) diff += stops.length;
+              }
+              unawaited(
+                pageController.animateToPage(
+                  currentPage + diff,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                ),
+              );
+            }
           },
         ),
       ],
