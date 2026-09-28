@@ -3437,7 +3437,7 @@ abstract class AppLocalizations {
   /// No description provided for @driverMealsUnit.
   ///
   /// In en, this message translates to:
-  /// **'meals'**
+  /// **'Meals'**
   String get driverMealsUnit;
 
   /// No description provided for @driverTotalBoxesToday.
@@ -5153,7 +5153,7 @@ abstract class AppLocalizations {
   /// No description provided for @driverDeliveryTimeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Delivery Time'**
+  /// **'Delivery time'**
   String get driverDeliveryTimeLabel;
 
   /// No description provided for @driverConfirmArrivalToCustomerAction.
@@ -5803,6 +5803,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Missing'**
   String get driverDetailsDocumentMissing;
+
+  /// No description provided for @driverStartWorkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Available for Work'**
+  String get driverStartWorkTitle;
+
+  /// No description provided for @driverStartWorkSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete requirements to start receiving orders'**
+  String get driverStartWorkSubtitle;
+
+  /// No description provided for @driverStatusNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Current Status'**
+  String get driverStatusNow;
+
+  /// No description provided for @driverStatusOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get driverStatusOffline;
+
+  /// No description provided for @driverNotAvailableDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not available to receive orders'**
+  String get driverNotAvailableDescription;
+
+  /// No description provided for @driverProfits.
+  ///
+  /// In en, this message translates to:
+  /// **'Profits'**
+  String get driverProfits;
+
+  /// No description provided for @driverCurrencyKd.
+  ///
+  /// In en, this message translates to:
+  /// **'KD'**
+  String get driverCurrencyKd;
+
+  /// No description provided for @driverDistanceApprox.
+  ///
+  /// In en, this message translates to:
+  /// **'KM approx'**
+  String get driverDistanceApprox;
+
+  /// No description provided for @driverCompletedOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed orders'**
+  String get driverCompletedOrders;
+
+  /// No description provided for @driverReqCheckRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Check start work requirements'**
+  String get driverReqCheckRequirements;
+
+  /// No description provided for @driverReqCheckRequirementsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review required checklist'**
+  String get driverReqCheckRequirementsSubtitle;
+
+  /// No description provided for @driverReqGoToPickup.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to pickup point'**
+  String get driverReqGoToPickup;
+
+  /// No description provided for @driverReqGoToPickupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive boxes and start delivery'**
+  String get driverReqGoToPickupSubtitle;
+
+  /// No description provided for @driverReqReadyToWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to start work?'**
+  String get driverReqReadyToWork;
+
+  /// No description provided for @driverReqReadyToWorkSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure readiness and begin accepting orders'**
+  String get driverReqReadyToWorkSubtitle;
+
+  /// No description provided for @driverStartWorkAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Work'**
+  String get driverStartWorkAction;
+
+  /// No description provided for @driverCurrentStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current status'**
+  String get driverCurrentStatusLabel;
+
+  /// No description provided for @driverStatusInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivering Order'**
+  String get driverStatusInDelivery;
+
+  /// No description provided for @driverCurrentLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Location'**
+  String get driverCurrentLocationLabel;
+
+  /// No description provided for @driverDailyGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Achievement Indicator'**
+  String get driverDailyGoalTitle;
+
+  /// No description provided for @driverDailyGoalCount.
+  ///
+  /// In en, this message translates to:
+  /// **'5/8 orders'**
+  String get driverDailyGoalCount;
+
+  /// No description provided for @driverDailyGoalCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed {count} orders of daily goal'**
+  String driverDailyGoalCompleted(int count);
+
+  /// No description provided for @driverDailyGoalRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders remaining to reach goal'**
+  String driverDailyGoalRemaining(int count);
+
+  /// No description provided for @driverPerformanceGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance Level : Good'**
+  String get driverPerformanceGood;
+
+  /// No description provided for @driverCurrentOrderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Order'**
+  String get driverCurrentOrderLabel;
+
+  /// No description provided for @driverClientLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Client'**
+  String get driverClientLabel;
+
+  /// No description provided for @driverAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get driverAddressLabel;
+
+  /// No description provided for @driverMealsCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals count'**
+  String get driverMealsCountLabel;
+
+  /// No description provided for @driverViewDetailsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get driverViewDetailsAction;
+
+  /// No description provided for @driverIssuesWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'If you encounter a delivery issue'**
+  String get driverIssuesWarningTitle;
+
+  /// No description provided for @driverIssuesWarningSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report so we can assist you'**
+  String get driverIssuesWarningSubtitle;
+
+  /// No description provided for @driverDailySummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Summary'**
+  String get driverDailySummaryTitle;
+
+  /// No description provided for @driverSummaryIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete'**
+  String get driverSummaryIncomplete;
+
+  /// No description provided for @driverSummaryInDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'In Delivery'**
+  String get driverSummaryInDelivery;
+
+  /// No description provided for @driverSummaryDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get driverSummaryDelivered;
+
+  /// No description provided for @driverSummaryTotalOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Orders'**
+  String get driverSummaryTotalOrders;
+
+  /// No description provided for @driverDailyPerformanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Performance'**
+  String get driverDailyPerformanceTitle;
+
+  /// No description provided for @driverAvgDeliveryTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Delivery Time'**
+  String get driverAvgDeliveryTime;
+
+  /// No description provided for @driverAvgDeliveryTimeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'18 mins'**
+  String get driverAvgDeliveryTimeValue;
+
+  /// No description provided for @driverDistanceCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance Covered'**
+  String get driverDistanceCovered;
+
+  /// No description provided for @driverDistanceCoveredValue.
+  ///
+  /// In en, this message translates to:
+  /// **'32.4 km'**
+  String get driverDistanceCoveredValue;
+
+  /// No description provided for @driverOnTimeRate.
+  ///
+  /// In en, this message translates to:
+  /// **'On Time'**
+  String get driverOnTimeRate;
+
+  /// No description provided for @driverOnTimeRateValue.
+  ///
+  /// In en, this message translates to:
+  /// **'92%'**
+  String get driverOnTimeRateValue;
 }
 
 class _AppLocalizationsDelegate

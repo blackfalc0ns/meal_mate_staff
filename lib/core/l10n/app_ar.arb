@@ -1208,6 +1208,65 @@
   "driverDetailsDocumentValid": "ساري",
   "driverDetailsDocumentExpiringSoon": "ينتهي قريباً",
   "driverDetailsDocumentExpired": "منتهي",
-  "driverDetailsDocumentMissing": "غير متوفر"
+  "driverDetailsDocumentMissing": "غير متوفر",
+  "driverStartWorkTitle": "غير متاح للعمل",
+  "driverStartWorkSubtitle": "أكمل المتطلبات لبدء استلام الطلبات",
+  "driverStatusNow": "حالتك الآن",
+  "driverStatusOffline": "غير متاح",
+  "driverNotAvailableDescription": "أنت غير متاح لاستلام الطلبات",
+  "driverProfits": "الأرباح",
+  "driverCurrencyKd": "د.ك",
+  "driverDistanceApprox": "كم تقريباً",
+  "driverCompletedOrders": "طلبات مكتملة",
+  "driverReqCheckRequirements": "تحقق من متطلبات بدء العمل",
+  "driverReqCheckRequirementsSubtitle": "راجع المتطلبات المطلوبة",
+  "driverReqGoToPickup": "توجه إلى نقطة الاستلام",
+  "driverReqGoToPickupSubtitle": "استلم الصناديق وابدأ التسليم",
+  "driverReqReadyToWork": "جاهز لبدء العمل؟",
+  "driverReqReadyToWorkSubtitle": "تأكد من جاهزيتك وبدء استقبال الطلبات",
+  "driverStartWorkAction": "بدء العمل",
+  "driverCurrentStatusLabel": "حالتك الحالية",
+  "driverStatusInDelivery": "توصيل الطلب",
+  "driverCurrentLocationLabel": "الموقع الحالي",
+  "driverDailyGoalTitle": "مؤشر الإنجاز اليومي",
+  "driverDailyGoalCount": "8/5 طلبات",
+  "driverDailyGoalCompleted": "أتممت {count} طلبات من الهدف اليومي",
+  "@driverDailyGoalCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDailyGoalRemaining": "تبقى {count} طلبات للوصول للهدف",
+  "@driverDailyGoalRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverPerformanceGood": "مستوى الأداء : جيد",
+  "driverCurrentOrderLabel": "الطلب الحالي",
+  "driverClientLabel": "عميل",
+  "driverAddressLabel": "العنوان",
+  "driverMealsCountLabel": "عدد الوجبات",
+  "driverMealsUnit": "وجبات",
+  "driverDeliveryTimeLabel": "وقت التسليم",
+  "driverViewDetailsAction": "عرض التفاصيل",
+  "driverIssuesWarningTitle": "في حال وجود مشكلة في التوصيل",
+  "driverIssuesWarningSubtitle": "أخبر لتتمكن من مساعدتك",
+  "driverDailySummaryTitle": "ملخص اليوم",
+  "driverSummaryIncomplete": "غير مكتملة",
+  "driverSummaryInDelivery": "قيد التوصيل",
+  "driverSummaryDelivered": "تم التسليم",
+  "driverSummaryTotalOrders": "إجمالي الطلبات",
+  "driverDailyPerformanceTitle": "أداء اليوم",
+  "driverAvgDeliveryTime": "متوسط مدة التوصيل",
+  "driverAvgDeliveryTimeValue": "18 دقيقة",
+  "driverDistanceCovered": "المسافة المقطوعة",
+  "driverDistanceCoveredValue": "32.4 كم",
+  "driverOnTimeRate": "في الموعد",
+  "driverOnTimeRateValue": "92%"
 }
 

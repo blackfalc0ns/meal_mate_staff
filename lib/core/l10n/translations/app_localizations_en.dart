@@ -1768,7 +1768,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverTotalMeals => 'Total Meals';
 
   @override
-  String get driverMealsUnit => 'meals';
+  String get driverMealsUnit => 'Meals';
 
   @override
   String get driverTotalBoxesToday => 'Total boxes assigned today';
@@ -2678,7 +2678,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverCustomerAddressLabel => 'Customer Address';
 
   @override
-  String get driverDeliveryTimeLabel => 'Delivery Time';
+  String get driverDeliveryTimeLabel => 'Delivery time';
 
   @override
   String get driverConfirmArrivalToCustomerAction =>
@@ -3027,4 +3027,140 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverDetailsDocumentMissing => 'Missing';
+
+  @override
+  String get driverStartWorkTitle => 'Not Available for Work';
+
+  @override
+  String get driverStartWorkSubtitle =>
+      'Complete requirements to start receiving orders';
+
+  @override
+  String get driverStatusNow => 'Your Current Status';
+
+  @override
+  String get driverStatusOffline => 'Offline';
+
+  @override
+  String get driverNotAvailableDescription =>
+      'You are not available to receive orders';
+
+  @override
+  String get driverProfits => 'Profits';
+
+  @override
+  String get driverCurrencyKd => 'KD';
+
+  @override
+  String get driverDistanceApprox => 'KM approx';
+
+  @override
+  String get driverCompletedOrders => 'Completed orders';
+
+  @override
+  String get driverReqCheckRequirements => 'Check start work requirements';
+
+  @override
+  String get driverReqCheckRequirementsSubtitle => 'Review required checklist';
+
+  @override
+  String get driverReqGoToPickup => 'Go to pickup point';
+
+  @override
+  String get driverReqGoToPickupSubtitle => 'Receive boxes and start delivery';
+
+  @override
+  String get driverReqReadyToWork => 'Ready to start work?';
+
+  @override
+  String get driverReqReadyToWorkSubtitle =>
+      'Ensure readiness and begin accepting orders';
+
+  @override
+  String get driverStartWorkAction => 'Start Work';
+
+  @override
+  String get driverCurrentStatusLabel => 'Current status';
+
+  @override
+  String get driverStatusInDelivery => 'Delivering Order';
+
+  @override
+  String get driverCurrentLocationLabel => 'Current Location';
+
+  @override
+  String get driverDailyGoalTitle => 'Daily Achievement Indicator';
+
+  @override
+  String get driverDailyGoalCount => '5/8 orders';
+
+  @override
+  String driverDailyGoalCompleted(int count) {
+    return 'Completed $count orders of daily goal';
+  }
+
+  @override
+  String driverDailyGoalRemaining(int count) {
+    return '$count orders remaining to reach goal';
+  }
+
+  @override
+  String get driverPerformanceGood => 'Performance Level : Good';
+
+  @override
+  String get driverCurrentOrderLabel => 'Current Order';
+
+  @override
+  String get driverClientLabel => 'Client';
+
+  @override
+  String get driverAddressLabel => 'Address';
+
+  @override
+  String get driverMealsCountLabel => 'Meals count';
+
+  @override
+  String get driverViewDetailsAction => 'View Details';
+
+  @override
+  String get driverIssuesWarningTitle => 'If you encounter a delivery issue';
+
+  @override
+  String get driverIssuesWarningSubtitle => 'Report so we can assist you';
+
+  @override
+  String get driverDailySummaryTitle => 'Today\'s Summary';
+
+  @override
+  String get driverSummaryIncomplete => 'Incomplete';
+
+  @override
+  String get driverSummaryInDelivery => 'In Delivery';
+
+  @override
+  String get driverSummaryDelivered => 'Delivered';
+
+  @override
+  String get driverSummaryTotalOrders => 'Total Orders';
+
+  @override
+  String get driverDailyPerformanceTitle => 'Today\'s Performance';
+
+  @override
+  String get driverAvgDeliveryTime => 'Avg Delivery Time';
+
+  @override
+  String get driverAvgDeliveryTimeValue => '18 mins';
+
+  @override
+  String get driverDistanceCovered => 'Distance Covered';
+
+  @override
+  String get driverDistanceCoveredValue => '32.4 km';
+
+  @override
+  String get driverOnTimeRate => 'On Time';
+
+  @override
+  String get driverOnTimeRateValue => '92%';
 }

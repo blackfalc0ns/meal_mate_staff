@@ -126,4 +126,6 @@ class Spacing {
   static const double dispatcherSupportFilterChipHeight = 26;
   static const double dispatcherSupportCardActionBtnHeight = 32;
   static const double dispatcherSupportCardIndicatorWidth = 4;
+  static const double driverHomeMapHeight = 140;
+  static const double driverHomeGoalTargetSize = 56;
 }

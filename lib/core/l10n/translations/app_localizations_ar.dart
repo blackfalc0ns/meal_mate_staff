@@ -1765,7 +1765,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverTotalMeals => 'إجمالي الوجبات';
 
   @override
-  String get driverMealsUnit => 'وجبة';
+  String get driverMealsUnit => 'وجبات';
 
   @override
   String get driverTotalBoxesToday => 'إجمالي الصناديق المخصصة اليوم';
@@ -3015,4 +3015,138 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverDetailsDocumentMissing => 'غير متوفر';
+
+  @override
+  String get driverStartWorkTitle => 'غير متاح للعمل';
+
+  @override
+  String get driverStartWorkSubtitle => 'أكمل المتطلبات لبدء استلام الطلبات';
+
+  @override
+  String get driverStatusNow => 'حالتك الآن';
+
+  @override
+  String get driverStatusOffline => 'غير متاح';
+
+  @override
+  String get driverNotAvailableDescription => 'أنت غير متاح لاستلام الطلبات';
+
+  @override
+  String get driverProfits => 'الأرباح';
+
+  @override
+  String get driverCurrencyKd => 'د.ك';
+
+  @override
+  String get driverDistanceApprox => 'كم تقريباً';
+
+  @override
+  String get driverCompletedOrders => 'طلبات مكتملة';
+
+  @override
+  String get driverReqCheckRequirements => 'تحقق من متطلبات بدء العمل';
+
+  @override
+  String get driverReqCheckRequirementsSubtitle => 'راجع المتطلبات المطلوبة';
+
+  @override
+  String get driverReqGoToPickup => 'توجه إلى نقطة الاستلام';
+
+  @override
+  String get driverReqGoToPickupSubtitle => 'استلم الصناديق وابدأ التسليم';
+
+  @override
+  String get driverReqReadyToWork => 'جاهز لبدء العمل؟';
+
+  @override
+  String get driverReqReadyToWorkSubtitle =>
+      'تأكد من جاهزيتك وبدء استقبال الطلبات';
+
+  @override
+  String get driverStartWorkAction => 'بدء العمل';
+
+  @override
+  String get driverCurrentStatusLabel => 'حالتك الحالية';
+
+  @override
+  String get driverStatusInDelivery => 'توصيل الطلب';
+
+  @override
+  String get driverCurrentLocationLabel => 'الموقع الحالي';
+
+  @override
+  String get driverDailyGoalTitle => 'مؤشر الإنجاز اليومي';
+
+  @override
+  String get driverDailyGoalCount => '8/5 طلبات';
+
+  @override
+  String driverDailyGoalCompleted(int count) {
+    return 'أتممت $count طلبات من الهدف اليومي';
+  }
+
+  @override
+  String driverDailyGoalRemaining(int count) {
+    return 'تبقى $count طلبات للوصول للهدف';
+  }
+
+  @override
+  String get driverPerformanceGood => 'مستوى الأداء : جيد';
+
+  @override
+  String get driverCurrentOrderLabel => 'الطلب الحالي';
+
+  @override
+  String get driverClientLabel => 'عميل';
+
+  @override
+  String get driverAddressLabel => 'العنوان';
+
+  @override
+  String get driverMealsCountLabel => 'عدد الوجبات';
+
+  @override
+  String get driverViewDetailsAction => 'عرض التفاصيل';
+
+  @override
+  String get driverIssuesWarningTitle => 'في حال وجود مشكلة في التوصيل';
+
+  @override
+  String get driverIssuesWarningSubtitle => 'أخبر لتتمكن من مساعدتك';
+
+  @override
+  String get driverDailySummaryTitle => 'ملخص اليوم';
+
+  @override
+  String get driverSummaryIncomplete => 'غير مكتملة';
+
+  @override
+  String get driverSummaryInDelivery => 'قيد التوصيل';
+
+  @override
+  String get driverSummaryDelivered => 'تم التسليم';
+
+  @override
+  String get driverSummaryTotalOrders => 'إجمالي الطلبات';
+
+  @override
+  String get driverDailyPerformanceTitle => 'أداء اليوم';
+
+  @override
+  String get driverAvgDeliveryTime => 'متوسط مدة التوصيل';
+
+  @override
+  String get driverAvgDeliveryTimeValue => '18 دقيقة';
+
+  @override
+  String get driverDistanceCovered => 'المسافة المقطوعة';
+
+  @override
+  String get driverDistanceCoveredValue => '32.4 كم';
+
+  @override
+  String get driverOnTimeRate => 'في الموعد';
+
+  @override
+  String get driverOnTimeRateValue => '92%';
 }

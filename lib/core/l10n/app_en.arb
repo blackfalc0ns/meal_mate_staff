@@ -1215,6 +1215,65 @@
   "driverDetailsDocumentValid": "Valid",
   "driverDetailsDocumentExpiringSoon": "Expiring Soon",
   "driverDetailsDocumentExpired": "Expired",
-  "driverDetailsDocumentMissing": "Missing"
+  "driverDetailsDocumentMissing": "Missing",
+  "driverStartWorkTitle": "Not Available for Work",
+  "driverStartWorkSubtitle": "Complete requirements to start receiving orders",
+  "driverStatusNow": "Your Current Status",
+  "driverStatusOffline": "Offline",
+  "driverNotAvailableDescription": "You are not available to receive orders",
+  "driverProfits": "Profits",
+  "driverCurrencyKd": "KD",
+  "driverDistanceApprox": "KM approx",
+  "driverCompletedOrders": "Completed orders",
+  "driverReqCheckRequirements": "Check start work requirements",
+  "driverReqCheckRequirementsSubtitle": "Review required checklist",
+  "driverReqGoToPickup": "Go to pickup point",
+  "driverReqGoToPickupSubtitle": "Receive boxes and start delivery",
+  "driverReqReadyToWork": "Ready to start work?",
+  "driverReqReadyToWorkSubtitle": "Ensure readiness and begin accepting orders",
+  "driverStartWorkAction": "Start Work",
+  "driverCurrentStatusLabel": "Current status",
+  "driverStatusInDelivery": "Delivering Order",
+  "driverCurrentLocationLabel": "Current Location",
+  "driverDailyGoalTitle": "Daily Achievement Indicator",
+  "driverDailyGoalCount": "5/8 orders",
+  "driverDailyGoalCompleted": "Completed {count} orders of daily goal",
+  "@driverDailyGoalCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverDailyGoalRemaining": "{count} orders remaining to reach goal",
+  "@driverDailyGoalRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "driverPerformanceGood": "Performance Level : Good",
+  "driverCurrentOrderLabel": "Current Order",
+  "driverClientLabel": "Client",
+  "driverAddressLabel": "Address",
+  "driverMealsCountLabel": "Meals count",
+  "driverMealsUnit": "Meals",
+  "driverDeliveryTimeLabel": "Delivery time",
+  "driverViewDetailsAction": "View Details",
+  "driverIssuesWarningTitle": "If you encounter a delivery issue",
+  "driverIssuesWarningSubtitle": "Report so we can assist you",
+  "driverDailySummaryTitle": "Today's Summary",
+  "driverSummaryIncomplete": "Incomplete",
+  "driverSummaryInDelivery": "In Delivery",
+  "driverSummaryDelivered": "Delivered",
+  "driverSummaryTotalOrders": "Total Orders",
+  "driverDailyPerformanceTitle": "Today's Performance",
+  "driverAvgDeliveryTime": "Avg Delivery Time",
+  "driverAvgDeliveryTimeValue": "18 mins",
+  "driverDistanceCovered": "Distance Covered",
+  "driverDistanceCoveredValue": "32.4 km",
+  "driverOnTimeRate": "On Time",
+  "driverOnTimeRateValue": "92%"
 }
 

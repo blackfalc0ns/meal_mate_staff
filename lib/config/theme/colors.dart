@@ -204,3 +204,24 @@ extension DispatcherHomeColorScheme on ColorScheme {
   Color get homeAlertBannerBg => AppColors.homeAlertBannerBg;
   Color get homeAlertBannerText => AppColors.homeAlertBannerText;
 }
+
+extension DriverHomeColorScheme on ColorScheme {
+  Color get driverCardBorder => AppColors.border;
+  Color get driverOfflineStatusBg => AppColors.errorSurface;
+  Color get driverActiveStatusBg => AppColors.successSurface;
+  Color get driverLocationBg => AppColors.primarySurface;
+  Color get driverGoalBadgeBg => AppColors.homeSoftPurpleBg;
+  Color get driverGoalTrack => AppColors.homeGaugeTrack;
+  Color get driverSummaryIncompleteBg => AppColors.errorSurface;
+  Color get driverSummaryIncompleteText => AppColors.error;
+  Color get driverSummaryInDeliveryBg => AppColors.warningSurface;
+  Color get driverSummaryInDeliveryText => AppColors.warning;
+  Color get driverSummaryDeliveredBg => AppColors.successSurface;
+  Color get driverSummaryDeliveredText => AppColors.success;
+  Color get driverSummaryTotalBg => AppColors.primarySurface;
+  Color get driverSummaryTotalText => AppColors.primary;
+  Color get driverWarningBannerBg => AppColors.accountStatusWarningSurface;
+  Color get driverWarningBannerBorder => AppColors.accountStatusWarning;
+  Color get driverMetricCardBg => AppColors.surfaceSoft;
+}
+
