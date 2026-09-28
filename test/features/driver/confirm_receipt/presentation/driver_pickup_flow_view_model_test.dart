@@ -95,8 +95,8 @@ void main() {
     );
   });
 
-  tearDown(() {
-    viewModel.close();
+  tearDown(() async {
+    await viewModel.close();
   });
 
   group('DriverPickupFlowViewModel', () {

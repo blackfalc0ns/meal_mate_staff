@@ -20,6 +20,7 @@ class DriverConfirmReceiptStep1Section extends StatelessWidget {
     required this.isFlashOn,
     required this.onFlashChanged,
     required this.onScanSuccess,
+    this.onBarcodeDetected,
     required this.onEnterCodeManually,
     required this.isQrScanned,
     required this.onContinueToStep2,
@@ -32,6 +33,7 @@ class DriverConfirmReceiptStep1Section extends StatelessWidget {
   final bool isFlashOn;
   final ValueChanged<bool> onFlashChanged;
   final VoidCallback onScanSuccess;
+  final ValueChanged<String>? onBarcodeDetected;
   final VoidCallback onEnterCodeManually;
   final bool isQrScanned;
   final VoidCallback onContinueToStep2;
@@ -56,6 +58,7 @@ class DriverConfirmReceiptStep1Section extends StatelessWidget {
         DriverQrViewfinder(
           controller: scannerController,
           onScanSuccess: onScanSuccess,
+          onBarcodeDetected: onBarcodeDetected,
         ),
         const SizedBox(height: Spacing.md),
         if (failure != null) ...[

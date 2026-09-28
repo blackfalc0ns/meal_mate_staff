@@ -6,7 +6,6 @@ import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_box_received_success_entity.dart';
-import '../../domain/fake_data/driver_box_received_success_fake_data.dart';
 import '../widgets/driver_box_received_details_card.dart';
 import '../widgets/driver_box_received_next_button.dart';
 import '../widgets/driver_box_received_safety_card.dart';
@@ -35,7 +34,14 @@ class DriverBoxReceivedSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-    final item = box ?? DriverBoxReceivedSuccessFakeData.defaultSuccessBox;
+    final item = box ??
+        const DriverBoxReceivedSuccessEntity(
+          boxCode: '',
+          restaurantName: '',
+          itemsCount: 0,
+          expectedReceiptTime: '',
+          isReceived: true,
+        );
 
     return Scaffold(
       backgroundColor: color.surface,

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _DriverCameraViewfinderState extends State<DriverCameraViewfinder> {
 
   @override
   void dispose() {
-    _internalController?.dispose();
+    unawaited(_internalController?.dispose());
     super.dispose();
   }
 

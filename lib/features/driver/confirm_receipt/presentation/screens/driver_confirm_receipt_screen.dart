@@ -73,10 +73,10 @@ class _DriverConfirmReceiptScreenState
   @override
   void dispose() {
     if (_isInternalViewModel) {
-      _viewModel.close();
+      unawaited(_viewModel.close());
     }
     if (_isInternalController) {
-      _scannerController.dispose();
+      unawaited(_scannerController.dispose());
     }
     super.dispose();
   }
@@ -86,12 +86,14 @@ class _DriverConfirmReceiptScreenState
   }
 
   void _handleEnterCodeManually() {
-    DriverManualCodeModalSheet.show(
-      context: context,
-      defaultCode: widget.box?.boxCode ?? widget.box?.boxId ?? '',
-      onCodeSubmitted: (code) {
-        _viewModel.doIntent(ValidateBarcodeEvent(code));
-      },
+    unawaited(
+      DriverManualCodeModalSheet.show(
+        context: context,
+        defaultCode: widget.box?.boxCode ?? widget.box?.boxId ?? '',
+        onCodeSubmitted: (code) {
+          _viewModel.doIntent(ValidateBarcodeEvent(code));
+        },
+      ),
     );
   }
 
@@ -142,21 +144,24 @@ class _DriverConfirmReceiptScreenState
         if (state.stage == DriverPickupFlowStage.pickedUp) {
           final nextAction = state.confirmation?.nextAction;
           if (nextAction == DriverPickupNextAction.showPickupSummary) {
-            Navigator.of(context).pushReplacementNamed(
-              AppRoutes.driverBoxesReceived,
-              arguments: DriverPickupSummaryRouteArguments(
-                tripId: state.confirmation?.tripId ?? '',
+            unawaited(
+              Navigator.of(context).pushReplacementNamed(
+                AppRoutes.driverBoxesReceived,
+                arguments: DriverPickupSummaryRouteArguments(
+                  tripId: state.confirmation?.tripId ?? '',
+                ),
               ),
             );
           } else if (nextAction == DriverPickupNextAction.showBoxSuccess) {
-            Navigator.of(context).pushReplacementNamed(
-              AppRoutes.driverBoxReceivedSuccess,
-              arguments: DriverBoxReceivedSuccessEntity(
-                boxCode:
-                    state.validatedBox?.boxCode ??
-                    state.confirmation?.boxCode ??
-                    widget.box?.boxCode ??
-                    '',
+            unawaited(
+              Navigator.of(context).pushReplacementNamed(
+                AppRoutes.driverBoxReceivedSuccess,
+                arguments: DriverBoxReceivedSuccessEntity(
+                  boxCode:
+                      state.validatedBox?.boxCode ??
+                      state.confirmation?.boxCode ??
+                      widget.box?.boxCode ??
+                      '',
                 restaurantName:
                     state.validatedBox?.customerName ??
                     widget.box?.customerName ??
@@ -171,9 +176,10 @@ class _DriverConfirmReceiptScreenState
                     '',
                 isReceived: true,
               ),
-            );
-          }
-        } else if (state.requiresRescan && state.currentStep != 1) {
+            ),
+          );
+        }
+      } else if (state.requiresRescan && state.currentStep != 1) {
           _viewModel.doIntent(const StepChangedEvent(1));
           _viewModel.doIntent(const ResetScanEvent());
         }
@@ -202,6 +208,7 @@ class _DriverConfirmReceiptScreenState
                         } catch (_) {}
                         setState(() => _isFlashOn = val);
                       },
+                      onBarcodeDetected: _handleBarcodeScanned,
                       onScanSuccess: () => _handleBarcodeScanned(
                         widget.box?.boxCode ?? widget.box?.boxId ?? 'BOX-101',
                       ),

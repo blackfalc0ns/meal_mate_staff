@@ -103,9 +103,9 @@ void main() {
     testScannerController = MobileScannerController(autoStart: false);
   });
 
-  tearDown(() {
-    viewModel.close();
-    testScannerController.dispose();
+  tearDown(() async {
+    await viewModel.close();
+    await testScannerController.dispose();
   });
 
   Widget buildScreen({NavigatorObserver? observer}) {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +11,6 @@ import '../../../../../core/errors/error_widgets/empty_state_widget.dart';
 import '../../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_received_box_item_entity.dart';
-import '../../domain/fake_data/driver_boxes_received_fake_data.dart';
 import '../manager/driver_pickup_summary_event.dart';
 import '../manager/driver_pickup_summary_state.dart';
 import '../manager/driver_pickup_summary_view_model.dart';
@@ -64,7 +65,7 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
   @override
   void dispose() {
     if (_isInternalViewModel) {
-      _viewModel.close();
+      unawaited(_viewModel.close());
     }
     super.dispose();
   }
@@ -91,9 +92,11 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
           if (widget.onStartDelivery != null) {
             widget.onStartDelivery!();
           } else {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.driverStartDeliveryRoute,
-              (route) => false,
+            unawaited(
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.driverStartDeliveryRoute,
+                (route) => false,
+              ),
             );
           }
         }
@@ -164,7 +167,7 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
                       isReceived: box.isReceived,
                     );
                   }).toList()
-                : DriverBoxesReceivedFakeData.defaultReceivedBoxes);
+                : const <DriverReceivedBoxItemEntity>[]);
 
         final canStart = (state.canStartTrip) || (widget.boxes != null);
 

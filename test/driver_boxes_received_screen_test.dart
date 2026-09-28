@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_received_box_item_entity.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/fake_data/driver_boxes_received_fake_data.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/screens/driver_boxes_received_screen.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_boxes_received_action_button.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_boxes_received_header.dart';
@@ -12,7 +13,40 @@ import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_received_box_card.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_received_boxes_header_bar.dart';
 
+import 'package:meal_mate_delivery/core/services/idempotency_key_factory.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/repo/driver_pickup_repository.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/usecase/get_driver_pickup_summary_usecase.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/usecase/start_driver_trip_usecase.dart';
+import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_view_model.dart';
+import 'support/fakes/fake_driver_pickup_location_provider.dart';
+
+class _FakePickupSummaryRepo implements DriverPickupRepository {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _FixedKeyFactory implements IdempotencyKeyFactory {
+  @override
+  String create() => 'test-key';
+}
+
 void main() {
+  late DriverPickupSummaryViewModel viewModel;
+
+  setUp(() {
+    final fakeRepo = _FakePickupSummaryRepo();
+    viewModel = DriverPickupSummaryViewModel(
+      getSummaryUseCase: GetDriverPickupSummaryUseCase(fakeRepo),
+      startTripUseCase: StartDriverTripUseCase(fakeRepo),
+      locationProvider: FakeDriverPickupLocationProvider(),
+      idempotencyKeyFactory: _FixedKeyFactory(),
+    );
+  });
+
+  tearDown(() async {
+    await viewModel.close();
+  });
+
   Widget buildSubject({
     List<DriverReceivedBoxItemEntity>? boxes,
     VoidCallback? onStartDelivery,
@@ -28,8 +62,9 @@ void main() {
       ],
       supportedLocales: const [Locale('ar'), Locale('en')],
       home: DriverBoxesReceivedScreen(
-        boxes: boxes,
+        boxes: boxes ?? DriverBoxesReceivedFakeData.defaultReceivedBoxes,
         onStartDelivery: onStartDelivery,
+        viewModel: viewModel,
       ),
     );
   }

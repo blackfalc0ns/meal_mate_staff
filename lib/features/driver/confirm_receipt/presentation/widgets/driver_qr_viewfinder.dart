@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -10,10 +12,12 @@ class DriverQrViewfinder extends StatefulWidget {
   const DriverQrViewfinder({
     super.key,
     required this.onScanSuccess,
+    this.onBarcodeDetected,
     this.controller,
   });
 
   final VoidCallback onScanSuccess;
+  final ValueChanged<String>? onBarcodeDetected;
   final MobileScannerController? controller;
 
   @override
@@ -31,7 +35,8 @@ class _DriverQrViewfinderState extends State<DriverQrViewfinder>
     _animController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2000),
-    )..repeat(reverse: true);
+    );
+    unawaited(_animController.repeat(reverse: true));
 
     _scanAnimation = Tween<double>(begin: 0.15, end: 0.85).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeInOut),
@@ -54,7 +59,13 @@ class _DriverQrViewfinderState extends State<DriverQrViewfinder>
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         GestureDetector(
-          onTap: widget.onScanSuccess,
+          onTap: () {
+            if (widget.onBarcodeDetected != null) {
+              widget.onBarcodeDetected!('BOX-101');
+            } else {
+              widget.onScanSuccess();
+            }
+          },
           child: Container(
             height: 235,
             padding: const EdgeInsets.all(Spacing.base),
@@ -80,7 +91,11 @@ class _DriverQrViewfinderState extends State<DriverQrViewfinder>
                           for (final barcode in capture.barcodes) {
                             if (barcode.rawValue != null &&
                                 barcode.rawValue!.isNotEmpty) {
-                              widget.onScanSuccess();
+                              if (widget.onBarcodeDetected != null) {
+                                widget.onBarcodeDetected!(barcode.rawValue!);
+                              } else {
+                                widget.onScanSuccess();
+                              }
                               break;
                             }
                           }

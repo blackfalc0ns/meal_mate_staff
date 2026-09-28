@@ -16,24 +16,20 @@ import 'driver_pickup_summary_state.dart';
 class DriverPickupSummaryViewModel
     extends Bloc<DriverPickupSummaryEvent, DriverPickupSummaryState> {
   DriverPickupSummaryViewModel({
-    required GetDriverPickupSummaryUseCase getSummaryUseCase,
-    required StartDriverTripUseCase startTripUseCase,
-    required DriverPickupLocationProvider locationProvider,
-    required IdempotencyKeyFactory idempotencyKeyFactory,
-  }) : _getSummaryUseCase = getSummaryUseCase,
-       _startTripUseCase = startTripUseCase,
-       _locationProvider = locationProvider,
-       _idempotencyKeyFactory = idempotencyKeyFactory,
-       super(const DriverPickupSummaryState()) {
+    required this.getSummaryUseCase,
+    required this.startTripUseCase,
+    required this.locationProvider,
+    required this.idempotencyKeyFactory,
+  }) : super(const DriverPickupSummaryState()) {
     on<LoadDriverPickupSummaryEvent>(_onLoadSummary);
     on<RetryDriverPickupSummaryEvent>(_onRetry);
     on<StartDriverTripEvent>(_onStartTrip);
   }
 
-  final GetDriverPickupSummaryUseCase _getSummaryUseCase;
-  final StartDriverTripUseCase _startTripUseCase;
-  final DriverPickupLocationProvider _locationProvider;
-  final IdempotencyKeyFactory _idempotencyKeyFactory;
+  final GetDriverPickupSummaryUseCase getSummaryUseCase;
+  final StartDriverTripUseCase startTripUseCase;
+  final DriverPickupLocationProvider locationProvider;
+  final IdempotencyKeyFactory idempotencyKeyFactory;
 
   void doIntent(DriverPickupSummaryEvent event) => add(event);
 
@@ -62,7 +58,7 @@ class DriverPickupSummaryViewModel
       ),
     );
 
-    final result = await _getSummaryUseCase(tripId);
+    final result = await getSummaryUseCase(tripId);
 
     if (emit.isDone) return;
 
@@ -110,13 +106,13 @@ class DriverPickupSummaryViewModel
 
     // Reuse persistent idempotency key or create new one
     final idempotencyKey =
-        state.idempotencyKey ?? _idempotencyKeyFactory.create();
+        state.idempotencyKey ?? idempotencyKeyFactory.create();
     emit(state.copyWith(idempotencyKey: idempotencyKey, clearFailure: true));
 
     // Acquire GPS location
     DriverPickupCoordinates coordinates;
     try {
-      coordinates = await _locationProvider.getCurrentCoordinates();
+      coordinates = await locationProvider.getCurrentCoordinates();
     } on LocationServiceException catch (e) {
       emit(
         state.copyWith(
@@ -140,7 +136,7 @@ class DriverPickupSummaryViewModel
 
     emit(state.copyWith(isActionLoading: true, clearFailure: true));
 
-    final result = await _startTripUseCase(
+    final result = await startTripUseCase(
       tripId: effectiveTripId,
       idempotencyKey: idempotencyKey,
       request: StartDriverTripRequestEntity(

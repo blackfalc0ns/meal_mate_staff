@@ -20,17 +20,12 @@ import 'driver_pickup_flow_state.dart';
 class DriverPickupFlowViewModel
     extends Bloc<DriverPickupFlowEvent, DriverPickupFlowState> {
   DriverPickupFlowViewModel({
-    required ValidateDriverPickupBarcodeUseCase validateBarcodeUseCase,
-    required UploadDriverBoxConditionPhotoUseCase uploadPhotoUseCase,
-    required ConfirmDriverBoxPickupUseCase confirmPickupUseCase,
-    required DriverPickupLocationProvider locationProvider,
-    required IdempotencyKeyFactory idempotencyKeyFactory,
-  }) : _validateBarcodeUseCase = validateBarcodeUseCase,
-       _uploadPhotoUseCase = uploadPhotoUseCase,
-       _confirmPickupUseCase = confirmPickupUseCase,
-       _locationProvider = locationProvider,
-       _idempotencyKeyFactory = idempotencyKeyFactory,
-       super(const DriverPickupFlowState()) {
+    required this.validateBarcodeUseCase,
+    required this.uploadPhotoUseCase,
+    required this.confirmPickupUseCase,
+    required this.locationProvider,
+    required this.idempotencyKeyFactory,
+  }) : super(const DriverPickupFlowState()) {
     on<ValidateBarcodeEvent>(_onValidateBarcode);
     on<StepChangedEvent>(_onStepChanged);
     on<PhotoSelectedEvent>(_onPhotoSelected);
@@ -40,11 +35,11 @@ class DriverPickupFlowViewModel
     on<ResetScanEvent>(_onResetScan);
   }
 
-  final ValidateDriverPickupBarcodeUseCase _validateBarcodeUseCase;
-  final UploadDriverBoxConditionPhotoUseCase _uploadPhotoUseCase;
-  final ConfirmDriverBoxPickupUseCase _confirmPickupUseCase;
-  final DriverPickupLocationProvider _locationProvider;
-  final IdempotencyKeyFactory _idempotencyKeyFactory;
+  final ValidateDriverPickupBarcodeUseCase validateBarcodeUseCase;
+  final UploadDriverBoxConditionPhotoUseCase uploadPhotoUseCase;
+  final ConfirmDriverBoxPickupUseCase confirmPickupUseCase;
+  final DriverPickupLocationProvider locationProvider;
+  final IdempotencyKeyFactory idempotencyKeyFactory;
 
   String? _lastAttemptedBarcode;
 
@@ -76,7 +71,7 @@ class DriverPickupFlowViewModel
       ),
     );
 
-    final result = await _validateBarcodeUseCase(
+    final result = await validateBarcodeUseCase(
       ValidateDriverBarcodeRequestEntity(barcodeValue: barcode),
     );
 
@@ -151,7 +146,7 @@ class DriverPickupFlowViewModel
       ),
     );
 
-    final result = await _uploadPhotoUseCase(
+    final result = await uploadPhotoUseCase(
       boxId: boxId,
       file: File(photoPath),
       validationToken: token,
@@ -205,13 +200,13 @@ class DriverPickupFlowViewModel
 
     // Reuse or generate idempotency key
     final idempotencyKey =
-        state.idempotencyKey ?? _idempotencyKeyFactory.create();
+        state.idempotencyKey ?? idempotencyKeyFactory.create();
     emit(state.copyWith(idempotencyKey: idempotencyKey));
 
     // Acquire GPS location
     DriverPickupCoordinates coordinates;
     try {
-      coordinates = await _locationProvider.getCurrentCoordinates();
+      coordinates = await locationProvider.getCurrentCoordinates();
     } on LocationServiceException catch (e) {
       emit(
         state.copyWith(
@@ -241,7 +236,7 @@ class DriverPickupFlowViewModel
       ),
     );
 
-    final result = await _confirmPickupUseCase(
+    final result = await confirmPickupUseCase(
       boxId: boxId,
       idempotencyKey: idempotencyKey,
       request: ConfirmDriverPickupRequestEntity(
