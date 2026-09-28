@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
 import 'package:meal_mate_delivery/features/driver/home/data/datasources/driver_home_fake_datasource.dart';
 import 'package:meal_mate_delivery/features/driver/home/data/repositories/driver_home_repository_impl.dart';
 import 'package:meal_mate_delivery/features/driver/home/domain/usecases/get_driver_start_work_usecase.dart';
@@ -9,7 +10,6 @@ import 'package:meal_mate_delivery/features/driver/home/domain/usecases/start_dr
 import 'package:meal_mate_delivery/features/driver/home/presentation/manager/driver_start_work_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/screens/driver_start_work_screen.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_action_button.dart';
-import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_header_logo.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_status_card.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_title_section.dart';
 
@@ -68,7 +68,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(DriverStartWorkHeaderLogo), findsOneWidget);
+      expect(find.byType(CustomAppBar), findsOneWidget);
       expect(find.byType(DriverStartWorkTitleSection), findsOneWidget);
       expect(find.text('غير متاح للعمل'), findsOneWidget);
       expect(find.text('أكمل المتطلبات لبدء استلام الطلبات'), findsOneWidget);

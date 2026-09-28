@@ -1,37 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
+import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 class DriverDailySummaryCard extends StatelessWidget {
   const DriverDailySummaryCard({
     super.key,
     required this.count,
     required this.label,
-    required this.iconAsset,
-    required this.backgroundColor,
-    required this.textColor,
+    required this.icon,
+    required this.accentColor,
+    required this.borderColor,
   });
 
   final int count;
   final String label;
-  final String iconAsset;
-  final Color backgroundColor;
-  final Color textColor;
+  final IconData icon;
+  final Color accentColor;
+  final Color borderColor;
 
   static const double _iconSize = 14;
 
   @override
   Widget build(BuildContext context) {
+    final color = context.colorScheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.xs,
         vertical: Spacing.sm,
       ),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        border: Border.all(
+          color: borderColor,
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -43,15 +56,14 @@ class DriverDailySummaryCard extends StatelessWidget {
                 '$count',
                 style: getBoldStyle(
                   fontSize: FontSize.size16,
-                  color: textColor,
+                  color: accentColor,
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-              SvgPicture.asset(
-                iconAsset,
-                width: _iconSize,
-                height: _iconSize,
-                colorFilter: ColorFilter.mode(textColor, BlendMode.srcIn),
+              Icon(
+                icon,
+                color: accentColor,
+                size: _iconSize,
               ),
             ],
           ),
@@ -60,7 +72,7 @@ class DriverDailySummaryCard extends StatelessWidget {
             label,
             style: getRegularStyle(
               fontSize: FontSize.size10,
-              color: textColor,
+              color: color.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
             maxLines: 1,

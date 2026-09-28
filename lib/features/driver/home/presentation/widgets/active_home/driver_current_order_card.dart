@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_mate_delivery/config/theme/colors.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
@@ -19,8 +18,7 @@ class DriverCurrentOrderCard extends StatelessWidget {
   final DriverCurrentOrderEntity order;
   final VoidCallback? onDetailsTap;
 
-  static const double _boxImageSize = 44;
-  static const double _detailIconSize = 14;
+  static const double _detailIconSize = 18;
 
   @override
   Widget build(BuildContext context) {
@@ -34,170 +32,154 @@ class DriverCurrentOrderCard extends StatelessWidget {
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
         border: Border.all(
-          color: color.driverCardBorder,
+          color: color.outlineVariant.withValues(alpha: 0.5),
           width: Spacing.hairline,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    locale.driverCurrentOrderLabel,
+                    style: getRegularStyle(
+                      fontSize: FontSize.size11,
+                      color: color.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    order.orderCode,
+                    style: getBoldStyle(
+                      fontSize: FontSize.size22,
+                      color: color.primary,
+                    ),
+                  ),
+                ],
+              ),
               Image.asset(
                 order.imageAsset.isNotEmpty
                     ? order.imageAsset
-                    : AppAssets.driverBox3d,
-                width: _boxImageSize,
-                height: _boxImageSize,
+                    : AppAssets.driverOrderBox3d,
+                width: 88,
+                height: 74,
                 fit: BoxFit.contain,
               ),
-              const SizedBox(width: Spacing.sm),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      locale.driverCurrentOrderLabel,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size11,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      order.orderCode,
-                      style: getBoldStyle(
-                        fontSize: FontSize.size16,
-                        color: color.onSurface,
-                      ),
-                    ),
-                  ],
+            ],
+          ),
+          const SizedBox(height: Spacing.md),
+          _buildDetailRow(
+            icon: Icons.person_rounded,
+            label: locale.driverClientLabel.replaceAll(':', '').trim(),
+            value: order.clientName,
+            color: color,
+          ),
+          const SizedBox(height: Spacing.sm),
+          _buildDetailRow(
+            icon: Icons.location_on_rounded,
+            label: locale.driverAddressLabel.replaceAll(':', '').trim(),
+            value: order.address,
+            color: color,
+          ),
+          const SizedBox(height: Spacing.sm),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: _buildDetailRow(
+                  icon: Icons.restaurant_rounded,
+                  label: locale.driverMealsCountLabel.replaceAll(':', '').trim(),
+                  value: '${order.mealsCount} ${locale.driverMealsUnit}',
+                  color: color,
+                  isExpanded: false,
                 ),
               ),
-              const SizedBox(width: Spacing.sm),
               DriverCurrentOrderDetailsButton(onPressed: onDetailsTap),
             ],
           ),
-          const SizedBox(height: Spacing.md),
-          Divider(
-            color: color.driverCardBorder,
-            height: Spacing.hairline,
-            thickness: Spacing.hairline,
-          ),
-          const SizedBox(height: Spacing.md),
-          Row(
-            children: [
-              Icon(
-                Icons.person_outline_rounded,
-                color: color.onSurfaceVariant,
-                size: _detailIconSize,
-              ),
-              const SizedBox(width: Spacing.xs),
-              Text(
-                '${locale.driverClientLabel} : ',
-                style: getRegularStyle(
-                  fontSize: FontSize.size11,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  order.clientName,
-                  style: getMediumStyle(
-                    fontSize: FontSize.size11,
-                    color: color.onSurface,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
           const SizedBox(height: Spacing.sm),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.location_on_outlined,
-                color: color.onSurfaceVariant,
-                size: _detailIconSize,
-              ),
-              const SizedBox(width: Spacing.xs),
-              Text(
-                '${locale.driverAddressLabel} : ',
-                style: getRegularStyle(
-                  fontSize: FontSize.size11,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  order.address,
-                  style: getMediumStyle(
-                    fontSize: FontSize.size11,
-                    color: color.onSurface,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.sm),
-          Row(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.inventory_2_outlined,
-                      color: color.onSurfaceVariant,
-                      size: _detailIconSize,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Expanded(
-                      child: Text(
-                        '${locale.driverMealsCountLabel}: ${order.mealsCount} ${locale.driverMealsUnit}',
-                        style: getRegularStyle(
-                          fontSize: FontSize.size11,
-                          color: color.onSurfaceVariant,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: Spacing.sm),
-              Expanded(
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.access_time_rounded,
-                      color: color.onSurfaceVariant,
-                      size: _detailIconSize,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Expanded(
-                      child: Text(
-                        '${locale.driverDeliveryTimeLabel}: ${order.deliveryTime}',
-                        style: getRegularStyle(
-                          fontSize: FontSize.size11,
-                          color: color.onSurfaceVariant,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          _buildDetailRow(
+            icon: Icons.calendar_month_rounded,
+            label: locale.driverDeliveryTimeLabel
+                .replaceAll(':', '')
+                .trim(),
+            value: order.deliveryTime,
+            color: color,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDetailRow({
+    required IconData icon,
+    required String label,
+    required String value,
+    required ColorScheme color,
+    bool isExpanded = true,
+  }) {
+    final content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: getRegularStyle(
+            fontSize: FontSize.size10,
+            color: color.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 1),
+        Text(
+          value,
+          style: getBoldStyle(
+            fontSize: FontSize.size12,
+            color: color.onSurface,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+
+    return Row(
+      mainAxisSize: isExpanded ? MainAxisSize.max : MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            color: const Color(0xFFF3E8FF),
+            borderRadius: BorderRadius.circular(Spacing.radiusSm),
+          ),
+          child: Icon(
+            icon,
+            color: color.primary,
+            size: _detailIconSize,
+          ),
+        ),
+        const SizedBox(width: Spacing.xs),
+        if (isExpanded)
+          Expanded(child: content)
+        else
+          Flexible(child: content),
+      ],
     );
   }
 }

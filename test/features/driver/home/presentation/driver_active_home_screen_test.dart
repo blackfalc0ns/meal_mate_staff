@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
 import 'package:meal_mate_delivery/features/driver/home/data/datasources/driver_home_fake_datasource.dart';
 import 'package:meal_mate_delivery/features/driver/home/data/repositories/driver_home_repository_impl.dart';
 import 'package:meal_mate_delivery/features/driver/home/domain/usecases/get_driver_active_home_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/manager/driver_active_home_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/screens/driver_active_home_screen.dart';
-import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/active_home/driver_active_home_header.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/active_home/driver_active_status_location_row.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/active_home/driver_current_order_card.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/active_home/driver_daily_goal_card.dart';
@@ -74,7 +74,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(DriverActiveHomeHeader), findsOneWidget);
+      expect(find.byType(CustomAppBar), findsOneWidget);
       expect(find.byType(DriverActiveStatusLocationRow), findsOneWidget);
       expect(find.text('توصيل الطلب'), findsOneWidget);
       expect(find.byType(DriverDailyGoalCard), findsOneWidget);

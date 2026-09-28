@@ -42,8 +42,11 @@ class AppAssets {
   static const String driverLocationPin = '$_svg/driver_location_pin.svg';
   static const String deliveryTruckSpeed = '$_svg/delivery_truck_speed.svg';
   static const String driverMapPreview =
-      '$_dispatcherImages/driver_map_preview.png';
-  static const String driverBox3d = '$_dispatcherImages/driver_box_3d.png';
+      '$_driverImages/driver_home_map_bg.png';
+  static const String driverHomeMapBg = '$_driverImages/driver_home_map_bg.png';
+  static const String driverBox3d = '$_driverImages/driver_order_box_3d.png';
+  static const String driverOrderBox3d = '$_driverImages/driver_order_box_3d.png';
+  static const String driverTarget3d = '$_driverImages/driver_target_3d.png';
 
   static const String authSplashBackground =
       '$_authImages/splash_background.png';

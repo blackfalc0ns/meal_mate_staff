@@ -7,10 +7,11 @@ import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
+import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
+
 import '../manager/driver_start_work_state.dart';
 import '../manager/driver_start_work_view_model.dart';
 import '../widgets/start_work/driver_start_work_action_button.dart';
-import '../widgets/start_work/driver_start_work_header_logo.dart';
 import '../widgets/start_work/driver_start_work_status_card.dart';
 import '../widgets/start_work/driver_start_work_title_section.dart';
 
@@ -67,6 +68,10 @@ class _DriverStartWorkScreenState extends State<DriverStartWorkScreen> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: color.surface,
+          appBar: CustomAppBar.logo(
+            showBackButton: false,
+            backgroundColor: color.surface,
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
@@ -76,9 +81,6 @@ class _DriverStartWorkScreenState extends State<DriverStartWorkScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: Spacing.xs),
-                  const DriverStartWorkHeaderLogo(),
-                  const SizedBox(height: Spacing.base),
                   const DriverStartWorkTitleSection(),
                   const SizedBox(height: Spacing.base),
                   DriverStartWorkStatusCard(

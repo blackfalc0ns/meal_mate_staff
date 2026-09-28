@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:meal_mate_delivery/config/theme/colors.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
@@ -11,73 +9,57 @@ class DriverDailyPerformanceCard extends StatelessWidget {
     super.key,
     required this.value,
     required this.label,
-    required this.iconAsset,
+    required this.icon,
   });
 
   final String value;
   final String label;
-  final String iconAsset;
+  final IconData icon;
 
-  static const double _iconSize = 14;
+  static const double _iconSize = 18;
 
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.xs,
-        vertical: Spacing.md,
-      ),
-      decoration: BoxDecoration(
-        color: color.driverMetricCardBg,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(
-          color: color.driverCardBorder,
-          width: Spacing.hairline,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          icon,
+          color: color.primary,
+          size: _iconSize,
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  value,
-                  style: getBoldStyle(
-                    fontSize: FontSize.size14,
-                    color: color.onSurface,
-                  ),
+        const SizedBox(width: Spacing.xs),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                value,
+                style: getBoldStyle(
+                  fontSize: FontSize.size12,
+                  color: color.onSurface,
                 ),
-                const SizedBox(width: Spacing.xs),
-                SvgPicture.asset(
-                  iconAsset,
-                  width: _iconSize,
-                  height: _iconSize,
-                  colorFilter: ColorFilter.mode(
-                    color.primary,
-                    BlendMode.srcIn,
-                  ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 1),
+              Text(
+                label,
+                style: getRegularStyle(
+                  fontSize: FontSize.size9,
+                  color: color.onSurfaceVariant,
                 ),
-              ],
-            ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-          const SizedBox(height: Spacing.xs),
-          Text(
-            label,
-            style: getRegularStyle(
-              fontSize: FontSize.size10,
-              color: color.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

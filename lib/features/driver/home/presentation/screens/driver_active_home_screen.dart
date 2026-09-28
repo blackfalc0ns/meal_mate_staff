@@ -8,11 +8,12 @@ import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/app_shell/widgets/app_bottom_nav_bar.dart';
 import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
+import 'package:meal_mate_delivery/core/constants/assets.dart';
+import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 
 import '../manager/driver_active_home_state.dart';
 import '../manager/driver_active_home_view_model.dart';
-import '../widgets/active_home/driver_active_home_header.dart';
 import '../widgets/active_home/driver_active_status_location_row.dart';
 import '../widgets/active_home/driver_current_order_card.dart';
 import '../widgets/active_home/driver_daily_goal_card.dart';
@@ -68,6 +69,86 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
         return Scaffold(
           backgroundColor: color.surface,
           extendBody: true,
+          appBar: CustomAppBar(
+            showBackButton: false,
+            backgroundColor: color.surface,
+            leading: IconButton(
+              onPressed: widget.onMenuTap ??
+                  () {
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+              icon: Icon(
+                Icons.menu_rounded,
+                color: color.onSurface,
+                size: 28,
+              ),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+            ),
+            titleWidget: Image.asset(
+              AppAssets.authHeaderLogo,
+              height: 28,
+              fit: BoxFit.contain,
+            ),
+            centerTitle: true,
+            actions: [
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: Spacing.screenH),
+                child: InkWell(
+                  onTap: widget.onNotificationTap ??
+                      () {
+                        unawaited(
+                          context.pushNamed(AppRoutes.driverNotifications),
+                        );
+                      },
+                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                  child: Container(
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: color.surface,
+                      borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                      border: Border.all(
+                        color: color.outlineVariant.withValues(alpha: 0.5),
+                        width: Spacing.hairline,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.06),
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        const Icon(
+                          Icons.notifications_rounded,
+                          color: Color(0xFF1E293B),
+                          size: 22,
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 11,
+                          child: Container(
+                            width: 7,
+                            height: 7,
+                            decoration: BoxDecoration(
+                              color: color.primary,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           bottomNavigationBar: AppBottomNavBar(
             selectedIndex: 0,
             onItemSelected: (index) {
@@ -92,49 +173,72 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.screenH,
                 vertical: Spacing.sm,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DriverActiveHomeHeader(
-                    onNotificationTap: widget.onNotificationTap ??
-                        () {
-                          unawaited(
-                            context.pushNamed(AppRoutes.driverNotifications),
-                          );
-                        },
-                    onMenuTap: widget.onMenuTap ??
-                        () {
-                          if (Navigator.of(context).canPop()) {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                  ),
-                  const SizedBox(height: Spacing.md),
                   if (data != null) ...[
-                    DriverActiveStatusLocationRow(
-                      location: data.currentLocation,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.screenH,
+                      ),
+                      child: DriverActiveStatusLocationRow(
+                        location: data.currentLocation,
+                      ),
                     ),
                     const SizedBox(height: Spacing.md),
-                    DriverDailyGoalCard(goal: data.goal),
-                    const SizedBox(height: Spacing.md),
-                    const DriverHomeMapCard(),
-                    const SizedBox(height: Spacing.md),
-                    DriverCurrentOrderCard(
-                      order: data.currentOrder,
-                      onDetailsTap: widget.onOrderDetailsTap,
+                    Stack(
+                      children: [
+                        const Positioned(
+                          top: 40,
+                          bottom: 60,
+                          left: 0,
+                          right: 0,
+                          child: DriverHomeMapCard(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.screenH,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              DriverDailyGoalCard(goal: data.goal),
+                              const SizedBox(height: 175),
+                              DriverCurrentOrderCard(
+                                order: data.currentOrder,
+                                onDetailsTap: widget.onOrderDetailsTap,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: Spacing.md),
-                    DriverIssuesHelpBanner(
-                      onTap: widget.onIssuesTap,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.screenH,
+                      ),
+                      child: DriverIssuesHelpBanner(
+                        onTap: widget.onIssuesTap,
+                      ),
                     ),
                     const SizedBox(height: Spacing.base),
-                    DriverDailySummarySection(summary: data.summary),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.screenH,
+                      ),
+                      child: DriverDailySummarySection(summary: data.summary),
+                    ),
                     const SizedBox(height: Spacing.base),
-                    DriverDailyPerformanceSection(
-                      performance: data.performance,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.screenH,
+                      ),
+                      child: DriverDailyPerformanceSection(
+                        performance: data.performance,
+                      ),
                     ),
                     const SizedBox(height: Spacing.base),
                   ] else ...[

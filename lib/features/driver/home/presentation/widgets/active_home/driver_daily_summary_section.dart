@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meal_mate_delivery/config/theme/colors.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
-import 'package:meal_mate_delivery/core/constants/assets.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 import 'package:meal_mate_delivery/features/driver/home/domain/entities/driver_daily_summary_entity.dart';
 
@@ -40,9 +38,9 @@ class DriverDailySummarySection extends StatelessWidget {
               child: DriverDailySummaryCard(
                 count: summary.incompleteCount,
                 label: locale.driverSummaryIncomplete,
-                iconAsset: AppAssets.driverPerfNo,
-                backgroundColor: color.driverSummaryIncompleteBg,
-                textColor: color.driverSummaryIncompleteText,
+                icon: Icons.cancel_rounded,
+                accentColor: const Color(0xFFEF4444),
+                borderColor: const Color(0xFFFFD4D4),
               ),
             ),
             const SizedBox(width: Spacing.xs),
@@ -50,9 +48,9 @@ class DriverDailySummarySection extends StatelessWidget {
               child: DriverDailySummaryCard(
                 count: summary.inDeliveryCount,
                 label: locale.driverSummaryInDelivery,
-                iconAsset: AppAssets.driverKpiClock,
-                backgroundColor: color.driverSummaryInDeliveryBg,
-                textColor: color.driverSummaryInDeliveryText,
+                icon: Icons.access_time_filled_rounded,
+                accentColor: const Color(0xFFF97316),
+                borderColor: const Color(0xFFFFE0CC),
               ),
             ),
             const SizedBox(width: Spacing.xs),
@@ -60,9 +58,9 @@ class DriverDailySummarySection extends StatelessWidget {
               child: DriverDailySummaryCard(
                 count: summary.deliveredCount,
                 label: locale.driverSummaryDelivered,
-                iconAsset: AppAssets.driverKpiCheck,
-                backgroundColor: color.driverSummaryDeliveredBg,
-                textColor: color.driverSummaryDeliveredText,
+                icon: Icons.check_circle_rounded,
+                accentColor: const Color(0xFF22C55E),
+                borderColor: const Color(0xFFCCF4DD),
               ),
             ),
             const SizedBox(width: Spacing.xs),
@@ -70,9 +68,9 @@ class DriverDailySummarySection extends StatelessWidget {
               child: DriverDailySummaryCard(
                 count: summary.totalOrdersCount,
                 label: locale.driverSummaryTotalOrders,
-                iconAsset: AppAssets.driverKpiBox,
-                backgroundColor: color.driverSummaryTotalBg,
-                textColor: color.driverSummaryTotalText,
+                icon: Icons.shopping_bag_rounded,
+                accentColor: color.primary,
+                borderColor: const Color(0xFFE0D4FC),
               ),
             ),
           ],

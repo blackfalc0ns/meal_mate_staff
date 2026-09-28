@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_mate_delivery/config/theme/colors.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
@@ -26,13 +25,14 @@ class DriverCurrentOrderDetailsButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.md,
-          vertical: Spacing.xs,
+          vertical: 6,
         ),
         decoration: BoxDecoration(
+          color: const Color(0xFFFAF5FF),
           borderRadius: BorderRadius.circular(Spacing.radiusPill),
           border: Border.all(
-            color: color.driverCardBorder,
-            width: Spacing.hairline,
+            color: const Color(0xFFDDD6FE),
+            width: 1,
           ),
         ),
         child: Row(
@@ -40,16 +40,16 @@ class DriverCurrentOrderDetailsButton extends StatelessWidget {
           children: [
             Text(
               locale.driverViewDetailsAction,
-              style: getRegularStyle(
+              style: getMediumStyle(
                 fontSize: FontSize.size11,
-                color: color.onSurfaceVariant,
+                color: color.primary,
               ),
             ),
-            const SizedBox(width: Spacing.xs),
+            const SizedBox(width: 4),
             Icon(
-              Icons.arrow_forward_ios_rounded,
+              Icons.arrow_back_ios_new_rounded,
               size: _chevronSize,
-              color: color.onSurfaceVariant,
+              color: color.primary,
             ),
           ],
         ),
