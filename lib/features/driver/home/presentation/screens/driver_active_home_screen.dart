@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
@@ -47,7 +49,7 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
             : DriverActiveHomeViewModel(
                 getDriverActiveHomeUseCase: getIt(),
               ));
-    _viewModel.loadOverview();
+    unawaited(_viewModel.loadOverview());
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../config/routing/app_routes.dart';
@@ -12,6 +14,7 @@ import '../../../features/dispatcher/dispatcher_profile/presentation/screens/dis
 import '../../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
 import '../../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import '../../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
+import '../../../features/driver/home/presentation/screens/driver_start_work_screen.dart';
 import '../../di/di.dart';
 import '../../extensions/extensions.dart';
 import '../../services/token_service.dart';
@@ -73,7 +76,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   List<Widget> _defaultPages(BuildContext context, int activeIndex) {
     if (widget.role == UserRole.driver) {
       return [
-        const Text("Home"),
+        const DriverStartWorkScreen(),
         const DriverAssignedBoxesScreen(),
         const Text("Map"),
         const Text("Support"),
@@ -93,9 +96,10 @@ class _AppShellScreenState extends State<AppShellScreen> {
     final locale = context.localization;
     final color = context.colorScheme;
 
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (dialogContext) {
         return AlertDialog(
           title: Text(
             widget.role == UserRole.driver
@@ -138,7 +142,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
           ],
         );
       },
-    );
+    ));
   }
 
   @override
@@ -166,7 +170,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         role: widget.role,
         onLogout: () => _handleLogout(context),
         onItemSelected: (item) {
-          Navigator.of(context).maybePop();
+          unawaited(Navigator.of(context).maybePop());
           const tabMapping = {
             'home': 0,
             'orders': 1,

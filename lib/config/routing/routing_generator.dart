@@ -61,6 +61,8 @@ import '../../features/driver/active_delivery/presentation/screens/driver_delive
 import '../../features/driver/active_delivery/presentation/screens/driver_failed_delivery_screen.dart';
 import '../../features/driver/active_delivery/presentation/screens/driver_return_box_to_restaurant_screen.dart';
 import '../../features/driver/active_delivery/presentation/screens/driver_delivery_success_screen.dart';
+import '../../features/driver/home/presentation/screens/driver_start_work_screen.dart';
+import '../../features/driver/home/presentation/screens/driver_active_home_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 import 'arguments/driver_confirm_receipt_route_arguments.dart';
@@ -573,6 +575,18 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverDeliverySuccessScreen(trip: trip),
+        );
+
+      case AppRoutes.driverStartWork:
+        return _buildRoute(
+          settings: settings,
+          page: const DriverStartWorkScreen(),
+        );
+
+      case AppRoutes.driverHome:
+        return _buildRoute(
+          settings: settings,
+          page: const DriverActiveHomeScreen(),
         );
 
       default:

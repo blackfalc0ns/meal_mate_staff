@@ -6,19 +6,17 @@ import 'driver_start_work_state.dart';
 
 class DriverStartWorkViewModel extends Cubit<DriverStartWorkState> {
   DriverStartWorkViewModel({
-    required GetDriverStartWorkUseCase getDriverStartWorkUseCase,
-    required StartDriverShiftUseCase startDriverShiftUseCase,
-  })  : _getDriverStartWorkUseCase = getDriverStartWorkUseCase,
-        _startDriverShiftUseCase = startDriverShiftUseCase,
-        super(const DriverStartWorkState());
+    required this.getDriverStartWorkUseCase,
+    required this.startDriverShiftUseCase,
+  }) : super(const DriverStartWorkState());
 
-  final GetDriverStartWorkUseCase _getDriverStartWorkUseCase;
-  final StartDriverShiftUseCase _startDriverShiftUseCase;
+  final GetDriverStartWorkUseCase getDriverStartWorkUseCase;
+  final StartDriverShiftUseCase startDriverShiftUseCase;
 
   Future<void> loadOverview() async {
     emit(state.copyWith(status: DriverStartWorkStatus.loading));
     try {
-      final data = await _getDriverStartWorkUseCase();
+      final data = await getDriverStartWorkUseCase();
       emit(state.copyWith(
         status: DriverStartWorkStatus.loaded,
         data: data,
@@ -32,6 +30,6 @@ class DriverStartWorkViewModel extends Cubit<DriverStartWorkState> {
   }
 
   Future<void> startShift() async {
-    await _startDriverShiftUseCase();
+    await startDriverShiftUseCase();
   }
 }

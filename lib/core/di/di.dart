@@ -52,6 +52,15 @@ import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup
 import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_view_model.dart';
 import '../../features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../features/driver/active_delivery/domain/repositories/active_delivery_repository.dart';
+import '../../features/driver/home/data/datasources/driver_home_datasource.dart';
+import '../../features/driver/home/data/datasources/driver_home_fake_datasource.dart';
+import '../../features/driver/home/data/repositories/driver_home_repository_impl.dart';
+import '../../features/driver/home/domain/repositories/driver_home_repository.dart';
+import '../../features/driver/home/domain/usecases/get_driver_active_home_usecase.dart';
+import '../../features/driver/home/domain/usecases/get_driver_start_work_usecase.dart';
+import '../../features/driver/home/domain/usecases/start_driver_shift_usecase.dart';
+import '../../features/driver/home/presentation/manager/driver_active_home_view_model.dart';
+import '../../features/driver/home/presentation/manager/driver_start_work_view_model.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repo/auth_repository_impl.dart';
@@ -812,6 +821,34 @@ Future<void> configureDependencies() async {
       startTripUseCase: getIt<StartDriverTripUseCase>(),
       locationProvider: getIt<DriverPickupLocationProvider>(),
       idempotencyKeyFactory: getIt<IdempotencyKeyFactory>(),
+    ),
+  );
+
+  // Driver Home feature dependencies
+  getIt.registerLazySingleton<DriverHomeDataSource>(
+    DriverHomeFakeDataSource.new,
+  );
+  getIt.registerLazySingleton<DriverHomeRepository>(
+    () => DriverHomeRepositoryImpl(getIt<DriverHomeDataSource>()),
+  );
+  getIt.registerFactory<GetDriverStartWorkUseCase>(
+    () => GetDriverStartWorkUseCase(getIt<DriverHomeRepository>()),
+  );
+  getIt.registerFactory<GetDriverActiveHomeUseCase>(
+    () => GetDriverActiveHomeUseCase(getIt<DriverHomeRepository>()),
+  );
+  getIt.registerFactory<StartDriverShiftUseCase>(
+    () => StartDriverShiftUseCase(getIt<DriverHomeRepository>()),
+  );
+  getIt.registerFactory<DriverStartWorkViewModel>(
+    () => DriverStartWorkViewModel(
+      getDriverStartWorkUseCase: getIt<GetDriverStartWorkUseCase>(),
+      startDriverShiftUseCase: getIt<StartDriverShiftUseCase>(),
+    ),
+  );
+  getIt.registerFactory<DriverActiveHomeViewModel>(
+    () => DriverActiveHomeViewModel(
+      getDriverActiveHomeUseCase: getIt<GetDriverActiveHomeUseCase>(),
     ),
   );
 }

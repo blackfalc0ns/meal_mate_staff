@@ -5,16 +5,15 @@ import 'driver_active_home_state.dart';
 
 class DriverActiveHomeViewModel extends Cubit<DriverActiveHomeState> {
   DriverActiveHomeViewModel({
-    required GetDriverActiveHomeUseCase getDriverActiveHomeUseCase,
-  })  : _getDriverActiveHomeUseCase = getDriverActiveHomeUseCase,
-        super(const DriverActiveHomeState());
+    required this.getDriverActiveHomeUseCase,
+  }) : super(const DriverActiveHomeState());
 
-  final GetDriverActiveHomeUseCase _getDriverActiveHomeUseCase;
+  final GetDriverActiveHomeUseCase getDriverActiveHomeUseCase;
 
   Future<void> loadOverview() async {
     emit(state.copyWith(status: DriverActiveHomeStatus.loading));
     try {
-      final data = await _getDriverActiveHomeUseCase();
+      final data = await getDriverActiveHomeUseCase();
       emit(state.copyWith(
         status: DriverActiveHomeStatus.loaded,
         data: data,

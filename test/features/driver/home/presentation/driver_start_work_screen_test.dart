@@ -8,11 +8,7 @@ import 'package:meal_mate_delivery/features/driver/home/domain/usecases/get_driv
 import 'package:meal_mate_delivery/features/driver/home/domain/usecases/start_driver_shift_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/manager/driver_start_work_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/screens/driver_start_work_screen.dart';
-import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_action_button.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_header_logo.dart';
-import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_illustration_card.dart';
-import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_metrics_row.dart';
-import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_requirements_list.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_status_card.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_title_section.dart';
 
@@ -50,7 +46,7 @@ void main() {
       );
     });
 
-    testWidgets('renders all 05.01 components and triggers start shift', (
+    testWidgets('renders all 05.01 components and triggers start shift on card tap', (
       tester,
     ) async {
       tester.view.physicalSize = const Size(390 * 2, 844 * 2);
@@ -75,15 +71,12 @@ void main() {
       expect(find.byType(DriverStartWorkTitleSection), findsOneWidget);
       expect(find.text('غير متاح للعمل'), findsOneWidget);
       expect(find.text('أكمل المتطلبات لبدء استلام الطلبات'), findsOneWidget);
-      expect(find.byType(DriverStartWorkIllustrationCard), findsOneWidget);
       expect(find.byType(DriverStartWorkStatusCard), findsOneWidget);
+      expect(find.text('حالتك الآن'), findsOneWidget);
       expect(find.text('غير متاح'), findsOneWidget);
-      expect(find.byType(DriverStartWorkMetricsRow), findsOneWidget);
-      expect(find.byType(DriverStartWorkRequirementsList), findsOneWidget);
-      expect(find.byType(DriverStartWorkActionButton), findsOneWidget);
+      expect(find.text('أنت غير متاح لاستلام الطلبات'), findsOneWidget);
 
-      await tester.ensureVisible(find.byType(DriverStartWorkActionButton));
-      await tester.tap(find.byType(DriverStartWorkActionButton));
+      await tester.tap(find.byType(DriverStartWorkStatusCard));
       await tester.pumpAndSettle();
 
       expect(startWorkCalled, isTrue);
