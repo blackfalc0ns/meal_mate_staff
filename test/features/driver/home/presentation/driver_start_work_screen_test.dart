@@ -8,6 +8,7 @@ import 'package:meal_mate_delivery/features/driver/home/domain/usecases/get_driv
 import 'package:meal_mate_delivery/features/driver/home/domain/usecases/start_driver_shift_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/manager/driver_start_work_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/screens/driver_start_work_screen.dart';
+import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_action_button.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_header_logo.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_status_card.dart';
 import 'package:meal_mate_delivery/features/driver/home/presentation/widgets/start_work/driver_start_work_title_section.dart';
@@ -75,8 +76,10 @@ void main() {
       expect(find.text('حالتك الآن'), findsOneWidget);
       expect(find.text('غير متاح'), findsOneWidget);
       expect(find.text('أنت غير متاح لاستلام الطلبات'), findsOneWidget);
+      expect(find.byType(DriverStartWorkActionButton), findsOneWidget);
+      expect(find.text('بدء العمل'), findsOneWidget);
 
-      await tester.tap(find.byType(DriverStartWorkStatusCard));
+      await tester.tap(find.byType(DriverStartWorkActionButton));
       await tester.pumpAndSettle();
 
       expect(startWorkCalled, isTrue);

@@ -9,6 +9,7 @@ import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 import '../manager/driver_start_work_state.dart';
 import '../manager/driver_start_work_view_model.dart';
+import '../widgets/start_work/driver_start_work_action_button.dart';
 import '../widgets/start_work/driver_start_work_header_logo.dart';
 import '../widgets/start_work/driver_start_work_status_card.dart';
 import '../widgets/start_work/driver_start_work_title_section.dart';
@@ -29,6 +30,7 @@ class DriverStartWorkScreen extends StatefulWidget {
 
 class _DriverStartWorkScreenState extends State<DriverStartWorkScreen> {
   late final DriverStartWorkViewModel _viewModel;
+  bool _isLocalLoading = false;
 
   @override
   void initState() {
@@ -44,13 +46,15 @@ class _DriverStartWorkScreenState extends State<DriverStartWorkScreen> {
   }
 
   Future<void> _handleStartWork() async {
+    setState(() => _isLocalLoading = true);
     await _viewModel.startShift();
     if (!mounted) return;
+    setState(() => _isLocalLoading = false);
 
     if (widget.onStartWorkSuccess != null) {
       widget.onStartWorkSuccess!();
     } else {
-      context.pushReplacementNamed(AppRoutes.driverHome);
+      context.pushNamed(AppRoutes.driverHome);
     }
   }
 
@@ -79,6 +83,11 @@ class _DriverStartWorkScreenState extends State<DriverStartWorkScreen> {
                   const SizedBox(height: Spacing.base),
                   DriverStartWorkStatusCard(
                     onTap: _handleStartWork,
+                  ),
+                  const SizedBox(height: Spacing.xl),
+                  DriverStartWorkActionButton(
+                    isLoading: _isLocalLoading,
+                    onPressed: _handleStartWork,
                   ),
                   const SizedBox(height: Spacing.base),
                 ],

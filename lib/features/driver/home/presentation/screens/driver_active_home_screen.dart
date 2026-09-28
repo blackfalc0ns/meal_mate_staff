@@ -2,9 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_mate_delivery/config/routing/app_routes.dart';
+import 'package:meal_mate_delivery/config/routing/arguments/auth_route_arguments.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
+import 'package:meal_mate_delivery/core/app_shell/widgets/app_bottom_nav_bar.dart';
 import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
+import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 
 import '../manager/driver_active_home_state.dart';
 import '../manager/driver_active_home_view_model.dart';
@@ -63,6 +67,28 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
 
         return Scaffold(
           backgroundColor: color.surface,
+          extendBody: true,
+          bottomNavigationBar: AppBottomNavBar(
+            selectedIndex: 0,
+            onItemSelected: (index) {
+              if (index == 0) {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                }
+              } else {
+                unawaited(
+                  context.pushNamedAndRemoveUntil(
+                    AppRoutes.appShell,
+                    (route) => false,
+                    arguments: AppShellRouteArgs(
+                      role: UserRole.driver,
+                      initialIndex: index,
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
@@ -73,8 +99,18 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DriverActiveHomeHeader(
-                    onNotificationTap: widget.onNotificationTap,
-                    onMenuTap: widget.onMenuTap,
+                    onNotificationTap: widget.onNotificationTap ??
+                        () {
+                          unawaited(
+                            context.pushNamed(AppRoutes.driverNotifications),
+                          );
+                        },
+                    onMenuTap: widget.onMenuTap ??
+                        () {
+                          if (Navigator.of(context).canPop()) {
+                            Navigator.of(context).pop();
+                          }
+                        },
                   ),
                   const SizedBox(height: Spacing.md),
                   if (data != null) ...[
@@ -109,6 +145,9 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
                       ),
                     ),
                   ],
+                  const SizedBox(
+                    height: Spacing.bottomNavHeight + Spacing.base,
+                  ),
                 ],
               ),
             ),
