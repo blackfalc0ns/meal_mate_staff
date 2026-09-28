@@ -54,4 +54,6 @@ class AppRoutes {
   static const String driverDeliverySuccess = '/driver-delivery-success';
   static const String driverStartWork = '/driver-start-work';
   static const String driverHome = '/driver-home';
+  static const String mapDriver = '/map-driver';
+  static const String driverMap = '/map-driver';
 }

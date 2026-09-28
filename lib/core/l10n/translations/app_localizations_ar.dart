@@ -3165,4 +3165,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverOnTimeRateValue => '92%';
+
+  @override
+  String get driverStatusOnTheWayToCustomer => 'في الطريق للعميل';
+
+  @override
+  String get driverMapDeliveryDetailsTitle => 'تفاصيل التوصيل';
+
+  @override
+  String get driverMapCustomerPrefix => 'العميل';
 }

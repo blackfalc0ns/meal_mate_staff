@@ -1279,6 +1279,9 @@
   "driverDistanceCovered": "Distance Covered",
   "driverDistanceCoveredValue": "32.4 km",
   "driverOnTimeRate": "On Time",
-  "driverOnTimeRateValue": "92%"
+  "driverOnTimeRateValue": "92%",
+  "driverStatusOnTheWayToCustomer": "On the way to customer",
+  "driverMapDeliveryDetailsTitle": "Delivery Details",
+  "driverMapCustomerPrefix": "Customer"
 }
 

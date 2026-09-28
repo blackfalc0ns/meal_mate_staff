@@ -3180,4 +3180,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverOnTimeRateValue => '92%';
+
+  @override
+  String get driverStatusOnTheWayToCustomer => 'On the way to customer';
+
+  @override
+  String get driverMapDeliveryDetailsTitle => 'Delivery Details';
+
+  @override
+  String get driverMapCustomerPrefix => 'Customer';
 }

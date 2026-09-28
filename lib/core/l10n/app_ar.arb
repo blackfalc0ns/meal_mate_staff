@@ -1272,6 +1272,9 @@
   "driverDistanceCovered": "المسافة المقطوعة",
   "driverDistanceCoveredValue": "32.4 كم",
   "driverOnTimeRate": "في الموعد",
-  "driverOnTimeRateValue": "92%"
+  "driverOnTimeRateValue": "92%",
+  "driverStatusOnTheWayToCustomer": "في الطريق للعميل",
+  "driverMapDeliveryDetailsTitle": "تفاصيل التوصيل",
+  "driverMapCustomerPrefix": "العميل"
 }
 

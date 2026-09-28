@@ -6091,6 +6091,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'92%'**
   String get driverOnTimeRateValue;
+
+  /// No description provided for @driverStatusOnTheWayToCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'On the way to customer'**
+  String get driverStatusOnTheWayToCustomer;
+
+  /// No description provided for @driverMapDeliveryDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Details'**
+  String get driverMapDeliveryDetailsTitle;
+
+  /// No description provided for @driverMapCustomerPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get driverMapCustomerPrefix;
 }
 
 class _AppLocalizationsDelegate

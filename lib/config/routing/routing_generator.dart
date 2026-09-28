@@ -63,6 +63,7 @@ import '../../features/driver/active_delivery/presentation/screens/driver_return
 import '../../features/driver/active_delivery/presentation/screens/driver_delivery_success_screen.dart';
 import '../../features/driver/home/presentation/screens/driver_start_work_screen.dart';
 import '../../features/driver/home/presentation/screens/driver_active_home_screen.dart';
+import '../../features/driver/map/presentation/screens/driver_map_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 import 'arguments/driver_confirm_receipt_route_arguments.dart';
@@ -587,6 +588,12 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DriverActiveHomeScreen(),
+        );
+
+      case AppRoutes.mapDriver:
+        return _buildRoute(
+          settings: settings,
+          page: const DriverMapScreen(showBottomNavBar: true),
         );
 
       default:
