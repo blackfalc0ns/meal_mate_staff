@@ -3506,6 +3506,36 @@ abstract class AppLocalizations {
   /// **'Box ID copied to clipboard'**
   String get driverBoxCopiedToClipboard;
 
+  /// No description provided for @driverNoAssignedBoxesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Assigned Boxes'**
+  String get driverNoAssignedBoxesTitle;
+
+  /// No description provided for @driverNoAssignedBoxesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'There are currently no boxes assigned to you'**
+  String get driverNoAssignedBoxesSubtitle;
+
+  /// No description provided for @driverNoAssignedBoxesNoticeLine1.
+  ///
+  /// In en, this message translates to:
+  /// **'When new boxes are assigned'**
+  String get driverNoAssignedBoxesNoticeLine1;
+
+  /// No description provided for @driverNoAssignedBoxesNoticeLine2.
+  ///
+  /// In en, this message translates to:
+  /// **'They will appear here automatically'**
+  String get driverNoAssignedBoxesNoticeLine2;
+
+  /// No description provided for @driverNoAssignedBoxesBackToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get driverNoAssignedBoxesBackToHome;
+
   /// No description provided for @driverBoxesFilterReadyForDelivery.
   ///
   /// In en, this message translates to:

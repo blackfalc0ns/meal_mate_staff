@@ -1804,6 +1804,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverBoxCopiedToClipboard => 'Box ID copied to clipboard';
 
   @override
+  String get driverNoAssignedBoxesTitle => 'No Assigned Boxes';
+
+  @override
+  String get driverNoAssignedBoxesSubtitle =>
+      'There are currently no boxes assigned to you';
+
+  @override
+  String get driverNoAssignedBoxesNoticeLine1 => 'When new boxes are assigned';
+
+  @override
+  String get driverNoAssignedBoxesNoticeLine2 =>
+      'They will appear here automatically';
+
+  @override
+  String get driverNoAssignedBoxesBackToHome => 'Back to Home';
+
+  @override
   String get driverBoxesFilterReadyForDelivery => 'Ready for delivery';
 
   @override

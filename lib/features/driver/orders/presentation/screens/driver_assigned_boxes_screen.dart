@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/auth_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/errors/error_widgets/api_error_widget.dart';
 import '../../../../../core/errors/error_widgets/empty_state_widget.dart';
 import '../../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../auth/domain/user_role.dart';
 import '../../domain/entities/driver_assigned_box_entity.dart';
 import '../../domain/entities/driver_boxes_filter_type.dart';
 import '../../domain/entities/driver_pickup_manifest_entity.dart';
@@ -20,6 +24,7 @@ import '../widgets/driver_boxes_filter_bar.dart';
 import '../widgets/driver_boxes_header_logo.dart';
 import '../widgets/driver_boxes_stats_banner.dart';
 import '../widgets/driver_boxes_title_bar.dart';
+import '../widgets/driver_no_assigned_boxes_view.dart';
 
 class DriverAssignedBoxesScreen extends StatefulWidget {
   const DriverAssignedBoxesScreen({
@@ -27,11 +32,13 @@ class DriverAssignedBoxesScreen extends StatefulWidget {
     this.viewModel,
     this.initialBoxes,
     this.onCompleteAction,
+    this.onBackToHome,
   });
 
   final DriverPickupManifestViewModel? viewModel;
   final List<DriverAssignedBoxEntity>? initialBoxes;
   final ValueChanged<DriverAssignedBoxEntity>? onCompleteAction;
+  final VoidCallback? onBackToHome;
 
   @override
   State<DriverAssignedBoxesScreen> createState() =>
@@ -110,6 +117,27 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
     }
   }
 
+  void _handleBackToHome() {
+    if (widget.onBackToHome != null) {
+      widget.onBackToHome!();
+      return;
+    }
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    } else {
+      unawaited(
+        context.pushNamedAndRemoveUntil(
+          AppRoutes.appShell,
+          (route) => false,
+          arguments: const AppShellRouteArgs(
+            role: UserRole.driver,
+            initialIndex: 0,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -136,6 +164,26 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
 
               final manifest = state.manifest;
               final boxes = manifest?.boxes ?? const [];
+              final hasNoAssignedBoxes =
+                  (manifest == null || manifest.totalBoxesCount == 0) ||
+                  (boxes.isEmpty &&
+                      state.selectedFilter == DriverBoxesFilterType.all);
+
+              if (hasNoAssignedBoxes) {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await _viewModel.doIntent(
+                      const RefreshDriverPickupManifestEvent(),
+                    );
+                  },
+                  child: DriverNoAssignedBoxesView(
+                    onRefresh: () => _viewModel.doIntent(
+                      const RefreshDriverPickupManifestEvent(),
+                    ),
+                    onBackToHome: _handleBackToHome,
+                  ),
+                );
+              }
 
               return RefreshIndicator(
                 onRefresh: () async {
@@ -154,8 +202,8 @@ class _DriverAssignedBoxesScreenState extends State<DriverAssignedBoxesScreen> {
                       const DriverBoxesTitleBar(),
                       const SizedBox(height: Spacing.sm),
                       DriverBoxesStatsBanner(
-                        totalMeals: manifest?.totalMealsCount ?? 0,
-                        totalBoxes: manifest?.totalBoxesCount ?? 0,
+                        totalMeals: manifest.totalMealsCount,
+                        totalBoxes: manifest.totalBoxesCount,
                       ),
                       const SizedBox(height: Spacing.md),
                       DriverBoxesFilterBar(

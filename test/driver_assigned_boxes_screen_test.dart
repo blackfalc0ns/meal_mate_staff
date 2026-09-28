@@ -19,6 +19,8 @@ import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/d
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_boxes_header_logo.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_boxes_stats_banner.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_boxes_title_bar.dart';
+import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_no_assigned_boxes_notice_card.dart';
+import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_no_assigned_boxes_view.dart';
 
 class _MockImagePickerPlatform extends ImagePickerPlatform {
   @override
@@ -88,9 +90,24 @@ void main() {
     boxes: sampleBoxes,
   );
 
+  const emptyManifest = DriverPickupManifestEntity(
+    tripId: 'trip-empty',
+    tripCode: 'TRIP-EMPTY',
+    driverId: 'drv-1',
+    driverName: 'Driver Name',
+    totalBoxesCount: 0,
+    totalMealsCount: 0,
+    pendingScanBoxesCount: 0,
+    pickedUpBoxesCount: 0,
+    allBoxesPickedUp: false,
+    canStartTrip: false,
+    boxes: [],
+  );
+
   Widget buildSubject({
     Locale locale = const Locale('ar'),
     DriverPickupManifestEntity manifest = sampleManifest,
+    VoidCallback? onBackToHome,
   }) {
     final repo = _FakeManifestRepo(manifest);
     final vm = DriverPickupManifestViewModel(
@@ -103,7 +120,10 @@ void main() {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.lightTheme,
       onGenerateRoute: RouteGenerator.getRoute,
-      home: DriverAssignedBoxesScreen(viewModel: vm),
+      home: DriverAssignedBoxesScreen(
+        viewModel: vm,
+        onBackToHome: onBackToHome,
+      ),
     );
   }
 
@@ -164,4 +184,64 @@ void main() {
     expect(find.text('Total boxes assigned today'), findsOneWidget);
     expect(find.text('All'), findsOneWidget);
   });
+
+  testWidgets(
+    'renders DriverNoAssignedBoxesView when no boxes are assigned in Arabic',
+    (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.5;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      var backToHomePressed = false;
+
+      await tester.pumpWidget(
+        buildSubject(
+          manifest: emptyManifest,
+          onBackToHome: () => backToHomePressed = true,
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(find.byType(DriverNoAssignedBoxesView), findsOneWidget);
+      expect(find.byType(DriverNoAssignedBoxesNoticeCard), findsOneWidget);
+      expect(find.text('لا توجد صناديق مسندة'), findsOneWidget);
+      expect(find.text('لا توجد صناديق تم تعيينها لك حالياً'), findsOneWidget);
+      expect(find.text('عند إسناد صناديق جديدة'), findsOneWidget);
+      expect(find.text('ستظهر هنا تلقائياً'), findsOneWidget);
+      expect(find.text('تحديث'), findsOneWidget);
+      expect(find.text('العودة للرئيسية'), findsOneWidget);
+
+      await tester.tap(find.text('العودة للرئيسية'));
+      await tester.pump();
+      expect(backToHomePressed, isTrue);
+    },
+  );
+
+  testWidgets(
+    'renders DriverNoAssignedBoxesView in English when no boxes are assigned',
+    (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.5;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      await tester.pumpWidget(
+        buildSubject(
+          locale: const Locale('en'),
+          manifest: emptyManifest,
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(find.byType(DriverNoAssignedBoxesView), findsOneWidget);
+      expect(find.byType(DriverNoAssignedBoxesNoticeCard), findsOneWidget);
+      expect(find.text('No Assigned Boxes'), findsOneWidget);
+      expect(find.text('There are currently no boxes assigned to you'), findsOneWidget);
+      expect(find.text('When new boxes are assigned'), findsOneWidget);
+      expect(find.text('They will appear here automatically'), findsOneWidget);
+      expect(find.text('Refresh'), findsOneWidget);
+      expect(find.text('Back to Home'), findsOneWidget);
+    },
+  );
 }

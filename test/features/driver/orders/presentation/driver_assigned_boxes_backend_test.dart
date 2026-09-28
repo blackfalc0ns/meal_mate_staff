@@ -21,6 +21,7 @@ import 'package:meal_mate_delivery/features/driver/orders/presentation/manager/d
 import 'package:meal_mate_delivery/features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_assigned_box_card.dart';
 import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_assigned_boxes_shimmer.dart';
+import 'package:meal_mate_delivery/features/driver/orders/presentation/widgets/driver_no_assigned_boxes_view.dart';
 
 class _MockRepo implements DriverPickupManifestRepository {
   Future<ApiResult<DriverPickupManifestEntity>> Function(
@@ -160,7 +161,7 @@ void main() {
       }
     });
 
-    testWidgets('success + empty boxes renders EmptyStateWidget', (
+    testWidgets('success + empty boxes renders DriverNoAssignedBoxesView', (
       tester,
     ) async {
       viewModel.emit(
@@ -171,7 +172,7 @@ void main() {
       );
 
       await tester.pumpWidget(buildSubject());
-      expect(find.byType(EmptyStateWidget), findsOneWidget);
+      expect(find.byType(DriverNoAssignedBoxesView), findsOneWidget);
     });
 
     testWidgets('filter loading renders cards shimmer, not full page shimmer', (

@@ -17,6 +17,8 @@ class AppAssets {
   static const String driverToyotaCorolla = '$_driverImages/toyota_corolla.png';
   static const String driverStartWorkIllustration =
       '$_driverImages/driver_start_work_illustration.png';
+  static const String driverNoAssignedBoxesIllustration =
+      '$_driverImages/driver_no_assigned_boxes.png';
 
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';
@@ -40,6 +42,8 @@ class AppAssets {
   static const String driverOpenMap = '$_svg/driver_open_map.svg';
   static const String driverLiveSignal = '$_svg/driver_live_signal.svg';
   static const String driverLocationPin = '$_svg/driver_location_pin.svg';
+  static const String driverAssignPersonClock =
+      '$_svg/driver_assign_person_clock.svg';
   static const String deliveryTruckSpeed = '$_svg/delivery_truck_speed.svg';
   static const String driverMapPreview =
       '$_driverImages/driver_home_map_bg.png';

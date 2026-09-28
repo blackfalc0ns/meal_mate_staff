@@ -1801,6 +1801,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverBoxCopiedToClipboard => 'تم نسخ رقم البوكس';
 
   @override
+  String get driverNoAssignedBoxesTitle => 'لا توجد صناديق مسندة';
+
+  @override
+  String get driverNoAssignedBoxesSubtitle =>
+      'لا توجد صناديق تم تعيينها لك حالياً';
+
+  @override
+  String get driverNoAssignedBoxesNoticeLine1 => 'عند إسناد صناديق جديدة';
+
+  @override
+  String get driverNoAssignedBoxesNoticeLine2 => 'ستظهر هنا تلقائياً';
+
+  @override
+  String get driverNoAssignedBoxesBackToHome => 'العودة للرئيسية';
+
+  @override
   String get driverBoxesFilterReadyForDelivery => 'جاهز للتوصيل';
 
   @override
