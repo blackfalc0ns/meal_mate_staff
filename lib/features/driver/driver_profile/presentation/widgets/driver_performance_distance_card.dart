@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../config/theme/font_manager.dart';
+import '../../../../../config/theme/spacing.dart';
+import '../../../../../config/theme/styles_manager.dart';
+import '../../../../../core/extensions/extensions.dart';
+import '../../domain/entities/driver_performance_metric_card_entity.dart';
+import 'driver_performance_line_chart.dart';
+
+class DriverPerformanceDistanceCard extends StatelessWidget {
+  const DriverPerformanceDistanceCard({
+    super.key,
+    required this.cardData,
+  });
+
+  final DriverPerformanceMetricCardEntity cardData;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.colorScheme;
+    final locale = context.localization;
+
+    return Container(
+      padding: const EdgeInsets.all(Spacing.sm),
+      decoration: BoxDecoration(
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(
+          color: color.outline.withValues(alpha: 0.5),
+          width: Spacing.border,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  locale.driverPerformanceTotalDistance,
+                  style: getRegularStyle(
+                    fontSize: FontSize.size11,
+                    color: color.onSurfaceVariant,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              Icon(
+                Icons.location_on_outlined,
+                size: 16,
+                color: color.onSurfaceVariant,
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.xs),
+          Text(
+            cardData.value,
+            style: getBoldStyle(
+              fontSize: FontSize.size18,
+              color: color.onSurface,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            locale.driverPerformanceTrendUpFromYesterday(cardData.trendText),
+            style: getMediumStyle(
+              fontSize: FontSize.size10,
+              color: color.tertiary,
+            ),
+          ),
+          const SizedBox(height: Spacing.sm),
+          DriverPerformanceLineChart(
+            points: cardData.points,
+            lineColor: color.secondary,
+            gradientColors: [
+              color.secondary.withValues(alpha: 0.4),
+              color.secondary.withValues(alpha: 0.02),
+            ],
+            yLabels: const ['0', '20', '40'],
+          ),
+        ],
+      ),
+    );
+  }
+}
