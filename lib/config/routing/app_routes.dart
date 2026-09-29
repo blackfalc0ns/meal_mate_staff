@@ -61,4 +61,5 @@ class AppRoutes {
   static const String driverHome = '/driver-home';
   static const String mapDriver = '/map-driver';
   static const String driverMap = '/map-driver';
+  static const String driverAppShell = '/driver-app-shell';
 }

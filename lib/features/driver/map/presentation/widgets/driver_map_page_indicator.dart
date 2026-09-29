@@ -30,7 +30,7 @@ class DriverMapPageIndicator extends StatelessWidget {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: isSelected ? 32 : 28,
+              width: isSelected ? 32 : 22,
               height: 4,
               decoration: BoxDecoration(
                 color: isSelected

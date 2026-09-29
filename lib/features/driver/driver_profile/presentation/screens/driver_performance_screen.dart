@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/custom_app_bar.dart';
 import '../../domain/entities/driver_performance_entity.dart';
 import '../../domain/fake_data/driver_performance_fake_data.dart';
 import '../widgets/driver_performance_deliveries_card.dart';
@@ -54,11 +55,17 @@ class _DriverPerformanceScreenState extends State<DriverPerformanceScreen> {
 
     return Scaffold(
       backgroundColor: color.surface,
+      appBar: CustomAppBar.logo(
+        showBackButton: widget.showBackButton,
+        onBackPressed: widget.onBackTap,
+        backgroundColor: color.surface,
+      ),
       body: SafeArea(
         child: ValueListenableBuilder<bool>(
           valueListenable: _isTodayNotifier,
           builder: (context, isToday, _) {
-            final activePerformance = widget.performance ??
+            final activePerformance =
+                widget.performance ??
                 (isToday
                     ? DriverPerformanceFakeData.todayPerformance
                     : DriverPerformanceFakeData.thisWeekPerformance);
@@ -74,8 +81,6 @@ class _DriverPerformanceScreenState extends State<DriverPerformanceScreen> {
                   DriverPerformanceHeader(
                     formattedDate: activePerformance.formattedDate,
                     isOnline: activePerformance.isOnline,
-                    showBackButton: widget.showBackButton,
-                    onBackTap: widget.onBackTap,
                   ),
                   const SizedBox(height: Spacing.md),
                   DriverPerformancePeriodToggle(
@@ -83,9 +88,7 @@ class _DriverPerformanceScreenState extends State<DriverPerformanceScreen> {
                     onToggle: (val) => _isTodayNotifier.value = val,
                   ),
                   const SizedBox(height: Spacing.md),
-                  DriverPerformanceSummaryCard(
-                    performance: activePerformance,
-                  ),
+                  DriverPerformanceSummaryCard(performance: activePerformance),
                   const SizedBox(height: Spacing.base),
                   const DriverPerformanceSectionTitle(),
                   Row(

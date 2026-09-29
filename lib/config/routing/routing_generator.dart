@@ -109,6 +109,24 @@ class RouteGenerator {
           page: AppShellScreen(initialIndex: initialIndex, role: role),
         );
 
+      case AppRoutes.driverAppShell:
+        int initialIndex = 0;
+        final args = settings.arguments;
+        if (args is AppShellRouteArgs) {
+          initialIndex = args.initialIndex;
+        } else if (args is int) {
+          initialIndex = args;
+        } else if (args is Map) {
+          initialIndex = (args['index'] ?? 0) as int;
+        }
+        return _buildRoute(
+          settings: settings,
+          page: AppShellScreen(
+            initialIndex: initialIndex,
+            role: UserRole.driver,
+          ),
+        );
+
       case AppRoutes.login:
         UserRole role = UserRole.operations;
         final args = settings.arguments;

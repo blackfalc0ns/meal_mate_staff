@@ -57,7 +57,7 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
         ? (300 ~/ _stops.length) * _stops.length + _currentIndex
         : _currentIndex;
     _pageController = PageController(
-      viewportFraction: 0.62,
+      viewportFraction: 0.52,
       initialPage: initialPage,
     );
   }

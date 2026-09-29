@@ -35,7 +35,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          height: 228,
+          height: 216,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -101,7 +101,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: Spacing.md),
+        const SizedBox(height: Spacing.sm),
         DriverMapPageIndicator(
           itemCount: stops.length,
           currentIndex: currentIndex,

@@ -9,6 +9,7 @@ import 'package:meal_mate_delivery/features/driver/map/presentation/screens/driv
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_active_order_card.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_background.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_carousel_nav_button.dart';
+import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_page_indicator.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_recenter_button.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_stop_card.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_stops_carousel.dart';
@@ -195,6 +196,31 @@ void main() {
 
       // Back to Stop 1 (محمد علي)
       expect(find.text('محمد علي'), findsWidgets);
+    });
+
+    testWidgets('DriverMapPageIndicator renders active bar 32px and inactive bars 22px', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _buildTestApp(
+          child: const DriverMapPageIndicator(
+            itemCount: 3,
+            currentIndex: 0,
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final containers = tester.widgetList<AnimatedContainer>(
+        find.byType(AnimatedContainer),
+      ).toList();
+
+      expect(containers.length, equals(3));
+      // First (index 0) is selected: width 32
+      expect((containers[0].constraints as BoxConstraints?)?.maxWidth ?? 32, equals(32));
+      // Second and third (index 1, 2) are unselected: width 22
+      expect((containers[1].constraints as BoxConstraints?)?.maxWidth ?? 22, equals(22));
+      expect((containers[2].constraints as BoxConstraints?)?.maxWidth ?? 22, equals(22));
     });
   });
 }

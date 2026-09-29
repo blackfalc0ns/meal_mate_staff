@@ -33,12 +33,12 @@ class DriverMapStopCard extends StatelessWidget {
   Color _resolveStatusColor(BuildContext context) {
     final color = context.colorScheme;
     if (stop.isDelivered) {
-      return color.outline;
+      return color.onSurfaceVariant.withValues(alpha: 0.6);
     }
     if (stop.sequenceNumber == 1) {
-      return color.secondaryContainer;
+      return color.tertiary;
     }
-    return color.tertiary;
+    return color.secondary;
   }
 
   @override
@@ -49,7 +49,8 @@ class DriverMapStopCard extends StatelessWidget {
     final statusText = _resolveStatusText(context);
     final statusColor = _resolveStatusColor(context);
 
-    final footerColor = isSelected ? color.primary : color.outline;
+    final footerColor =
+        isSelected ? color.primary : color.onSurfaceVariant.withValues(alpha: 0.65);
 
     return InkWell(
       onTap: onTap,
@@ -60,7 +61,7 @@ class DriverMapStopCard extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.sm,
-          vertical: Spacing.xs,
+          vertical: Spacing.sm,
         ),
         decoration: BoxDecoration(
           color: color.surface,
@@ -85,49 +86,58 @@ class DriverMapStopCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.sm,
-                  vertical: 3,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? color.primary
-                      : color.primary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                ),
-                child: Text(
-                  stop.badgeText,
-                  style: getBoldStyle(
-                    fontSize: FontSize.size10,
-                    color: isSelected ? color.onPrimary : color.primary,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              width: 48,
-              height: 48,
-              padding: const EdgeInsets.all(Spacing.xs),
-              decoration: BoxDecoration(
-                color: color.primary.withValues(alpha: 0.08),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: stop.imageAsset.endsWith('.svg')
-                    ? SvgPicture.asset(
-                        stop.imageAsset,
-                        width: 26,
-                        height: 26,
-                      )
-                    : Image.asset(
-                        stop.imageAsset,
-                        width: 26,
-                        height: 26,
-                        fit: BoxFit.contain,
+            SizedBox(
+              height: isSelected ? 44 : 40,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    left: 0,
+                    top: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 2.5,
                       ),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? color.primary
+                            : color.primary.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        stop.badgeText,
+                        style: getBoldStyle(
+                          fontSize: FontSize.size10,
+                          color: isSelected ? color.onPrimary : color.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: isSelected ? 44 : 40,
+                    height: isSelected ? 44 : 40,
+                    padding: const EdgeInsets.all(Spacing.xs),
+                    decoration: BoxDecoration(
+                      color: color.primary.withValues(alpha: 0.08),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: stop.imageAsset.endsWith('.svg')
+                          ? SvgPicture.asset(
+                              stop.imageAsset,
+                              width: isSelected ? 24 : 22,
+                              height: isSelected ? 24 : 22,
+                            )
+                          : Image.asset(
+                              stop.imageAsset,
+                              width: isSelected ? 24 : 22,
+                              height: isSelected ? 24 : 22,
+                              fit: BoxFit.contain,
+                            ),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: Spacing.xs),
@@ -136,7 +146,7 @@ class DriverMapStopCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
-                fontSize: isSelected ? FontSize.size16 : FontSize.size14,
+                fontSize: isSelected ? FontSize.size14 : FontSize.size12,
                 color: color.onSurface,
               ),
             ),
@@ -144,7 +154,7 @@ class DriverMapStopCard extends StatelessWidget {
             Text(
               stop.boxCode,
               style: getBoldStyle(
-                fontSize: FontSize.size12,
+                fontSize: isSelected ? FontSize.size12 : FontSize.size11,
                 color: color.primary,
               ),
             ),
@@ -154,7 +164,7 @@ class DriverMapStopCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.location_on_rounded,
-                  size: 13,
+                  size: isSelected ? 13 : 12,
                   color: color.primary,
                 ),
                 const SizedBox(width: 3),
@@ -164,7 +174,7 @@ class DriverMapStopCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
-                      fontSize: FontSize.size11,
+                      fontSize: isSelected ? FontSize.size11 : FontSize.size10,
                       color: color.onSurface.withValues(alpha: 0.85),
                     ),
                   ),
@@ -174,8 +184,8 @@ class DriverMapStopCard extends StatelessWidget {
             const SizedBox(height: Spacing.xs),
             Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.md,
-                vertical: 3,
+                horizontal: Spacing.sm,
+                vertical: 2.5,
               ),
               decoration: BoxDecoration(
                 color: statusColor.withValues(alpha: 0.12),
@@ -207,12 +217,7 @@ class DriverMapStopCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: Spacing.xs),
-            Container(
-              height: 0.8,
-              color: color.outline.withValues(alpha: 0.12),
-            ),
-            const SizedBox(height: Spacing.xs),
+            const SizedBox(height: Spacing.sm),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -246,7 +251,9 @@ class DriverMapStopCard extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 12,
-                  color: color.outline.withValues(alpha: 0.25),
+                  color: isSelected
+                      ? color.primary.withValues(alpha: 0.25)
+                      : color.outline.withValues(alpha: 0.25),
                 ),
                 Expanded(
                   child: Row(
