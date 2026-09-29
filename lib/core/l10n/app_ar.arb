@@ -1331,6 +1331,11 @@
   },
   "driverPerformanceExcellenceTitle": "أداء رائع اليوم! استمر بنفس التميز",
   "driverPerformanceExcellenceSubtitle": "أنت من أفضل السائقين هذا الأسبوع",
-  "driverPerformanceViewDetails": "عرض التفاصيل"
+  "driverPerformanceViewDetails": "عرض التفاصيل",
+  "driverCallInProgress": "اتصال جاري...",
+  "driverCallAddressTitle": "العنوان",
+  "driverCallSpeaker": "سماعة",
+  "driverCallMute": "كتم الميكروفون",
+  "driverCallEnd": "إنهاء المكالمة"
 }
 

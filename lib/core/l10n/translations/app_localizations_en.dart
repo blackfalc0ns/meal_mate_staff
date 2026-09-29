@@ -3339,4 +3339,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverPerformanceViewDetails => 'View Details';
+
+  @override
+  String get driverCallInProgress => 'Call in progress...';
+
+  @override
+  String get driverCallAddressTitle => 'Address';
+
+  @override
+  String get driverCallSpeaker => 'Speaker';
+
+  @override
+  String get driverCallMute => 'Mute Microphone';
+
+  @override
+  String get driverCallEnd => 'End Call';
 }

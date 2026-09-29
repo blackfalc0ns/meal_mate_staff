@@ -1338,6 +1338,11 @@
   },
   "driverPerformanceExcellenceTitle": "Great performance today! Keep up the excellence",
   "driverPerformanceExcellenceSubtitle": "You are one of the top drivers this week",
-  "driverPerformanceViewDetails": "View Details"
+  "driverPerformanceViewDetails": "View Details",
+  "driverCallInProgress": "Call in progress...",
+  "driverCallAddressTitle": "Address",
+  "driverCallSpeaker": "Speaker",
+  "driverCallMute": "Mute Microphone",
+  "driverCallEnd": "End Call"
 }
 

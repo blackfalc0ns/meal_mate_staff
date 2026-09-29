@@ -6391,6 +6391,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View Details'**
   String get driverPerformanceViewDetails;
+
+  /// No description provided for @driverCallInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Call in progress...'**
+  String get driverCallInProgress;
+
+  /// No description provided for @driverCallAddressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get driverCallAddressTitle;
+
+  /// No description provided for @driverCallSpeaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaker'**
+  String get driverCallSpeaker;
+
+  /// No description provided for @driverCallMute.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute Microphone'**
+  String get driverCallMute;
+
+  /// No description provided for @driverCallEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End Call'**
+  String get driverCallEnd;
 }
 
 class _AppLocalizationsDelegate

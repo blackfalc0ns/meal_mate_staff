@@ -3323,4 +3323,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverPerformanceViewDetails => 'عرض التفاصيل';
+
+  @override
+  String get driverCallInProgress => 'اتصال جاري...';
+
+  @override
+  String get driverCallAddressTitle => 'العنوان';
+
+  @override
+  String get driverCallSpeaker => 'سماعة';
+
+  @override
+  String get driverCallMute => 'كتم الميكروفون';
+
+  @override
+  String get driverCallEnd => 'إنهاء المكالمة';
 }
