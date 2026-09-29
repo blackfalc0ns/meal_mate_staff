@@ -16,7 +16,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
   final DriverProfileEntity profile;
   final VoidCallback? onTap;
 
-  static const double _activeDotSize = 8.0;
+  static const double _activeDotSize = 7.0;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,10 @@ class DriverProfileVehicleCard extends StatelessWidget {
             width: Spacing.border,
           ),
         ),
-        padding: const EdgeInsets.all(Spacing.cardPadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.base,
+          vertical: Spacing.md,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -43,7 +46,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.directions_car_outlined,
-                  size: Spacing.iconMd,
+                  size: 20,
                   color: color.primary,
                 ),
                 const SizedBox(width: Spacing.sm),
@@ -51,7 +54,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
                   child: Text(
                     locale.driverVehicleInfo,
                     style: getBoldStyle(
-                      fontSize: FontSize.size14,
+                      fontSize: FontSize.size13,
                       color: color.onSurface,
                     ),
                   ),
@@ -60,7 +63,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Spacing.sm,
-                      vertical: Spacing.xs,
+                      vertical: 3,
                     ),
                     decoration: BoxDecoration(
                       color: color.tertiaryContainer,
@@ -81,7 +84,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
                         Text(
                           locale.driverVehicleActive,
                           style: getMediumStyle(
-                            fontSize: FontSize.size11,
+                            fontSize: FontSize.size10,
                             color: color.tertiary,
                           ),
                         ),
@@ -90,7 +93,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: Spacing.base),
+            const SizedBox(height: Spacing.md),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -101,15 +104,15 @@ class DriverProfileVehicleCard extends StatelessWidget {
                       Text(
                         locale.driverVehicleType,
                         style: getRegularStyle(
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: Spacing.xs),
+                      const SizedBox(height: 3),
                       Text(
                         profile.vehicleType,
                         style: getBoldStyle(
-                          fontSize: FontSize.size12,
+                          fontSize: FontSize.size11,
                           color: color.onSurface,
                         ),
                       ),
@@ -124,15 +127,15 @@ class DriverProfileVehicleCard extends StatelessWidget {
                       Text(
                         locale.driverVehicleModel,
                         style: getRegularStyle(
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: Spacing.xs),
+                      const SizedBox(height: 3),
                       Text(
                         profile.vehicleModel,
                         style: getBoldStyle(
-                          fontSize: FontSize.size12,
+                          fontSize: FontSize.size11,
                           color: color.onSurface,
                         ),
                         maxLines: 1,
@@ -148,15 +151,15 @@ class DriverProfileVehicleCard extends StatelessWidget {
                       Text(
                         locale.driverPlateNumber,
                         style: getRegularStyle(
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: Spacing.xs),
+                      const SizedBox(height: 3),
                       Text(
                         profile.plateNumber,
                         style: getBoldStyle(
-                          fontSize: FontSize.size12,
+                          fontSize: FontSize.size11,
                           color: color.onSurface,
                         ),
                       ),
@@ -171,3 +174,5 @@ class DriverProfileVehicleCard extends StatelessWidget {
     );
   }
 }
+
+

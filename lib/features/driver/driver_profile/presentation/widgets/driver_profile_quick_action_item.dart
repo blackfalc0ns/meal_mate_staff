@@ -45,19 +45,19 @@ class DriverProfileQuickActionItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(icon, size: Spacing.iconMd, color: color.primary),
+                Icon(icon, size: 21, color: color.primary),
                 Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  size: Spacing.iconSm,
+                  Icons.arrow_forward_ios_rounded,
+                  size: 12,
                   color: color.onSurfaceVariant,
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.sm),
+            const SizedBox(height: Spacing.xs + 2),
             Text(
               title,
               style: getBoldStyle(
-                fontSize: FontSize.size12,
+                fontSize: FontSize.size11,
                 color: color.onSurface,
               ),
               maxLines: 1,
@@ -67,7 +67,7 @@ class DriverProfileQuickActionItem extends StatelessWidget {
             Text(
               subtitle,
               style: getRegularStyle(
-                fontSize: FontSize.size10,
+                fontSize: FontSize.size9,
                 color: color.onSurfaceVariant,
               ),
               maxLines: 1,

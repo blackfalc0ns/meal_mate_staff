@@ -14,8 +14,8 @@ class DriverProfileHeroCard extends StatelessWidget {
 
   final DriverProfileEntity profile;
 
-  static const double _avatarSize = 60.0;
-  static const double _onlineDotSize = 12.0;
+  static const double _avatarSize = 52.0;
+  static const double _onlineDotSize = 11.0;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,10 @@ class DriverProfileHeroCard extends StatelessWidget {
         color: color.inverseSurface,
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
       ),
-      padding: const EdgeInsets.all(Spacing.cardPadding),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.base,
+        vertical: Spacing.md,
+      ),
       child: Column(
         children: [
           Row(
@@ -59,7 +62,7 @@ class DriverProfileHeroCard extends StatelessWidget {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: color.inverseSurface,
-                          width: 2,
+                          width: 1.5,
                         ),
                       ),
                     ),
@@ -75,19 +78,19 @@ class DriverProfileHeroCard extends StatelessWidget {
                         Text(
                           profile.name,
                           style: getBoldStyle(
-                            fontSize: FontSize.size16,
+                            fontSize: FontSize.size15,
                             color: color.onInverseSurface,
                           ),
                         ),
                         const SizedBox(width: Spacing.xs),
                         Icon(
                           Icons.person_outline_rounded,
-                          size: Spacing.iconSm,
+                          size: 16,
                           color: color.onInverseSurface.withValues(alpha: 0.8),
                         ),
                       ],
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: 3),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.sm,
@@ -118,12 +121,12 @@ class DriverProfileHeroCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: 3),
                     Row(
                       children: [
                         Icon(
                           Icons.star_rounded,
-                          size: Spacing.iconSm,
+                          size: 15,
                           color: color.secondary,
                         ),
                         const SizedBox(width: 2),
@@ -149,13 +152,13 @@ class DriverProfileHeroCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Spacing.base),
+          const SizedBox(height: Spacing.sm),
           Divider(
             color: color.onInverseSurface.withValues(alpha: 0.15),
-            height: Spacing.base,
+            height: Spacing.md,
             thickness: Spacing.border,
           ),
-          const SizedBox(height: Spacing.sm),
+          const SizedBox(height: Spacing.xs),
           Row(
             children: [
               Expanded(
@@ -171,18 +174,18 @@ class DriverProfileHeroCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: 3),
                     Text(
                       '${profile.totalOrders}',
                       style: getBoldStyle(
-                        fontSize: FontSize.size14,
+                        fontSize: FontSize.size13,
                         color: color.onInverseSurface,
                       ),
                     ),
                     Text(
                       locale.driverOrdersUnit,
                       style: getRegularStyle(
-                        fontSize: FontSize.size10,
+                        fontSize: FontSize.size9,
                         color: color.onInverseSurface.withValues(alpha: 0.6),
                       ),
                     ),
@@ -202,11 +205,11 @@ class DriverProfileHeroCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: 3),
                     Text(
                       '${profile.acceptanceRate}%',
                       style: getBoldStyle(
-                        fontSize: FontSize.size14,
+                        fontSize: FontSize.size13,
                         color: color.onInverseSurface,
                       ),
                     ),
@@ -226,21 +229,21 @@ class DriverProfileHeroCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: 3),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           '${profile.rating}',
                           style: getBoldStyle(
-                            fontSize: FontSize.size14,
+                            fontSize: FontSize.size13,
                             color: color.onInverseSurface,
                           ),
                         ),
                         const SizedBox(width: 2),
                         Icon(
                           Icons.star_rounded,
-                          size: Spacing.iconSm,
+                          size: 14,
                           color: color.secondary,
                         ),
                       ],
@@ -261,11 +264,11 @@ class DriverProfileHeroCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: Spacing.xs),
+                    const SizedBox(height: 3),
                     Text(
                       profile.memberSince,
                       style: getBoldStyle(
-                        fontSize: FontSize.size12,
+                        fontSize: FontSize.size11,
                         color: color.onInverseSurface,
                       ),
                       textAlign: TextAlign.center,
@@ -282,3 +285,5 @@ class DriverProfileHeroCard extends StatelessWidget {
     );
   }
 }
+
+

@@ -18,7 +18,7 @@ class DriverProfileTicketCard extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onViewAllTap;
 
-  static const double _iconBoxSize = 40.0;
+  static const double _iconBoxSize = 36.0;
   static const double _statusDotSize = 6.0;
 
   @override
@@ -36,7 +36,7 @@ class DriverProfileTicketCard extends StatelessWidget {
               child: Text(
                 locale.driverRecentTicketTitle,
                 style: getBoldStyle(
-                  fontSize: FontSize.size14,
+                  fontSize: FontSize.size13,
                   color: color.onSurface,
                 ),
                 maxLines: 1,
@@ -50,7 +50,7 @@ class DriverProfileTicketCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: Spacing.sm,
-                  vertical: Spacing.xs,
+                  vertical: 3,
                 ),
                 decoration: BoxDecoration(
                   color: color.primaryContainer,
@@ -67,7 +67,7 @@ class DriverProfileTicketCard extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: Spacing.sm),
+        const SizedBox(height: Spacing.xs + 2),
         InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
@@ -80,7 +80,10 @@ class DriverProfileTicketCard extends StatelessWidget {
                 width: Spacing.border,
               ),
             ),
-            padding: const EdgeInsets.all(Spacing.cardPadding),
+            padding: const EdgeInsets.symmetric(
+              horizontal: Spacing.base,
+              vertical: Spacing.md,
+            ),
             child: Row(
               children: [
                 Container(
@@ -92,7 +95,7 @@ class DriverProfileTicketCard extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.shopping_bag_outlined,
-                    size: Spacing.iconMd,
+                    size: 18,
                     color: color.onPrimary,
                   ),
                 ),
@@ -105,7 +108,7 @@ class DriverProfileTicketCard extends StatelessWidget {
                       Text(
                         profile.recentTicketId,
                         style: getBoldStyle(
-                          fontSize: FontSize.size12,
+                          fontSize: FontSize.size11,
                           color: color.onSurface,
                         ),
                       ),
@@ -113,7 +116,7 @@ class DriverProfileTicketCard extends StatelessWidget {
                       Text(
                         profile.recentTicketSubject,
                         style: getRegularStyle(
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                         maxLines: 1,
@@ -143,7 +146,7 @@ class DriverProfileTicketCard extends StatelessWidget {
                           Text(
                             locale.driverTicketStatusResolved,
                             style: getMediumStyle(
-                              fontSize: FontSize.size11,
+                              fontSize: FontSize.size10,
                               color: color.tertiary,
                             ),
                           ),
@@ -153,7 +156,7 @@ class DriverProfileTicketCard extends StatelessWidget {
                       Text(
                         locale.driverTicketResolvedSubtitle,
                         style: getRegularStyle(
-                          fontSize: FontSize.size10,
+                          fontSize: FontSize.size9,
                           color: color.onSurfaceVariant,
                         ),
                         maxLines: 1,
@@ -181,7 +184,7 @@ class DriverProfileTicketCard extends StatelessWidget {
                       Text(
                         locale.driverTicketDateLabel,
                         style: getRegularStyle(
-                          fontSize: FontSize.size10,
+                          fontSize: FontSize.size9,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -190,8 +193,8 @@ class DriverProfileTicketCard extends StatelessWidget {
                 ),
                 const SizedBox(width: Spacing.xs),
                 Icon(
-                  Icons.chevron_left_rounded,
-                  size: Spacing.iconSm,
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
                   color: color.onSurfaceVariant,
                 ),
               ],

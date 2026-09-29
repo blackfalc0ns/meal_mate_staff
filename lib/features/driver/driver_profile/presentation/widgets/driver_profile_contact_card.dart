@@ -6,14 +6,11 @@ import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class DriverProfileContactCard extends StatelessWidget {
-  const DriverProfileContactCard({
-    super.key,
-    this.onTap,
-  });
+  const DriverProfileContactCard({super.key, this.onTap});
 
   final VoidCallback? onTap;
 
-  static const double _iconBoxSize = 44.0;
+  static const double _iconBoxSize = 38.0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,10 @@ class DriverProfileContactCard extends StatelessWidget {
             width: Spacing.border,
           ),
         ),
-        padding: const EdgeInsets.all(Spacing.cardPadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.base,
+          vertical: Spacing.md,
+        ),
         child: Row(
           children: [
             Container(
@@ -44,11 +44,11 @@ class DriverProfileContactCard extends StatelessWidget {
               ),
               child: Icon(
                 Icons.headset_mic_rounded,
-                size: Spacing.iconMd,
+                size: 20,
                 color: color.onPrimary,
               ),
             ),
-            const SizedBox(width: Spacing.md),
+            const SizedBox(width: Spacing.sm),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +56,7 @@ class DriverProfileContactCard extends StatelessWidget {
                   Text(
                     locale.driverContactSupportTitle,
                     style: getBoldStyle(
-                      fontSize: FontSize.size13,
+                      fontSize: FontSize.size12,
                       color: color.onSurface,
                     ),
                   ),
@@ -64,7 +64,7 @@ class DriverProfileContactCard extends StatelessWidget {
                   Text(
                     locale.driverContactSupportDesc,
                     style: getRegularStyle(
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size10,
                       color: color.onSurfaceVariant,
                     ),
                   ),
@@ -72,8 +72,8 @@ class DriverProfileContactCard extends StatelessWidget {
               ),
             ),
             Icon(
-              Icons.chevron_left_rounded,
-              size: Spacing.iconMd,
+              Icons.arrow_forward_ios_rounded,
+              size: 18,
               color: color.onSurfaceVariant,
             ),
           ],

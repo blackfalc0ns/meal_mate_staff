@@ -155,59 +155,61 @@ class DriverProfileScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.base,
+            horizontal: Spacing.screenH,
             vertical: Spacing.sm,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DriverProfileHeroCard(profile: currentProfile),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
               DriverProfileVehicleCard(
-                profile: currentProfile,
+                 profile: currentProfile,
                 onTap: () => _handleVehicleInfoTap(context),
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
               Row(
                 children: [
                   Icon(
                     Icons.headset_mic_outlined,
-                    size: Spacing.iconMd,
+                    size: 20,
                     color: color.primary,
                   ),
-                  const SizedBox(width: Spacing.sm),
+                  const SizedBox(width: Spacing.xs),
                   Text(
                     locale.driverSupportSectionTitle,
                     style: getBoldStyle(
-                      fontSize: FontSize.size14,
+                      fontSize: FontSize.size13,
                       color: color.onSurface,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: Spacing.sm),
+              const SizedBox(height: Spacing.xs + 2),
               DriverProfileContactCard(
                 onTap: () => _handleContactUsTap(context),
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
               DriverProfileTicketCard(
                 profile: currentProfile,
                 onTap: () => _handleRecentTicketTap(context),
                 onViewAllTap: () => _handleViewAllTicketsTap(context),
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
               DriverProfileQuickActionsRow(
                 onLanguageTap: onLanguageTap,
                 onSettingsTap: () => _handleSettingsTap(context),
                 onLogoutTap: () => _handleLogout(context),
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.md),
               const DriverProfilePolicyBanner(),
-              const SizedBox(height: Spacing.xxl),
+              const SizedBox(height: Spacing.xl),
             ],
           ),
         ),
       ),
+
     );
   }
 }
+

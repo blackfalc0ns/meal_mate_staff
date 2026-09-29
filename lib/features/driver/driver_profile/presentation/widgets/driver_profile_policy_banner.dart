@@ -8,7 +8,7 @@ import '../../../../../core/extensions/extensions.dart';
 class DriverProfilePolicyBanner extends StatelessWidget {
   const DriverProfilePolicyBanner({super.key});
 
-  static const double _badgeSize = 32.0;
+  static const double _badgeSize = 28.0;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class DriverProfilePolicyBanner extends StatelessWidget {
         return TextSpan(
           text: fullTip,
           style: getRegularStyle(
-            fontSize: FontSize.size11,
+            fontSize: FontSize.size10,
             color: color.onSurfaceVariant,
           ),
         );
@@ -37,7 +37,7 @@ class DriverProfilePolicyBanner extends StatelessWidget {
       final parts = fullTip.split(highlightWord);
       return TextSpan(
         style: getRegularStyle(
-          fontSize: FontSize.size11,
+          fontSize: FontSize.size10,
           color: color.onSurfaceVariant,
         ),
         children: [
@@ -45,7 +45,7 @@ class DriverProfilePolicyBanner extends StatelessWidget {
           TextSpan(
             text: highlightWord,
             style: getBoldStyle(
-              fontSize: FontSize.size11,
+              fontSize: FontSize.size10,
               color: color.secondary,
             ),
           ),
@@ -76,18 +76,18 @@ class DriverProfilePolicyBanner extends StatelessWidget {
                 Text(
                   locale.driverDeliveryPolicyTitle,
                   style: getBoldStyle(
-                    fontSize: FontSize.size13,
+                    fontSize: FontSize.size12,
                     color: color.primary,
                   ),
                 ),
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: 2),
                 RichText(
                   text: buildBodySpan(),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: Spacing.md),
+          const SizedBox(width: Spacing.sm),
           Container(
             width: _badgeSize,
             height: _badgeSize,
@@ -95,12 +95,12 @@ class DriverProfilePolicyBanner extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(
                 color: color.secondary,
-                width: 2,
+                width: 1.5,
               ),
             ),
             child: Icon(
               Icons.check_rounded,
-              size: Spacing.iconSm,
+              size: 15,
               color: color.secondary,
             ),
           ),
@@ -109,3 +109,5 @@ class DriverProfilePolicyBanner extends StatelessWidget {
     );
   }
 }
+
+
