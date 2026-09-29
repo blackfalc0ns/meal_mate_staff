@@ -25,6 +25,7 @@ class DriverSettingsScreen extends StatelessWidget {
     this.onNotificationTap,
     this.onMenuTap,
     this.onEditProfileTap,
+    this.onPerformanceTap,
     this.onPersonalInfoTap,
     this.onVehicleInfoTap,
     this.onMyDocumentsTap,
@@ -43,6 +44,7 @@ class DriverSettingsScreen extends StatelessWidget {
   final VoidCallback? onNotificationTap;
   final VoidCallback? onMenuTap;
   final VoidCallback? onEditProfileTap;
+  final VoidCallback? onPerformanceTap;
   final VoidCallback? onPersonalInfoTap;
   final VoidCallback? onVehicleInfoTap;
   final VoidCallback? onMyDocumentsTap;
@@ -112,6 +114,14 @@ class DriverSettingsScreen extends StatelessWidget {
     unawaited(context.pushNamed(AppRoutes.driverNotifications));
   }
 
+  void _handlePerformanceTap(BuildContext context) {
+    if (onPerformanceTap != null) {
+      onPerformanceTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverPerformance));
+  }
+
   void _handleVehicleInfoTap(BuildContext context) {
     if (onVehicleInfoTap != null) {
       onVehicleInfoTap!();
@@ -159,6 +169,11 @@ class DriverSettingsScreen extends StatelessWidget {
                 title: locale.driverSettingsAccountSection,
                 icon: Icons.person_outline_rounded,
                 children: [
+                  DriverSettingsMenuTile(
+                    icon: Icons.insights_rounded,
+                    title: locale.driverPerformanceTitle,
+                    onTap: () => _handlePerformanceTap(context),
+                  ),
                   DriverSettingsMenuTile(
                     icon: Icons.person_outline_rounded,
                     title: locale.driverSettingsPersonalInfo,

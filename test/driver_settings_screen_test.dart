@@ -16,6 +16,7 @@ void main() {
     Locale locale = const Locale('ar'),
     VoidCallback? onHelpCenterTap,
     VoidCallback? onContactUsTap,
+    VoidCallback? onPerformanceTap,
   }) {
     return MaterialApp(
       locale: locale,
@@ -30,6 +31,7 @@ void main() {
         profile: profile,
         onHelpCenterTap: onHelpCenterTap,
         onContactUsTap: onContactUsTap,
+        onPerformanceTap: onPerformanceTap,
       ),
     );
   }
@@ -47,13 +49,14 @@ void main() {
     expect(find.byType(DriverSettingsHeader), findsOneWidget);
     expect(find.byType(DriverSettingsProfileCard), findsOneWidget);
     expect(find.byType(DriverSettingsSectionCard), findsNWidgets(3));
-    expect(find.byType(DriverSettingsMenuTile), findsNWidgets(11));
+    expect(find.byType(DriverSettingsMenuTile), findsNWidgets(12));
     expect(find.byType(DriverSettingsLogoutButton), findsOneWidget);
 
     expect(find.text('الأعدادات'), findsOneWidget);
     expect(find.text('أحمد إبراهيم'), findsOneWidget);
     expect(find.text('#MM-1256'), findsOneWidget);
     expect(find.text('إعدادات الحساب'), findsOneWidget);
+    expect(find.text('الأداء'), findsOneWidget);
     expect(find.text('المعلومات الشخصية'), findsOneWidget);
     expect(find.text('إعدادات التطبيق'), findsOneWidget);
     expect(find.text('الدعم والمساعدة'), findsOneWidget);
@@ -72,6 +75,7 @@ void main() {
 
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Account Settings'), findsOneWidget);
+    expect(find.text('Performance'), findsOneWidget);
     expect(find.text('Personal Information'), findsOneWidget);
     expect(find.text('App Settings'), findsOneWidget);
     expect(find.text('Support & Help'), findsOneWidget);
@@ -137,5 +141,29 @@ void main() {
     await tester.tap(contactUsTile);
     await tester.pumpAndSettle();
     expect(contactUsTapped, isTrue);
+  });
+
+  testWidgets('tapping Performance triggers onPerformanceTap', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.0;
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    bool performanceTapped = false;
+
+    await tester.pumpWidget(
+      buildSubject(
+        onPerformanceTap: () => performanceTapped = true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final performanceTile = find.text('الأداء');
+    await tester.ensureVisible(performanceTile);
+    await tester.tap(performanceTile);
+    await tester.pumpAndSettle();
+
+    expect(performanceTapped, isTrue);
   });
 }
