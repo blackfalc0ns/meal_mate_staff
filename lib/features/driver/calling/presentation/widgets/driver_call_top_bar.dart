@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/spacing.dart';
@@ -23,7 +25,7 @@ class DriverCallTopBar extends StatelessWidget {
       child: Align(
         alignment: AlignmentDirectional.centerStart,
         child: IconButton(
-          onPressed: onDismiss ?? () => Navigator.of(context).maybePop(),
+          onPressed: onDismiss ?? () => unawaited(Navigator.of(context).maybePop()),
           icon: Icon(
             Icons.keyboard_arrow_down_rounded,
             size: Spacing.iconLg,

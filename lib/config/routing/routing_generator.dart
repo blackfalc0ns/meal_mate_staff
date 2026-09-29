@@ -70,6 +70,8 @@ import '../../features/driver/active_delivery/presentation/screens/driver_delive
 import '../../features/driver/home/presentation/screens/driver_start_work_screen.dart';
 import '../../features/driver/home/presentation/screens/driver_active_home_screen.dart';
 import '../../features/driver/map/presentation/screens/driver_map_screen.dart';
+import '../../features/driver/calling/domain/entities/driver_active_call_entity.dart';
+import '../../features/driver/calling/presentation/screens/driver_active_call_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 import 'arguments/driver_confirm_receipt_route_arguments.dart';
@@ -651,6 +653,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverSupportTicketDetailsScreen(ticket: ticket),
+        );
+
+      case AppRoutes.driverActiveCall:
+        final callData = settings.arguments is DriverActiveCallEntity
+            ? settings.arguments! as DriverActiveCallEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverActiveCallScreen(callData: callData),
         );
 
       default:

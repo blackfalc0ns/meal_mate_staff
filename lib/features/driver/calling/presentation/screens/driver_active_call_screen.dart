@@ -70,7 +70,7 @@ class _DriverActiveCallScreenState extends State<DriverActiveCallScreen> {
     if (widget.onEndCall != null) {
       widget.onEndCall!();
     } else {
-      Navigator.of(context).maybePop();
+      unawaited(Navigator.of(context).maybePop());
     }
   }
 
