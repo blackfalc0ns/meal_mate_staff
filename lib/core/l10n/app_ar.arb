@@ -1305,6 +1305,32 @@
   "driverSupportTicketOrderNumberLabel": "رقم الطلب",
   "driverSupportTicketOrderTimeLabel": "وقت الطلب",
   "driverSupportTicketDeliveryAddressLabel": "عنوان التوصيل",
-  "driverSupportTicketContactSupport": "التواصل مع الدعم"
+  "driverSupportTicketContactSupport": "التواصل مع الدعم",
+  "driverPerformanceTitle": "الأداء",
+  "driverPerformanceToday": "اليوم",
+  "driverPerformanceThisWeek": "هذا الأسبوع",
+  "driverPerformanceOnlineStatus": "أنت متصل",
+  "driverPerformanceTotalOrders": "إجمالي الطلبات",
+  "driverPerformanceOrdersUnit": "طلبات",
+  "driverPerformanceOnTimeRate": "معدل الالتزام بالوقت",
+  "driverPerformanceOnTimeLabel": "في الوقت",
+  "driverPerformanceDeliveries": "التسليمات",
+  "driverPerformanceHandover": "استلام يد بيد",
+  "driverPerformanceDeliveriesUnit": "تسليمات",
+  "driverPerformanceTotalDistance": "المسافة الكلية",
+  "driverPerformanceDistanceKmUnit": "كم",
+  "driverPerformanceWorkingHours": "ساعات العمل",
+  "driverPerformanceOverview": "نظرة عامة على الأداء",
+  "driverPerformanceTrendUpFromYesterday": "↑ {value} من أمس",
+  "@driverPerformanceTrendUpFromYesterday": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "driverPerformanceExcellenceTitle": "أداء رائع اليوم! استمر بنفس التميز",
+  "driverPerformanceExcellenceSubtitle": "أنت من أفضل السائقين هذا الأسبوع",
+  "driverPerformanceViewDetails": "عرض التفاصيل"
 }
 

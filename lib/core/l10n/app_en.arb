@@ -1312,6 +1312,32 @@
   "driverSupportTicketOrderNumberLabel": "Order Number",
   "driverSupportTicketOrderTimeLabel": "Order Time",
   "driverSupportTicketDeliveryAddressLabel": "Delivery Address",
-  "driverSupportTicketContactSupport": "Contact Support"
+  "driverSupportTicketContactSupport": "Contact Support",
+  "driverPerformanceTitle": "Performance",
+  "driverPerformanceToday": "Today",
+  "driverPerformanceThisWeek": "This Week",
+  "driverPerformanceOnlineStatus": "You are online",
+  "driverPerformanceTotalOrders": "Total Orders",
+  "driverPerformanceOrdersUnit": "orders",
+  "driverPerformanceOnTimeRate": "On-Time Rate",
+  "driverPerformanceOnTimeLabel": "on time",
+  "driverPerformanceDeliveries": "Deliveries",
+  "driverPerformanceHandover": "Hand-to-hand",
+  "driverPerformanceDeliveriesUnit": "deliveries",
+  "driverPerformanceTotalDistance": "Total Distance",
+  "driverPerformanceDistanceKmUnit": "km",
+  "driverPerformanceWorkingHours": "Working Hours",
+  "driverPerformanceOverview": "Performance Overview",
+  "driverPerformanceTrendUpFromYesterday": "↑ {value} from yesterday",
+  "@driverPerformanceTrendUpFromYesterday": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "driverPerformanceExcellenceTitle": "Great performance today! Keep up the excellence",
+  "driverPerformanceExcellenceSubtitle": "You are one of the top drivers this week",
+  "driverPerformanceViewDetails": "View Details"
 }
 
