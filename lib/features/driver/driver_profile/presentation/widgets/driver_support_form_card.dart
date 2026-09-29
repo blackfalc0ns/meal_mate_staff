@@ -46,13 +46,13 @@ class DriverSupportFormCard extends StatelessWidget {
           locale.driverSupportSendMessageTitle,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size16,
+            fontSize: FontSize.size12,
             color: color.onSurface,
           ),
         ),
-        const SizedBox(height: Spacing.sm),
+        const SizedBox(height: Spacing.xs),
         Container(
-          padding: const EdgeInsets.all(Spacing.base),
+          padding: const EdgeInsets.all(Spacing.sm + 2),
           decoration: BoxDecoration(
             color: color.surface,
             borderRadius: BorderRadius.circular(Spacing.cardRadius),
@@ -70,15 +70,15 @@ class DriverSupportFormCard extends StatelessWidget {
                 selectedCategory: selectedCategory,
                 onCategorySelected: onCategorySelected,
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.sm),
               DriverSupportMessageInput(controller: messageController),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.sm),
               DriverSupportAttachmentBox(
                 attachedFileName: attachedFileName,
                 onTap: onAttachmentTap,
                 onRemove: onAttachmentRemove,
               ),
-              const SizedBox(height: Spacing.lg),
+              const SizedBox(height: Spacing.sm + 2),
               ValueListenableBuilder<TextEditingValue>(
                 valueListenable: messageController,
                 builder: (context, value, _) {
@@ -88,18 +88,19 @@ class DriverSupportFormCard extends StatelessWidget {
                   return AppButton(
                     text: locale.driverSupportSubmitButton,
                     onPressed: canSubmit ? onSubmit : null,
+                    height: 42,
                     color: canSubmit
                         ? color.primary
-                        : color.primary.withValues(alpha: 0.35),
+                        : color.primary.withValues(alpha: 0.25),
                     textColor: canSubmit
                         ? color.onPrimary
-                        : color.onPrimary.withValues(alpha: 0.7),
+                        : color.onPrimary.withValues(alpha: 0.9),
                     textStyle: getBoldStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size14,
+                      fontSize: FontSize.size13,
                       color: canSubmit
                           ? color.onPrimary
-                          : color.onPrimary.withValues(alpha: 0.7),
+                          : color.onPrimary.withValues(alpha: 0.9),
                     ),
                   );
                 },

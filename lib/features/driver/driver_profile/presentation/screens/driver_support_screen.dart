@@ -154,8 +154,8 @@ class _DriverSupportScreenState extends State<DriverSupportScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.base,
-            vertical: Spacing.sm,
+            horizontal: Spacing.screenH,
+            vertical: Spacing.screenV,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -164,13 +164,13 @@ class _DriverSupportScreenState extends State<DriverSupportScreen> {
                 onCallTap: _handleCall,
                 onEmailTap: _handleEmail,
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.sm + 2),
               DriverSupportFaqCard(
                 topics: _topics,
                 onTopicTap: _handleTopicTap,
                 onViewAllTap: widget.onViewAllTopicsTap,
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.sm + 2),
               DriverSupportFormCard(
                 categories: _categories,
                 selectedCategory: _selectedCategory,
@@ -183,7 +183,7 @@ class _DriverSupportScreenState extends State<DriverSupportScreen> {
                 onSubmit: _handleSubmit,
                 isSubmitting: _isSubmitting,
               ),
-              const SizedBox(height: Spacing.xxl),
+              const SizedBox(height: Spacing.lg),
             ],
           ),
         ),

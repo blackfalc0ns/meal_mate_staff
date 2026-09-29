@@ -40,8 +40,8 @@ class DriverSupportMessageInput extends StatelessWidget {
             children: [
               TextField(
                 controller: controller,
-                maxLines: 5,
-                minLines: 4,
+                maxLines: 4,
+                minLines: 3,
                 maxLength: maxLength,
                 buildCounter:
                     (
@@ -52,32 +52,36 @@ class DriverSupportMessageInput extends StatelessWidget {
                     }) => null,
                 style: getRegularStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size13,
+                  fontSize: FontSize.size12,
                   color: color.onSurface,
                 ),
                 decoration: InputDecoration(
                   hintText: locale.driverSupportMessageDetailsHint,
                   hintStyle: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size13,
+                    fontSize: FontSize.size11,
                     color: color.onSurfaceVariant,
                   ),
                   border: InputBorder.none,
-                  contentPadding: const EdgeInsets.all(Spacing.base),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm + 2,
+                    vertical: Spacing.sm,
+                  ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.base,
-                  vertical: Spacing.xs,
+                padding: const EdgeInsets.only(
+                  left: Spacing.sm + 2,
+                  right: Spacing.sm + 2,
+                  bottom: Spacing.xs,
                 ),
                 child: Align(
-                  alignment: AlignmentDirectional.centerStart,
+                  alignment: AlignmentDirectional.centerEnd,
                   child: Text(
                     '$currentLength/$maxLength',
                     style: getRegularStyle(
                       fontFamily: FontConstant.alexandria,
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size10,
                       color: color.onSurfaceVariant,
                     ),
                   ),
@@ -90,3 +94,4 @@ class DriverSupportMessageInput extends StatelessWidget {
     );
   }
 }
+

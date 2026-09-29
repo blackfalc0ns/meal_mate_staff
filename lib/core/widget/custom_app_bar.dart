@@ -294,7 +294,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 title!,
                 style: getBoldStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: titleFontSize ?? FontSize.size16,
+                  fontSize: titleFontSize ?? FontSize.size14,
                   color: titleColor ?? color.onSurface,
                 ),
                 textAlign: TextAlign.center,

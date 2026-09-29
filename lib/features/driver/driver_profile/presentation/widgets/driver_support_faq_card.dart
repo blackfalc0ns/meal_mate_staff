@@ -32,11 +32,11 @@ class DriverSupportFaqCard extends StatelessWidget {
           locale.driverSupportFaqTitle,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size16,
+            fontSize: FontSize.size12,
             color: color.onSurface,
           ),
         ),
-        const SizedBox(height: Spacing.sm),
+        const SizedBox(height: Spacing.xs),
         DecoratedBox(
           decoration: BoxDecoration(
             color: color.surface,
@@ -61,25 +61,31 @@ class DriverSupportFaqCard extends StatelessWidget {
                   bottom: Radius.circular(Spacing.cardRadius),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Spacing.md),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: 11,
-                        color: color.primary,
-                      ),
-                      const SizedBox(width: Spacing.xs),
-                      Text(
-                        locale.driverSupportViewAllTopics,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size12,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm + 2,
+                    vertical: Spacing.sm,
+                  ),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          size: 10,
                           color: color.primary,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: Spacing.xs),
+                        Text(
+                          locale.driverSupportViewAllTopics,
+                          style: getBoldStyle(
+                            fontFamily: FontConstant.alexandria,
+                            fontSize: FontSize.size11,
+                            color: color.primary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

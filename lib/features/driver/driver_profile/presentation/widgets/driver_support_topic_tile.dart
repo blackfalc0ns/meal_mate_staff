@@ -34,10 +34,14 @@ class DriverSupportTopicTile extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 14,
-                  color: color.onSurfaceVariant,
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: color.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(Spacing.xs + 2),
+                  ),
+                  child: Icon(topic.icon, color: color.primary, size: 16),
                 ),
                 const SizedBox(width: Spacing.sm),
                 Expanded(
@@ -49,18 +53,18 @@ class DriverSupportTopicTile extends StatelessWidget {
                         topic.title,
                         style: getBoldStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size13,
+                          fontSize: FontSize.size10,
                           color: color.onSurface,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: Spacing.border),
+                      const SizedBox(height: 2),
                       Text(
                         topic.subtitle,
                         style: getRegularStyle(
                           fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                         maxLines: 1,
@@ -70,14 +74,10 @@ class DriverSupportTopicTile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: Spacing.sm),
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: color.primary.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(Spacing.sm),
-                  ),
-                  child: Icon(topic.icon, color: color.primary, size: 20),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 11,
+                  color: color.onSurfaceVariant.withValues(alpha: 0.6),
                 ),
               ],
             ),
@@ -86,8 +86,8 @@ class DriverSupportTopicTile extends StatelessWidget {
             Divider(
               height: 1,
               thickness: 1,
-              indent: Spacing.base,
-              endIndent: Spacing.base,
+              indent: Spacing.sm,
+              endIndent: Spacing.sm,
               color: color.outlineVariant.withValues(alpha: 0.3),
             ),
         ],

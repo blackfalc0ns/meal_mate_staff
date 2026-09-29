@@ -27,65 +27,57 @@ class DriverSupportContactCard extends StatelessWidget {
 
     return Expanded(
       child: Material(
-        color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: Spacing.sm,
-              vertical: Spacing.base,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Spacing.cardRadius),
-              border: Border.all(
-                color: color.outlineVariant.withValues(alpha: 0.6),
-                width: Spacing.border,
-              ),
+              horizontal: Spacing.xs,
+              vertical: Spacing.sm,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 25,
+                  height: 25,
                   decoration: BoxDecoration(
                     color: color.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, color: color.primary, size: Spacing.iconMd),
+                  child: Icon(icon, color: color.primary, size: 18),
                 ),
-                const SizedBox(height: Spacing.sm),
+                const SizedBox(height: Spacing.xs),
                 Text(
                   title,
                   style: getMediumStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size14,
+                    fontSize: FontSize.size10,
                     color: color.onSurface,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: 2),
                 Text(
                   value,
                   style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size12,
+                    fontSize: FontSize.size9,
                     color: color.primary,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: Spacing.border),
+                const SizedBox(height: 2),
                 Text(
                   subtitle,
                   style: getRegularStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size10,
+                    fontSize: FontSize.size9,
                     color: color.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,

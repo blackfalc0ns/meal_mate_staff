@@ -25,8 +25,8 @@ class DriverSupportAttachmentBox extends StatelessWidget {
     if (attachedFileName != null) {
       return Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.base,
-          vertical: Spacing.sm,
+          horizontal: Spacing.sm + 2,
+          vertical: Spacing.xs + 2,
         ),
         decoration: BoxDecoration(
           color: color.primary.withValues(alpha: 0.06),
@@ -41,15 +41,15 @@ class DriverSupportAttachmentBox extends StatelessWidget {
             Icon(
               Icons.attach_file_rounded,
               color: color.primary,
-              size: Spacing.iconMd,
+              size: 16,
             ),
-            const SizedBox(width: Spacing.sm),
+            const SizedBox(width: Spacing.xs),
             Expanded(
               child: Text(
                 locale.driverSupportAttachmentSelected(attachedFileName!),
                 style: getMediumStyle(
                   fontFamily: FontConstant.alexandria,
-                  fontSize: FontSize.size12,
+                  fontSize: FontSize.size11,
                   color: color.primary,
                 ),
                 maxLines: 1,
@@ -61,10 +61,12 @@ class DriverSupportAttachmentBox extends StatelessWidget {
                 icon: Icon(
                   Icons.close_rounded,
                   color: color.onSurfaceVariant,
-                  size: 18,
+                  size: 16,
                 ),
                 onPressed: onRemove,
-                splashRadius: 18,
+                splashRadius: 16,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
           ],
         ),
@@ -76,14 +78,14 @@ class DriverSupportAttachmentBox extends StatelessWidget {
       borderRadius: BorderRadius.circular(Spacing.cardRadius),
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.base,
-          vertical: Spacing.md,
+          horizontal: Spacing.sm,
+          vertical: Spacing.xs + 2,
         ),
         decoration: BoxDecoration(
           color: color.primary.withValues(alpha: 0.03),
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
           border: Border.all(
-            color: color.primary.withValues(alpha: 0.25),
+            color: color.primary.withValues(alpha: 0.3),
             width: Spacing.border,
           ),
         ),
@@ -93,24 +95,24 @@ class DriverSupportAttachmentBox extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.attach_file_rounded, color: color.primary, size: 18),
+                Icon(Icons.attach_file_rounded, color: color.primary, size: 16),
                 const SizedBox(width: Spacing.xs),
                 Text(
                   locale.driverSupportAddAttachment,
-                  style: getMediumStyle(
+                  style: getBoldStyle(
                     fontFamily: FontConstant.alexandria,
-                    fontSize: FontSize.size13,
+                    fontSize: FontSize.size11,
                     color: color.primary,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.xs),
+            const SizedBox(height: 2),
             Text(
               locale.driverSupportAttachmentHint,
               style: getRegularStyle(
                 fontFamily: FontConstant.alexandria,
-                fontSize: FontSize.size11,
+                fontSize: FontSize.size9,
                 color: color.onSurfaceVariant,
               ),
               textAlign: TextAlign.center,
@@ -121,3 +123,4 @@ class DriverSupportAttachmentBox extends StatelessWidget {
     );
   }
 }
+

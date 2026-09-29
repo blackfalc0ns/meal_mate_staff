@@ -29,29 +29,47 @@ class DriverSupportContactSection extends StatelessWidget {
           locale.driverSupportContactMethodsTitle,
           style: getBoldStyle(
             fontFamily: FontConstant.alexandria,
-            fontSize: FontSize.size16,
+            fontSize: FontSize.size12,
             color: color.onSurface,
           ),
         ),
-        const SizedBox(height: Spacing.sm),
-        Row(
-          children: [
-            DriverSupportContactCard(
-              icon: Icons.phone_rounded,
-              title: locale.driverSupportCallUs,
-              value: locale.driverSupportPhoneNumber,
-              subtitle: locale.driverSupportCallHours,
-              onTap: onCallTap,
+        const SizedBox(height: Spacing.xs),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: color.surface,
+            borderRadius: BorderRadius.circular(Spacing.cardRadius),
+            border: Border.all(
+              color: color.outlineVariant.withValues(alpha: 0.6),
+              width: Spacing.border,
             ),
-            const SizedBox(width: Spacing.md),
-            DriverSupportContactCard(
-              icon: Icons.mail_outline_rounded,
-              title: locale.driverSupportEmail,
-              value: locale.driverSupportEmailAddress,
-              subtitle: locale.driverSupportEmailTurnaround,
-              onTap: onEmailTap,
+          ),
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                DriverSupportContactCard(
+                  icon: Icons.phone_rounded,
+                  title: locale.driverSupportCallUs,
+                  value: locale.driverSupportPhoneNumber,
+                  subtitle: locale.driverSupportCallHours,
+                  onTap: onCallTap,
+                ),
+                VerticalDivider(
+                  width: 1,
+                  thickness: 1,
+                  color: color.outlineVariant.withValues(alpha: 0.4),
+                  indent: Spacing.sm,
+                  endIndent: Spacing.sm,
+                ),
+                DriverSupportContactCard(
+                  icon: Icons.mail_outline_rounded,
+                  title: locale.driverSupportEmail,
+                  value: locale.driverSupportEmailAddress,
+                  subtitle: locale.driverSupportEmailTurnaround,
+                  onTap: onEmailTap,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ],
     );
