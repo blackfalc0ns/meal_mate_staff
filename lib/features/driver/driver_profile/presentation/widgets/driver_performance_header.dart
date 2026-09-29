@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
-import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/custom_app_bar.dart';
 
 class DriverPerformanceHeader extends StatelessWidget {
   const DriverPerformanceHeader({
@@ -28,34 +28,9 @@ class DriverPerformanceHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            if (showBackButton)
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: IconButton(
-                  onPressed: onBackTap ??
-                      () {
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    size: 18,
-                    color: color.onSurface,
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
-              ),
-            Image.asset(
-              AppAssets.authHeaderLogo,
-              height: 28,
-              fit: BoxFit.contain,
-            ),
-          ],
+        CustomAppBar.logo(
+          showBackButton: showBackButton,
+          onBackPressed: onBackTap,
         ),
         const SizedBox(height: Spacing.md),
         Row(
