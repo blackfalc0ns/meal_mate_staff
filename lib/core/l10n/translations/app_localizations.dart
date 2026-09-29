@@ -3161,7 +3161,7 @@ abstract class AppLocalizations {
   /// No description provided for @driverPerformanceTitle.
   ///
   /// In en, this message translates to:
-  /// **'Driver Performance'**
+  /// **'Performance'**
   String get driverPerformanceTitle;
 
   /// No description provided for @driverPerformanceLast7Days.
@@ -6289,6 +6289,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contact Support'**
   String get driverSupportTicketContactSupport;
+
+  /// No description provided for @driverPerformanceThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get driverPerformanceThisWeek;
+
+  /// No description provided for @driverPerformanceOnlineStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'You are online'**
+  String get driverPerformanceOnlineStatus;
+
+  /// No description provided for @driverPerformanceTotalOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Orders'**
+  String get driverPerformanceTotalOrders;
+
+  /// No description provided for @driverPerformanceOrdersUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'orders'**
+  String get driverPerformanceOrdersUnit;
+
+  /// No description provided for @driverPerformanceOnTimeRate.
+  ///
+  /// In en, this message translates to:
+  /// **'On-Time Rate'**
+  String get driverPerformanceOnTimeRate;
+
+  /// No description provided for @driverPerformanceOnTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'on time'**
+  String get driverPerformanceOnTimeLabel;
+
+  /// No description provided for @driverPerformanceDeliveries.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries'**
+  String get driverPerformanceDeliveries;
+
+  /// No description provided for @driverPerformanceHandover.
+  ///
+  /// In en, this message translates to:
+  /// **'Hand-to-hand'**
+  String get driverPerformanceHandover;
+
+  /// No description provided for @driverPerformanceDeliveriesUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'deliveries'**
+  String get driverPerformanceDeliveriesUnit;
+
+  /// No description provided for @driverPerformanceTotalDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Distance'**
+  String get driverPerformanceTotalDistance;
+
+  /// No description provided for @driverPerformanceDistanceKmUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'km'**
+  String get driverPerformanceDistanceKmUnit;
+
+  /// No description provided for @driverPerformanceWorkingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Working Hours'**
+  String get driverPerformanceWorkingHours;
+
+  /// No description provided for @driverPerformanceOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance Overview'**
+  String get driverPerformanceOverview;
+
+  /// No description provided for @driverPerformanceTrendUpFromYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'↑ {value} from yesterday'**
+  String driverPerformanceTrendUpFromYesterday(String value);
+
+  /// No description provided for @driverPerformanceExcellenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Great performance today! Keep up the excellence'**
+  String get driverPerformanceExcellenceTitle;
+
+  /// No description provided for @driverPerformanceExcellenceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You are one of the top drivers this week'**
+  String get driverPerformanceExcellenceSubtitle;
+
+  /// No description provided for @driverPerformanceViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get driverPerformanceViewDetails;
 }
 
 class _AppLocalizationsDelegate

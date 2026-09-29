@@ -1625,7 +1625,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'متابعة وتقييم أداء السائقين ومؤشرات التوصيل';
 
   @override
-  String get driverPerformanceTitle => 'أداء السائقين';
+  String get driverPerformanceTitle => 'الأداء';
 
   @override
   String get driverPerformanceLast7Days => 'آخر 7 أيام';
@@ -3268,4 +3268,59 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverSupportTicketContactSupport => 'التواصل مع الدعم';
+
+  @override
+  String get driverPerformanceThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get driverPerformanceOnlineStatus => 'أنت متصل';
+
+  @override
+  String get driverPerformanceTotalOrders => 'إجمالي الطلبات';
+
+  @override
+  String get driverPerformanceOrdersUnit => 'طلبات';
+
+  @override
+  String get driverPerformanceOnTimeRate => 'معدل الالتزام بالوقت';
+
+  @override
+  String get driverPerformanceOnTimeLabel => 'في الوقت';
+
+  @override
+  String get driverPerformanceDeliveries => 'التسليمات';
+
+  @override
+  String get driverPerformanceHandover => 'استلام يد بيد';
+
+  @override
+  String get driverPerformanceDeliveriesUnit => 'تسليمات';
+
+  @override
+  String get driverPerformanceTotalDistance => 'المسافة الكلية';
+
+  @override
+  String get driverPerformanceDistanceKmUnit => 'كم';
+
+  @override
+  String get driverPerformanceWorkingHours => 'ساعات العمل';
+
+  @override
+  String get driverPerformanceOverview => 'نظرة عامة على الأداء';
+
+  @override
+  String driverPerformanceTrendUpFromYesterday(String value) {
+    return '↑ $value من أمس';
+  }
+
+  @override
+  String get driverPerformanceExcellenceTitle =>
+      'أداء رائع اليوم! استمر بنفس التميز';
+
+  @override
+  String get driverPerformanceExcellenceSubtitle =>
+      'أنت من أفضل السائقين هذا الأسبوع';
+
+  @override
+  String get driverPerformanceViewDetails => 'عرض التفاصيل';
 }

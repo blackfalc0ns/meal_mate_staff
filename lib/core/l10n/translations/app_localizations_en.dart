@@ -1628,7 +1628,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Monitor driver metrics and delivery performance';
 
   @override
-  String get driverPerformanceTitle => 'Driver Performance';
+  String get driverPerformanceTitle => 'Performance';
 
   @override
   String get driverPerformanceLast7Days => 'Last 7 days';
@@ -3284,4 +3284,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverSupportTicketContactSupport => 'Contact Support';
+
+  @override
+  String get driverPerformanceThisWeek => 'This Week';
+
+  @override
+  String get driverPerformanceOnlineStatus => 'You are online';
+
+  @override
+  String get driverPerformanceTotalOrders => 'Total Orders';
+
+  @override
+  String get driverPerformanceOrdersUnit => 'orders';
+
+  @override
+  String get driverPerformanceOnTimeRate => 'On-Time Rate';
+
+  @override
+  String get driverPerformanceOnTimeLabel => 'on time';
+
+  @override
+  String get driverPerformanceDeliveries => 'Deliveries';
+
+  @override
+  String get driverPerformanceHandover => 'Hand-to-hand';
+
+  @override
+  String get driverPerformanceDeliveriesUnit => 'deliveries';
+
+  @override
+  String get driverPerformanceTotalDistance => 'Total Distance';
+
+  @override
+  String get driverPerformanceDistanceKmUnit => 'km';
+
+  @override
+  String get driverPerformanceWorkingHours => 'Working Hours';
+
+  @override
+  String get driverPerformanceOverview => 'Performance Overview';
+
+  @override
+  String driverPerformanceTrendUpFromYesterday(String value) {
+    return '↑ $value from yesterday';
+  }
+
+  @override
+  String get driverPerformanceExcellenceTitle =>
+      'Great performance today! Keep up the excellence';
+
+  @override
+  String get driverPerformanceExcellenceSubtitle =>
+      'You are one of the top drivers this week';
+
+  @override
+  String get driverPerformanceViewDetails => 'View Details';
 }
