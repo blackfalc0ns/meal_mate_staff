@@ -1282,6 +1282,16 @@
   "driverOnTimeRateValue": "92%",
   "driverStatusOnTheWayToCustomer": "On the way to customer",
   "driverMapDeliveryDetailsTitle": "Delivery Details",
-  "driverMapCustomerPrefix": "Customer"
+  "driverMapCustomerPrefix": "Customer",
+  "driverSupportTicketsTitle": "Support",
+  "driverSupportTicketsSubtitle": "Track open reports quickly",
+  "driverSupportTicketsSearchHint": "Search by order number or issue",
+  "driverSupportTicketsFilterAll": "All",
+  "driverSupportTicketsStatusUnderReview": "Under Review",
+  "driverSupportTicketsStatusAwaitingResponse": "Awaiting Response",
+  "driverSupportTicketsStatusResolved": "Resolved",
+  "driverSupportTicketsViewDetails": "View Details",
+  "driverSupportTicketsReportNewIssue": "Report New Issue",
+  "driverSupportTicketsNoResults": "No tickets match your search"
 }
 

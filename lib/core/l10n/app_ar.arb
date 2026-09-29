@@ -1275,6 +1275,16 @@
   "driverOnTimeRateValue": "92%",
   "driverStatusOnTheWayToCustomer": "في الطريق للعميل",
   "driverMapDeliveryDetailsTitle": "تفاصيل التوصيل",
-  "driverMapCustomerPrefix": "العميل"
+  "driverMapCustomerPrefix": "العميل",
+  "driverSupportTicketsTitle": "الدعم",
+  "driverSupportTicketsSubtitle": "تابع البلاغات المفتوحة بسرعة",
+  "driverSupportTicketsSearchHint": "ابحث برقم الطلب أو المشكلة",
+  "driverSupportTicketsFilterAll": "الكل",
+  "driverSupportTicketsStatusUnderReview": "قيد المراجعة",
+  "driverSupportTicketsStatusAwaitingResponse": "بانتظار الرد",
+  "driverSupportTicketsStatusResolved": "تم الحل",
+  "driverSupportTicketsViewDetails": "عرض التفاصيل",
+  "driverSupportTicketsReportNewIssue": "إبلاغ عن مشكلة جديدة",
+  "driverSupportTicketsNoResults": "لا توجد بلاغات تطابق البحث"
 }
 

@@ -3174,4 +3174,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverMapCustomerPrefix => 'العميل';
+
+  @override
+  String get driverSupportTicketsTitle => 'الدعم';
+
+  @override
+  String get driverSupportTicketsSubtitle => 'تابع البلاغات المفتوحة بسرعة';
+
+  @override
+  String get driverSupportTicketsSearchHint => 'ابحث برقم الطلب أو المشكلة';
+
+  @override
+  String get driverSupportTicketsFilterAll => 'الكل';
+
+  @override
+  String get driverSupportTicketsStatusUnderReview => 'قيد المراجعة';
+
+  @override
+  String get driverSupportTicketsStatusAwaitingResponse => 'بانتظار الرد';
+
+  @override
+  String get driverSupportTicketsStatusResolved => 'تم الحل';
+
+  @override
+  String get driverSupportTicketsViewDetails => 'عرض التفاصيل';
+
+  @override
+  String get driverSupportTicketsReportNewIssue => 'إبلاغ عن مشكلة جديدة';
+
+  @override
+  String get driverSupportTicketsNoResults => 'لا توجد بلاغات تطابق البحث';
 }

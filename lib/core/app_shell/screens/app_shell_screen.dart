@@ -16,6 +16,7 @@ import '../../../features/driver/orders/presentation/screens/driver_assigned_box
 import '../../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
 import '../../../features/driver/home/presentation/screens/driver_start_work_screen.dart';
 import '../../../features/driver/map/presentation/screens/driver_map_screen.dart';
+import '../../../features/driver/driver_support_tickets/presentation/screens/driver_support_tickets_screen.dart';
 import '../../di/di.dart';
 import '../../extensions/extensions.dart';
 import '../../services/token_service.dart';
@@ -80,7 +81,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         const DriverStartWorkScreen(),
         const DriverAssignedBoxesScreen(),
         const DriverMapScreen(),
-        const Text("Support"),
+        const DriverSupportTicketsScreen(),
         const DriverProfileScreen(),
       ];
     }

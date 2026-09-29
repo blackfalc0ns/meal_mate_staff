@@ -6109,6 +6109,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Customer'**
   String get driverMapCustomerPrefix;
+
+  /// No description provided for @driverSupportTicketsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get driverSupportTicketsTitle;
+
+  /// No description provided for @driverSupportTicketsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track open reports quickly'**
+  String get driverSupportTicketsSubtitle;
+
+  /// No description provided for @driverSupportTicketsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by order number or issue'**
+  String get driverSupportTicketsSearchHint;
+
+  /// No description provided for @driverSupportTicketsFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get driverSupportTicketsFilterAll;
+
+  /// No description provided for @driverSupportTicketsStatusUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Review'**
+  String get driverSupportTicketsStatusUnderReview;
+
+  /// No description provided for @driverSupportTicketsStatusAwaitingResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting Response'**
+  String get driverSupportTicketsStatusAwaitingResponse;
+
+  /// No description provided for @driverSupportTicketsStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get driverSupportTicketsStatusResolved;
+
+  /// No description provided for @driverSupportTicketsViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get driverSupportTicketsViewDetails;
+
+  /// No description provided for @driverSupportTicketsReportNewIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Report New Issue'**
+  String get driverSupportTicketsReportNewIssue;
+
+  /// No description provided for @driverSupportTicketsNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No tickets match your search'**
+  String get driverSupportTicketsNoResults;
 }
 
 class _AppLocalizationsDelegate

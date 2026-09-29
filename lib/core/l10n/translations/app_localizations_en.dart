@@ -3189,4 +3189,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverMapCustomerPrefix => 'Customer';
+
+  @override
+  String get driverSupportTicketsTitle => 'Support';
+
+  @override
+  String get driverSupportTicketsSubtitle => 'Track open reports quickly';
+
+  @override
+  String get driverSupportTicketsSearchHint =>
+      'Search by order number or issue';
+
+  @override
+  String get driverSupportTicketsFilterAll => 'All';
+
+  @override
+  String get driverSupportTicketsStatusUnderReview => 'Under Review';
+
+  @override
+  String get driverSupportTicketsStatusAwaitingResponse => 'Awaiting Response';
+
+  @override
+  String get driverSupportTicketsStatusResolved => 'Resolved';
+
+  @override
+  String get driverSupportTicketsViewDetails => 'View Details';
+
+  @override
+  String get driverSupportTicketsReportNewIssue => 'Report New Issue';
+
+  @override
+  String get driverSupportTicketsNoResults => 'No tickets match your search';
 }
