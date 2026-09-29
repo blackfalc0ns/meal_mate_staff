@@ -40,6 +40,7 @@ class AppRoutes {
   static const String driverBoxesReceived = '/driver-boxes-received';
   static const String driverBoxReceivedSuccess = '/driver-box-received-success';
   static const String driverProfile = '/driver-profile';
+  static const String driverSettings = '/driver-settings';
   static const String driverNotifications = '/driver-notifications';
   static const String driverVehicleDetails = '/driver-vehicle-details';
   static const String driverEditVehicleDetails = '/driver-edit-vehicle-details';

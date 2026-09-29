@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/font_manager.dart';
@@ -21,9 +23,10 @@ class DriverSupportCategoryDropdown extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: color.surface,
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: color.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(Spacing.cardRadius),
@@ -106,7 +109,7 @@ class DriverSupportCategoryDropdown extends StatelessWidget {
           ),
         );
       },
-    );
+    ));
   }
 
   @override

@@ -2032,8 +2032,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverQuickActionLogoutDesc => 'Sign out of account';
 
   @override
+  String get driverDeliveryPolicyTitle => 'Delivery Policy';
+
+  @override
   String get driverDeliveryPolicyTip =>
       'All orders must be delivered manually to the client only';
+
+  @override
+  String get driverOrdersUnit => 'orders';
+
+  @override
+  String get driverTicketDateLabel => 'Date';
+
+  @override
+  String get driverTicketResolvedSubtitle => 'Request resolved successfully';
 
   @override
   String get driverLogoutConfirmTitle => 'Logout';

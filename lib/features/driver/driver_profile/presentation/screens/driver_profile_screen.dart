@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/routing/arguments/auth_route_arguments.dart';
+import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
+import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/services/token_service.dart';
@@ -10,49 +14,85 @@ import '../../../../auth/domain/usecase/logout_usecase.dart';
 import '../../../../auth/domain/user_role.dart';
 import '../../domain/entities/driver_profile_entity.dart';
 import '../../domain/fake_data/driver_profile_fake_data.dart';
-import '../widgets/driver_settings_header.dart';
-import '../widgets/driver_settings_logout_button.dart';
-import '../widgets/driver_settings_menu_tile.dart';
-import '../widgets/driver_settings_profile_card.dart';
-import '../widgets/driver_settings_section_card.dart';
+import '../widgets/driver_profile_contact_card.dart';
+import '../widgets/driver_profile_header.dart';
+import '../widgets/driver_profile_hero_card.dart';
+import '../widgets/driver_profile_policy_banner.dart';
+import '../widgets/driver_profile_quick_actions_row.dart';
+import '../widgets/driver_profile_ticket_card.dart';
+import '../widgets/driver_profile_vehicle_card.dart';
 
 class DriverProfileScreen extends StatelessWidget {
   const DriverProfileScreen({
     super.key,
     this.profile,
     this.onNotificationTap,
-    this.onMenuTap,
-    this.onEditProfileTap,
-    this.onPersonalInfoTap,
     this.onVehicleInfoTap,
-    this.onMyDocumentsTap,
-    this.onChangePasswordTap,
-    this.onLanguageTap,
-    this.onNotificationsTap,
-    this.onSoundsTap,
-    this.onHelpCenterTap,
     this.onContactUsTap,
-    this.onAboutAppTap,
-    this.onPrivacyPolicyTap,
+    this.onViewAllTicketsTap,
+    this.onRecentTicketTap,
+    this.onLanguageTap,
+    this.onSettingsTap,
     this.onLogoutTap,
   });
 
   final DriverProfileEntity? profile;
   final VoidCallback? onNotificationTap;
-  final VoidCallback? onMenuTap;
-  final VoidCallback? onEditProfileTap;
-  final VoidCallback? onPersonalInfoTap;
   final VoidCallback? onVehicleInfoTap;
-  final VoidCallback? onMyDocumentsTap;
-  final VoidCallback? onChangePasswordTap;
-  final VoidCallback? onLanguageTap;
-  final VoidCallback? onNotificationsTap;
-  final VoidCallback? onSoundsTap;
-  final VoidCallback? onHelpCenterTap;
   final VoidCallback? onContactUsTap;
-  final VoidCallback? onAboutAppTap;
-  final VoidCallback? onPrivacyPolicyTap;
+  final VoidCallback? onViewAllTicketsTap;
+  final VoidCallback? onRecentTicketTap;
+  final VoidCallback? onLanguageTap;
+  final VoidCallback? onSettingsTap;
   final VoidCallback? onLogoutTap;
+
+  void _handleSettingsTap(BuildContext context) {
+    if (onSettingsTap != null) {
+      onSettingsTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverSettings));
+  }
+
+  void _handleNotificationTap(BuildContext context) {
+    if (onNotificationTap != null) {
+      onNotificationTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverNotifications));
+  }
+
+  void _handleVehicleInfoTap(BuildContext context) {
+    if (onVehicleInfoTap != null) {
+      onVehicleInfoTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverVehicleDetails));
+  }
+
+  void _handleContactUsTap(BuildContext context) {
+    if (onContactUsTap != null) {
+      onContactUsTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverSupport));
+  }
+
+  void _handleViewAllTicketsTap(BuildContext context) {
+    if (onViewAllTicketsTap != null) {
+      onViewAllTicketsTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverSupportTickets));
+  }
+
+  void _handleRecentTicketTap(BuildContext context) {
+    if (onRecentTicketTap != null) {
+      onRecentTicketTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverSupportTickets));
+  }
 
   void _handleLogout(BuildContext context) {
     if (onLogoutTap != null) {
@@ -63,9 +103,10 @@ class DriverProfileScreen extends StatelessWidget {
     final locale = context.localization;
     final color = context.colorScheme;
 
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (dialogContext) {
         return AlertDialog(
           title: Text(locale.driverLogoutConfirmTitle),
           content: Text(locale.driverLogoutConfirmMessage),
@@ -90,38 +131,14 @@ class DriverProfileScreen extends StatelessWidget {
                 );
               },
               child: Text(
-                locale.driverSettingsLogout,
+                locale.driverQuickActionLogout,
                 style: TextStyle(color: color.error),
               ),
             ),
           ],
         );
       },
-    );
-  }
-
-  void _handleNotificationTap(BuildContext context) {
-    if (onNotificationTap != null) {
-      onNotificationTap!();
-      return;
-    }
-    context.pushNamed(AppRoutes.driverNotifications);
-  }
-
-  void _handleVehicleInfoTap(BuildContext context) {
-    if (onVehicleInfoTap != null) {
-      onVehicleInfoTap!();
-      return;
-    }
-    context.pushNamed(AppRoutes.driverVehicleDetails);
-  }
-
-  void _handleSupportTap(BuildContext context, VoidCallback? customCallback) {
-    if (customCallback != null) {
-      customCallback();
-      return;
-    }
-    context.pushNamed(AppRoutes.driverSupport);
+    ));
   }
 
   @override
@@ -132,9 +149,8 @@ class DriverProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: color.surface,
-      appBar: DriverSettingsHeader(
+      appBar: DriverProfileHeader(
         onNotificationTap: () => _handleNotificationTap(context),
-        onMenuTap: onMenuTap,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -145,100 +161,48 @@ class DriverProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              DriverSettingsProfileCard(
+              DriverProfileHeroCard(profile: currentProfile),
+              const SizedBox(height: Spacing.base),
+              DriverProfileVehicleCard(
                 profile: currentProfile,
-                onEditProfileTap: onEditProfileTap,
+                onTap: () => _handleVehicleInfoTap(context),
               ),
               const SizedBox(height: Spacing.base),
-              // Section 1: Account Settings
-              DriverSettingsSectionCard(
-                title: locale.driverSettingsAccountSection,
-                icon: Icons.person_outline_rounded,
+              Row(
                 children: [
-                  DriverSettingsMenuTile(
-                    icon: Icons.person_outline_rounded,
-                    title: locale.driverSettingsPersonalInfo,
-                    onTap: onPersonalInfoTap,
+                  Icon(
+                    Icons.headset_mic_outlined,
+                    size: Spacing.iconMd,
+                    color: color.primary,
                   ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.directions_car_outlined,
-                    title: locale.driverSettingsVehicleInfo,
-                    onTap: () => _handleVehicleInfoTap(context),
-                  ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.description_outlined,
-                    title: locale.driverSettingsMyDocuments,
-                    onTap: onMyDocumentsTap,
-                  ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.lock_outline_rounded,
-                    title: locale.driverSettingsChangePassword,
-                    onTap: onChangePasswordTap,
-                    showDivider: false,
+                  const SizedBox(width: Spacing.sm),
+                  Text(
+                    locale.driverSupportSectionTitle,
+                    style: getBoldStyle(
+                      fontSize: FontSize.size14,
+                      color: color.onSurface,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: Spacing.base),
-              // Section 2: App Settings
-              DriverSettingsSectionCard(
-                title: locale.driverSettingsAppSection,
-                icon: Icons.settings_outlined,
-                children: [
-                  DriverSettingsMenuTile(
-                    icon: Icons.language_rounded,
-                    title: locale.driverSettingsLanguage,
-                    trailingText: locale.driverSettingsLanguageValue,
-                    onTap: onLanguageTap,
-                  ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.notifications_none_rounded,
-                    title: locale.driverSettingsNotifications,
-                    onTap:
-                        onNotificationsTap ??
-                        () => _handleNotificationTap(context),
-                  ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.volume_up_outlined,
-                    title: locale.driverSettingsSounds,
-                    onTap: onSoundsTap,
-                    showDivider: false,
-                  ),
-                ],
+              const SizedBox(height: Spacing.sm),
+              DriverProfileContactCard(
+                onTap: () => _handleContactUsTap(context),
               ),
               const SizedBox(height: Spacing.base),
-              // Section 3: Support & Help
-              DriverSettingsSectionCard(
-                title: locale.driverSettingsSupportSection,
-                icon: Icons.headset_mic_outlined,
-                children: [
-                  DriverSettingsMenuTile(
-                    icon: Icons.help_outline_rounded,
-                    title: locale.driverSettingsHelpCenter,
-                    onTap: () => _handleSupportTap(context, onHelpCenterTap),
-                  ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.support_agent_rounded,
-                    title: locale.driverSettingsContactUs,
-                    onTap: () => _handleSupportTap(context, onContactUsTap),
-                  ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.info_outline_rounded,
-                    title: locale.driverSettingsAboutApp,
-                    onTap: onAboutAppTap,
-                  ),
-                  DriverSettingsMenuTile(
-                    icon: Icons.verified_user_outlined,
-                    title: locale.driverSettingsPrivacyPolicy,
-                    onTap: onPrivacyPolicyTap,
-                    showDivider: false,
-                  ),
-                ],
+              DriverProfileTicketCard(
+                profile: currentProfile,
+                onTap: () => _handleRecentTicketTap(context),
+                onViewAllTap: () => _handleViewAllTicketsTap(context),
               ),
-              const SizedBox(height: Spacing.lg),
-              DriverSettingsLogoutButton(
+              const SizedBox(height: Spacing.base),
+              DriverProfileQuickActionsRow(
+                onLanguageTap: onLanguageTap,
+                onSettingsTap: () => _handleSettingsTap(context),
                 onLogoutTap: () => _handleLogout(context),
-                version: locale.driverSettingsAppVersion,
               ),
+              const SizedBox(height: Spacing.base),
+              const DriverProfilePolicyBanner(),
               const SizedBox(height: Spacing.xxl),
             ],
           ),

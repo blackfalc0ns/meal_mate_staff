@@ -11,10 +11,14 @@ class DriverSettingsHeader extends StatelessWidget
     super.key,
     this.onNotificationTap,
     this.onMenuTap,
+    this.showBackButton,
+    this.onBackPressed,
   });
 
   final VoidCallback? onNotificationTap;
   final VoidCallback? onMenuTap;
+  final bool? showBackButton;
+  final VoidCallback? onBackPressed;
 
   @override
   Size get preferredSize => const Size.fromHeight(106.0);
@@ -23,12 +27,20 @@ class DriverSettingsHeader extends StatelessWidget
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+    final canPop = Navigator.canPop(context);
+    final shouldShowBack = showBackButton ?? canPop;
 
     return CustomAppBar.logo(
-      leading: IconButton(
-        icon: Icon(Icons.menu, color: color.onSurface, size: Spacing.iconMd),
-        onPressed: onMenuTap,
-      ),
+      leading: shouldShowBack
+          ? null
+          : (onMenuTap != null
+              ? IconButton(
+                  icon: Icon(Icons.menu, color: color.onSurface, size: Spacing.iconMd),
+                  onPressed: onMenuTap,
+                )
+              : null),
+      showBackButton: shouldShowBack,
+      onBackPressed: onBackPressed,
       actions: [
         NotificationButton(onPressed: onNotificationTap),
         const SizedBox(width: Spacing.xs),

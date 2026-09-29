@@ -2027,8 +2027,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverQuickActionLogoutDesc => 'خروج من الحساب';
 
   @override
+  String get driverDeliveryPolicyTitle => 'سياسة التسليم';
+
+  @override
   String get driverDeliveryPolicyTip =>
       'جميع الطلبات يتم تسليمها يدوياً للعميل فقط';
+
+  @override
+  String get driverOrdersUnit => 'طلب';
+
+  @override
+  String get driverTicketDateLabel => 'التاريخ';
+
+  @override
+  String get driverTicketResolvedSubtitle => 'تم حل الطلب بنجاح';
 
   @override
   String get driverLogoutConfirmTitle => 'تسجيل الخروج';

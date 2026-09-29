@@ -3944,11 +3944,35 @@ abstract class AppLocalizations {
   /// **'Sign out of account'**
   String get driverQuickActionLogoutDesc;
 
+  /// No description provided for @driverDeliveryPolicyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Policy'**
+  String get driverDeliveryPolicyTitle;
+
   /// No description provided for @driverDeliveryPolicyTip.
   ///
   /// In en, this message translates to:
   /// **'All orders must be delivered manually to the client only'**
   String get driverDeliveryPolicyTip;
+
+  /// No description provided for @driverOrdersUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'orders'**
+  String get driverOrdersUnit;
+
+  /// No description provided for @driverTicketDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get driverTicketDateLabel;
+
+  /// No description provided for @driverTicketResolvedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request resolved successfully'**
+  String get driverTicketResolvedSubtitle;
 
   /// No description provided for @driverLogoutConfirmTitle.
   ///
