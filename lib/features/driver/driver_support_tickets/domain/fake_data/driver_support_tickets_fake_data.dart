@@ -1,8 +1,41 @@
+import 'package:meal_mate_delivery/core/constants/assets_fake.dart';
 import '../entities/driver_support_ticket_entity.dart';
 import '../entities/driver_support_ticket_status.dart';
+import '../entities/driver_support_ticket_timeline_step.dart';
 
 class DriverSupportTicketsFakeData {
   const DriverSupportTicketsFakeData._();
+
+  static const List<DriverSupportTicketTimelineStep> defaultTimelineSteps = [
+    DriverSupportTicketTimelineStep(
+      title: 'تم استلام البلاغ',
+      timestamp: '12 سبتمبر 2024، 03:25 م',
+      state: DriverTicketStepState.completed,
+      isHighlighted: true,
+    ),
+    DriverSupportTicketTimelineStep(
+      title: 'قيد المراجعة',
+      description: 'جار مراجعة البلاغ من قبل فريق الدعم',
+      timestamp: '12 سبتمبر 2024، 03:40 م',
+      state: DriverTicketStepState.inProgress,
+    ),
+    DriverSupportTicketTimelineStep(
+      title: 'جار التواصل مع العميل',
+      description: 'سيتم تحديثك فور توفر أي مستجدات',
+      state: DriverTicketStepState.pending,
+    ),
+    DriverSupportTicketTimelineStep(
+      title: 'تم الحل',
+      description: 'سيظهر هنا عند حل البلاغ',
+      state: DriverTicketStepState.pending,
+    ),
+  ];
+
+  static const List<String> defaultAttachedPhotos = [
+    AssetsFake.ticketPhoto1,
+    AssetsFake.ticketPhoto2,
+    AssetsFake.ticketPhoto3,
+  ];
 
   static const List<DriverSupportTicketEntity> tickets = [
     DriverSupportTicketEntity(
@@ -12,6 +45,15 @@ class DriverSupportTicketsFakeData {
       location: 'منطقة السالمية',
       updatedAt: 'آخر تحديث منذ 20 دقيقة',
       status: DriverSupportTicketStatus.underReview,
+      createdAt: '12 سبتمبر 2024، 03:25 م',
+      boxIcon: AssetsFake.ticketBoxIcon,
+      issueDescription:
+          'وصلت إلى موقع العميل ولم يكن متواجد، حاولت التواصل عبر الهاتف ولم يتم الرد.',
+      attachedImages: defaultAttachedPhotos,
+      orderNumber: '#12345',
+      orderTime: '12 سبتمبر 2024\n02:10 م',
+      deliveryAddress: 'منطقة السالمية',
+      timelineSteps: defaultTimelineSteps,
     ),
     DriverSupportTicketEntity(
       id: '2',

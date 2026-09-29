@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../domain/entities/driver_support_ticket_entity.dart';
 import '../../domain/entities/driver_support_ticket_status.dart';
@@ -156,7 +159,15 @@ class _DriverSupportTicketsScreenState
                     ),
                     sliver: DriverSupportTicketsList.sliver(
                       tickets: filteredTickets,
-                      onTicketTap: widget.onTicketTap,
+                      onTicketTap: widget.onTicketTap ??
+                          (ticket) {
+                            unawaited(
+                              Navigator.of(context).pushNamed(
+                                AppRoutes.driverSupportTicketDetails,
+                                arguments: ticket,
+                              ),
+                            );
+                          },
                     ),
                   ),
                   SliverPadding(

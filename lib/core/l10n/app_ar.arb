@@ -1285,6 +1285,22 @@
   "driverSupportTicketsStatusResolved": "تم الحل",
   "driverSupportTicketsViewDetails": "عرض التفاصيل",
   "driverSupportTicketsReportNewIssue": "إبلاغ عن مشكلة جديدة",
-  "driverSupportTicketsNoResults": "لا توجد بلاغات تطابق البحث"
+  "driverSupportTicketsNoResults": "لا توجد بلاغات تطابق البحث",
+  "driverSupportTicketDetailsTitle": "تفاصيل البلاغ",
+  "driverSupportTicketDetailsSubtitle": "متابعة حالة البلاغ ومعرفة آخر التحديثات",
+  "driverSupportTicketCreatedAt": "تم الإنشاء",
+  "driverSupportTicketTimelineTitle": "سير البلاغ",
+  "driverSupportTicketStepReceived": "تم استلام البلاغ",
+  "driverSupportTicketStepReviewingDesc": "جار مراجعة البلاغ من قبل فريق الدعم",
+  "driverSupportTicketStepContactingCustomer": "جار التواصل مع العميل",
+  "driverSupportTicketStepContactingDesc": "سيتم تحديثك فور توفر أي مستجدات",
+  "driverSupportTicketStepResolvedDesc": "سيظهر هنا عند حل البلاغ",
+  "driverSupportTicketIssueDetailsTitle": "تفاصيل المشكلة",
+  "driverSupportTicketAttachedPhotosTitle": "الصور المرفقة",
+  "driverSupportTicketOrderInfoTitle": "معلومات الطلب",
+  "driverSupportTicketOrderNumberLabel": "رقم الطلب",
+  "driverSupportTicketOrderTimeLabel": "وقت الطلب",
+  "driverSupportTicketDeliveryAddressLabel": "عنوان التوصيل",
+  "driverSupportTicketContactSupport": "التواصل مع الدعم"
 }
 

@@ -61,11 +61,15 @@ class DriverSupportTicketStatusBadge extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Spacing.xs),
-          Text(
-            label,
-            style: getMediumStyle(
-              fontSize: FontSize.size11,
-              color: fgColor,
+          Flexible(
+            child: Text(
+              label,
+              style: getMediumStyle(
+                fontSize: FontSize.size11,
+                color: fgColor,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

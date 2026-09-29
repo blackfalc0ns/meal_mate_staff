@@ -53,6 +53,9 @@ import '../../features/driver/driver_vehicle/domain/entities/driver_vehicle_enti
 import '../../features/driver/driver_vehicle/presentation/screens/driver_edit_vehicle_details_screen.dart';
 import '../../features/driver/driver_vehicle/presentation/screens/driver_vehicle_details_screen.dart';
 import '../../features/driver/driver_profile/presentation/screens/driver_support_screen.dart';
+import '../../features/driver/driver_support_tickets/domain/entities/driver_support_ticket_entity.dart';
+import '../../features/driver/driver_support_tickets/presentation/screens/driver_support_ticket_details_screen.dart';
+import '../../features/driver/driver_support_tickets/presentation/screens/driver_support_tickets_screen.dart';
 import '../../features/driver/active_delivery/domain/entities/active_delivery_trip_entity.dart';
 import '../../features/driver/active_delivery/domain/entities/return_box_entity.dart';
 import '../../features/driver/active_delivery/presentation/screens/driver_start_delivery_route_screen.dart';
@@ -594,6 +597,21 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: const DriverMapScreen(showBottomNavBar: true),
+        );
+
+      case AppRoutes.driverSupportTickets:
+        return _buildRoute(
+          settings: settings,
+          page: const DriverSupportTicketsScreen(),
+        );
+
+      case AppRoutes.driverSupportTicketDetails:
+        final ticket = settings.arguments is DriverSupportTicketEntity
+            ? settings.arguments! as DriverSupportTicketEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverSupportTicketDetailsScreen(ticket: ticket),
         );
 
       default:

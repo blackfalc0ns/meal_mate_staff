@@ -22,18 +22,18 @@ class DriverSupportTicketCard extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(Spacing.cardRadius),
       child: Ink(
-        padding: const EdgeInsets.all(Spacing.cardPadding),
+        padding: const EdgeInsets.all(Spacing.md),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFFFF),
+          color: color.surface,
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
           border: Border.all(
-            color: const Color(0xFFE8E5EF),
+            color: color.outlineVariant.withValues(alpha: 0.5),
             width: Spacing.border,
           ),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Color(0x08000000),
-              offset: Offset(0, 2),
+              color: color.shadow.withValues(alpha: 0.04),
+              offset: const Offset(0, 2),
               blurRadius: 8,
             ),
           ],
@@ -49,14 +49,14 @@ class DriverSupportTicketCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.inventory_2_rounded,
-                      size: Spacing.iconMd,
+                      size: Spacing.iconSm + 4,
                       color: color.primary,
                     ),
                     const SizedBox(width: Spacing.xs),
                     Text(
                       ticket.boxNumber,
                       style: getBoldStyle(
-                        fontSize: FontSize.size14,
+                        fontSize: FontSize.size13,
                         color: color.primary,
                       ),
                     ),
@@ -65,39 +65,39 @@ class DriverSupportTicketCard extends StatelessWidget {
                 DriverSupportTicketStatusBadge(status: ticket.status),
               ],
             ),
-            const SizedBox(height: Spacing.sm),
+            const SizedBox(height: Spacing.xs + 2),
             Text(
               ticket.title,
               style: getBoldStyle(
-                fontSize: FontSize.size14,
+                fontSize: FontSize.size13,
                 color: color.onSurface,
               ),
             ),
-            const SizedBox(height: Spacing.xs),
+            const SizedBox(height: Spacing.xs / 2),
             Row(
               children: [
                 Icon(
                   Icons.location_on_rounded,
-                  size: Spacing.iconSm,
+                  size: Spacing.iconXs,
                   color: color.onSurfaceVariant,
                 ),
                 const SizedBox(width: Spacing.xs),
                 Text(
                   ticket.location,
                   style: getRegularStyle(
-                    fontSize: FontSize.size12,
+                    fontSize: FontSize.size11,
                     color: color.onSurfaceVariant,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.sm),
+            const SizedBox(height: Spacing.xs + 2),
             Divider(
-              color: color.outlineVariant,
-              height: Spacing.sm,
+              color: color.outlineVariant.withValues(alpha: 0.5),
+              height: 1,
               thickness: Spacing.hairline,
             ),
-            const SizedBox(height: Spacing.xs),
+            const SizedBox(height: Spacing.xs + 2),
             Row(
               children: [
                 Expanded(
@@ -105,7 +105,7 @@ class DriverSupportTicketCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.access_time_rounded,
-                        size: Spacing.iconSm,
+                        size: Spacing.iconXs,
                         color: color.onSurfaceVariant,
                       ),
                       const SizedBox(width: Spacing.xs),
@@ -113,7 +113,7 @@ class DriverSupportTicketCard extends StatelessWidget {
                         child: Text(
                           ticket.updatedAt,
                           style: getRegularStyle(
-                            fontSize: FontSize.size11,
+                            fontSize: FontSize.size10,
                             color: color.onSurfaceVariant,
                           ),
                           maxLines: 1,
@@ -130,14 +130,14 @@ class DriverSupportTicketCard extends StatelessWidget {
                     Text(
                       locale.driverSupportTicketsViewDetails,
                       style: getSemiBoldStyle(
-                        fontSize: FontSize.size12,
+                        fontSize: FontSize.size11,
                         color: color.primary,
                       ),
                     ),
                     const SizedBox(width: Spacing.xs),
                     Icon(
                       Icons.arrow_forward_ios_rounded,
-                      size: Spacing.iconXs,
+                      size: Spacing.iconXs - 2,
                       color: color.primary,
                     ),
                   ],

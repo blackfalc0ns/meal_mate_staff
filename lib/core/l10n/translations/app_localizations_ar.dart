@@ -3204,4 +3204,56 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverSupportTicketsNoResults => 'لا توجد بلاغات تطابق البحث';
+
+  @override
+  String get driverSupportTicketDetailsTitle => 'تفاصيل البلاغ';
+
+  @override
+  String get driverSupportTicketDetailsSubtitle =>
+      'متابعة حالة البلاغ ومعرفة آخر التحديثات';
+
+  @override
+  String get driverSupportTicketCreatedAt => 'تم الإنشاء';
+
+  @override
+  String get driverSupportTicketTimelineTitle => 'سير البلاغ';
+
+  @override
+  String get driverSupportTicketStepReceived => 'تم استلام البلاغ';
+
+  @override
+  String get driverSupportTicketStepReviewingDesc =>
+      'جار مراجعة البلاغ من قبل فريق الدعم';
+
+  @override
+  String get driverSupportTicketStepContactingCustomer =>
+      'جار التواصل مع العميل';
+
+  @override
+  String get driverSupportTicketStepContactingDesc =>
+      'سيتم تحديثك فور توفر أي مستجدات';
+
+  @override
+  String get driverSupportTicketStepResolvedDesc => 'سيظهر هنا عند حل البلاغ';
+
+  @override
+  String get driverSupportTicketIssueDetailsTitle => 'تفاصيل المشكلة';
+
+  @override
+  String get driverSupportTicketAttachedPhotosTitle => 'الصور المرفقة';
+
+  @override
+  String get driverSupportTicketOrderInfoTitle => 'معلومات الطلب';
+
+  @override
+  String get driverSupportTicketOrderNumberLabel => 'رقم الطلب';
+
+  @override
+  String get driverSupportTicketOrderTimeLabel => 'وقت الطلب';
+
+  @override
+  String get driverSupportTicketDeliveryAddressLabel => 'عنوان التوصيل';
+
+  @override
+  String get driverSupportTicketContactSupport => 'التواصل مع الدعم';
 }

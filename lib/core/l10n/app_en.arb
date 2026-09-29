@@ -1292,6 +1292,22 @@
   "driverSupportTicketsStatusResolved": "Resolved",
   "driverSupportTicketsViewDetails": "View Details",
   "driverSupportTicketsReportNewIssue": "Report New Issue",
-  "driverSupportTicketsNoResults": "No tickets match your search"
+  "driverSupportTicketsNoResults": "No tickets match your search",
+  "driverSupportTicketDetailsTitle": "Ticket Details",
+  "driverSupportTicketDetailsSubtitle": "Track ticket status and view latest updates",
+  "driverSupportTicketCreatedAt": "Created At",
+  "driverSupportTicketTimelineTitle": "Ticket Progress",
+  "driverSupportTicketStepReceived": "Ticket Received",
+  "driverSupportTicketStepReviewingDesc": "Ticket is being reviewed by the support team",
+  "driverSupportTicketStepContactingCustomer": "Contacting Customer",
+  "driverSupportTicketStepContactingDesc": "You will be updated as soon as details are available",
+  "driverSupportTicketStepResolvedDesc": "Will appear here when the ticket is resolved",
+  "driverSupportTicketIssueDetailsTitle": "Issue Details",
+  "driverSupportTicketAttachedPhotosTitle": "Attached Photos",
+  "driverSupportTicketOrderInfoTitle": "Order Information",
+  "driverSupportTicketOrderNumberLabel": "Order Number",
+  "driverSupportTicketOrderTimeLabel": "Order Time",
+  "driverSupportTicketDeliveryAddressLabel": "Delivery Address",
+  "driverSupportTicketContactSupport": "Contact Support"
 }
 

@@ -3220,4 +3220,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverSupportTicketsNoResults => 'No tickets match your search';
+
+  @override
+  String get driverSupportTicketDetailsTitle => 'Ticket Details';
+
+  @override
+  String get driverSupportTicketDetailsSubtitle =>
+      'Track ticket status and view latest updates';
+
+  @override
+  String get driverSupportTicketCreatedAt => 'Created At';
+
+  @override
+  String get driverSupportTicketTimelineTitle => 'Ticket Progress';
+
+  @override
+  String get driverSupportTicketStepReceived => 'Ticket Received';
+
+  @override
+  String get driverSupportTicketStepReviewingDesc =>
+      'Ticket is being reviewed by the support team';
+
+  @override
+  String get driverSupportTicketStepContactingCustomer => 'Contacting Customer';
+
+  @override
+  String get driverSupportTicketStepContactingDesc =>
+      'You will be updated as soon as details are available';
+
+  @override
+  String get driverSupportTicketStepResolvedDesc =>
+      'Will appear here when the ticket is resolved';
+
+  @override
+  String get driverSupportTicketIssueDetailsTitle => 'Issue Details';
+
+  @override
+  String get driverSupportTicketAttachedPhotosTitle => 'Attached Photos';
+
+  @override
+  String get driverSupportTicketOrderInfoTitle => 'Order Information';
+
+  @override
+  String get driverSupportTicketOrderNumberLabel => 'Order Number';
+
+  @override
+  String get driverSupportTicketOrderTimeLabel => 'Order Time';
+
+  @override
+  String get driverSupportTicketDeliveryAddressLabel => 'Delivery Address';
+
+  @override
+  String get driverSupportTicketContactSupport => 'Contact Support';
 }

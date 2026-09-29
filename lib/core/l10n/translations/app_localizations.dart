@@ -6169,6 +6169,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tickets match your search'**
   String get driverSupportTicketsNoResults;
+
+  /// No description provided for @driverSupportTicketDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket Details'**
+  String get driverSupportTicketDetailsTitle;
+
+  /// No description provided for @driverSupportTicketDetailsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track ticket status and view latest updates'**
+  String get driverSupportTicketDetailsSubtitle;
+
+  /// No description provided for @driverSupportTicketCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created At'**
+  String get driverSupportTicketCreatedAt;
+
+  /// No description provided for @driverSupportTicketTimelineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket Progress'**
+  String get driverSupportTicketTimelineTitle;
+
+  /// No description provided for @driverSupportTicketStepReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket Received'**
+  String get driverSupportTicketStepReceived;
+
+  /// No description provided for @driverSupportTicketStepReviewingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket is being reviewed by the support team'**
+  String get driverSupportTicketStepReviewingDesc;
+
+  /// No description provided for @driverSupportTicketStepContactingCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacting Customer'**
+  String get driverSupportTicketStepContactingCustomer;
+
+  /// No description provided for @driverSupportTicketStepContactingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be updated as soon as details are available'**
+  String get driverSupportTicketStepContactingDesc;
+
+  /// No description provided for @driverSupportTicketStepResolvedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Will appear here when the ticket is resolved'**
+  String get driverSupportTicketStepResolvedDesc;
+
+  /// No description provided for @driverSupportTicketIssueDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Details'**
+  String get driverSupportTicketIssueDetailsTitle;
+
+  /// No description provided for @driverSupportTicketAttachedPhotosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attached Photos'**
+  String get driverSupportTicketAttachedPhotosTitle;
+
+  /// No description provided for @driverSupportTicketOrderInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Information'**
+  String get driverSupportTicketOrderInfoTitle;
+
+  /// No description provided for @driverSupportTicketOrderNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Number'**
+  String get driverSupportTicketOrderNumberLabel;
+
+  /// No description provided for @driverSupportTicketOrderTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Time'**
+  String get driverSupportTicketOrderTimeLabel;
+
+  /// No description provided for @driverSupportTicketDeliveryAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Address'**
+  String get driverSupportTicketDeliveryAddressLabel;
+
+  /// No description provided for @driverSupportTicketContactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get driverSupportTicketContactSupport;
 }
 
 class _AppLocalizationsDelegate
