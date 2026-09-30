@@ -74,11 +74,11 @@ void main() async {
     );
   } catch (_) {}
 
-  runApp(const MyApp(initialRoute: AppRoutes.driverAppShell));
+  runApp(const MyApp(initialRoute: AppRoutes.splash));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, this.initialRoute = AppRoutes.driverAppShell});
+  const MyApp({super.key, this.initialRoute = AppRoutes.splash});
 
   final String initialRoute;
 

@@ -87,5 +87,79 @@ void main() {
         expect(entity.canResubmit, isFalse);
       },
     );
+
+    test('parses fullNameAr, fullNameEn, requestedByRole and accountStatus alias', () {
+      final json = {
+        'accountStatus': 'NeedsChanges',
+        'fullNameAr': 'أحمد محمد',
+        'fullNameEn': 'Ahmed Mohamed',
+        'requestedByRole': 'IndependentDriver',
+        'restaurantApprovalStatus': 'Approved',
+        'adminApprovalStatus': 'Pending',
+      };
+
+      final dto = DriverRegistrationStatusResponseDto.fromJson(json);
+      expect(dto.status, 'NeedsChanges');
+      expect(dto.fullNameAr, 'أحمد محمد');
+      expect(dto.fullNameEn, 'Ahmed Mohamed');
+      expect(dto.requestedByRole, 'IndependentDriver');
+      expect(dto.restaurantApprovalStatus, 'Approved');
+      expect(dto.adminApprovalStatus, 'Pending');
+
+      final entity = dto.toEntity();
+      expect(entity.kind, AccountStatusKind.moreInformationRequired);
+      expect(entity.fullName, 'أحمد محمد');
+      expect(entity.requestedByRole, 'IndependentDriver');
+    });
+
+    test('mapper name fallback uses fullName first, then fullNameAr, then fullNameEn', () {
+      const dtoWithBoth = DriverRegistrationStatusResponseDto(
+        fullName: 'Full Name Explicit',
+        fullNameAr: 'الاسم بالعربي',
+        fullNameEn: 'English Name',
+      );
+      expect(dtoWithBoth.toEntity().fullName, 'Full Name Explicit');
+
+      const dtoWithArOnly = DriverRegistrationStatusResponseDto(
+        fullNameAr: 'الاسم بالعربي',
+        fullNameEn: 'English Name',
+      );
+      expect(dtoWithArOnly.toEntity().fullName, 'الاسم بالعربي');
+
+      const dtoWithEnOnly = DriverRegistrationStatusResponseDto(
+        fullNameEn: 'English Name',
+      );
+      expect(dtoWithEnOnly.toEntity().fullName, 'English Name');
+    });
+
+    test('conservative resubmit guard: Rejected and Approved always force canResubmit to false', () {
+      // Backend bug: backend reports canResubmit: true on Rejected, but POST returns 409
+      const rejectedDto = DriverRegistrationStatusResponseDto(
+        status: 'Rejected',
+        canResubmit: true,
+      );
+      final rejectedEntity = rejectedDto.toEntity();
+      expect(rejectedEntity.kind, AccountStatusKind.rejected);
+      expect(rejectedEntity.canResubmit, isFalse,
+          reason: 'Client-side guard must reject resubmission for Rejected status');
+
+      // Approved status also cannot be resubmitted
+      const approvedDto = DriverRegistrationStatusResponseDto(
+        status: 'Approved',
+        canResubmit: true,
+      );
+      final approvedEntity = approvedDto.toEntity();
+      expect(approvedEntity.kind, AccountStatusKind.accepted);
+      expect(approvedEntity.canResubmit, isFalse);
+
+      // NeedsChanges retains canResubmit: true
+      const needsChangesDto = DriverRegistrationStatusResponseDto(
+        status: 'NeedsChanges',
+        canResubmit: true,
+      );
+      final needsChangesEntity = needsChangesDto.toEntity();
+      expect(needsChangesEntity.kind, AccountStatusKind.moreInformationRequired);
+      expect(needsChangesEntity.canResubmit, isTrue);
+    });
   });
 }

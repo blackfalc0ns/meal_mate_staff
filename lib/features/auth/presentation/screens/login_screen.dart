@@ -11,8 +11,10 @@ import '../../../../core/di/di.dart';
 import '../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/helpers/validators.dart';
+import '../../../../core/services/token_service.dart';
 import '../../../../core/widget/custom_progress_indecator.dart';
 import '../../../../core/widget/custom_snak_bar.dart';
+import '../../../account_status/domain/account_status_kind.dart';
 import '../../../dispatcher_auth/domain/dispatcher_auth_destination.dart';
 import '../../../dispatcher_auth/presentation/manager/dispatcher_auth_coordinator.dart';
 import '../../../driver_auth/domain/driver_auth_destination.dart';
@@ -108,6 +110,35 @@ class _LoginScreenState extends State<LoginScreen> {
               message: state.errorMessage!,
             );
           } else if (state.status == AuthStatus.loginSuccess) {
+            final isDriver = widget.role == UserRole.driver;
+            final statusStr = getIt.isRegistered<TokenService>()
+                ? getIt<TokenService>().getSavedAccountStatus()?.toLowerCase()
+                : null;
+
+            final isUnderReview = statusStr != null &&
+                (statusStr.contains('review') ||
+                    statusStr.contains('pending') ||
+                    statusStr.contains('submitted') ||
+                    statusStr.contains('moreinfo') ||
+                    statusStr.contains('changes'));
+            final isRejected =
+                statusStr != null && statusStr.contains('reject');
+
+            if (isDriver && (isUnderReview || isRejected)) {
+              context.pushReplacementNamed(
+                AppRoutes.accountStatus,
+                arguments: AccountStatusRouteArgs(
+                  kind: isRejected
+                      ? AccountStatusKind.rejected
+                      : (statusStr!.contains('changes') ||
+                              statusStr.contains('moreinfo')
+                          ? AccountStatusKind.moreInformationRequired
+                          : AccountStatusKind.underReview),
+                ),
+              );
+              return;
+            }
+
             CustomSnackbar.showSuccess(
               context: context,
               message: locale.welcomeBack,

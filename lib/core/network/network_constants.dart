@@ -1,5 +1,5 @@
 abstract class NetworkConstants {
-  static const String baseUrl = 'http://maelmate.runasp.net';
+  static const String baseUrl = 'https://maelmate.runasp.net';
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer';
 }
@@ -17,6 +17,27 @@ abstract class EndPoints {
   static const String resetPassword = '/api/v1/auth/staff/reset-password';
   static const String resendOtp = '/api/v1/auth/staff/resend-otp';
   static const String staffRoles = '/api/v1/auth/staff/roles';
+
+  // Driver auth endpoints
+  static const String driverLookupPhone = '/api/v1/auth/drivers/lookup-phone';
+  static const String driverFirstTimeSetup =
+      '/api/v1/auth/drivers/first-time-setup';
+  static const String driverLogin = '/api/v1/auth/drivers/login';
+  static const String driverResendOtp = '/api/v1/auth/drivers/resend-otp';
+  static const String driverVerifyOtp = '/api/v1/auth/drivers/verify-otp';
+  static const String driverForgotPassword =
+      '/api/v1/auth/drivers/forgot-password';
+  static const String driverResetPassword =
+      '/api/v1/auth/drivers/reset-password';
+  static const String driverRegistrationDetails =
+      '/api/v1/drivers/registrations/{id}';
+
+  // Driver notifications endpoints
+  static const String driverNotifications = '/api/v1/driver/notifications';
+  static const String driverNotificationRead =
+      '/api/v1/driver/notifications/{id}/read';
+  static const String driverDeviceTokenDeactivate =
+      '/api/v1/driver/device-token/deactivate';
 
   // Driver registration and status endpoints
   static const String driverRestaurants =

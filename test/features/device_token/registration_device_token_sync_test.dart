@@ -123,7 +123,7 @@ void main() {
 
   group('DriverRegistrationViewModel device token sync', () {
     test(
-      'successful submission syncs pre-login context with registrationId',
+      'successful submission does not sync device token pre-login',
       () async {
         repository.submitResult = const ApiSuccessResult(
           data: DriverRegistrationResultEntity(
@@ -144,18 +144,13 @@ void main() {
           viewModel.state.status,
           DriverRegistrationStatus.submissionSuccess,
         );
-        expect(coordinator.syncedContexts.length, 1);
-        final ctx = coordinator.syncedContexts.first;
-        expect(ctx, isA<DriverPreLoginSyncContext>());
-        expect(
-          (ctx as DriverPreLoginSyncContext).registrationId,
-          'reg-new-123',
-        );
+        // Pre-login registration must NOT make an unauthenticated protected token call
+        expect(coordinator.syncedContexts, isEmpty);
       },
     );
 
     test(
-      'successful resubmission syncs pre-login context with registrationId',
+      'successful resubmission does not sync device token pre-login',
       () async {
         repository.resubmitResult = const ApiSuccessResult(
           data: DriverRegistrationResultEntity(
@@ -171,7 +166,7 @@ void main() {
         viewModel.doIntent(
           const DriverRegistrationResubmitEvent(
             registrationId: 'reg-resubmit-456',
-            resubmitData: DriverResubmitEntity(),
+            resubmitData: DriverResubmitEntity(vehiclePlate: '9988'),
           ),
         );
 
@@ -181,13 +176,8 @@ void main() {
           viewModel.state.status,
           DriverRegistrationStatus.resubmissionSuccess,
         );
-        expect(coordinator.syncedContexts.length, 1);
-        final ctx = coordinator.syncedContexts.first;
-        expect(ctx, isA<DriverPreLoginSyncContext>());
-        expect(
-          (ctx as DriverPreLoginSyncContext).registrationId,
-          'reg-resubmit-456',
-        );
+        // Pre-login resubmission must NOT make an unauthenticated protected token call
+        expect(coordinator.syncedContexts, isEmpty);
       },
     );
 

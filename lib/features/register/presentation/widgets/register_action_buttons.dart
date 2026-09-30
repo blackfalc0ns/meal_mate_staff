@@ -11,10 +11,12 @@ class RegisterActionButtons extends StatelessWidget {
     super.key,
     required this.onSubmit,
     required this.onBackToEdit,
+    this.isSubmitEnabled = true,
   });
 
   final VoidCallback onSubmit;
   final VoidCallback onBackToEdit;
+  final bool isSubmitEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class RegisterActionButtons extends StatelessWidget {
       children: [
         AppButton(
           text: locale.registrationSubmitRequest,
-          onPressed: onSubmit,
+          onPressed: isSubmitEnabled ? onSubmit : null,
           height: Spacing.xxl,
           borderRadius: Spacing.registrationRadius,
           color: color.primary,

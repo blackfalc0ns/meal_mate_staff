@@ -13,10 +13,12 @@ class RegisterPersonalInfoSection extends StatefulWidget {
     super.key,
     required this.formController,
     required this.nationalities,
+    this.isResubmission = false,
   });
 
   final RegisterPersonalDataFormController formController;
   final List<DriverNationalityEntity> nationalities;
+  final bool isResubmission;
 
   @override
   State<RegisterPersonalInfoSection> createState() =>
@@ -54,26 +56,32 @@ class _RegisterPersonalInfoSectionState
           hint: locale.registrationPhoneHint,
           controller: widget.formController.phone,
           keyboardType: TextInputType.phone,
+          readOnly: widget.isResubmission,
+          helperText: widget.isResubmission
+              ? locale.phoneChangeRequiresVerification
+              : null,
           validator: (v) => context.validatePhoneNumber(v),
         ),
-        const SizedBox(height: Spacing.registrationFieldGap),
-        RegistrationInputField(
-          fieldKey: const Key('driver_registration_password_field'),
-          label: locale.passwordLabel,
-          hint: locale.passwordHint,
-          controller: widget.formController.password,
-          obscureText: _obscurePassword,
-          suffixIcon: _obscurePassword
-              ? Icons.visibility_off_outlined
-              : Icons.visibility_outlined,
-          suffixTooltip: _obscurePassword
-              ? locale.showPassword
-              : locale.hidePassword,
-          onSuffixTap: () {
-            setState(() => _obscurePassword = !_obscurePassword);
-          },
-          validator: context.validatePassword,
-        ),
+        if (!widget.isResubmission) ...[
+          const SizedBox(height: Spacing.registrationFieldGap),
+          RegistrationInputField(
+            fieldKey: const Key('driver_registration_password_field'),
+            label: locale.passwordLabel,
+            hint: locale.passwordHint,
+            controller: widget.formController.password,
+            obscureText: _obscurePassword,
+            suffixIcon: _obscurePassword
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined,
+            suffixTooltip: _obscurePassword
+                ? locale.showPassword
+                : locale.hidePassword,
+            onSuffixTap: () {
+              setState(() => _obscurePassword = !_obscurePassword);
+            },
+            validator: context.validatePassword,
+          ),
+        ],
         const SizedBox(height: Spacing.registrationFieldGap),
         RegistrationInputField(
           label: locale.registrationEmail,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -15,6 +16,7 @@ import '../../domain/usecase/resubmit_driver_registration_usecase.dart';
 import '../../domain/usecase/search_driver_vehicle_models_usecase.dart';
 import '../../domain/usecase/submit_driver_registration_usecase.dart';
 import '../../domain/usecase/upload_driver_document_usecase.dart';
+import '../../domain/entities/driver_resubmit_entity.dart';
 import '../../domain/register_personal_data.dart';
 import 'driver_registration_event.dart';
 import 'driver_registration_state.dart';
@@ -117,8 +119,13 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
         :final resubmitData,
       ):
         _handleResubmit(registrationId, resubmitData);
-      case DriverRegistrationSetDraftEvent(:final draft):
-        emit(state.copyWith(draft: draft));
+      case DriverRegistrationSetDraftEvent(:final draft, :final isOriginal):
+        emit(
+          state.copyWith(
+            draft: draft,
+            originalDraft: isOriginal ? draft : state.originalDraft,
+          ),
+        );
     }
   }
 
@@ -445,6 +452,55 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
   }
 
   Future<void> _handleUploadDocument(String documentId, dynamic file) async {
+    if (file is File && file.existsSync()) {
+      final length = file.lengthSync();
+      if (length <= 0) {
+        final errorDocs = state.documents.map((doc) {
+          if (doc.id == documentId) {
+            return doc.copyWith(
+              isUploading: false,
+              errorMessage: 'Empty file cannot be uploaded',
+            );
+          }
+          return doc;
+        }).toList();
+
+        emit(
+          state.copyWith(
+            status: DriverRegistrationStatus.error,
+            documents: errorDocs,
+            failure: Failure(errorMessage: 'Empty file cannot be uploaded'),
+            errorMessage: 'Empty file cannot be uploaded',
+            clearUploading: true,
+          ),
+        );
+        return;
+      }
+
+      if (length > 14 * 1024 * 1024) {
+        final errorDocs = state.documents.map((doc) {
+          if (doc.id == documentId) {
+            return doc.copyWith(
+              isUploading: false,
+              errorMessage: 'File size exceeds 14MB limit',
+            );
+          }
+          return doc;
+        }).toList();
+
+        emit(
+          state.copyWith(
+            status: DriverRegistrationStatus.error,
+            documents: errorDocs,
+            failure: Failure(errorMessage: 'File size exceeds 14MB limit'),
+            errorMessage: 'File size exceeds 14MB limit',
+            clearUploading: true,
+          ),
+        );
+        return;
+      }
+    }
+
     // Set isUploading for this document
     final updatedDocs = state.documents.map((doc) {
       if (doc.id == documentId) {
@@ -514,11 +570,15 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
           );
         }
 
+        final newUploadedIds = Set<String>.from(state.newlyUploadedDocumentIds)
+          ..add(documentId);
+
         emit(
           state.copyWith(
             status: DriverRegistrationStatus.documentUploaded,
             documents: finalDocs,
             draft: updatedDraft,
+            newlyUploadedDocumentIds: newUploadedIds,
             clearUploading: true,
           ),
         );
@@ -582,14 +642,7 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
   Future<void> _handleSubmit() async {
     if (state.isSubmitting) return;
 
-    // Ensure fallback restaurant if available
-    var draftToSubmit = state.draft;
-    if (draftToSubmit.restaurantId.isEmpty && state.restaurants.isNotEmpty) {
-      draftToSubmit = draftToSubmit.copyWith(
-        restaurantId: state.restaurants.first.id,
-        restaurantName: state.restaurants.first.tradeName,
-      );
-    }
+    final draftToSubmit = state.draft;
 
     emit(
       state.copyWith(
@@ -607,7 +660,6 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             submissionResult: data,
           ),
         );
-        _syncDeviceToken(data.registrationId);
       case ApiErrorResult(:final failure):
         emit(
           state.copyWith(
@@ -621,9 +673,23 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
 
   Future<void> _handleResubmit(
     String registrationId,
-    dynamic resubmitData,
+    DriverResubmitEntity resubmitData,
   ) async {
     if (state.isSubmitting) return;
+
+    if (resubmitData.isEmpty) {
+      emit(
+        state.copyWith(
+          status: DriverRegistrationStatus.error,
+          failure: Failure(
+            errorMessage: 'Resubmit.EmptyChanges',
+            code: 'Resubmit.EmptyChanges',
+          ),
+          errorMessage: 'Resubmit.EmptyChanges',
+        ),
+      );
+      return;
+    }
 
     emit(state.copyWith(status: DriverRegistrationStatus.resubmitting));
 
@@ -640,7 +706,6 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             submissionResult: data,
           ),
         );
-        _syncDeviceToken(data.registrationId);
       case ApiErrorResult(:final failure):
         emit(
           state.copyWith(
@@ -649,25 +714,6 @@ class DriverRegistrationViewModel extends Cubit<DriverRegistrationState> {
             errorMessage: failure.errorMessage,
           ),
         );
-    }
-  }
-
-  void _syncDeviceToken(String registrationId) {
-    final coordinator = pushNotificationCoordinator;
-    if (registrationId.isNotEmpty && coordinator != null) {
-      try {
-        unawaited(
-          coordinator
-              .updateSyncContext(
-                DeviceTokenSyncContext.driverPreLogin(
-                  registrationId: registrationId,
-                ),
-              )
-              .catchError((_) {}),
-        );
-      } catch (_) {
-        // FCM token sync is best-effort and never fails registration
-      }
     }
   }
 }

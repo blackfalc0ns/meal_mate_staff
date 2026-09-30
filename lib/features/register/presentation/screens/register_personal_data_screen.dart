@@ -26,6 +26,7 @@ class RegisterPersonalDataScreen extends StatefulWidget {
     this.isLoadingCatalogs = false,
     this.onPersonalDataChanged,
     this.failure,
+    this.isResubmission = false,
   });
 
   final VoidCallback onContinue;
@@ -36,6 +37,7 @@ class RegisterPersonalDataScreen extends StatefulWidget {
   final bool isLoadingCatalogs;
   final ValueChanged<RegisterPersonalData>? onPersonalDataChanged;
   final Failure? failure;
+  final bool isResubmission;
 
   @override
   State<RegisterPersonalDataScreen> createState() =>
@@ -87,6 +89,7 @@ class _RegisterPersonalDataScreenState
                   RegisterPersonalInfoSection(
                     formController: _formController,
                     nationalities: widget.nationalities,
+                    isResubmission: widget.isResubmission,
                   ),
                   RegisterIdentitySection(formController: _formController),
                   if (widget.failure != null) ...[

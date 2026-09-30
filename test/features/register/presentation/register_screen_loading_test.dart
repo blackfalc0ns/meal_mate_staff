@@ -75,7 +75,7 @@ void main() {
       expect(barrierFinder, findsOneWidget);
       final barrier = tester.widget<ModalBarrier>(barrierFinder);
       expect(barrier.dismissible, isFalse);
-      expect(find.byType(CustomProgressIndicator), findsNothing);
+      expect(find.byType(CustomProgressIndicator), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.byType(LinearProgressIndicator), findsNothing);
     },

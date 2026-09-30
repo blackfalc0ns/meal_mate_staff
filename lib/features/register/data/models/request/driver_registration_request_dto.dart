@@ -5,7 +5,7 @@ part 'driver_registration_request_dto.g.dart';
 @JsonSerializable()
 class DriverRegistrationRequestDto {
   const DriverRegistrationRequestDto({
-    required this.restaurantId,
+    this.restaurantId,
     required this.fullNameAr,
     required this.fullNameEn,
     required this.phone,
@@ -38,7 +38,7 @@ class DriverRegistrationRequestDto {
   factory DriverRegistrationRequestDto.fromJson(Map<String, dynamic> json) =>
       _$DriverRegistrationRequestDtoFromJson(json);
 
-  final String restaurantId;
+  final String? restaurantId;
   final String fullNameAr;
   final String fullNameEn;
   final String phone;

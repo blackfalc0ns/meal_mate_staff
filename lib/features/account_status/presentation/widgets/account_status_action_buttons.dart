@@ -9,13 +9,13 @@ import '../../../../core/widget/app_button.dart';
 class AccountStatusActionButtons extends StatelessWidget {
   const AccountStatusActionButtons({
     super.key,
-    required this.primaryText,
+    this.primaryText,
     required this.secondaryText,
     required this.onPrimaryPressed,
     required this.onSecondaryPressed,
   });
 
-  final String primaryText;
+  final String? primaryText;
   final String secondaryText;
   final VoidCallback onPrimaryPressed;
   final VoidCallback onSecondaryPressed;
@@ -27,19 +27,21 @@ class AccountStatusActionButtons extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AppButton(
-          text: primaryText,
-          onPressed: onPrimaryPressed,
-          height: Spacing.accountStatusButtonHeight,
-          borderRadius: Spacing.accountStatusButtonRadius,
-          color: color.primary,
-          textColor: color.onPrimary,
-          textStyle: getBoldStyle(
-            color: color.onPrimary,
-            fontSize: FontSize.size14,
+        if (primaryText != null && primaryText!.isNotEmpty) ...[
+          AppButton(
+            text: primaryText!,
+            onPressed: onPrimaryPressed,
+            height: Spacing.accountStatusButtonHeight,
+            borderRadius: Spacing.accountStatusButtonRadius,
+            color: color.primary,
+            textColor: color.onPrimary,
+            textStyle: getBoldStyle(
+              color: color.onPrimary,
+              fontSize: FontSize.size14,
+            ),
           ),
-        ),
-        const SizedBox(height: Spacing.accountStatusButtonGap),
+          const SizedBox(height: Spacing.accountStatusButtonGap),
+        ],
         AppButton(
           text: secondaryText,
           onPressed: onSecondaryPressed,

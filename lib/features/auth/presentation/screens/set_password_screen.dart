@@ -3,13 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routing/app_routes.dart';
 import '../../../../config/routing/arguments/auth_route_arguments.dart';
+import '../../../../config/theme/colors.dart';
 import '../../../../config/theme/font_manager.dart';
 import '../../../../config/theme/spacing.dart';
 import '../../../../config/theme/styles_manager.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/helpers/validators.dart';
+import '../../../../core/widget/custom_progress_indecator.dart';
 import '../../../../core/widget/custom_snak_bar.dart';
+import '../../../account_status/domain/account_status_kind.dart';
+import '../../domain/user_role.dart';
 import '../manager/auth_event.dart';
 import '../manager/auth_state.dart';
 import '../manager/auth_view_model.dart';
@@ -110,112 +114,134 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                       ? 'تم تعيين كلمة المرور بنجاح'
                       : 'Password set successfully'),
             );
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.appShell,
-              (route) => false,
-              arguments: widget.args.role,
-            );
+            if (widget.args.role == UserRole.driver) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.accountStatus,
+                (route) => false,
+                arguments: AccountStatusRouteArgs(
+                  kind: AccountStatusKind.underReview,
+                  phone: widget.args.phone,
+                ),
+              );
+            } else {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.appShell,
+                (route) => false,
+                arguments: widget.args.role,
+              );
+            }
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            body: AuthBackground(
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: Spacing.xxl),
-                        const AuthHeaderLogo.compact(),
-                        const SizedBox(height: Spacing.xl),
-                        Text(
-                          title,
-                          style: getBoldStyle(
-                            color: color.onSurface,
-                            fontSize: FontSize.size22,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          subtitle,
-                          style: getRegularStyle(
-                            color: color.onSurfaceVariant,
-                            fontSize: FontSize.size14,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: Spacing.xl),
-                        AuthInputField(
-                          label: newPasswordLabel,
-                          hint: newPasswordHint,
-                          icon: Icons.lock_outline,
-                          obscureText: _obscureNewPassword,
-                          controller: _newPasswordController,
-                          enabled: !state.isLoading,
-                          validator: (val) =>
-                              Validations.validatePassword(context, val),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureNewPassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: color.onSurfaceVariant,
-                              size: 22,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureNewPassword = !_obscureNewPassword;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: Spacing.md),
-                        AuthInputField(
-                          label: confirmPasswordLabel,
-                          hint: confirmPasswordHint,
-                          icon: Icons.lock_outline,
-                          obscureText: _obscureConfirmPassword,
-                          controller: _confirmPasswordController,
-                          enabled: !state.isLoading,
-                          validator: (val) =>
-                              Validations.validateConfirmPassword(
-                                context,
-                                _newPasswordController.text,
-                                val,
+          return Stack(
+            children: [
+              Scaffold(
+                body: AuthBackground(
+                  child: SafeArea(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: Spacing.xxl),
+                            const AuthHeaderLogo.compact(),
+                            const SizedBox(height: Spacing.xl),
+                            Text(
+                              title,
+                              style: getBoldStyle(
+                                color: color.onSurface,
+                                fontSize: FontSize.size22,
                               ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureConfirmPassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: color.onSurfaceVariant,
-                              size: 22,
+                              textAlign: TextAlign.center,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureConfirmPassword =
-                                    !_obscureConfirmPassword;
-                              });
-                            },
-                          ),
+                            const SizedBox(height: Spacing.xs),
+                            Text(
+                              subtitle,
+                              style: getRegularStyle(
+                                color: color.onSurfaceVariant,
+                                fontSize: FontSize.size14,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: Spacing.xl),
+                            AuthInputField(
+                              label: newPasswordLabel,
+                              hint: newPasswordHint,
+                              icon: Icons.lock_outline,
+                              obscureText: _obscureNewPassword,
+                              controller: _newPasswordController,
+                              enabled: !state.isLoading,
+                              validator: (val) =>
+                                  Validations.validatePassword(context, val),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureNewPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: color.onSurfaceVariant,
+                                  size: 22,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureNewPassword = !_obscureNewPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: Spacing.md),
+                            AuthInputField(
+                              label: confirmPasswordLabel,
+                              hint: confirmPasswordHint,
+                              icon: Icons.lock_outline,
+                              obscureText: _obscureConfirmPassword,
+                              controller: _confirmPasswordController,
+                              enabled: !state.isLoading,
+                              validator: (val) =>
+                                  Validations.validateConfirmPassword(
+                                    context,
+                                    _newPasswordController.text,
+                                    val,
+                                  ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureConfirmPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: color.onSurfaceVariant,
+                                  size: 22,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureConfirmPassword =
+                                        !_obscureConfirmPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: Spacing.xl),
+                            AuthPrimaryButton(
+                              text: submitButtonText,
+                              isLoading: state.isLoading,
+                              onPressed: state.isLoading ? null : _submit,
+                            ),
+                            const SizedBox(height: Spacing.xxl),
+                          ],
                         ),
-                        const SizedBox(height: Spacing.xl),
-                        AuthPrimaryButton(
-                          text: submitButtonText,
-                          isLoading: state.isLoading,
-                          onPressed: state.isLoading ? null : _submit,
-                        ),
-                        const SizedBox(height: Spacing.xxl),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+              if (state.isLoading)
+                Positioned.fill(
+                  child: ColoredBox(
+                    color: AppColors.scrim.withValues(alpha: 0.3),
+                    child: const Center(child: CustomProgressIndicator()),
+                  ),
+                ),
+            ],
           );
         },
       ),

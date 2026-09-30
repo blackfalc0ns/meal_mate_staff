@@ -1016,6 +1016,18 @@ abstract class AppLocalizations {
   /// **'Resubmit'**
   String get accountStatusResubmit;
 
+  /// No description provided for @resubmitEmptyChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes were made. Please edit at least one field or upload a new document to resubmit.'**
+  String get resubmitEmptyChanges;
+
+  /// No description provided for @phoneChangeRequiresVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number cannot be changed directly during review. Phone change requires separate verification.'**
+  String get phoneChangeRequiresVerification;
+
   /// No description provided for @accountStatusEditAndResend.
   ///
   /// In en, this message translates to:

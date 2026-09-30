@@ -6,9 +6,11 @@ import '../../../../config/routing/app_routes.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/helpers/image_picker_helper.dart';
+import '../../../../core/widget/custom_progress_indecator.dart';
 import '../../../../core/widget/custom_snak_bar.dart';
 import '../widgets/register_submission_shimmer.dart';
 import '../../../account_status/domain/account_status_kind.dart';
+import '../../domain/entities/driver_registration_draft_entity.dart';
 import '../../domain/register_document.dart';
 import '../../domain/register_review_data.dart';
 import '../manager/driver_registration_event.dart';
@@ -54,9 +56,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _viewModel.doIntent(const DriverRegistrationLoadVehicleTypesEvent());
     _viewModel.doIntent(const DriverRegistrationLoadVehicleColorsEvent());
     if (widget.phone != null && widget.phone!.isNotEmpty) {
+      final initialDraft = _viewModel.state.draft.copyWith(phone: widget.phone);
       _viewModel.doIntent(
         DriverRegistrationSetDraftEvent(
-          _viewModel.state.draft.copyWith(phone: widget.phone),
+          initialDraft,
+          isOriginal: widget.isResubmission,
         ),
       );
     }
@@ -115,6 +119,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
               AppRoutes.accountStatus,
               arguments: AccountStatusKind.underReview,
             );
+          } else if (state.status == DriverRegistrationStatus.error) {
+            final is409 = state.failure?.exception.statusCode == 409 ||
+                state.failure?.code == 'conflict' ||
+                (state.errorMessage?.contains('ALREADY_APPROVED') ?? false) ||
+                (state.errorMessage?.contains('ALREADY_REJECTED') ?? false) ||
+                (state.errorMessage?.contains('INVALID_TRANSITION') ?? false);
+            if (is409) {
+              CustomSnackbar.showError(
+                context: context,
+                message: state.errorMessage ?? '',
+              );
+              context.pushReplacementNamed(
+                AppRoutes.accountStatus,
+                arguments: AccountStatusKind.underReview,
+              );
+            }
           }
         },
         builder: (context, state) {
@@ -133,6 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               isLoadingCatalogs:
                   state.isLoadingRestaurants || state.isLoadingNationalities,
               failure: stepFailure,
+              isResubmission: widget.isResubmission,
               onPersonalDataChanged: (data) {
                 _viewModel.doIntent(
                   DriverRegistrationPersonalDataUpdatedEvent(data),
@@ -232,14 +253,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
               selectedImagePaths: state.selectedImagePaths,
               failure: stepFailure,
               onDocumentTap: _pickDocumentImage,
+              isSubmitEnabled:
+                  !widget.isResubmission || state.hasResubmissionChanges,
               onSubmit: () {
                 if (widget.isResubmission &&
                     widget.registrationId != null &&
                     widget.registrationId!.isNotEmpty) {
+                  final sparseResubmit = state.draft.toSparseResubmitEntity(
+                    original: state.originalDraft ??
+                        DriverRegistrationDraftEntity(),
+                    newlyUploadedDocumentIds: state.newlyUploadedDocumentIds,
+                  );
+                  if (sparseResubmit.isEmpty) {
+                    CustomSnackbar.showError(
+                      context: context,
+                      message: context.localization.resubmitEmptyChanges,
+                    );
+                    return;
+                  }
                   _viewModel.doIntent(
                     DriverRegistrationResubmitEvent(
                       registrationId: widget.registrationId!,
-                      resubmitData: state.draft.toResubmitEntity(),
+                      resubmitData: sparseResubmit,
                     ),
                   );
                 } else {
@@ -261,6 +296,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 content,
                 const ModalBarrier(dismissible: false, color: Colors.black26),
                 const RegisterSubmissionShimmer(),
+                const Center(child: CustomProgressIndicator()),
               ],
             );
           }

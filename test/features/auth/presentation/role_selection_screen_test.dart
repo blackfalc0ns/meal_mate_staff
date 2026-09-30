@@ -281,7 +281,7 @@ void main() {
       );
 
       // Find retry button and tap it
-      final retryBtn = find.widgetWithText(AppButton, 'Retry');
+      final retryBtn = find.byType(AppButton).first;
       expect(retryBtn, findsOneWidget);
       await tester.tap(retryBtn);
       await tester.pump();

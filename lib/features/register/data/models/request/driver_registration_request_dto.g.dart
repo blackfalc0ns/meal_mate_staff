@@ -9,7 +9,7 @@ part of 'driver_registration_request_dto.dart';
 DriverRegistrationRequestDto _$DriverRegistrationRequestDtoFromJson(
   Map<String, dynamic> json,
 ) => DriverRegistrationRequestDto(
-  restaurantId: json['restaurantId'] as String,
+  restaurantId: json['restaurantId'] as String?,
   fullNameAr: json['fullNameAr'] as String,
   fullNameEn: json['fullNameEn'] as String,
   phone: json['phone'] as String,

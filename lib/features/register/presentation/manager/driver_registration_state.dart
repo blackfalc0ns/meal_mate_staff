@@ -76,11 +76,15 @@ class DriverRegistrationState {
     this.failure,
     this.errorMessage,
     this.uploadingDocumentId,
+    this.originalDraft,
+    this.newlyUploadedDocumentIds = const {},
   });
 
   final DriverRegistrationStatus status;
   final int currentStep;
   final DriverRegistrationDraftEntity draft;
+  final DriverRegistrationDraftEntity? originalDraft;
+  final Set<String> newlyUploadedDocumentIds;
   final List<DriverRestaurantEntity> restaurants;
   final List<DriverNationalityEntity> nationalities;
   final List<DriverVehicleTypeEntity> vehicleTypes;
@@ -107,6 +111,14 @@ class DriverRegistrationState {
       status == DriverRegistrationStatus.submissionSuccess ||
       status == DriverRegistrationStatus.resubmissionSuccess;
 
+  bool get hasResubmissionChanges {
+    if (originalDraft == null) return true;
+    return draft.hasChangesFrom(
+      original: originalDraft!,
+      newlyUploadedDocumentIds: newlyUploadedDocumentIds,
+    );
+  }
+
   Map<String, String> get selectedImagePaths {
     final map = <String, String>{};
     for (final doc in documents) {
@@ -129,6 +141,8 @@ class DriverRegistrationState {
     DriverRegistrationStatus? status,
     int? currentStep,
     DriverRegistrationDraftEntity? draft,
+    DriverRegistrationDraftEntity? originalDraft,
+    Set<String>? newlyUploadedDocumentIds,
     List<DriverRestaurantEntity>? restaurants,
     List<DriverNationalityEntity>? nationalities,
     List<DriverVehicleTypeEntity>? vehicleTypes,
@@ -154,6 +168,9 @@ class DriverRegistrationState {
       status: status ?? this.status,
       currentStep: currentStep ?? this.currentStep,
       draft: draft ?? this.draft,
+      originalDraft: originalDraft ?? this.originalDraft,
+      newlyUploadedDocumentIds:
+          newlyUploadedDocumentIds ?? this.newlyUploadedDocumentIds,
       restaurants: restaurants ?? this.restaurants,
       nationalities: nationalities ?? this.nationalities,
       vehicleTypes: vehicleTypes ?? this.vehicleTypes,

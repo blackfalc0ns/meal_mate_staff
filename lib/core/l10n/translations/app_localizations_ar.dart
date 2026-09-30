@@ -489,6 +489,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accountStatusResubmit => 'إعادة التقديم';
 
   @override
+  String get resubmitEmptyChanges =>
+      'لم يتم تعديل أي بيانات. يُرجى تعديل حقل واحد على الأقل أو رفع مستند جديد قبل إعادة الإرسال.';
+
+  @override
+  String get phoneChangeRequiresVerification =>
+      'لا يمكن تعديل رقم الهاتف مباشرة أثناء المراجعة. تغيير الرقم يتطلب التحقق بشكل منفصل.';
+
+  @override
   String get accountStatusEditAndResend => 'تعديل وإعادة الإرسال';
 
   @override

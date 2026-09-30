@@ -20,6 +20,7 @@ import '../manager/account_status_event.dart';
 import '../manager/account_status_state.dart';
 import '../manager/account_status_view_model.dart';
 import '../widgets/account_status_content.dart';
+import '../widgets/account_status_shimmer.dart';
 
 class AccountStatusScreen extends StatefulWidget {
   const AccountStatusScreen({
@@ -45,12 +46,14 @@ class AccountStatusScreen extends StatefulWidget {
   State<AccountStatusScreen> createState() => _AccountStatusScreenState();
 }
 
-class _AccountStatusScreenState extends State<AccountStatusScreen> {
+class _AccountStatusScreenState extends State<AccountStatusScreen>
+    with WidgetsBindingObserver {
   AccountStatusViewModel? _viewModel;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     if (widget.viewModel != null) {
       _viewModel = widget.viewModel;
     } else if (getIt.isRegistered<AccountStatusViewModel>()) {
@@ -61,6 +64,26 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
 
     _viewModel?.doIntent(AccountStatusSetKindEvent(widget.kind));
 
+    _refresh();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    if (widget.viewModel == null) {
+      _viewModel?.close();
+    }
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState lifecycleState) {
+    if (lifecycleState == AppLifecycleState.resumed) {
+      _refresh();
+    }
+  }
+
+  void _refresh() {
     if (widget.phone != null || widget.registrationId != null) {
       _viewModel?.doIntent(
         AccountStatusLoadEvent(
@@ -69,14 +92,6 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
         ),
       );
     }
-  }
-
-  @override
-  void dispose() {
-    if (widget.viewModel == null) {
-      _viewModel?.close();
-    }
-    super.dispose();
   }
 
   void _handlePrimary(
@@ -108,6 +123,20 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
         }
         break;
       case AccountStatusKind.rejected:
+        if (entity != null && !entity.canResubmit) {
+          context.pushNamedAndRemoveUntil(AppRoutes.login, (route) => false);
+          return;
+        }
+        context.pushReplacementNamed(
+          AppRoutes.register,
+          arguments: DriverRegistrationRouteArgs(
+            role: UserRole.driver,
+            phone: effectivePhone,
+            isResubmission: true,
+            registrationId: effectiveRegId,
+          ),
+        );
+        break;
       case AccountStatusKind.moreInformationRequired:
         context.pushReplacementNamed(
           AppRoutes.register,
@@ -184,7 +213,11 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
           if (state.isLoading && !state.hasEntity) {
             return Scaffold(
               backgroundColor: color.surface,
-              body: const Center(child: CustomProgressIndicator()),
+              body: const SafeArea(
+                child: SingleChildScrollView(
+                  child: AccountStatusShimmer(),
+                ),
+              ),
             );
           }
 
@@ -218,38 +251,44 @@ class _AccountStatusScreenState extends State<AccountStatusScreen> {
           final content = Scaffold(
             backgroundColor: color.surface,
             body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (state.status == AccountStatusStateStatus.error &&
-                        state.failure != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Spacing.base,
-                          vertical: Spacing.sm,
-                        ),
-                        child: InlineApiErrorWidget(
-                          failure: state.failure!,
-                          onRetry: () => _handlePrimary(
-                            context,
-                            effectiveKind,
-                            state.statusEntity,
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  _refresh();
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (state.status == AccountStatusStateStatus.error &&
+                          state.failure != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.base,
+                            vertical: Spacing.sm,
+                          ),
+                          child: InlineApiErrorWidget(
+                            failure: state.failure!,
+                            onRetry: () => _handlePrimary(
+                              context,
+                              effectiveKind,
+                              state.statusEntity,
+                            ),
                           ),
                         ),
+                      AccountStatusContent(
+                        kind: effectiveKind,
+                        statusEntity: state.statusEntity,
+                        onPrimaryPressed: () => _handlePrimary(
+                          context,
+                          effectiveKind,
+                          state.statusEntity,
+                        ),
+                        onSecondaryPressed: () => _handleSecondary(context),
+                        onHelpPressed: widget.onHelpPressed,
                       ),
-                    AccountStatusContent(
-                      kind: effectiveKind,
-                      statusEntity: state.statusEntity,
-                      onPrimaryPressed: () => _handlePrimary(
-                        context,
-                        effectiveKind,
-                        state.statusEntity,
-                      ),
-                      onSecondaryPressed: () => _handleSecondary(context),
-                      onHelpPressed: widget.onHelpPressed,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

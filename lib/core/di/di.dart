@@ -58,6 +58,13 @@ import '../../features/driver/driver_profile/data/repo/driver_profile_repository
 import '../../features/driver/driver_profile/domain/repo/driver_profile_repository.dart';
 import '../../features/driver/driver_profile/domain/usecase/get_driver_profile_usecase.dart';
 import '../../features/driver/driver_profile/presentation/manager/driver_profile_view_model.dart';
+import '../../features/driver/driver_notifications/data/data_source/driver_notifications_remote_data_source.dart';
+import '../../features/driver/driver_notifications/data/data_source/driver_notifications_remote_data_source_impl.dart';
+import '../../features/driver/driver_notifications/data/repo/driver_notifications_repository_impl.dart';
+import '../../features/driver/driver_notifications/domain/repo/driver_notifications_repository.dart';
+import '../../features/driver/driver_notifications/domain/usecase/get_driver_notifications_usecase.dart';
+import '../../features/driver/driver_notifications/domain/usecase/mark_driver_notification_as_read_usecase.dart';
+import '../../features/driver/driver_notifications/presentation/manager/driver_notifications_view_model.dart';
 import '../../features/driver/home/data/datasources/driver_home_datasource.dart';
 import '../../features/driver/home/data/datasources/driver_home_fake_datasource.dart';
 import '../../features/driver/home/data/repositories/driver_home_repository_impl.dart';
@@ -871,6 +878,32 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<DriverProfileViewModel>(
     () => DriverProfileViewModel(
       getDriverProfileUseCase: getIt<GetDriverProfileUseCase>(),
+    ),
+  );
+
+  // Driver Notifications feature dependencies
+  getIt.registerLazySingleton<DriverNotificationsRemoteDataSource>(
+    () => DriverNotificationsRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverNotificationsRepository>(
+    () => DriverNotificationsRepositoryImpl(
+      getIt<DriverNotificationsRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDriverNotificationsUseCase>(
+    () => GetDriverNotificationsUseCase(
+      getIt<DriverNotificationsRepository>(),
+    ),
+  );
+  getIt.registerFactory<MarkDriverNotificationAsReadUseCase>(
+    () => MarkDriverNotificationAsReadUseCase(
+      getIt<DriverNotificationsRepository>(),
+    ),
+  );
+  getIt.registerFactory<DriverNotificationsViewModel>(
+    () => DriverNotificationsViewModel(
+      getNotificationsUseCase: getIt<GetDriverNotificationsUseCase>(),
+      markAsReadUseCase: getIt<MarkDriverNotificationAsReadUseCase>(),
     ),
   );
 }

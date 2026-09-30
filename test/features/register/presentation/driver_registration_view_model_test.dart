@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
+import 'package:meal_mate_delivery/features/register/data/mapper/driver_registration_mapper.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_file_upload_result_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_registration_draft_entity.dart';
 import 'package:meal_mate_delivery/features/register/domain/entities/driver_registration_result_entity.dart';
@@ -981,5 +982,50 @@ void main() {
         expect(viewModel.state.failure, isNotNull);
       },
     );
+
+    test('submits independent registration with empty restaurantId preserved', () async {
+      mockRepo.restaurants = [
+        const DriverRestaurantEntity(
+          id: 'res-default',
+          tradeName: 'Default Restaurant',
+          tradeNameAr: 'مطعم افتراضي',
+          tradeNameEn: 'Default Restaurant',
+        ),
+      ];
+
+      const independentDraft = DriverRegistrationDraftEntity(
+        restaurantId: '',
+        fullNameAr: 'أحمد',
+        fullNameEn: 'Ahmed',
+        phone: '+966501234567',
+        password: 'Password123!',
+        nationalId: '1234567890',
+        nationalIdExpiry: '2029-01-01T00:00:00Z',
+        nationality: 'Saudi',
+        vehicleType: 'Car',
+        vehicleModel: 'Camry',
+        vehiclePlate: 'ABC 1234',
+        vehicleYear: 2023,
+        licenseNumber: 'LIC-1',
+        licenseExpiry: '2029-01-01T00:00:00Z',
+        vehicleLicenseExpiry: '2029-01-01T00:00:00Z',
+        nationalIdFrontStorageKey: 'nid-f',
+        nationalIdBackStorageKey: 'nid-b',
+        drivingLicenseFrontStorageKey: 'lic-f',
+        drivingLicenseBackStorageKey: 'lic-b',
+        vehicleRegistrationStorageKey: 'veh-r',
+      );
+
+      viewModel.doIntent(const DriverRegistrationLoadRestaurantsEvent());
+      viewModel.doIntent(const DriverRegistrationSetDraftEvent(independentDraft));
+      await Future<void>.delayed(Duration.zero);
+
+      viewModel.doIntent(const DriverRegistrationSubmitEvent());
+      await Future<void>.delayed(Duration.zero);
+
+      expect(viewModel.state.status, DriverRegistrationStatus.submissionSuccess);
+      expect(mockRepo.lastSubmittedDraft?.restaurantId, isEmpty);
+      expect(mockRepo.lastSubmittedDraft?.toDto().restaurantId, isNull);
+    });
   });
 }

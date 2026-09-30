@@ -4,6 +4,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/services/token_service.dart';
 import 'package:meal_mate_delivery/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/request/driver_first_time_setup_request_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/request/driver_forgot_password_request_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/request/driver_login_request_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/request/driver_phone_lookup_request_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/request/driver_resend_otp_request_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/request/driver_reset_password_request_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/request/driver_verify_otp_request_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/response/driver_auth_response_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/response/driver_message_response_dto.dart';
+import 'package:meal_mate_delivery/features/auth/data/models/response/driver_phone_lookup_response_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/request/forgot_password_request_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/request/phone_lookup_request_dto.dart';
 import 'package:meal_mate_delivery/features/auth/data/models/request/refresh_token_request_dto.dart';
@@ -123,6 +133,98 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   Future<List<StaffRoleResponseDto>> getStaffRoles() async {
     if (errorToThrow != null) throw errorToThrow;
     return staffRolesResponse;
+  }
+
+  @override
+  Future<DriverPhoneLookupResponseDto> driverLookupPhone(
+    DriverPhoneLookupRequestDto request,
+  ) async {
+    if (errorToThrow != null) throw errorToThrow;
+    return DriverPhoneLookupResponseDto(
+      exists: phoneLookupResponse.exists,
+      requiresFirstTimeSetup: phoneLookupResponse.isFirstTimeSetup,
+      fullName: phoneLookupResponse.fullName,
+      restaurantName: phoneLookupResponse.restaurantName,
+      accountStatus: phoneLookupResponse.status,
+    );
+  }
+
+  @override
+  Future<DriverAuthResponseDto> driverFirstTimeSetup(
+    DriverFirstTimeSetupRequestDto request,
+  ) async {
+    if (errorToThrow != null) throw errorToThrow;
+    return DriverAuthResponseDto(
+      userId: authResponse.userId,
+      accessToken: authResponse.accessToken,
+      refreshToken: authResponse.refreshToken,
+      userType: authResponse.userType,
+      accountStatus: authResponse.accountStatus,
+      phoneNumber: authResponse.phoneNumber,
+      fullName: authResponse.fullName,
+      roles: authResponse.roles,
+    );
+  }
+
+  @override
+  Future<DriverAuthResponseDto> driverLogin(
+    DriverLoginRequestDto request,
+  ) async {
+    if (errorToThrow != null) throw errorToThrow;
+    return DriverAuthResponseDto(
+      userId: authResponse.userId,
+      accessToken: authResponse.accessToken,
+      refreshToken: authResponse.refreshToken,
+      userType: authResponse.userType,
+      accountStatus: authResponse.accountStatus,
+      phoneNumber: authResponse.phoneNumber,
+      fullName: authResponse.fullName,
+      roles: authResponse.roles,
+    );
+  }
+
+  @override
+  Future<DriverMessageResponseDto> driverResendOtp(
+    DriverResendOtpRequestDto request,
+  ) async {
+    if (errorToThrow != null) throw errorToThrow;
+    return DriverMessageResponseDto(
+      message: messageResponse.message,
+      success: messageResponse.success,
+    );
+  }
+
+  @override
+  Future<DriverMessageResponseDto> driverVerifyOtp(
+    DriverVerifyOtpRequestDto request,
+  ) async {
+    if (errorToThrow != null) throw errorToThrow;
+    return DriverMessageResponseDto(
+      message: messageResponse.message,
+      success: messageResponse.success,
+    );
+  }
+
+  @override
+  Future<DriverMessageResponseDto> driverForgotPassword(
+    DriverForgotPasswordRequestDto request,
+  ) async {
+    if (errorToThrow != null) throw errorToThrow;
+    return DriverMessageResponseDto(
+      message: messageResponse.message,
+      success: messageResponse.success,
+    );
+  }
+
+  @override
+  Future<DriverMessageResponseDto> driverResetPassword(
+    DriverResetPasswordRequestDto request,
+  ) async {
+    if (errorToThrow != null) throw errorToThrow;
+    return DriverMessageResponseDto(
+      message: messageResponse.message,
+      success: messageResponse.success,
+    );
   }
 }
 

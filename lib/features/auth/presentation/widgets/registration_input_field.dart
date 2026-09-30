@@ -26,6 +26,8 @@ class RegistrationInputField extends StatelessWidget {
     this.keyboardType,
     this.focusNode,
     this.obscureText = false,
+    this.readOnly = false,
+    this.helperText,
     this.fieldKey,
   });
 
@@ -47,6 +49,8 @@ class RegistrationInputField extends StatelessWidget {
   final TextInputType? keyboardType;
   final FocusNode? focusNode;
   final bool obscureText;
+  final bool readOnly;
+  final String? helperText;
   final Key? fieldKey;
 
   @override
@@ -82,9 +86,9 @@ class RegistrationInputField extends StatelessWidget {
                     focusNode: focusNode,
                     controller: controller,
                     initialValue: controller == null ? initialValue : null,
-                    readOnly: isPicker,
-                    canRequestFocus: !isPicker,
-                    enableInteractiveSelection: !isPicker,
+                    readOnly: readOnly || isPicker,
+                    canRequestFocus: !readOnly && !isPicker,
+                    enableInteractiveSelection: !readOnly && !isPicker,
                     obscureText: obscureText,
                     onTap: isPicker
                         ? () {
@@ -98,7 +102,7 @@ class RegistrationInputField extends StatelessWidget {
                     keyboardType: keyboardType,
                     textAlign: TextAlign.start,
                     style: getMediumStyle(
-                      color: color.onSurface,
+                      color: readOnly ? color.onSurfaceVariant : color.onSurface,
                       fontSize: FontSize.size12,
                     ),
                     decoration: InputDecoration(
@@ -110,6 +114,12 @@ class RegistrationInputField extends StatelessWidget {
                       hintStyle: getMediumStyle(
                         color: color.onSurfaceVariant,
                         fontSize: FontSize.size12,
+                      ),
+                      helperText: helperText,
+                      helperMaxLines: 3,
+                      helperStyle: getRegularStyle(
+                        color: color.onSurfaceVariant,
+                        fontSize: FontSize.size11,
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: Spacing.md,

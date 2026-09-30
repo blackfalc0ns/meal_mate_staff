@@ -26,6 +26,7 @@ class RegisterReviewScreen extends StatelessWidget {
     this.onBackPressed,
     this.reviewData,
     this.failure,
+    this.isSubmitEnabled = true,
   });
 
   final Map<String, String> selectedImagePaths;
@@ -35,6 +36,7 @@ class RegisterReviewScreen extends StatelessWidget {
   final VoidCallback? onBackPressed;
   final RegisterReviewData? reviewData;
   final Failure? failure;
+  final bool isSubmitEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,11 @@ class RegisterReviewScreen extends StatelessWidget {
             InlineApiErrorWidget(failure: failure!, onRetry: onSubmit),
           ],
           const SizedBox(height: Spacing.sm),
-          RegisterActionButtons(onSubmit: onSubmit, onBackToEdit: onBackToEdit),
+          RegisterActionButtons(
+            onSubmit: onSubmit,
+            onBackToEdit: onBackToEdit,
+            isSubmitEnabled: isSubmitEnabled,
+          ),
           const SizedBox(height: Spacing.screenV),
         ],
       ),

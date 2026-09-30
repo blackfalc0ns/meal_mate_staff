@@ -112,7 +112,8 @@ class DriverRegistrationResubmitEvent extends DriverRegistrationEvent {
 }
 
 class DriverRegistrationSetDraftEvent extends DriverRegistrationEvent {
-  const DriverRegistrationSetDraftEvent(this.draft);
+  const DriverRegistrationSetDraftEvent(this.draft, {this.isOriginal = false});
 
   final DriverRegistrationDraftEntity draft;
+  final bool isOriginal;
 }

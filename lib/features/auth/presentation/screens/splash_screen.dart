@@ -126,6 +126,11 @@ class _SplashScreenState extends State<SplashScreen>
     }
     if (!mounted) return;
 
+    TokenService? tokenService = widget.tokenService;
+    if (tokenService == null && getIt.isRegistered<TokenService>()) {
+      tokenService = getIt<TokenService>();
+    }
+
     RestoreSessionUseCase? useCase = widget.restoreSessionUseCase;
     if (useCase == null && getIt.isRegistered<RestoreSessionUseCase>()) {
       useCase = getIt<RestoreSessionUseCase>();
@@ -140,6 +145,29 @@ class _SplashScreenState extends State<SplashScreen>
         final session = result.data!;
         if (session.isAuthenticated) {
           final role = session.user.role;
+          if (role == UserRole.driver) {
+            final savedStatus =
+                tokenService?.getSavedAccountStatus()?.toLowerCase();
+            final isNotApproved = savedStatus != null &&
+                !savedStatus.contains('approved') &&
+                !savedStatus.contains('active');
+            if (isNotApproved) {
+              final isRejected = savedStatus.contains('reject');
+              final isChanges = savedStatus.contains('changes') ||
+                  savedStatus.contains('moreinfo');
+              context.pushReplacementNamed(
+                AppRoutes.accountStatus,
+                arguments: AccountStatusRouteArgs(
+                  kind: isRejected
+                      ? AccountStatusKind.rejected
+                      : (isChanges
+                          ? AccountStatusKind.moreInformationRequired
+                          : AccountStatusKind.underReview),
+                ),
+              );
+              return;
+            }
+          }
           context.pushReplacementNamed(
             AppRoutes.appShell,
             arguments: AppShellRouteArgs(role: role),
@@ -147,11 +175,6 @@ class _SplashScreenState extends State<SplashScreen>
           return;
         }
       }
-    }
-
-    TokenService? tokenService = widget.tokenService;
-    if (tokenService == null && getIt.isRegistered<TokenService>()) {
-      tokenService = getIt<TokenService>();
     }
 
     if (tokenService != null) {

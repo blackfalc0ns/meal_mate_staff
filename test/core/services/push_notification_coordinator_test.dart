@@ -175,6 +175,22 @@ class FakeNotificationRouter implements NotificationRouter {
   bool isDuplicate(String key, [DateTime? now]) => false;
 
   @override
+  PushNotificationPayload? pendingPayload;
+
+  @override
+  void clearPendingPayload() {
+    pendingPayload = null;
+  }
+
+  @override
+  Future<bool> routePending() async {
+    final p = pendingPayload;
+    if (p == null) return false;
+    pendingPayload = null;
+    return route(p);
+  }
+
+  @override
   Future<bool> route(
     PushNotificationPayload payload, {
     String? messageId,

@@ -17,11 +17,25 @@ extension DriverRegistrationStatusResponseDtoMapper
       _ => AccountStatusKind.underReview,
     };
 
+    final resolvedFullName = (fullName != null && fullName!.trim().isNotEmpty)
+        ? fullName
+        : ((fullNameAr != null && fullNameAr!.trim().isNotEmpty)
+            ? fullNameAr
+            : fullNameEn);
+
+    final isTerminalOrApproved = normalized == 'approved' ||
+        normalized == 'accepted' ||
+        normalized == 'rejected';
+    final safeCanResubmit = (canResubmit ?? false) && !isTerminalOrApproved;
+
     return DriverRegistrationStatusEntity(
       registrationId: registrationId ?? '',
       kind: kind,
       phone: phone,
-      fullName: fullName,
+      fullName: resolvedFullName,
+      fullNameAr: fullNameAr,
+      fullNameEn: fullNameEn,
+      requestedByRole: requestedByRole,
       restaurantName: restaurantName,
       restaurantId: restaurantId,
       statusString: statusVal.isNotEmpty ? statusVal : 'Submitted',
@@ -32,7 +46,7 @@ extension DriverRegistrationStatusResponseDtoMapper
       notice: notice,
       restaurantApprovalStatus: restaurantApprovalStatus,
       adminApprovalStatus: adminApprovalStatus,
-      canResubmit: canResubmit ?? false,
+      canResubmit: safeCanResubmit,
       isApproved:
           isApproved ?? (normalized == 'approved' || normalized == 'accepted'),
       changeRequestNotes: changeRequestNotes,

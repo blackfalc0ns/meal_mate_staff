@@ -124,7 +124,7 @@ void main() {
     expect(find.text('فشل الاتصال بالخادم'), findsOneWidget);
 
     // Tap retry
-    await tester.tap(find.text('Retry'));
+    await tester.tap(find.byType(TextButton));
     expect(retried, isTrue);
   });
 

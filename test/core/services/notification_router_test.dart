@@ -78,6 +78,26 @@ void main() {
       },
     );
 
+    testWidgets(
+      'routes restaurant_rejected to accountStatus with rejected',
+      (tester) async {
+        await tester.pumpWidget(appWithMockNavigation());
+
+        final routed = await router.route(
+          const DriverRegistrationRestaurantRejectedPayload(
+            registrationId: 'reg-rej-1',
+          ),
+          messageId: 'msg-rej',
+        );
+
+        expect(routed, isTrue);
+        expect(pushedRoute, AppRoutes.accountStatus);
+        final args = pushedArguments as AccountStatusRouteArgs;
+        expect(args.kind, AccountStatusKind.rejected);
+        expect(args.registrationId, 'reg-rej-1');
+      },
+    );
+
     testWidgets('routes admin_confirmed to accountStatus with accepted', (
       tester,
     ) async {
@@ -97,6 +117,45 @@ void main() {
       expect(args.registrationId, 'reg-789');
     });
 
+    testWidgets('routes admin_approved to accountStatus with accepted', (
+      tester,
+    ) async {
+      await tester.pumpWidget(appWithMockNavigation());
+
+      final routed = await router.route(
+        const DriverRegistrationAdminApprovedPayload(
+          registrationId: 'reg-adm-app',
+        ),
+        messageId: 'msg-app',
+      );
+
+      expect(routed, isTrue);
+      expect(pushedRoute, AppRoutes.accountStatus);
+      final args = pushedArguments as AccountStatusRouteArgs;
+      expect(args.kind, AccountStatusKind.accepted);
+      expect(args.registrationId, 'reg-adm-app');
+    });
+
+    testWidgets(
+      'routes admin_changes_requested to accountStatus with moreInformationRequired',
+      (tester) async {
+        await tester.pumpWidget(appWithMockNavigation());
+
+        final routed = await router.route(
+          const DriverRegistrationAdminChangesRequestedPayload(
+            registrationId: 'reg-adm-chg',
+          ),
+          messageId: 'msg-adm-chg',
+        );
+
+        expect(routed, isTrue);
+        expect(pushedRoute, AppRoutes.accountStatus);
+        final args = pushedArguments as AccountStatusRouteArgs;
+        expect(args.kind, AccountStatusKind.moreInformationRequired);
+        expect(args.registrationId, 'reg-adm-chg');
+      },
+    );
+
     testWidgets('routes admin_rejected to accountStatus with rejected', (
       tester,
     ) async {
@@ -113,6 +172,71 @@ void main() {
       expect(args.kind, AccountStatusKind.rejected);
       expect(args.registrationId, 'reg-999');
     });
+
+    testWidgets(
+      'routes independent_submitted and resubmitted to accountStatus',
+      (tester) async {
+        await tester.pumpWidget(appWithMockNavigation());
+
+        await router.route(
+          const DriverRegistrationIndependentSubmittedPayload(
+            registrationId: 'reg-indep',
+          ),
+          messageId: 'msg-indep',
+        );
+        expect(pushedRoute, AppRoutes.accountStatus);
+
+        await router.route(
+          const DriverRegistrationResubmittedPayload(
+            registrationId: 'reg-resub',
+          ),
+          messageId: 'msg-resub',
+        );
+        expect(pushedRoute, AppRoutes.accountStatus);
+      },
+    );
+
+    testWidgets('routes status deep link to accountStatus with registrationId', (
+      tester,
+    ) async {
+      await tester.pumpWidget(appWithMockNavigation());
+
+      final routed = await router.route(
+        const DriverRegistrationStatusDeepLinkPayload(
+          registrationId: 'reg-deep-link',
+        ),
+        messageId: 'msg-deep',
+      );
+
+      expect(routed, isTrue);
+      expect(pushedRoute, AppRoutes.accountStatus);
+      final args = pushedArguments as AccountStatusRouteArgs;
+      expect(args.registrationId, 'reg-deep-link');
+    });
+
+    testWidgets(
+      'buffers payload during cold start when navigator is null and routes on routePending',
+      (tester) async {
+        // No widget mounted yet, navigator is null
+        final routed = await router.route(
+          const DriverRegistrationRestaurantApprovedPayload(
+            registrationId: 'reg-cold',
+          ),
+          messageId: 'msg-cold',
+        );
+
+        expect(routed, isFalse);
+        expect(router.pendingPayload, isNotNull);
+
+        // Mount widget now
+        await tester.pumpWidget(appWithMockNavigation());
+
+        final pendingRouted = await router.routePending();
+        expect(pendingRouted, isTrue);
+        expect(pushedRoute, AppRoutes.accountStatus);
+        expect(router.pendingPayload, isNull);
+      },
+    );
 
     testWidgets(
       'routes driver box/trip/kitchen payloads to driverAssignedBoxes',
@@ -149,7 +273,7 @@ void main() {
       expect(pushedRoute, AppRoutes.dispatcherOrders);
     });
 
-    testWidgets('routes driver registration submitted to dispatcherHome', (
+    testWidgets('routes driver registration submitted to accountStatus', (
       tester,
     ) async {
       await tester.pumpWidget(appWithMockNavigation());
@@ -158,7 +282,7 @@ void main() {
         const DriverRegistrationSubmittedPayload(registrationId: 'reg-sub'),
         messageId: 'msg-sub',
       );
-      expect(pushedRoute, AppRoutes.dispatcherHome);
+      expect(pushedRoute, AppRoutes.accountStatus);
     });
 
     testWidgets('does not route incoming_call or unsupported', (tester) async {

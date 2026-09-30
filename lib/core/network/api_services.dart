@@ -4,6 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../features/account_status/data/models/response/driver_registration_status_response_dto.dart';
+import '../../features/auth/data/models/request/driver_first_time_setup_request_dto.dart';
+import '../../features/auth/data/models/request/driver_forgot_password_request_dto.dart';
+import '../../features/auth/data/models/request/driver_login_request_dto.dart';
+import '../../features/auth/data/models/request/driver_phone_lookup_request_dto.dart';
+import '../../features/auth/data/models/request/driver_resend_otp_request_dto.dart';
+import '../../features/auth/data/models/request/driver_reset_password_request_dto.dart';
+import '../../features/auth/data/models/request/driver_verify_otp_request_dto.dart';
 import '../../features/auth/data/models/request/forgot_password_request_dto.dart';
 import '../../features/auth/data/models/request/phone_lookup_request_dto.dart';
 import '../../features/auth/data/models/request/refresh_token_request_dto.dart';
@@ -12,6 +19,9 @@ import '../../features/auth/data/models/request/reset_password_request_dto.dart'
 import '../../features/auth/data/models/request/set_password_request_dto.dart';
 import '../../features/auth/data/models/request/staff_login_request_dto.dart';
 import '../../features/auth/data/models/request/verify_first_time_otp_request_dto.dart';
+import '../../features/auth/data/models/response/driver_auth_response_dto.dart';
+import '../../features/auth/data/models/response/driver_message_response_dto.dart';
+import '../../features/auth/data/models/response/driver_phone_lookup_response_dto.dart';
 import '../../features/auth/data/models/response/phone_lookup_response_dto.dart';
 import '../../features/auth/data/models/response/staff_auth_response_dto.dart';
 import '../../features/auth/data/models/response/staff_message_response_dto.dart';
@@ -68,6 +78,7 @@ import '../../features/dispatcher/dispatcher_drivers_status/data/models/request/
 import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/dispatcher_driver_details_response_dto.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/dispatcher_drivers_status_response_dto.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/update_driver_availability_response_dto.dart';
+import '../../features/driver/driver_notifications/data/models/driver_notification_dto.dart';
 import '../../features/driver/driver_profile/data/models/response/driver_profile_response_dto.dart';
 import 'network_constants.dart';
 
@@ -119,6 +130,42 @@ abstract class ApiServices {
   @GET(EndPoints.staffRoles)
   Future<List<StaffRoleResponseDto>> getStaffRoles();
 
+  // Driver auth endpoints
+  @POST(EndPoints.driverLookupPhone)
+  Future<DriverPhoneLookupResponseDto> driverLookupPhone(
+    @Body() DriverPhoneLookupRequestDto request,
+  );
+
+  @POST(EndPoints.driverFirstTimeSetup)
+  Future<DriverAuthResponseDto> driverFirstTimeSetup(
+    @Body() DriverFirstTimeSetupRequestDto request,
+  );
+
+  @POST(EndPoints.driverLogin)
+  Future<DriverAuthResponseDto> driverLogin(
+    @Body() DriverLoginRequestDto request,
+  );
+
+  @POST(EndPoints.driverResendOtp)
+  Future<DriverMessageResponseDto> driverResendOtp(
+    @Body() DriverResendOtpRequestDto request,
+  );
+
+  @POST(EndPoints.driverVerifyOtp)
+  Future<DriverMessageResponseDto> driverVerifyOtp(
+    @Body() DriverVerifyOtpRequestDto request,
+  );
+
+  @POST(EndPoints.driverForgotPassword)
+  Future<DriverMessageResponseDto> driverForgotPassword(
+    @Body() DriverForgotPasswordRequestDto request,
+  );
+
+  @POST(EndPoints.driverResetPassword)
+  Future<DriverMessageResponseDto> driverResetPassword(
+    @Body() DriverResetPasswordRequestDto request,
+  );
+
   // Driver-only registration and status endpoints
   @GET(EndPoints.driverRestaurants)
   Future<List<DriverRestaurantResponseDto>> getDriverRestaurants();
@@ -169,6 +216,12 @@ abstract class ApiServices {
 
   @DELETE(EndPoints.driverDeviceToken)
   Future<void> deactivateDriverDeviceToken(@Query('token') String token);
+
+  @GET(EndPoints.driverNotifications)
+  Future<List<DriverNotificationDto>> getDriverNotifications();
+
+  @PUT(EndPoints.driverNotificationRead)
+  Future<void> markDriverNotificationAsRead(@Path('id') String id);
 
   @PUT(EndPoints.restaurantDeviceTokens)
   Future<void> upsertRestaurantDeviceTokens(

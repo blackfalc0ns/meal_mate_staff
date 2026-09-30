@@ -157,6 +157,8 @@
   "accountStatusStartWork": "Start work",
   "accountStatusBackToLogin": "Back to login",
   "accountStatusResubmit": "Resubmit",
+  "resubmitEmptyChanges": "No changes were made. Please edit at least one field or upload a new document to resubmit.",
+  "phoneChangeRequiresVerification": "Phone number cannot be changed directly during review. Phone change requires separate verification.",
   "accountStatusEditAndResend": "Edit and resend",
   "accountStatusRejectionReason": "Rejection reason",
   "accountStatusChangeReason": "Reason for requested changes",

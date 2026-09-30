@@ -15,6 +15,38 @@ class NotificationPayloadParser {
     final normalizedEvent = event.trim().toLowerCase();
 
     switch (normalizedEvent) {
+      case 'driver.registration.submitted':
+        final id = _extractId(rawData, ['registrationId', 'registration_id']);
+        if (id == null) {
+          return UnsupportedNotificationPayload(
+            rawData: rawData,
+            reason: 'Missing registrationId for $normalizedEvent',
+          );
+        }
+        return DriverRegistrationSubmittedPayload(registrationId: id);
+
+      case 'driver.registration.independent_submitted':
+        final id = _extractId(rawData, ['registrationId', 'registration_id']);
+        if (id == null) {
+          return UnsupportedNotificationPayload(
+            rawData: rawData,
+            reason: 'Missing registrationId for $normalizedEvent',
+          );
+        }
+        return DriverRegistrationIndependentSubmittedPayload(
+          registrationId: id,
+        );
+
+      case 'driver.registration.resubmitted':
+        final id = _extractId(rawData, ['registrationId', 'registration_id']);
+        if (id == null) {
+          return UnsupportedNotificationPayload(
+            rawData: rawData,
+            reason: 'Missing registrationId for $normalizedEvent',
+          );
+        }
+        return DriverRegistrationResubmittedPayload(registrationId: id);
+
       case 'driver.registration.restaurant_approved':
         final id = _extractId(rawData, ['registrationId', 'registration_id']);
         if (id == null) {
@@ -35,7 +67,18 @@ class NotificationPayloadParser {
         }
         return DriverRegistrationChangesRequestedPayload(registrationId: id);
 
+      case 'driver.registration.restaurant_rejected':
+        final id = _extractId(rawData, ['registrationId', 'registration_id']);
+        if (id == null) {
+          return UnsupportedNotificationPayload(
+            rawData: rawData,
+            reason: 'Missing registrationId for $normalizedEvent',
+          );
+        }
+        return DriverRegistrationRestaurantRejectedPayload(registrationId: id);
+
       case 'driver.registration.admin_confirmed':
+      case 'driver.registration.admin_approved':
         final id = _extractId(rawData, ['registrationId', 'registration_id']);
         if (id == null) {
           return UnsupportedNotificationPayload(
@@ -44,6 +87,18 @@ class NotificationPayloadParser {
           );
         }
         return DriverRegistrationAdminConfirmedPayload(registrationId: id);
+
+      case 'driver.registration.admin_changes_requested':
+        final id = _extractId(rawData, ['registrationId', 'registration_id']);
+        if (id == null) {
+          return UnsupportedNotificationPayload(
+            rawData: rawData,
+            reason: 'Missing registrationId for $normalizedEvent',
+          );
+        }
+        return DriverRegistrationAdminChangesRequestedPayload(
+          registrationId: id,
+        );
 
       case 'driver.registration.admin_rejected':
         final id = _extractId(rawData, ['registrationId', 'registration_id']);
@@ -55,15 +110,10 @@ class NotificationPayloadParser {
         }
         return DriverRegistrationAdminRejectedPayload(registrationId: id);
 
-      case 'driver.registration.submitted':
+      case 'driver.status.deep_link':
+      case '/driver/status':
         final id = _extractId(rawData, ['registrationId', 'registration_id']);
-        if (id == null) {
-          return UnsupportedNotificationPayload(
-            rawData: rawData,
-            reason: 'Missing registrationId for $normalizedEvent',
-          );
-        }
-        return DriverRegistrationSubmittedPayload(registrationId: id);
+        return DriverRegistrationStatusDeepLinkPayload(registrationId: id);
 
       case 'driver.box.assigned':
       case 'box-assigned':
@@ -130,6 +180,22 @@ class NotificationPayloadParser {
     if (candidate is String && candidate.trim().isNotEmpty) {
       return candidate.trim();
     }
+
+    final nested = data['data'];
+    if (nested is Map<String, dynamic>) {
+      final nestedCandidate =
+          nested['event'] ?? nested['eventType'] ?? nested['type'];
+      if (nestedCandidate is String && nestedCandidate.trim().isNotEmpty) {
+        return nestedCandidate.trim();
+      }
+    }
+
+    final link =
+        data['link'] ?? data['route'] ?? data['deepLink'] ?? data['click_action'];
+    if (link is String && link.contains('/driver/status')) {
+      return 'driver.status.deep_link';
+    }
+
     return null;
   }
 
@@ -141,6 +207,32 @@ class NotificationPayloadParser {
         if (str.isNotEmpty) return str;
       }
     }
+
+    final nested = data['data'];
+    if (nested is Map<String, dynamic>) {
+      for (final key in keys) {
+        final value = nested[key];
+        if (value != null) {
+          final str = value.toString().trim();
+          if (str.isNotEmpty) return str;
+        }
+      }
+    }
+
+    final link =
+        data['link'] ?? data['route'] ?? data['deepLink'] ?? data['click_action'];
+    if (link is String && link.isNotEmpty) {
+      final uri = Uri.tryParse(link);
+      if (uri != null) {
+        for (final key in keys) {
+          final queryVal = uri.queryParameters[key];
+          if (queryVal != null && queryVal.trim().isNotEmpty) {
+            return queryVal.trim();
+          }
+        }
+      }
+    }
+
     return null;
   }
 }

@@ -13,6 +13,13 @@ class NotificationRouter {
   final LinkedHashMap<String, DateTime> _handledMessages =
       LinkedHashMap<String, DateTime>();
 
+  PushNotificationPayload? _pendingPayload;
+  PushNotificationPayload? get pendingPayload => _pendingPayload;
+
+  void clearPendingPayload() {
+    _pendingPayload = null;
+  }
+
   bool isDuplicate(String key, [DateTime? now]) {
     final current = now ?? DateTime.now();
     _cleanOldEntries(current);
@@ -33,6 +40,13 @@ class NotificationRouter {
     );
   }
 
+  Future<bool> routePending() async {
+    final payload = _pendingPayload;
+    if (payload == null) return false;
+    _pendingPayload = null;
+    return route(payload);
+  }
+
   Future<bool> route(
     PushNotificationPayload payload, {
     String? messageId,
@@ -44,6 +58,7 @@ class NotificationRouter {
 
     final navigator = AppNavigatorService.navigator;
     if (navigator == null) {
+      _pendingPayload = payload;
       return false;
     }
 
@@ -59,6 +74,7 @@ class NotificationRouter {
         return true;
 
       case DriverRegistrationChangesRequestedPayload(:final registrationId):
+      case DriverRegistrationAdminChangesRequestedPayload(:final registrationId):
         navigator.pushNamed(
           AppRoutes.accountStatus,
           arguments: AccountStatusRouteArgs(
@@ -68,7 +84,19 @@ class NotificationRouter {
         );
         return true;
 
+      case DriverRegistrationRestaurantRejectedPayload(:final registrationId):
+      case DriverRegistrationAdminRejectedPayload(:final registrationId):
+        navigator.pushNamed(
+          AppRoutes.accountStatus,
+          arguments: AccountStatusRouteArgs(
+            kind: AccountStatusKind.rejected,
+            registrationId: registrationId,
+          ),
+        );
+        return true;
+
       case DriverRegistrationAdminConfirmedPayload(:final registrationId):
+      case DriverRegistrationAdminApprovedPayload(:final registrationId):
         navigator.pushNamed(
           AppRoutes.accountStatus,
           arguments: AccountStatusRouteArgs(
@@ -78,11 +106,23 @@ class NotificationRouter {
         );
         return true;
 
-      case DriverRegistrationAdminRejectedPayload(:final registrationId):
+      case DriverRegistrationSubmittedPayload(:final registrationId):
+      case DriverRegistrationIndependentSubmittedPayload(:final registrationId):
+      case DriverRegistrationResubmittedPayload(:final registrationId):
         navigator.pushNamed(
           AppRoutes.accountStatus,
           arguments: AccountStatusRouteArgs(
-            kind: AccountStatusKind.rejected,
+            kind: AccountStatusKind.underReview,
+            registrationId: registrationId,
+          ),
+        );
+        return true;
+
+      case DriverRegistrationStatusDeepLinkPayload(:final registrationId):
+        navigator.pushNamed(
+          AppRoutes.accountStatus,
+          arguments: AccountStatusRouteArgs(
+            kind: AccountStatusKind.underReview,
             registrationId: registrationId,
           ),
         );
@@ -98,10 +138,6 @@ class NotificationRouter {
         navigator.pushNamed(AppRoutes.dispatcherOrders);
         return true;
 
-      case DriverRegistrationSubmittedPayload():
-        navigator.pushNamed(AppRoutes.dispatcherHome);
-        return true;
-
       case IncomingCallPayload():
       case UnsupportedNotificationPayload():
         return false;
@@ -114,16 +150,28 @@ class NotificationRouter {
         'restaurant_approved:$registrationId',
       DriverRegistrationChangesRequestedPayload(:final registrationId) =>
         'changes_requested:$registrationId',
+      DriverRegistrationRestaurantRejectedPayload(:final registrationId) =>
+        'restaurant_rejected:$registrationId',
       DriverRegistrationAdminConfirmedPayload(:final registrationId) =>
         'admin_confirmed:$registrationId',
+      DriverRegistrationAdminApprovedPayload(:final registrationId) =>
+        'admin_approved:$registrationId',
+      DriverRegistrationAdminChangesRequestedPayload(:final registrationId) =>
+        'admin_changes_requested:$registrationId',
       DriverRegistrationAdminRejectedPayload(:final registrationId) =>
         'admin_rejected:$registrationId',
+      DriverRegistrationSubmittedPayload(:final registrationId) =>
+        'submitted:$registrationId',
+      DriverRegistrationIndependentSubmittedPayload(:final registrationId) =>
+        'independent_submitted:$registrationId',
+      DriverRegistrationResubmittedPayload(:final registrationId) =>
+        'resubmitted:$registrationId',
+      DriverRegistrationStatusDeepLinkPayload(:final registrationId) =>
+        'status_deep_link:$registrationId',
       DriverBoxAssignedPayload(:final boxId) => 'box_assigned:$boxId',
       DriverTripAssignedPayload(:final tripId) => 'trip_assigned:$tripId',
       DriverTripKitchenReadyPayload(:final tripId) => 'kitchen_ready:$tripId',
       DispatcherBatchReadyPayload(:final batchId) => 'batch_ready:$batchId',
-      DriverRegistrationSubmittedPayload(:final registrationId) =>
-        'submitted:$registrationId',
       IncomingCallPayload() => 'incoming_call:${payload.hashCode}',
       UnsupportedNotificationPayload() => 'unsupported:${payload.hashCode}',
     };

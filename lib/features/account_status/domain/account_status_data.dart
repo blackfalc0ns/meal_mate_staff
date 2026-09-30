@@ -64,6 +64,12 @@ class AccountStatusData {
           .toList();
     }
 
+    final canResubmit = entity.canResubmit;
+    final primaryAction =
+        (entity.kind == AccountStatusKind.rejected && !canResubmit)
+            ? null
+            : base.primaryAction;
+
     return AccountStatusData(
       kind: entity.kind,
       illustrationAsset: base.illustrationAsset,
@@ -73,7 +79,7 @@ class AccountStatusData {
       body: (entity.subtitle != null && entity.subtitle!.isNotEmpty)
           ? entity.subtitle!
           : base.body,
-      primaryAction: base.primaryAction,
+      primaryAction: primaryAction,
       secondaryAction: base.secondaryAction,
       reasonTitle: (entity.badge != null && entity.badge!.isNotEmpty)
           ? entity.badge

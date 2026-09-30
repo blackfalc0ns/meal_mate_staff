@@ -491,6 +491,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountStatusResubmit => 'Resubmit';
 
   @override
+  String get resubmitEmptyChanges =>
+      'No changes were made. Please edit at least one field or upload a new document to resubmit.';
+
+  @override
+  String get phoneChangeRequiresVerification =>
+      'Phone number cannot be changed directly during review. Phone change requires separate verification.';
+
+  @override
   String get accountStatusEditAndResend => 'Edit and resend';
 
   @override

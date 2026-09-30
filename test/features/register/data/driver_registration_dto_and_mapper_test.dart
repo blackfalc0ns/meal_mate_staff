@@ -257,12 +257,69 @@ void main() {
       },
     );
 
-    test('DriverRegistrationDraftEntity checks validation accurately', () {
+    test('DriverRegistrationDraftEntity checks validation accurately and supports independent registration', () {
       const emptyDraft = DriverRegistrationDraftEntity();
       expect(emptyDraft.hasRequiredPersonalData, isFalse);
       expect(emptyDraft.hasRequiredVehicleData, isFalse);
       expect(emptyDraft.hasRequiredDocuments, isFalse);
       expect(emptyDraft.isReadyForSubmission, isFalse);
+
+      const independentDraft = DriverRegistrationDraftEntity(
+        restaurantId: '',
+        fullNameAr: 'محمد العلي',
+        fullNameEn: 'Mohammed Al-Ali',
+        phone: '+96550000000',
+        password: 'Password123!',
+        nationalId: '12345678',
+        nationalIdExpiry: '2030-01-01T00:00:00Z',
+        nationality: 'Kuwaiti',
+        vehicleType: 'Car',
+        vehicleModel: 'Camry',
+        vehiclePlate: '1234',
+        vehicleYear: 2022,
+        licenseNumber: 'LIC-1',
+        licenseExpiry: '2030-01-01T00:00:00Z',
+        vehicleLicenseExpiry: '2030-01-01T00:00:00Z',
+        nationalIdFrontStorageKey: 'nid_f',
+        nationalIdBackStorageKey: 'nid_b',
+        drivingLicenseFrontStorageKey: 'lic_f',
+        drivingLicenseBackStorageKey: 'lic_b',
+        vehicleRegistrationStorageKey: 'veh_reg',
+      );
+      expect(independentDraft.isReadyForSubmission, isTrue);
+
+      final dto = independentDraft.toDto();
+      expect(dto.restaurantId, isNull);
+      final json = dto.toJson();
+      expect(json.containsKey('restaurantId'), isTrue);
+      expect(json['restaurantId'], isNull);
+    });
+
+    test('DriverRegistrationResponseDto preserves response fields without session tokens', () {
+      final json = {
+        'registrationId': 'reg-abc-123',
+        'restaurantId': null,
+        'restaurantName': null,
+        'fullName': 'Mohammed Al-Ali',
+        'fullNameAr': 'محمد العلي',
+        'fullNameEn': null,
+        'phone': '+96550000000',
+        'email': 'driver@test.com',
+        'status': 'UnderReview',
+        'message': 'Registration received.',
+      };
+
+      final dto = DriverRegistrationResponseDto.fromJson(json);
+      expect(dto.registrationId, 'reg-abc-123');
+      expect(dto.restaurantId, isNull);
+      expect(dto.fullName, 'Mohammed Al-Ali');
+      expect(dto.fullNameAr, 'محمد العلي');
+      expect(dto.fullNameEn, isNull);
+      expect(dto.status, 'UnderReview');
+
+      final entity = dto.toEntity();
+      expect(entity.registrationId, 'reg-abc-123');
+      expect(entity.status, 'UnderReview');
     });
 
     test('DriverResubmitEntity maps correctly to DriverResubmitRequestDto', () {

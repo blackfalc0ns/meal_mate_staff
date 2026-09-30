@@ -4,6 +4,8 @@ import '../../domain/entities/phone_lookup_result_entity.dart';
 import '../../domain/entities/staff_application_status_entity.dart';
 import '../../domain/entities/verify_first_time_otp_result_entity.dart';
 import '../../domain/user_role.dart';
+import '../models/response/driver_auth_response_dto.dart';
+import '../models/response/driver_phone_lookup_response_dto.dart';
 import '../models/response/phone_lookup_response_dto.dart';
 import '../models/response/staff_application_status_dto.dart';
 import '../models/response/staff_auth_response_dto.dart';
@@ -46,6 +48,23 @@ extension PhoneLookupResponseDtoMapper on PhoneLookupResponseDto {
       restaurantId: restaurantId,
       status: status,
       applicationStatus: applicationStatus.toEntity(),
+    );
+  }
+}
+
+extension DriverPhoneLookupResponseDtoMapper on DriverPhoneLookupResponseDto {
+  PhoneLookupResultEntity toEntity({
+    UserRole fallbackRole = UserRole.driver,
+    String fallbackPhone = '',
+  }) {
+    return PhoneLookupResultEntity(
+      exists: exists ?? false,
+      isFirstTimeSetup: requiresFirstTimeSetup ?? false,
+      role: fallbackRole,
+      phone: fallbackPhone,
+      fullName: fullName,
+      restaurantName: restaurantName,
+      status: accountStatus,
     );
   }
 }
@@ -95,6 +114,38 @@ extension StaffAuthResponseDtoMapper on StaffAuthResponseDto {
       accessTokenExpiresAtUtc: parsedExpiry,
       isAuthenticated:
           isAuthenticated ?? (accessToken != null && accessToken!.isNotEmpty),
+    );
+  }
+}
+
+extension DriverAuthResponseDtoMapper on DriverAuthResponseDto {
+  AuthSessionEntity toSessionEntity({
+    UserRole fallbackRole = UserRole.driver,
+    String fallbackPhone = '',
+  }) {
+    final parsedUserRole = userType != null
+        ? userType.toUserRole()
+        : fallbackRole;
+
+    DateTime? parsedExpiry;
+    if (expiresIn != null && expiresIn! > 0) {
+      parsedExpiry = DateTime.now().toUtc().add(Duration(seconds: expiresIn!));
+    }
+
+    return AuthSessionEntity(
+      user: AuthUserEntity(
+        userId: userId ?? '',
+        phoneNumber: phoneNumber ?? fallbackPhone,
+        fullName: fullName ?? '',
+        role: parsedUserRole,
+        restaurantId: restaurantId,
+        accountStatus: accountStatus,
+        roles: roles ?? const ['Driver'],
+      ),
+      accessToken: accessToken ?? '',
+      refreshToken: refreshToken ?? '',
+      accessTokenExpiresAtUtc: parsedExpiry,
+      isAuthenticated: accessToken != null && accessToken!.isNotEmpty,
     );
   }
 }

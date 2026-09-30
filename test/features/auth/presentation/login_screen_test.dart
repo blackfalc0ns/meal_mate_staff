@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/routing_generator.dart';
 import 'package:meal_mate_delivery/config/theme/app_theme.dart';
 import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_widget.dart';
+import 'package:meal_mate_delivery/core/widget/custom_progress_indecator.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
@@ -37,11 +39,15 @@ import 'package:meal_mate_delivery/features/auth/presentation/widgets/auth_prima
 class _FakeLoginRepo implements AuthRepository {
   ApiResult<AuthSessionEntity>? loginResult;
   ApiResult<PhoneLookupResultEntity>? lookupResult;
+  Future<ApiResult<AuthSessionEntity>> Function(StaffLoginRequestEntity)? onLogin;
 
   @override
   Future<ApiResult<AuthSessionEntity>> login(
     StaffLoginRequestEntity request,
   ) async {
+    if (onLogin != null) {
+      return onLogin!(request);
+    }
     return loginResult ??
         ApiSuccessResult(
           data: AuthSessionEntity(
@@ -186,6 +192,9 @@ void main() {
   testWidgets(
     'LoginScreen displays CustomProgressIndicator while loading is active',
     (tester) async {
+      final completer = Completer<ApiResult<AuthSessionEntity>>();
+      fakeRepo.onLogin = (_) => completer.future;
+
       await tester.pumpWidget(
         buildTestApp(LoginScreen(role: UserRole.driver, viewModel: viewModel)),
       );
@@ -197,7 +206,12 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 50));
 
-      expect(find.byType(AuthPrimaryButton), findsOneWidget);
+      expect(find.byType(CustomProgressIndicator), findsOneWidget);
+
+      completer.complete(
+        ApiErrorResult(failure: Failure(errorMessage: 'Loading test complete')),
+      );
+      await tester.pump();
     },
   );
 }

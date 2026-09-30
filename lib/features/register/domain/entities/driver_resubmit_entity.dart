@@ -3,7 +3,6 @@ class DriverResubmitEntity {
     this.restaurantId,
     this.fullNameAr,
     this.fullNameEn,
-    this.phone,
     this.email,
     this.nationalId,
     this.nationalIdExpiry,
@@ -32,7 +31,6 @@ class DriverResubmitEntity {
   final String? restaurantId;
   final String? fullNameAr;
   final String? fullNameEn;
-  final String? phone;
   final String? email;
   final String? nationalId;
   final String? nationalIdExpiry;
@@ -56,4 +54,35 @@ class DriverResubmitEntity {
   final String? profileImageStorageKey;
   final String? vehiclePhotoStorageKey;
   final String? contractStorageKey;
+
+  bool get isEmpty {
+    return restaurantId == null &&
+        fullNameAr == null &&
+        fullNameEn == null &&
+        email == null &&
+        nationalId == null &&
+        nationalIdExpiry == null &&
+        dateOfBirth == null &&
+        nationality == null &&
+        vehicleType == null &&
+        vehicleModel == null &&
+        vehiclePlate == null &&
+        vehicleYear == null &&
+        vehicleColor == null &&
+        isVehicleOwned == null &&
+        licenseNumber == null &&
+        licenseExpiry == null &&
+        vehicleLicenseExpiry == null &&
+        contractExpiry == null &&
+        nationalIdFrontStorageKey == null &&
+        nationalIdBackStorageKey == null &&
+        drivingLicenseFrontStorageKey == null &&
+        drivingLicenseBackStorageKey == null &&
+        vehicleRegistrationStorageKey == null &&
+        profileImageStorageKey == null &&
+        vehiclePhotoStorageKey == null &&
+        contractStorageKey == null;
+  }
+
+  bool get isNotEmpty => !isEmpty;
 }

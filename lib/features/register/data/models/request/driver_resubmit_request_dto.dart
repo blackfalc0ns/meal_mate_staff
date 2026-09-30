@@ -8,7 +8,6 @@ class DriverResubmitRequestDto {
     this.restaurantId,
     this.fullNameAr,
     this.fullNameEn,
-    this.phone,
     this.email,
     this.nationalId,
     this.nationalIdExpiry,
@@ -40,7 +39,6 @@ class DriverResubmitRequestDto {
   final String? restaurantId;
   final String? fullNameAr;
   final String? fullNameEn;
-  final String? phone;
   final String? email;
   final String? nationalId;
   final String? nationalIdExpiry;

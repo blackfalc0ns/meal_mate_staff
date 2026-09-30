@@ -67,8 +67,8 @@ class AccountStatusResultContent extends StatelessWidget {
         ],
         const SizedBox(height: Spacing.accountStatusButtonTop),
         AccountStatusActionButtons(
-          primaryText: data.primaryAction!,
-          secondaryText: data.secondaryAction!,
+          primaryText: data.primaryAction,
+          secondaryText: data.secondaryAction ?? '',
           onPrimaryPressed: onPrimaryPressed,
           onSecondaryPressed: onSecondaryPressed,
         ),

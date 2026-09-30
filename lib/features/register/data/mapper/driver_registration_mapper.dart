@@ -137,7 +137,7 @@ extension DriverRegistrationResponseDtoMapper on DriverRegistrationResponseDto {
 extension DriverRegistrationDraftEntityMapper on DriverRegistrationDraftEntity {
   DriverRegistrationRequestDto toDto() {
     return DriverRegistrationRequestDto(
-      restaurantId: restaurantId,
+      restaurantId: restaurantId.trim().isNotEmpty ? restaurantId.trim() : null,
       fullNameAr: fullNameAr,
       fullNameEn: fullNameEn,
       phone: phone,
@@ -193,7 +193,6 @@ extension DriverResubmitEntityMapper on DriverResubmitEntity {
       restaurantId: restaurantId,
       fullNameAr: fullNameAr,
       fullNameEn: fullNameEn,
-      phone: phone,
       email: email,
       nationalId: nationalId,
       nationalIdExpiry: nationalIdExpiry,

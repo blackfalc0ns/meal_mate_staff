@@ -34,16 +34,54 @@ void main() {
       );
     });
 
-    test('parses driver.registration.admin_confirmed', () {
+    test('parses driver.registration.restaurant_rejected', () {
       final payload = parser.parse({
-        'eventType': 'driver.registration.admin_confirmed',
-        'registrationId': 'reg-789',
+        'event': 'driver.registration.restaurant_rejected',
+        'registrationId': 'reg-rej-1',
       });
 
       expect(
         payload,
+        const DriverRegistrationRestaurantRejectedPayload(
+          registrationId: 'reg-rej-1',
+        ),
+      );
+    });
+
+    test('parses driver.registration.admin_confirmed and admin_approved', () {
+      final payloadConfirmed = parser.parse({
+        'eventType': 'driver.registration.admin_confirmed',
+        'registrationId': 'reg-789',
+      });
+      final payloadApproved = parser.parse({
+        'event': 'driver.registration.admin_approved',
+        'registrationId': 'reg-789',
+      });
+
+      expect(
+        payloadConfirmed,
         const DriverRegistrationAdminConfirmedPayload(
           registrationId: 'reg-789',
+        ),
+      );
+      expect(
+        payloadApproved,
+        const DriverRegistrationAdminConfirmedPayload(
+          registrationId: 'reg-789',
+        ),
+      );
+    });
+
+    test('parses driver.registration.admin_changes_requested', () {
+      final payload = parser.parse({
+        'event': 'driver.registration.admin_changes_requested',
+        'registrationId': 'reg-adm-chg',
+      });
+
+      expect(
+        payload,
+        const DriverRegistrationAdminChangesRequestedPayload(
+          registrationId: 'reg-adm-chg',
         ),
       );
     });
@@ -69,6 +107,63 @@ void main() {
       expect(
         payload,
         const DriverRegistrationSubmittedPayload(registrationId: 'reg-111'),
+      );
+    });
+
+    test('parses driver.registration.independent_submitted', () {
+      final payload = parser.parse({
+        'event': 'driver.registration.independent_submitted',
+        'registrationId': 'reg-indep-1',
+      });
+
+      expect(
+        payload,
+        const DriverRegistrationIndependentSubmittedPayload(
+          registrationId: 'reg-indep-1',
+        ),
+      );
+    });
+
+    test('parses driver.registration.resubmitted', () {
+      final payload = parser.parse({
+        'event': 'driver.registration.resubmitted',
+        'registrationId': 'reg-resub-1',
+      });
+
+      expect(
+        payload,
+        const DriverRegistrationResubmittedPayload(
+          registrationId: 'reg-resub-1',
+        ),
+      );
+    });
+
+    test('parses deep link /driver/status?registrationId=...', () {
+      final payload = parser.parse({
+        'route': '/driver/status?registrationId=reg-deep-9',
+      });
+
+      expect(
+        payload,
+        const DriverRegistrationStatusDeepLinkPayload(
+          registrationId: 'reg-deep-9',
+        ),
+      );
+    });
+
+    test('extracts ID from nested data map', () {
+      final payload = parser.parse({
+        'event': 'driver.registration.restaurant_approved',
+        'data': {
+          'registrationId': 'reg-nested-7',
+        },
+      });
+
+      expect(
+        payload,
+        const DriverRegistrationRestaurantApprovedPayload(
+          registrationId: 'reg-nested-7',
+        ),
       );
     });
 

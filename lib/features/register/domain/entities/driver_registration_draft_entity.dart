@@ -66,7 +66,6 @@ class DriverRegistrationDraftEntity {
   final String? contractStorageKey;
 
   bool get hasRequiredPersonalData =>
-      restaurantId.trim().isNotEmpty &&
       fullNameAr.trim().isNotEmpty &&
       fullNameEn.trim().isNotEmpty &&
       phone.trim().isNotEmpty &&
@@ -136,7 +135,6 @@ class DriverRegistrationDraftEntity {
       restaurantId: restaurantId.isNotEmpty ? restaurantId : null,
       fullNameAr: fullNameAr.isNotEmpty ? fullNameAr : null,
       fullNameEn: fullNameEn.isNotEmpty ? fullNameEn : null,
-      phone: phone.isNotEmpty ? phone : null,
       email: email,
       nationalId: nationalId.isNotEmpty ? nationalId : null,
       nationalIdExpiry: nationalIdExpiry.isNotEmpty ? nationalIdExpiry : null,
@@ -172,6 +170,142 @@ class DriverRegistrationDraftEntity {
       profileImageStorageKey: profileImageStorageKey,
       vehiclePhotoStorageKey: vehiclePhotoStorageKey,
       contractStorageKey: contractStorageKey,
+    );
+  }
+
+  bool hasChangesFrom({
+    required DriverRegistrationDraftEntity original,
+    Set<String> newlyUploadedDocumentIds = const {},
+  }) {
+    if (newlyUploadedDocumentIds.isNotEmpty) return true;
+    if (restaurantId.trim() != original.restaurantId.trim()) return true;
+    if (fullNameAr.trim() != original.fullNameAr.trim()) return true;
+    if (fullNameEn.trim() != original.fullNameEn.trim()) return true;
+    if (email?.trim() != original.email?.trim()) return true;
+    if (nationalId.trim() != original.nationalId.trim()) return true;
+    if (nationalIdExpiry.trim() != original.nationalIdExpiry.trim()) return true;
+    if (dateOfBirth?.trim() != original.dateOfBirth?.trim()) return true;
+    if (nationality.trim() != original.nationality.trim()) return true;
+    if (vehicleType.trim() != original.vehicleType.trim()) return true;
+    if (vehicleModel.trim() != original.vehicleModel.trim()) return true;
+    if (vehiclePlate.trim() != original.vehiclePlate.trim()) return true;
+    if (vehicleYear != original.vehicleYear) return true;
+    if (vehicleColor?.trim() != original.vehicleColor?.trim()) return true;
+    if (isVehicleOwned != original.isVehicleOwned) return true;
+    if (licenseNumber.trim() != original.licenseNumber.trim()) return true;
+    if (licenseExpiry.trim() != original.licenseExpiry.trim()) return true;
+    if (vehicleLicenseExpiry.trim() != original.vehicleLicenseExpiry.trim()) {
+      return true;
+    }
+    if (contractExpiry?.trim() != original.contractExpiry?.trim()) return true;
+    return false;
+  }
+
+  DriverResubmitEntity toSparseResubmitEntity({
+    required DriverRegistrationDraftEntity original,
+    Set<String> newlyUploadedDocumentIds = const {},
+  }) {
+    return DriverResubmitEntity(
+      restaurantId: restaurantId.trim() != original.restaurantId.trim()
+          ? (restaurantId.trim().isNotEmpty ? restaurantId.trim() : null)
+          : null,
+      fullNameAr: fullNameAr.trim() != original.fullNameAr.trim()
+          ? (fullNameAr.trim().isNotEmpty ? fullNameAr.trim() : null)
+          : null,
+      fullNameEn: fullNameEn.trim() != original.fullNameEn.trim()
+          ? (fullNameEn.trim().isNotEmpty ? fullNameEn.trim() : null)
+          : null,
+      email: email?.trim() != original.email?.trim() ? email?.trim() : null,
+      nationalId: nationalId.trim() != original.nationalId.trim()
+          ? (nationalId.trim().isNotEmpty ? nationalId.trim() : null)
+          : null,
+      nationalIdExpiry: nationalIdExpiry.trim() != original.nationalIdExpiry.trim()
+          ? (nationalIdExpiry.trim().isNotEmpty ? nationalIdExpiry.trim() : null)
+          : null,
+      dateOfBirth: dateOfBirth?.trim() != original.dateOfBirth?.trim()
+          ? (dateOfBirth?.trim().isNotEmpty == true
+              ? dateOfBirth!.trim().replaceAll('/', '-')
+              : null)
+          : null,
+      nationality: nationality.trim() != original.nationality.trim()
+          ? (nationality.trim().isNotEmpty ? nationality.trim() : null)
+          : null,
+      vehicleType: vehicleType.trim() != original.vehicleType.trim()
+          ? (vehicleType.trim().isNotEmpty ? vehicleType.trim() : null)
+          : null,
+      vehicleModel: vehicleModel.trim() != original.vehicleModel.trim()
+          ? (vehicleModel.trim().isNotEmpty ? vehicleModel.trim() : null)
+          : null,
+      vehiclePlate: vehiclePlate.trim() != original.vehiclePlate.trim()
+          ? (vehiclePlate.trim().isNotEmpty ? vehiclePlate.trim() : null)
+          : null,
+      vehicleYear: vehicleYear != original.vehicleYear && vehicleYear > 0
+          ? vehicleYear
+          : null,
+      vehicleColor: vehicleColor?.trim() != original.vehicleColor?.trim()
+          ? (vehicleColor?.trim().isNotEmpty == true
+              ? vehicleColor!.trim()
+              : null)
+          : null,
+      isVehicleOwned: isVehicleOwned != original.isVehicleOwned
+          ? isVehicleOwned
+          : null,
+      licenseNumber: licenseNumber.trim() != original.licenseNumber.trim()
+          ? (licenseNumber.trim().isNotEmpty ? licenseNumber.trim() : null)
+          : null,
+      licenseExpiry: licenseExpiry.trim() != original.licenseExpiry.trim()
+          ? (licenseExpiry.trim().isNotEmpty ? licenseExpiry.trim() : null)
+          : null,
+      vehicleLicenseExpiry: vehicleLicenseExpiry.trim() != original.vehicleLicenseExpiry.trim()
+          ? (vehicleLicenseExpiry.trim().isNotEmpty
+              ? vehicleLicenseExpiry.trim()
+              : null)
+          : null,
+      contractExpiry: contractExpiry?.trim() != original.contractExpiry?.trim()
+          ? (contractExpiry?.trim().isNotEmpty == true
+              ? contractExpiry!.trim()
+              : null)
+          : null,
+      nationalIdFrontStorageKey: (newlyUploadedDocumentIds.contains('civil-card') ||
+              nationalIdFrontStorageKey != original.nationalIdFrontStorageKey) &&
+          nationalIdFrontStorageKey.isNotEmpty
+          ? nationalIdFrontStorageKey
+          : null,
+      nationalIdBackStorageKey: (newlyUploadedDocumentIds.contains('civil-card') ||
+              nationalIdBackStorageKey != original.nationalIdBackStorageKey) &&
+          nationalIdBackStorageKey.isNotEmpty
+          ? nationalIdBackStorageKey
+          : null,
+      drivingLicenseFrontStorageKey: (newlyUploadedDocumentIds.contains('driving-license') ||
+              drivingLicenseFrontStorageKey != original.drivingLicenseFrontStorageKey) &&
+          drivingLicenseFrontStorageKey.isNotEmpty
+          ? drivingLicenseFrontStorageKey
+          : null,
+      drivingLicenseBackStorageKey: (newlyUploadedDocumentIds.contains('driving-license') ||
+              drivingLicenseBackStorageKey != original.drivingLicenseBackStorageKey) &&
+          drivingLicenseBackStorageKey.isNotEmpty
+          ? drivingLicenseBackStorageKey
+          : null,
+      vehicleRegistrationStorageKey: (newlyUploadedDocumentIds.contains('car-registration') ||
+              vehicleRegistrationStorageKey != original.vehicleRegistrationStorageKey) &&
+          vehicleRegistrationStorageKey.isNotEmpty
+          ? vehicleRegistrationStorageKey
+          : null,
+      profileImageStorageKey: (newlyUploadedDocumentIds.contains('personal-photo') ||
+              profileImageStorageKey != original.profileImageStorageKey) &&
+          (profileImageStorageKey != null && profileImageStorageKey!.isNotEmpty)
+          ? profileImageStorageKey
+          : null,
+      vehiclePhotoStorageKey: (newlyUploadedDocumentIds.contains('vehicle-photo') ||
+              vehiclePhotoStorageKey != original.vehiclePhotoStorageKey) &&
+          (vehiclePhotoStorageKey != null && vehiclePhotoStorageKey!.isNotEmpty)
+          ? vehiclePhotoStorageKey
+          : null,
+      contractStorageKey: (newlyUploadedDocumentIds.contains('contract') ||
+              contractStorageKey != original.contractStorageKey) &&
+          (contractStorageKey != null && contractStorageKey!.isNotEmpty)
+          ? contractStorageKey
+          : null,
     );
   }
 

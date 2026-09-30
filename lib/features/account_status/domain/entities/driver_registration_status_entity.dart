@@ -6,6 +6,9 @@ class DriverRegistrationStatusEntity {
     required this.kind,
     this.phone,
     this.fullName,
+    this.fullNameAr,
+    this.fullNameEn,
+    this.requestedByRole,
     this.restaurantName,
     this.restaurantId,
     this.statusString = 'Submitted',
@@ -26,6 +29,9 @@ class DriverRegistrationStatusEntity {
   final AccountStatusKind kind;
   final String? phone;
   final String? fullName;
+  final String? fullNameAr;
+  final String? fullNameEn;
+  final String? requestedByRole;
   final String? restaurantName;
   final String? restaurantId;
   final String statusString;

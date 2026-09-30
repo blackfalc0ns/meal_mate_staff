@@ -160,6 +160,8 @@ class _VehicleCatalogFailureRepo extends _TestRegistrationRepo {
 }
 
 Future<void> _completePersonalAndContinue(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(1080, 2400);
+  tester.view.devicePixelRatio = 1.0;
   await tester.pumpAndSettle();
   final initialFields = find.byType(TextFormField);
   await tester.ensureVisible(initialFields.at(0));
@@ -172,17 +174,18 @@ Future<void> _completePersonalAndContinue(WidgetTester tester) async {
   await tester.enterText(fields.at(1), 'Ahmed Arabic Name');
   await tester.enterText(fields.at(2), 'Ahmed Mohamed Al-Shammari');
   await tester.enterText(fields.at(3), '+966501234567');
-  await tester.enterText(fields.at(7), '1234567890');
+  await tester.enterText(fields.at(4), 'Password123!');
+  await tester.enterText(fields.at(8), '1234567890');
 
-  await tester.ensureVisible(fields.at(6));
-  await tester.tap(fields.at(6));
+  await tester.ensureVisible(fields.at(7));
+  await tester.tap(fields.at(7));
   await tester.pumpAndSettle();
   await tester.tap(find.textContaining('Kuwaiti').last);
   await tester.pumpAndSettle();
 
   final updatedFields = find.byType(TextFormField);
-  await tester.ensureVisible(updatedFields.at(8));
-  await tester.tap(updatedFields.at(8));
+  await tester.ensureVisible(updatedFields.at(9));
+  await tester.tap(updatedFields.at(9));
   await tester.pumpAndSettle();
   await tester.tap(find.byType(AppButton).last);
   await tester.pumpAndSettle();
@@ -270,6 +273,7 @@ void main() {
           home: const RegisterScreen(),
         ),
       );
+      await tester.pumpAndSettle();
 
       expect(find.byType(CustomAppBar), findsOneWidget);
       expect(find.text('Personal data'), findsWidgets);
@@ -370,6 +374,7 @@ void main() {
         home: const RegisterScreen(),
       ),
     );
+    await tester.pumpAndSettle();
 
     await tester.ensureVisible(find.text('Continue'));
     await tester.tap(find.text('Continue'));
@@ -413,6 +418,7 @@ void main() {
         home: const RegisterScreen(),
       ),
     );
+    await tester.pumpAndSettle();
 
     expect(find.widgetWithText(AppButton, 'Continue'), findsOneWidget);
 
