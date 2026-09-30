@@ -68,6 +68,7 @@ import '../../features/dispatcher/dispatcher_drivers_status/data/models/request/
 import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/dispatcher_driver_details_response_dto.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/dispatcher_drivers_status_response_dto.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/data/models/response/update_driver_availability_response_dto.dart';
+import '../../features/driver/driver_profile/data/models/response/driver_profile_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -374,4 +375,7 @@ abstract class ApiServices {
   Future<DriverCallProxyResponseDto> getDriverCallProxy(
     @Path('boxId') String boxId,
   );
+
+  @GET(EndPoints.driverProfile)
+  Future<DriverProfileResponseDto> getDriverProfile();
 }

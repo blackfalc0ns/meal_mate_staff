@@ -52,6 +52,11 @@ import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup
 import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_view_model.dart';
 import '../../features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../features/driver/active_delivery/domain/repositories/active_delivery_repository.dart';
+import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source.dart';
+import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source_impl.dart';
+import '../../features/driver/driver_profile/data/repo/driver_profile_repository_impl.dart';
+import '../../features/driver/driver_profile/domain/repo/driver_profile_repository.dart';
+import '../../features/driver/driver_profile/domain/usecase/get_driver_profile_usecase.dart';
 import '../../features/driver/home/data/datasources/driver_home_datasource.dart';
 import '../../features/driver/home/data/datasources/driver_home_fake_datasource.dart';
 import '../../features/driver/home/data/repositories/driver_home_repository_impl.dart';
@@ -850,6 +855,17 @@ Future<void> configureDependencies() async {
     () => DriverActiveHomeViewModel(
       getDriverActiveHomeUseCase: getIt<GetDriverActiveHomeUseCase>(),
     ),
+  );
+
+  // Driver Profile feature dependencies
+  getIt.registerLazySingleton<DriverProfileRemoteDataSource>(
+    () => DriverProfileRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverProfileRepository>(
+    () => DriverProfileRepositoryImpl(getIt<DriverProfileRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetDriverProfileUseCase>(
+    () => GetDriverProfileUseCase(getIt<DriverProfileRepository>()),
   );
 }
 
