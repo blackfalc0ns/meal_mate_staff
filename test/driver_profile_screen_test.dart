@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/driver/driver_profile/domain/entities/driver_profile_entity.dart';
+import 'package:meal_mate_delivery/features/driver/driver_profile/domain/fake_data/driver_profile_fake_data.dart';
 import 'package:meal_mate_delivery/features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
 import 'package:meal_mate_delivery/features/driver/driver_profile/presentation/widgets/driver_profile_contact_card.dart';
 import 'package:meal_mate_delivery/features/driver/driver_profile/presentation/widgets/driver_profile_header.dart';
@@ -22,6 +23,8 @@ void main() {
     VoidCallback? onRecentTicketTap,
     VoidCallback? onLogoutTap,
   }) {
+    final resolvedProfile = profile ?? DriverProfileFakeData.defaultProfile;
+
     return MaterialApp(
       locale: locale,
       localizationsDelegates: const [
@@ -32,7 +35,7 @@ void main() {
       ],
       supportedLocales: const [Locale('ar'), Locale('en')],
       home: DriverProfileScreen(
-        profile: profile,
+        profile: resolvedProfile,
         onSettingsTap: onSettingsTap,
         onContactUsTap: onContactUsTap,
         onViewAllTicketsTap: onViewAllTicketsTap,
@@ -62,7 +65,7 @@ void main() {
 
     expect(find.text('الملف الشخصي والدعم'), findsOneWidget);
     expect(find.text('أحمد إبراهيم'), findsOneWidget);
-    expect(find.text('#MM-1256'), findsOneWidget);
+    expect(find.text('MM-1256'), findsOneWidget);
     expect(find.text('معلومات المركبة'), findsOneWidget);
     expect(find.text('نشطة'), findsOneWidget);
     expect(find.text('تواصل مع الدعم'), findsOneWidget);

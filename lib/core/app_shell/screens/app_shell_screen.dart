@@ -82,7 +82,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
         const DriverAssignedBoxesScreen(),
         const DriverMapScreen(),
         const DriverSupportTicketsScreen(),
-        const DriverProfileScreen(),
+        DriverProfileScreen(isActive: activeIndex == 4),
       ];
     }
     return [
