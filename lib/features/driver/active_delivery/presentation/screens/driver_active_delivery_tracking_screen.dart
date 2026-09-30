@@ -17,6 +17,8 @@ import '../widgets/driver_tracking_map_view.dart';
 import '../widgets/driver_tracking_stepper.dart';
 import '../widgets/driver_tracking_summary_card.dart';
 import '../widgets/driver_tracking_title_section.dart';
+import '../../../calling/domain/entities/driver_call_attempt_entity.dart';
+import '../../../calling/presentation/widgets/customer_call_attempts_sheet.dart';
 
 class DriverActiveDeliveryTrackingScreen extends StatefulWidget {
   const DriverActiveDeliveryTrackingScreen({
@@ -104,6 +106,18 @@ class _DriverActiveDeliveryTrackingScreenState
     );
   }
 
+  void _handleCallCustomer() {
+    unawaited(
+      CustomerCallAttemptsSheet.show(
+        context,
+        initialAttempt: DriverCallAttemptEntity(
+          customerName: _trip.order.customerName,
+          customerPhone: _trip.order.customerPhone,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -127,7 +141,7 @@ class _DriverActiveDeliveryTrackingScreenState
               const SizedBox(height: Spacing.base),
               DriverTrackingSummaryCard(
                 order: _trip.order,
-                onCallPressed: () {},
+                onCallPressed: _handleCallCustomer,
                 onNavigatePressed: () {},
               ),
               const SizedBox(height: Spacing.base),
@@ -136,7 +150,7 @@ class _DriverActiveDeliveryTrackingScreenState
                 customerLocation: _trip.customerLocation,
                 routePoints: _trip.routePoints,
                 locationStream: _stream,
-                onCallCustomer: () {},
+                onCallCustomer: _handleCallCustomer,
                 onMessageCustomer: () {},
               ),
               const SizedBox(height: Spacing.base),

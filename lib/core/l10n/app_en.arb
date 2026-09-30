@@ -1343,6 +1343,72 @@
   "driverCallAddressTitle": "Address",
   "driverCallSpeaker": "Speaker",
   "driverCallMute": "Mute Microphone",
-  "driverCallEnd": "End Call"
+  "driverCallEnd": "End Call",
+  "driverCallAttemptTitle": "Call Customer",
+  "driverCallAttemptPrompt": "Do you want to call customer {name} now?",
+  "@driverCallAttemptPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "driverCallAttemptSubtitle": "An in-app internal call will be initiated",
+  "driverCallProtectedNumber": "Phone number protected",
+  "driverCallExternalAvailable": "External call unlocked",
+  "driverCallCancel": "Cancel",
+  "driverCallNow": "Call Now",
+  "driverCallAttemptsLabel": "Call Attempts",
+  "driverCallAttemptsFooterNote": "Direct phone call option unlocks after 3 unanswered attempts",
+  "driverCallNoAnswerTitle": "No answer from customer",
+  "driverCallAttemptCounter": "Attempt {attempt} of 3",
+  "@driverCallAttemptCounter": {
+    "placeholders": {
+      "attempt": {
+        "type": "int"
+      }
+    }
+  },
+  "driverCallNoAnswerBadge": "No Answer",
+  "driverCallUnreachableTitle": "Unable to reach customer",
+  "driverCallUnreachableSubtitle": "No answer after 3 call attempts",
+  "driverCallExternalButton": "Call External Phone Number",
+  "driverCallReportUnreachableButton": "Report Unreachable Customer",
+  "reportIssueTitle": "Report Issue",
+  "reportIssueSubtitle": "Help us resolve the issue quickly",
+  "reportIssueCurrentBox": "Current Box",
+  "reportIssueSelectReasonTitle": "Select Issue Reason",
+  "reportIssueSelectReasonSubtitle": "Select the main reason for the issue",
+  "reportIssueReasonAddressUnclear": "Address unclear",
+  "reportIssueReasonCustomerNoAnswer": "Customer not answering",
+  "reportIssueReasonSevereDelay": "Severe delay",
+  "reportIssueReasonBoxDamaged": "Box damaged",
+  "reportIssueReasonRefusedDelivery": "Delivery refused",
+  "reportIssueNotesTitle": "Additional details (optional)",
+  "reportIssueNotesSubtitle": "Add any details that help supervisor understand better",
+  "reportIssueNotesHint": "Write your notes here...",
+  "reportIssuePhotosTitle": "Attach photos (optional)",
+  "reportIssuePhotosSubtitle": "Add photos clarifying the issue if possible",
+  "reportIssueAddPhoto": "Add Photo",
+  "reportIssuePhotosLimitNote": "You can add up to 4 photos",
+  "reportIssueSendToSupervisor": "Send to Supervisor",
+  "reportIssueRequestReassign": "Request Reassignment",
+  "reportIssueCallSupervisor": "Call Supervisor",
+  "reportIssueOperationalWarning": "Notice: This action is for operational cases only. Misuse may affect your rating",
+  "reassignRequestTitle": "Reassignment Request",
+  "reassignRequestDescription": "Facing an issue preventing you from completing delivery? You can request reassigning to another driver",
+  "reassignRequestReasonLabel": "Request Reason",
+  "reassignRequestReasonHint": "Select reassignment reason",
+  "reassignRequestReasonVehicleFailure": "Vehicle breakdown",
+  "reassignRequestReasonAccident": "Traffic accident",
+  "reassignRequestReasonEmergency": "Emergency",
+  "reassignRequestReasonHealthIssue": "Sudden health issue",
+  "reassignRequestNotesHint": "Write additional details (optional)",
+  "reassignRequestSubmit": "Submit Request",
+  "reassignSubmittedTitle": "Reassignment Request Submitted",
+  "reassignSubmittedSubtitle": "Your request was submitted successfully. You will be notified when accepted by another driver",
+  "issueSubmittedTitle": "Issue Submitted Successfully",
+  "issueSubmittedSubtitle": "Thank you for your cooperation. We will review and take required action",
+  "issueReturnToHome": "Return to Home"
 }
 

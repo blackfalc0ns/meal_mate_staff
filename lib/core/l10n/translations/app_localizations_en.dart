@@ -3354,4 +3354,173 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverCallEnd => 'End Call';
+
+  @override
+  String get driverCallAttemptTitle => 'Call Customer';
+
+  @override
+  String driverCallAttemptPrompt(String name) {
+    return 'Do you want to call customer $name now?';
+  }
+
+  @override
+  String get driverCallAttemptSubtitle =>
+      'An in-app internal call will be initiated';
+
+  @override
+  String get driverCallProtectedNumber => 'Phone number protected';
+
+  @override
+  String get driverCallExternalAvailable => 'External call unlocked';
+
+  @override
+  String get driverCallCancel => 'Cancel';
+
+  @override
+  String get driverCallNow => 'Call Now';
+
+  @override
+  String get driverCallAttemptsLabel => 'Call Attempts';
+
+  @override
+  String get driverCallAttemptsFooterNote =>
+      'Direct phone call option unlocks after 3 unanswered attempts';
+
+  @override
+  String get driverCallNoAnswerTitle => 'No answer from customer';
+
+  @override
+  String driverCallAttemptCounter(int attempt) {
+    return 'Attempt $attempt of 3';
+  }
+
+  @override
+  String get driverCallNoAnswerBadge => 'No Answer';
+
+  @override
+  String get driverCallUnreachableTitle => 'Unable to reach customer';
+
+  @override
+  String get driverCallUnreachableSubtitle => 'No answer after 3 call attempts';
+
+  @override
+  String get driverCallExternalButton => 'Call External Phone Number';
+
+  @override
+  String get driverCallReportUnreachableButton => 'Report Unreachable Customer';
+
+  @override
+  String get reportIssueTitle => 'Report Issue';
+
+  @override
+  String get reportIssueSubtitle => 'Help us resolve the issue quickly';
+
+  @override
+  String get reportIssueCurrentBox => 'Current Box';
+
+  @override
+  String get reportIssueSelectReasonTitle => 'Select Issue Reason';
+
+  @override
+  String get reportIssueSelectReasonSubtitle =>
+      'Select the main reason for the issue';
+
+  @override
+  String get reportIssueReasonAddressUnclear => 'Address unclear';
+
+  @override
+  String get reportIssueReasonCustomerNoAnswer => 'Customer not answering';
+
+  @override
+  String get reportIssueReasonSevereDelay => 'Severe delay';
+
+  @override
+  String get reportIssueReasonBoxDamaged => 'Box damaged';
+
+  @override
+  String get reportIssueReasonRefusedDelivery => 'Delivery refused';
+
+  @override
+  String get reportIssueNotesTitle => 'Additional details (optional)';
+
+  @override
+  String get reportIssueNotesSubtitle =>
+      'Add any details that help supervisor understand better';
+
+  @override
+  String get reportIssueNotesHint => 'Write your notes here...';
+
+  @override
+  String get reportIssuePhotosTitle => 'Attach photos (optional)';
+
+  @override
+  String get reportIssuePhotosSubtitle =>
+      'Add photos clarifying the issue if possible';
+
+  @override
+  String get reportIssueAddPhoto => 'Add Photo';
+
+  @override
+  String get reportIssuePhotosLimitNote => 'You can add up to 4 photos';
+
+  @override
+  String get reportIssueSendToSupervisor => 'Send to Supervisor';
+
+  @override
+  String get reportIssueRequestReassign => 'Request Reassignment';
+
+  @override
+  String get reportIssueCallSupervisor => 'Call Supervisor';
+
+  @override
+  String get reportIssueOperationalWarning =>
+      'Notice: This action is for operational cases only. Misuse may affect your rating';
+
+  @override
+  String get reassignRequestTitle => 'Reassignment Request';
+
+  @override
+  String get reassignRequestDescription =>
+      'Facing an issue preventing you from completing delivery? You can request reassigning to another driver';
+
+  @override
+  String get reassignRequestReasonLabel => 'Request Reason';
+
+  @override
+  String get reassignRequestReasonHint => 'Select reassignment reason';
+
+  @override
+  String get reassignRequestReasonVehicleFailure => 'Vehicle breakdown';
+
+  @override
+  String get reassignRequestReasonAccident => 'Traffic accident';
+
+  @override
+  String get reassignRequestReasonEmergency => 'Emergency';
+
+  @override
+  String get reassignRequestReasonHealthIssue => 'Sudden health issue';
+
+  @override
+  String get reassignRequestNotesHint => 'Write additional details (optional)';
+
+  @override
+  String get reassignRequestSubmit => 'Submit Request';
+
+  @override
+  String get reassignSubmittedTitle => 'Reassignment Request Submitted';
+
+  @override
+  String get reassignSubmittedSubtitle =>
+      'Your request was submitted successfully. You will be notified when accepted by another driver';
+
+  @override
+  String get issueSubmittedTitle => 'Issue Submitted Successfully';
+
+  @override
+  String get issueSubmittedSubtitle =>
+      'Thank you for your cooperation. We will review and take required action';
+
+  @override
+  String get issueReturnToHome => 'Return to Home';
 }

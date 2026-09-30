@@ -72,6 +72,12 @@ import '../../features/driver/home/presentation/screens/driver_active_home_scree
 import '../../features/driver/map/presentation/screens/driver_map_screen.dart';
 import '../../features/driver/calling/domain/entities/driver_active_call_entity.dart';
 import '../../features/driver/calling/presentation/screens/driver_active_call_screen.dart';
+import '../../features/driver/delivery_issues/domain/entities/delivery_issue_entity.dart';
+import '../../features/driver/delivery_issues/domain/entities/reassignment_request_entity.dart';
+import '../../features/driver/delivery_issues/presentation/screens/driver_issue_submitted_screen.dart';
+import '../../features/driver/delivery_issues/presentation/screens/driver_reassignment_request_screen.dart';
+import '../../features/driver/delivery_issues/presentation/screens/driver_reassignment_submitted_screen.dart';
+import '../../features/driver/delivery_issues/presentation/screens/driver_report_issue_screen.dart';
 import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 import 'arguments/driver_confirm_receipt_route_arguments.dart';
@@ -662,6 +668,42 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverActiveCallScreen(callData: callData),
+        );
+
+      case AppRoutes.driverReportIssue:
+        final issue = settings.arguments is DeliveryIssueEntity
+            ? settings.arguments! as DeliveryIssueEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverReportIssueScreen(initialIssue: issue),
+        );
+
+      case AppRoutes.driverReassignmentRequest:
+        final request = settings.arguments is ReassignmentRequestEntity
+            ? settings.arguments! as ReassignmentRequestEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverReassignmentRequestScreen(initialRequest: request),
+        );
+
+      case AppRoutes.driverReassignmentSubmitted:
+        final request = settings.arguments is ReassignmentRequestEntity
+            ? settings.arguments! as ReassignmentRequestEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverReassignmentSubmittedScreen(request: request),
+        );
+
+      case AppRoutes.driverIssueSubmitted:
+        final issue = settings.arguments is DeliveryIssueEntity
+            ? settings.arguments! as DeliveryIssueEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverIssueSubmittedScreen(issue: issue),
         );
 
       default:

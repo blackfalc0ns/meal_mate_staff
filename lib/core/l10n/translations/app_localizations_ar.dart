@@ -3338,4 +3338,172 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverCallEnd => 'إنهاء المكالمة';
+
+  @override
+  String get driverCallAttemptTitle => 'الاتصال بالعميل';
+
+  @override
+  String driverCallAttemptPrompt(String name) {
+    return 'هل تريد الاتصال بالعميل $name الآن؟';
+  }
+
+  @override
+  String get driverCallAttemptSubtitle =>
+      'سيتم بدء مكالمة داخلية من خلال التطبيق';
+
+  @override
+  String get driverCallProtectedNumber => 'رقم الهاتف محمي';
+
+  @override
+  String get driverCallExternalAvailable => 'تم إتاحة الاتصال الخارجي';
+
+  @override
+  String get driverCallCancel => 'إلغاء';
+
+  @override
+  String get driverCallNow => 'اتصل الآن';
+
+  @override
+  String get driverCallAttemptsLabel => 'محاولات الاتصال';
+
+  @override
+  String get driverCallAttemptsFooterNote =>
+      'سيتم فتح خيار الاتصال برقم الهاتف بعد 3 محاولات غير رد';
+
+  @override
+  String get driverCallNoAnswerTitle => 'لم يتم الرد من العميل';
+
+  @override
+  String driverCallAttemptCounter(int attempt) {
+    return 'المحاولة $attempt من 3';
+  }
+
+  @override
+  String get driverCallNoAnswerBadge => 'لم يتم الرد';
+
+  @override
+  String get driverCallUnreachableTitle => 'تعذر التواصل مع العميل';
+
+  @override
+  String get driverCallUnreachableSubtitle => 'بعد 3 محاولات اتصال لم يتم الرد';
+
+  @override
+  String get driverCallExternalButton => 'اتصل برقم الهاتف الخارجي';
+
+  @override
+  String get driverCallReportUnreachableButton => 'إبلاغ عن تعذر التواصل';
+
+  @override
+  String get reportIssueTitle => 'إبلاغ عن مشكلة';
+
+  @override
+  String get reportIssueSubtitle => 'ساعدنا في حل المشكلة بسرعة';
+
+  @override
+  String get reportIssueCurrentBox => 'الصندوق الحالي';
+
+  @override
+  String get reportIssueSelectReasonTitle => 'اختر سبب المشكلة';
+
+  @override
+  String get reportIssueSelectReasonSubtitle =>
+      'اختر السبب الرئيسي للمشكلة التي تواجهها';
+
+  @override
+  String get reportIssueReasonAddressUnclear => 'العنوان غير واضح';
+
+  @override
+  String get reportIssueReasonCustomerNoAnswer => 'العميل لا يرد';
+
+  @override
+  String get reportIssueReasonSevereDelay => 'تأخير شديد';
+
+  @override
+  String get reportIssueReasonBoxDamaged => 'الصندوق تالف';
+
+  @override
+  String get reportIssueReasonRefusedDelivery => 'رفض الاستلام';
+
+  @override
+  String get reportIssueNotesTitle => 'تفاصيل إضافية (اختياري)';
+
+  @override
+  String get reportIssueNotesSubtitle =>
+      'أضف أي تفاصيل تساعد المشرف على فهم المشكلة بشكل أفضل';
+
+  @override
+  String get reportIssueNotesHint => 'اكتب ملاحظاتك هنا...';
+
+  @override
+  String get reportIssuePhotosTitle => 'إرفاق صور (اختياري)';
+
+  @override
+  String get reportIssuePhotosSubtitle => 'أضف صور توضح المشكلة إن أمكن';
+
+  @override
+  String get reportIssueAddPhoto => 'إضافة صورة';
+
+  @override
+  String get reportIssuePhotosLimitNote => 'يمكنك إضافة حتى 4 صور';
+
+  @override
+  String get reportIssueSendToSupervisor => 'إرسال للمشرف';
+
+  @override
+  String get reportIssueRequestReassign => 'طلب إعادة إسناد';
+
+  @override
+  String get reportIssueCallSupervisor => 'اتصال بالمشرف';
+
+  @override
+  String get reportIssueOperationalWarning =>
+      'تنبيه: هذا الإجراء مخصص للحالات التشغيلية فقط. الاستخدام غير الصحيح قد يؤثر على تقييم أدائك';
+
+  @override
+  String get reassignRequestTitle => 'طلب إعادة إسناد';
+
+  @override
+  String get reassignRequestDescription =>
+      'هل تواجه مشكلة تمنعك من إكمال التوصيل؟ يمكنك طلب إعادة إسناد الطلب لسائق آخر';
+
+  @override
+  String get reassignRequestReasonLabel => 'سبب الطلب';
+
+  @override
+  String get reassignRequestReasonHint => 'اختر سبب إعادة الإسناد';
+
+  @override
+  String get reassignRequestReasonVehicleFailure => 'عطل في المركبة';
+
+  @override
+  String get reassignRequestReasonAccident => 'حادث سير';
+
+  @override
+  String get reassignRequestReasonEmergency => 'حالة طارئة';
+
+  @override
+  String get reassignRequestReasonHealthIssue => 'وعكة صحية مفاجئة';
+
+  @override
+  String get reassignRequestNotesHint => 'اكتب تفاصيل إضافية (اختياري)';
+
+  @override
+  String get reassignRequestSubmit => 'إرسال الطلب';
+
+  @override
+  String get reassignSubmittedTitle => 'تم إرسال طلب إعادة الإسناد';
+
+  @override
+  String get reassignSubmittedSubtitle =>
+      'تم إرسال طلبك بنجاح. سيتم إشعارك عند قبول الطلب من سائق آخر';
+
+  @override
+  String get issueSubmittedTitle => 'تم إرسال البلاغ بنجاح';
+
+  @override
+  String get issueSubmittedSubtitle =>
+      'شكراً لتعاونك معنا. سنقوم بمراجعة البلاغ واتخاذ الإجراء اللازم';
+
+  @override
+  String get issueReturnToHome => 'العودة للرئيسية';
 }

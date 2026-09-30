@@ -1336,6 +1336,72 @@
   "driverCallAddressTitle": "العنوان",
   "driverCallSpeaker": "سماعة",
   "driverCallMute": "كتم الميكروفون",
-  "driverCallEnd": "إنهاء المكالمة"
+  "driverCallEnd": "إنهاء المكالمة",
+  "driverCallAttemptTitle": "الاتصال بالعميل",
+  "driverCallAttemptPrompt": "هل تريد الاتصال بالعميل {name} الآن؟",
+  "@driverCallAttemptPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "driverCallAttemptSubtitle": "سيتم بدء مكالمة داخلية من خلال التطبيق",
+  "driverCallProtectedNumber": "رقم الهاتف محمي",
+  "driverCallExternalAvailable": "تم إتاحة الاتصال الخارجي",
+  "driverCallCancel": "إلغاء",
+  "driverCallNow": "اتصل الآن",
+  "driverCallAttemptsLabel": "محاولات الاتصال",
+  "driverCallAttemptsFooterNote": "سيتم فتح خيار الاتصال برقم الهاتف بعد 3 محاولات غير رد",
+  "driverCallNoAnswerTitle": "لم يتم الرد من العميل",
+  "driverCallAttemptCounter": "المحاولة {attempt} من 3",
+  "@driverCallAttemptCounter": {
+    "placeholders": {
+      "attempt": {
+        "type": "int"
+      }
+    }
+  },
+  "driverCallNoAnswerBadge": "لم يتم الرد",
+  "driverCallUnreachableTitle": "تعذر التواصل مع العميل",
+  "driverCallUnreachableSubtitle": "بعد 3 محاولات اتصال لم يتم الرد",
+  "driverCallExternalButton": "اتصل برقم الهاتف الخارجي",
+  "driverCallReportUnreachableButton": "إبلاغ عن تعذر التواصل",
+  "reportIssueTitle": "إبلاغ عن مشكلة",
+  "reportIssueSubtitle": "ساعدنا في حل المشكلة بسرعة",
+  "reportIssueCurrentBox": "الصندوق الحالي",
+  "reportIssueSelectReasonTitle": "اختر سبب المشكلة",
+  "reportIssueSelectReasonSubtitle": "اختر السبب الرئيسي للمشكلة التي تواجهها",
+  "reportIssueReasonAddressUnclear": "العنوان غير واضح",
+  "reportIssueReasonCustomerNoAnswer": "العميل لا يرد",
+  "reportIssueReasonSevereDelay": "تأخير شديد",
+  "reportIssueReasonBoxDamaged": "الصندوق تالف",
+  "reportIssueReasonRefusedDelivery": "رفض الاستلام",
+  "reportIssueNotesTitle": "تفاصيل إضافية (اختياري)",
+  "reportIssueNotesSubtitle": "أضف أي تفاصيل تساعد المشرف على فهم المشكلة بشكل أفضل",
+  "reportIssueNotesHint": "اكتب ملاحظاتك هنا...",
+  "reportIssuePhotosTitle": "إرفاق صور (اختياري)",
+  "reportIssuePhotosSubtitle": "أضف صور توضح المشكلة إن أمكن",
+  "reportIssueAddPhoto": "إضافة صورة",
+  "reportIssuePhotosLimitNote": "يمكنك إضافة حتى 4 صور",
+  "reportIssueSendToSupervisor": "إرسال للمشرف",
+  "reportIssueRequestReassign": "طلب إعادة إسناد",
+  "reportIssueCallSupervisor": "اتصال بالمشرف",
+  "reportIssueOperationalWarning": "تنبيه: هذا الإجراء مخصص للحالات التشغيلية فقط. الاستخدام غير الصحيح قد يؤثر على تقييم أدائك",
+  "reassignRequestTitle": "طلب إعادة إسناد",
+  "reassignRequestDescription": "هل تواجه مشكلة تمنعك من إكمال التوصيل؟ يمكنك طلب إعادة إسناد الطلب لسائق آخر",
+  "reassignRequestReasonLabel": "سبب الطلب",
+  "reassignRequestReasonHint": "اختر سبب إعادة الإسناد",
+  "reassignRequestReasonVehicleFailure": "عطل في المركبة",
+  "reassignRequestReasonAccident": "حادث سير",
+  "reassignRequestReasonEmergency": "حالة طارئة",
+  "reassignRequestReasonHealthIssue": "وعكة صحية مفاجئة",
+  "reassignRequestNotesHint": "اكتب تفاصيل إضافية (اختياري)",
+  "reassignRequestSubmit": "إرسال الطلب",
+  "reassignSubmittedTitle": "تم إرسال طلب إعادة الإسناد",
+  "reassignSubmittedSubtitle": "تم إرسال طلبك بنجاح. سيتم إشعارك عند قبول الطلب من سائق آخر",
+  "issueSubmittedTitle": "تم إرسال البلاغ بنجاح",
+  "issueSubmittedSubtitle": "شكراً لتعاونك معنا. سنقوم بمراجعة البلاغ واتخاذ الإجراء اللازم",
+  "issueReturnToHome": "العودة للرئيسية"
 }
 

@@ -179,7 +179,14 @@ class _DriverSupportTicketsScreenState
                         children: [
                           const SizedBox(height: Spacing.md),
                           DriverSupportTicketsReportButton(
-                            onPressed: widget.onReportTap ?? () {},
+                            onPressed: widget.onReportTap ??
+                                () {
+                                  unawaited(
+                                    Navigator.of(context).pushNamed(
+                                      AppRoutes.driverReportIssue,
+                                    ),
+                                  );
+                                },
                           ),
                           const SizedBox(
                             height: Spacing.bottomNavHeight + Spacing.md,

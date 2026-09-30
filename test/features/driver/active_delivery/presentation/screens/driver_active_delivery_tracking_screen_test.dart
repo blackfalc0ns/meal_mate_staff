@@ -13,6 +13,7 @@ import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_stepper.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_summary_card.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_title_section.dart';
+import 'package:meal_mate_delivery/features/driver/calling/presentation/widgets/customer_call_attempts_sheet.dart';
 
 Widget _buildTestApp({
   required Widget child,
@@ -119,6 +120,32 @@ void main() {
       expect(find.text('Confirm Arrival to Customer'), findsOneWidget);
       expect(find.text('Delay'), findsOneWidget);
       expect(find.text('Delivery Failed'), findsOneWidget);
+    });
+
+    testWidgets('tapping call button in summary card opens CustomerCallAttemptsSheet', (tester) async {
+      tester.view.physicalSize = const Size(390 * 2, 844 * 2);
+      tester.view.devicePixelRatio = 2;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final repository = ActiveDeliveryFakeRepositoryImpl(
+        locationTickInterval: const Duration(seconds: 10),
+      );
+      addTearDown(repository.dispose);
+
+      await tester.pumpWidget(
+        _buildTestApp(
+          child: DriverActiveDeliveryTrackingScreen(repository: repository),
+        ),
+      );
+      await tester.pump();
+
+      final callIconFinder = find.byIcon(Icons.call);
+      expect(callIconFinder, findsOneWidget);
+      await tester.tap(callIconFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CustomerCallAttemptsSheet), findsOneWidget);
+      expect(find.text('الاتصال بالعميل'), findsOneWidget);
     });
   });
 }

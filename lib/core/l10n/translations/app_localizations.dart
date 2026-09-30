@@ -6421,6 +6421,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End Call'**
   String get driverCallEnd;
+
+  /// No description provided for @driverCallAttemptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Customer'**
+  String get driverCallAttemptTitle;
+
+  /// No description provided for @driverCallAttemptPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to call customer {name} now?'**
+  String driverCallAttemptPrompt(String name);
+
+  /// No description provided for @driverCallAttemptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'An in-app internal call will be initiated'**
+  String get driverCallAttemptSubtitle;
+
+  /// No description provided for @driverCallProtectedNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number protected'**
+  String get driverCallProtectedNumber;
+
+  /// No description provided for @driverCallExternalAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'External call unlocked'**
+  String get driverCallExternalAvailable;
+
+  /// No description provided for @driverCallCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get driverCallCancel;
+
+  /// No description provided for @driverCallNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Now'**
+  String get driverCallNow;
+
+  /// No description provided for @driverCallAttemptsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Attempts'**
+  String get driverCallAttemptsLabel;
+
+  /// No description provided for @driverCallAttemptsFooterNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct phone call option unlocks after 3 unanswered attempts'**
+  String get driverCallAttemptsFooterNote;
+
+  /// No description provided for @driverCallNoAnswerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No answer from customer'**
+  String get driverCallNoAnswerTitle;
+
+  /// No description provided for @driverCallAttemptCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt {attempt} of 3'**
+  String driverCallAttemptCounter(int attempt);
+
+  /// No description provided for @driverCallNoAnswerBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'No Answer'**
+  String get driverCallNoAnswerBadge;
+
+  /// No description provided for @driverCallUnreachableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to reach customer'**
+  String get driverCallUnreachableTitle;
+
+  /// No description provided for @driverCallUnreachableSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No answer after 3 call attempts'**
+  String get driverCallUnreachableSubtitle;
+
+  /// No description provided for @driverCallExternalButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Call External Phone Number'**
+  String get driverCallExternalButton;
+
+  /// No description provided for @driverCallReportUnreachableButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Unreachable Customer'**
+  String get driverCallReportUnreachableButton;
+
+  /// No description provided for @reportIssueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Issue'**
+  String get reportIssueTitle;
+
+  /// No description provided for @reportIssueSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us resolve the issue quickly'**
+  String get reportIssueSubtitle;
+
+  /// No description provided for @reportIssueCurrentBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Box'**
+  String get reportIssueCurrentBox;
+
+  /// No description provided for @reportIssueSelectReasonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Issue Reason'**
+  String get reportIssueSelectReasonTitle;
+
+  /// No description provided for @reportIssueSelectReasonSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the main reason for the issue'**
+  String get reportIssueSelectReasonSubtitle;
+
+  /// No description provided for @reportIssueReasonAddressUnclear.
+  ///
+  /// In en, this message translates to:
+  /// **'Address unclear'**
+  String get reportIssueReasonAddressUnclear;
+
+  /// No description provided for @reportIssueReasonCustomerNoAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer not answering'**
+  String get reportIssueReasonCustomerNoAnswer;
+
+  /// No description provided for @reportIssueReasonSevereDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Severe delay'**
+  String get reportIssueReasonSevereDelay;
+
+  /// No description provided for @reportIssueReasonBoxDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Box damaged'**
+  String get reportIssueReasonBoxDamaged;
+
+  /// No description provided for @reportIssueReasonRefusedDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery refused'**
+  String get reportIssueReasonRefusedDelivery;
+
+  /// No description provided for @reportIssueNotesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional details (optional)'**
+  String get reportIssueNotesTitle;
+
+  /// No description provided for @reportIssueNotesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any details that help supervisor understand better'**
+  String get reportIssueNotesSubtitle;
+
+  /// No description provided for @reportIssueNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your notes here...'**
+  String get reportIssueNotesHint;
+
+  /// No description provided for @reportIssuePhotosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach photos (optional)'**
+  String get reportIssuePhotosTitle;
+
+  /// No description provided for @reportIssuePhotosSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos clarifying the issue if possible'**
+  String get reportIssuePhotosSubtitle;
+
+  /// No description provided for @reportIssueAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photo'**
+  String get reportIssueAddPhoto;
+
+  /// No description provided for @reportIssuePhotosLimitNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add up to 4 photos'**
+  String get reportIssuePhotosLimitNote;
+
+  /// No description provided for @reportIssueSendToSupervisor.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to Supervisor'**
+  String get reportIssueSendToSupervisor;
+
+  /// No description provided for @reportIssueRequestReassign.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Reassignment'**
+  String get reportIssueRequestReassign;
+
+  /// No description provided for @reportIssueCallSupervisor.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Supervisor'**
+  String get reportIssueCallSupervisor;
+
+  /// No description provided for @reportIssueOperationalWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Notice: This action is for operational cases only. Misuse may affect your rating'**
+  String get reportIssueOperationalWarning;
+
+  /// No description provided for @reassignRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reassignment Request'**
+  String get reassignRequestTitle;
+
+  /// No description provided for @reassignRequestDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Facing an issue preventing you from completing delivery? You can request reassigning to another driver'**
+  String get reassignRequestDescription;
+
+  /// No description provided for @reassignRequestReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Reason'**
+  String get reassignRequestReasonLabel;
+
+  /// No description provided for @reassignRequestReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select reassignment reason'**
+  String get reassignRequestReasonHint;
+
+  /// No description provided for @reassignRequestReasonVehicleFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle breakdown'**
+  String get reassignRequestReasonVehicleFailure;
+
+  /// No description provided for @reassignRequestReasonAccident.
+  ///
+  /// In en, this message translates to:
+  /// **'Traffic accident'**
+  String get reassignRequestReasonAccident;
+
+  /// No description provided for @reassignRequestReasonEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get reassignRequestReasonEmergency;
+
+  /// No description provided for @reassignRequestReasonHealthIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Sudden health issue'**
+  String get reassignRequestReasonHealthIssue;
+
+  /// No description provided for @reassignRequestNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write additional details (optional)'**
+  String get reassignRequestNotesHint;
+
+  /// No description provided for @reassignRequestSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Request'**
+  String get reassignRequestSubmit;
+
+  /// No description provided for @reassignSubmittedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reassignment Request Submitted'**
+  String get reassignSubmittedTitle;
+
+  /// No description provided for @reassignSubmittedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request was submitted successfully. You will be notified when accepted by another driver'**
+  String get reassignSubmittedSubtitle;
+
+  /// No description provided for @issueSubmittedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Submitted Successfully'**
+  String get issueSubmittedTitle;
+
+  /// No description provided for @issueSubmittedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your cooperation. We will review and take required action'**
+  String get issueSubmittedSubtitle;
+
+  /// No description provided for @issueReturnToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Home'**
+  String get issueReturnToHome;
 }
 
 class _AppLocalizationsDelegate
