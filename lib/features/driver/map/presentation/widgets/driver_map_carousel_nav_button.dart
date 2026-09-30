@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 class DriverMapCarouselNavButton extends StatelessWidget {
@@ -21,14 +22,17 @@ class DriverMapCarouselNavButton extends StatelessWidget {
       onPressed: isEnabled ? onPressed : null,
       icon: Icon(
         icon,
-        size: 28,
+        size: Spacing.iconLg,
         color: isEnabled
             ? color.primary
             : color.primary.withValues(alpha: 0.35),
       ),
       padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-      splashRadius: 20,
+      constraints: const BoxConstraints(
+        minWidth: Spacing.iconLg,
+        minHeight: Spacing.iconLg,
+      ),
+      splashRadius: Spacing.screenH,
     );
   }
 }

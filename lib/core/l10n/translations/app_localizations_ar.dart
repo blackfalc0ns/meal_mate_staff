@@ -1212,7 +1212,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverDetailsLocationTitle => 'الموقع الحالي';
 
   @override
-  String get driverDetailsStatusOutForDelivery => 'خارج للتوصيل';
+  String get driverDetailsStatusOutForDelivery => 'خارج التوصيل';
 
   @override
   String get driverDetailsStatusReceived => 'تم الاستلام';

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
+import 'package:meal_mate_delivery/core/constants/assets.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 import '../../../orders/domain/entities/driver_delivery_status.dart';
@@ -32,12 +34,25 @@ class DriverMapActiveOrderCard extends StatelessWidget {
     }
   }
 
+  Color _resolveStatusColor(BuildContext context, DriverDeliveryStatus status) {
+    final color = context.colorScheme;
+    switch (status) {
+      case DriverDeliveryStatus.delivered:
+        return color.onSurfaceVariant;
+      case DriverDeliveryStatus.inProgress:
+        return color.tertiary;
+      default:
+        return color.secondary;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
 
     final statusText = _resolveStatusText(context, stop.status);
+    final statusColor = _resolveStatusColor(context, stop.status);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
@@ -145,7 +160,7 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: color.secondaryContainer.withValues(alpha: 0.25),
+                        color: statusColor.withValues(alpha: 0.25),
                         borderRadius: BorderRadius.circular(Spacing.radiusPill),
                       ),
                       child: Row(
@@ -155,7 +170,7 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                             width: 6,
                             height: 6,
                             decoration: BoxDecoration(
-                              color: color.secondaryContainer,
+                              color: statusColor,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -185,10 +200,16 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                   color: color.onPrimary.withValues(alpha: 0.20),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.inventory_2_outlined,
-                  size: Spacing.iconMd,
-                  color: color.onPrimary,
+                child: Center(
+                  child: SvgPicture.asset(
+                    AppAssets.driverKpiBox,
+                    width: 22,
+                    height: 22,
+                    colorFilter: ColorFilter.mode(
+                      color.onPrimary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -201,47 +222,37 @@ class DriverMapActiveOrderCard extends StatelessWidget {
               thickness: 1,
             ),
           ),
-          IntrinsicHeight(
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: DriverMapOrderStatColumn(
-                    icon: Icons.location_on_outlined,
-                    label: locale.driverAddressLabel,
-                    value: stop.formattedAddress,
-                    showArrow: true,
-                    onTap: onAddressPressed,
-                  ),
+          Row(
+            children: [
+              Expanded(
+                flex: 5,
+                child: DriverMapOrderStatColumn(
+                  icon: Icons.location_on_outlined,
+                  label: locale.driverAddressLabel,
+                  value: stop.formattedAddress,
+                  showArrow: true,
+                  onTap: onAddressPressed,
                 ),
-                VerticalDivider(
-                  color: color.onPrimary.withValues(alpha: 0.15),
-                  thickness: 1,
-                  width: Spacing.md,
+              ),
+              const SizedBox(width: Spacing.xs),
+              Expanded(
+                flex: 3,
+                child: DriverMapOrderStatColumn(
+                  icon: Icons.calendar_today_outlined,
+                  label: locale.driverDeliveryTimeLabel,
+                  value: stop.deliveryTimeSlot,
                 ),
-                Expanded(
-                  flex: 3,
-                  child: DriverMapOrderStatColumn(
-                    icon: Icons.access_time_rounded,
-                    label: locale.driverDeliveryTimeLabel,
-                    value: stop.deliveryTimeSlot,
-                  ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              Expanded(
+                flex: 3,
+                child: DriverMapOrderStatColumn(
+                  icon: Icons.restaurant_outlined,
+                  label: locale.driverMealsCountLabel,
+                  value: '${stop.mealsCount} ${locale.driverMealsUnit}',
                 ),
-                VerticalDivider(
-                  color: color.onPrimary.withValues(alpha: 0.15),
-                  thickness: 1,
-                  width: Spacing.md,
-                ),
-                Expanded(
-                  flex: 3,
-                  child: DriverMapOrderStatColumn(
-                    icon: Icons.restaurant_outlined,
-                    label: locale.driverMealsCountLabel,
-                    value: '${stop.mealsCount} ${locale.driverMealsUnit}',
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

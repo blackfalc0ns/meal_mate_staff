@@ -176,7 +176,11 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
 
     final activeStop = _stops.isNotEmpty ? _stops[_currentIndex] : null;
 
-    const bottomPadding = Spacing.bottomNavHeight + Spacing.xs;
+    final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
+    final bottomPadding =
+        (bottomInset > Spacing.md ? bottomInset : Spacing.md) +
+        Spacing.bottomNavHeight +
+        Spacing.sm;
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -204,6 +208,7 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
             ),
           ),
           SafeArea(
+            bottom: false,
             child: Stack(
               children: [
                 if (activeStop != null)

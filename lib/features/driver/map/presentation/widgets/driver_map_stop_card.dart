@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
+import 'package:meal_mate_delivery/core/constants/assets.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 import '../../domain/entities/driver_map_stop_entity.dart';
@@ -54,31 +55,27 @@ class DriverMapStopCard extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(
-        isSelected ? Spacing.radiusXl : Spacing.radiusLg,
-      ),
+      borderRadius: BorderRadius.circular(Spacing.radiusXl),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(
           horizontal: Spacing.sm,
-          vertical: Spacing.sm,
+          vertical: 6,
         ),
         decoration: BoxDecoration(
           color: color.surface,
-          borderRadius: BorderRadius.circular(
-            isSelected ? Spacing.radiusXl : Spacing.radiusLg,
-          ),
+          borderRadius: BorderRadius.circular(Spacing.radiusXl),
           border: isSelected
               ? Border.all(color: color.primary, width: 2.0)
               : Border.all(
                   color: color.outline.withValues(alpha: 0.15),
-                  width: 1.0,
+                  width: Spacing.border,
                 ),
           boxShadow: [
             BoxShadow(
               color: color.shadow.withValues(alpha: isSelected ? 0.08 : 0.04),
-              blurRadius: isSelected ? 16 : 8,
-              offset: const Offset(0, 4),
+              blurRadius: isSelected ? 14 : 6,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -87,13 +84,14 @@ class DriverMapStopCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: isSelected ? 44 : 40,
+              width: double.infinity,
+              height: isSelected ? 42 : 36,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Positioned(
-                    left: 0,
-                    top: 0,
+                    left: Spacing.zero,
+                    top: Spacing.zero,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 7,
@@ -103,20 +101,22 @@ class DriverMapStopCard extends StatelessWidget {
                         color: isSelected
                             ? color.primary
                             : color.primary.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(Spacing.radiusSm),
                       ),
                       child: Text(
                         stop.badgeText,
                         style: getBoldStyle(
-                          fontSize: FontSize.size10,
+                          fontSize: isSelected
+                              ? FontSize.size10
+                              : FontSize.size9,
                           color: isSelected ? color.onPrimary : color.primary,
                         ),
                       ),
                     ),
                   ),
                   Container(
-                    width: isSelected ? 44 : 40,
-                    height: isSelected ? 44 : 40,
+                    width: isSelected ? 42 : 36,
+                    height: isSelected ? 42 : 36,
                     padding: const EdgeInsets.all(Spacing.xs),
                     decoration: BoxDecoration(
                       color: color.primary.withValues(alpha: 0.08),
@@ -126,13 +126,13 @@ class DriverMapStopCard extends StatelessWidget {
                       child: stop.imageAsset.endsWith('.svg')
                           ? SvgPicture.asset(
                               stop.imageAsset,
-                              width: isSelected ? 24 : 22,
-                              height: isSelected ? 24 : 22,
+                              width: isSelected ? 24 : 20,
+                              height: isSelected ? 24 : 20,
                             )
                           : Image.asset(
                               stop.imageAsset,
-                              width: isSelected ? 24 : 22,
-                              height: isSelected ? 24 : 22,
+                              width: isSelected ? 24 : 20,
+                              height: isSelected ? 24 : 20,
                               fit: BoxFit.contain,
                             ),
                     ),
@@ -140,52 +140,56 @@ class DriverMapStopCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: Spacing.xs),
+            const SizedBox(height: 2),
             Text(
               stop.customerName,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
-                fontSize: isSelected ? FontSize.size14 : FontSize.size12,
+                fontSize: isSelected ? FontSize.size15 : FontSize.size12,
                 color: color.onSurface,
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 1),
             Text(
               stop.boxCode,
               style: getBoldStyle(
-                fontSize: isSelected ? FontSize.size12 : FontSize.size11,
+                fontSize: isSelected ? FontSize.size12 : FontSize.size10,
                 color: color.primary,
               ),
             ),
-            const SizedBox(height: 3),
+            const SizedBox(height: 1),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.location_on_rounded,
-                  size: isSelected ? 13 : 12,
-                  color: color.primary,
+                SvgPicture.asset(
+                  AppAssets.driverLocationPin,
+                  width: isSelected ? 11 : 9,
+                  height: isSelected ? 11 : 9,
+                  colorFilter: ColorFilter.mode(
+                    color.primary,
+                    BlendMode.srcIn,
+                  ),
                 ),
-                const SizedBox(width: 3),
+                const SizedBox(width: Spacing.xs),
                 Flexible(
                   child: Text(
                     stop.area,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
-                      fontSize: isSelected ? FontSize.size11 : FontSize.size10,
+                      fontSize: isSelected ? FontSize.size10 : FontSize.size9,
                       color: color.onSurface.withValues(alpha: 0.85),
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.xs),
+            const SizedBox(height: 3),
             Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: 2.5,
+                horizontal: 8,
+                vertical: 2,
               ),
               decoration: BoxDecoration(
                 color: statusColor.withValues(alpha: 0.12),
@@ -195,21 +199,21 @@ class DriverMapStopCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: 6,
-                    height: 6,
+                    width: 5,
+                    height: 5,
                     decoration: BoxDecoration(
                       color: statusColor,
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: Spacing.xs),
+                  const SizedBox(width: 4),
                   Flexible(
                     child: Text(
                       statusText,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getMediumStyle(
-                        fontSize: FontSize.size10,
+                        fontSize: FontSize.size9,
                         color: statusColor,
                       ),
                     ),
@@ -217,14 +221,21 @@ class DriverMapStopCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: Spacing.sm),
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.xs),
+              child: Divider(
+                height: 1,
+                thickness: 1,
+                color: color.outline.withValues(alpha: 0.15),
+              ),
+            ),
+            const SizedBox(height: 5),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
                         child: Text(
@@ -233,15 +244,15 @@ class DriverMapStopCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: getBoldStyle(
                             fontSize: isSelected
-                                ? FontSize.size11
-                                : FontSize.size10,
+                                ? FontSize.size10
+                                : FontSize.size9,
                             color: footerColor,
                           ),
                         ),
                       ),
                       const SizedBox(width: Spacing.xs),
                       Icon(
-                        Icons.restaurant_outlined,
+                        Icons.flatware_outlined,
                         size: isSelected ? 14 : 12,
                         color: footerColor,
                       ),
@@ -250,15 +261,12 @@ class DriverMapStopCard extends StatelessWidget {
                 ),
                 Container(
                   width: 1,
-                  height: 12,
-                  color: isSelected
-                      ? color.primary.withValues(alpha: 0.25)
-                      : color.outline.withValues(alpha: 0.25),
+                  height: 13,
+                  color: color.outline.withValues(alpha: 0.18),
                 ),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
                         child: Text(
@@ -267,15 +275,15 @@ class DriverMapStopCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: getBoldStyle(
                             fontSize: isSelected
-                                ? FontSize.size11
-                                : FontSize.size10,
+                                ? FontSize.size10
+                                : FontSize.size9,
                             color: footerColor,
                           ),
                         ),
                       ),
                       const SizedBox(width: Spacing.xs),
                       Icon(
-                        Icons.calendar_today_outlined,
+                        Icons.calendar_month_outlined,
                         size: isSelected ? 14 : 12,
                         color: footerColor,
                       ),

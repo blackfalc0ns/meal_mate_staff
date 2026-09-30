@@ -35,7 +35,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          height: 216,
+          height: 185,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -61,8 +61,8 @@ class DriverMapStopsCarousel extends StatelessWidget {
                       child: AnimatedPadding(
                         duration: const Duration(milliseconds: 200),
                         padding: EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: isSelected ? 0 : 10,
+                          horizontal: Spacing.xs,
+                          vertical: isSelected ? Spacing.zero : Spacing.sm,
                         ),
                         child: DriverMapStopCard(
                           stop: stops[stopIndex],
@@ -101,7 +101,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: Spacing.sm),
+        const SizedBox(height: Spacing.xs),
         DriverMapPageIndicator(
           itemCount: stops.length,
           currentIndex: currentIndex,

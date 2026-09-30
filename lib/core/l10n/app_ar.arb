@@ -497,7 +497,7 @@
   "driverDetailsKpiAvgDelay": "متوسط التأخير (د)",
   "driverDetailsKpiRating": "تقييم الأداء",
   "driverDetailsLocationTitle": "الموقع الحالي",
-  "driverDetailsStatusOutForDelivery": "خارج للتوصيل",
+  "driverDetailsStatusOutForDelivery": "خارج التوصيل",
   "driverDetailsStatusReceived": "تم الاستلام",
   "driverDetailsTimeAgo": "منذ {minutes} دقيقة",
   "@driverDetailsTimeAgo": {

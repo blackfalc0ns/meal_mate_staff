@@ -65,7 +65,7 @@ void main() {
       expect(find.text('محمد علي'), findsWidgets);
       expect(find.text('+966 50 123 4567'), findsOneWidget);
       expect(find.text('3 وجبات'), findsWidgets);
-      expect(find.text('09:20 ص'), findsWidgets);
+      expect(find.text('20 : 09 ص'), findsWidgets);
 
       // Test tapping Call button
       final callBtnFinder = find.widgetWithIcon(InkWell, Icons.phone_rounded);
@@ -217,10 +217,10 @@ void main() {
 
       expect(containers.length, equals(3));
       // First (index 0) is selected: width 32
-      expect((containers[0].constraints as BoxConstraints?)?.maxWidth ?? 32, equals(32));
+      expect(containers[0].constraints?.maxWidth ?? 32, equals(32));
       // Second and third (index 1, 2) are unselected: width 22
-      expect((containers[1].constraints as BoxConstraints?)?.maxWidth ?? 22, equals(22));
-      expect((containers[2].constraints as BoxConstraints?)?.maxWidth ?? 22, equals(22));
+      expect(containers[1].constraints?.maxWidth ?? 22, equals(22));
+      expect(containers[2].constraints?.maxWidth ?? 22, equals(22));
     });
   });
 }
