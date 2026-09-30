@@ -1402,6 +1402,22 @@
   "reassignSubmittedSubtitle": "تم إرسال طلبك بنجاح. سيتم إشعارك عند قبول الطلب من سائق آخر",
   "issueSubmittedTitle": "تم إرسال البلاغ بنجاح",
   "issueSubmittedSubtitle": "شكراً لتعاونك معنا. سنقوم بمراجعة البلاغ واتخاذ الإجراء اللازم",
-  "issueReturnToHome": "العودة للرئيسية"
+  "issueReturnToHome": "العودة للرئيسية",
+  "driverDocumentsTitle": "المستندات",
+  "driverDocumentsEmpty": "لا توجد مستندات مسجلة",
+  "driverDocumentExpiry": "تاريخ الانتهاء",
+  "driverAssignmentTitle": "جهة التعيين",
+  "driverAssignmentRestaurant": "المطعم",
+  "driverAssignmentBranch": "الفرع",
+  "driverVehicleEmpty": "لا توجد مركبة مسجلة",
+  "driverVehicleYear": "سنة الصنع",
+  "driverVehicleColor": "اللون",
+  "driverVehiclePlateGovernorate": "المحافظة",
+  "driverTicketEmpty": "لا توجد طلبات دعم حالية",
+  "driverTicketSubject": "الموضوع",
+  "driverTicketPriority": "الأولوية",
+  "driverTicketCreated": "تاريخ الإنشاء",
+  "driverProfileEmpty": "لا توجد بيانات للملف الشخصي",
+  "driverProfileUnavailable": "غير متوفر"
 }
 

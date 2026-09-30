@@ -3506,4 +3506,52 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get issueReturnToHome => 'العودة للرئيسية';
+
+  @override
+  String get driverDocumentsTitle => 'المستندات';
+
+  @override
+  String get driverDocumentsEmpty => 'لا توجد مستندات مسجلة';
+
+  @override
+  String get driverDocumentExpiry => 'تاريخ الانتهاء';
+
+  @override
+  String get driverAssignmentTitle => 'جهة التعيين';
+
+  @override
+  String get driverAssignmentRestaurant => 'المطعم';
+
+  @override
+  String get driverAssignmentBranch => 'الفرع';
+
+  @override
+  String get driverVehicleEmpty => 'لا توجد مركبة مسجلة';
+
+  @override
+  String get driverVehicleYear => 'سنة الصنع';
+
+  @override
+  String get driverVehicleColor => 'اللون';
+
+  @override
+  String get driverVehiclePlateGovernorate => 'المحافظة';
+
+  @override
+  String get driverTicketEmpty => 'لا توجد طلبات دعم حالية';
+
+  @override
+  String get driverTicketSubject => 'الموضوع';
+
+  @override
+  String get driverTicketPriority => 'الأولوية';
+
+  @override
+  String get driverTicketCreated => 'تاريخ الإنشاء';
+
+  @override
+  String get driverProfileEmpty => 'لا توجد بيانات للملف الشخصي';
+
+  @override
+  String get driverProfileUnavailable => 'غير متوفر';
 }

@@ -1409,6 +1409,22 @@
   "reassignSubmittedSubtitle": "Your request was submitted successfully. You will be notified when accepted by another driver",
   "issueSubmittedTitle": "Issue Submitted Successfully",
   "issueSubmittedSubtitle": "Thank you for your cooperation. We will review and take required action",
-  "issueReturnToHome": "Return to Home"
+  "issueReturnToHome": "Return to Home",
+  "driverDocumentsTitle": "Documents",
+  "driverDocumentsEmpty": "No documents registered",
+  "driverDocumentExpiry": "Expiry date",
+  "driverAssignmentTitle": "Current Assignment",
+  "driverAssignmentRestaurant": "Restaurant",
+  "driverAssignmentBranch": "Branch",
+  "driverVehicleEmpty": "No vehicle registered",
+  "driverVehicleYear": "Year",
+  "driverVehicleColor": "Color",
+  "driverVehiclePlateGovernorate": "Governorate",
+  "driverTicketEmpty": "No current support tickets",
+  "driverTicketSubject": "Subject",
+  "driverTicketPriority": "Priority",
+  "driverTicketCreated": "Created at",
+  "driverProfileEmpty": "No profile data available",
+  "driverProfileUnavailable": "Not available"
 }
 

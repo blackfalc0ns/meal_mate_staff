@@ -6733,6 +6733,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Return to Home'**
   String get issueReturnToHome;
+
+  /// No description provided for @driverDocumentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get driverDocumentsTitle;
+
+  /// No description provided for @driverDocumentsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents registered'**
+  String get driverDocumentsEmpty;
+
+  /// No description provided for @driverDocumentExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry date'**
+  String get driverDocumentExpiry;
+
+  /// No description provided for @driverAssignmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Assignment'**
+  String get driverAssignmentTitle;
+
+  /// No description provided for @driverAssignmentRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant'**
+  String get driverAssignmentRestaurant;
+
+  /// No description provided for @driverAssignmentBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get driverAssignmentBranch;
+
+  /// No description provided for @driverVehicleEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicle registered'**
+  String get driverVehicleEmpty;
+
+  /// No description provided for @driverVehicleYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get driverVehicleYear;
+
+  /// No description provided for @driverVehicleColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get driverVehicleColor;
+
+  /// No description provided for @driverVehiclePlateGovernorate.
+  ///
+  /// In en, this message translates to:
+  /// **'Governorate'**
+  String get driverVehiclePlateGovernorate;
+
+  /// No description provided for @driverTicketEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No current support tickets'**
+  String get driverTicketEmpty;
+
+  /// No description provided for @driverTicketSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get driverTicketSubject;
+
+  /// No description provided for @driverTicketPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get driverTicketPriority;
+
+  /// No description provided for @driverTicketCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created at'**
+  String get driverTicketCreated;
+
+  /// No description provided for @driverProfileEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No profile data available'**
+  String get driverProfileEmpty;
+
+  /// No description provided for @driverProfileUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get driverProfileUnavailable;
 }
 
 class _AppLocalizationsDelegate

@@ -3523,4 +3523,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get issueReturnToHome => 'Return to Home';
+
+  @override
+  String get driverDocumentsTitle => 'Documents';
+
+  @override
+  String get driverDocumentsEmpty => 'No documents registered';
+
+  @override
+  String get driverDocumentExpiry => 'Expiry date';
+
+  @override
+  String get driverAssignmentTitle => 'Current Assignment';
+
+  @override
+  String get driverAssignmentRestaurant => 'Restaurant';
+
+  @override
+  String get driverAssignmentBranch => 'Branch';
+
+  @override
+  String get driverVehicleEmpty => 'No vehicle registered';
+
+  @override
+  String get driverVehicleYear => 'Year';
+
+  @override
+  String get driverVehicleColor => 'Color';
+
+  @override
+  String get driverVehiclePlateGovernorate => 'Governorate';
+
+  @override
+  String get driverTicketEmpty => 'No current support tickets';
+
+  @override
+  String get driverTicketSubject => 'Subject';
+
+  @override
+  String get driverTicketPriority => 'Priority';
+
+  @override
+  String get driverTicketCreated => 'Created at';
+
+  @override
+  String get driverProfileEmpty => 'No profile data available';
+
+  @override
+  String get driverProfileUnavailable => 'Not available';
 }
