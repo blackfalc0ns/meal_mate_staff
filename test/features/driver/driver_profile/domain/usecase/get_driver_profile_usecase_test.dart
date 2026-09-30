@@ -10,8 +10,8 @@ class _FakeDriverProfileRepository implements DriverProfileRepository {
   @override
   Future<ApiResult<DriverProfileEntity>> getProfile() async {
     return result ??
-        ApiSuccessResult(
-          data: const DriverProfileEntity(
+        const ApiSuccessResult(
+          data: DriverProfileEntity(
             driverProfileId: '1',
             fullName: 'Test Driver',
             driverDescription: 'Desc',

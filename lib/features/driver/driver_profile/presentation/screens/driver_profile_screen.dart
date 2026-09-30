@@ -89,53 +89,57 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_viewModel == null) return;
+    final vm = _viewModel;
+    if (vm == null) return;
     final locale = Localizations.localeOf(context).languageCode;
     if (!_initialized) {
       _initialized = true;
       _lastLocale = locale;
-      _viewModel!.doIntent(DriverProfileStarted(locale: locale));
+      unawaited(vm.doIntent(DriverProfileStarted(locale: locale)));
     } else if (_lastLocale != null && _lastLocale != locale) {
       _lastLocale = locale;
-      _viewModel!.doIntent(DriverProfileLocaleChanged(locale: locale));
+      unawaited(vm.doIntent(DriverProfileLocaleChanged(locale: locale)));
     }
   }
 
   @override
   void didUpdateWidget(covariant DriverProfileScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (_viewModel == null) return;
+    final vm = _viewModel;
+    if (vm == null) return;
     if (!oldWidget.isActive && widget.isActive) {
       final locale = Localizations.localeOf(context).languageCode;
-      _viewModel!.doIntent(DriverProfileActivated(locale: locale));
+      unawaited(vm.doIntent(DriverProfileActivated(locale: locale)));
     }
   }
 
   @override
   void dispose() {
     if (_createdInternalViewModel) {
-      _viewModel?.close();
+      unawaited(_viewModel?.close());
     }
     super.dispose();
   }
 
   void _handleAvatarResolved(bool resolved, String? profileImageUrl) {
-    if (!resolved && profileImageUrl != null && _viewModel != null) {
+    final vm = _viewModel;
+    if (!resolved && profileImageUrl != null && vm != null) {
       if (_lastFailedAvatarUrl != profileImageUrl) {
         _lastFailedAvatarUrl = profileImageUrl;
         final locale = Localizations.localeOf(context).languageCode;
-        _viewModel!.doIntent(DriverProfileAvatarFailed(locale: locale));
+        unawaited(vm.doIntent(DriverProfileAvatarFailed(locale: locale)));
       }
     }
   }
 
   Future<void> _handleRefresh() async {
-    if (_viewModel == null) return;
+    final vm = _viewModel;
+    if (vm == null) return;
     final locale = Localizations.localeOf(context).languageCode;
-    _viewModel!.doIntent(DriverProfileRefreshed(locale: locale));
-    await _viewModel!.stream
+    unawaited(vm.doIntent(DriverProfileRefreshed(locale: locale)));
+    await vm.stream
         .firstWhere((s) => !s.isRefreshing)
-        .timeout(const Duration(seconds: 10), onTimeout: () => _viewModel!.state);
+        .timeout(const Duration(seconds: 10), onTimeout: () => vm.state);
   }
 
   bool _hasAssignment(DriverProfileAssignmentEntity? assignment) {
@@ -393,12 +397,13 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
       ),
     );
 
-    if (_viewModel == null) {
+    final vm = _viewModel;
+    if (vm == null) {
       return scaffold;
     }
 
     return BlocProvider.value(
-      value: _viewModel!,
+      value: vm,
       child: BlocListener<DriverProfileViewModel, DriverProfileState>(
         listenWhen: (previous, current) =>
             previous.inlineFailure != current.inlineFailure &&

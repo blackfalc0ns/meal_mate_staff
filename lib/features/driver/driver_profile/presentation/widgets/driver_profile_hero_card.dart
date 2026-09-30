@@ -26,9 +26,7 @@ class DriverProfileHeroCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final ratingText = profile.averageRating != null
-        ? profile.averageRating!.toStringAsFixed(1)
-        : null;
+    final ratingText = profile.averageRating?.toStringAsFixed(1);
     final acceptanceText = profile.acceptanceRatePercent != null
         ? '${profile.acceptanceRatePercent!.toStringAsFixed(0)}%'
         : null;

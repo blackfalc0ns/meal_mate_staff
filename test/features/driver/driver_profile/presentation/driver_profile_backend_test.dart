@@ -131,8 +131,8 @@ void main() {
     viewModel = DriverProfileViewModel(getDriverProfileUseCase: useCase);
   });
 
-  tearDown(() {
-    viewModel.close();
+  tearDown(() async {
+    await viewModel.close();
   });
 
   testWidgets('loads once, shows shimmer while pending, then renders loaded content', (

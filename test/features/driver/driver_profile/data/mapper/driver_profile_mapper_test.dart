@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/features/driver/driver_profile/data/mapper/driver_profile_mapper.dart';
 import 'package:meal_mate_delivery/features/driver/driver_profile/data/models/response/driver_profile_response_dto.dart';
-import 'package:meal_mate_delivery/features/driver/driver_profile/domain/entities/driver_profile_entity.dart';
 
 void main() {
   group('DriverProfileMapper', () {
