@@ -266,9 +266,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
         ),
         child: ApiErrorWidget.fromTypedFailure(
           failure: failure,
-          onRetry: () => _viewModel?.doIntent(
-            DriverProfileRefreshed(locale: lang),
-          ),
+          onRetry: () =>
+              _viewModel?.doIntent(DriverProfileRefreshed(locale: lang)),
         ),
       ),
     );
@@ -293,10 +292,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
           children: [
             DriverProfileHeroCard(
               profile: profile,
-              onAvatarResolved: (resolved) => _handleAvatarResolved(
-                resolved,
-                profile.profileImageUrl,
-              ),
+              onAvatarResolved: (resolved) =>
+                  _handleAvatarResolved(resolved, profile.profileImageUrl),
             ),
             const SizedBox(height: Spacing.md),
             DriverProfileVehicleCard(
@@ -304,14 +301,10 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               onTap: () => _handleVehicleInfoTap(context),
             ),
             const SizedBox(height: Spacing.md),
-            DriverProfileDocumentsCard(
-              documents: profile.documents,
-            ),
+            DriverProfileDocumentsCard(documents: profile.documents),
             if (_hasAssignment(profile.assignment)) ...[
               const SizedBox(height: Spacing.md),
-              DriverProfileAssignmentCard(
-                assignment: profile.assignment,
-              ),
+              DriverProfileAssignmentCard(assignment: profile.assignment),
             ],
             const SizedBox(height: Spacing.md),
             Row(
@@ -332,9 +325,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               ],
             ),
             const SizedBox(height: Spacing.xs + 2),
-            DriverProfileContactCard(
-              onTap: () => _handleContactUsTap(context),
-            ),
+            DriverProfileContactCard(onTap: () => _handleContactUsTap(context)),
             const SizedBox(height: Spacing.md),
             DriverProfileTicketCard(
               ticket: profile.latestSupportTicket,
@@ -369,8 +360,8 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
       body: SafeArea(
         child: _viewModel == null
             ? (widget.profile != null
-                ? _buildContent(context, widget.profile!, color, locale)
-                : _buildShimmer())
+                  ? _buildContent(context, widget.profile!, color, locale)
+                  : _buildShimmer())
             : BlocBuilder<DriverProfileViewModel, DriverProfileState>(
                 buildWhen: (previous, current) =>
                     previous.profile != current.profile ||
