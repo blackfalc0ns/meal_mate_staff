@@ -57,6 +57,7 @@ import '../../features/driver/driver_profile/data/data_source/driver_profile_rem
 import '../../features/driver/driver_profile/data/repo/driver_profile_repository_impl.dart';
 import '../../features/driver/driver_profile/domain/repo/driver_profile_repository.dart';
 import '../../features/driver/driver_profile/domain/usecase/get_driver_profile_usecase.dart';
+import '../../features/driver/driver_profile/presentation/manager/driver_profile_view_model.dart';
 import '../../features/driver/home/data/datasources/driver_home_datasource.dart';
 import '../../features/driver/home/data/datasources/driver_home_fake_datasource.dart';
 import '../../features/driver/home/data/repositories/driver_home_repository_impl.dart';
@@ -866,6 +867,11 @@ Future<void> configureDependencies() async {
   );
   getIt.registerFactory<GetDriverProfileUseCase>(
     () => GetDriverProfileUseCase(getIt<DriverProfileRepository>()),
+  );
+  getIt.registerFactory<DriverProfileViewModel>(
+    () => DriverProfileViewModel(
+      getDriverProfileUseCase: getIt<GetDriverProfileUseCase>(),
+    ),
   );
 }
 
