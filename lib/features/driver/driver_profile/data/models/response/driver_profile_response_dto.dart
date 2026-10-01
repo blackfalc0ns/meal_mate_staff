@@ -7,6 +7,7 @@ class DriverProfileResponseDto {
   const DriverProfileResponseDto({
     this.driverProfileId,
     this.fullName,
+    this.fullNameAr,
     this.driverDescription,
     this.driverRank,
     this.driverCode,
@@ -32,6 +33,7 @@ class DriverProfileResponseDto {
 
   final String? driverProfileId;
   final String? fullName;
+  final String? fullNameAr;
   final String? driverDescription;
   final String? driverRank;
   final String? driverCode;
@@ -56,9 +58,12 @@ class DriverProfileResponseDto {
 class DriverProfileVehicleResponseDto {
   const DriverProfileVehicleResponseDto({
     this.vehicleType,
+    this.vehicleTypeLocalized,
     this.vehicleModel,
+    this.vehiclePlate,
     this.vehicleYear,
     this.vehicleColor,
+    this.vehicleColorLocalized,
     this.color,
     this.plateNumber,
     this.plateGovernorate,
@@ -71,9 +76,12 @@ class DriverProfileVehicleResponseDto {
       _$DriverProfileVehicleResponseDtoFromJson(json);
 
   final String? vehicleType;
+  final String? vehicleTypeLocalized;
   final String? vehicleModel;
+  final String? vehiclePlate;
   final int? vehicleYear;
   final String? vehicleColor;
+  final String? vehicleColorLocalized;
   final String? color;
   final String? plateNumber;
   final String? plateGovernorate;
@@ -82,6 +90,9 @@ class DriverProfileVehicleResponseDto {
   final bool? isVehicleActive;
 
   String? get effectiveColor => color ?? vehicleColor;
+  String? get effectivePlate => vehiclePlate ?? plateNumber;
+  String? get effectiveTypeLocalized => vehicleTypeLocalized ?? vehicleType;
+  String? get effectiveColorLocalized => vehicleColorLocalized ?? effectiveColor;
 }
 
 @JsonSerializable(createToJson: false)
@@ -92,8 +103,10 @@ class DriverProfileDocumentResponseDto {
     this.documentTitle,
     this.status,
     this.statusText,
+    this.verificationStatus,
     this.expiryDate,
     this.daysUntilExpiry,
+    this.requiresRenewal,
     this.uploadedAtUtc,
   });
 
@@ -107,8 +120,10 @@ class DriverProfileDocumentResponseDto {
   final String? documentTitle;
   final String? status;
   final String? statusText;
+  final String? verificationStatus;
   final String? expiryDate;
   final int? daysUntilExpiry;
+  final bool? requiresRenewal;
   final String? uploadedAtUtc;
 }
 

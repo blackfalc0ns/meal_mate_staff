@@ -19,9 +19,13 @@ class DriverProfileQuickActionItem extends StatelessWidget {
   final String subtitle;
   final VoidCallback? onTap;
 
+  static const double _iconSize = 16.0;
+  static const double _chevronSize = 9.0;
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     return InkWell(
       onTap: onTap,
@@ -36,42 +40,57 @@ class DriverProfileQuickActionItem extends StatelessWidget {
           ),
         ),
         padding: const EdgeInsets.symmetric(
-          horizontal: Spacing.sm,
-          vertical: Spacing.md,
+          horizontal: Spacing.xs + 2,
+          vertical: Spacing.sm,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(icon, size: 21, color: color.primary),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 12,
-                  color: color.onSurfaceVariant,
-                ),
-              ],
+            Icon(
+              icon,
+              size: _iconSize,
+              color: color.primary,
             ),
-            const SizedBox(height: Spacing.xs + 2),
-            Text(
-              title,
-              style: getBoldStyle(
-                fontSize: FontSize.size11,
-                color: color.onSurface,
+            const SizedBox(width: Spacing.xs),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      title,
+                      style: getBoldStyle(
+                        fontSize: FontSize.size11,
+                        color: color.onSurface,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      subtitle,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size9,
+                        color: color.onSurfaceVariant,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 2),
-            Text(
-              subtitle,
-              style: getRegularStyle(
-                fontSize: FontSize.size9,
-                color: color.onSurfaceVariant,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(width: 2),
+            Icon(
+              isRtl
+                  ? Icons.arrow_back_ios_new_rounded
+                  : Icons.arrow_forward_ios_rounded,
+              size: _chevronSize,
+              color: color.onSurfaceVariant,
             ),
           ],
         ),

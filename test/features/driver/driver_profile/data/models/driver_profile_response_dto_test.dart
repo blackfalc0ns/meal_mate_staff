@@ -87,5 +87,70 @@ void main() {
       expect(dto.assignment?.restaurantName, 'مطعم البركة');
       expect(dto.latestSupportTicket?.ticketNumber, '#SUP-100');
     });
+
+    test('parses live runasp backend payload accurately', () {
+      final json = {
+        "driverProfileId": "52a408f2-94d4-4c7d-bfaf-3e9017eb0d49",
+        "fullNameAr": "يحيي سواق",
+        "fullName": "يحيي سواق",
+        "phoneNumber": "1236907854",
+        "driverCode": "52a408f294d44c7dbfaf3e9017eb0d49",
+        "profileImageStorageKey":
+            "uploads/drivers/driver-registration/f53d8f92a4bb43c28c3aedeb8f4c10fa_Screenshot_2026-09-09-18-40-55-34_ffecf901ff8b6ced2230e4c65e7fd945.jpg",
+        "profileImageUrl":
+            "C:\\Windows\\TEMP\\mealmate-uploads\\uploads\\drivers\\driver-registration\\f53d8f92a4bb43c28c3aedeb8f4c10fa_Screenshot_2026-09-09-18-40-55-34_ffecf901ff8b6ced2230e4c65e7fd945.jpg",
+        "isOnline": false,
+        "status": "Offline",
+        "statusText": "غير متصل",
+        "averageRating": null,
+        "reviewsCount": 0,
+        "totalOrders": 0,
+        "acceptanceRatePercent": null,
+        "joinedAtUtc": "2026-09-30T22:46:44.790612Z",
+        "driverRank": null,
+        "driverDescription": "سائق توصيل معتمد",
+        "vehicle": {
+          "vehicleType": "Car",
+          "vehicleTypeLocalized": "سيارة",
+          "vehicleModel": "Honda Civic",
+          "vehiclePlate": "1275765",
+          "plateGovernorate": null,
+          "vehicleYear": 2024,
+          "vehicleColor": "#FFFFFF",
+          "vehicleColorLocalized": "أبيض",
+          "verificationStatus": "Approved",
+          "verificationStatusText": "معتمد"
+        },
+        "documents": [
+          {
+            "documentId": "139fce1c-c761-4cfa-8a22-b4b01879b6c2",
+            "documentType": "DrivingLicenseBack",
+            "documentTitle": "رخصة القيادة - الوجه الخلفي",
+            "status": "Approved",
+            "statusText": "معتمد",
+            "verificationStatus": "Approved",
+            "expiryDate": "2027-10-04",
+            "daysUntilExpiry": 368,
+            "requiresRenewal": false
+          }
+        ],
+        "assignment": {
+          "restaurantId": "f8575d1f-943e-455b-bd45-12b5af4eb097",
+          "restaurantName": "[تجربة] مطبخ دايت كير",
+          "branchId": null,
+          "branchName": null
+        },
+        "latestSupportTicket": null
+      };
+
+      final dto = DriverProfileResponseDto.fromJson(json);
+      expect(dto.fullNameAr, "يحيي سواق");
+      expect(dto.vehicle?.effectivePlate, "1275765");
+      expect(dto.vehicle?.effectiveTypeLocalized, "سيارة");
+      expect(dto.vehicle?.effectiveColorLocalized, "أبيض");
+      expect(dto.documents?.first.verificationStatus, "Approved");
+      expect(dto.documents?.first.requiresRenewal, false);
+      expect(dto.assignment?.restaurantName, "[تجربة] مطبخ دايت كير");
+    });
   });
 }

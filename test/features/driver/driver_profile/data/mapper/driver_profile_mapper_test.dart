@@ -101,5 +101,39 @@ void main() {
       expect(entity.latestSupportTicket?.ticketNumber, '#12345');
       expect(entity.latestSupportTicket?.createdAtUtc?.isUtc, isTrue);
     });
+
+    test('resolves live runasp payload avatar from storage key and maps vehiclePlate', () {
+      final entity = DriverProfileResponseDto.fromJson({
+        "driverProfileId": "52a408f2-94d4-4c7d-bfaf-3e9017eb0d49",
+        "fullNameAr": "يحيي سواق",
+        "fullName": "يحيي سواق",
+        "driverCode": "52a408f294d44c7dbfaf3e9017eb0d49",
+        "profileImageStorageKey":
+            "uploads/drivers/driver-registration/f53d8f92a4bb43c28c3aedeb8f4c10fa_Screenshot_2026-09-09-18-40-55-34_ffecf901ff8b6ced2230e4c65e7fd945.jpg",
+        "profileImageUrl":
+            "C:\\Windows\\TEMP\\mealmate-uploads\\uploads\\drivers\\driver-registration\\f53d8f92a4bb43c28c3aedeb8f4c10fa_Screenshot_2026-09-09-18-40-55-34_ffecf901ff8b6ced2230e4c65e7fd945.jpg",
+        "vehicle": {
+          "vehicleType": "Car",
+          "vehicleTypeLocalized": "سيارة",
+          "vehicleModel": "Honda Civic",
+          "vehiclePlate": "1275765",
+          "vehicleYear": 2024,
+          "vehicleColor": "#FFFFFF",
+          "vehicleColorLocalized": "أبيض",
+          "verificationStatus": "Approved",
+          "verificationStatusText": "معتمد"
+        },
+      }).toEntity();
+
+      expect(entity.fullName, "يحيي سواق");
+      expect(
+        entity.profileImageUrl,
+        "https://maelmate.runasp.net/uploads/drivers/driver-registration/f53d8f92a4bb43c28c3aedeb8f4c10fa_Screenshot_2026-09-09-18-40-55-34_ffecf901ff8b6ced2230e4c65e7fd945.jpg",
+      );
+      expect(entity.vehicle?.plateNumber, "1275765");
+      expect(entity.vehicle?.vehicleTypeLocalized, "سيارة");
+      expect(entity.vehicle?.vehicleColorLocalized, "أبيض");
+      expect(entity.vehicle?.isVehicleActive, isTrue);
+    });
   });
 }

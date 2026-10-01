@@ -68,7 +68,26 @@ class DriverProfilePolicyBanner extends StatelessWidget {
         vertical: Spacing.md,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            width: _badgeSize,
+            height: _badgeSize,
+            decoration: BoxDecoration(
+              color: color.surface,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: color.secondary,
+                width: 1.5,
+              ),
+            ),
+            child: Icon(
+              Icons.check_rounded,
+              size: 16,
+              color: color.secondary,
+            ),
+          ),
+          const SizedBox(width: Spacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,23 +104,6 @@ class DriverProfilePolicyBanner extends StatelessWidget {
                   text: buildBodySpan(),
                 ),
               ],
-            ),
-          ),
-          const SizedBox(width: Spacing.sm),
-          Container(
-            width: _badgeSize,
-            height: _badgeSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: color.secondary,
-                width: 1.5,
-              ),
-            ),
-            child: Icon(
-              Icons.check_rounded,
-              size: 15,
-              color: color.secondary,
             ),
           ),
         ],

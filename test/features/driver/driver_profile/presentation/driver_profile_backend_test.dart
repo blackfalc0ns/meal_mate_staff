@@ -159,10 +159,10 @@ void main() {
     expect(find.byType(DriverProfileShimmer), findsNothing);
     expect(find.byType(DriverProfileHeroCard), findsOneWidget);
     expect(find.text('طارق علي'), findsOneWidget);
-    expect(find.text('DRV-101'), findsOneWidget);
+    expect(find.text('#DRV-101'), findsOneWidget);
     expect(find.byType(DriverProfileVehicleCard), findsOneWidget);
-    expect(find.byType(DriverProfileDocumentsCard), findsOneWidget);
-    expect(find.byType(DriverProfileAssignmentCard), findsOneWidget);
+    expect(find.byType(DriverProfileDocumentsCard), findsNothing);
+    expect(find.byType(DriverProfileAssignmentCard), findsNothing);
     expect(find.byType(DriverProfileTicketCard), findsOneWidget);
   });
 

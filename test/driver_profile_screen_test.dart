@@ -65,7 +65,7 @@ void main() {
 
     expect(find.text('الملف الشخصي والدعم'), findsOneWidget);
     expect(find.text('أحمد إبراهيم'), findsOneWidget);
-    expect(find.text('MM-1256'), findsOneWidget);
+    expect(find.text('#MM-1256'), findsOneWidget);
     expect(find.text('معلومات المركبة'), findsOneWidget);
     expect(find.text('نشطة'), findsOneWidget);
     expect(find.text('تواصل مع الدعم'), findsOneWidget);
@@ -167,5 +167,29 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(logoutTapped, isTrue);
+  });
+
+  testWidgets('handles long driver code on small screens without overflow', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 3.0; // 360px logical width
+    addTearDown(() => tester.view.resetPhysicalSize());
+
+    final profile = DriverProfileFakeData.defaultProfile.copyWith(
+      driverCode: '52a408f294d44c7dbfaf3e9017eb0949',
+      fullName: 'يحيي سواق',
+      totalOrders: 0,
+      acceptanceRatePercent: null,
+      averageRating: null,
+      reviewsCount: 0,
+      joinedAtUtc: DateTime.utc(2024, 9, 1),
+    );
+
+    await tester.pumpWidget(buildSubject(profile: profile));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(DriverProfileHeroCard), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

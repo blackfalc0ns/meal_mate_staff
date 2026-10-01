@@ -13,21 +13,14 @@ class DriverProfileShimmer extends StatelessWidget {
       children: [
         // Hero card skeleton
         ShimmerWidget(
-          height: 220,
+          height: 200,
           borderRadius: Spacing.cardRadius,
         ),
         SizedBox(height: Spacing.md),
 
         // Vehicle card skeleton
         ShimmerWidget(
-          height: 120,
-          borderRadius: Spacing.cardRadius,
-        ),
-        SizedBox(height: Spacing.md),
-
-        // Documents card skeleton
-        ShimmerWidget(
-          height: 160,
+          height: 110,
           borderRadius: Spacing.cardRadius,
         ),
         SizedBox(height: Spacing.md),
@@ -41,14 +34,21 @@ class DriverProfileShimmer extends StatelessWidget {
 
         // Ticket card skeleton
         ShimmerWidget(
-          height: 130,
+          height: 100,
           borderRadius: Spacing.cardRadius,
         ),
         SizedBox(height: Spacing.md),
 
         // Quick actions row skeleton
         ShimmerWidget(
-          height: 60,
+          height: 52,
+          borderRadius: Spacing.cardRadius,
+        ),
+        SizedBox(height: Spacing.md),
+
+        // Policy banner skeleton
+        ShimmerWidget(
+          height: 56,
           borderRadius: Spacing.cardRadius,
         ),
       ],

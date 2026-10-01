@@ -29,7 +29,16 @@ class DriverProfileTicketCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final langCode = Localizations.localeOf(context).languageCode;
     final effectiveTicket = ticket ?? profile?.latestSupportTicket;
+    final formattedDate = effectiveTicket?.createdAtUtc != null
+        ? _formatTicketDate(effectiveTicket!.createdAtUtc!, langCode)
+        : null;
+
+    final isResolved = effectiveTicket != null &&
+        (effectiveTicket.status.toLowerCase() == 'resolved' ||
+            effectiveTicket.statusText == locale.driverTicketStatusResolved);
+    final statusSubtitle = isResolved ? locale.driverTicketResolvedSubtitle : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,13 +133,13 @@ class DriverProfileTicketCard extends StatelessWidget {
                         width: _iconBoxSize,
                         height: _iconBoxSize,
                         decoration: BoxDecoration(
-                          color: color.primary,
+                          color: color.primary.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(Spacing.radiusSm),
                         ),
                         child: Icon(
-                          Icons.headset_mic_outlined,
-                          size: 18,
-                          color: color.onPrimary,
+                          Icons.confirmation_number_outlined,
+                          size: 19,
+                          color: color.primary,
                         ),
                       ),
                       const SizedBox(width: Spacing.sm),
@@ -140,10 +149,14 @@ class DriverProfileTicketCard extends StatelessWidget {
                           children: [
                             Text(
                               effectiveTicket.ticketNumber.isNotEmpty
-                                  ? effectiveTicket.ticketNumber
-                                  : effectiveTicket.ticketId,
+                                  ? (effectiveTicket.ticketNumber.startsWith('#')
+                                      ? effectiveTicket.ticketNumber
+                                      : '#${effectiveTicket.ticketNumber}')
+                                  : (effectiveTicket.ticketId.startsWith('#')
+                                      ? effectiveTicket.ticketId
+                                      : '#${effectiveTicket.ticketId}'),
                               style: getBoldStyle(
-                                fontSize: FontSize.size11,
+                                fontSize: FontSize.size12,
                                 color: color.onSurface,
                               ),
                             ),
@@ -151,8 +164,8 @@ class DriverProfileTicketCard extends StatelessWidget {
                             Text(
                               effectiveTicket.subject,
                               style: getRegularStyle(
-                                fontSize: FontSize.size11,
-                                color: color.onSurface,
+                                fontSize: FontSize.size10,
+                                color: color.onSurfaceVariant,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -162,61 +175,75 @@ class DriverProfileTicketCard extends StatelessWidget {
                       ),
                       const SizedBox(width: Spacing.xs),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Spacing.sm,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: color.tertiaryContainer,
-                              borderRadius:
-                                  BorderRadius.circular(Spacing.radiusPill),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: _statusDotSize,
-                                  height: _statusDotSize,
-                                  decoration: BoxDecoration(
-                                    color: color.tertiary,
-                                    shape: BoxShape.circle,
-                                  ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: _statusDotSize,
+                                height: _statusDotSize,
+                                decoration: BoxDecoration(
+                                  color: color.tertiary,
+                                  shape: BoxShape.circle,
                                 ),
-                                const SizedBox(width: Spacing.xs),
-                                Text(
-                                  effectiveTicket.statusText,
-                                  style: getMediumStyle(
-                                    fontSize: FontSize.size10,
-                                    color: color.tertiary,
-                                  ),
+                              ),
+                              const SizedBox(width: Spacing.xs),
+                              Text(
+                                effectiveTicket.statusText,
+                                style: getMediumStyle(
+                                  fontSize: FontSize.size11,
+                                  color: color.tertiary,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          if (effectiveTicket.createdAtUtc != null) ...[
+                          if (statusSubtitle != null) ...[
                             const SizedBox(height: 2),
                             Text(
-                              '${effectiveTicket.createdAtUtc!.year}-${effectiveTicket.createdAtUtc!.month.toString().padLeft(2, '0')}-${effectiveTicket.createdAtUtc!.day.toString().padLeft(2, '0')}',
+                              statusSubtitle,
+                              style: getRegularStyle(
+                                fontSize: FontSize.size9,
+                                color: color.onSurfaceVariant,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(width: Spacing.sm),
+                      if (formattedDate != null)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              formattedDate,
+                              style: getBoldStyle(
+                                fontSize: FontSize.size10,
+                                color: color.onSurface,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              locale.driverTicketDateLabel,
                               style: getRegularStyle(
                                 fontSize: FontSize.size9,
                                 color: color.onSurfaceVariant,
                               ),
                             ),
                           ],
-                        ],
-                      ),
+                        ),
                       const SizedBox(width: Spacing.xs),
                       Icon(
                         Icons.arrow_forward_ios_rounded,
-                        size: 16,
+                        size: 14,
                         color: color.onSurfaceVariant,
                       ),
                     ],
                   ),
-                  if (effectiveTicket.body.isNotEmpty) ...[
+                  if (effectiveTicket.body.isNotEmpty &&
+                      effectiveTicket.body != effectiveTicket.subject) ...[
                     const SizedBox(height: Spacing.xs),
                     Text(
                       effectiveTicket.body,
@@ -257,5 +284,40 @@ class DriverProfileTicketCard extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  String _formatTicketDate(DateTime date, String langCode) {
+    const monthsAr = [
+      'يناير',
+      'فبراير',
+      'مارس',
+      'أبريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'أغسطس',
+      'سبتمبر',
+      'أكتوبر',
+      'نوفمبر',
+      'ديسمبر',
+    ];
+    const monthsEn = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    final monthName = langCode == 'ar'
+        ? monthsAr[date.month - 1]
+        : monthsEn[date.month - 1];
+    return '${date.day} $monthName ${date.year}';
   }
 }

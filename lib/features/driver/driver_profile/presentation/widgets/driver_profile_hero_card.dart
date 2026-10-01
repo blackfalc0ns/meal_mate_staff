@@ -26,12 +26,13 @@ class DriverProfileHeroCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final langCode = Localizations.localeOf(context).languageCode;
     final ratingText = profile.averageRating?.toStringAsFixed(1);
     final acceptanceText = profile.acceptanceRatePercent != null
         ? '${profile.acceptanceRatePercent!.toStringAsFixed(0)}%'
         : null;
     final joinedText = profile.joinedAtUtc != null
-        ? '${profile.joinedAtUtc!.year}-${profile.joinedAtUtc!.month.toString().padLeft(2, '0')}'
+        ? _formatJoinedDate(profile.joinedAtUtc!, langCode)
         : null;
 
     return Container(
@@ -50,28 +51,37 @@ class DriverProfileHeroCard extends StatelessWidget {
               Stack(
                 alignment: AlignmentDirectional.bottomEnd,
                 children: [
-                  AppCachedNetworkImage(
-                    imageUrl: profile.profileImageUrl,
-                    width: _avatarSize,
-                    height: _avatarSize,
-                    shape: BoxShape.circle,
-                    onImageResolved: onAvatarResolved,
-                    loadingWidget: const ShimmerWidget(
-                      width: _avatarSize,
-                      height: _avatarSize,
-                      borderRadius: _avatarSize / 2,
-                    ),
-                    errorWidget: Container(
-                      width: _avatarSize,
-                      height: _avatarSize,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: color.onInverseSurface.withValues(alpha: 0.12),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: color.onInverseSurface.withValues(alpha: 0.9),
+                        width: 2.0,
                       ),
-                      child: Icon(
-                        Icons.person_rounded,
-                        size: 28,
-                        color: color.onInverseSurface.withValues(alpha: 0.7),
+                    ),
+                    child: AppCachedNetworkImage(
+                      imageUrl: profile.profileImageUrl,
+                      width: _avatarSize,
+                      height: _avatarSize,
+                      shape: BoxShape.circle,
+                      onImageResolved: onAvatarResolved,
+                      loadingWidget: const ShimmerWidget(
+                        width: _avatarSize,
+                        height: _avatarSize,
+                        borderRadius: _avatarSize / 2,
+                      ),
+                      errorWidget: Container(
+                        width: _avatarSize,
+                        height: _avatarSize,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: color.onInverseSurface.withValues(alpha: 0.12),
+                        ),
+                        child: Icon(
+                          Icons.person_rounded,
+                          size: 28,
+                          color: color.onInverseSurface.withValues(alpha: 0.7),
+                        ),
                       ),
                     ),
                   ),
@@ -101,115 +111,64 @@ class DriverProfileHeroCard extends StatelessWidget {
                           child: Text(
                             profile.fullName,
                             style: getBoldStyle(
-                              fontSize: FontSize.size15,
+                              fontSize: FontSize.size16,
                               color: color.onInverseSurface,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (profile.driverRank != null &&
-                            profile.driverRank!.isNotEmpty) ...[
-                          const SizedBox(width: Spacing.xs),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Spacing.xs,
-                              vertical: 1,
-                            ),
-                            decoration: BoxDecoration(
-                              color: color.secondary.withValues(alpha: 0.2),
-                              borderRadius:
-                                  BorderRadius.circular(Spacing.radiusPill),
-                            ),
-                            child: Text(
-                              profile.driverRank!,
-                              style: getMediumStyle(
-                                fontSize: FontSize.size9,
-                                color: color.secondary,
-                              ),
-                            ),
-                          ),
-                        ],
+                        const SizedBox(width: Spacing.xs),
+                        Icon(
+                          Icons.person_outline_rounded,
+                          size: 16,
+                          color: color.onInverseSurface.withValues(alpha: 0.8),
+                        ),
                       ],
                     ),
-                    if (profile.driverDescription.isNotEmpty) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        profile.driverDescription,
-                        style: getRegularStyle(
-                          fontSize: FontSize.size11,
-                          color: color.onInverseSurface.withValues(alpha: 0.7),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                    const SizedBox(height: 3),
+                    const SizedBox(height: Spacing.xs),
                     Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Spacing.sm,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                color.onInverseSurface.withValues(alpha: 0.12),
-                            borderRadius:
-                                BorderRadius.circular(Spacing.radiusPill),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                locale.driverIdLabel,
-                                style: getRegularStyle(
-                                  fontSize: FontSize.size10,
-                                  color: color.onInverseSurface
-                                      .withValues(alpha: 0.7),
-                                ),
-                              ),
-                              const SizedBox(width: Spacing.xs),
-                              Text(
-                                profile.driverCode,
-                                style: getMediumStyle(
-                                  fontSize: FontSize.size11,
-                                  color: color.onInverseSurface,
-                                ),
-                              ),
-                            ],
+                        Text(
+                          locale.driverIdLabel,
+                          style: getRegularStyle(
+                            fontSize: FontSize.size10,
+                            color: color.onInverseSurface.withValues(
+                              alpha: 0.7,
+                            ),
                           ),
                         ),
-                        if (profile.statusText.isNotEmpty) ...[
-                          const SizedBox(width: Spacing.xs),
-                          Container(
+                        const SizedBox(width: Spacing.xs),
+                        Flexible(
+                          child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: Spacing.sm,
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: profile.isOnline
-                                  ? color.tertiary.withValues(alpha: 0.2)
-                                  : color.onInverseSurface
-                                      .withValues(alpha: 0.12),
-                              borderRadius:
-                                  BorderRadius.circular(Spacing.radiusPill),
-                            ),
-                            child: Text(
-                              profile.statusText,
-                              style: getMediumStyle(
-                                fontSize: FontSize.size10,
-                                color: profile.isOnline
-                                  ? color.tertiary
-                                  : color.onInverseSurface
-                                      .withValues(alpha: 0.8),
+                              color: color.onInverseSurface.withValues(
+                                alpha: 0.15,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                Spacing.radiusPill,
                               ),
                             ),
+                            child: Text(
+                              profile.driverCode.startsWith('#')
+                                  ? profile.driverCode
+                                  : '#${profile.driverCode}',
+                              style: getBoldStyle(
+                                fontSize: FontSize.size11,
+                                color: color.onInverseSurface,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ],
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: Spacing.xs),
                     Row(
                       children: [
                         if (ratingText != null) ...[
@@ -232,8 +191,9 @@ class DriverProfileHeroCard extends StatelessWidget {
                           '(${profile.reviewsCount} ${locale.driverRatingReviews})',
                           style: getRegularStyle(
                             fontSize: FontSize.size11,
-                            color:
-                                color.onInverseSurface.withValues(alpha: 0.7),
+                            color: color.onInverseSurface.withValues(
+                              alpha: 0.7,
+                            ),
                           ),
                         ),
                       ],
@@ -246,119 +206,183 @@ class DriverProfileHeroCard extends StatelessWidget {
           const SizedBox(height: Spacing.sm),
           Divider(
             color: color.onInverseSurface.withValues(alpha: 0.15),
-            height: Spacing.md,
+            height: Spacing.lg,
             thickness: Spacing.border,
           ),
           const SizedBox(height: Spacing.xs),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      locale.driverTotalOrders,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size10,
-                        color: color.onInverseSurface.withValues(alpha: 0.7),
+          IntrinsicHeight(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        locale.driverTotalOrders,
+                        style: getRegularStyle(
+                          fontSize: FontSize.size10,
+                          color: color.onInverseSurface.withValues(alpha: 0.7),
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      '${profile.totalOrders}',
-                      style: getBoldStyle(
-                        fontSize: FontSize.size13,
-                        color: color.onInverseSurface,
+                      const SizedBox(height: 3),
+                      Text(
+                        '${profile.totalOrders}',
+                        style: getBoldStyle(
+                          fontSize: FontSize.size14,
+                          color: color.onInverseSurface,
+                        ),
                       ),
-                    ),
-                    Text(
-                      locale.driverOrdersUnit,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size9,
-                        color: color.onInverseSurface.withValues(alpha: 0.6),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      locale.driverAcceptanceRate,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size10,
-                        color: color.onInverseSurface.withValues(alpha: 0.7),
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      acceptanceText ?? locale.driverProfileUnavailable,
-                      style: getBoldStyle(
-                        fontSize: FontSize.size13,
-                        color: color.onInverseSurface,
-                      ),
-                    ),
-                  ],
+                VerticalDivider(
+                  color: color.onInverseSurface.withValues(alpha: 0.15),
+                  thickness: Spacing.border,
+                  width: Spacing.xs,
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      locale.driverRating,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size10,
-                        color: color.onInverseSurface.withValues(alpha: 0.7),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        locale.driverAcceptanceRate,
+                        style: getRegularStyle(
+                          fontSize: FontSize.size10,
+                          color: color.onInverseSurface.withValues(alpha: 0.7),
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      ratingText != null ? '$ratingText ★' : locale.driverProfileUnavailable,
-                      style: getBoldStyle(
-                        fontSize: FontSize.size13,
-                        color: color.onInverseSurface,
+                      const SizedBox(height: 3),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          acceptanceText ?? "",
+                          style: getBoldStyle(
+                            fontSize: FontSize.size13,
+                            color: color.onInverseSurface,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      locale.driverMemberSince,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size10,
-                        color: color.onInverseSurface.withValues(alpha: 0.7),
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      joinedText ?? locale.driverProfileUnavailable,
-                      style: getBoldStyle(
-                        fontSize: FontSize.size11,
-                        color: color.onInverseSurface,
-                      ),
-                    ),
-                  ],
+                VerticalDivider(
+                  color: color.onInverseSurface.withValues(alpha: 0.15),
+                  thickness: Spacing.border,
+                  width: Spacing.xs,
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        locale.driverRating,
+                        style: getRegularStyle(
+                          fontSize: FontSize.size10,
+                          color: color.onInverseSurface.withValues(alpha: 0.7),
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 3),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          ratingText != null ? '$ratingText ★' : '',
+                          style: getBoldStyle(
+                            fontSize: FontSize.size13,
+                            color: color.onInverseSurface,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                VerticalDivider(
+                  color: color.onInverseSurface.withValues(alpha: 0.15),
+                  thickness: Spacing.border,
+                  width: Spacing.xs,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        locale.driverMemberSince,
+                        style: getRegularStyle(
+                          fontSize: FontSize.size10,
+                          color: color.onInverseSurface.withValues(alpha: 0.7),
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 3),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          joinedText ?? locale.driverProfileUnavailable,
+                          style: getBoldStyle(
+                            fontSize: FontSize.size11,
+                            color: color.onInverseSurface,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  String _formatJoinedDate(DateTime date, String langCode) {
+    const monthsAr = [
+      'يناير',
+      'فبراير',
+      'مارس',
+      'أبريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'أغسطس',
+      'سبتمبر',
+      'أكتوبر',
+      'نوفمبر',
+      'ديسمبر',
+    ];
+    const monthsEn = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    final monthName = langCode == 'ar'
+        ? monthsAr[date.month - 1]
+        : monthsEn[date.month - 1];
+    return '$monthName ${date.year}';
   }
 }

@@ -16,14 +16,11 @@ import '../../../../../core/network/failures.dart';
 import '../../../../../core/services/token_service.dart';
 import '../../../../auth/domain/usecase/logout_usecase.dart';
 import '../../../../auth/domain/user_role.dart';
-import '../../domain/entities/driver_profile_assignment_entity.dart';
 import '../../domain/entities/driver_profile_entity.dart';
 import '../manager/driver_profile_event.dart';
 import '../manager/driver_profile_state.dart';
 import '../manager/driver_profile_view_model.dart';
-import '../widgets/driver_profile_assignment_card.dart';
 import '../widgets/driver_profile_contact_card.dart';
-import '../widgets/driver_profile_documents_card.dart';
 import '../widgets/driver_profile_header.dart';
 import '../widgets/driver_profile_hero_card.dart';
 import '../widgets/driver_profile_policy_banner.dart';
@@ -140,13 +137,6 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
     await vm.stream
         .firstWhere((s) => !s.isRefreshing)
         .timeout(const Duration(seconds: 10), onTimeout: () => vm.state);
-  }
-
-  bool _hasAssignment(DriverProfileAssignmentEntity? assignment) {
-    if (assignment == null) return false;
-    final r = assignment.restaurantName?.trim();
-    final b = assignment.branchName?.trim();
-    return (r != null && r.isNotEmpty) || (b != null && b.isNotEmpty);
   }
 
   void _handleSettingsTap(BuildContext context) {
@@ -300,12 +290,6 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               vehicle: profile.vehicle,
               onTap: () => _handleVehicleInfoTap(context),
             ),
-            const SizedBox(height: Spacing.md),
-            DriverProfileDocumentsCard(documents: profile.documents),
-            if (_hasAssignment(profile.assignment)) ...[
-              const SizedBox(height: Spacing.md),
-              DriverProfileAssignmentCard(assignment: profile.assignment),
-            ],
             const SizedBox(height: Spacing.md),
             Row(
               children: [

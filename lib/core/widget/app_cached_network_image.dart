@@ -61,11 +61,21 @@ class AppCachedNetworkImage extends StatelessWidget {
   }
 
   String? _resolveUrl(String? url) {
-    if (url == null || url.isEmpty) return url;
+    if (url == null || url.trim().isEmpty) return null;
     final uri = Uri.tryParse(url);
-    if (uri != null && uri.hasScheme) return url;
+    if (uri != null && (uri.scheme == 'http' || uri.scheme == 'https')) {
+      return url;
+    }
     if (url.startsWith('/')) return '${NetworkConstants.baseUrl}$url';
-    return url;
+    if (url.contains(':\\') || url.startsWith('\\')) {
+      final uploadsIndex = url.indexOf('uploads');
+      if (uploadsIndex != -1) {
+        final key = url.substring(uploadsIndex).replaceAll('\\', '/');
+        return '${NetworkConstants.baseUrl}/$key';
+      }
+      return null;
+    }
+    return '${NetworkConstants.baseUrl}/$url';
   }
 
   Widget _buildLoading(BuildContext context) {

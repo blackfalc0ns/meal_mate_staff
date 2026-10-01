@@ -11,6 +11,7 @@ DriverProfileResponseDto _$DriverProfileResponseDtoFromJson(
 ) => DriverProfileResponseDto(
   driverProfileId: json['driverProfileId'] as String?,
   fullName: json['fullName'] as String?,
+  fullNameAr: json['fullNameAr'] as String?,
   driverDescription: json['driverDescription'] as String?,
   driverRank: json['driverRank'] as String?,
   driverCode: json['driverCode'] as String?,
@@ -53,9 +54,12 @@ DriverProfileVehicleResponseDto _$DriverProfileVehicleResponseDtoFromJson(
   Map<String, dynamic> json,
 ) => DriverProfileVehicleResponseDto(
   vehicleType: json['vehicleType'] as String?,
+  vehicleTypeLocalized: json['vehicleTypeLocalized'] as String?,
   vehicleModel: json['vehicleModel'] as String?,
+  vehiclePlate: json['vehiclePlate'] as String?,
   vehicleYear: (json['vehicleYear'] as num?)?.toInt(),
   vehicleColor: json['vehicleColor'] as String?,
+  vehicleColorLocalized: json['vehicleColorLocalized'] as String?,
   color: json['color'] as String?,
   plateNumber: json['plateNumber'] as String?,
   plateGovernorate: json['plateGovernorate'] as String?,
@@ -72,8 +76,10 @@ DriverProfileDocumentResponseDto _$DriverProfileDocumentResponseDtoFromJson(
   documentTitle: json['documentTitle'] as String?,
   status: json['status'] as String?,
   statusText: json['statusText'] as String?,
+  verificationStatus: json['verificationStatus'] as String?,
   expiryDate: json['expiryDate'] as String?,
   daysUntilExpiry: (json['daysUntilExpiry'] as num?)?.toInt(),
+  requiresRenewal: json['requiresRenewal'] as bool?,
   uploadedAtUtc: json['uploadedAtUtc'] as String?,
 );
 

@@ -201,9 +201,12 @@ class DriverProfileVehicleCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      v.vehicleType ?? '-',
+                      (Localizations.localeOf(context).languageCode == 'ar'
+                              ? (v.vehicleTypeLocalized ?? v.vehicleType)
+                              : (v.vehicleType ?? v.vehicleTypeLocalized)) ??
+                          '-',
                       style: getBoldStyle(
-                        fontSize: FontSize.size11,
+                        fontSize: FontSize.size12,
                         color: color.onSurface,
                       ),
                     ),
@@ -226,7 +229,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
                     Text(
                       modelYearText,
                       style: getBoldStyle(
-                        fontSize: FontSize.size11,
+                        fontSize: FontSize.size12,
                         color: color.onSurface,
                       ),
                       maxLines: 1,
@@ -250,7 +253,7 @@ class DriverProfileVehicleCard extends StatelessWidget {
                     Text(
                       v.plateNumber ?? '-',
                       style: getBoldStyle(
-                        fontSize: FontSize.size11,
+                        fontSize: FontSize.size12,
                         color: color.onSurface,
                       ),
                     ),
@@ -268,9 +271,11 @@ class DriverProfileVehicleCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (v.color != null && v.color!.isNotEmpty)
+                if ((v.color != null && v.color!.isNotEmpty) ||
+                    (v.vehicleColorLocalized != null &&
+                        v.vehicleColorLocalized!.isNotEmpty))
                   Text(
-                    '${locale.driverVehicleColor}: ${v.color}',
+                    '${locale.driverVehicleColor}: ${(Localizations.localeOf(context).languageCode == 'ar' ? (v.vehicleColorLocalized ?? v.color) : (v.color ?? v.vehicleColorLocalized))}',
                     style: getRegularStyle(
                       fontSize: FontSize.size10,
                       color: color.onSurfaceVariant,

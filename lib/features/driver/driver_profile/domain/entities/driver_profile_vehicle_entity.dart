@@ -1,9 +1,11 @@
 class DriverProfileVehicleEntity {
   const DriverProfileVehicleEntity({
     this.vehicleType,
+    this.vehicleTypeLocalized,
     this.vehicleModel,
     this.vehicleYear,
     this.color,
+    this.vehicleColorLocalized,
     this.plateNumber,
     this.plateGovernorate,
     this.verificationStatus,
@@ -12,9 +14,11 @@ class DriverProfileVehicleEntity {
   });
 
   final String? vehicleType;
+  final String? vehicleTypeLocalized;
   final String? vehicleModel;
   final int? vehicleYear;
   final String? color;
+  final String? vehicleColorLocalized;
   final String? plateNumber;
   final String? plateGovernorate;
   final String? verificationStatus;
@@ -23,9 +27,11 @@ class DriverProfileVehicleEntity {
 
   DriverProfileVehicleEntity copyWith({
     String? vehicleType,
+    String? vehicleTypeLocalized,
     String? vehicleModel,
     int? vehicleYear,
     String? color,
+    String? vehicleColorLocalized,
     String? plateNumber,
     String? plateGovernorate,
     String? verificationStatus,
@@ -34,9 +40,12 @@ class DriverProfileVehicleEntity {
   }) {
     return DriverProfileVehicleEntity(
       vehicleType: vehicleType ?? this.vehicleType,
+      vehicleTypeLocalized: vehicleTypeLocalized ?? this.vehicleTypeLocalized,
       vehicleModel: vehicleModel ?? this.vehicleModel,
       vehicleYear: vehicleYear ?? this.vehicleYear,
       color: color ?? this.color,
+      vehicleColorLocalized:
+          vehicleColorLocalized ?? this.vehicleColorLocalized,
       plateNumber: plateNumber ?? this.plateNumber,
       plateGovernorate: plateGovernorate ?? this.plateGovernorate,
       verificationStatus: verificationStatus ?? this.verificationStatus,
@@ -52,9 +61,11 @@ class DriverProfileVehicleEntity {
       other is DriverProfileVehicleEntity &&
           runtimeType == other.runtimeType &&
           vehicleType == other.vehicleType &&
+          vehicleTypeLocalized == other.vehicleTypeLocalized &&
           vehicleModel == other.vehicleModel &&
           vehicleYear == other.vehicleYear &&
           color == other.color &&
+          vehicleColorLocalized == other.vehicleColorLocalized &&
           plateNumber == other.plateNumber &&
           plateGovernorate == other.plateGovernorate &&
           verificationStatus == other.verificationStatus &&
@@ -64,9 +75,11 @@ class DriverProfileVehicleEntity {
   @override
   int get hashCode => Object.hash(
         vehicleType,
+        vehicleTypeLocalized,
         vehicleModel,
         vehicleYear,
         color,
+        vehicleColorLocalized,
         plateNumber,
         plateGovernorate,
         verificationStatus,
