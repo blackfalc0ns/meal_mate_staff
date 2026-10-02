@@ -1765,7 +1765,7 @@ class _ApiServices implements ApiServices {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/driver/pickup/boxes/validate-barcode',
+            '/api/v1/driver/pickup/validate-barcode',
             queryParameters: queryParameters,
             data: _data,
           )

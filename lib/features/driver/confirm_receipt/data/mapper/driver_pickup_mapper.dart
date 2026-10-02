@@ -18,7 +18,10 @@ import '../models/response/driver_trip_start_response_dto.dart';
 extension ValidateDriverBarcodeRequestEntityMapper
     on ValidateDriverBarcodeRequestEntity {
   ValidateDriverBarcodeRequestDto toDto() {
-    return ValidateDriverBarcodeRequestDto(barcodeValue: barcodeValue);
+    return ValidateDriverBarcodeRequestDto(
+      barcodeValue: barcodeValue,
+      isManualEntry: isManualEntry,
+    );
   }
 }
 

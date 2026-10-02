@@ -121,7 +121,7 @@ class DriverPickupFlowViewModel
     await _executeUploadPhoto(emit);
   }
 
-  Future<bool> _executeUploadPhoto(Emitter<DriverPickupFlowState> emit) async {
+  Future<String?> _executeUploadPhoto(Emitter<DriverPickupFlowState> emit) async {
     final boxId = state.validatedBox?.boxId;
     final token = state.validationToken;
     final photoPath = state.localPhotoPath;
@@ -135,7 +135,7 @@ class DriverPickupFlowViewModel
           ),
         ),
       );
-      return false;
+      return null;
     }
 
     emit(
@@ -152,7 +152,7 @@ class DriverPickupFlowViewModel
       validationToken: token,
     );
 
-    if (emit.isDone) return false;
+    if (emit.isDone) return null;
 
     switch (result) {
       case ApiSuccessResult(:final data):
@@ -164,10 +164,10 @@ class DriverPickupFlowViewModel
             clearFailure: true,
           ),
         );
-        return true;
+        return data.conditionPhotoStorageKey;
       case ApiErrorResult(:final failure):
         emit(state.copyWith(isUploadingPhoto: false, failure: failure));
-        return false;
+        return null;
     }
   }
 
@@ -191,9 +191,10 @@ class DriverPickupFlowViewModel
     }
 
     // If photo is not uploaded yet, perform upload first
-    if (state.conditionPhotoStorageKey == null) {
-      final uploadSuccess = await _executeUploadPhoto(emit);
-      if (!uploadSuccess || emit.isDone) {
+    var photoStorageKey = state.conditionPhotoStorageKey;
+    if (photoStorageKey == null || photoStorageKey.isEmpty) {
+      photoStorageKey = await _executeUploadPhoto(emit);
+      if (photoStorageKey == null || photoStorageKey.isEmpty || emit.isDone) {
         return;
       }
     }
@@ -241,7 +242,7 @@ class DriverPickupFlowViewModel
       idempotencyKey: idempotencyKey,
       request: ConfirmDriverPickupRequestEntity(
         validationToken: token,
-        conditionPhotoStorageKey: state.conditionPhotoStorageKey!,
+        conditionPhotoStorageKey: photoStorageKey,
         latitude: coordinates.latitude,
         longitude: coordinates.longitude,
       ),

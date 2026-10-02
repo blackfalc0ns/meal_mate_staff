@@ -45,7 +45,9 @@ class DriverPickupFlowState {
 
   bool get isTokenExpired {
     if (tokenExpiresAtUtc == null) return false;
-    return DateTime.now().toUtc().isAfter(tokenExpiresAtUtc!);
+    return DateTime.now().toUtc().isAfter(
+      tokenExpiresAtUtc!.add(const Duration(minutes: 10)),
+    );
   }
 
   bool get isBarcodeValidated =>
@@ -61,7 +63,6 @@ class DriverPickupFlowState {
       !isConfirmingPickup;
 
   bool get requiresRescan {
-    if (isTokenExpired) return true;
     if (failure != null) {
       final code = failure!.code.toLowerCase();
       final msg = failure!.errorMessage.toLowerCase();
@@ -70,7 +71,7 @@ class DriverPickupFlowState {
         return true;
       }
     }
-    return false;
+    return isTokenExpired;
   }
 
   bool get isActionLoading =>

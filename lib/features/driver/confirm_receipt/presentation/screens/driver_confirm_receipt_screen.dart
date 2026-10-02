@@ -82,6 +82,10 @@ class _DriverConfirmReceiptScreenState
   }
 
   void _handleBarcodeScanned(String barcode) {
+    if (_viewModel.state.isValidatingBarcode ||
+        _viewModel.state.isBarcodeValidated) {
+      return;
+    }
     _viewModel.doIntent(ValidateBarcodeEvent(barcode));
   }
 
@@ -98,6 +102,7 @@ class _DriverConfirmReceiptScreenState
   }
 
   void _goToStep2() {
+    unawaited(_scannerController.pause());
     _viewModel.doIntent(const StepChangedEvent(2));
   }
 
@@ -162,24 +167,28 @@ class _DriverConfirmReceiptScreenState
                       state.confirmation?.boxCode ??
                       widget.box?.boxCode ??
                       '',
-                restaurantName:
-                    state.validatedBox?.customerName ??
-                    widget.box?.customerName ??
-                    '',
-                itemsCount:
-                    state.validatedBox?.mealsCount ??
-                    widget.box?.mealsCount ??
-                    0,
-                expectedReceiptTime:
-                    state.validatedBox?.deliveryTimeSlot ??
-                    widget.box?.deliveryTimeSlot ??
-                    '',
-                isReceived: true,
+                  restaurantName:
+                      state.validatedBox?.customerName ??
+                      widget.box?.customerName ??
+                      '',
+                  itemsCount:
+                      state.validatedBox?.mealsCount ??
+                      widget.box?.mealsCount ??
+                      0,
+                  expectedReceiptTime:
+                      state.validatedBox?.deliveryTimeSlot ??
+                      widget.box?.deliveryTimeSlot ??
+                      '',
+                  isReceived: true,
+                ),
               ),
-            ),
-          );
-        }
-      } else if (state.requiresRescan && state.currentStep != 1) {
+            );
+          }
+        } else if (state.stage == DriverPickupFlowStage.barcodeValidated &&
+            state.currentStep == 1) {
+          unawaited(_scannerController.pause());
+          _viewModel.doIntent(const StepChangedEvent(2));
+        } else if (state.requiresRescan && state.currentStep != 1) {
           _viewModel.doIntent(const StepChangedEvent(1));
           _viewModel.doIntent(const ResetScanEvent());
         }
@@ -196,7 +205,19 @@ class _DriverConfirmReceiptScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DriverConfirmReceiptHeader(currentStep: state.currentStep),
+                  DriverConfirmReceiptHeader(
+                    currentStep: state.currentStep,
+                    onBack: () {
+                      if (state.currentStep == 2) {
+                        _viewModel.doIntent(const StepChangedEvent(1));
+                        try {
+                          unawaited(_scannerController.start());
+                        } catch (_) {}
+                      } else {
+                        unawaited(Navigator.of(context).maybePop());
+                      }
+                    },
+                  ),
                   const SizedBox(height: Spacing.lg),
                   if (state.currentStep == 1)
                     DriverConfirmReceiptStep1Section(
