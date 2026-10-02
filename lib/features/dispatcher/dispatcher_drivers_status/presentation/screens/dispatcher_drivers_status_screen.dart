@@ -224,7 +224,7 @@ class _DispatcherDriversStatusScreenState
                               onTap: () {
                                 unawaited(
                                   Navigator.of(context).pushNamed(
-                                    AppRoutes.dispatcherDriverDetails,
+                                    AppRoutes.dispatcherDriverStatusDetails,
                                     arguments: DispatcherDriverDetailsRouteArgs(
                                       driverId: driver.id,
                                     ),

@@ -8,6 +8,7 @@ import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/data/services/driver_location_service.dart';
 
 import '../manager/driver_start_work_state.dart';
 import '../manager/driver_start_work_view_model.dart';
@@ -44,6 +45,9 @@ class _DriverStartWorkScreenState extends State<DriverStartWorkScreen> {
                 startDriverShiftUseCase: getIt(),
               ));
     unawaited(_viewModel.loadOverview());
+    if (getIt.isRegistered<DriverLocationService>()) {
+      unawaited(getIt<DriverLocationService>().checkAndRequestPermission());
+    }
   }
 
   Future<void> _handleStartWork() async {

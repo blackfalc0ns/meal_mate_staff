@@ -240,7 +240,13 @@ class DriverOrdersViewModel extends Bloc<DriverOrdersEvent, DriverOrdersState> {
     String? failureCategory;
     String? failureText;
 
-    if (event is DriverOrderDeliveredEvent) {
+    if (event is DriverBoxAssignedEvent) {
+      add(const RefreshDriverOrdersEvent());
+      return;
+    } else if (event is DriverDeliveryCompletedEvent) {
+      targetBoxId = event.boxId;
+      newStatus = DriverDeliveryStatus.delivered;
+    } else if (event is DriverOrderDeliveredEvent) {
       targetBoxId = event.boxId;
       newStatus = DriverDeliveryStatus.delivered;
       statusText = event.statusText;

@@ -121,7 +121,9 @@ abstract class EndPoints {
   static const String driverOrders = '/api/v1/driver/orders';
   static const String driverCallProxy =
       '/api/v1/driver/orders/{boxId}/call-proxy';
-  static const String driverHub = '/hubs/driver';
+  static const String driverHub = '/hubs/driver-hub';
+  static const String driverHubAlternative = '/hubs/driver';
+  static const String driverLocation = '/api/v1/driver/location';
 
   // Driver profile (Screen 09.02)
   static const String driverProfile = '/api/v1/driver/profile';

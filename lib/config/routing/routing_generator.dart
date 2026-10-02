@@ -24,6 +24,7 @@ import '../../features/dispatcher/dispatcher_box_tracking/presentation/screens/d
 import 'arguments/dispatcher_driver_details_route_arguments.dart';
 import 'arguments/dispatcher_map_route_arguments.dart';
 import '../../features/dispatcher/dispatcher_driver_performance/presentation/screens/dispatcher_driver_performance_screen.dart';
+import '../../features/dispatcher/dispatcher_driver_details/presentation/screens/dispatcher_driver_details_screen.dart';
 import '../../features/dispatcher/dispatcher_drivers/presentation/screens/dispatcher_drivers_screen.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/presentation/screens/dispatcher_driver_status_details_screen.dart';
 import '../../features/dispatcher/dispatcher_drivers_status/presentation/screens/dispatcher_drivers_status_screen.dart';
@@ -423,6 +424,28 @@ class RouteGenerator {
         );
 
       case AppRoutes.dispatcherDriverDetails:
+        final driverDetailsArgs = switch (settings.arguments) {
+          final DispatcherDriverDetailsRouteArgs args => args,
+          final String id when id.trim().isNotEmpty =>
+            DispatcherDriverDetailsRouteArgs(driverId: id.trim()),
+          _ => null,
+        };
+        if (driverDetailsArgs == null || !driverDetailsArgs.isValid) {
+          return _buildRoute(
+            settings: settings,
+            page: const Scaffold(
+              body: Center(child: Text('Invalid route arguments')),
+            ),
+          );
+        }
+        return _buildRoute(
+          settings: settings,
+          page: DispatcherDriverDetailsScreen(
+            driverId: driverDetailsArgs.driverId,
+          ),
+        );
+
+      case AppRoutes.dispatcherDriverStatusDetails:
         final driverDetailsArgs = switch (settings.arguments) {
           final DispatcherDriverDetailsRouteArgs args => args,
           final String id when id.trim().isNotEmpty =>

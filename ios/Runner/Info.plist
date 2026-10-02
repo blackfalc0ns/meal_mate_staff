@@ -70,8 +70,13 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>This application requires camera access to scan order QR codes and take delivery verification photos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Meal Mate requires access to your location to track deliveries in real time.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Meal Mate requires background location access to update delivery progress while driving.</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>

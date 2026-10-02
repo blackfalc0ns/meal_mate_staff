@@ -12,6 +12,9 @@ import 'package:meal_mate_delivery/core/constants/assets.dart';
 import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
 
+import 'package:meal_mate_delivery/features/driver/tracking/data/services/driver_location_service.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/presentation/manager/driver_live_location_coordinator.dart';
+
 import '../manager/driver_active_home_state.dart';
 import '../manager/driver_active_home_view_model.dart';
 import '../widgets/active_home/driver_active_status_location_row.dart';
@@ -48,13 +51,21 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _viewModel = widget.viewModel ??
+    _viewModel =
+        widget.viewModel ??
         (getIt.isRegistered<DriverActiveHomeViewModel>()
             ? getIt<DriverActiveHomeViewModel>()
             : DriverActiveHomeViewModel(
                 getDriverActiveHomeUseCase: getIt(),
+                locationCoordinator:
+                    getIt.isRegistered<DriverLiveLocationCoordinator>()
+                    ? getIt<DriverLiveLocationCoordinator>()
+                    : null,
               ));
     unawaited(_viewModel.loadOverview());
+    if (getIt.isRegistered<DriverLocationService>()) {
+      unawaited(getIt<DriverLocationService>().checkAndRequestPermission());
+    }
   }
 
   @override
@@ -73,17 +84,14 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
             showBackButton: false,
             backgroundColor: color.surface,
             leading: IconButton(
-              onPressed: widget.onMenuTap ??
+              onPressed:
+                  widget.onMenuTap ??
                   () {
                     if (Navigator.of(context).canPop()) {
                       Navigator.of(context).pop();
                     }
                   },
-              icon: Icon(
-                Icons.menu_rounded,
-                color: color.onSurface,
-                size: 28,
-              ),
+              icon: Icon(Icons.menu_rounded, color: color.onSurface, size: 28),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
             ),
@@ -97,7 +105,8 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
               Padding(
                 padding: const EdgeInsetsDirectional.only(end: Spacing.screenH),
                 child: InkWell(
-                  onTap: widget.onNotificationTap ??
+                  onTap:
+                      widget.onNotificationTap ??
                       () {
                         unawaited(
                           context.pushNamed(AppRoutes.driverNotifications),
@@ -172,9 +181,7 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
           ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                vertical: Spacing.sm,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -220,9 +227,7 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: Spacing.screenH,
                       ),
-                      child: DriverIssuesHelpBanner(
-                        onTap: widget.onIssuesTap,
-                      ),
+                      child: DriverIssuesHelpBanner(onTap: widget.onIssuesTap),
                     ),
                     const SizedBox(height: Spacing.base),
                     Padding(
@@ -244,9 +249,7 @@ class _DriverActiveHomeScreenState extends State<DriverActiveHomeScreen> {
                   ] else ...[
                     const SizedBox(
                       height: 200,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                      child: Center(child: CircularProgressIndicator()),
                     ),
                   ],
                   const SizedBox(

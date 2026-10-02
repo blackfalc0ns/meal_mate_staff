@@ -83,6 +83,77 @@ class DriverOrdersRealtimeEventDto {
           tripStatusText: json['tripStatusText']?.toString(),
         );
 
+      case 'box-assigned':
+        return DriverBoxAssignedEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          boxId: boxId,
+          boxCode: json['boxCode']?.toString(),
+          tripId: tripId,
+          isReassigned: false,
+        );
+
+      case 'box-reassigned':
+        return DriverBoxAssignedEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          boxId: boxId,
+          boxCode: json['boxCode']?.toString(),
+          tripId: tripId,
+          isReassigned: true,
+        );
+
+      case 'delivery-completed':
+        final remaining = json['remainingBoxesCount'] ??
+            json['remainingDeliveries'] ??
+            json['remainingCount'] ??
+            json['remaining'];
+        return DriverDeliveryCompletedEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          boxId: boxId,
+          tripId: tripId,
+          remainingBoxesCount: remaining is int ? remaining : int.tryParse(remaining?.toString() ?? ''),
+        );
+
+      case 'kitchen-ready':
+        return DriverKitchenReadyEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          boxId: boxId,
+          mealName: json['mealName']?.toString(),
+        );
+
+      case 'shift-status-confirmed':
+        return DriverShiftStatusConfirmedEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          status: (json['status'] ?? json['shiftStatus'] ?? '').toString(),
+        );
+
+      case 'dispatcher-message':
+        return DriverDispatcherMessageEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          message: (json['message'] ?? json['text'] ?? '').toString(),
+          title: json['title']?.toString(),
+        );
+
+      case 'connection-established':
+        return DriverConnectionEstablishedEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          connectionId: json['connectionId']?.toString(),
+        );
+
+      case 'tracking-not-required':
+      case 'dispatcher.tracking_not_required':
+        return DriverTrackingNotRequiredEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          reason: json['reason']?.toString(),
+        );
+
       default:
         return DriverUnknownRealtimeEvent(
           eventId: eventId,

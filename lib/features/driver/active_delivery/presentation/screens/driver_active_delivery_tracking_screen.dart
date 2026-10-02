@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
+import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../tracking/presentation/manager/driver_live_location_coordinator.dart';
 import '../../data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../domain/entities/active_delivery_location_entity.dart';
 import '../../domain/entities/active_delivery_trip_entity.dart';
@@ -62,12 +64,18 @@ class _DriverActiveDeliveryTrackingScreenState
       _ownsRepository = true;
     }
     _stream = widget.locationStream ?? _repository.watchDriverLocation();
+    if (getIt.isRegistered<DriverLiveLocationCoordinator>()) {
+      unawaited(getIt<DriverLiveLocationCoordinator>().setActiveBoxesCount(1));
+    }
   }
 
   @override
   void dispose() {
     if (_ownsRepository) {
       _repository.dispose();
+    }
+    if (getIt.isRegistered<DriverLiveLocationCoordinator>()) {
+      unawaited(getIt<DriverLiveLocationCoordinator>().setActiveBoxesCount(0));
     }
     super.dispose();
   }

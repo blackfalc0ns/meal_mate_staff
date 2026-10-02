@@ -3,15 +3,19 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/network/api_results.dart';
 import '../../domain/entities/driver_boxes_filter_type.dart';
 import '../../domain/usecase/get_driver_pickup_manifest_usecase.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/presentation/manager/driver_live_location_coordinator.dart';
 import 'driver_pickup_manifest_event.dart';
 import 'driver_pickup_manifest_state.dart';
 
 @injectable
 class DriverPickupManifestViewModel extends Cubit<DriverPickupManifestState> {
-  DriverPickupManifestViewModel({required this.getManifestUseCase})
-    : super(const DriverPickupManifestState());
+  DriverPickupManifestViewModel({
+    required this.getManifestUseCase,
+    this.locationCoordinator,
+  }) : super(const DriverPickupManifestState());
 
   final GetDriverPickupManifestUseCase getManifestUseCase;
+  final DriverLiveLocationCoordinator? locationCoordinator;
 
   int _requestGeneration = 0;
 
@@ -101,6 +105,9 @@ class DriverPickupManifestViewModel extends Cubit<DriverPickupManifestState> {
             hasLoadedOnce: true,
           ),
         );
+        if (data.boxes.isNotEmpty) {
+          locationCoordinator?.setActiveBoxesCount(data.boxes.length);
+        }
       case ApiErrorResult(:final failure):
         emit(
           state.copyWith(

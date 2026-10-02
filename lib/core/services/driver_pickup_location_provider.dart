@@ -45,3 +45,26 @@ class DefaultDriverPickupLocationProvider
     return DriverPickupCoordinates(latitude: 29.3375, longitude: 48.0280);
   }
 }
+
+class GeolocatorDriverPickupLocationProvider
+    implements DriverPickupLocationProvider {
+  GeolocatorDriverPickupLocationProvider({this.locationService});
+
+  final dynamic locationService;
+
+  @override
+  Future<DriverPickupCoordinates> getCurrentCoordinates() async {
+    try {
+      if (locationService != null) {
+        final pos = await locationService.getCurrentPosition();
+        if (pos != null && pos.latitude != 0 && pos.longitude != 0) {
+          return DriverPickupCoordinates(
+            latitude: pos.latitude,
+            longitude: pos.longitude,
+          );
+        }
+      }
+    } catch (_) {}
+    return const DefaultDriverPickupLocationProvider().getCurrentCoordinates();
+  }
+}

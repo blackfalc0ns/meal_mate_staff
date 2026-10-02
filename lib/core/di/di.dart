@@ -33,6 +33,11 @@ import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
 import '../services/token_interceptor.dart';
 import '../services/token_service.dart';
+import '../../features/driver/orders/data/realtime/driver_orders_realtime_client.dart';
+import '../../features/driver/orders/data/realtime/driver_orders_signalr_client.dart';
+import '../../features/driver/tracking/data/datasources/driver_location_remote_datasource.dart';
+import '../../features/driver/tracking/data/services/driver_location_service.dart';
+import '../../features/driver/tracking/presentation/manager/driver_live_location_coordinator.dart';
 import '../../features/driver/orders/data/data_source/driver_pickup_manifest_remote_data_source.dart';
 import '../../features/driver/orders/data/data_source/driver_pickup_manifest_remote_data_source_impl.dart';
 import '../../features/driver/orders/data/repo/driver_pickup_manifest_repository_impl.dart';
@@ -778,7 +783,11 @@ Future<void> configureDependencies() async {
 
   // Driver pickup flow
   getIt.registerLazySingleton<IdempotencyKeyFactory>(IdempotencyKeyFactory.new);
-  getIt.registerLazySingleton<DriverPickupLocationProvider>(DefaultDriverPickupLocationProvider.new);
+  getIt.registerLazySingleton<DriverPickupLocationProvider>(
+    () => GeolocatorDriverPickupLocationProvider(
+      locationService: getIt<DriverLocationService>(),
+    ),
+  );
   getIt.registerLazySingleton<DriverPickupManifestRemoteDataSource>(
     () => DriverPickupManifestRemoteDataSourceImpl(getIt<ApiServices>()),
   );
@@ -794,6 +803,7 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<DriverPickupManifestViewModel>(
     () => DriverPickupManifestViewModel(
       getManifestUseCase: getIt<GetDriverPickupManifestUseCase>(),
+      locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
     ),
   );
 
@@ -862,6 +872,7 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<DriverActiveHomeViewModel>(
     () => DriverActiveHomeViewModel(
       getDriverActiveHomeUseCase: getIt<GetDriverActiveHomeUseCase>(),
+      locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
     ),
   );
 
@@ -906,6 +917,32 @@ Future<void> configureDependencies() async {
       markAsReadUseCase: getIt<MarkDriverNotificationAsReadUseCase>(),
     ),
   );
+
+  // Driver Live Location & Realtime Streaming
+  getIt.registerLazySingleton<DriverLocationService>(
+    DriverLocationServiceImpl.new,
+  );
+  getIt.registerLazySingleton<DriverLocationRemoteDataSource>(
+    () => DriverLocationRemoteDataSourceImpl(getIt<Dio>()),
+  );
+  getIt.registerLazySingleton<DriverOrdersRealtimeClient>(
+    () => DriverOrdersSignalRClient(
+      getIt<TokenService>(),
+      refreshService: getIt.isRegistered<AuthRefreshService>()
+          ? getIt<AuthRefreshService>()
+          : null,
+    ),
+  );
+  getIt.registerLazySingleton<DriverLiveLocationCoordinator>(
+    () => DriverLiveLocationCoordinator(
+      locationService: getIt<DriverLocationService>(),
+      realtimeClient: getIt<DriverOrdersRealtimeClient>(),
+      fallbackDataSource: getIt<DriverLocationRemoteDataSource>(),
+    ),
+  );
+
+  // Eagerly resolve coordinator so realtime event listeners are active immediately
+  getIt<DriverLiveLocationCoordinator>();
 }
 
 Dio _buildDio() {
