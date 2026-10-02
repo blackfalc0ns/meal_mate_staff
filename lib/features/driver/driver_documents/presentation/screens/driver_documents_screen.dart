@@ -104,23 +104,23 @@ class _DriverDocumentsScreenState extends State<DriverDocumentsScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.base,
+            horizontal: Spacing.md,
             vertical: Spacing.sm,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const DriverDocumentsNoticeCard(),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.sm),
               for (final document in _documents) ...[
                 DriverDocumentCard(
                   document: document,
                   onViewTap: () => _openPreviewDialog(document),
                   onUpdateTap: () => _openEditSheet(document),
                 ),
-                const SizedBox(height: Spacing.base),
+                const SizedBox(height: Spacing.sm),
               ],
-              const SizedBox(height: Spacing.xl),
+              const SizedBox(height: Spacing.lg),
             ],
           ),
         ),

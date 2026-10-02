@@ -23,7 +23,7 @@ class DriverPickupManifestViewModel extends Cubit<DriverPickupManifestState> {
   // [TEMPORARY FAKE DATA] - احذف هذا البلوك بالكامل عند إصلاح الباك إند
   // أو اجعل _useFakeData = false للرجوع للـ API الحقيقي مباشرة
   // ===========================================================================
-  static const bool _useFakeData = true;
+  static const bool _useFakeData = false;
 
   // 1. قائمة الصناديق قيد الاستلام / الفحص (Pending Scan)
   static const List<DriverAssignedBoxEntity> fakePendingBoxes = [
@@ -105,10 +105,10 @@ class DriverPickupManifestViewModel extends Cubit<DriverPickupManifestState> {
     }
 
     final totalBoxes = fakePendingBoxes.length + fakePickedUpBoxes.length;
-    final totalMeals = [...fakePendingBoxes, ...fakePickedUpBoxes].fold<int>(
-      0,
-      (sum, b) => sum + b.mealsCount,
-    );
+    final totalMeals = [
+      ...fakePendingBoxes,
+      ...fakePickedUpBoxes,
+    ].fold<int>(0, (sum, b) => sum + b.mealsCount);
 
     return DriverPickupManifestEntity(
       tripId: 'TRIP-DEMO-2026',

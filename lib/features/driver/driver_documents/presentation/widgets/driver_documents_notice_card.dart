@@ -14,7 +14,10 @@ class DriverDocumentsNoticeCard extends StatelessWidget {
     final locale = context.localization;
 
     return Container(
-      padding: const EdgeInsets.all(Spacing.md),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.md,
+        vertical: Spacing.sm,
+      ),
       decoration: BoxDecoration(
         color: color.primary.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
@@ -29,9 +32,9 @@ class DriverDocumentsNoticeCard extends StatelessWidget {
           Icon(
             Icons.info_rounded,
             color: color.primary,
-            size: Spacing.iconMd,
+            size: 16,
           ),
-          const SizedBox(width: Spacing.sm),
+          const SizedBox(width: Spacing.xs),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,16 +44,16 @@ class DriverDocumentsNoticeCard extends StatelessWidget {
                   locale.registrationImportantNote,
                   style: getBoldStyle(
                     color: color.primary,
-                    fontSize: FontSize.size13,
+                    fontSize: FontSize.size11,
                   ),
                 ),
-                const SizedBox(height: Spacing.xs),
+                const SizedBox(height: 2),
                 Text(
                   locale.registrationUploadNote,
                   style: getRegularStyle(
                     color: color.onSurfaceVariant,
-                    fontSize: FontSize.size11,
-                    height: 1.4,
+                    fontSize: FontSize.size10,
+                    height: 1.3,
                   ),
                 ),
               ],

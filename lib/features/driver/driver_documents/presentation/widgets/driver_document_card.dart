@@ -61,26 +61,29 @@ class DriverDocumentCard extends StatelessWidget {
           width: Spacing.border,
         ),
       ),
-      padding: const EdgeInsets.all(Spacing.base),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Spacing.md,
+        vertical: Spacing.sm,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(Spacing.sm),
+                padding: const EdgeInsets.all(Spacing.xs),
                 decoration: BoxDecoration(
                   color: color.primaryContainer.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                  borderRadius: BorderRadius.circular(Spacing.radiusXs),
                 ),
                 child: Icon(
                   Icons.description_outlined,
-                  size: 20,
+                  size: 16,
                   color: color.primary,
                 ),
               ),
-              const SizedBox(width: Spacing.sm),
+              const SizedBox(width: Spacing.xs),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +91,7 @@ class DriverDocumentCard extends StatelessWidget {
                     Text(
                       title,
                       style: getBoldStyle(
-                        fontSize: FontSize.size14,
+                        fontSize: FontSize.size12,
                         color: color.onSurface,
                       ),
                     ),
@@ -97,7 +100,7 @@ class DriverDocumentCard extends StatelessWidget {
                       Text(
                         subtitle,
                         style: getRegularStyle(
-                          fontSize: FontSize.size11,
+                          fontSize: FontSize.size10,
                           color: color.onSurfaceVariant,
                         ),
                       ),
@@ -105,18 +108,18 @@ class DriverDocumentCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: Spacing.sm),
+              const SizedBox(width: Spacing.xs),
               DriverDocumentStatusBadge(status: document.status),
             ],
           ),
           if (document.expiryDate != null &&
               document.expiryDate!.isNotEmpty) ...[
-            const SizedBox(height: Spacing.md),
+            const SizedBox(height: Spacing.xs),
             Row(
               children: [
                 Icon(
                   Icons.calendar_today_outlined,
-                  size: 14,
+                  size: 12,
                   color: color.onSurfaceVariant,
                 ),
                 const SizedBox(width: Spacing.xs),
@@ -124,7 +127,7 @@ class DriverDocumentCard extends StatelessWidget {
                   child: Text(
                     '${locale.driverDocumentExpiry}: ${document.expiryDate}',
                     style: getRegularStyle(
-                      fontSize: FontSize.size11,
+                      fontSize: FontSize.size10,
                       color: color.onSurfaceVariant,
                     ),
                   ),
@@ -132,7 +135,7 @@ class DriverDocumentCard extends StatelessWidget {
               ],
             ),
           ],
-          const SizedBox(height: Spacing.md),
+          const SizedBox(height: Spacing.sm),
           // Action Buttons: View Photo & Update Document
           Row(
             children: [
@@ -142,12 +145,15 @@ class DriverDocumentCard extends StatelessWidget {
                   icon: Icons.visibility_outlined,
                   onPressed: onViewTap,
                   variant: AppButtonVariant.outlined,
-                  height: Spacing.buttonSmallHeight,
+                  height: Spacing.registrationSmallButtonHeight,
                   borderRadius: Spacing.radiusSm,
                   color: color.primary,
                   textColor: color.primary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                  ),
                   textStyle: getMediumStyle(
-                    fontSize: FontSize.size12,
+                    fontSize: FontSize.size11,
                     color: color.primary,
                   ),
                 ),
@@ -158,12 +164,15 @@ class DriverDocumentCard extends StatelessWidget {
                   text: locale.driverDocumentChangeButton,
                   icon: Icons.edit_outlined,
                   onPressed: onUpdateTap,
-                  height: Spacing.buttonSmallHeight,
+                  height: Spacing.registrationSmallButtonHeight,
                   borderRadius: Spacing.radiusSm,
                   color: color.primary,
                   textColor: color.onPrimary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.sm,
+                  ),
                   textStyle: getMediumStyle(
-                    fontSize: FontSize.size12,
+                    fontSize: FontSize.size11,
                     color: color.onPrimary,
                   ),
                 ),

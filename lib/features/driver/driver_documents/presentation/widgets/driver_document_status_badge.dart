@@ -49,7 +49,7 @@ class DriverDocumentStatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.sm,
-        vertical: Spacing.xs,
+        vertical: 2,
       ),
       decoration: BoxDecoration(
         color: bg,
@@ -60,14 +60,14 @@ class DriverDocumentStatusBadge extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 14,
+            size: 11,
             color: fg,
           ),
           const SizedBox(width: Spacing.xs),
           Text(
             label,
             style: getMediumStyle(
-              fontSize: FontSize.size11,
+              fontSize: FontSize.size10,
               color: fg,
             ),
           ),
