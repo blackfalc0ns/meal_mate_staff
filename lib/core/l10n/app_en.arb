@@ -1427,6 +1427,20 @@
   "driverTicketPriority": "Priority",
   "driverTicketCreated": "Created at",
   "driverProfileEmpty": "No profile data available",
-  "driverProfileUnavailable": "Not available"
+  "driverProfileUnavailable": "Not available",
+  "driverDocumentsSubtitle": "You can view or update your verified official documents",
+  "driverDocumentChangeButton": "Update Document",
+  "driverDocumentUploadNew": "Upload New Document",
+  "driverDocumentUploadHint": "Please select a clear and legible photo of the document",
+  "driverDocumentStatusApproved": "Approved",
+  "driverDocumentStatusExpiringSoon": "Expiring Soon",
+  "driverDocumentStatusUnderReview": "Under Review",
+  "driverDocumentStatusExpired": "Expired",
+  "driverDocumentUpdateSuccess": "Document submitted successfully for review and verification",
+  "driverDocumentConfirmUpload": "Confirm Upload",
+  "driverDocumentFromGallery": "Gallery",
+  "driverDocumentFromCamera": "Camera",
+  "driverDocumentClose": "Close",
+  "driverDocumentViewPhoto": "View Document"
 }
 

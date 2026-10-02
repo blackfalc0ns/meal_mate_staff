@@ -1420,6 +1420,20 @@
   "driverTicketPriority": "الأولوية",
   "driverTicketCreated": "تاريخ الإنشاء",
   "driverProfileEmpty": "لا توجد بيانات للملف الشخصي",
-  "driverProfileUnavailable": "غير متوفر"
+  "driverProfileUnavailable": "غير متوفر",
+  "driverDocumentsSubtitle": "يمكنك عرض أو تحديث مستنداتك الرسمية المعتمدة",
+  "driverDocumentChangeButton": "تحديث المستند",
+  "driverDocumentUploadNew": "رفع مستند جديد",
+  "driverDocumentUploadHint": "يرجى اختيار صورة واضحة ومقروءة للمستند",
+  "driverDocumentStatusApproved": "معتمد",
+  "driverDocumentStatusExpiringSoon": "ينتهي قريباً",
+  "driverDocumentStatusUnderReview": "قيد المراجعة",
+  "driverDocumentStatusExpired": "منتهي الصلاحية",
+  "driverDocumentUpdateSuccess": "تم إرسال المستند بنجاح للمراجعة والتدقيق",
+  "driverDocumentConfirmUpload": "تأكيد الرفع",
+  "driverDocumentFromGallery": "المعرض",
+  "driverDocumentFromCamera": "الكاميرا",
+  "driverDocumentClose": "إغلاق",
+  "driverDocumentViewPhoto": "عرض المستند"
 }
 

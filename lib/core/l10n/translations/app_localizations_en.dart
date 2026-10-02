@@ -3579,4 +3579,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverProfileUnavailable => 'Not available';
+
+  @override
+  String get driverDocumentsSubtitle =>
+      'You can view or update your verified official documents';
+
+  @override
+  String get driverDocumentChangeButton => 'Update Document';
+
+  @override
+  String get driverDocumentUploadNew => 'Upload New Document';
+
+  @override
+  String get driverDocumentUploadHint =>
+      'Please select a clear and legible photo of the document';
+
+  @override
+  String get driverDocumentStatusApproved => 'Approved';
+
+  @override
+  String get driverDocumentStatusExpiringSoon => 'Expiring Soon';
+
+  @override
+  String get driverDocumentStatusUnderReview => 'Under Review';
+
+  @override
+  String get driverDocumentStatusExpired => 'Expired';
+
+  @override
+  String get driverDocumentUpdateSuccess =>
+      'Document submitted successfully for review and verification';
+
+  @override
+  String get driverDocumentConfirmUpload => 'Confirm Upload';
+
+  @override
+  String get driverDocumentFromGallery => 'Gallery';
+
+  @override
+  String get driverDocumentFromCamera => 'Camera';
+
+  @override
+  String get driverDocumentClose => 'Close';
+
+  @override
+  String get driverDocumentViewPhoto => 'View Document';
 }

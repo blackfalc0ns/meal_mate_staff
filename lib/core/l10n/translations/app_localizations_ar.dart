@@ -3562,4 +3562,49 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverProfileUnavailable => 'غير متوفر';
+
+  @override
+  String get driverDocumentsSubtitle =>
+      'يمكنك عرض أو تحديث مستنداتك الرسمية المعتمدة';
+
+  @override
+  String get driverDocumentChangeButton => 'تحديث المستند';
+
+  @override
+  String get driverDocumentUploadNew => 'رفع مستند جديد';
+
+  @override
+  String get driverDocumentUploadHint =>
+      'يرجى اختيار صورة واضحة ومقروءة للمستند';
+
+  @override
+  String get driverDocumentStatusApproved => 'معتمد';
+
+  @override
+  String get driverDocumentStatusExpiringSoon => 'ينتهي قريباً';
+
+  @override
+  String get driverDocumentStatusUnderReview => 'قيد المراجعة';
+
+  @override
+  String get driverDocumentStatusExpired => 'منتهي الصلاحية';
+
+  @override
+  String get driverDocumentUpdateSuccess =>
+      'تم إرسال المستند بنجاح للمراجعة والتدقيق';
+
+  @override
+  String get driverDocumentConfirmUpload => 'تأكيد الرفع';
+
+  @override
+  String get driverDocumentFromGallery => 'المعرض';
+
+  @override
+  String get driverDocumentFromCamera => 'الكاميرا';
+
+  @override
+  String get driverDocumentClose => 'إغلاق';
+
+  @override
+  String get driverDocumentViewPhoto => 'عرض المستند';
 }

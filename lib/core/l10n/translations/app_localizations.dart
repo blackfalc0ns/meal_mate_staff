@@ -6841,6 +6841,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not available'**
   String get driverProfileUnavailable;
+
+  /// No description provided for @driverDocumentsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can view or update your verified official documents'**
+  String get driverDocumentsSubtitle;
+
+  /// No description provided for @driverDocumentChangeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Document'**
+  String get driverDocumentChangeButton;
+
+  /// No description provided for @driverDocumentUploadNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload New Document'**
+  String get driverDocumentUploadNew;
+
+  /// No description provided for @driverDocumentUploadHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a clear and legible photo of the document'**
+  String get driverDocumentUploadHint;
+
+  /// No description provided for @driverDocumentStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get driverDocumentStatusApproved;
+
+  /// No description provided for @driverDocumentStatusExpiringSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiring Soon'**
+  String get driverDocumentStatusExpiringSoon;
+
+  /// No description provided for @driverDocumentStatusUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Review'**
+  String get driverDocumentStatusUnderReview;
+
+  /// No description provided for @driverDocumentStatusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get driverDocumentStatusExpired;
+
+  /// No description provided for @driverDocumentUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Document submitted successfully for review and verification'**
+  String get driverDocumentUpdateSuccess;
+
+  /// No description provided for @driverDocumentConfirmUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Upload'**
+  String get driverDocumentConfirmUpload;
+
+  /// No description provided for @driverDocumentFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get driverDocumentFromGallery;
+
+  /// No description provided for @driverDocumentFromCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get driverDocumentFromCamera;
+
+  /// No description provided for @driverDocumentClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get driverDocumentClose;
+
+  /// No description provided for @driverDocumentViewPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'View Document'**
+  String get driverDocumentViewPhoto;
 }
 
 class _AppLocalizationsDelegate

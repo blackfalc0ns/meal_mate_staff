@@ -55,6 +55,8 @@ import '../../features/driver/driver_notifications/domain/entities/driver_notifi
 import '../../features/driver/driver_vehicle/domain/entities/driver_vehicle_entity.dart';
 import '../../features/driver/driver_vehicle/presentation/screens/driver_edit_vehicle_details_screen.dart';
 import '../../features/driver/driver_vehicle/presentation/screens/driver_vehicle_details_screen.dart';
+import '../../features/driver/driver_documents/domain/entities/driver_document_item_entity.dart';
+import '../../features/driver/driver_documents/presentation/screens/driver_documents_screen.dart';
 import '../../features/driver/driver_profile/presentation/screens/driver_support_screen.dart';
 import '../../features/driver/driver_support_tickets/domain/entities/driver_support_ticket_entity.dart';
 import '../../features/driver/driver_support_tickets/presentation/screens/driver_support_ticket_details_screen.dart';
@@ -560,6 +562,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverEditVehicleDetailsScreen(vehicle: vehicle),
+        );
+
+      case AppRoutes.driverDocuments:
+        final documents = settings.arguments is List<DriverDocumentItemEntity>
+            ? settings.arguments! as List<DriverDocumentItemEntity>
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverDocumentsScreen(initialDocuments: documents),
         );
 
       case AppRoutes.driverSupport:

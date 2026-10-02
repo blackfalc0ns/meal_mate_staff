@@ -130,6 +130,14 @@ class DriverSettingsScreen extends StatelessWidget {
     unawaited(context.pushNamed(AppRoutes.driverVehicleDetails));
   }
 
+  void _handleMyDocumentsTap(BuildContext context) {
+    if (onMyDocumentsTap != null) {
+      onMyDocumentsTap!();
+      return;
+    }
+    unawaited(context.pushNamed(AppRoutes.driverDocuments));
+  }
+
   void _handleSupportTap(BuildContext context, VoidCallback? customCallback) {
     if (customCallback != null) {
       customCallback();
@@ -187,7 +195,7 @@ class DriverSettingsScreen extends StatelessWidget {
                   DriverSettingsMenuTile(
                     icon: Icons.description_outlined,
                     title: locale.driverSettingsMyDocuments,
-                    onTap: onMyDocumentsTap,
+                    onTap: () => _handleMyDocumentsTap(context),
                   ),
                   DriverSettingsMenuTile(
                     icon: Icons.lock_outline_rounded,

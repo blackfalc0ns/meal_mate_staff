@@ -11,4 +11,9 @@ class AssetsFake {
   static const String ticketPhoto1 = 'assets/images/driver/driver_ticket_photo_1.png';
   static const String ticketPhoto2 = 'assets/images/driver/driver_ticket_photo_2.png';
   static const String ticketPhoto3 = 'assets/images/driver/driver_ticket_photo_3.png';
+  static const String documentCivilCard = 'assets/images/auth/registration_license_sample.png';
+  static const String documentDrivingLicense = 'assets/images/auth/registration_license_sample.png';
+  static const String documentCarRegistration = 'assets/images/auth/registration_license_sample.png';
+  static const String documentVehiclePhoto = 'assets/images/auth/registration_vehicle_sample.png';
+  static const String documentPersonalPhoto = 'assets/images/auth/registration_driver_role.png';
 }
