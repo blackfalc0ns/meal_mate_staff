@@ -12,6 +12,7 @@ void main() {
     String? boxCode,
     String? boxId,
     String? orderCode,
+    String? customerName,
   }) {
     return MaterialApp(
       locale: const Locale('ar'),
@@ -24,6 +25,7 @@ void main() {
             boxCode: boxCode,
             boxId: boxId,
             orderCode: orderCode,
+            customerName: customerName,
           ),
         ),
       ),
@@ -74,13 +76,17 @@ void main() {
       expect(setDataCalls.last.arguments, {'text': testBoxCode});
     });
 
-    testWidgets('falls back to orderCode when boxCode is not passed', (tester) async {
+    testWidgets('renders customerName when provided', (tester) async {
       await tester.pumpWidget(
-        buildSubject(orderCode: '#BOX-999'),
+        buildSubject(
+          boxCode: 'BX-1256#',
+          customerName: 'سارة العتيبي',
+        ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('#BOX-999'), findsOneWidget);
+      expect(find.text('سارة العتيبي'), findsOneWidget);
+      expect(find.text('BX-1256#'), findsOneWidget);
     });
   });
 }

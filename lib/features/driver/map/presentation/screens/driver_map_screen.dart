@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/app_shell/widgets/app_bottom_nav_bar.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/datasources/driver_map_fake_datasource.dart';
 import '../../domain/entities/driver_map_stop_entity.dart';
@@ -20,6 +21,7 @@ class DriverMapScreen extends StatefulWidget {
     this.initialDriverLocation,
     this.initialRoutePoints,
     this.showBottomNavBar = false,
+    @Deprecated('Customer calling is disabled by operations decision')
     this.onCallCustomer,
     this.onAddressTap,
   });
@@ -170,6 +172,19 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
     }
   }
 
+  Future<void> _handleAddressPressed(DriverMapStopEntity stop) async {
+    if (widget.onAddressTap != null) {
+      widget.onAddressTap!();
+      return;
+    }
+    final googleMapsUrl = Uri.parse(
+      'https://www.google.com/maps/dir/?api=1&destination=${stop.latitude},${stop.longitude}',
+    );
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
@@ -218,8 +233,7 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
                     end: Spacing.zero,
                     child: DriverMapActiveOrderCard(
                       stop: activeStop,
-                      onCallPressed: widget.onCallCustomer,
-                      onAddressPressed: widget.onAddressTap,
+                      onAddressPressed: () => _handleAddressPressed(activeStop),
                     ),
                   ),
                 PositionedDirectional(

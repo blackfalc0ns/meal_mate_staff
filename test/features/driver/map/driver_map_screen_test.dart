@@ -42,13 +42,11 @@ void main() {
       tester.view.devicePixelRatio = 2;
       addTearDown(tester.view.resetPhysicalSize);
 
-      bool callPressed = false;
       bool addressPressed = false;
 
       await tester.pumpWidget(
         _buildTestApp(
           child: DriverMapScreen(
-            onCallCustomer: () => callPressed = true,
             onAddressTap: () => addressPressed = true,
           ),
         ),
@@ -63,16 +61,10 @@ void main() {
       expect(find.byType(DriverMapActiveOrderCard), findsOneWidget);
       expect(find.text('BX-458722'), findsWidgets);
       expect(find.text('محمد علي'), findsWidgets);
-      expect(find.text('+966 50 123 4567'), findsOneWidget);
+      expect(find.text('+966 50 123 4567'), findsNothing);
+      expect(find.byIcon(Icons.phone_rounded), findsNothing);
       expect(find.text('3 وجبات'), findsWidgets);
       expect(find.text('20 : 09 ص'), findsWidgets);
-
-      // Test tapping Call button
-      final callBtnFinder = find.widgetWithIcon(InkWell, Icons.phone_rounded);
-      expect(callBtnFinder, findsOneWidget);
-      await tester.tap(callBtnFinder);
-      await tester.pump();
-      expect(callPressed, isTrue);
 
       // Test tapping Address in stats
       final addressFinder = find.text(

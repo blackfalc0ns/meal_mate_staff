@@ -12,6 +12,7 @@ class StartRouteCustomerCard extends StatelessWidget {
     required this.order,
     this.estimatedMinutes = 15,
     this.distanceKm = 4.2,
+    @Deprecated('Customer calling is disabled by operations decision')
     this.onCallCustomer,
   });
 
@@ -89,24 +90,6 @@ class StartRouteCustomerCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
-                ),
-              ),
-              const SizedBox(width: Spacing.sm),
-              InkWell(
-                onTap: onCallCustomer,
-                borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                child: Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: color.primaryContainer,
-                    borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                  ),
-                  child: Icon(
-                    Icons.call,
-                    color: color.primary,
-                    size: Spacing.iconSm,
-                  ),
                 ),
               ),
             ],

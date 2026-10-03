@@ -14,6 +14,7 @@ class DriverMapActiveOrderCard extends StatelessWidget {
   const DriverMapActiveOrderCard({
     super.key,
     required this.stop,
+    @Deprecated('Customer calling is disabled by operations decision')
     this.onCallPressed,
     this.onAddressPressed,
   });
@@ -74,21 +75,17 @@ class DriverMapActiveOrderCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              InkWell(
-                onTap: onCallPressed,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: color.onPrimary.withValues(alpha: 0.22),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.phone_rounded,
-                    size: Spacing.iconSm,
-                    color: color.onPrimary,
-                  ),
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: color.onPrimary.withValues(alpha: 0.18),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person_rounded,
+                  size: Spacing.iconMd,
+                  color: color.onPrimary,
                 ),
               ),
               const SizedBox(width: Spacing.sm),
@@ -97,23 +94,12 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.person_outline_rounded,
-                          size: Spacing.iconXs,
-                          color: color.onPrimary.withValues(alpha: 0.75),
-                        ),
-                        const SizedBox(width: Spacing.xs),
-                        Text(
-                          locale.driverMapCustomerPrefix,
-                          style: getRegularStyle(
-                            fontSize: FontSize.size10,
-                            color: color.onPrimary.withValues(alpha: 0.75),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      locale.driverMapCustomerPrefix,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size10,
+                        color: color.onPrimary.withValues(alpha: 0.75),
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -121,18 +107,8 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: getBoldStyle(
-                        fontSize: FontSize.size13,
+                        fontSize: FontSize.size14,
                         color: color.onPrimary,
-                      ),
-                    ),
-                    Text(
-                      stop.customerPhone,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textDirection: TextDirection.ltr,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size10,
-                        color: color.onPrimary.withValues(alpha: 0.75),
                       ),
                     ),
                   ],

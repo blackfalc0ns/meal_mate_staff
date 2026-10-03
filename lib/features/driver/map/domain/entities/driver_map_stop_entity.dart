@@ -7,7 +7,7 @@ class DriverMapStopEntity {
     required this.sequenceNumber,
     required this.totalStops,
     required this.customerName,
-    required this.customerPhone,
+    this.customerPhone = '',
     required this.area,
     required this.formattedAddress,
     required this.mealsCount,

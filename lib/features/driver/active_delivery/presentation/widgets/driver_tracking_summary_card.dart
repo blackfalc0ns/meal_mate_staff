@@ -11,6 +11,7 @@ class DriverTrackingSummaryCard extends StatelessWidget {
     super.key,
     required this.order,
     this.estimatedDeliveryTime = '10:20 ص',
+    @Deprecated('Customer calling is disabled by operations decision')
     this.onCallPressed,
     this.onNavigatePressed,
   });
@@ -117,24 +118,6 @@ class DriverTrackingSummaryCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-              const SizedBox(width: Spacing.sm),
-              InkWell(
-                onTap: onCallPressed,
-                borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                child: Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: color.primaryContainer,
-                    borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                  ),
-                  child: Icon(
-                    Icons.call,
-                    color: color.primary,
-                    size: Spacing.iconSm,
-                  ),
                 ),
               ),
             ],

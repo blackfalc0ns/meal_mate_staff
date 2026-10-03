@@ -122,7 +122,7 @@ void main() {
       expect(find.text('Delivery Failed'), findsOneWidget);
     });
 
-    testWidgets('tapping call button in summary card opens CustomerCallAttemptsSheet', (tester) async {
+    testWidgets('summary card does not render customer call button per operations decision', (tester) async {
       tester.view.physicalSize = const Size(390 * 2, 844 * 2);
       tester.view.devicePixelRatio = 2;
       addTearDown(tester.view.resetPhysicalSize);
@@ -139,13 +139,8 @@ void main() {
       );
       await tester.pump();
 
-      final callIconFinder = find.byIcon(Icons.call);
-      expect(callIconFinder, findsOneWidget);
-      await tester.tap(callIconFinder);
-      await tester.pumpAndSettle();
-
-      expect(find.byType(CustomerCallAttemptsSheet), findsOneWidget);
-      expect(find.text('الاتصال بالعميل'), findsOneWidget);
+      expect(find.byIcon(Icons.call), findsNothing);
+      expect(find.byType(CustomerCallAttemptsSheet), findsNothing);
     });
   });
 }

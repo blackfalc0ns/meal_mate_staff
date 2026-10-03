@@ -47,6 +47,17 @@ class _FakeRealtimeClient implements DriverOrdersRealtimeClient {
   }
 
   @override
+  bool get isConnected => false;
+
+  @override
+  Future<Map<String, dynamic>?> updateLocation({
+    required double latitude,
+    required double longitude,
+    double? heading,
+    double? speedKmh,
+  }) async => null;
+
+  @override
   Future<void> dispose() async {
     await stop();
     await _eventsController.close();
@@ -99,7 +110,7 @@ void main() {
   late StopDriverOrdersUpdatesUseCase stopUpdates;
   late DriverOrdersViewModel viewModel;
 
-  final sampleStop1 = DriverDeliveryStopEntity(
+  const sampleStop1 = DriverDeliveryStopEntity(
     tripStopId: 'ts-1',
     boxId: 'box-1',
     boxCode: 'BX-101',
