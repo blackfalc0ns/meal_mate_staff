@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
 import 'package:meal_mate_delivery/core/services/idempotency_key_factory.dart';
 import 'package:meal_mate_delivery/core/widget/app_button.dart';
+import 'package:meal_mate_delivery/core/widget/custom_progress_indecator.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/confirm_driver_pickup_request_entity.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_barcode_validation_entity.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_condition_photo_upload_entity.dart';
@@ -32,6 +34,8 @@ import '../../../../support/fakes/fake_driver_pickup_location_provider.dart';
 
 class _FakePickupRepo implements DriverPickupRepository {
   ApiResult<DriverBarcodeValidationEntity>? validateResult;
+  Future<ApiResult<DriverBarcodeValidationEntity>> Function()?
+  onValidateBarcode;
   ApiResult<DriverConditionPhotoUploadEntity>? uploadResult;
   ApiResult<DriverPickupConfirmationEntity>? confirmResult;
 
@@ -41,6 +45,9 @@ class _FakePickupRepo implements DriverPickupRepository {
   Future<ApiResult<DriverBarcodeValidationEntity>> validateDriverPickupBarcode(
     ValidateDriverBarcodeRequestEntity request,
   ) async {
+    if (onValidateBarcode != null) {
+      return onValidateBarcode!();
+    }
     return validateResult!;
   }
 
@@ -329,6 +336,110 @@ void main() {
         await tester.pump(const Duration(milliseconds: 400));
 
         expect(find.text('Box Received Success Screen'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'navigates to driverBoxReceivedSuccess as default when nextAction is unknown',
+      (tester) async {
+        fakeRepo.validateResult = const ApiSuccessResult(
+          data: DriverBarcodeValidationEntity(
+            boxId: 'box-101',
+            boxCode: 'BOX-101',
+            customerName: 'Ahmad Ali',
+            deliveryZone: 'Hawalli',
+            mealsCount: 2,
+            deliveryTimeSlot: '12:00 - 14:00',
+            validationToken: 'valid-token-123',
+            expiresAtUtc: null,
+            status: 'Validated',
+            statusText: 'Validated',
+            nextAction: 'TakeConditionPhoto',
+          ),
+        );
+
+        fakeRepo.uploadResult = const ApiSuccessResult(
+          data: DriverConditionPhotoUploadEntity(
+            boxId: 'box-101',
+            conditionPhotoStorageKey: 'uploaded-key-1',
+            uploadedAtUtc: null,
+            status: 'Uploaded',
+            statusText: 'Uploaded',
+            nextAction: 'ConfirmPickup',
+          ),
+        );
+
+        fakeRepo.confirmResult = const ApiSuccessResult(
+          data: DriverPickupConfirmationEntity(
+            boxId: 'box-101',
+            boxCode: 'BOX-101',
+            tripId: 'trip-101',
+            confirmedAtUtc: null,
+            status: 'PickedUp',
+            statusText: 'PickedUp',
+            nextAction: DriverPickupNextAction.unknown,
+            pickedUpBoxesCount: 1,
+            totalBoxesCount: 5,
+            allBoxesPickedUp: false,
+          ),
+        );
+
+        await tester.pumpWidget(buildScreen());
+        await pumpScreen(tester);
+
+        await sendIntent(tester, const ValidateBarcodeEvent('BOX-101'));
+        await sendIntent(tester, const StepChangedEvent(2));
+        await sendIntent(tester, const PhotoSelectedEvent('photo.jpg'));
+        await sendIntent(tester, const ConfirmPickupEvent());
+        await tester.pump(const Duration(milliseconds: 400));
+
+        expect(find.text('Box Received Success Screen'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'shows CustomProgressIndicator overlay while request is loading',
+      (tester) async {
+        final completer = Completer<ApiResult<DriverBarcodeValidationEntity>>();
+        fakeRepo.onValidateBarcode = () => completer.future;
+
+        await tester.pumpWidget(buildScreen());
+        await pumpScreen(tester);
+
+        expect(find.byType(CustomProgressIndicator), findsNothing);
+
+        await tester.runAsync(() async {
+          viewModel.doIntent(const ValidateBarcodeEvent('BOX-101'));
+          await pumpEventQueue();
+        });
+        await tester.pump(const Duration(milliseconds: 100));
+
+        expect(find.byType(CustomProgressIndicator), findsOneWidget);
+
+        completer.complete(
+          const ApiSuccessResult(
+            data: DriverBarcodeValidationEntity(
+              boxId: 'box-101',
+              boxCode: 'BOX-101',
+              customerName: 'Ahmad Ali',
+              deliveryZone: 'Hawalli',
+              mealsCount: 2,
+              deliveryTimeSlot: '12:00 - 14:00',
+              validationToken: 'valid-token-123',
+              expiresAtUtc: null,
+              status: 'Validated',
+              statusText: 'Validated',
+              nextAction: 'TakeConditionPhoto',
+            ),
+          ),
+        );
+
+        await tester.runAsync(() async {
+          await pumpEventQueue();
+        });
+        await tester.pump(const Duration(milliseconds: 100));
+
+        expect(find.byType(CustomProgressIndicator), findsNothing);
       },
     );
 
