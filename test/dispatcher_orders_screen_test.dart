@@ -45,6 +45,16 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/entities/driver_assignment_result_entity.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/repo/dispatcher_drivers_repository.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/domain/usecase/assign_driver_to_box_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_driver_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/box_tracking_status.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/report_box_issue_request_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/entities/report_box_issue_result_entity.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/repo/box_tracking_repository.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/get_box_tracking_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/report_box_issue_usecase.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/manager/box_tracking_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/screens/dispatcher_box_tracking_screen.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -327,6 +337,86 @@ void main() {
       expect(find.text('تأكيد الإسناد'), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'tapping details button invokes onOrderDetails callback if provided',
+    (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.5;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      final repository = _OrdersRepository();
+      final viewModel = _viewModel(repository);
+
+      DispatcherOrderEntity? capturedOrder;
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('ar'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          theme: AppTheme.lightTheme,
+          home: DispatcherOrdersScreen(
+            viewModel: viewModel,
+            onOrderDetails: (order) => capturedOrder = order,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final detailsButtons = find.text('التفاصيل');
+      expect(detailsButtons, findsWidgets);
+
+      await tester.tap(detailsButtons.first);
+      await tester.pumpAndSettle();
+
+      expect(capturedOrder, isNotNull);
+      expect(capturedOrder!.boxId, 'a1111111-1111-1111-1111-111111111111');
+      await viewModel.close();
+    },
+  );
+
+  testWidgets(
+    'tapping details button opens DispatcherBoxTrackingScreen via route generator when no callback provided',
+    (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.5;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      final repository = _OrdersRepository();
+      getIt.registerFactory<DispatcherOrdersViewModel>(
+        () => _viewModel(repository),
+      );
+
+      final trackingRepo = _FakeTrackingRepository();
+      getIt.registerFactoryParam<BoxTrackingViewModel, String, void>(
+        (boxId, _) => BoxTrackingViewModel(
+          GetBoxTrackingUseCase(trackingRepo),
+          ReportBoxIssueUseCase(trackingRepo),
+          boxId: boxId,
+        ),
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('ar'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          theme: AppTheme.lightTheme,
+          initialRoute: AppRoutes.dispatcherOrders,
+          onGenerateRoute: RouteGenerator.getRoute,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final detailsButtons = find.text('التفاصيل');
+      expect(detailsButtons, findsWidgets);
+
+      await tester.tap(detailsButtons.first);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DispatcherBoxTrackingScreen), findsOneWidget);
+    },
+  );
 }
 
 DispatcherOrdersViewModel _viewModel(DispatcherOrdersRepository repository) {
@@ -507,3 +597,49 @@ class _FakeDriversRepository implements DispatcherDriversRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
+
+class _FakeTrackingRepository implements BoxTrackingRepository {
+  @override
+  Future<ApiResult<BoxTrackingEntity>> getTracking(String boxId) async {
+    return const ApiSuccessResult(
+      data: BoxTrackingEntity(
+        boxId: 'a1111111-1111-1111-1111-111111111111',
+        boxCode: '#BX-1256',
+        status: BoxTrackingStatus.onTheWay,
+        statusText: 'في الطريق للتوصيل',
+        statusColor: '#3B82F6',
+        customerName: 'أحمد العتيبي',
+        scheduledTimeText: '12:30 م - 01:30 م',
+        deliveryAddress: 'شارع الملك فهد، حي الصحافة',
+        driver: BoxTrackingDriverEntity(
+          driverId: 'drv-1',
+          driverCode: 'DR-1025',
+          fullName: 'أحمد السعيد',
+          phoneNumber: '+966501234567',
+          avatarUrl: null,
+        ),
+        programType: 'وجبات يومية',
+        orderDateText: '2026-09-13',
+        customerNotes: 'الرجاء الاتصال قبل التوصيل',
+        mealsSummary: '3 وجبات',
+        steps: [],
+      ),
+    );
+  }
+
+  @override
+  Future<ApiResult<ReportBoxIssueResultEntity>> reportIssue(
+    String boxId,
+    ReportBoxIssueRequestEntity request,
+  ) async {
+    return const ApiSuccessResult(
+      data: ReportBoxIssueResultEntity(
+        boxId: 'a1111111-1111-1111-1111-111111111111',
+        issueId: 'iss-1',
+        reportedAtUtc: null,
+        message: 'تم الإبلاغ',
+      ),
+    );
+  }
+}
+

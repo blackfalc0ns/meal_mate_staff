@@ -43,8 +43,8 @@ void main() {
   late DriverPickupManifestViewModel viewModel;
 
   const sampleBox = DriverAssignedBoxEntity(
-    boxId: '#BOX-101',
-    boxCode: '#MM-101',
+    boxId: 'uuid-box-101',
+    boxCode: '#BOX-101',
     customerName: 'Customer A',
     deliveryZone: 'حي النرجس',
     mealsCount: 4,

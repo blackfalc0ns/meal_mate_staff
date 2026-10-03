@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/routing/arguments/assign_box_route_arguments.dart';
+import '../../../../../config/routing/arguments/box_tracking_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/errors/error_widgets/api_error_widget.dart';
@@ -200,7 +201,19 @@ class _DispatcherOrdersScreenState extends State<DispatcherOrdersScreen> {
                           );
                         }
                       },
-                  onOrderDetails: widget.onOrderDetails,
+                  onOrderDetails:
+                      widget.onOrderDetails ??
+                      (order) async {
+                        await context.pushNamed(
+                          AppRoutes.boxTracking,
+                          arguments: BoxTrackingRouteArguments(boxId: order.boxId),
+                        );
+                        if (context.mounted) {
+                          await viewModel.doIntent(
+                            const RefreshDispatcherOrdersEvent(),
+                          );
+                        }
+                      },
                 ),
               const SliverToBoxAdapter(child: SizedBox(height: Spacing.base)),
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/routing/arguments/assign_box_route_arguments.dart';
+import '../../../../../config/routing/arguments/box_tracking_route_arguments.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/dispatcher_order_entity.dart';
 import 'dispatcher_order_card.dart';
@@ -38,9 +39,16 @@ class DispatcherOrdersList extends StatelessWidget {
                   );
                 }
               },
-              onDetailsPressed: onOrderDetails != null
-                  ? () => onOrderDetails!(order)
-                  : null,
+              onDetailsPressed: () {
+                if (onOrderDetails != null) {
+                  onOrderDetails!(order);
+                } else {
+                  context.pushNamed(
+                    AppRoutes.boxTracking,
+                    arguments: BoxTrackingRouteArguments(boxId: order.boxId),
+                  );
+                }
+              },
             ),
           );
         },

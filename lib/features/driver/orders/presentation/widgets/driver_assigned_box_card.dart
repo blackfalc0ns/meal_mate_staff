@@ -74,8 +74,7 @@ class DriverAssignedBoxCard extends StatelessWidget {
           Expanded(
             flex: 3,
             child: DriverBoxIdsSection(
-              boxId: box.boxId,
-              orderCode: box.orderCode,
+              boxCode: box.boxCode,
             ),
           ),
           const SizedBox(width: Spacing.xs),

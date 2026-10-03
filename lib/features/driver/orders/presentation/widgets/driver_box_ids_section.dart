@@ -10,15 +10,29 @@ import '../../../../../core/widget/custom_snak_bar.dart';
 class DriverBoxIdsSection extends StatelessWidget {
   const DriverBoxIdsSection({
     super.key,
-    required this.boxId,
-    required this.orderCode,
+    this.boxCode,
+    this.boxId,
+    this.orderCode,
   });
 
-  final String boxId;
-  final String orderCode;
+  final String? boxCode;
+  final String? boxId;
+  final String? orderCode;
+
+  String get effectiveBoxCode {
+    if (boxCode != null && boxCode!.trim().isNotEmpty) {
+      return boxCode!;
+    }
+    if (orderCode != null && orderCode!.trim().isNotEmpty) {
+      return orderCode!;
+    }
+    return boxId ?? '';
+  }
 
   Future<void> _handleCopy(BuildContext context) async {
-    await Clipboard.setData(ClipboardData(text: boxId));
+    final code = effectiveBoxCode;
+    if (code.isEmpty) return;
+    await Clipboard.setData(ClipboardData(text: code));
     if (!context.mounted) return;
     final locale = context.localization;
     CustomSnackbar.showSuccess(
@@ -30,43 +44,34 @@ class DriverBoxIdsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final code = effectiveBoxCode;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          boxId,
-          style: getBoldStyle(
-            color: color.onSurface,
-            fontSize: FontSize.size13,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: Spacing.xs),
         InkWell(
           onTap: () => _handleCopy(context),
           borderRadius: BorderRadius.circular(Spacing.radiusXs),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.copy_rounded,
-                size: Spacing.iconXs,
-                color: color.onSurfaceVariant,
-              ),
-              const SizedBox(width: Spacing.xs),
               Flexible(
                 child: Text(
-                  orderCode,
-                  style: getMediumStyle(
-                    color: color.onSurfaceVariant,
+                  code,
+                  style: getBoldStyle(
+                    color: color.onSurface,
                     fontSize: FontSize.size11,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              Icon(
+                Icons.copy_rounded,
+                size: Spacing.iconXs,
+                color: color.onSurfaceVariant,
               ),
             ],
           ),

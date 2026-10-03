@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/entities/driver_box_received_success_entity.dart';
-import 'package:meal_mate_delivery/features/driver/confirm_receipt/domain/fake_data/driver_box_received_success_fake_data.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/screens/driver_box_received_success_screen.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_box_received_detail_row.dart';
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_box_received_details_card.dart';
@@ -13,6 +12,14 @@ import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/
 import 'package:meal_mate_delivery/features/driver/confirm_receipt/presentation/widgets/driver_box_received_success_illustration.dart';
 
 void main() {
+  const defaultSuccessBox = DriverBoxReceivedSuccessEntity(
+    boxCode: '#BX-9876',
+    restaurantName: 'مطعم MealMate الكويت',
+    itemsCount: 3,
+    expectedReceiptTime: '9:30 ص - 9 مايو 2025',
+    isReceived: true,
+  );
+
   Widget buildSubject({
     DriverBoxReceivedSuccessEntity? box,
     VoidCallback? onNextOrder,
@@ -28,7 +35,7 @@ void main() {
       ],
       supportedLocales: const [Locale('ar'), Locale('en')],
       home: DriverBoxReceivedSuccessScreen(
-        box: box ?? DriverBoxReceivedSuccessFakeData.defaultSuccessBox,
+        box: box ?? defaultSuccessBox,
         onNextOrder: onNextOrder,
       ),
     );

@@ -493,7 +493,7 @@ class RouteGenerator {
           settings: settings,
           page: withoutShell
               ? const DriverAssignedBoxesScreen()
-              : const AppShellScreen(role: UserRole.driver, initialIndex: 0),
+              : const AppShellScreen(role: UserRole.driver, initialIndex: 1),
         );
 
       case AppRoutes.driverConfirmReceipt:
