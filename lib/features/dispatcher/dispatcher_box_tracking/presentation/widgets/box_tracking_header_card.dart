@@ -97,7 +97,7 @@ class BoxTrackingHeaderCard extends StatelessWidget {
                                 color: color.onSurfaceVariant,
                                 fontSize: FontSize.size11,
                               ),
-                              maxLines: 1,
+                              maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

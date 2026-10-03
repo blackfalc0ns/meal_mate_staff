@@ -10,6 +10,7 @@ import '../../../../../config/routing/arguments/driver_pickup_summary_route_argu
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/helpers/image_picker_helper.dart';
 import '../../../orders/domain/entities/driver_assigned_box_entity.dart';
 import '../../domain/entities/driver_box_received_success_entity.dart';
 import '../../domain/entities/driver_pickup_confirmation_entity.dart';
@@ -121,10 +122,14 @@ class _DriverConfirmReceiptScreenState
     } catch (_) {}
 
     try {
-      final picker = ImagePicker();
-      final image = await picker.pickImage(source: ImageSource.camera);
-      if (image != null) {
-        _viewModel.doIntent(PhotoSelectedEvent(image.path));
+      final file = await ImagePickerHelper.pickImage(
+        ImageSource.camera,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 70,
+      );
+      if (file != null) {
+        _viewModel.doIntent(PhotoSelectedEvent(file.path));
         return;
       }
     } catch (_) {}

@@ -15,6 +15,9 @@ class ImagePickerHelper {
     BuildContext context, {
     ImagePicker? picker,
     Widget? sourceSheet,
+    double? maxWidth = 1024,
+    double? maxHeight = 1024,
+    int? imageQuality = 70,
   }) async {
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
@@ -26,7 +29,12 @@ class ImagePickerHelper {
     }
 
     final imagePicker = picker ?? ImagePicker();
-    final image = await imagePicker.pickImage(source: source);
+    final image = await imagePicker.pickImage(
+      source: source,
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      imageQuality: imageQuality,
+    );
     if (image == null) {
       return null;
     }
@@ -38,9 +46,17 @@ class ImagePickerHelper {
   static Future<File?> pickImage(
     ImageSource source, {
     ImagePicker? picker,
+    double? maxWidth = 1024,
+    double? maxHeight = 1024,
+    int? imageQuality = 70,
   }) async {
     final imagePicker = picker ?? ImagePicker();
-    final image = await imagePicker.pickImage(source: source);
+    final image = await imagePicker.pickImage(
+      source: source,
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      imageQuality: imageQuality,
+    );
     if (image == null) {
       return null;
     }

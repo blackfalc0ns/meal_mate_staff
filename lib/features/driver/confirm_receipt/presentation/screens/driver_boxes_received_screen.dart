@@ -12,6 +12,7 @@ import '../../../../../core/errors/error_widgets/inline_api_error_widget.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_received_box_item_entity.dart';
 import '../manager/driver_pickup_summary_event.dart';
+import '../../../../../core/widget/custom_progress_indecator.dart';
 import '../manager/driver_pickup_summary_state.dart';
 import '../manager/driver_pickup_summary_view_model.dart';
 import '../widgets/driver_boxes_received_action_button.dart';
@@ -174,47 +175,58 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
         return Scaffold(
           backgroundColor: color.surface,
           appBar: const DriverBoxesReceivedHeader(),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.base,
-                vertical: Spacing.sm,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: Spacing.base),
-                  const DriverBoxesReceivedSuccessBanner(),
-                  const SizedBox(height: Spacing.sm),
-                  const DriverBoxesReceivedInfoCard(),
-                  if (state.failure != null && state.summary != null) ...[
-                    const SizedBox(height: Spacing.md),
-                    InlineApiErrorWidget(
-                      failure: state.failure!,
-                      onRetry: () => _viewModel.doIntent(
-                        const RetryDriverPickupSummaryEvent(),
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: Spacing.lg),
-                  DriverReceivedBoxesHeaderBar(count: displayBoxes.length),
-                  const SizedBox(height: Spacing.sm),
-                  for (final item in displayBoxes) ...[
-                    DriverReceivedBoxCard(item: item),
-                    const SizedBox(height: Spacing.sm),
-                  ],
-                  const SizedBox(height: Spacing.xs),
-                  const DriverBoxesReceivedSafetyBanner(),
-                  const SizedBox(height: Spacing.lg),
-                  DriverBoxesReceivedActionButton(
-                    onPressed: _handleStartDelivery,
-                    isLoading: state.isActionLoading,
-                    isEnabled: canStart,
+          body: Stack(
+            children: [
+              SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.base,
+                    vertical: Spacing.sm,
                   ),
-                  const SizedBox(height: Spacing.xxl),
-                ],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: Spacing.base),
+                      const DriverBoxesReceivedSuccessBanner(),
+                      const SizedBox(height: Spacing.sm),
+                      const DriverBoxesReceivedInfoCard(),
+                      if (state.failure != null && state.summary != null) ...[
+                        const SizedBox(height: Spacing.md),
+                        InlineApiErrorWidget(
+                          failure: state.failure!,
+                          onRetry: () => _viewModel.doIntent(
+                            const RetryDriverPickupSummaryEvent(),
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: Spacing.lg),
+                      DriverReceivedBoxesHeaderBar(count: displayBoxes.length),
+                      const SizedBox(height: Spacing.sm),
+                      for (final item in displayBoxes) ...[
+                        DriverReceivedBoxCard(item: item),
+                        const SizedBox(height: Spacing.sm),
+                      ],
+                      const SizedBox(height: Spacing.xs),
+                      const DriverBoxesReceivedSafetyBanner(),
+                      const SizedBox(height: Spacing.lg),
+                      DriverBoxesReceivedActionButton(
+                        onPressed: _handleStartDelivery,
+                        isLoading: state.isActionLoading,
+                        isEnabled: canStart,
+                      ),
+                      const SizedBox(height: Spacing.xxl),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              if (state.isActionLoading) ...[
+                ModalBarrier(
+                  dismissible: false,
+                  color: color.scrim.withValues(alpha: 0.3),
+                ),
+                const Center(child: CustomProgressIndicator()),
+              ],
+            ],
           ),
         );
       },
