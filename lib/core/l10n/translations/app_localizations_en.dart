@@ -2633,6 +2633,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverProceedToNextOrder => 'Proceed to Next Order';
 
   @override
+  String get driverBoxNotAssignedTitle => 'This Code Does Not Belong to You';
+
+  @override
+  String get driverBoxNotAssignedSubtitle =>
+      'The QR code you scanned does not belong to any box currently assigned to you';
+
+  @override
+  String get driverBoxNotAssignedStatusBadge => 'Not Assigned to You';
+
+  @override
+  String get driverBoxNotAssignedInfoTitle => 'What can you do?';
+
+  @override
+  String get driverBoxNotAssignedInfoSubtitle =>
+      'Please verify the correct box or contact the restaurant if there is an assignment error';
+
+  @override
+  String get driverScanAnotherCode => 'Scan Another Code';
+
+  @override
+  String get driverContactRestaurant => 'Contact the Restaurant';
+
+  @override
+  String get driverReturnToBoxesList => 'Return to Boxes List';
+
+  @override
   String driverBoxMealsCount(int count) {
     return '$count Meals';
   }

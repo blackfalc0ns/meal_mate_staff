@@ -1019,6 +1019,14 @@
   "driverBoxSafetyCheckTitle": "Check Box Safety",
   "driverBoxSafetyCheckDesc": "Please verify the condition of the box before starting delivery and report any issues if found",
   "driverProceedToNextOrder": "Proceed to Next Order",
+  "driverBoxNotAssignedTitle": "This Code Does Not Belong to You",
+  "driverBoxNotAssignedSubtitle": "The QR code you scanned does not belong to any box currently assigned to you",
+  "driverBoxNotAssignedStatusBadge": "Not Assigned to You",
+  "driverBoxNotAssignedInfoTitle": "What can you do?",
+  "driverBoxNotAssignedInfoSubtitle": "Please verify the correct box or contact the restaurant if there is an assignment error",
+  "driverScanAnotherCode": "Scan Another Code",
+  "driverContactRestaurant": "Contact the Restaurant",
+  "driverReturnToBoxesList": "Return to Boxes List",
   "driverBoxMealsCount": "{count} Meals",
   "@driverBoxMealsCount": {
     "placeholders": {

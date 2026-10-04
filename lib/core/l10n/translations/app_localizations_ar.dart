@@ -2626,6 +2626,32 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverProceedToNextOrder => 'الانتقال الى الطلب التالي';
 
   @override
+  String get driverBoxNotAssignedTitle => 'هذا الرمز لا يخصك';
+
+  @override
+  String get driverBoxNotAssignedSubtitle =>
+      'رمز QR الذي قمت بمسحه لا يخص أي بوكس مسند إليك حالياً';
+
+  @override
+  String get driverBoxNotAssignedStatusBadge => 'غير مسند لك';
+
+  @override
+  String get driverBoxNotAssignedInfoTitle => 'ماذا يمكنك فعله؟';
+
+  @override
+  String get driverBoxNotAssignedInfoSubtitle =>
+      'يرجى التأكد من البوكس الصحيح أو التواصل مع المطعم إذا كان هناك خطأ في الإسناد';
+
+  @override
+  String get driverScanAnotherCode => 'مسح رمز آخر';
+
+  @override
+  String get driverContactRestaurant => 'التواصل مع المطعم';
+
+  @override
+  String get driverReturnToBoxesList => 'العودة إلى قائمة البوكسات';
+
+  @override
   String driverBoxMealsCount(int count) {
     return '$count وجبات';
   }

@@ -44,7 +44,9 @@ import '../../features/driver/orders/presentation/screens/driver_assigned_boxes_
 import '../../features/driver/confirm_receipt/presentation/screens/driver_confirm_receipt_screen.dart';
 import '../../features/driver/confirm_receipt/presentation/screens/driver_boxes_received_screen.dart';
 import '../../features/driver/confirm_receipt/presentation/screens/driver_box_received_success_screen.dart';
+import '../../features/driver/confirm_receipt/presentation/screens/driver_box_not_assigned_screen.dart';
 import '../../features/driver/confirm_receipt/domain/entities/driver_box_received_success_entity.dart';
+import '../../features/driver/confirm_receipt/domain/entities/driver_box_not_assigned_entity.dart';
 import '../../features/driver/confirm_receipt/domain/entities/driver_received_box_item_entity.dart';
 import '../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
 import '../../features/driver/driver_profile/presentation/screens/driver_performance_screen.dart';
@@ -530,6 +532,15 @@ class RouteGenerator {
         return _buildRoute(
           settings: settings,
           page: DriverBoxReceivedSuccessScreen(box: box),
+        );
+
+      case AppRoutes.driverBoxNotAssigned:
+        final box = settings.arguments is DriverBoxNotAssignedEntity
+            ? settings.arguments! as DriverBoxNotAssignedEntity
+            : null;
+        return _buildRoute(
+          settings: settings,
+          page: DriverBoxNotAssignedScreen(box: box),
         );
 
       case AppRoutes.driverProfile:

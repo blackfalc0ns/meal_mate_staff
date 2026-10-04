@@ -1012,6 +1012,14 @@
   "driverBoxSafetyCheckTitle": "تأكد من سلامة البوكس",
   "driverBoxSafetyCheckDesc": "يرجى التحقق من سلامة البوكس قبل بدء التوصيل وأبلغ عن أي مشكلة إن وجدت",
   "driverProceedToNextOrder": "الانتقال الى الطلب التالي",
+  "driverBoxNotAssignedTitle": "هذا الرمز لا يخصك",
+  "driverBoxNotAssignedSubtitle": "رمز QR الذي قمت بمسحه لا يخص أي بوكس مسند إليك حالياً",
+  "driverBoxNotAssignedStatusBadge": "غير مسند لك",
+  "driverBoxNotAssignedInfoTitle": "ماذا يمكنك فعله؟",
+  "driverBoxNotAssignedInfoSubtitle": "يرجى التأكد من البوكس الصحيح أو التواصل مع المطعم إذا كان هناك خطأ في الإسناد",
+  "driverScanAnotherCode": "مسح رمز آخر",
+  "driverContactRestaurant": "التواصل مع المطعم",
+  "driverReturnToBoxesList": "العودة إلى قائمة البوكسات",
   "driverBoxMealsCount": "{count} وجبات",
   "@driverBoxMealsCount": {
     "placeholders": {

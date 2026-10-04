@@ -5078,6 +5078,54 @@ abstract class AppLocalizations {
   /// **'Proceed to Next Order'**
   String get driverProceedToNextOrder;
 
+  /// No description provided for @driverBoxNotAssignedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This Code Does Not Belong to You'**
+  String get driverBoxNotAssignedTitle;
+
+  /// No description provided for @driverBoxNotAssignedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The QR code you scanned does not belong to any box currently assigned to you'**
+  String get driverBoxNotAssignedSubtitle;
+
+  /// No description provided for @driverBoxNotAssignedStatusBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Assigned to You'**
+  String get driverBoxNotAssignedStatusBadge;
+
+  /// No description provided for @driverBoxNotAssignedInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What can you do?'**
+  String get driverBoxNotAssignedInfoTitle;
+
+  /// No description provided for @driverBoxNotAssignedInfoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify the correct box or contact the restaurant if there is an assignment error'**
+  String get driverBoxNotAssignedInfoSubtitle;
+
+  /// No description provided for @driverScanAnotherCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Another Code'**
+  String get driverScanAnotherCode;
+
+  /// No description provided for @driverContactRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the Restaurant'**
+  String get driverContactRestaurant;
+
+  /// No description provided for @driverReturnToBoxesList.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Boxes List'**
+  String get driverReturnToBoxesList;
+
   /// No description provided for @driverBoxMealsCount.
   ///
   /// In en, this message translates to:
