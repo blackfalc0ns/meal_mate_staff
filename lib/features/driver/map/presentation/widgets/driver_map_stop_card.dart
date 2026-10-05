@@ -6,6 +6,7 @@ import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
 import 'package:meal_mate_delivery/core/constants/assets.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
+import '../../../orders/domain/entities/driver_delivery_status.dart';
 import '../../domain/entities/driver_map_stop_entity.dart';
 
 class DriverMapStopCard extends StatelessWidget {
@@ -20,23 +21,48 @@ class DriverMapStopCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback? onTap;
 
+  static Color? _parseStatusColor(String? colorStr) {
+    if (colorStr == null) return null;
+    final cleaned = colorStr.replaceAll('#', '').trim().toLowerCase();
+    if (cleaned.isEmpty) return null;
+    if (cleaned == 'green') return const Color(0xFF2E7D32);
+    if (cleaned == 'orange') return const Color(0xFFEF6C00);
+    if (cleaned == 'gray' || cleaned == 'grey') return const Color(0xFF757575);
+    final buffer = StringBuffer();
+    if (cleaned.length == 6) {
+      buffer.write('ff');
+      buffer.write(cleaned);
+    } else if (cleaned.length == 8) {
+      buffer.write(cleaned);
+    } else {
+      return null;
+    }
+    final value = int.tryParse(buffer.toString(), radix: 16);
+    return value != null ? Color(value) : null;
+  }
+
   String _resolveStatusText(BuildContext context) {
+    if (stop.statusText != null && stop.statusText!.trim().isNotEmpty) {
+      return stop.statusText!.trim();
+    }
     final locale = context.localization;
     if (stop.isDelivered) {
       return locale.driverSummaryDelivered;
     }
-    if (stop.sequenceNumber == 1) {
+    if (stop.status == DriverDeliveryStatus.inProgress) {
       return locale.driverDetailsStatusOutForDelivery;
     }
     return locale.driverStatusOnTheWayToCustomer;
   }
 
   Color _resolveStatusColor(BuildContext context) {
+    final parsed = _parseStatusColor(stop.statusColor);
+    if (parsed != null) return parsed;
     final color = context.colorScheme;
     if (stop.isDelivered) {
       return color.onSurfaceVariant.withValues(alpha: 0.6);
     }
-    if (stop.sequenceNumber == 1) {
+    if (stop.status == DriverDeliveryStatus.inProgress) {
       return color.tertiary;
     }
     return color.secondary;

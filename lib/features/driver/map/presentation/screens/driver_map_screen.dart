@@ -1,22 +1,160 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/app_shell/widgets/app_bottom_nav_bar.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
+import 'package:meal_mate_delivery/core/errors/error_widgets/api_error_widget.dart';
+import 'package:meal_mate_delivery/core/errors/error_widgets/empty_state_widget.dart';
+import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import 'package:meal_mate_delivery/core/network/api_results.dart';
+import '../../../tracking/domain/entities/driver_live_location_sample.dart';
+import '../../../tracking/presentation/manager/driver_live_location_coordinator.dart';
 import '../../data/datasources/driver_map_fake_datasource.dart';
+import '../../domain/entities/driver_map_location_entity.dart';
+import '../../domain/entities/driver_map_navigation_entity.dart';
+import '../../domain/entities/driver_map_route_entity.dart';
+import '../../domain/entities/driver_map_route_status.dart';
 import '../../domain/entities/driver_map_stop_entity.dart';
+import '../../domain/usecase/get_driver_map_route_usecase.dart';
+import '../manager/driver_map_event.dart';
+import '../manager/driver_map_state.dart';
+import '../manager/driver_map_view_model.dart';
 import '../widgets/driver_map_active_order_card.dart';
 import '../widgets/driver_map_background.dart';
+import '../widgets/driver_map_camera_controller.dart';
+import '../widgets/driver_map_navigation_launcher.dart';
+import '../widgets/driver_map_navigation_panel.dart';
+import '../widgets/driver_map_polyline_decoder.dart';
 import '../widgets/driver_map_recenter_button.dart';
+import '../widgets/driver_map_shimmer.dart';
 import '../widgets/driver_map_stops_carousel.dart';
+
+class _FallbackMapRouteUseCase implements GetDriverMapRouteUseCase {
+  const _FallbackMapRouteUseCase(this.stops);
+
+  final List<DriverMapStopEntity> stops;
+
+  @override
+  Future<ApiResult<DriverMapRouteEntity>> call({String? focusedStopId}) async {
+    final effectiveStops =
+        stops.isNotEmpty ? stops : DriverMapFakeDataSource.sampleStops;
+    final focused = effectiveStops.firstWhere(
+      (s) => s.id == focusedStopId,
+      orElse: () => effectiveStops.first,
+    );
+    return ApiSuccessResult(
+      data: DriverMapRouteEntity(
+        tripId: 'sample-trip',
+        tripCode: 'TRP-SAMPLE',
+        totalStopsCount: effectiveStops.length,
+        completedStopsCount:
+            effectiveStops.where((s) => s.isDelivered).length,
+        stops: effectiveStops,
+        focusedStop: focused,
+        navigation: DriverMapNavigationEntity(
+          routeStatus: DriverMapRouteStatus.ready,
+          canNavigate: true,
+          distanceMeters: 2500,
+          durationSeconds: 300,
+          destinationStopId: focused.id,
+          origin: const DriverMapLocationEntity(
+            latitude: 29.3320,
+            longitude: 48.0820,
+            label: 'Driver',
+            source: 'tracking',
+          ),
+          destination: DriverMapLocationEntity(
+            latitude: focused.latitude ?? 29.3375,
+            longitude: focused.longitude ?? 48.0753,
+            label: focused.customerName,
+            source: 'trip_stop',
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _FallbackLocationCoordinator implements DriverLiveLocationCoordinator {
+  @override
+  Stream<DriverLiveLocationSample> get positions => const Stream.empty();
+
+  @override
+  DriverLiveLocationSample? get latestLocation => null;
+
+  @override
+  DriverLiveLocationSample? get lastSuccessfullySentLocation => null;
+
+  @override
+  Future<bool> sendCurrentLocationNow() async => true;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+DriverMapViewModel _createFallbackViewModel({
+  List<DriverMapStopEntity>? initialStops,
+  LatLng? initialDriverLocation,
+  List<LatLng>? initialRoutePoints,
+}) {
+  final stops = initialStops ?? DriverMapFakeDataSource.sampleStops;
+  final focused = stops.isNotEmpty ? stops.first : null;
+  final route = stops.isNotEmpty
+      ? DriverMapRouteEntity(
+          tripId: 'sample-trip',
+          tripCode: 'TRP-SAMPLE',
+          totalStopsCount: stops.length,
+          completedStopsCount: stops.where((s) => s.isDelivered).length,
+          stops: stops,
+          focusedStop: focused ?? stops.first,
+          navigation: DriverMapNavigationEntity(
+            routeStatus: DriverMapRouteStatus.ready,
+            canNavigate: true,
+            distanceMeters: 2500,
+            durationSeconds: 300,
+            destinationStopId: focused?.id ?? '',
+            origin: DriverMapLocationEntity(
+              latitude: initialDriverLocation?.latitude ?? 29.3320,
+              longitude: initialDriverLocation?.longitude ?? 48.0820,
+              label: 'Driver',
+              source: 'tracking',
+            ),
+            destination: DriverMapLocationEntity(
+              latitude: focused?.latitude ?? 29.3375,
+              longitude: focused?.longitude ?? 48.0753,
+              label: focused?.customerName ?? '',
+              source: 'trip_stop',
+            ),
+          ),
+        )
+      : null;
+
+  return DriverMapViewModel(
+    getDriverMapRouteUseCase: _FallbackMapRouteUseCase(stops),
+    liveLocationCoordinator: _FallbackLocationCoordinator(),
+    bootstrapWaitLimit: Duration.zero,
+    pollingInterval: Duration.zero,
+    initialState: DriverMapState(
+      isLoading: false,
+      route: route,
+      selectedStopId: focused?.id,
+    ),
+  );
+}
 
 class DriverMapScreen extends StatefulWidget {
   const DriverMapScreen({
     super.key,
+    this.isActive = true,
+    this.viewModel,
     this.initialStops,
     this.initialDriverLocation,
     this.initialRoutePoints,
@@ -26,6 +164,8 @@ class DriverMapScreen extends StatefulWidget {
     this.onAddressTap,
   });
 
+  final bool isActive;
+  final DriverMapViewModel? viewModel;
   final List<DriverMapStopEntity>? initialStops;
   final LatLng? initialDriverLocation;
   final List<LatLng>? initialRoutePoints;
@@ -37,80 +177,198 @@ class DriverMapScreen extends StatefulWidget {
   State<DriverMapScreen> createState() => _DriverMapScreenState();
 }
 
-class _DriverMapScreenState extends State<DriverMapScreen> {
-  late final List<DriverMapStopEntity> _stops;
-  late final LatLng _driverLocation;
-  late final List<LatLng> _routePoints;
+class _DriverMapScreenState extends State<DriverMapScreen>
+    with WidgetsBindingObserver {
+  late final DriverMapViewModel _viewModel;
+  late final bool _isOwnedViewModel;
   late final PageController _pageController;
+  final DriverMapCameraController _cameraController =
+      const DriverMapCameraController();
+  late final DriverMapNavigationLauncher _navigationLauncher;
 
   GoogleMapController? _mapController;
-  int _currentIndex = 0;
+  String? _lastFittedPolyline;
+  String? _lastFittedDestinationId;
 
   @override
   void initState() {
     super.initState();
-    _stops = widget.initialStops ?? DriverMapFakeDataSource.sampleStops;
-    _driverLocation =
-        widget.initialDriverLocation ??
-        DriverMapFakeDataSource.driverInitialLocation;
-    _routePoints =
-        widget.initialRoutePoints ?? DriverMapFakeDataSource.sampleRoutePoints;
-    final initialPage = _stops.length > 1
-        ? (300 ~/ _stops.length) * _stops.length + _currentIndex
-        : _currentIndex;
+    WidgetsBinding.instance.addObserver(this);
+
+    _navigationLauncher = DriverMapNavigationLauncher();
+
+    if (widget.viewModel != null) {
+      _viewModel = widget.viewModel!;
+      _isOwnedViewModel = false;
+    } else if (getIt.isRegistered<DriverMapViewModel>()) {
+      _viewModel = getIt<DriverMapViewModel>();
+      _isOwnedViewModel = true;
+    } else {
+      _viewModel = _createFallbackViewModel(
+        initialStops: widget.initialStops,
+        initialDriverLocation: widget.initialDriverLocation,
+        initialRoutePoints: widget.initialRoutePoints,
+      );
+      _isOwnedViewModel = true;
+    }
+
+    final initialStops = widget.initialStops ??
+        _viewModel.state.route?.stops ??
+        DriverMapFakeDataSource.sampleStops;
+    final initialPage = initialStops.length > 1
+        ? (300 ~/ initialStops.length) * initialStops.length
+        : 0;
     _pageController = PageController(
-      viewportFraction: 0.52,
+      viewportFraction: 0.62,
       initialPage: initialPage,
     );
+
+    if (widget.isActive) {
+      unawaited(_viewModel.doIntent(const DriverMapActivated()));
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant DriverMapScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isActive != oldWidget.isActive) {
+      if (widget.isActive) {
+        unawaited(_viewModel.doIntent(const DriverMapActivated()));
+      } else {
+        unawaited(_viewModel.doIntent(const DriverMapDeactivated()));
+      }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        if (widget.isActive) {
+          unawaited(_viewModel.doIntent(const DriverMapAppResumed()));
+        }
+        break;
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.hidden:
+        unawaited(_viewModel.doIntent(const DriverMapAppPaused()));
+        break;
+      case AppLifecycleState.detached:
+        break;
+    }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _pageController.dispose();
     _mapController = null;
+    if (_isOwnedViewModel) {
+      unawaited(_viewModel.close());
+    }
     super.dispose();
   }
 
   void _handleMapCreated(GoogleMapController controller) {
     _mapController = controller;
+    _fitCamera(_viewModel.state);
   }
 
-  void _handleRecenter() {
+  void _handleRecenter(DriverMapState state) {
     final controller = _mapController;
-    if (controller != null) {
-      unawaited(
-        controller.animateCamera(
-          CameraUpdate.newLatLngZoom(_driverLocation, 14.5),
+    if (controller == null) return;
+    LatLng target;
+    if (state.liveLocation != null) {
+      target = LatLng(
+        state.liveLocation!.latitude,
+        state.liveLocation!.longitude,
+      );
+    } else if (state.visibleNavigation?.origin != null) {
+      target = LatLng(
+        state.visibleNavigation!.origin!.latitude,
+        state.visibleNavigation!.origin!.longitude,
+      );
+    } else {
+      target = DriverMapCameraController.defaultKuwaitCenter;
+    }
+    unawaited(
+      controller.animateCamera(
+        CameraUpdate.newLatLngZoom(target, 15.0),
+      ),
+    );
+  }
+
+  void _fitCamera(DriverMapState state) {
+    final controller = _mapController;
+    if (controller == null) return;
+    final points = <LatLng>[];
+
+    final encoded = state.visibleNavigation?.encodedPolyline;
+    if (encoded != null && encoded.isNotEmpty) {
+      points.addAll(DriverMapPolylineDecoder.decodePolyline(encoded));
+    }
+
+    if (state.visibleNavigation?.origin != null) {
+      points.add(
+        LatLng(
+          state.visibleNavigation!.origin!.latitude,
+          state.visibleNavigation!.origin!.longitude,
+        ),
+      );
+    } else if (state.liveLocation != null) {
+      points.add(
+        LatLng(
+          state.liveLocation!.latitude,
+          state.liveLocation!.longitude,
         ),
       );
     }
+
+    if (state.visibleNavigation?.destination != null) {
+      points.add(
+        LatLng(
+          state.visibleNavigation!.destination!.latitude,
+          state.visibleNavigation!.destination!.longitude,
+        ),
+      );
+    } else {
+      final selected = state.selectedStop;
+      if (selected != null &&
+          selected.latitude != null &&
+          selected.longitude != null) {
+        points.add(LatLng(selected.latitude!, selected.longitude!));
+      }
+    }
+
+    if (points.isNotEmpty) {
+      final update = _cameraController.calculateBoundsUpdate(points);
+      unawaited(controller.animateCamera(update));
+    }
   }
 
-  int _closestPageForIndex(int targetIndex) {
+  int _closestPageForIndex(int targetIndex, int totalStops) {
+    if (totalStops <= 0) return 0;
     if (!_pageController.hasClients) {
-      return _pageController.initialPage;
+      return targetIndex;
     }
     final currentPage =
         _pageController.page?.round() ?? _pageController.initialPage;
-    final currentModulo =
-        _stops.isEmpty ? 0 : currentPage % _stops.length;
+    final currentModulo = currentPage % totalStops;
     var diff = targetIndex - currentModulo;
-    if (_stops.isNotEmpty) {
-      if (diff > _stops.length / 2) diff -= _stops.length;
-      if (diff < -_stops.length / 2) diff += _stops.length;
-    }
+    if (diff > totalStops / 2) diff -= totalStops;
+    if (diff < -totalStops / 2) diff += totalStops;
     return currentPage + diff;
   }
 
-  void _handleStopSelected(int index) {
-    if (index < 0 || index >= _stops.length) return;
-    if (_currentIndex != index) {
-      setState(() {
-        _currentIndex = index;
-      });
+  void _handleStopSelected(int index, List<DriverMapStopEntity> stops) {
+    if (index < 0 || index >= stops.length) return;
+    final selectedStop = stops[index];
+    if (selectedStop.id != _viewModel.state.selectedStopId) {
+      unawaited(_viewModel.doIntent(DriverMapStopSelected(selectedStop.id)));
     }
     if (_pageController.hasClients) {
-      final targetPage = _closestPageForIndex(index);
+      final targetPage = _closestPageForIndex(index, stops.length);
       if (_pageController.page?.round() != targetPage) {
         unawaited(
           _pageController.animateToPage(
@@ -121,37 +379,29 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
         );
       }
     }
-    final stop = _stops[index];
-    final controller = _mapController;
-    if (controller != null && stop.latitude != null && stop.longitude != null) {
-      unawaited(
-        controller.animateCamera(
-          CameraUpdate.newLatLng(LatLng(stop.latitude!, stop.longitude!)),
+  }
+
+  Future<void> _handleNavigate(DriverMapState state) async {
+    if (widget.onAddressTap != null) {
+      widget.onAddressTap!();
+      return;
+    }
+    final launched = await _navigationLauncher.launchNavigation(
+      navigation: state.visibleNavigation,
+      selectedStopId: state.selectedStopId,
+    );
+    if (!launched && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.localization.driverMapLaunchFailed),
+          behavior: SnackBarBehavior.floating,
         ),
       );
     }
   }
 
-  void _handleCarouselPageChanged(int index) {
-    if (index < 0 || index >= _stops.length) return;
-    if (_currentIndex != index) {
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-    final stop = _stops[index];
-    final controller = _mapController;
-    if (controller != null && stop.latitude != null && stop.longitude != null) {
-      unawaited(
-        controller.animateCamera(
-          CameraUpdate.newLatLng(LatLng(stop.latitude!, stop.longitude!)),
-        ),
-      );
-    }
-  }
-
-  void _handlePrevious() {
-    if (_stops.length > 1 && _pageController.hasClients) {
+  void _handlePrevious(List<DriverMapStopEntity> stops) {
+    if (stops.length > 1 && _pageController.hasClients) {
       unawaited(
         _pageController.previousPage(
           duration: const Duration(milliseconds: 300),
@@ -161,8 +411,8 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
     }
   }
 
-  void _handleNext() {
-    if (_stops.length > 1 && _pageController.hasClients) {
+  void _handleNext(List<DriverMapStopEntity> stops) {
+    if (stops.length > 1 && _pageController.hasClients) {
       unawaited(
         _pageController.nextPage(
           duration: const Duration(milliseconds: 300),
@@ -172,24 +422,9 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
     }
   }
 
-  Future<void> _handleAddressPressed(DriverMapStopEntity stop) async {
-    if (widget.onAddressTap != null) {
-      widget.onAddressTap!();
-      return;
-    }
-    final googleMapsUrl = Uri.parse(
-      'https://www.google.com/maps/dir/?api=1&destination=${stop.latitude},${stop.longitude}',
-    );
-    if (await canLaunchUrl(googleMapsUrl)) {
-      await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
-
-    final activeStop = _stops.isNotEmpty ? _stops[_currentIndex] : null;
 
     final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
     final bottomPadding =
@@ -197,70 +432,202 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
         Spacing.bottomNavHeight +
         Spacing.sm;
 
-    return Scaffold(
-      backgroundColor: color.surface,
-      extendBody: true,
-      bottomNavigationBar: widget.showBottomNavBar
-          ? AppBottomNavBar(
-              selectedIndex: 2,
-              onItemSelected: (index) {
-                if (index != 2 && Navigator.of(context).canPop()) {
-                  Navigator.of(context).pop();
-                }
-              },
-            )
-          : null,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: DriverMapBackground(
-              driverLocation: _driverLocation,
-              stops: _stops,
-              routePoints: _routePoints,
-              selectedStopIndex: _currentIndex,
-              onMapCreated: _handleMapCreated,
-              onMarkerTapped: _handleStopSelected,
-            ),
-          ),
-          SafeArea(
-            bottom: false,
-            child: Stack(
-              children: [
-                if (activeStop != null)
-                  PositionedDirectional(
-                    top: Spacing.xs,
-                    start: Spacing.zero,
-                    end: Spacing.zero,
-                    child: DriverMapActiveOrderCard(
-                      stop: activeStop,
-                      onAddressPressed: () => _handleAddressPressed(activeStop),
-                    ),
+    return BlocProvider.value(
+      value: _viewModel,
+      child: BlocConsumer<DriverMapViewModel, DriverMapState>(
+        listenWhen: (previous, current) =>
+            previous.selectedStopId != current.selectedStopId ||
+            previous.visibleNavigation != current.visibleNavigation,
+        listener: (context, state) {
+          final stops = state.route?.stops ?? const [];
+          if (stops.isNotEmpty && state.selectedStopId != null) {
+            final targetIndex =
+                stops.indexWhere((s) => s.id == state.selectedStopId);
+            if (targetIndex >= 0 && _pageController.hasClients) {
+              final targetPage =
+                  _closestPageForIndex(targetIndex, stops.length);
+              if (_pageController.page?.round() != targetPage) {
+                unawaited(
+                  _pageController.animateToPage(
+                    targetPage,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
                   ),
-                PositionedDirectional(
-                  end: Spacing.screenH,
-                  top: 168,
-                  child: DriverMapRecenterButton(
-                    onPressed: _handleRecenter,
-                  ),
-                ),
-                PositionedDirectional(
-                  start: Spacing.zero,
-                  end: Spacing.zero,
-                  bottom: bottomPadding,
-                  child: DriverMapStopsCarousel(
-                    stops: _stops,
-                    currentIndex: _currentIndex,
-                    pageController: _pageController,
-                    onPageChanged: _handleCarouselPageChanged,
-                    onPrevious: _handlePrevious,
-                    onNext: _handleNext,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+                );
+              }
+            }
+          }
+
+          final nav = state.visibleNavigation;
+          final polyline = nav?.encodedPolyline;
+          final destId = nav?.destinationStopId;
+          if (polyline != _lastFittedPolyline ||
+              destId != _lastFittedDestinationId) {
+            _lastFittedPolyline = polyline;
+            _lastFittedDestinationId = destId;
+            _fitCamera(state);
+          }
+        },
+        builder: (context, state) {
+          final scaffoldChild = _buildBody(context, state, bottomPadding);
+
+          return Scaffold(
+            backgroundColor: color.surface,
+            extendBody: true,
+            bottomNavigationBar: widget.showBottomNavBar
+                ? AppBottomNavBar(
+                    selectedIndex: 2,
+                    onItemSelected: (index) {
+                      if (index != 2 && Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  )
+                : null,
+            body: scaffoldChild,
+          );
+        },
       ),
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    DriverMapState state,
+    double bottomPadding,
+  ) {
+    final l10n = context.localization;
+
+    // 1. Fatal failure with no displayable stops: ApiErrorWidget
+    if (state.failure != null &&
+        (state.route == null || state.route!.stops.isEmpty)) {
+      return ApiErrorWidget.fromTypedFailure(
+        failure: state.failure!,
+        onRetry: () => _viewModel.doIntent(const DriverMapRetryRequested()),
+      );
+    }
+
+    // 2. Empty state: EmptyStateWidget
+    if (state.isEmpty || (state.route != null && state.route!.stops.isEmpty)) {
+      return EmptyStateWidget(
+        title: l10n.driverMapEmptyTitle,
+        description: l10n.driverMapEmptyDesc,
+        onAction: () => _viewModel.doIntent(const DriverMapRetryRequested()),
+      );
+    }
+
+    // 3. Initial loading: full skeleton shimmer
+    if (state.isLoading || state.route == null) {
+      return const DriverMapShimmer();
+    }
+
+    // 4. Content state
+    final stops = state.route!.stops;
+    final activeStop = state.selectedStop ?? stops.first;
+    final activeIndex = stops.indexWhere((s) => s.id == activeStop.id);
+    final validIndex = activeIndex >= 0 ? activeIndex : 0;
+
+    final routePoints = state.visibleNavigation?.encodedPolyline != null
+        ? DriverMapPolylineDecoder.decodePolyline(
+            state.visibleNavigation!.encodedPolyline!,
+          )
+        : const <LatLng>[];
+
+    final driverLocation = state.liveLocation != null
+        ? LatLng(state.liveLocation!.latitude, state.liveLocation!.longitude)
+        : (state.visibleNavigation?.origin != null
+            ? LatLng(
+                state.visibleNavigation!.origin!.latitude,
+                state.visibleNavigation!.origin!.longitude,
+              )
+            : null);
+
+    final routeOrigin = state.visibleNavigation?.origin != null
+        ? LatLng(
+            state.visibleNavigation!.origin!.latitude,
+            state.visibleNavigation!.origin!.longitude,
+          )
+        : null;
+
+    final canNavigate = state.visibleNavigation?.canNavigate ?? false;
+
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: DriverMapBackground(
+            driverLocation: driverLocation,
+            driverHeading: state.liveLocation?.heading,
+            routeOrigin: routeOrigin,
+            routeOriginLabel: state.visibleNavigation?.origin?.label,
+            stops: stops,
+            routePoints: routePoints,
+            selectedStopIndex: validIndex,
+            onMapCreated: _handleMapCreated,
+            onMarkerTapped: (index) => _handleStopSelected(index, stops),
+          ),
+        ),
+        SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              PositionedDirectional(
+                top: Spacing.xs,
+                start: Spacing.zero,
+                end: Spacing.zero,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (state.failure != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.screenH,
+                          vertical: Spacing.xs,
+                        ),
+                        child: InlineApiErrorWidget(
+                          failure: state.failure!,
+                          onRetry: () => _viewModel.doIntent(
+                            const DriverMapRetryRequested(),
+                          ),
+                        ),
+                      ),
+                    DriverMapActiveOrderCard(
+                      stop: activeStop,
+                      canNavigate: canNavigate,
+                      onAddressPressed: () => _handleNavigate(state),
+                    ),
+                    const SizedBox(height: Spacing.xs),
+                    DriverMapNavigationPanel(
+                      navigation: state.visibleNavigation,
+                      isRefreshing: state.isRefreshing,
+                      onNavigatePressed: () => _handleNavigate(state),
+                    ),
+                  ],
+                ),
+              ),
+              PositionedDirectional(
+                end: Spacing.screenH,
+                top: 240,
+                child: DriverMapRecenterButton(
+                  onPressed: () => _handleRecenter(state),
+                ),
+              ),
+              PositionedDirectional(
+                start: Spacing.zero,
+                end: Spacing.zero,
+                bottom: bottomPadding,
+                child: DriverMapStopsCarousel(
+                  stops: stops,
+                  currentIndex: validIndex,
+                  pageController: _pageController,
+                  onPageChanged: (index) => _handleStopSelected(index, stops),
+                  onPrevious: () => _handlePrevious(stops),
+                  onNext: () => _handleNext(stops),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

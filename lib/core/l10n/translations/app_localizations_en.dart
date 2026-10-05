@@ -3657,4 +3657,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverDocumentViewPhoto => 'View Document';
+
+  @override
+  String get driverMapEstimatedArrival => 'Estimated arrival';
+
+  @override
+  String get driverMapNavigateAction => 'Navigate';
+
+  @override
+  String get driverMapLaunchFailed => 'Unable to open Google Maps';
+
+  @override
+  String get driverMapEmptyTitle => 'No Active Deliveries';
+
+  @override
+  String get driverMapEmptyDesc =>
+      'You currently have no active deliveries or assigned stops.';
+
+  @override
+  String get driverMapReasonDriverLocationMissing =>
+      'Please turn on device location to calculate the route.';
+
+  @override
+  String get driverMapReasonDriverLocationStale =>
+      'Location is stale. Please ensure GPS is active.';
+
+  @override
+  String get driverMapReasonDriverLocationInvalid =>
+      'Location coordinates are invalid.';
+
+  @override
+  String get driverMapReasonDestinationLocationMissing =>
+      'Customer address coordinates are missing.';
+
+  @override
+  String get driverMapReasonDirectionsUnavailable =>
+      'Street directions currently unavailable.';
+
+  @override
+  String get driverMapLastKnownLocation => 'Last known location';
+
+  @override
+  String get driverMapYourLocation => 'Your location';
+
+  @override
+  String get driverMapDeliveryDestination => 'Delivery destination';
+
+  @override
+  String get driverMapRefreshing => 'Updating...';
+
+  @override
+  String get driverMapCompletedTitle => 'Delivery Completed';
+
+  @override
+  String get driverMapKmUnit => 'km';
+
+  @override
+  String get driverMapMinuteUnit => 'min';
 }

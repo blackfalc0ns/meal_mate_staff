@@ -32,4 +32,8 @@ class DriverMapNavigationEntity {
   final DateTime? calculatedAtUtc;
   final String? googleMapsUrl;
   final bool canNavigate;
+
+  bool get isReady => routeStatus == DriverMapRouteStatus.ready;
+  bool get isUnavailable => routeStatus == DriverMapRouteStatus.unavailable;
+  bool get isCompleted => routeStatus == DriverMapRouteStatus.completed;
 }

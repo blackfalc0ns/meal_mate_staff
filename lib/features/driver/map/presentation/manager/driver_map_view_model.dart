@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
-import 'package:meal_mate_delivery/core/network/failures.dart';
 import '../../../tracking/domain/entities/driver_live_location_sample.dart';
 import '../../../tracking/presentation/manager/driver_live_location_coordinator.dart';
 import '../../domain/entities/driver_map_route_entity.dart';
@@ -18,11 +17,12 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
     required DriverLiveLocationCoordinator liveLocationCoordinator,
     Duration pollingInterval = const Duration(seconds: 30),
     Duration bootstrapWaitLimit = const Duration(seconds: 5),
+    DriverMapState? initialState,
   })  : _getDriverMapRouteUseCase = getDriverMapRouteUseCase,
         _liveLocationCoordinator = liveLocationCoordinator,
         _pollingInterval = pollingInterval,
         _bootstrapWaitLimit = bootstrapWaitLimit,
-        super(const DriverMapState());
+        super(initialState ?? const DriverMapState());
 
   final GetDriverMapRouteUseCase _getDriverMapRouteUseCase;
   final DriverLiveLocationCoordinator _liveLocationCoordinator;
@@ -68,9 +68,13 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
 
     // Bootstrap wait for initial GPS fix/send, capped by bootstrapWaitLimit
     try {
-      await _liveLocationCoordinator
-          .sendCurrentLocationNow()
-          .timeout(_bootstrapWaitLimit, onTimeout: () => false);
+      if (_bootstrapWaitLimit > Duration.zero) {
+        await _liveLocationCoordinator
+            .sendCurrentLocationNow()
+            .timeout(_bootstrapWaitLimit, onTimeout: () => false);
+      } else {
+        await _liveLocationCoordinator.sendCurrentLocationNow();
+      }
     } catch (_) {
       // Ignored: continue to route fetch even if initial location send fails
     }
@@ -78,6 +82,7 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
     if (isClosed || !state.isActive) return;
 
     await _fetchRoute(focusedStopId: null);
+    if (isClosed || !state.isActive || !state.isForeground) return;
     _startPolling();
   }
 
@@ -85,10 +90,9 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
     _pollTimer?.cancel();
     _pollTimer = null;
     _requestGeneration++;
+    emit(state.copyWith(isActive: false));
     await _positionsSubscription?.cancel();
     _positionsSubscription = null;
-
-    emit(state.copyWith(isActive: false));
   }
 
   Future<void> _onAppPaused() async {
@@ -106,6 +110,7 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
       // Treat as fresh return: clear previous visibleNavigation to prevent stale display
       emit(state.copyWith(clearVisibleNavigation: true, isRefreshing: true));
       await _fetchRoute(focusedStopId: state.selectedStopId);
+      if (isClosed || !state.isActive || !state.isForeground) return;
       _startPolling();
     }
   }
@@ -183,7 +188,8 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
         );
 
       case ApiErrorResult<DriverMapRouteEntity>(:final failure):
-        if (failure is ServerFailure && failure.code == 'DriverTrip.NotFound') {
+        final code = failure.exception.backendErrorCode ?? failure.code;
+        if (code == 'DriverTrip.NotFound') {
           emit(
             state.copyWith(
               clearRoute: true,
@@ -195,9 +201,7 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
               isRefreshing: false,
             ),
           );
-        } else if (failure is ServerFailure &&
-            failure.code == 'DriverMap.StopNotFound' &&
-            !isFallback) {
+        } else if (code == 'DriverMap.StopNotFound' && !isFallback) {
           emit(
             state.copyWith(
               clearVisibleNavigation: true,
@@ -219,7 +223,7 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
   }
 
   void _subscribeToPositions() {
-    _positionsSubscription?.cancel();
+    unawaited(_positionsSubscription?.cancel());
     _positionsSubscription = _liveLocationCoordinator.positions.listen((sample) {
       if (isClosed || !state.isActive) return;
       emit(state.copyWith(liveLocation: sample));
@@ -228,6 +232,9 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
 
   void _startPolling() {
     _pollTimer?.cancel();
+    _pollTimer = null;
+    if (_pollingInterval <= Duration.zero) return;
+    if (isClosed || !state.isActive || !state.isForeground) return;
     _pollTimer = Timer.periodic(_pollingInterval, (_) {
       if (isClosed ||
           !state.isActive ||
@@ -236,16 +243,16 @@ class DriverMapViewModel extends Cubit<DriverMapState> {
           state.isRefreshing) {
         return;
       }
-      _fetchRoute(focusedStopId: state.selectedStopId);
+      unawaited(_fetchRoute(focusedStopId: state.selectedStopId));
     });
   }
 
   @override
-  Future<void> close() async {
+  Future<void> close() {
     _pollTimer?.cancel();
     _pollTimer = null;
     _requestGeneration++;
-    await _positionsSubscription?.cancel();
+    unawaited(_positionsSubscription?.cancel());
     _positionsSubscription = null;
     return super.close();
   }

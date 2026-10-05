@@ -1444,6 +1444,23 @@
   "driverDocumentFromGallery": "المعرض",
   "driverDocumentFromCamera": "الكاميرا",
   "driverDocumentClose": "إغلاق",
-  "driverDocumentViewPhoto": "عرض المستند"
+  "driverDocumentViewPhoto": "عرض المستند",
+  "driverMapEstimatedArrival": "الوصول التقديري",
+  "driverMapNavigateAction": "بدء الملاحة",
+  "driverMapLaunchFailed": "تعذر فتح خرائط Google",
+  "driverMapEmptyTitle": "لا توجد توصيلات نشطة",
+  "driverMapEmptyDesc": "لا توجد لديك رحلات أو محطات نشطة للتوصيل حالياً.",
+  "driverMapReasonDriverLocationMissing": "يرجى تشغيل تحديد الموقع لحساب المسار.",
+  "driverMapReasonDriverLocationStale": "الموقع قديم — يرجى التأكد من تشغيل GPS.",
+  "driverMapReasonDriverLocationInvalid": "إحداثيات الموقع غير صالحة.",
+  "driverMapReasonDestinationLocationMissing": "إحداثيات عنوان العميل غير متوفرة.",
+  "driverMapReasonDirectionsUnavailable": "تعذر حساب مسار الشوارع حالياً.",
+  "driverMapLastKnownLocation": "آخر موقع معروف",
+  "driverMapYourLocation": "موقعك الحالي",
+  "driverMapDeliveryDestination": "وجهة التوصيل",
+  "driverMapRefreshing": "جارٍ التحديث...",
+  "driverMapCompletedTitle": "تم تسليم الطلب",
+  "driverMapKmUnit": "كم",
+  "driverMapMinuteUnit": "دقيقة"
 }
 

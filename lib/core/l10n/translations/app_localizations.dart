@@ -6985,6 +6985,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View Document'**
   String get driverDocumentViewPhoto;
+
+  /// No description provided for @driverMapEstimatedArrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated arrival'**
+  String get driverMapEstimatedArrival;
+
+  /// No description provided for @driverMapNavigateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate'**
+  String get driverMapNavigateAction;
+
+  /// No description provided for @driverMapLaunchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to open Google Maps'**
+  String get driverMapLaunchFailed;
+
+  /// No description provided for @driverMapEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Active Deliveries'**
+  String get driverMapEmptyTitle;
+
+  /// No description provided for @driverMapEmptyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You currently have no active deliveries or assigned stops.'**
+  String get driverMapEmptyDesc;
+
+  /// No description provided for @driverMapReasonDriverLocationMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Please turn on device location to calculate the route.'**
+  String get driverMapReasonDriverLocationMissing;
+
+  /// No description provided for @driverMapReasonDriverLocationStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is stale. Please ensure GPS is active.'**
+  String get driverMapReasonDriverLocationStale;
+
+  /// No description provided for @driverMapReasonDriverLocationInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Location coordinates are invalid.'**
+  String get driverMapReasonDriverLocationInvalid;
+
+  /// No description provided for @driverMapReasonDestinationLocationMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer address coordinates are missing.'**
+  String get driverMapReasonDestinationLocationMissing;
+
+  /// No description provided for @driverMapReasonDirectionsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Street directions currently unavailable.'**
+  String get driverMapReasonDirectionsUnavailable;
+
+  /// No description provided for @driverMapLastKnownLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last known location'**
+  String get driverMapLastKnownLocation;
+
+  /// No description provided for @driverMapYourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your location'**
+  String get driverMapYourLocation;
+
+  /// No description provided for @driverMapDeliveryDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery destination'**
+  String get driverMapDeliveryDestination;
+
+  /// No description provided for @driverMapRefreshing.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating...'**
+  String get driverMapRefreshing;
+
+  /// No description provided for @driverMapCompletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Completed'**
+  String get driverMapCompletedTitle;
+
+  /// No description provided for @driverMapKmUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'km'**
+  String get driverMapKmUnit;
+
+  /// No description provided for @driverMapMinuteUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get driverMapMinuteUnit;
 }
 
 class _AppLocalizationsDelegate

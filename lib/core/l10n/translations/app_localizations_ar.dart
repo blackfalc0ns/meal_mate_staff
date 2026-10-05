@@ -3640,4 +3640,61 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverDocumentViewPhoto => 'عرض المستند';
+
+  @override
+  String get driverMapEstimatedArrival => 'الوصول التقديري';
+
+  @override
+  String get driverMapNavigateAction => 'بدء الملاحة';
+
+  @override
+  String get driverMapLaunchFailed => 'تعذر فتح خرائط Google';
+
+  @override
+  String get driverMapEmptyTitle => 'لا توجد توصيلات نشطة';
+
+  @override
+  String get driverMapEmptyDesc =>
+      'لا توجد لديك رحلات أو محطات نشطة للتوصيل حالياً.';
+
+  @override
+  String get driverMapReasonDriverLocationMissing =>
+      'يرجى تشغيل تحديد الموقع لحساب المسار.';
+
+  @override
+  String get driverMapReasonDriverLocationStale =>
+      'الموقع قديم — يرجى التأكد من تشغيل GPS.';
+
+  @override
+  String get driverMapReasonDriverLocationInvalid =>
+      'إحداثيات الموقع غير صالحة.';
+
+  @override
+  String get driverMapReasonDestinationLocationMissing =>
+      'إحداثيات عنوان العميل غير متوفرة.';
+
+  @override
+  String get driverMapReasonDirectionsUnavailable =>
+      'تعذر حساب مسار الشوارع حالياً.';
+
+  @override
+  String get driverMapLastKnownLocation => 'آخر موقع معروف';
+
+  @override
+  String get driverMapYourLocation => 'موقعك الحالي';
+
+  @override
+  String get driverMapDeliveryDestination => 'وجهة التوصيل';
+
+  @override
+  String get driverMapRefreshing => 'جارٍ التحديث...';
+
+  @override
+  String get driverMapCompletedTitle => 'تم تسليم الطلب';
+
+  @override
+  String get driverMapKmUnit => 'كم';
+
+  @override
+  String get driverMapMinuteUnit => 'دقيقة';
 }

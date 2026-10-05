@@ -1451,6 +1451,23 @@
   "driverDocumentFromGallery": "Gallery",
   "driverDocumentFromCamera": "Camera",
   "driverDocumentClose": "Close",
-  "driverDocumentViewPhoto": "View Document"
+  "driverDocumentViewPhoto": "View Document",
+  "driverMapEstimatedArrival": "Estimated arrival",
+  "driverMapNavigateAction": "Navigate",
+  "driverMapLaunchFailed": "Unable to open Google Maps",
+  "driverMapEmptyTitle": "No Active Deliveries",
+  "driverMapEmptyDesc": "You currently have no active deliveries or assigned stops.",
+  "driverMapReasonDriverLocationMissing": "Please turn on device location to calculate the route.",
+  "driverMapReasonDriverLocationStale": "Location is stale. Please ensure GPS is active.",
+  "driverMapReasonDriverLocationInvalid": "Location coordinates are invalid.",
+  "driverMapReasonDestinationLocationMissing": "Customer address coordinates are missing.",
+  "driverMapReasonDirectionsUnavailable": "Street directions currently unavailable.",
+  "driverMapLastKnownLocation": "Last known location",
+  "driverMapYourLocation": "Your location",
+  "driverMapDeliveryDestination": "Delivery destination",
+  "driverMapRefreshing": "Updating...",
+  "driverMapCompletedTitle": "Delivery Completed",
+  "driverMapKmUnit": "km",
+  "driverMapMinuteUnit": "min"
 }
 

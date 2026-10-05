@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_polyline_decoder.dart';
 
 void main() {

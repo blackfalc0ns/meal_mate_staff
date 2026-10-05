@@ -3,6 +3,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class DriverMapPolylineDecoder {
   const DriverMapPolylineDecoder();
 
+  static List<LatLng> decodePolyline(String? encodedPolyline, {String encoding = 'google_polyline5'}) {
+    return const DriverMapPolylineDecoder().decode(encodedPolyline, encoding: encoding);
+  }
+
   List<LatLng> decode(String? encodedPolyline, {String encoding = 'google_polyline5'}) {
     if (encodedPolyline == null) return const [];
     final trimmed = encodedPolyline.trim();
