@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/network/api_results.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
 import '../entities/driver_map_route_entity.dart';
 import '../repo/driver_map_repository.dart';
 

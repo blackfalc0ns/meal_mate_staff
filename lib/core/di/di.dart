@@ -81,6 +81,7 @@ import '../../features/driver/map/data/data_source/driver_map_remote_data_source
 import '../../features/driver/map/data/repo/driver_map_repository_impl.dart';
 import '../../features/driver/map/domain/repo/driver_map_repository.dart';
 import '../../features/driver/map/domain/usecase/get_driver_map_route_usecase.dart';
+import '../../features/driver/map/presentation/manager/driver_map_view_model.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repo/auth_repository_impl.dart';
@@ -917,6 +918,12 @@ Future<void> configureDependencies() async {
   );
   getIt.registerFactory<GetDriverMapRouteUseCase>(
     () => GetDriverMapRouteUseCase(getIt<DriverMapRepository>()),
+  );
+  getIt.registerFactory<DriverMapViewModel>(
+    () => DriverMapViewModel(
+      getDriverMapRouteUseCase: getIt<GetDriverMapRouteUseCase>(),
+      liveLocationCoordinator: getIt<DriverLiveLocationCoordinator>(),
+    ),
   );
 
   // Driver Live Location & Realtime Streaming
