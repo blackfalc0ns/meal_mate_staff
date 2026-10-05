@@ -1,0 +1,63 @@
+{
+  "tripId": "3f6b1c2e-1111-4a2b-9c3d-000000000001",
+  "tripCode": "TRP-1256",
+  "totalStopsCount": 1,
+  "completedStopsCount": 0,
+  "focusedStop": {
+    "stopId": "9a7c1d2e-3333-4a2b-9c3d-000000000003",
+    "sequenceBadge": "1/1",
+    "boxCode": "#BX-1256",
+    "customerName": "محمد علي",
+    "status": "InTransit",
+    "statusText": "خارج التوصيل",
+    "statusColor": "green",
+    "isCurrent": true,
+    "latitude": 29.338,
+    "longitude": 48.023
+  },
+  "stops": [
+    {
+      "stopId": "9a7c1d2e-3333-4a2b-9c3d-000000000003",
+      "sequenceBadge": "1/1",
+      "boxCode": "#BX-1256",
+      "customerName": "محمد علي",
+      "status": "InTransit",
+      "statusText": "خارج التوصيل",
+      "statusColor": "green",
+      "isCurrent": true,
+      "latitude": 29.338,
+      "longitude": 48.023
+    }
+  ],
+  "navigation": {
+    "destinationStopId": "9a7c1d2e-3333-4a2b-9c3d-000000000003",
+    "origin": {
+      "latitude": 29.3375,
+      "longitude": 48.028,
+      "label": "موقعك الحالي",
+      "source": "tracking",
+      "recordedAtUtc": "2026-10-05T07:55:00Z",
+      "isStale": true,
+      "heading": 90.0
+    },
+    "destination": {
+      "latitude": 29.338,
+      "longitude": 48.023,
+      "label": "محمد علي",
+      "source": "trip_stop",
+      "recordedAtUtc": null,
+      "isStale": false,
+      "heading": null
+    },
+    "routeStatus": "Unavailable",
+    "unavailableReason": "driver_location_stale",
+    "encodedPolyline": null,
+    "polylineEncoding": "google_polyline5",
+    "distanceMeters": null,
+    "durationSeconds": null,
+    "estimatedArrivalAtUtc": null,
+    "calculatedAtUtc": null,
+    "googleMapsUrl": "https://www.google.com/maps/dir/?api=1&destination=29.338%2C48.023&travelmode=driving&dir_action=navigate",
+    "canNavigate": true
+  }
+}

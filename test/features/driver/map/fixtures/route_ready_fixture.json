@@ -1,0 +1,103 @@
+{
+  "tripId": "3f6b1c2e-1111-4a2b-9c3d-000000000001",
+  "tripCode": "TRP-1256",
+  "driverLatitude": 29.3375,
+  "driverLongitude": 48.028,
+  "totalStopsCount": 2,
+  "completedStopsCount": 0,
+  "focusedStop": {
+    "stopId": "9a7c1d2e-3333-4a2b-9c3d-000000000003",
+    "sequenceBadge": "1/2",
+    "sequenceNumber": 1,
+    "boxCode": "#BX-1256",
+    "customerName": "محمد علي",
+    "customerPhone": "",
+    "addressShort": "السالمية",
+    "fullAddress": "شارع الخليج، السالمية",
+    "mealsCount": 3,
+    "mealsSummary": "3 وجبات",
+    "deliveryTimeSlot": "09:20 ص",
+    "status": "InTransit",
+    "statusText": "خارج التوصيل",
+    "statusColor": "green",
+    "isCurrent": true,
+    "latitude": 29.338,
+    "longitude": 48.023
+  },
+  "stops": [
+    {
+      "stopId": "9a7c1d2e-3333-4a2b-9c3d-000000000003",
+      "sequenceBadge": "1/2",
+      "sequenceNumber": 1,
+      "boxCode": "#BX-1256",
+      "customerName": "محمد علي",
+      "customerPhone": "",
+      "addressShort": "السالمية",
+      "fullAddress": "شارع الخليج، السالمية",
+      "mealsCount": 3,
+      "mealsSummary": "3 وجبات",
+      "deliveryTimeSlot": "09:20 ص",
+      "status": "InTransit",
+      "statusText": "خارج التوصيل",
+      "statusColor": "green",
+      "isCurrent": true,
+      "latitude": 29.338,
+      "longitude": 48.023
+    },
+    {
+      "stopId": "4b2e5f6a-4444-4a2b-9c3d-000000000004",
+      "sequenceBadge": "2/2",
+      "sequenceNumber": 1,
+      "boxCode": "#BX-4665",
+      "customerName": "مهند أحمد",
+      "customerPhone": "0123456789",
+      "addressShort": "الروضة",
+      "fullAddress": "الروضة",
+      "mealsCount": 2,
+      "mealsSummary": "وجبتان",
+      "deliveryTimeSlot": "09:30-10:30 ص",
+      "status": "Pending",
+      "statusText": "في الطريق للعميل",
+      "statusColor": "orange",
+      "isCurrent": false,
+      "latitude": 29.339,
+      "longitude": 48.024
+    }
+  ],
+  "routePolylineWaypoints": [
+    { "latitude": 29.3375, "longitude": 48.028 },
+    { "latitude": 29.338, "longitude": 48.023 },
+    { "latitude": 29.339, "longitude": 48.024 }
+  ],
+  "navigation": {
+    "destinationStopId": "9a7c1d2e-3333-4a2b-9c3d-000000000003",
+    "origin": {
+      "latitude": 29.3375,
+      "longitude": 48.028,
+      "label": "موقعك الحالي",
+      "source": "tracking",
+      "recordedAtUtc": "2026-10-05T07:59:50Z",
+      "isStale": false,
+      "heading": 90.0
+    },
+    "destination": {
+      "latitude": 29.338,
+      "longitude": 48.023,
+      "label": "محمد علي",
+      "source": "trip_stop",
+      "recordedAtUtc": null,
+      "isStale": false,
+      "heading": null
+    },
+    "routeStatus": "Ready",
+    "unavailableReason": null,
+    "encodedPolyline": "_p~iF~ps|U_ulLnnqC",
+    "polylineEncoding": "google_polyline5",
+    "distanceMeters": 5200,
+    "durationSeconds": 480,
+    "estimatedArrivalAtUtc": "2026-10-05T08:08:00Z",
+    "calculatedAtUtc": "2026-10-05T08:00:00Z",
+    "googleMapsUrl": "https://www.google.com/maps/dir/?api=1&destination=29.338%2C48.023&travelmode=driving&dir_action=navigate",
+    "canNavigate": true
+  }
+}

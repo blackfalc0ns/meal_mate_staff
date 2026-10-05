@@ -34,16 +34,17 @@ class DriverMapBackground extends StatelessWidget {
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       ),
       for (int i = 0; i < stops.length; i++)
-        Marker(
-          markerId: MarkerId(stops[i].id),
-          position: LatLng(stops[i].latitude, stops[i].longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-            i == selectedStopIndex
-                ? BitmapDescriptor.hueViolet
-                : BitmapDescriptor.hueMagenta,
+        if (stops[i].latitude != null && stops[i].longitude != null)
+          Marker(
+            markerId: MarkerId(stops[i].id),
+            position: LatLng(stops[i].latitude!, stops[i].longitude!),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+              i == selectedStopIndex
+                  ? BitmapDescriptor.hueViolet
+                  : BitmapDescriptor.hueMagenta,
+            ),
+            onTap: () => onMarkerTapped?.call(i),
           ),
-          onTap: () => onMarkerTapped?.call(i),
-        ),
     };
 
     final polylines = <Polyline>{

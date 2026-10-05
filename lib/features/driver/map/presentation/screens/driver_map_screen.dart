@@ -123,10 +123,10 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
     }
     final stop = _stops[index];
     final controller = _mapController;
-    if (controller != null) {
+    if (controller != null && stop.latitude != null && stop.longitude != null) {
       unawaited(
         controller.animateCamera(
-          CameraUpdate.newLatLng(LatLng(stop.latitude, stop.longitude)),
+          CameraUpdate.newLatLng(LatLng(stop.latitude!, stop.longitude!)),
         ),
       );
     }
@@ -141,10 +141,10 @@ class _DriverMapScreenState extends State<DriverMapScreen> {
     }
     final stop = _stops[index];
     final controller = _mapController;
-    if (controller != null) {
+    if (controller != null && stop.latitude != null && stop.longitude != null) {
       unawaited(
         controller.animateCamera(
-          CameraUpdate.newLatLng(LatLng(stop.latitude, stop.longitude)),
+          CameraUpdate.newLatLng(LatLng(stop.latitude!, stop.longitude!)),
         ),
       );
     }
