@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_mate_delivery/config/theme/colors.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
@@ -21,26 +22,6 @@ class DriverMapStopCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback? onTap;
 
-  static Color? _parseStatusColor(String? colorStr) {
-    if (colorStr == null) return null;
-    final cleaned = colorStr.replaceAll('#', '').trim().toLowerCase();
-    if (cleaned.isEmpty) return null;
-    if (cleaned == 'green') return const Color(0xFF2E7D32);
-    if (cleaned == 'orange') return const Color(0xFFEF6C00);
-    if (cleaned == 'gray' || cleaned == 'grey') return const Color(0xFF757575);
-    final buffer = StringBuffer();
-    if (cleaned.length == 6) {
-      buffer.write('ff');
-      buffer.write(cleaned);
-    } else if (cleaned.length == 8) {
-      buffer.write(cleaned);
-    } else {
-      return null;
-    }
-    final value = int.tryParse(buffer.toString(), radix: 16);
-    return value != null ? Color(value) : null;
-  }
-
   String _resolveStatusText(BuildContext context) {
     if (stop.statusText != null && stop.statusText!.trim().isNotEmpty) {
       return stop.statusText!.trim();
@@ -56,16 +37,20 @@ class DriverMapStopCard extends StatelessWidget {
   }
 
   Color _resolveStatusColor(BuildContext context) {
-    final parsed = _parseStatusColor(stop.statusColor);
-    if (parsed != null) return parsed;
     final color = context.colorScheme;
+    final colorStr = stop.statusColor?.replaceAll('#', '').trim().toLowerCase();
+    if (colorStr == 'green') return color.success;
+    if (colorStr == 'orange') return color.warning;
+    if (colorStr == 'gray' || colorStr == 'grey') {
+      return color.onSurfaceVariant.withValues(alpha: 0.6);
+    }
     if (stop.isDelivered) {
       return color.onSurfaceVariant.withValues(alpha: 0.6);
     }
     if (stop.status == DriverDeliveryStatus.inProgress) {
-      return color.tertiary;
+      return color.success;
     }
-    return color.secondary;
+    return color.warning;
   }
 
   @override

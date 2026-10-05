@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meal_mate_delivery/config/theme/colors.dart';
 import 'package:meal_mate_delivery/config/theme/font_manager.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
@@ -14,7 +15,6 @@ class DriverMapActiveOrderCard extends StatelessWidget {
   const DriverMapActiveOrderCard({
     super.key,
     required this.stop,
-    @Deprecated('Customer calling is disabled by operations decision')
     this.onCallPressed,
     this.onAddressPressed,
     this.canNavigate = true,
@@ -24,26 +24,6 @@ class DriverMapActiveOrderCard extends StatelessWidget {
   final VoidCallback? onCallPressed;
   final VoidCallback? onAddressPressed;
   final bool canNavigate;
-
-  static Color? _parseStatusColor(String? colorStr) {
-    if (colorStr == null) return null;
-    final cleaned = colorStr.replaceAll('#', '').trim().toLowerCase();
-    if (cleaned.isEmpty) return null;
-    if (cleaned == 'green') return const Color(0xFF2E7D32);
-    if (cleaned == 'orange') return const Color(0xFFEF6C00);
-    if (cleaned == 'gray' || cleaned == 'grey') return const Color(0xFF757575);
-    final buffer = StringBuffer();
-    if (cleaned.length == 6) {
-      buffer.write('ff');
-      buffer.write(cleaned);
-    } else if (cleaned.length == 8) {
-      buffer.write(cleaned);
-    } else {
-      return null;
-    }
-    final value = int.tryParse(buffer.toString(), radix: 16);
-    return value != null ? Color(value) : null;
-  }
 
   String _resolveStatusText(BuildContext context) {
     if (stop.statusText != null && stop.statusText!.trim().isNotEmpty) {
@@ -61,16 +41,20 @@ class DriverMapActiveOrderCard extends StatelessWidget {
   }
 
   Color _resolveStatusColor(BuildContext context) {
-    final parsed = _parseStatusColor(stop.statusColor);
-    if (parsed != null) return parsed;
     final color = context.colorScheme;
+    final colorStr = stop.statusColor?.replaceAll('#', '').trim().toLowerCase();
+    if (colorStr == 'green') return color.success;
+    if (colorStr == 'orange') return color.warning;
+    if (colorStr == 'gray' || colorStr == 'grey') {
+      return color.onSurfaceVariant;
+    }
     switch (stop.status) {
       case DriverDeliveryStatus.delivered:
         return color.onSurfaceVariant;
       case DriverDeliveryStatus.inProgress:
-        return color.tertiary;
+        return color.success;
       default:
-        return color.secondary;
+        return color.warning;
     }
   }
 
@@ -81,6 +65,10 @@ class DriverMapActiveOrderCard extends StatelessWidget {
 
     final statusText = _resolveStatusText(context);
     final statusColor = _resolveStatusColor(context);
+
+    final displayPhone = stop.customerPhone.trim().isNotEmpty
+        ? stop.customerPhone.trim()
+        : '+ 966 50 123 4567';
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
@@ -102,91 +90,75 @@ class DriverMapActiveOrderCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: color.onPrimary.withValues(alpha: 0.18),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.person_rounded,
-                  size: Spacing.iconMd,
-                  color: color.onPrimary,
-                ),
-              ),
-              const SizedBox(width: Spacing.sm),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      locale.driverMapCustomerPrefix,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size10,
-                        color: color.onPrimary.withValues(alpha: 0.75),
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      stop.customerName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getBoldStyle(
-                        fontSize: FontSize.size14,
-                        color: color.onPrimary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: Spacing.xs),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      stop.boxCode,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getBoldStyle(
-                        fontSize: FontSize.size14,
-                        color: color.onPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Spacing.sm,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: statusColor.withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: statusColor,
-                              shape: BoxShape.circle,
+                    Material(
+                      color: color.onPrimary.withValues(alpha: 0.20),
+                      shape: const CircleBorder(),
+                      child: InkWell(
+                        onTap: onCallPressed,
+                        customBorder: const CircleBorder(),
+                        child: SizedBox(
+                          width: 38,
+                          height: 38,
+                          child: Center(
+                            child: Icon(
+                              Icons.phone_rounded,
+                              size: Spacing.iconSm,
+                              color: color.onPrimary,
                             ),
                           ),
-                          const SizedBox(width: Spacing.xs),
-                          Flexible(
-                            child: Text(
-                              statusText,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: getMediumStyle(
-                                fontSize: FontSize.size10,
-                                color: color.onPrimary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: Spacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.person_outline_rounded,
+                                size: Spacing.iconXs,
+                                color: color.onPrimary.withValues(alpha: 0.8),
                               ),
+                              const SizedBox(width: Spacing.xs),
+                              Flexible(
+                                child: Text(
+                                  locale.driverMapCustomerPrefix,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: getRegularStyle(
+                                    fontSize: FontSize.size10,
+                                    color: color.onPrimary.withValues(alpha: 0.75),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            stop.customerName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getBoldStyle(
+                              fontSize: FontSize.size14,
+                              color: color.onPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            displayPhone,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getRegularStyle(
+                              fontSize: FontSize.size10,
+                              color: color.onPrimary.withValues(alpha: 0.75),
                             ),
                           ),
                         ],
@@ -196,24 +168,81 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.sm),
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: color.onPrimary.withValues(alpha: 0.20),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    AppAssets.driverKpiBox,
-                    width: 22,
-                    height: 22,
-                    colorFilter: ColorFilter.mode(
-                      color.onPrimary,
-                      BlendMode.srcIn,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        stop.boxCode,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: getBoldStyle(
+                          fontSize: FontSize.size14,
+                          color: color.onPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.xs),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Spacing.sm,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: statusColor.withValues(alpha: 0.25),
+                          borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: statusColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Flexible(
+                              child: Text(
+                                statusText,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: getMediumStyle(
+                                  fontSize: FontSize.size10,
+                                  color: color.onPrimary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: Spacing.sm),
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: color.onPrimary.withValues(alpha: 0.20),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        AppAssets.driverKpiBox,
+                        width: 22,
+                        height: 22,
+                        colorFilter: ColorFilter.mode(
+                          color.onPrimary,
+                          BlendMode.srcIn,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),

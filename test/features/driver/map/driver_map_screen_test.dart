@@ -7,7 +7,6 @@ import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
-import 'package:meal_mate_delivery/features/driver/map/data/datasources/driver_map_fake_datasource.dart';
 import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_location_entity.dart';
 import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_navigation_entity.dart';
 import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_route_entity.dart';
@@ -24,15 +23,64 @@ import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driv
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_recenter_button.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_stop_card.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_stops_carousel.dart';
+import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_delivery_status.dart';
 import 'package:meal_mate_delivery/features/driver/tracking/domain/entities/driver_live_location_sample.dart';
 import 'package:meal_mate_delivery/features/driver/tracking/presentation/manager/driver_live_location_coordinator.dart';
+
+const List<DriverMapStopEntity> _sampleStops = [
+  DriverMapStopEntity(
+    id: 'stop_1',
+    boxCode: 'BX-458722',
+    sequenceNumber: 1,
+    totalStops: 3,
+    customerName: 'محمد علي',
+    customerPhone: '+ 966 50 123 4567',
+    area: 'السالمية',
+    formattedAddress: 'شارع الخليج العربي ، قطعة 12 ، منزل 45 ، السالمية',
+    mealsCount: 3,
+    deliveryTimeSlot: '20 : 09 ص',
+    status: DriverDeliveryStatus.inProgress,
+    latitude: 29.3375,
+    longitude: 48.0753,
+  ),
+  DriverMapStopEntity(
+    id: 'stop_2',
+    boxCode: 'BX-458722',
+    sequenceNumber: 2,
+    totalStops: 3,
+    customerName: 'مهند أحمد',
+    customerPhone: '+ 966 50 123 4567',
+    area: 'السالمية',
+    formattedAddress: 'السالمية ، شارع 512 ، عمارة 10',
+    mealsCount: 3,
+    deliveryTimeSlot: '20 : 09 ص',
+    status: DriverDeliveryStatus.inProgress,
+    latitude: 29.3450,
+    longitude: 48.0650,
+  ),
+  DriverMapStopEntity(
+    id: 'stop_3',
+    boxCode: 'BX-458722',
+    sequenceNumber: 3,
+    totalStops: 3,
+    customerName: 'أحمد فيصل',
+    customerPhone: '+ 966 50 123 4567',
+    area: 'السالمية',
+    formattedAddress: 'السالمية ، شارع 512 ، مجمع الأمل',
+    mealsCount: 3,
+    deliveryTimeSlot: '20 : 09 ص',
+    status: DriverDeliveryStatus.delivered,
+    latitude: 29.3520,
+    longitude: 48.0550,
+  ),
+];
 
 class _TestMapRouteUseCase implements GetDriverMapRouteUseCase {
   const _TestMapRouteUseCase();
 
   @override
   Future<ApiResult<DriverMapRouteEntity>> call({String? focusedStopId}) async {
-    final stops = DriverMapFakeDataSource.sampleStops;
+    final stops = _sampleStops;
     final focused = stops.firstWhere(
       (s) => s.id == focusedStopId,
       orElse: () => stops.first,
@@ -90,7 +138,7 @@ class _TestLocationCoordinator implements DriverLiveLocationCoordinator {
 }
 
 DriverMapViewModel _createTestViewModel() {
-  final stops = DriverMapFakeDataSource.sampleStops;
+  final stops = _sampleStops;
   final focused = stops.first;
   return DriverMapViewModel(
     getDriverMapRouteUseCase: const _TestMapRouteUseCase(),
@@ -191,8 +239,7 @@ void main() {
       expect(find.byType(DriverMapActiveOrderCard), findsOneWidget);
       expect(find.text('BX-458722'), findsWidgets);
       expect(find.text('محمد علي'), findsWidgets);
-      expect(find.text('+966 50 123 4567'), findsNothing);
-      expect(find.byIcon(Icons.phone_rounded), findsNothing);
+      expect(find.byIcon(Icons.phone_rounded), findsOneWidget);
       expect(find.text('3 وجبات'), findsWidgets);
       expect(find.text('20 : 09 ص'), findsWidgets);
 

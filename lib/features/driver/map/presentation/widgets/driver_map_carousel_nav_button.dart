@@ -18,21 +18,28 @@ class DriverMapCarouselNavButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    return IconButton(
-      onPressed: isEnabled ? onPressed : null,
-      icon: Icon(
-        icon,
-        size: Spacing.iconLg,
-        color: isEnabled
-            ? color.primary
-            : color.primary.withValues(alpha: 0.35),
+    return Material(
+      color: color.surface,
+      shape: const CircleBorder(),
+      elevation: 2,
+      shadowColor: color.shadow.withValues(alpha: 0.12),
+      child: InkWell(
+        onTap: isEnabled ? onPressed : null,
+        customBorder: const CircleBorder(),
+        child: SizedBox(
+          width: 32,
+          height: 32,
+          child: Center(
+            child: Icon(
+              icon,
+              size: Spacing.iconSm,
+              color: isEnabled
+                  ? color.primary
+                  : color.primary.withValues(alpha: 0.35),
+            ),
+          ),
+        ),
       ),
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(
-        minWidth: Spacing.iconLg,
-        minHeight: Spacing.iconLg,
-      ),
-      splashRadius: Spacing.screenH,
     );
   }
 }

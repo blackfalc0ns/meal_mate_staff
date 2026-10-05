@@ -18,7 +18,6 @@ import '../widgets/driver_map_active_order_card.dart';
 import '../widgets/driver_map_background.dart';
 import '../widgets/driver_map_camera_controller.dart';
 import '../widgets/driver_map_navigation_launcher.dart';
-import '../widgets/driver_map_navigation_panel.dart';
 import '../widgets/driver_map_polyline_decoder.dart';
 import '../widgets/driver_map_recenter_button.dart';
 import '../widgets/driver_map_shimmer.dart';
@@ -458,19 +457,14 @@ class _DriverMapScreenState extends State<DriverMapScreen>
                       stop: activeStop,
                       canNavigate: canNavigate,
                       onAddressPressed: () => _handleNavigate(state),
-                    ),
-                    const SizedBox(height: Spacing.xs),
-                    DriverMapNavigationPanel(
-                      navigation: state.visibleNavigation,
-                      isRefreshing: state.isRefreshing,
-                      onNavigatePressed: () => _handleNavigate(state),
+                      onCallPressed: widget.onCallCustomer,
                     ),
                   ],
                 ),
               ),
               PositionedDirectional(
                 end: Spacing.screenH,
-                top: 240,
+                top: 190,
                 child: DriverMapRecenterButton(
                   onPressed: () => _handleRecenter(state),
                 ),

@@ -18,7 +18,6 @@ import 'package:meal_mate_delivery/features/driver/map/domain/usecase/get_driver
 import 'package:meal_mate_delivery/features/driver/map/presentation/manager/driver_map_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/screens/driver_map_screen.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_active_order_card.dart';
-import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_navigation_panel.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_shimmer.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_stops_carousel.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_delivery_status.dart';
@@ -220,7 +219,6 @@ void main() {
     await tester.pump(const Duration(milliseconds: 50));
 
     expect(find.byType(DriverMapActiveOrderCard), findsOneWidget);
-    expect(find.byType(DriverMapNavigationPanel), findsOneWidget);
     expect(find.byType(DriverMapStopsCarousel), findsOneWidget);
     expect(find.text('Customer One'), findsWidgets);
 
