@@ -10,6 +10,7 @@ import 'package:meal_mate_delivery/features/driver/orders/data/realtime/driver_o
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_orders_realtime_event.dart';
 import 'package:meal_mate_delivery/features/driver/tracking/data/datasources/driver_location_remote_datasource.dart';
 import 'package:meal_mate_delivery/features/driver/tracking/data/services/driver_location_service.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/domain/entities/driver_live_location_sample.dart';
 
 class DriverLiveLocationCoordinator {
   DriverLiveLocationCoordinator({
@@ -32,16 +33,23 @@ class DriverLiveLocationCoordinator {
   StreamSubscription<Position>? _positionSubscription;
 
   Position? _latestPosition;
+  DriverLiveLocationSample? _latestLocationSample;
+  DriverLiveLocationSample? _lastSuccessfullySentLocation;
   int _activeBoxCount = 0;
   bool _isStreaming = false;
   bool _isDisposed = false;
   bool _isSending = false;
+  Future<bool>? _inFlightSendFuture;
 
   final _streamingStatusController = StreamController<bool>.broadcast();
+  final _positionsController = StreamController<DriverLiveLocationSample>.broadcast();
 
   bool get isStreaming => _isStreaming;
   int get activeBoxCount => _activeBoxCount;
   Stream<bool> get streamingStatusStream => _streamingStatusController.stream;
+  Stream<DriverLiveLocationSample> get positions => _positionsController.stream;
+  DriverLiveLocationSample? get latestLocation => _latestLocationSample;
+  DriverLiveLocationSample? get lastSuccessfullySentLocation => _lastSuccessfullySentLocation;
 
   void _log(String message, {Object? error}) {
     developer.log(message, name: 'DriverLiveTracking', error: error);
@@ -130,6 +138,17 @@ class DriverLiveLocationCoordinator {
         .listen(
       (pos) {
         _latestPosition = pos;
+        final sample = DriverLiveLocationSample(
+          latitude: pos.latitude,
+          longitude: pos.longitude,
+          recordedAtUtc: pos.timestamp.toUtc(),
+          heading: pos.heading >= 0 && pos.heading <= 360 ? pos.heading : null,
+          speedKmh: pos.speed >= 0 ? pos.speed * 3.6 : null,
+        );
+        _latestLocationSample = sample;
+        if (!_positionsController.isClosed) {
+          _positionsController.add(sample);
+        }
       },
       onError: (err) {
         _log('GPS Stream error: $err', error: err);
@@ -146,9 +165,45 @@ class DriverLiveLocationCoordinator {
     });
   }
 
-  Future<void> _sendTick() async {
-    if (_isDisposed || !_isStreaming || _isSending) return;
+  /// Sends the current location immediately or waits for an ongoing send operation.
+  Future<bool> sendCurrentLocationNow() async {
+    if (_isDisposed) return false;
+    if (_inFlightSendFuture != null) {
+      return _inFlightSendFuture!;
+    }
+
+    final completer = Completer<bool>();
+    _inFlightSendFuture = completer.future;
+
+    try {
+      bool success = false;
+      if (!_isStreaming) {
+        if (_activeBoxCount > 0) {
+          await startTracking();
+          success = _lastSuccessfullySentLocation != null;
+        } else {
+          final hasPermission = await locationService.checkAndRequestPermission();
+          if (hasPermission) {
+            success = await _sendTick();
+          }
+        }
+      } else {
+        success = await _sendTick();
+      }
+      completer.complete(success);
+      return success;
+    } catch (e) {
+      completer.complete(false);
+      return false;
+    } finally {
+      _inFlightSendFuture = null;
+    }
+  }
+
+  Future<bool> _sendTick() async {
+    if (_isDisposed || _isSending) return false;
     _isSending = true;
+    bool sentSuccessfully = false;
 
     try {
       Position? position = _latestPosition;
@@ -156,12 +211,22 @@ class DriverLiveLocationCoordinator {
         position = await locationService.getCurrentPosition();
         if (position != null) {
           _latestPosition = position;
+          _latestLocationSample = DriverLiveLocationSample(
+            latitude: position.latitude,
+            longitude: position.longitude,
+            recordedAtUtc: position.timestamp.toUtc(),
+            heading: position.heading >= 0 && position.heading <= 360 ? position.heading : null,
+            speedKmh: position.speed >= 0 ? position.speed * 3.6 : null,
+          );
+          if (!_positionsController.isClosed) {
+            _positionsController.add(_latestLocationSample!);
+          }
         }
       }
 
       if (position == null) {
         _log('⏳ Waiting for GPS fix...');
-        return;
+        return false;
       }
 
       final lat = position.latitude;
@@ -169,7 +234,7 @@ class DriverLiveLocationCoordinator {
 
       if (!DriverLocationServiceImpl.isValidCoordinate(lat, lng)) {
         _log('⚠️ Skipping invalid coordinates ($lat, $lng)');
-        return;
+        return false;
       }
 
       final heading = position.heading >= 0 && position.heading <= 360
@@ -179,7 +244,6 @@ class DriverLiveLocationCoordinator {
       final speedKmh = position.speed >= 0 ? position.speed * 3.6 : null;
 
       // 1. Primary path: SignalR Hub
-      bool sentSuccessfully = false;
       if (realtimeClient.isConnected) {
         try {
           await realtimeClient.updateLocation(
@@ -196,14 +260,14 @@ class DriverLiveLocationCoordinator {
               errStr.contains('tracking_not_required')) {
             _activeBoxCount = 0;
             stopTracking(reason: 'dispatcher.tracking_not_required');
-            return;
+            return false;
           }
           _log('SignalR updateLocation failed: $hubErr. Falling back to REST...');
         }
       }
 
       // 2. Fallback path: REST API if SignalR failed or disconnected
-      if (!sentSuccessfully && _isStreaming) {
+      if (!sentSuccessfully && (_isStreaming || _activeBoxCount > 0)) {
         try {
           await fallbackDataSource.sendLocation(
             latitude: lat,
@@ -211,6 +275,7 @@ class DriverLiveLocationCoordinator {
             heading: heading,
             speedKmh: speedKmh,
           );
+          sentSuccessfully = true;
           _log('Sent [REST API] -> Lat: $lat, Lng: $lng | Speed: ${speedKmh?.toStringAsFixed(1) ?? "0.0"} km/h | Heading: ${heading?.toStringAsFixed(1) ?? "0.0"}°');
         } on DioException catch (dioErr) {
           final statusCode = dioErr.response?.statusCode;
@@ -219,13 +284,24 @@ class DriverLiveLocationCoordinator {
             _log('REST 409 tracking_not_required. Halting stream.');
             _activeBoxCount = 0;
             stopTracking(reason: 'dispatcher.tracking_not_required');
-            return;
+            return false;
           }
           _log('REST fallback failed: ${dioErr.message}');
         } catch (e) {
           _log('REST fallback unexpected error: $e');
         }
       }
+
+      if (sentSuccessfully) {
+        _lastSuccessfullySentLocation = DriverLiveLocationSample(
+          latitude: lat,
+          longitude: lng,
+          recordedAtUtc: position.timestamp.toUtc(),
+          heading: heading,
+          speedKmh: speedKmh,
+        );
+      }
+      return sentSuccessfully;
     } finally {
       _isSending = false;
     }
@@ -256,5 +332,6 @@ class DriverLiveLocationCoordinator {
       unawaited(_realtimeSubscription!.cancel());
     }
     unawaited(_streamingStatusController.close());
+    unawaited(_positionsController.close());
   }
 }
