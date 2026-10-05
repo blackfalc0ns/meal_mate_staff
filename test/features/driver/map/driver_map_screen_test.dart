@@ -3,8 +3,19 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate_delivery/core/app_shell/screens/app_shell_screen.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/features/auth/domain/user_role.dart';
+import 'package:meal_mate_delivery/features/driver/map/data/datasources/driver_map_fake_datasource.dart';
+import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_location_entity.dart';
+import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_navigation_entity.dart';
+import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_route_entity.dart';
+import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_route_status.dart';
+import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_stop_entity.dart';
+import 'package:meal_mate_delivery/features/driver/map/domain/usecase/get_driver_map_route_usecase.dart';
+import 'package:meal_mate_delivery/features/driver/map/presentation/manager/driver_map_state.dart';
+import 'package:meal_mate_delivery/features/driver/map/presentation/manager/driver_map_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/screens/driver_map_screen.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_active_order_card.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_background.dart';
@@ -13,6 +24,112 @@ import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driv
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_recenter_button.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_stop_card.dart';
 import 'package:meal_mate_delivery/features/driver/map/presentation/widgets/driver_map_stops_carousel.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/domain/entities/driver_live_location_sample.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/presentation/manager/driver_live_location_coordinator.dart';
+
+class _TestMapRouteUseCase implements GetDriverMapRouteUseCase {
+  const _TestMapRouteUseCase();
+
+  @override
+  Future<ApiResult<DriverMapRouteEntity>> call({String? focusedStopId}) async {
+    final stops = DriverMapFakeDataSource.sampleStops;
+    final focused = stops.firstWhere(
+      (s) => s.id == focusedStopId,
+      orElse: () => stops.first,
+    );
+    return ApiSuccessResult(
+      data: DriverMapRouteEntity(
+        tripId: 'sample-trip',
+        tripCode: 'TRP-SAMPLE',
+        totalStopsCount: stops.length,
+        completedStopsCount: stops.where((s) => s.isDelivered).length,
+        stops: stops,
+        focusedStop: focused,
+        navigation: DriverMapNavigationEntity(
+          routeStatus: DriverMapRouteStatus.ready,
+          canNavigate: true,
+          distanceMeters: 2500,
+          durationSeconds: 300,
+          destinationStopId: focused.id,
+          origin: const DriverMapLocationEntity(
+            latitude: 29.3320,
+            longitude: 48.0820,
+            label: 'Driver',
+            source: 'tracking',
+          ),
+          destination: DriverMapLocationEntity(
+            latitude: focused.latitude ?? 29.3375,
+            longitude: focused.longitude ?? 48.0753,
+            label: focused.customerName,
+            source: 'trip_stop',
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _TestLocationCoordinator implements DriverLiveLocationCoordinator {
+  @override
+  Stream<DriverLiveLocationSample> get positions => const Stream.empty();
+
+  @override
+  DriverLiveLocationSample? get latestLocation => null;
+
+  @override
+  DriverLiveLocationSample? get lastSuccessfullySentLocation => null;
+
+  @override
+  Future<bool> sendCurrentLocationNow() async => true;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+DriverMapViewModel _createTestViewModel() {
+  final stops = DriverMapFakeDataSource.sampleStops;
+  final focused = stops.first;
+  return DriverMapViewModel(
+    getDriverMapRouteUseCase: const _TestMapRouteUseCase(),
+    liveLocationCoordinator: _TestLocationCoordinator(),
+    bootstrapWaitLimit: Duration.zero,
+    pollingInterval: Duration.zero,
+    initialState: DriverMapState(
+      isLoading: false,
+      route: DriverMapRouteEntity(
+        tripId: 'sample-trip',
+        tripCode: 'TRP-SAMPLE',
+        totalStopsCount: stops.length,
+        completedStopsCount: stops.where((s) => s.isDelivered).length,
+        stops: stops,
+        focusedStop: focused,
+        navigation: DriverMapNavigationEntity(
+          routeStatus: DriverMapRouteStatus.ready,
+          canNavigate: true,
+          distanceMeters: 2500,
+          durationSeconds: 300,
+          destinationStopId: focused.id,
+          origin: const DriverMapLocationEntity(
+            latitude: 29.3320,
+            longitude: 48.0820,
+            label: 'Driver',
+            source: 'tracking',
+          ),
+          destination: DriverMapLocationEntity(
+            latitude: focused.latitude ?? 29.3375,
+            longitude: focused.longitude ?? 48.0753,
+            label: focused.customerName,
+            source: 'trip_stop',
+          ),
+        ),
+      ),
+      selectedStopId: focused.id,
+    ),
+  );
+}
 
 Widget _buildTestApp({
   required Widget child,
@@ -35,6 +152,19 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('DriverMapScreen Widget Tests', () {
+    setUp(() {
+      if (getIt.isRegistered<DriverMapViewModel>()) {
+        getIt.unregister<DriverMapViewModel>();
+      }
+      getIt.registerFactory<DriverMapViewModel>(() => _createTestViewModel());
+    });
+
+    tearDown(() {
+      if (getIt.isRegistered<DriverMapViewModel>()) {
+        getIt.unregister<DriverMapViewModel>();
+      }
+    });
+
     testWidgets('renders all components properly in Arabic (RTL)', (
       tester,
     ) async {

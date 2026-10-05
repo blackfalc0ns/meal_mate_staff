@@ -11,16 +11,7 @@ import 'package:meal_mate_delivery/core/errors/error_widgets/empty_state_widget.
 import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
-import 'package:meal_mate_delivery/core/network/api_results.dart';
-import '../../../tracking/domain/entities/driver_live_location_sample.dart';
-import '../../../tracking/presentation/manager/driver_live_location_coordinator.dart';
-import '../../data/datasources/driver_map_fake_datasource.dart';
-import '../../domain/entities/driver_map_location_entity.dart';
-import '../../domain/entities/driver_map_navigation_entity.dart';
-import '../../domain/entities/driver_map_route_entity.dart';
-import '../../domain/entities/driver_map_route_status.dart';
 import '../../domain/entities/driver_map_stop_entity.dart';
-import '../../domain/usecase/get_driver_map_route_usecase.dart';
 import '../manager/driver_map_event.dart';
 import '../manager/driver_map_state.dart';
 import '../manager/driver_map_view_model.dart';
@@ -33,122 +24,6 @@ import '../widgets/driver_map_polyline_decoder.dart';
 import '../widgets/driver_map_recenter_button.dart';
 import '../widgets/driver_map_shimmer.dart';
 import '../widgets/driver_map_stops_carousel.dart';
-
-class _FallbackMapRouteUseCase implements GetDriverMapRouteUseCase {
-  const _FallbackMapRouteUseCase(this.stops);
-
-  final List<DriverMapStopEntity> stops;
-
-  @override
-  Future<ApiResult<DriverMapRouteEntity>> call({String? focusedStopId}) async {
-    final effectiveStops =
-        stops.isNotEmpty ? stops : DriverMapFakeDataSource.sampleStops;
-    final focused = effectiveStops.firstWhere(
-      (s) => s.id == focusedStopId,
-      orElse: () => effectiveStops.first,
-    );
-    return ApiSuccessResult(
-      data: DriverMapRouteEntity(
-        tripId: 'sample-trip',
-        tripCode: 'TRP-SAMPLE',
-        totalStopsCount: effectiveStops.length,
-        completedStopsCount:
-            effectiveStops.where((s) => s.isDelivered).length,
-        stops: effectiveStops,
-        focusedStop: focused,
-        navigation: DriverMapNavigationEntity(
-          routeStatus: DriverMapRouteStatus.ready,
-          canNavigate: true,
-          distanceMeters: 2500,
-          durationSeconds: 300,
-          destinationStopId: focused.id,
-          origin: const DriverMapLocationEntity(
-            latitude: 29.3320,
-            longitude: 48.0820,
-            label: 'Driver',
-            source: 'tracking',
-          ),
-          destination: DriverMapLocationEntity(
-            latitude: focused.latitude ?? 29.3375,
-            longitude: focused.longitude ?? 48.0753,
-            label: focused.customerName,
-            source: 'trip_stop',
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _FallbackLocationCoordinator implements DriverLiveLocationCoordinator {
-  @override
-  Stream<DriverLiveLocationSample> get positions => const Stream.empty();
-
-  @override
-  DriverLiveLocationSample? get latestLocation => null;
-
-  @override
-  DriverLiveLocationSample? get lastSuccessfullySentLocation => null;
-
-  @override
-  Future<bool> sendCurrentLocationNow() async => true;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-DriverMapViewModel _createFallbackViewModel({
-  List<DriverMapStopEntity>? initialStops,
-  LatLng? initialDriverLocation,
-  List<LatLng>? initialRoutePoints,
-}) {
-  final stops = initialStops ?? DriverMapFakeDataSource.sampleStops;
-  final focused = stops.isNotEmpty ? stops.first : null;
-  final route = stops.isNotEmpty
-      ? DriverMapRouteEntity(
-          tripId: 'sample-trip',
-          tripCode: 'TRP-SAMPLE',
-          totalStopsCount: stops.length,
-          completedStopsCount: stops.where((s) => s.isDelivered).length,
-          stops: stops,
-          focusedStop: focused ?? stops.first,
-          navigation: DriverMapNavigationEntity(
-            routeStatus: DriverMapRouteStatus.ready,
-            canNavigate: true,
-            distanceMeters: 2500,
-            durationSeconds: 300,
-            destinationStopId: focused?.id ?? '',
-            origin: DriverMapLocationEntity(
-              latitude: initialDriverLocation?.latitude ?? 29.3320,
-              longitude: initialDriverLocation?.longitude ?? 48.0820,
-              label: 'Driver',
-              source: 'tracking',
-            ),
-            destination: DriverMapLocationEntity(
-              latitude: focused?.latitude ?? 29.3375,
-              longitude: focused?.longitude ?? 48.0753,
-              label: focused?.customerName ?? '',
-              source: 'trip_stop',
-            ),
-          ),
-        )
-      : null;
-
-  return DriverMapViewModel(
-    getDriverMapRouteUseCase: _FallbackMapRouteUseCase(stops),
-    liveLocationCoordinator: _FallbackLocationCoordinator(),
-    bootstrapWaitLimit: Duration.zero,
-    pollingInterval: Duration.zero,
-    initialState: DriverMapState(
-      isLoading: false,
-      route: route,
-      selectedStopId: focused?.id,
-    ),
-  );
-}
 
 class DriverMapScreen extends StatefulWidget {
   const DriverMapScreen({
@@ -200,21 +75,14 @@ class _DriverMapScreenState extends State<DriverMapScreen>
     if (widget.viewModel != null) {
       _viewModel = widget.viewModel!;
       _isOwnedViewModel = false;
-    } else if (getIt.isRegistered<DriverMapViewModel>()) {
-      _viewModel = getIt<DriverMapViewModel>();
-      _isOwnedViewModel = true;
     } else {
-      _viewModel = _createFallbackViewModel(
-        initialStops: widget.initialStops,
-        initialDriverLocation: widget.initialDriverLocation,
-        initialRoutePoints: widget.initialRoutePoints,
-      );
+      _viewModel = getIt<DriverMapViewModel>();
       _isOwnedViewModel = true;
     }
 
     final initialStops = widget.initialStops ??
         _viewModel.state.route?.stops ??
-        DriverMapFakeDataSource.sampleStops;
+        const [];
     final initialPage = initialStops.length > 1
         ? (300 ~/ initialStops.length) * initialStops.length
         : 0;
