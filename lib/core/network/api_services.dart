@@ -81,6 +81,7 @@ import '../../features/dispatcher/dispatcher_drivers_status/data/models/response
 import '../../features/driver/driver_notifications/data/models/driver_notification_dto.dart';
 import '../../features/driver/driver_profile/data/models/response/driver_profile_response_dto.dart';
 import '../../features/driver/home/data/models/response/driver_home_response_dto.dart';
+import '../../features/driver/map/data/models/response/driver_map_route_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -435,4 +436,9 @@ abstract class ApiServices {
 
   @GET(EndPoints.driverHome)
   Future<DriverHomeResponseDto> getDriverHome();
+
+  @GET(EndPoints.driverMapRoute)
+  Future<DriverMapRouteResponseDto> getDriverMapRoute(
+    @Query('focusedStopId') String? focusedStopId,
+  );
 }

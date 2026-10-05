@@ -130,4 +130,7 @@ abstract class EndPoints {
 
   // Driver home (Screen 05.01 / 05.02)
   static const String driverHome = '/api/v1/driver/home';
+
+  // Driver map (Screen 03.01)
+  static const String driverMapRoute = '/api/v1/driver/map/route';
 }

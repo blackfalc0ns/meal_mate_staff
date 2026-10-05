@@ -76,6 +76,11 @@ import '../../features/driver/home/data/repo/driver_home_repository_impl.dart';
 import '../../features/driver/home/domain/repo/driver_home_repository.dart';
 import '../../features/driver/home/domain/usecase/get_driver_home_usecase.dart';
 import '../../features/driver/home/presentation/manager/driver_home_view_model.dart';
+import '../../features/driver/map/data/data_source/driver_map_remote_data_source.dart';
+import '../../features/driver/map/data/data_source/driver_map_remote_data_source_impl.dart';
+import '../../features/driver/map/data/repo/driver_map_repository_impl.dart';
+import '../../features/driver/map/domain/repo/driver_map_repository.dart';
+import '../../features/driver/map/domain/usecase/get_driver_map_route_usecase.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repo/auth_repository_impl.dart';
@@ -901,6 +906,17 @@ Future<void> configureDependencies() async {
       getNotificationsUseCase: getIt<GetDriverNotificationsUseCase>(),
       markAsReadUseCase: getIt<MarkDriverNotificationAsReadUseCase>(),
     ),
+  );
+
+  // Driver Map feature dependencies
+  getIt.registerLazySingleton<DriverMapRemoteDataSource>(
+    () => DriverMapRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverMapRepository>(
+    () => DriverMapRepositoryImpl(getIt<DriverMapRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetDriverMapRouteUseCase>(
+    () => GetDriverMapRouteUseCase(getIt<DriverMapRepository>()),
   );
 
   // Driver Live Location & Realtime Streaming
