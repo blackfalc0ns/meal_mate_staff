@@ -10,7 +10,6 @@ import 'package:meal_mate_delivery/core/errors/error_widgets/api_error_widget.da
 import 'package:meal_mate_delivery/core/errors/error_widgets/empty_state_widget.dart';
 import 'package:meal_mate_delivery/core/errors/error_widgets/inline_api_error_widget.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
-
 import '../../domain/entities/driver_map_stop_entity.dart';
 import '../manager/driver_map_event.dart';
 import '../manager/driver_map_state.dart';
@@ -80,9 +79,8 @@ class _DriverMapScreenState extends State<DriverMapScreen>
       _isOwnedViewModel = true;
     }
 
-    final initialStops = widget.initialStops ??
-        _viewModel.state.route?.stops ??
-        const [];
+    final initialStops =
+        widget.initialStops ?? _viewModel.state.route?.stops ?? const [];
     final initialPage = initialStops.length > 1
         ? (300 ~/ initialStops.length) * initialStops.length
         : 0;
@@ -161,9 +159,7 @@ class _DriverMapScreenState extends State<DriverMapScreen>
       target = DriverMapCameraController.defaultKuwaitCenter;
     }
     unawaited(
-      controller.animateCamera(
-        CameraUpdate.newLatLngZoom(target, 15.0),
-      ),
+      controller.animateCamera(CameraUpdate.newLatLngZoom(target, 15.0)),
     );
   }
 
@@ -186,10 +182,7 @@ class _DriverMapScreenState extends State<DriverMapScreen>
       );
     } else if (state.liveLocation != null) {
       points.add(
-        LatLng(
-          state.liveLocation!.latitude,
-          state.liveLocation!.longitude,
-        ),
+        LatLng(state.liveLocation!.latitude, state.liveLocation!.longitude),
       );
     }
 
@@ -309,11 +302,14 @@ class _DriverMapScreenState extends State<DriverMapScreen>
         listener: (context, state) {
           final stops = state.route?.stops ?? const [];
           if (stops.isNotEmpty && state.selectedStopId != null) {
-            final targetIndex =
-                stops.indexWhere((s) => s.id == state.selectedStopId);
+            final targetIndex = stops.indexWhere(
+              (s) => s.id == state.selectedStopId,
+            );
             if (targetIndex >= 0 && _pageController.hasClients) {
-              final targetPage =
-                  _closestPageForIndex(targetIndex, stops.length);
+              final targetPage = _closestPageForIndex(
+                targetIndex,
+                stops.length,
+              );
               if (_pageController.page?.round() != targetPage) {
                 unawaited(
                   _pageController.animateToPage(
@@ -404,11 +400,11 @@ class _DriverMapScreenState extends State<DriverMapScreen>
     final driverLocation = state.liveLocation != null
         ? LatLng(state.liveLocation!.latitude, state.liveLocation!.longitude)
         : (state.visibleNavigation?.origin != null
-            ? LatLng(
-                state.visibleNavigation!.origin!.latitude,
-                state.visibleNavigation!.origin!.longitude,
-              )
-            : null);
+              ? LatLng(
+                  state.visibleNavigation!.origin!.latitude,
+                  state.visibleNavigation!.origin!.longitude,
+                )
+              : null);
 
     final routeOrigin = state.visibleNavigation?.origin != null
         ? LatLng(

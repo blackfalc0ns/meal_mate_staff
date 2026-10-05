@@ -92,19 +92,19 @@ void main() {
   });
 
   group('UpdateDriverAvailabilityRequestDto', () {
-    test('serializes isAvailable and reason when provided', () {
+    test('serializes Inactive shiftStatus and omits reason', () {
       const dto = UpdateDriverAvailabilityRequestDto(
         isAvailable: false,
         reason: 'استراحة غداء مجدولة',
       );
       final json = dto.toJson();
-      expect(json, {'isAvailable': false, 'reason': 'استراحة غداء مجدولة'});
+      expect(json, {'shiftStatus': 'Inactive'});
     });
 
     test('omits reason when null', () {
       const dto = UpdateDriverAvailabilityRequestDto(isAvailable: true);
       final json = dto.toJson();
-      expect(json, {'isAvailable': true});
+      expect(json, {'shiftStatus': 'Active'});
       expect(json.containsKey('reason'), isFalse);
     });
   });

@@ -16,6 +16,15 @@ class UpdateDriverAvailabilityRequestDto {
   Map<String, dynamic> toJson() =>
       _$UpdateDriverAvailabilityRequestDtoToJson(this);
 
+  @JsonKey(
+    name: 'shiftStatus',
+    fromJson: _statusFromJson,
+    toJson: _statusToJson,
+  )
   final bool isAvailable;
+  @JsonKey(includeToJson: false)
   final String? reason;
+
+  static bool _statusFromJson(String value) => value == 'Active';
+  static String _statusToJson(bool value) => value ? 'Active' : 'Inactive';
 }

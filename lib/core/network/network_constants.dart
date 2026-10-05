@@ -84,7 +84,7 @@ abstract class EndPoints {
       '/api/v1/dispatcher/drivers/roster';
   static const String dispatcherDriversStatus = '/api/v1/dispatcher/drivers';
   static const String dispatcherDriverAvailability =
-      '/api/v1/dispatcher/drivers/{driverId}/availability';
+      '/api/v1/dispatcher/drivers/{driverId}/shift-status';
   static const String dispatcherDriverStatusDetails =
       '/api/v1/dispatcher/drivers/{driverId}';
   static const String dispatcherDriversStatusHub = '/hubs/dispatcher-hub';

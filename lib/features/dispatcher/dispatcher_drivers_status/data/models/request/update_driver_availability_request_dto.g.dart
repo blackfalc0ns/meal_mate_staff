@@ -9,13 +9,16 @@ part of 'update_driver_availability_request_dto.dart';
 UpdateDriverAvailabilityRequestDto _$UpdateDriverAvailabilityRequestDtoFromJson(
   Map<String, dynamic> json,
 ) => UpdateDriverAvailabilityRequestDto(
-  isAvailable: json['isAvailable'] as bool,
+  isAvailable: UpdateDriverAvailabilityRequestDto._statusFromJson(
+    json['shiftStatus'] as String,
+  ),
   reason: json['reason'] as String?,
 );
 
 Map<String, dynamic> _$UpdateDriverAvailabilityRequestDtoToJson(
   UpdateDriverAvailabilityRequestDto instance,
 ) => <String, dynamic>{
-  'isAvailable': instance.isAvailable,
-  'reason': ?instance.reason,
+  'shiftStatus': UpdateDriverAvailabilityRequestDto._statusToJson(
+    instance.isAvailable,
+  ),
 };

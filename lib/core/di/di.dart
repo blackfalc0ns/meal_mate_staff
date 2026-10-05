@@ -863,6 +863,7 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<DriverHomeViewModel>(
     () => DriverHomeViewModel(
       getDriverHomeUseCase: getIt<GetDriverHomeUseCase>(),
+      locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
       realtimeClient: getIt.isRegistered<DriverOrdersRealtimeClient>()
           ? getIt<DriverOrdersRealtimeClient>()
           : null,

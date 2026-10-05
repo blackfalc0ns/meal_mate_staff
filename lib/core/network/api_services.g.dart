@@ -1447,7 +1447,7 @@ class _ApiServices implements ApiServices {
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/dispatcher/drivers/${driverId}/availability',
+            '/api/v1/dispatcher/drivers/${driverId}/shift-status',
             queryParameters: queryParameters,
             data: _data,
           )

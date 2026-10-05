@@ -74,9 +74,6 @@ class _DriverActiveDeliveryTrackingScreenState
     if (_ownsRepository) {
       _repository.dispose();
     }
-    if (getIt.isRegistered<DriverLiveLocationCoordinator>()) {
-      unawaited(getIt<DriverLiveLocationCoordinator>().setActiveBoxesCount(0));
-    }
     super.dispose();
   }
 

@@ -267,7 +267,7 @@ class DriverLiveLocationCoordinator {
       }
 
       // 2. Fallback path: REST API if SignalR failed or disconnected
-      if (!sentSuccessfully && (_isStreaming || _activeBoxCount > 0)) {
+      if (!sentSuccessfully) {
         try {
           await fallbackDataSource.sendLocation(
             latitude: lat,

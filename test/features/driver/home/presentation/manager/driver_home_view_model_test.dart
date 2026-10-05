@@ -10,6 +10,20 @@ import 'package:meal_mate_delivery/features/driver/home/presentation/manager/dri
 import 'package:meal_mate_delivery/features/driver/home/presentation/manager/driver_home_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/orders/data/realtime/driver_orders_realtime_client.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_orders_realtime_event.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/presentation/manager/driver_live_location_coordinator.dart';
+
+class _RecordingLocationCoordinator implements DriverLiveLocationCoordinator {
+  @override
+  int activeBoxCount = 0;
+
+  @override
+  Future<void> setActiveBoxesCount(int count) async {
+    activeBoxCount = count;
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 class _FakeDriverHomeRepository implements DriverHomeRepository {
   ApiResult<DriverHomeEntity>? nextResult;
@@ -153,6 +167,26 @@ void main() {
       expect(viewModel.state.home?.shiftStatus, DriverShiftStatus.active);
       expect(viewModel.state.home?.isAvailable, true);
       expect(viewModel.state.home?.isAvailableAndIdle, true);
+    });
+
+    test('restores tracking for an existing delivery on startup', () async {
+      final coordinator = _RecordingLocationCoordinator();
+      final home = DriverHomeViewModel(
+        getDriverHomeUseCase: useCase,
+        locationCoordinator: coordinator,
+      );
+      addTearDown(home.close);
+      fakeRepository.nextResult = const ApiSuccessResult(data: activeBusyHome);
+      await home.doIntent(const DriverHomeLoadStarted());
+      expect(coordinator.activeBoxCount, 1);
+
+      coordinator.activeBoxCount = 8;
+      await home.doIntent(const DriverHomeRefreshRequested());
+      expect(coordinator.activeBoxCount, 8);
+
+      fakeRepository.nextResult = const ApiSuccessResult(data: activeAvailableHome);
+      await home.doIntent(const DriverHomeRefreshRequested());
+      expect(coordinator.activeBoxCount, 0);
     });
 
     test('Active busy remains Active when isAvailable == false', () async {
