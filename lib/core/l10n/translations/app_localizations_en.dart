@@ -3105,8 +3105,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverStatusOffline => 'Offline';
 
   @override
+  String get driverStatusInactive => 'Disconnected';
+
+  @override
   String get driverNotAvailableDescription =>
       'You are not available to receive orders';
+
+  @override
+  String get driverInactiveControlledByManager =>
+      'Shift activation and operational status are controlled by the delivery manager.';
 
   @override
   String get driverProfits => 'Profits';

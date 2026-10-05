@@ -72,8 +72,7 @@ import '../../features/driver/active_delivery/presentation/screens/driver_delive
 import '../../features/driver/active_delivery/presentation/screens/driver_failed_delivery_screen.dart';
 import '../../features/driver/active_delivery/presentation/screens/driver_return_box_to_restaurant_screen.dart';
 import '../../features/driver/active_delivery/presentation/screens/driver_delivery_success_screen.dart';
-import '../../features/driver/home/presentation/screens/driver_start_work_screen.dart';
-import '../../features/driver/home/presentation/screens/driver_active_home_screen.dart';
+import '../../features/driver/home/presentation/screens/driver_home_screen.dart';
 import '../../features/driver/map/presentation/screens/driver_map_screen.dart';
 import '../../features/driver/calling/domain/entities/driver_active_call_entity.dart';
 import '../../features/driver/calling/presentation/screens/driver_active_call_screen.dart';
@@ -674,16 +673,8 @@ class RouteGenerator {
         );
 
       case AppRoutes.driverStartWork:
-        return _buildRoute(
-          settings: settings,
-          page: const DriverStartWorkScreen(),
-        );
-
       case AppRoutes.driverHome:
-        return _buildRoute(
-          settings: settings,
-          page: const DriverActiveHomeScreen(),
-        );
+        return _buildRoute(settings: settings, page: const DriverHomeScreen());
 
       case AppRoutes.mapDriver:
         return _buildRoute(

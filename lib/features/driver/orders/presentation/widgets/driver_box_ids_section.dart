@@ -47,8 +47,7 @@ class DriverBoxIdsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final code = effectiveBoxCode;
-    final hasCustomer =
-        customerName != null && customerName!.trim().isNotEmpty;
+    final hasCustomer = customerName != null && customerName!.trim().isNotEmpty;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -89,11 +88,7 @@ class DriverBoxIdsSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-              Icon(
-                Icons.copy_rounded,
-                size: 11,
-                color: color.onSurfaceVariant,
-              ),
+              Icon(Icons.copy_rounded, size: 11, color: color.onSurfaceVariant),
             ],
           ),
         ),

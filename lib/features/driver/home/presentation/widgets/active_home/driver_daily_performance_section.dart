@@ -8,10 +8,7 @@ import 'package:meal_mate_delivery/features/driver/home/domain/entities/driver_d
 import 'driver_daily_performance_card.dart';
 
 class DriverDailyPerformanceSection extends StatelessWidget {
-  const DriverDailyPerformanceSection({
-    super.key,
-    required this.performance,
-  });
+  const DriverDailyPerformanceSection({super.key, required this.performance});
 
   final DriverDailyPerformanceEntity performance;
 

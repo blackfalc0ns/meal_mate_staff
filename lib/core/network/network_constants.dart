@@ -127,4 +127,7 @@ abstract class EndPoints {
 
   // Driver profile (Screen 09.02)
   static const String driverProfile = '/api/v1/driver/profile';
+
+  // Driver home (Screen 05.01 / 05.02)
+  static const String driverHome = '/api/v1/driver/home';
 }

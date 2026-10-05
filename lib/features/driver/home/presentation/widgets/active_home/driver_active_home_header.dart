@@ -79,11 +79,7 @@ class DriverActiveHomeHeader extends StatelessWidget {
           ),
           IconButton(
             onPressed: onMenuTap,
-            icon: Icon(
-              Icons.menu_rounded,
-              color: color.onSurface,
-              size: 28,
-            ),
+            icon: Icon(Icons.menu_rounded, color: color.onSurface, size: 28),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
           ),

@@ -70,15 +70,12 @@ import '../../features/driver/driver_notifications/domain/repo/driver_notificati
 import '../../features/driver/driver_notifications/domain/usecase/get_driver_notifications_usecase.dart';
 import '../../features/driver/driver_notifications/domain/usecase/mark_driver_notification_as_read_usecase.dart';
 import '../../features/driver/driver_notifications/presentation/manager/driver_notifications_view_model.dart';
-import '../../features/driver/home/data/datasources/driver_home_datasource.dart';
-import '../../features/driver/home/data/datasources/driver_home_fake_datasource.dart';
-import '../../features/driver/home/data/repositories/driver_home_repository_impl.dart';
-import '../../features/driver/home/domain/repositories/driver_home_repository.dart';
-import '../../features/driver/home/domain/usecases/get_driver_active_home_usecase.dart';
-import '../../features/driver/home/domain/usecases/get_driver_start_work_usecase.dart';
-import '../../features/driver/home/domain/usecases/start_driver_shift_usecase.dart';
-import '../../features/driver/home/presentation/manager/driver_active_home_view_model.dart';
-import '../../features/driver/home/presentation/manager/driver_start_work_view_model.dart';
+import '../../features/driver/home/data/data_source/driver_home_remote_data_source.dart';
+import '../../features/driver/home/data/data_source/driver_home_remote_data_source_impl.dart';
+import '../../features/driver/home/data/repo/driver_home_repository_impl.dart';
+import '../../features/driver/home/domain/repo/driver_home_repository.dart';
+import '../../features/driver/home/domain/usecase/get_driver_home_usecase.dart';
+import '../../features/driver/home/presentation/manager/driver_home_view_model.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source.dart';
 import '../../features/auth/data/data_source/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repo/auth_repository_impl.dart';
@@ -848,31 +845,21 @@ Future<void> configureDependencies() async {
   );
 
   // Driver Home feature dependencies
-  getIt.registerLazySingleton<DriverHomeDataSource>(
-    DriverHomeFakeDataSource.new,
+  getIt.registerLazySingleton<DriverHomeRemoteDataSource>(
+    () => DriverHomeRemoteDataSourceImpl(getIt<ApiServices>()),
   );
   getIt.registerLazySingleton<DriverHomeRepository>(
-    () => DriverHomeRepositoryImpl(getIt<DriverHomeDataSource>()),
+    () => DriverHomeRepositoryImpl(getIt<DriverHomeRemoteDataSource>()),
   );
-  getIt.registerFactory<GetDriverStartWorkUseCase>(
-    () => GetDriverStartWorkUseCase(getIt<DriverHomeRepository>()),
+  getIt.registerFactory<GetDriverHomeUseCase>(
+    () => GetDriverHomeUseCase(getIt<DriverHomeRepository>()),
   );
-  getIt.registerFactory<GetDriverActiveHomeUseCase>(
-    () => GetDriverActiveHomeUseCase(getIt<DriverHomeRepository>()),
-  );
-  getIt.registerFactory<StartDriverShiftUseCase>(
-    () => StartDriverShiftUseCase(getIt<DriverHomeRepository>()),
-  );
-  getIt.registerFactory<DriverStartWorkViewModel>(
-    () => DriverStartWorkViewModel(
-      getDriverStartWorkUseCase: getIt<GetDriverStartWorkUseCase>(),
-      startDriverShiftUseCase: getIt<StartDriverShiftUseCase>(),
-    ),
-  );
-  getIt.registerFactory<DriverActiveHomeViewModel>(
-    () => DriverActiveHomeViewModel(
-      getDriverActiveHomeUseCase: getIt<GetDriverActiveHomeUseCase>(),
-      locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
+  getIt.registerFactory<DriverHomeViewModel>(
+    () => DriverHomeViewModel(
+      getDriverHomeUseCase: getIt<GetDriverHomeUseCase>(),
+      realtimeClient: getIt.isRegistered<DriverOrdersRealtimeClient>()
+          ? getIt<DriverOrdersRealtimeClient>()
+          : null,
     ),
   );
 
@@ -902,9 +889,7 @@ Future<void> configureDependencies() async {
     ),
   );
   getIt.registerFactory<GetDriverNotificationsUseCase>(
-    () => GetDriverNotificationsUseCase(
-      getIt<DriverNotificationsRepository>(),
-    ),
+    () => GetDriverNotificationsUseCase(getIt<DriverNotificationsRepository>()),
   );
   getIt.registerFactory<MarkDriverNotificationAsReadUseCase>(
     () => MarkDriverNotificationAsReadUseCase(

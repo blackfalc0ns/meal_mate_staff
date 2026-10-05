@@ -5942,11 +5942,23 @@ abstract class AppLocalizations {
   /// **'Offline'**
   String get driverStatusOffline;
 
+  /// No description provided for @driverStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get driverStatusInactive;
+
   /// No description provided for @driverNotAvailableDescription.
   ///
   /// In en, this message translates to:
   /// **'You are not available to receive orders'**
   String get driverNotAvailableDescription;
+
+  /// No description provided for @driverInactiveControlledByManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift activation and operational status are controlled by the delivery manager.'**
+  String get driverInactiveControlledByManager;
 
   /// No description provided for @driverProfits.
   ///

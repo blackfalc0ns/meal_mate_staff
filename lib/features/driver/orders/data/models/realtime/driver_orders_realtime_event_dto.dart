@@ -104,7 +104,8 @@ class DriverOrdersRealtimeEventDto {
         );
 
       case 'delivery-completed':
-        final remaining = json['remainingBoxesCount'] ??
+        final remaining =
+            json['remainingBoxesCount'] ??
             json['remainingDeliveries'] ??
             json['remainingCount'] ??
             json['remaining'];
@@ -113,7 +114,9 @@ class DriverOrdersRealtimeEventDto {
           occurredAtUtc: occurredAtUtc,
           boxId: boxId,
           tripId: tripId,
-          remainingBoxesCount: remaining is int ? remaining : int.tryParse(remaining?.toString() ?? ''),
+          remainingBoxesCount: remaining is int
+              ? remaining
+              : int.tryParse(remaining?.toString() ?? ''),
         );
 
       case 'kitchen-ready':
@@ -125,6 +128,9 @@ class DriverOrdersRealtimeEventDto {
         );
 
       case 'shift-status-confirmed':
+      case 'ShiftStatusConfirmed':
+      case 'shiftStatusConfirmed':
+      case 'shift_status_confirmed':
         return DriverShiftStatusConfirmedEvent(
           eventId: eventId,
           occurredAtUtc: occurredAtUtc,
@@ -152,6 +158,30 @@ class DriverOrdersRealtimeEventDto {
           eventId: eventId,
           occurredAtUtc: occurredAtUtc,
           reason: json['reason']?.toString(),
+        );
+
+      case 'driver-status-updated':
+      case 'DriverStatusUpdated':
+      case 'driverStatusUpdated':
+      case 'driver_status_updated':
+      case 'ShiftStatusUpdated':
+      case 'shiftStatusUpdated':
+      case 'shift_status_updated':
+      case 'DriverStatusChanged':
+      case 'driverStatusChanged':
+      case 'driver-status-changed':
+      case 'shift-status-changed':
+        return DriverStatusUpdatedEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          driverId: json['driverId']?.toString(),
+          shiftStatus: (json['shiftStatus'] ?? json['status'])?.toString(),
+          statusText: json['statusText']?.toString(),
+          isAvailable: json['isAvailable'] is bool
+              ? json['isAvailable'] as bool
+              : (json['isAvailable'] != null
+                    ? json['isAvailable'].toString().toLowerCase() == 'true'
+                    : null),
         );
 
       default:

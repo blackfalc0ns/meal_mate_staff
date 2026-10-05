@@ -3091,7 +3091,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverStatusOffline => 'غير متاح';
 
   @override
+  String get driverStatusInactive => 'غير متصل';
+
+  @override
   String get driverNotAvailableDescription => 'أنت غير متاح لاستلام الطلبات';
+
+  @override
+  String get driverInactiveControlledByManager =>
+      'يتم تفعيل وردية العمل والتحكم بحالة التشغيل من قبل مدير التوصيل.';
 
   @override
   String get driverProfits => 'الأرباح';

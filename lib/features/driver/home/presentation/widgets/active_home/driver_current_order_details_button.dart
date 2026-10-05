@@ -5,10 +5,7 @@ import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 class DriverCurrentOrderDetailsButton extends StatelessWidget {
-  const DriverCurrentOrderDetailsButton({
-    super.key,
-    this.onPressed,
-  });
+  const DriverCurrentOrderDetailsButton({super.key, this.onPressed});
 
   final VoidCallback? onPressed;
 
@@ -30,10 +27,7 @@ class DriverCurrentOrderDetailsButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: const Color(0xFFFAF5FF),
           borderRadius: BorderRadius.circular(Spacing.radiusPill),
-          border: Border.all(
-            color: const Color(0xFFDDD6FE),
-            width: 1,
-          ),
+          border: Border.all(color: const Color(0xFFDDD6FE), width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

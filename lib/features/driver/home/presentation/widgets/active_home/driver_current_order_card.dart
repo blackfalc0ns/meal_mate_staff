@@ -103,7 +103,9 @@ class DriverCurrentOrderCard extends StatelessWidget {
               Flexible(
                 child: _buildDetailRow(
                   icon: Icons.restaurant_rounded,
-                  label: locale.driverMealsCountLabel.replaceAll(':', '').trim(),
+                  label: locale.driverMealsCountLabel
+                      .replaceAll(':', '')
+                      .trim(),
                   value: '${order.mealsCount} ${locale.driverMealsUnit}',
                   color: color,
                   isExpanded: false,
@@ -115,9 +117,7 @@ class DriverCurrentOrderCard extends StatelessWidget {
           const SizedBox(height: Spacing.sm),
           _buildDetailRow(
             icon: Icons.calendar_month_rounded,
-            label: locale.driverDeliveryTimeLabel
-                .replaceAll(':', '')
-                .trim(),
+            label: locale.driverDeliveryTimeLabel.replaceAll(':', '').trim(),
             value: order.deliveryTime,
             color: color,
           ),
@@ -168,17 +168,10 @@ class DriverCurrentOrderCard extends StatelessWidget {
             color: const Color(0xFFF3E8FF),
             borderRadius: BorderRadius.circular(Spacing.radiusSm),
           ),
-          child: Icon(
-            icon,
-            color: color.primary,
-            size: _detailIconSize,
-          ),
+          child: Icon(icon, color: color.primary, size: _detailIconSize),
         ),
         const SizedBox(width: Spacing.xs),
-        if (isExpanded)
-          Expanded(child: content)
-        else
-          Flexible(child: content),
+        if (isExpanded) Expanded(child: content) else Flexible(child: content),
       ],
     );
   }

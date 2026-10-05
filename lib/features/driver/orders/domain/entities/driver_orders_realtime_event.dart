@@ -178,6 +178,22 @@ class DriverTrackingNotRequiredEvent extends DriverOrdersRealtimeEvent {
   final String? reason;
 }
 
+class DriverStatusUpdatedEvent extends DriverOrdersRealtimeEvent {
+  const DriverStatusUpdatedEvent({
+    required super.eventId,
+    required super.occurredAtUtc,
+    this.driverId,
+    this.shiftStatus,
+    this.statusText,
+    this.isAvailable,
+  });
+
+  final String? driverId;
+  final String? shiftStatus;
+  final String? statusText;
+  final bool? isAvailable;
+}
+
 class DriverUnknownRealtimeEvent extends DriverOrdersRealtimeEvent {
   const DriverUnknownRealtimeEvent({
     required super.eventId,

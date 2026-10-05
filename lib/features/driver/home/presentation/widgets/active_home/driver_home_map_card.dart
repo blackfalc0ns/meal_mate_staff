@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_mate_delivery/core/constants/assets.dart';
 
 class DriverHomeMapCard extends StatelessWidget {
-  const DriverHomeMapCard({
-    super.key,
-    this.onLocateTap,
-  });
+  const DriverHomeMapCard({super.key, this.onLocateTap});
 
   final VoidCallback? onLocateTap;
 
@@ -34,10 +31,7 @@ class DriverHomeMapCard extends StatelessWidget {
             child: InkWell(
               onTap: onLocateTap,
               customBorder: const CircleBorder(),
-              child: const SizedBox(
-                width: 44,
-                height: 44,
-              ),
+              child: const SizedBox(width: 44, height: 44),
             ),
           ),
         ),
@@ -45,4 +39,3 @@ class DriverHomeMapCard extends StatelessWidget {
     );
   }
 }
-

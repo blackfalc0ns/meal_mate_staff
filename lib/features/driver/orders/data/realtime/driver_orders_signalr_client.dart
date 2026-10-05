@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
@@ -54,8 +56,22 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     'delivery-completed',
     'kitchen-ready',
     'shift-status-confirmed',
+    'ShiftStatusConfirmed',
+    'shiftStatusConfirmed',
+    'shift_status_confirmed',
     'dispatcher-message',
     'connection-established',
+    'driver-status-updated',
+    'DriverStatusUpdated',
+    'driverStatusUpdated',
+    'driver_status_updated',
+    'ShiftStatusUpdated',
+    'shiftStatusUpdated',
+    'shift_status_updated',
+    'DriverStatusChanged',
+    'driverStatusChanged',
+    'driver-status-changed',
+    'shift-status-changed',
   ];
 
   @override
@@ -88,6 +104,7 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
 
   void _log(String message, {Object? error}) {
     developer.log(message, name: 'DriverOrdersSignalR', error: error);
+    debugPrint('🛰️ [SignalR] $message${error != null ? ' | Error: $error' : ''}');
   }
 
   void _emitConnectionStatus(bool connected) {
@@ -179,10 +196,27 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
   }
 
   void _handleIncomingEvent(String eventName, Object? rawPayload) {
+    _log('📨 Raw event received on hub: "$eventName" -> $rawPayload');
     try {
-      if (rawPayload is! Map) return;
+      Map<String, dynamic>? map;
+      if (rawPayload is Map<String, dynamic>) {
+        map = rawPayload;
+      } else if (rawPayload is Map) {
+        map = rawPayload.map((k, v) => MapEntry(k.toString(), v));
+      } else if (rawPayload is String) {
+        try {
+          final decoded = jsonDecode(rawPayload);
+          if (decoded is Map) {
+            map = decoded.map((k, v) => MapEntry(k.toString(), v));
+          }
+        } catch (_) {}
+      }
 
-      final map = Map<String, dynamic>.from(rawPayload);
+      if (map == null) {
+        _log('⚠️ Cannot parse payload as Map for event "$eventName": $rawPayload');
+        return;
+      }
+
       final eventId = (map['eventId'] ?? '').toString();
 
       if (eventId.isNotEmpty) {
@@ -204,6 +238,7 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
         map,
       );
 
+      _log('📢 Emitting domain event: ${domainEvent.runtimeType} (eventId: ${domainEvent.eventId})');
       if (!_eventController.isClosed) {
         _eventController.add(domainEvent);
       }
@@ -249,9 +284,10 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
       }
 
       _ensureHubBuilt(token);
+      _log('Connecting to SignalR hub at: $_resolvedHubUrl');
       await _hubConnection?.start();
       _emitConnectionStatus(true);
-      _log('🚀 SignalR Driver Hub connection started successfully');
+      _log('🚀 SignalR Driver Hub connection started successfully (state: ${_hubConnection?.state})');
     } catch (e) {
       _log('Failed to start SignalR connection: $e', error: e);
       _emitConnectionStatus(false);
@@ -273,7 +309,10 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
         _emitConnectionStatus(true);
       }
     } catch (refreshErr) {
-      _log('Failed to refresh token for Driver Hub: $refreshErr', error: refreshErr);
+      _log(
+        'Failed to refresh token for Driver Hub: $refreshErr',
+        error: refreshErr,
+      );
     }
   }
 
@@ -308,10 +347,7 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
         heading ?? 0.0,
         speedKmh ?? 0.0,
       ];
-      final result = await _hubConnection!.invoke(
-        'UpdateLocation',
-        args: args,
-      );
+      final result = await _hubConnection!.invoke('UpdateLocation', args: args);
 
       if (result is Map) {
         final ack = Map<String, dynamic>.from(result);
@@ -332,7 +368,8 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
         if (!_eventController.isClosed) {
           _eventController.add(
             DriverTrackingNotRequiredEvent(
-              eventId: 'tracking-not-required-${DateTime.now().millisecondsSinceEpoch}',
+              eventId:
+                  'tracking-not-required-${DateTime.now().millisecondsSinceEpoch}',
               occurredAtUtc: DateTime.now().toUtc(),
               reason: 'dispatcher.tracking_not_required',
             ),

@@ -32,10 +32,7 @@ class DriverNoAssignedBoxesNoticeCard extends StatelessWidget {
             AppAssets.driverAssignPersonClock,
             width: Spacing.iconLg + Spacing.xs,
             height: Spacing.iconLg + Spacing.xs,
-            colorFilter: ColorFilter.mode(
-              color.primary,
-              BlendMode.srcIn,
-            ),
+            colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
           ),
           const SizedBox(width: Spacing.md),
           Expanded(

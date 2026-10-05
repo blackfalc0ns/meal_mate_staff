@@ -8,10 +8,7 @@ import 'package:meal_mate_delivery/features/driver/home/domain/entities/driver_d
 import 'driver_daily_summary_card.dart';
 
 class DriverDailySummarySection extends StatelessWidget {
-  const DriverDailySummarySection({
-    super.key,
-    required this.summary,
-  });
+  const DriverDailySummarySection({super.key, required this.summary});
 
   final DriverDailySummaryEntity summary;
 

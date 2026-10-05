@@ -34,10 +34,7 @@ class DriverDailySummaryCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(
-          color: borderColor,
-          width: 1.2,
-        ),
+        border: Border.all(color: borderColor, width: 1.2),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.02),
@@ -60,11 +57,7 @@ class DriverDailySummaryCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.xs),
-              Icon(
-                icon,
-                color: accentColor,
-                size: _iconSize,
-              ),
+              Icon(icon, color: accentColor, size: _iconSize),
             ],
           ),
           const SizedBox(height: Spacing.xs),

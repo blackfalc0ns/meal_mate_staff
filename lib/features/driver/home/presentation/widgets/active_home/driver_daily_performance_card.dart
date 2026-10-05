@@ -25,11 +25,7 @@ class DriverDailyPerformanceCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          icon,
-          color: color.primary,
-          size: _iconSize,
-        ),
+        Icon(icon, color: color.primary, size: _iconSize),
         const SizedBox(width: Spacing.xs),
         Flexible(
           child: Column(

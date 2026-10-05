@@ -51,9 +51,7 @@ class DriverActiveStatusLocationRow extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    locale.driverCurrentStatusLabel
-                        .replaceAll(':', '')
-                        .trim(),
+                    locale.driverCurrentStatusLabel.replaceAll(':', '').trim(),
                     style: getRegularStyle(
                       fontSize: FontSize.size10,
                       color: color.onSurfaceVariant,

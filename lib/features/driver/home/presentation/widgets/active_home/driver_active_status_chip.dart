@@ -6,10 +6,7 @@ import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 class DriverActiveStatusChip extends StatelessWidget {
-  const DriverActiveStatusChip({
-    super.key,
-    this.statusText,
-  });
+  const DriverActiveStatusChip({super.key, this.statusText});
 
   final String? statusText;
 

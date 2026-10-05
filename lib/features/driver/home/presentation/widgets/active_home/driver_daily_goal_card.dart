@@ -4,15 +4,12 @@ import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
 import 'package:meal_mate_delivery/core/constants/assets.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
-import 'package:meal_mate_delivery/features/driver/home/domain/entities/driver_daily_goal_entity.dart';
+import 'package:meal_mate_delivery/features/driver/home/domain/entities/driver_home_entity.dart';
 
 class DriverDailyGoalCard extends StatelessWidget {
-  const DriverDailyGoalCard({
-    super.key,
-    required this.goal,
-  });
+  const DriverDailyGoalCard({super.key, required this.targetProgress});
 
-  final DriverDailyGoalEntity goal;
+  final DriverHomeTargetProgressEntity targetProgress;
 
   static const double _starSize = 12;
 
@@ -21,8 +18,10 @@ class DriverDailyGoalCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final totalTarget = goal.totalOrdersTarget > 0 ? goal.totalOrdersTarget : 8;
-    final completed = goal.completedOrders.clamp(0, totalTarget);
+    final totalTarget = targetProgress.totalBoxes > 0
+        ? targetProgress.totalBoxes
+        : 8;
+    final completed = targetProgress.completedBoxes.clamp(0, totalTarget);
 
     return Container(
       width: double.infinity,
@@ -64,7 +63,7 @@ class DriverDailyGoalCard extends StatelessWidget {
                     children: [
                       TextSpan(
                         text:
-                            '${goal.totalOrdersTarget}/${goal.completedOrders} ',
+                            '${targetProgress.totalBoxes}/${targetProgress.completedBoxes} ',
                         style: getBoldStyle(
                           fontSize: FontSize.size22,
                           color: color.primary,
@@ -82,7 +81,9 @@ class DriverDailyGoalCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  locale.driverDailyGoalCompleted(goal.completedOrders),
+                  locale.driverDailyGoalCompleted(
+                    targetProgress.completedBoxes,
+                  ),
                   style: getRegularStyle(
                     fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
@@ -111,7 +112,10 @@ class DriverDailyGoalCard extends StatelessWidget {
                 ),
                 const SizedBox(height: Spacing.xs),
                 Text(
-                  locale.driverDailyGoalRemaining(goal.remainingOrders),
+                  locale.driverDailyGoalRemaining(
+                    (targetProgress.totalBoxes - targetProgress.completedBoxes)
+                        .clamp(0, 999),
+                  ),
                   style: getRegularStyle(
                     fontSize: FontSize.size10,
                     color: color.onSurfaceVariant,
@@ -133,10 +137,7 @@ class DriverDailyGoalCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 3,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3E8FF),
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),

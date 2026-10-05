@@ -6,10 +6,7 @@ import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 class DriverActiveLocationChip extends StatelessWidget {
-  const DriverActiveLocationChip({
-    super.key,
-    required this.location,
-  });
+  const DriverActiveLocationChip({super.key, required this.location});
 
   final String location;
 
@@ -32,11 +29,7 @@ class DriverActiveLocationChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.near_me_outlined,
-            color: color.primary,
-            size: _iconSize,
-          ),
+          Icon(Icons.near_me_outlined, color: color.primary, size: _iconSize),
           const SizedBox(width: Spacing.xs),
           Flexible(
             child: Text(

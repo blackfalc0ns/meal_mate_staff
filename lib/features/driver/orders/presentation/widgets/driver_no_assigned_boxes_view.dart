@@ -30,9 +30,7 @@ class DriverNoAssignedBoxesView extends StatelessWidget {
         return SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
               child: Column(
@@ -102,9 +100,7 @@ class DriverNoAssignedBoxesView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: Spacing.bottomNavHeight + Spacing.md,
-                  ),
+                  const SizedBox(height: Spacing.bottomNavHeight + Spacing.md),
                 ],
               ),
             ),

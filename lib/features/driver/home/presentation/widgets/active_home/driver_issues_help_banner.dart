@@ -5,10 +5,7 @@ import 'package:meal_mate_delivery/config/theme/styles_manager.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 class DriverIssuesHelpBanner extends StatelessWidget {
-  const DriverIssuesHelpBanner({
-    super.key,
-    this.onTap,
-  });
+  const DriverIssuesHelpBanner({super.key, this.onTap});
 
   final VoidCallback? onTap;
 

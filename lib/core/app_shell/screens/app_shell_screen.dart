@@ -14,7 +14,7 @@ import '../../../features/dispatcher/dispatcher_profile/presentation/screens/dis
 import '../../../features/dispatcher/dispatcher_support/presentation/screens/dispatcher_support_screen.dart';
 import '../../../features/driver/orders/presentation/screens/driver_assigned_boxes_screen.dart';
 import '../../../features/driver/driver_profile/presentation/screens/driver_profile_screen.dart';
-import '../../../features/driver/home/presentation/screens/driver_start_work_screen.dart';
+import '../../../features/driver/home/presentation/screens/driver_home_screen.dart';
 import '../../../features/driver/map/presentation/screens/driver_map_screen.dart';
 import '../../../features/driver/driver_support_tickets/presentation/screens/driver_support_tickets_screen.dart';
 import '../../di/di.dart';
@@ -78,7 +78,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
   List<Widget> _defaultPages(BuildContext context, int activeIndex) {
     if (widget.role == UserRole.driver) {
       return [
-        const DriverStartWorkScreen(),
+        const DriverHomeScreen(),
         const DriverAssignedBoxesScreen(),
         const DriverMapScreen(),
         const DriverSupportTicketsScreen(),
@@ -102,49 +102,50 @@ class _AppShellScreenState extends State<AppShellScreen> {
       showDialog<void>(
         context: context,
         builder: (dialogContext) {
-        return AlertDialog(
-          title: Text(
-            widget.role == UserRole.driver
-                ? locale.driverLogoutConfirmTitle
-                : locale.profileLogout,
-          ),
-          content: Text(
-            widget.role == UserRole.driver
-                ? locale.driverLogoutConfirmMessage
-                : locale.profileLogoutConfirm,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(locale.profileCancel),
+          return AlertDialog(
+            title: Text(
+              widget.role == UserRole.driver
+                  ? locale.driverLogoutConfirmTitle
+                  : locale.profileLogout,
             ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(dialogContext).pop();
-                if (getIt.isRegistered<LogoutUseCase>()) {
-                  await getIt<LogoutUseCase>()();
-                } else if (getIt.isRegistered<TokenService>()) {
-                  await getIt<TokenService>().clearTokens();
-                }
-                DispatcherMapMarkerBitmapFactory.clearCache();
-                if (!context.mounted) return;
-                context.pushNamedAndRemoveUntil(
-                  AppRoutes.login,
-                  (route) => false,
-                  arguments: LoginRouteArgs(role: widget.role),
-                );
-              },
-              child: Text(
-                widget.role == UserRole.driver
-                    ? locale.driverSettingsLogout
-                    : locale.profileLogout,
-                style: TextStyle(color: color.error),
+            content: Text(
+              widget.role == UserRole.driver
+                  ? locale.driverLogoutConfirmMessage
+                  : locale.profileLogoutConfirm,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(locale.profileCancel),
               ),
-            ),
-          ],
-        );
-      },
-    ));
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  if (getIt.isRegistered<LogoutUseCase>()) {
+                    await getIt<LogoutUseCase>()();
+                  } else if (getIt.isRegistered<TokenService>()) {
+                    await getIt<TokenService>().clearTokens();
+                  }
+                  DispatcherMapMarkerBitmapFactory.clearCache();
+                  if (!context.mounted) return;
+                  context.pushNamedAndRemoveUntil(
+                    AppRoutes.login,
+                    (route) => false,
+                    arguments: LoginRouteArgs(role: widget.role),
+                  );
+                },
+                child: Text(
+                  widget.role == UserRole.driver
+                      ? locale.driverSettingsLogout
+                      : locale.profileLogout,
+                  style: TextStyle(color: color.error),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
   @override

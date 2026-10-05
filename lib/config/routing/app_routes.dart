@@ -68,7 +68,8 @@ class AppRoutes {
   static const String driverAppShell = '/driver-app-shell';
   static const String driverActiveCall = '/driver-active-call';
   static const String driverReportIssue = '/driver-report-issue';
-  static const String driverReassignmentRequest = '/driver-reassignment-request';
+  static const String driverReassignmentRequest =
+      '/driver-reassignment-request';
   static const String driverReassignmentSubmitted =
       '/driver-reassignment-submitted';
   static const String driverIssueSubmitted = '/driver-issue-submitted';
