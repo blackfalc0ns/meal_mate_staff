@@ -15,7 +15,7 @@ class StartRouteActionButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
 
-  static const double _buttonHeight = 46.0;
+  static const double _buttonHeight = Spacing.buttonHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class StartRouteActionButton extends StatelessWidget {
           backgroundColor: color.primary,
           foregroundColor: color.onPrimary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Spacing.radiusMd),
+            borderRadius: BorderRadius.circular(Spacing.cardRadius),
           ),
           elevation: 0,
         ),
@@ -47,12 +47,13 @@ class StartRouteActionButton extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
+                textDirection: TextDirection.ltr,
                 children: [
                   Flexible(
                     child: Text(
                       locale.driverStartRouteActionButton,
                       style: getBoldStyle(
-                        fontSize: FontSize.size14,
+                        fontSize: FontSize.size15,
                         color: color.onPrimary,
                       ),
                       maxLines: 1,
@@ -60,10 +61,13 @@ class StartRouteActionButton extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: Spacing.sm),
-                  Icon(
-                    Icons.near_me_rounded,
-                    size: Spacing.iconSm,
-                    color: color.onPrimary,
+                  Transform.rotate(
+                    angle: 2.5,
+                    child: Icon(
+                      Icons.send_rounded,
+                      size: Spacing.iconSm,
+                      color: color.onPrimary,
+                    ),
                   ),
                 ],
               ),

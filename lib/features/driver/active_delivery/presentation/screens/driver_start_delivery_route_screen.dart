@@ -42,34 +42,62 @@ class DriverStartDeliveryRouteScreen extends StatelessWidget {
       backgroundColor: color.surface,
       appBar: StartRouteHeader(onBackPressed: () => context.maybePopRoute()),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.md,
+            horizontal: Spacing.base,
             vertical: Spacing.xs,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: Spacing.xs),
-              const StartRouteTitleSection(),
-              const SizedBox(height: Spacing.base),
-              StartRouteMapPreview(
-                driverLocation: currentTrip.driverLocation,
-                customerLocation: currentTrip.customerLocation,
-                routePoints: currentTrip.routePoints,
-              ),
-              const SizedBox(height: Spacing.md),
-              StartRouteCustomerCard(
-                order: currentTrip.order,
-                estimatedMinutes: currentTrip.estimatedMinutes,
-                distanceKm: currentTrip.distanceKm,
-              ),
-              const SizedBox(height: Spacing.base),
-              StartRouteActionButton(
-                onPressed: () => _handleStartRoute(context),
-              ),
-              const SizedBox(height: Spacing.md),
-            ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              const minTotalHeight = 560.0;
+              final isScrollable = constraints.maxHeight < minTotalHeight;
+
+              final children = [
+                const SizedBox(height: Spacing.xs),
+                const StartRouteTitleSection(),
+                const SizedBox(height: Spacing.sm),
+                if (isScrollable)
+                  StartRouteMapPreview(
+                    driverLocation: currentTrip.driverLocation,
+                    customerLocation: currentTrip.customerLocation,
+                    routePoints: currentTrip.routePoints,
+                    height: 260,
+                  )
+                else
+                  Expanded(
+                    child: StartRouteMapPreview(
+                      driverLocation: currentTrip.driverLocation,
+                      customerLocation: currentTrip.customerLocation,
+                      routePoints: currentTrip.routePoints,
+                    ),
+                  ),
+                const SizedBox(height: Spacing.md),
+                StartRouteCustomerCard(
+                  order: currentTrip.order,
+                  estimatedMinutes: currentTrip.estimatedMinutes,
+                  distanceKm: currentTrip.distanceKm,
+                ),
+                const SizedBox(height: Spacing.md),
+                StartRouteActionButton(
+                  onPressed: () => _handleStartRoute(context),
+                ),
+                const SizedBox(height: Spacing.xs),
+              ];
+
+              if (isScrollable) {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: children,
+                  ),
+                );
+              }
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: children,
+              );
+            },
           ),
         ),
       ),

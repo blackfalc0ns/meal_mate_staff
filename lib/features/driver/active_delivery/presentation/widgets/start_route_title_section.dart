@@ -19,8 +19,8 @@ class StartRouteTitleSection extends StatelessWidget {
       children: [
         Text(
           locale.driverStartDeliveryRouteReadyTitle,
-          style: getSemiBoldStyle(
-            fontSize: FontSize.size18,
+          style: getBoldStyle(
+            fontSize: FontSize.size20,
             color: color.onSurface,
           ),
           textAlign: TextAlign.center,

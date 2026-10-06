@@ -13,11 +13,13 @@ class StartRouteMapPreview extends StatelessWidget {
     required this.driverLocation,
     required this.customerLocation,
     required this.routePoints,
+    this.height,
   });
 
   final ActiveDeliveryLocationEntity driverLocation;
   final ActiveDeliveryLocationEntity customerLocation;
   final List<ActiveDeliveryLocationEntity> routePoints;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +54,12 @@ class StartRouteMapPreview extends StatelessWidget {
         (driverLocation.longitude + customerLocation.longitude) / 2;
 
     return Container(
-      height: 248,
+      height: height,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
       ),
       child: Stack(
         children: [
@@ -80,16 +82,16 @@ class StartRouteMapPreview extends StatelessWidget {
             start: Spacing.md,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: Spacing.xs,
+                horizontal: Spacing.sm + 2,
+                vertical: Spacing.xs + 2,
               ),
               decoration: BoxDecoration(
                 color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 boxShadow: [
                   BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.08),
-                    blurRadius: 4,
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
                 ],
@@ -122,16 +124,16 @@ class StartRouteMapPreview extends StatelessWidget {
             end: Spacing.md,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: Spacing.xs,
+                horizontal: Spacing.sm + 2,
+                vertical: Spacing.xs + 2,
               ),
               decoration: BoxDecoration(
                 color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 boxShadow: [
                   BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.08),
-                    blurRadius: 4,
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
                 ],
