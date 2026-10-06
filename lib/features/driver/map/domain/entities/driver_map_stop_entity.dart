@@ -44,6 +44,8 @@ class DriverMapStopEntity {
   final double? longitude;
   final String imageAsset;
 
+  String get addressShort => area;
+
   String get badgeText => sequenceBadge ?? '$sequenceNumber/$totalStops';
 
   bool get isDelivered => status == DriverDeliveryStatus.delivered;
@@ -57,6 +59,7 @@ class DriverMapStopEntity {
     String? customerName,
     String? customerPhone,
     String? area,
+    String? addressShort,
     String? formattedAddress,
     int? mealsCount,
     String? mealsSummary,
@@ -77,7 +80,7 @@ class DriverMapStopEntity {
       sequenceBadge: sequenceBadge ?? this.sequenceBadge,
       customerName: customerName ?? this.customerName,
       customerPhone: customerPhone ?? this.customerPhone,
-      area: area ?? this.area,
+      area: addressShort ?? area ?? this.area,
       formattedAddress: formattedAddress ?? this.formattedAddress,
       mealsCount: mealsCount ?? this.mealsCount,
       mealsSummary: mealsSummary ?? this.mealsSummary,

@@ -56,9 +56,13 @@ extension DriverMapRouteResponseDtoMapper on DriverMapRouteResponseDto {
 
 extension DriverMapStopResponseDtoMapper on DriverMapStopResponseDto {
   DriverMapStopEntity toEntity({int totalStopsCount = 1}) {
-    final address = (fullAddress != null && fullAddress!.trim().isNotEmpty)
-        ? fullAddress!.trim()
-        : (addressShort?.trim() ?? '');
+    final cleanShortAddress = addressShort?.trim() ?? '';
+    final cleanFullAddress = fullAddress?.trim() ?? '';
+    final address = cleanFullAddress.isNotEmpty ? cleanFullAddress : cleanShortAddress;
+
+    final resolvedArea = cleanShortAddress.isNotEmpty
+        ? cleanShortAddress
+        : (cleanFullAddress.isNotEmpty ? cleanFullAddress.split(',').first.trim() : '');
 
     return DriverMapStopEntity(
       id: stopId?.trim() ?? '',
@@ -68,7 +72,7 @@ extension DriverMapStopResponseDtoMapper on DriverMapStopResponseDto {
       sequenceBadge: sequenceBadge,
       customerName: customerName ?? '',
       customerPhone: '', // Rule: customerPhone is strictly empty in the driver map
-      area: addressShort ?? '',
+      area: resolvedArea,
       formattedAddress: address,
       mealsCount: mealsCount ?? 0,
       mealsSummary: mealsSummary,

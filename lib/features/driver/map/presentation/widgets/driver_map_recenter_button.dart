@@ -3,10 +3,7 @@ import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
 class DriverMapRecenterButton extends StatelessWidget {
-  const DriverMapRecenterButton({
-    super.key,
-    required this.onPressed,
-  });
+  const DriverMapRecenterButton({super.key, required this.onPressed});
 
   final VoidCallback onPressed;
 

@@ -66,9 +66,10 @@ class DriverMapActiveOrderCard extends StatelessWidget {
     final statusText = _resolveStatusText(context);
     final statusColor = _resolveStatusColor(context);
 
-    final displayPhone = stop.customerPhone.trim().isNotEmpty
-        ? stop.customerPhone.trim()
-        : '+ 966 50 123 4567';
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final customerName = stop.customerName.trim().isNotEmpty
+        ? stop.customerName.trim()
+        : (isArabic ? 'غير محدد' : 'Not specified');
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Spacing.screenH),
@@ -135,7 +136,9 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: getRegularStyle(
                                     fontSize: FontSize.size10,
-                                    color: color.onPrimary.withValues(alpha: 0.75),
+                                    color: color.onPrimary.withValues(
+                                      alpha: 0.75,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -143,22 +146,12 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            stop.customerName,
+                            customerName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: getBoldStyle(
                               fontSize: FontSize.size14,
                               color: color.onPrimary,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            displayPhone,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: getRegularStyle(
-                              fontSize: FontSize.size10,
-                              color: color.onPrimary.withValues(alpha: 0.75),
                             ),
                           ),
                         ],
@@ -191,8 +184,10 @@ class DriverMapActiveOrderCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: statusColor.withValues(alpha: 0.25),
-                          borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                          color: statusColor,
+                          borderRadius: BorderRadius.circular(
+                            Spacing.radiusPill,
+                          ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -255,6 +250,7 @@ class DriverMapActiveOrderCard extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
                 flex: 5,

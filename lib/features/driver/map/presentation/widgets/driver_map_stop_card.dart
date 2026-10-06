@@ -61,8 +61,9 @@ class DriverMapStopCard extends StatelessWidget {
     final statusText = _resolveStatusText(context);
     final statusColor = _resolveStatusColor(context);
 
-    final footerColor =
-        isSelected ? color.primary : color.onSurfaceVariant.withValues(alpha: 0.65);
+    final footerColor = isSelected
+        ? color.primary
+        : color.onSurfaceVariant.withValues(alpha: 0.65);
 
     return InkWell(
       onTap: onTap,
@@ -153,7 +154,11 @@ class DriverMapStopCard extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              stop.customerName,
+              stop.customerName.trim().isNotEmpty
+                  ? stop.customerName.trim()
+                  : (Localizations.localeOf(context).languageCode == 'ar'
+                      ? 'غير محدد'
+                      : 'Not specified'),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getBoldStyle(
@@ -177,15 +182,12 @@ class DriverMapStopCard extends StatelessWidget {
                   AppAssets.driverLocationPin,
                   width: isSelected ? 11 : 9,
                   height: isSelected ? 11 : 9,
-                  colorFilter: ColorFilter.mode(
-                    color.primary,
-                    BlendMode.srcIn,
-                  ),
+                  colorFilter: ColorFilter.mode(color.primary, BlendMode.srcIn),
                 ),
                 const SizedBox(width: Spacing.xs),
                 Flexible(
                   child: Text(
-                    stop.area,
+                    stop.addressShort,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: getBoldStyle(
@@ -198,10 +200,7 @@ class DriverMapStopCard extends StatelessWidget {
             ),
             const SizedBox(height: 3),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 2,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: statusColor.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(Spacing.radiusPill),

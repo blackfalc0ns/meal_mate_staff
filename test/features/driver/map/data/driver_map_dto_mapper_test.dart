@@ -34,6 +34,8 @@ void main() {
       expect(entity.stops[0].statusColor, 'green');
       expect(entity.stops[0].isCurrent, isTrue);
       expect(entity.stops[0].customerPhone, ''); // Always empty
+      expect(entity.stops[0].addressShort, 'السالمية');
+      expect(entity.stops[0].area, 'السالمية');
 
       expect(entity.stops[1].id, '4b2e5f6a-4444-4a2b-9c3d-000000000004');
       expect(entity.stops[1].sequenceBadge, '2/2');
@@ -42,6 +44,8 @@ void main() {
       expect(entity.stops[1].statusColor, 'orange');
       expect(entity.stops[1].isCurrent, isFalse);
       expect(entity.stops[1].customerPhone, ''); // Ignored even if backend sends it
+      expect(entity.stops[1].addressShort, 'الروضة');
+      expect(entity.stops[1].area, 'الروضة');
 
       // Focused stop
       expect(entity.focusedStop.id, '9a7c1d2e-3333-4a2b-9c3d-000000000003');

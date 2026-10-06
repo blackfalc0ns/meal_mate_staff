@@ -45,8 +45,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
                   controller: pageController,
                   itemCount: isLooping ? null : stops.length,
                   onPageChanged: (page) {
-                    final realIndex =
-                        stops.isEmpty ? 0 : page % stops.length;
+                    final realIndex = stops.isEmpty ? 0 : page % stops.length;
                     onPageChanged(realIndex);
                   },
                   clipBehavior: Clip.none,
@@ -56,27 +55,24 @@ class DriverMapStopsCarousel extends StatelessWidget {
                         : (isLooping ? index % stops.length : index);
                     final isSelected = stopIndex == currentIndex;
 
-                    return Directionality(
-                      textDirection: outerDirection,
-                      child: AnimatedPadding(
-                        duration: const Duration(milliseconds: 200),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: Spacing.xs,
-                          vertical: isSelected ? Spacing.zero : Spacing.sm,
-                        ),
-                        child: DriverMapStopCard(
-                          stop: stops[stopIndex],
-                          isSelected: isSelected,
-                          onTap: () {
-                            unawaited(
-                              pageController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              ),
-                            );
-                          },
-                        ),
+                    return AnimatedPadding(
+                      duration: const Duration(milliseconds: 200),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Spacing.xs,
+                        vertical: isSelected ? Spacing.zero : Spacing.sm,
+                      ),
+                      child: DriverMapStopCard(
+                        stop: stops[stopIndex],
+                        isSelected: isSelected,
+                        onTap: () {
+                          unawaited(
+                            pageController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
@@ -85,7 +81,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
               Positioned(
                 left: Spacing.xs,
                 child: DriverMapCarouselNavButton(
-                  icon: Icons.chevron_left_rounded,
+                  icon: Icons.arrow_forward_ios_sharp,
                   isEnabled: stops.length > 1,
                   onPressed: onPrevious,
                 ),
@@ -93,7 +89,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
               Positioned(
                 right: Spacing.xs,
                 child: DriverMapCarouselNavButton(
-                  icon: Icons.chevron_right_rounded,
+                  icon: Icons.arrow_back_ios_sharp,
                   isEnabled: stops.length > 1,
                   onPressed: onNext,
                 ),
@@ -109,8 +105,9 @@ class DriverMapStopsCarousel extends StatelessWidget {
             if (pageController.hasClients) {
               final currentPage =
                   pageController.page?.round() ?? pageController.initialPage;
-              final currentModulo =
-                  stops.isEmpty ? 0 : currentPage % stops.length;
+              final currentModulo = stops.isEmpty
+                  ? 0
+                  : currentPage % stops.length;
               var diff = targetIndex - currentModulo;
               if (stops.isNotEmpty) {
                 if (diff > stops.length / 2) diff -= stops.length;

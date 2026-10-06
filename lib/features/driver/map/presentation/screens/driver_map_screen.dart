@@ -84,7 +84,7 @@ class _DriverMapScreenState extends State<DriverMapScreen>
         ? (300 ~/ initialStops.length) * initialStops.length
         : 0;
     _pageController = PageController(
-      viewportFraction: 0.62,
+      viewportFraction: 0.45,
       initialPage: initialPage,
     );
 
@@ -463,7 +463,7 @@ class _DriverMapScreenState extends State<DriverMapScreen>
                 ),
               ),
               PositionedDirectional(
-                end: Spacing.screenH,
+                start: Spacing.screenH,
                 top: 190,
                 child: DriverMapRecenterButton(
                   onPressed: () => _handleRecenter(state),

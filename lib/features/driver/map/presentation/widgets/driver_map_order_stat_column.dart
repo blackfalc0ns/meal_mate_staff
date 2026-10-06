@@ -27,7 +27,7 @@ class DriverMapOrderStatColumn extends StatelessWidget {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     final content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         Row(
@@ -67,26 +67,26 @@ class DriverMapOrderStatColumn extends StatelessWidget {
                 ),
               ),
             ),
-            if (showArrow) ...[
-              const SizedBox(width: Spacing.xs),
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: color.onPrimary,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Icon(
-                    isRtl
-                        ? Icons.chevron_left_rounded
-                        : Icons.chevron_right_rounded,
-                    size: 14,
-                    color: color.primary,
-                  ),
-                ),
-              ),
-            ],
+            // if (showArrow) ...[
+            //   const SizedBox(width: Spacing.xs),
+            //   Container(
+            //     width: 20,
+            //     height: 20,
+            //     decoration: BoxDecoration(
+            //       color: color.onPrimary,
+            //       shape: BoxShape.circle,
+            //     ),
+            //     child: Center(
+            //       child: Icon(
+            //         isRtl
+            //             ? Icons.chevron_left_rounded
+            //             : Icons.chevron_right_rounded,
+            //         size: 14,
+            //         color: color.primary,
+            //       ),
+            //     ),
+            //   ),
+            // ],
           ],
         ),
       ],

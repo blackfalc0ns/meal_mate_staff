@@ -266,7 +266,7 @@ void main() {
       // Test Next arrow on Carousel
       final nextNavFinder = find.widgetWithIcon(
         DriverMapCarouselNavButton,
-        Icons.chevron_right_rounded,
+        Icons.arrow_back_ios_sharp,
       );
       expect(nextNavFinder, findsOneWidget);
       await tester.tap(nextNavFinder);
@@ -342,7 +342,7 @@ void main() {
       // Tap next arrow (right)
       final nextNavFinder = find.widgetWithIcon(
         DriverMapCarouselNavButton,
-        Icons.chevron_right_rounded,
+        Icons.arrow_back_ios_sharp,
       );
       expect(nextNavFinder, findsOneWidget);
       await tester.tap(nextNavFinder);
@@ -356,7 +356,7 @@ void main() {
       // Tap previous arrow (left)
       final prevNavFinder = find.widgetWithIcon(
         DriverMapCarouselNavButton,
-        Icons.chevron_left_rounded,
+        Icons.arrow_forward_ios_sharp,
       );
       expect(prevNavFinder, findsOneWidget);
       await tester.tap(prevNavFinder);
