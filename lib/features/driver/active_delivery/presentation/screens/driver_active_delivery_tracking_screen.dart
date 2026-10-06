@@ -194,7 +194,7 @@ class _DriverActiveDeliveryTrackingScreenState
                   ),
                 ],
               ),
-              const SizedBox(height: Spacing.base),
+              const SizedBox(height: Spacing.lg),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
                 child: DriverTrackingStepper(status: _trip.status),
