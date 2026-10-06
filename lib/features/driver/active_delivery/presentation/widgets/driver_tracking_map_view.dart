@@ -17,6 +17,7 @@ class DriverTrackingMapView extends StatefulWidget {
     required this.customerLocation,
     required this.routePoints,
     required this.locationStream,
+    this.height = 320,
     this.onCallCustomer,
     this.onMessageCustomer,
   });
@@ -25,6 +26,7 @@ class DriverTrackingMapView extends StatefulWidget {
   final ActiveDeliveryLocationEntity customerLocation;
   final List<ActiveDeliveryLocationEntity> routePoints;
   final Stream<ActiveDeliveryLocationEntity> locationStream;
+  final double height;
   final VoidCallback? onCallCustomer;
   final VoidCallback? onMessageCustomer;
 
@@ -104,14 +106,8 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
       ),
     };
 
-    return Container(
-      height: 260,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: color.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(Spacing.cardRadius),
-        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
-      ),
+    return SizedBox(
+      height: widget.height,
       child: Stack(
         children: [
           Positioned.fill(
@@ -120,6 +116,7 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
                 target: _driverLocation.toLatLng,
                 zoom: 14.5,
               ),
+              padding: const EdgeInsets.only(top: 65, bottom: 65),
               onMapCreated: (controller) => _mapController = controller,
               markers: markers,
               polylines: polylines,
@@ -130,8 +127,57 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
             ),
           ),
           PositionedDirectional(
-            top: Spacing.sm,
-            start: Spacing.sm,
+            top: 75,
+            end: Spacing.base,
+            child: MapFloatingActionButton(
+              icon: Icons.my_location,
+              onPressed: _centerOnDriver,
+              backgroundColor: color.surface,
+              iconColor: color.primary,
+            ),
+          ),
+          PositionedDirectional(
+            top: 130,
+            end: 85,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.sm + 2,
+                vertical: Spacing.xs + 2,
+              ),
+              decoration: BoxDecoration(
+                color: color.surface,
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.home_rounded,
+                    size: Spacing.iconXs,
+                    color: color.primary,
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  Text(
+                    locale.driverStartRouteCustomerLocation,
+                    style: getMediumStyle(
+                      fontSize: FontSize.size10,
+                      color: color.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          PositionedDirectional(
+            top: 175,
+            start: Spacing.base,
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: Spacing.sm + 2,
@@ -162,55 +208,6 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
                   const SizedBox(width: Spacing.xs),
                   Text(
                     locale.driverStartRouteCurrentLocation,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size10,
-                      color: color.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            top: Spacing.sm,
-            end: Spacing.sm,
-            child: MapFloatingActionButton(
-              icon: Icons.my_location,
-              onPressed: _centerOnDriver,
-              backgroundColor: color.surface,
-              iconColor: color.primary,
-            ),
-          ),
-          PositionedDirectional(
-            bottom: Spacing.sm,
-            end: Spacing.sm,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm + 2,
-                vertical: Spacing.xs + 2,
-              ),
-              decoration: BoxDecoration(
-                color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.home_rounded,
-                    size: Spacing.iconXs,
-                    color: color.primary,
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    locale.driverStartRouteCustomerLocation,
                     style: getMediumStyle(
                       fontSize: FontSize.size10,
                       color: color.onSurface,

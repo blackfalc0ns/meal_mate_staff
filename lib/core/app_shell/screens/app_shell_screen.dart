@@ -47,13 +47,11 @@ class AppShellScreen extends StatefulWidget {
 
 class _AppShellScreenState extends State<AppShellScreen> {
   late int _currentIndex;
-  late final Set<int> _visitedIndices;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.selectedIndex ?? widget.initialIndex;
-    _visitedIndices = {_currentIndex};
   }
 
   @override
@@ -61,7 +59,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedIndex != null && widget.selectedIndex != _currentIndex) {
       _currentIndex = widget.selectedIndex!;
-      _visitedIndices.add(_currentIndex);
     }
   }
 
@@ -69,7 +66,6 @@ class _AppShellScreenState extends State<AppShellScreen> {
     if (widget.selectedIndex == null && _currentIndex != index) {
       setState(() {
         _currentIndex = index;
-        _visitedIndices.add(index);
       });
     }
     widget.onItemSelected?.call(index);
@@ -156,15 +152,7 @@ class _AppShellScreenState extends State<AppShellScreen> {
     final resolvedPages = widget.pages.isNotEmpty
         ? widget.pages
         : _defaultPages(context, activeIndex);
-    final lazyPages = List<Widget>.generate(
-      resolvedPages.length,
-      (index) => _visitedIndices.contains(index)
-          ? resolvedPages[index]
-          : const SizedBox.shrink(),
-    );
-
-    final content =
-        widget.body ?? IndexedStack(index: activeIndex, children: lazyPages);
+    final content = widget.body ?? resolvedPages[activeIndex];
 
     return Scaffold(
       backgroundColor: color.surface,

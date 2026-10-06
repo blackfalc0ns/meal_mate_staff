@@ -152,36 +152,58 @@ class _DriverActiveDeliveryTrackingScreenState
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.base,
-            vertical: Spacing.xs,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: Spacing.xs),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: Spacing.xs),
-              const DriverTrackingTitleSection(),
-              const SizedBox(height: Spacing.base),
-              DriverTrackingSummaryCard(
-                order: _trip.order,
-                onCallPressed: _handleCallCustomer,
-                onNavigatePressed: () {},
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: Spacing.base),
+                child: DriverTrackingTitleSection(),
+              ),
+              const SizedBox(height: Spacing.sm),
+              Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 65, bottom: 65),
+                    child: DriverTrackingMapView(
+                      height: 320,
+                      initialDriverLocation: _trip.driverLocation,
+                      customerLocation: _trip.customerLocation,
+                      routePoints: _trip.routePoints,
+                      locationStream: _stream,
+                      onCallCustomer: _handleCallCustomer,
+                      onMessageCustomer: () {},
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: Spacing.base,
+                    right: Spacing.base,
+                    child: DriverTrackingSummaryCard(
+                      order: _trip.order,
+                      onCallPressed: _handleCallCustomer,
+                      onNavigatePressed: () {},
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -5,
+                    left: Spacing.base,
+                    right: Spacing.base,
+                    child: DriverTrackingAddressCard(order: _trip.order),
+                  ),
+                ],
               ),
               const SizedBox(height: Spacing.base),
-              DriverTrackingMapView(
-                initialDriverLocation: _trip.driverLocation,
-                customerLocation: _trip.customerLocation,
-                routePoints: _trip.routePoints,
-                locationStream: _stream,
-                onCallCustomer: _handleCallCustomer,
-                onMessageCustomer: () {},
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+                child: DriverTrackingStepper(status: _trip.status),
               ),
               const SizedBox(height: Spacing.base),
-              DriverTrackingAddressCard(order: _trip.order),
-              const SizedBox(height: Spacing.base),
-              DriverTrackingStepper(status: _trip.status),
-              const SizedBox(height: Spacing.base),
-              const DriverTrackingHelpCard(),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: Spacing.base),
+                child: DriverTrackingHelpCard(),
+              ),
               const SizedBox(height: Spacing.md),
             ],
           ),
