@@ -3,11 +3,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
+import 'package:meal_mate_delivery/core/widget/custom_app_bar.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/domain/fake_data/driver_active_delivery_fake_data.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/screens/driver_start_delivery_route_screen.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_action_button.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_customer_card.dart';
-import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_header.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_map_preview.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/start_route_title_section.dart';
 
@@ -53,7 +53,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(StartRouteHeader), findsOneWidget);
+      expect(find.byType(CustomAppBar), findsOneWidget);
       expect(find.byType(StartRouteTitleSection), findsOneWidget);
       expect(find.text('جاهز لبدأ مسار التوصيل؟'), findsOneWidget);
       expect(find.text('توجه إلى موقع العميل لبدء التوصيل'), findsOneWidget);
