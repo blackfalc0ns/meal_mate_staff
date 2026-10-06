@@ -80,7 +80,7 @@ class _TestMapRouteUseCase implements GetDriverMapRouteUseCase {
 
   @override
   Future<ApiResult<DriverMapRouteEntity>> call({String? focusedStopId}) async {
-    final stops = _sampleStops;
+    const stops = _sampleStops;
     final focused = stops.firstWhere(
       (s) => s.id == focusedStopId,
       orElse: () => stops.first,
@@ -138,7 +138,7 @@ class _TestLocationCoordinator implements DriverLiveLocationCoordinator {
 }
 
 DriverMapViewModel _createTestViewModel() {
-  final stops = _sampleStops;
+  const stops = _sampleStops;
   final focused = stops.first;
   return DriverMapViewModel(
     getDriverMapRouteUseCase: const _TestMapRouteUseCase(),

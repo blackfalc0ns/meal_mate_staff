@@ -28,7 +28,6 @@ class DriverMapStopsCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final outerDirection = Directionality.of(context);
     final isLooping = stops.length > 1;
 
     return Column(

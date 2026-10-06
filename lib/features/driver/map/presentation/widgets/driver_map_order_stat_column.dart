@@ -24,8 +24,6 @@ class DriverMapOrderStatColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
 
-    final isRtl = Directionality.of(context) == TextDirection.rtl;
-
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
