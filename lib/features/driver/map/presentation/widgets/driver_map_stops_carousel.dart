@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 
+import '../../../../../config/routing/app_routes.dart';
+import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_map_stop_entity.dart';
 import 'driver_map_carousel_nav_button.dart';
 import 'driver_map_page_indicator.dart';
@@ -65,11 +67,7 @@ class DriverMapStopsCarousel extends StatelessWidget {
                         isSelected: isSelected,
                         onTap: () {
                           unawaited(
-                            pageController.animateToPage(
-                              index,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            ),
+                            context.pushNamed(AppRoutes.driverStartDeliveryRoute),
                           );
                         },
                       ),
