@@ -9,6 +9,7 @@ import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_address_card.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_app_bar.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_bottom_actions.dart';
+import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_help_card.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_map_view.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_stepper.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/presentation/widgets/driver_tracking_summary_card.dart';
@@ -76,6 +77,7 @@ void main() {
         expect(find.byType(GoogleMap), findsOneWidget);
         expect(find.byType(DriverTrackingAddressCard), findsOneWidget);
         expect(find.byType(DriverTrackingStepper), findsOneWidget);
+        expect(find.byType(DriverTrackingHelpCard), findsOneWidget);
         expect(find.byType(DriverTrackingBottomActions), findsOneWidget);
 
         // Tap Confirm Arrival
@@ -83,18 +85,6 @@ void main() {
         await tester.tap(find.text('تأكيد الوصول للعميل'));
         await tester.pump();
         expect(arrivalCalled, isTrue);
-
-        // Tap Delay
-        await tester.ensureVisible(find.text('تأخير'));
-        await tester.tap(find.text('تأخير'));
-        await tester.pump();
-        expect(delayCalled, isTrue);
-
-        // Tap Failed Delivery
-        await tester.ensureVisible(find.text('تعذر التسليم'));
-        await tester.tap(find.text('تعذر التسليم'));
-        await tester.pump();
-        expect(failedCalled, isTrue);
       },
     );
 
@@ -118,8 +108,7 @@ void main() {
 
       expect(find.text('Active Delivery Tracking'), findsOneWidget);
       expect(find.text('Confirm Arrival to Customer'), findsOneWidget);
-      expect(find.text('Delay'), findsOneWidget);
-      expect(find.text('Delivery Failed'), findsOneWidget);
+      expect(find.byType(DriverTrackingHelpCard), findsOneWidget);
     });
 
     testWidgets('summary card does not render customer call button per operations decision', (tester) async {

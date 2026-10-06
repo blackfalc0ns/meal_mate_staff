@@ -19,7 +19,7 @@ class DriverTrackingTitleSection extends StatelessWidget {
       children: [
         Text(
           locale.driverActiveTrackingReadyTitle,
-          style: getSemiBoldStyle(
+          style: getBoldStyle(
             fontSize: FontSize.size16,
             color: color.onSurface,
           ),

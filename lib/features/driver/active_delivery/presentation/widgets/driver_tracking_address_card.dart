@@ -20,12 +20,12 @@ class DriverTrackingAddressCard extends StatelessWidget {
       padding: const EdgeInsets.all(Spacing.md),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
             color: color.shadow.withValues(alpha: 0.04),
-            blurRadius: 8,
+            blurRadius: 10,
             offset: const Offset(0, 3),
           ),
         ],
@@ -51,7 +51,7 @@ class DriverTrackingAddressCard extends StatelessWidget {
                     Text(
                       order.address,
                       style: getBoldStyle(
-                        fontSize: FontSize.size12,
+                        fontSize: FontSize.size13,
                         color: color.onSurface,
                       ),
                       maxLines: 2,
@@ -62,27 +62,21 @@ class DriverTrackingAddressCard extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.sm),
               Container(
-                width: 38,
-                height: 38,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: color.primaryContainer,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
                 ),
                 child: Icon(
                   Icons.location_on_rounded,
                   color: color.primary,
-                  size: Spacing.iconSm,
+                  size: Spacing.iconMd - 2,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: Spacing.xs),
-          Divider(
-            height: Spacing.md,
-            thickness: 1,
-            color: color.outlineVariant.withValues(alpha: 0.6),
-          ),
-          const SizedBox(height: Spacing.xs),
+          const SizedBox(height: Spacing.md),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -102,8 +96,8 @@ class DriverTrackingAddressCard extends StatelessWidget {
                       order.customerNote.isNotEmpty
                           ? order.customerNote
                           : locale.driverCustomerNotesLabel,
-                      style: getRegularStyle(
-                        fontSize: FontSize.size11,
+                      style: getMediumStyle(
+                        fontSize: FontSize.size12,
                         color: color.onSurface,
                       ),
                       maxLines: 2,
@@ -112,18 +106,19 @@ class DriverTrackingAddressCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: Spacing.sm),
+              const SizedBox(width: Spacing.sm + 2),
+
               Container(
-                width: 38,
-                height: 38,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
-                  color: color.secondaryContainer,
-                  shape: BoxShape.circle,
+                  color: const Color(0xFFFFF3E0),
+                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
                 ),
-                child: Icon(
-                  Icons.description_rounded,
-                  color: color.secondary,
-                  size: Spacing.iconSm,
+                child: const Icon(
+                  Icons.article_rounded,
+                  color: Color(0xFFF57C00),
+                  size: 20,
                 ),
               ),
             ],

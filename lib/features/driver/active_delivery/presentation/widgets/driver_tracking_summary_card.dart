@@ -30,12 +30,12 @@ class DriverTrackingSummaryCard extends StatelessWidget {
       padding: const EdgeInsets.all(Spacing.md),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
             color: color.shadow.withValues(alpha: 0.04),
-            blurRadius: 8,
+            blurRadius: 10,
             offset: const Offset(0, 3),
           ),
         ],
@@ -46,14 +46,14 @@ class DriverTrackingSummaryCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 38,
-                height: 38,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
-                  color: color.primaryContainer,
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                  color: color.primaryContainer.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
                 ),
                 child: Icon(
-                  Icons.person,
+                  Icons.person_rounded,
                   color: color.primary,
                   size: Spacing.iconMd,
                 ),
@@ -66,7 +66,7 @@ class DriverTrackingSummaryCard extends StatelessWidget {
                     Text(
                       order.customerName,
                       style: getBoldStyle(
-                        fontSize: FontSize.size13,
+                        fontSize: FontSize.size14,
                         color: color.onSurface,
                       ),
                       maxLines: 1,
@@ -85,39 +85,64 @@ class DriverTrackingSummaryCard extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.sm,
+                  horizontal: Spacing.sm + 2,
                   vertical: Spacing.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: color.tertiaryContainer,
+                  color: const Color(0xFFE8F8F0),
                   borderRadius: BorderRadius.circular(Spacing.radiusPill),
+                  border: Border.all(
+                    color: const Color(0xFF28A745).withValues(alpha: 0.2),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.local_shipping,
+                    const Icon(
+                      Icons.local_shipping_rounded,
                       size: Spacing.iconXs,
-                      color: color.tertiary,
+                      color: Color(0xFF28A745),
                     ),
                     const SizedBox(width: Spacing.xs),
                     Text(
                       locale.driverStatusEnRouteBadge,
                       style: getMediumStyle(
-                        fontSize: FontSize.size10,
-                        color: color.tertiary,
+                        fontSize: FontSize.size11,
+                        color: const Color(0xFF28A745),
                       ),
                     ),
                     const SizedBox(width: Spacing.xs),
                     Container(
                       width: 6,
                       height: 6,
-                      decoration: BoxDecoration(
-                        color: color.tertiary,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF28A745),
                         shape: BoxShape.circle,
                       ),
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(width: Spacing.xs + 2),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onCallPressed,
+                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                  child: Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: color.primaryContainer.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.phone_rounded,
+                      color: color.primary,
+                      size: 18,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -126,7 +151,7 @@ class DriverTrackingSummaryCard extends StatelessWidget {
           Divider(
             height: Spacing.md,
             thickness: 1,
-            color: color.outlineVariant.withValues(alpha: 0.6),
+            color: color.outlineVariant.withValues(alpha: 0.5),
           ),
           const SizedBox(height: Spacing.xs),
           Row(

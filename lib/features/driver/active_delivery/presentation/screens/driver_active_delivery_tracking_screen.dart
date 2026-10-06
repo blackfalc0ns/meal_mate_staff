@@ -15,6 +15,7 @@ import '../../domain/repositories/active_delivery_repository.dart';
 import '../widgets/driver_tracking_address_card.dart';
 import '../widgets/driver_tracking_app_bar.dart';
 import '../widgets/driver_tracking_bottom_actions.dart';
+import '../widgets/driver_tracking_help_card.dart';
 import '../widgets/driver_tracking_map_view.dart';
 import '../widgets/driver_tracking_stepper.dart';
 import '../widgets/driver_tracking_summary_card.dart';
@@ -132,10 +133,27 @@ class _DriverActiveDeliveryTrackingScreenState
       appBar: DriverTrackingAppBar(
         onBackPressed: () => context.maybePopRoute(),
       ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            Spacing.base,
+            Spacing.xs,
+            Spacing.base,
+            Spacing.md,
+          ),
+          child: DriverTrackingBottomActions(
+            onConfirmArrival: _handleConfirmArrival,
+            onReportDelay: _handleReportDelay,
+            onReportFailed: _handleReportFailed,
+          ),
+        ),
+      ),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.md,
+            horizontal: Spacing.base,
             vertical: Spacing.xs,
           ),
           child: Column(
@@ -163,11 +181,7 @@ class _DriverActiveDeliveryTrackingScreenState
               const SizedBox(height: Spacing.base),
               DriverTrackingStepper(status: _trip.status),
               const SizedBox(height: Spacing.base),
-              DriverTrackingBottomActions(
-                onConfirmArrival: _handleConfirmArrival,
-                onReportDelay: _handleReportDelay,
-                onReportFailed: _handleReportFailed,
-              ),
+              const DriverTrackingHelpCard(),
               const SizedBox(height: Spacing.md),
             ],
           ),

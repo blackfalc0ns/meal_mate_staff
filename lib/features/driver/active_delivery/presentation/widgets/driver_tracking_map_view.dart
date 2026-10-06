@@ -109,8 +109,8 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: color.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
       ),
       child: Stack(
         children: [
@@ -134,16 +134,16 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
             start: Spacing.sm,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: Spacing.xs,
+                horizontal: Spacing.sm + 2,
+                vertical: Spacing.xs + 2,
               ),
               decoration: BoxDecoration(
                 color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 boxShadow: [
                   BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.08),
-                    blurRadius: 4,
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
                 ],
@@ -186,16 +186,16 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
             end: Spacing.sm,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm,
-                vertical: Spacing.xs,
+                horizontal: Spacing.sm + 2,
+                vertical: Spacing.xs + 2,
               ),
               decoration: BoxDecoration(
                 color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                borderRadius: BorderRadius.circular(Spacing.radiusPill),
                 boxShadow: [
                   BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.08),
-                    blurRadius: 4,
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
                 ],

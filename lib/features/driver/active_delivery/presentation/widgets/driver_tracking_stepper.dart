@@ -29,16 +29,16 @@ class DriverTrackingStepper extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: Spacing.md,
-        vertical: Spacing.sm,
+        vertical: Spacing.md,
       ),
       decoration: BoxDecoration(
         color: color.surface,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-        border: Border.all(color: color.outlineVariant),
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(color: color.outlineVariant.withValues(alpha: 0.6)),
         boxShadow: [
           BoxShadow(
             color: color.shadow.withValues(alpha: 0.04),
-            blurRadius: 8,
+            blurRadius: 10,
             offset: const Offset(0, 3),
           ),
         ],
@@ -56,12 +56,12 @@ class DriverTrackingStepper extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              height: 4,
+              height: 3,
               margin: const EdgeInsets.symmetric(horizontal: Spacing.xs),
               decoration: BoxDecoration(
                 color: isEnRouteOrBeyond
                     ? color.primary
-                    : color.primaryContainer,
+                    : color.outlineVariant.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -69,7 +69,7 @@ class DriverTrackingStepper extends StatelessWidget {
           // Step 2: En Route
           _buildStepItem(
             color: color,
-            icon: Icons.local_shipping,
+            icon: Icons.local_shipping_rounded,
             isCompleted: isArrivedOrBeyond,
             isActive:
                 status == DeliveryTripStatus.enRoute ||
@@ -78,12 +78,12 @@ class DriverTrackingStepper extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              height: 4,
+              height: 3,
               margin: const EdgeInsets.symmetric(horizontal: Spacing.xs),
               decoration: BoxDecoration(
                 color: isArrivedOrBeyond
                     ? color.primary
-                    : color.primaryContainer,
+                    : color.outlineVariant.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
