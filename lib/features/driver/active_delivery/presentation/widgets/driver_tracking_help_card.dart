@@ -19,7 +19,7 @@ class DriverTrackingHelpCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap ?? () => context.pushNamed(AppRoutes.driverSupportTickets),
+        onTap: onTap ?? () => context.pushNamed(AppRoutes.driverReportIssue),
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
         child: Container(
           padding: const EdgeInsets.symmetric(

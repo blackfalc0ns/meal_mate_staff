@@ -3549,6 +3549,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reassignRequestSubmit => 'Submit Request';
 
   @override
+  String get reassignRequestCancel => 'Cancel';
+
+  @override
   String get reassignSubmittedTitle => 'Reassignment Request Submitted';
 
   @override

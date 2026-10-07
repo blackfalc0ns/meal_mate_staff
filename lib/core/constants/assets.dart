@@ -80,6 +80,8 @@ class AppAssets {
       '$_authImages/account_status_under_review.png';
 
   static const String _dispatcherImages = '$_images/dispatcher';
+  static const String dispatcherDriverBox3d =
+      '$_dispatcherImages/driver_box_3d.png';
   static const String dispatcherMetricCar =
       '$_dispatcherImages/driver_metric_car.png';
   static const String dispatcherMetricBoxActive =

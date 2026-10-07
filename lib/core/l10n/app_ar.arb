@@ -1410,6 +1410,7 @@
   "reassignRequestReasonHealthIssue": "وعكة صحية مفاجئة",
   "reassignRequestNotesHint": "اكتب تفاصيل إضافية (اختياري)",
   "reassignRequestSubmit": "إرسال الطلب",
+  "reassignRequestCancel": "إلغاء",
   "reassignSubmittedTitle": "تم إرسال طلب إعادة الإسناد",
   "reassignSubmittedSubtitle": "تم إرسال طلبك بنجاح. سيتم إشعارك عند قبول الطلب من سائق آخر",
   "issueSubmittedTitle": "تم إرسال البلاغ بنجاح",

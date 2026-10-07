@@ -10,9 +10,11 @@ class ReassignmentRequestHeader extends StatelessWidget
   const ReassignmentRequestHeader({
     super.key,
     this.onBackPressed,
+    this.showBackButton = false,
   });
 
   final VoidCallback? onBackPressed;
+  final bool showBackButton;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -27,14 +29,17 @@ class ReassignmentRequestHeader extends StatelessWidget
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: Spacing.iconSm,
-          color: color.onSurface,
-        ),
-        onPressed: onBackPressed ?? () => context.maybePopRoute(),
-      ),
+      automaticallyImplyLeading: false,
+      leading: showBackButton
+          ? IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: Spacing.iconSm,
+                color: color.onSurface,
+              ),
+              onPressed: onBackPressed ?? () => context.maybePopRoute(),
+            )
+          : null,
       title: Text(
         locale.reassignRequestTitle,
         style: getBoldStyle(

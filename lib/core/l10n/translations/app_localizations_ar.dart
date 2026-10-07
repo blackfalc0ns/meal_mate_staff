@@ -3532,6 +3532,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reassignRequestSubmit => 'إرسال الطلب';
 
   @override
+  String get reassignRequestCancel => 'إلغاء';
+
+  @override
   String get reassignSubmittedTitle => 'تم إرسال طلب إعادة الإسناد';
 
   @override

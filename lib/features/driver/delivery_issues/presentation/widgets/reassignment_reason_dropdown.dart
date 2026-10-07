@@ -44,37 +44,41 @@ class ReassignmentReasonDropdown extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.xs),
         Container(
+          height: 52,
           padding: const EdgeInsets.symmetric(horizontal: Spacing.md),
           decoration: BoxDecoration(
             color: color.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(Spacing.radiusMd),
+            borderRadius: BorderRadius.circular(Spacing.radiusLg),
             border: Border.all(
-              color: color.outlineVariant.withValues(alpha: 0.6),
-              width: Spacing.border,
+              color: color.outlineVariant.withValues(alpha: 0.7),
+              width: 1.0,
             ),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<ReassignmentReason>(
               value: selectedReason,
               isExpanded: true,
+              dropdownColor: color.surface,
+              borderRadius: BorderRadius.circular(Spacing.radiusLg),
               hint: Text(
                 locale.reassignRequestReasonHint,
                 style: getRegularStyle(
-                  fontSize: FontSize.size13,
-                  color: color.onSurfaceVariant.withValues(alpha: 0.6),
+                  fontSize: FontSize.size14,
+                  color: color.onSurfaceVariant.withValues(alpha: 0.55),
                 ),
               ),
               icon: Icon(
                 Icons.keyboard_arrow_down_rounded,
-                color: color.onSurfaceVariant,
+                color: color.onSurfaceVariant.withValues(alpha: 0.7),
+                size: 24,
               ),
               items: ReassignmentReason.values.map((reason) {
                 return DropdownMenuItem<ReassignmentReason>(
                   value: reason,
                   child: Text(
                     _getReasonTitle(context, reason),
-                    style: getRegularStyle(
-                      fontSize: FontSize.size13,
+                    style: getMediumStyle(
+                      fontSize: FontSize.size14,
                       color: color.onSurface,
                     ),
                   ),

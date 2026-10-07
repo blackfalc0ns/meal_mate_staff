@@ -6776,6 +6776,12 @@ abstract class AppLocalizations {
   /// **'Submit Request'**
   String get reassignRequestSubmit;
 
+  /// No description provided for @reassignRequestCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get reassignRequestCancel;
+
   /// No description provided for @reassignSubmittedTitle.
   ///
   /// In en, this message translates to:

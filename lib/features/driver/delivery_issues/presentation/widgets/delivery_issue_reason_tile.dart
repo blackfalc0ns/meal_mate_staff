@@ -32,14 +32,44 @@ class DeliveryIssueReasonTile extends StatelessWidget {
     };
   }
 
-  IconData _getReasonIcon() {
-    return switch (reason) {
+  Widget _buildReasonIcon(ColorScheme color) {
+    if (reason == DeliveryIssueReason.refusedDelivery) {
+      return Container(
+        width: 22,
+        height: 22,
+        decoration: const ShapeDecoration(
+          color: Colors.white,
+          shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(6.5)),
+            side: BorderSide(
+              color: Color(0xFFE53935),
+              width: 1.8,
+            ),
+          ),
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.front_hand_rounded,
+            size: 13,
+            color: Color(0xFFE53935),
+          ),
+        ),
+      );
+    }
+
+    final iconData = switch (reason) {
       DeliveryIssueReason.customerNoAnswer => Icons.phone_disabled_rounded,
-      DeliveryIssueReason.addressUnclear => Icons.location_off_rounded,
-      DeliveryIssueReason.severeDelay => Icons.access_time_rounded,
-      DeliveryIssueReason.boxDamaged => Icons.inventory_2_outlined,
-      DeliveryIssueReason.refusedDelivery => Icons.cancel_outlined,
+      DeliveryIssueReason.addressUnclear => Icons.location_on_rounded,
+      DeliveryIssueReason.severeDelay => Icons.access_time_filled_rounded,
+      DeliveryIssueReason.boxDamaged => Icons.inventory_2_rounded,
+      DeliveryIssueReason.refusedDelivery => Icons.front_hand_rounded,
     };
+
+    return Icon(
+      iconData,
+      size: 20,
+      color: color.primary,
+    );
   }
 
   @override
@@ -50,63 +80,74 @@ class DeliveryIssueReasonTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+        borderRadius: BorderRadius.circular(Spacing.radiusLg),
         child: Container(
+          height: 50,
           padding: const EdgeInsets.symmetric(
-            horizontal: Spacing.md,
-            vertical: Spacing.sm,
+            horizontal: Spacing.sm,
+            vertical: Spacing.xs,
           ),
           decoration: BoxDecoration(
-            color: isSelected
-                ? color.primary.withValues(alpha: 0.06)
-                : color.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(Spacing.radiusMd),
+            color: color.surface,
+            borderRadius: BorderRadius.circular(Spacing.radiusLg),
             border: Border.all(
               color: isSelected
                   ? color.primary
-                  : color.outlineVariant.withValues(alpha: 0.5),
-              width: isSelected ? 1.5 : Spacing.border,
+                  : color.outlineVariant.withValues(alpha: 0.6),
+              width: isSelected ? 1.5 : 1.0,
             ),
           ),
           child: Row(
             children: [
+              // Icon on Start (Right in RTL)
+              _buildReasonIcon(color),
+              const SizedBox(width: Spacing.xs),
+              // Reason Title in Center
+              Expanded(
+                child: Text(
+                  _getReasonTitle(context),
+                  style: isSelected
+                      ? getBoldStyle(
+                          fontSize: FontSize.size13,
+                          color: color.primary,
+                        )
+                      : getMediumStyle(
+                          fontSize: FontSize.size13,
+                          color: color.onSurface,
+                        ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: Spacing.xs),
+              // Radio Button on End (Left in RTL)
               Container(
-                width: 20,
-                height: 20,
+                width: 18,
+                height: 18,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  color: isSelected ? color.primary : Colors.transparent,
                   border: Border.all(
-                    color: isSelected ? color.primary : color.outlineVariant,
-                    width: 2,
+                    color: isSelected
+                        ? color.primary
+                        : color.outlineVariant.withValues(alpha: 0.8),
+                    width: isSelected ? 1.0 : 1.5,
                   ),
                 ),
                 child: isSelected
-                    ? Center(
-                        child: Container(
-                          width: 10,
-                          height: 10,
+                    ? const Center(
+                        child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: color.primary,
+                            color: Colors.white,
                             shape: BoxShape.circle,
+                          ),
+                          child: SizedBox(
+                            width: 6,
+                            height: 6,
                           ),
                         ),
                       )
                     : null,
-              ),
-              const SizedBox(width: Spacing.sm),
-              Expanded(
-                child: Text(
-                  _getReasonTitle(context),
-                  style: getMediumStyle(
-                    fontSize: FontSize.size13,
-                    color: isSelected ? color.primary : color.onSurface,
-                  ),
-                ),
-              ),
-              Icon(
-                _getReasonIcon(),
-                size: Spacing.iconSm,
-                color: isSelected ? color.primary : color.onSurfaceVariant,
               ),
             ],
           ),

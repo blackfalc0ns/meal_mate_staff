@@ -1417,6 +1417,7 @@
   "reassignRequestReasonHealthIssue": "Sudden health issue",
   "reassignRequestNotesHint": "Write additional details (optional)",
   "reassignRequestSubmit": "Submit Request",
+  "reassignRequestCancel": "Cancel",
   "reassignSubmittedTitle": "Reassignment Request Submitted",
   "reassignSubmittedSubtitle": "Your request was submitted successfully. You will be notified when accepted by another driver",
   "issueSubmittedTitle": "Issue Submitted Successfully",

@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
+import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/reassignment_reason.dart';
 import '../../domain/entities/reassignment_request_entity.dart';
-import '../../domain/fake_data/delivery_issues_fake_data.dart';
 import '../widgets/reassignment_hero_illustration.dart';
 import '../widgets/reassignment_notes_field.dart';
 import '../widgets/reassignment_reason_dropdown.dart';
@@ -39,10 +40,9 @@ class _DriverReassignmentRequestScreenState
   @override
   void initState() {
     super.initState();
-    final initial =
-        widget.initialRequest ?? DeliveryIssuesFakeData.defaultReassignment;
-    _reasonNotifier = ValueNotifier(initial.reason);
-    _notesController = TextEditingController(text: initial.notes);
+    final initial = widget.initialRequest;
+    _reasonNotifier = ValueNotifier<ReassignmentReason?>(initial?.reason);
+    _notesController = TextEditingController(text: initial?.notes ?? '');
   }
 
   @override
@@ -85,6 +85,7 @@ class _DriverReassignmentRequestScreenState
   @override
   Widget build(BuildContext context) {
     final color = context.colorScheme;
+    final locale = context.localization;
 
     return Scaffold(
       backgroundColor: color.surface,
@@ -102,7 +103,7 @@ class _DriverReassignmentRequestScreenState
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const ReassignmentHeroIllustration(),
-              const SizedBox(height: Spacing.lg),
+              const SizedBox(height: Spacing.xl),
               ValueListenableBuilder<ReassignmentReason?>(
                 valueListenable: _reasonNotifier,
                 builder: (context, reason, _) {
@@ -125,6 +126,22 @@ class _DriverReassignmentRequestScreenState
                   );
                 },
               ),
+              const SizedBox(height: Spacing.xs),
+              TextButton(
+                onPressed:
+                    widget.onBackPressed ?? () => context.maybePopRoute(),
+                style: TextButton.styleFrom(
+                  foregroundColor: color.primary,
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.sm),
+                ),
+                child: Text(
+                  locale.reassignRequestCancel,
+                  style: getBoldStyle(
+                    fontSize: FontSize.size16,
+                    color: color.primary,
+                  ),
+                ),
+              ),
               const SizedBox(height: Spacing.screenV),
             ],
           ),
@@ -133,3 +150,4 @@ class _DriverReassignmentRequestScreenState
     );
   }
 }
+

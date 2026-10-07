@@ -28,7 +28,9 @@ class ReassignmentSubmitButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: color.primary,
           foregroundColor: color.onPrimary,
-          elevation: Spacing.cardElevation,
+          disabledBackgroundColor: color.primary.withValues(alpha: 0.35),
+          disabledForegroundColor: color.onPrimary.withValues(alpha: 0.7),
+          elevation: onPressed != null ? Spacing.cardElevation : 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Spacing.radiusLg),
           ),
@@ -47,7 +49,7 @@ class ReassignmentSubmitButton extends StatelessWidget {
             : Text(
                 locale.reassignRequestSubmit,
                 style: getBoldStyle(
-                  fontSize: FontSize.size14,
+                  fontSize: FontSize.size16,
                   color: color.onPrimary,
                 ),
               ),

@@ -10,6 +10,8 @@ import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../calling/domain/entities/driver_call_attempt_entity.dart';
 import '../../../calling/presentation/widgets/customer_call_attempts_sheet.dart';
+import '../../../delivery_issues/domain/entities/delivery_issue_entity.dart';
+import '../../../delivery_issues/domain/entities/delivery_issue_reason.dart';
 import '../../../map/domain/entities/driver_map_route_entity.dart';
 import '../../../map/domain/entities/driver_map_stop_entity.dart';
 import '../../../map/presentation/widgets/driver_map_polyline_decoder.dart';
@@ -385,9 +387,27 @@ class _DriverActiveDeliveryTrackingScreenState
                 child: DriverTrackingStepper(status: trip.status),
               ),
               const SizedBox(height: Spacing.base),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: Spacing.base),
-                child: DriverTrackingHelpCard(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
+                child: DriverTrackingHelpCard(
+                  onTap: () {
+                    unawaited(
+                      context.pushNamed(
+                        AppRoutes.driverReportIssue,
+                        arguments: DeliveryIssueEntity(
+                          boxCode: trip.order.boxCode,
+                          customerName: trip.order.customerName,
+                          restaurantName: trip.order.restaurantName,
+                          area: trip.order.address,
+                          status: 'في الطريق للعميل',
+                          mealsCountText:
+                              '${trip.order.mealsCount} من ${trip.order.mealsCount} وجبة',
+                          selectedReason: DeliveryIssueReason.customerNoAnswer,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: Spacing.md),
             ],

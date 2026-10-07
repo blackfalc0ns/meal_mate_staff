@@ -22,149 +22,158 @@ class DeliveryIssueBoxSummaryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(Spacing.md),
       decoration: BoxDecoration(
-        color: color.surfaceContainerLowest,
+        color: color.surface,
         borderRadius: BorderRadius.circular(Spacing.radiusLg),
         border: Border.all(
-          color: color.outlineVariant.withValues(alpha: 0.6),
-          width: Spacing.border,
+          color: color.primary.withValues(alpha: 0.25),
+          width: 1.2,
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Spacing.sm,
-                  vertical: Spacing.xs,
-                ),
-                decoration: BoxDecoration(
-                  color: color.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(Spacing.radiusSm),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.inventory_2_outlined,
-                      size: Spacing.iconXs,
-                      color: color.primary,
-                    ),
-                    const SizedBox(width: Spacing.xs),
-                    Text(
-                      locale.reportIssueCurrentBox,
-                      style: getMediumStyle(
-                        fontSize: FontSize.size11,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Right Section (in RTL): Current Box pill, Restaurant, Customer, Meals
+            Expanded(
+              flex: 11,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
                         color: color.primary,
+                        borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                      ),
+                      child: Text(
+                        locale.reportIssueCurrentBox,
+                        style: getBoldStyle(
+                          fontSize: FontSize.size11,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Text(
-                issue.boxCode,
-                style: getBoldStyle(
-                  fontSize: FontSize.size14,
-                  color: color.onSurface,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.sm),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  issue.restaurantName,
-                  style: getSemiBoldStyle(
-                    fontSize: FontSize.size13,
-                    color: color.onSurface,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(width: Spacing.xs),
-              Text(
-                issue.customerName,
-                style: getRegularStyle(
-                  fontSize: FontSize.size12,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.xs),
-          Row(
-            children: [
-              Icon(
-                Icons.location_on_outlined,
-                size: Spacing.iconXs,
-                color: color.onSurfaceVariant,
-              ),
-              const SizedBox(width: Spacing.xs),
-              Text(
-                issue.area,
-                style: getRegularStyle(
-                  fontSize: FontSize.size12,
-                  color: color.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.sm),
-          Divider(
-            height: 1,
-            color: color.outlineVariant.withValues(alpha: 0.4),
-          ),
-          const SizedBox(height: Spacing.sm),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: color.tertiary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.xs),
+                  const SizedBox(height: Spacing.xs),
                   Text(
-                    issue.status,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size11,
-                      color: color.tertiary,
+                    issue.restaurantName,
+                    style: getBoldStyle(
+                      fontSize: FontSize.size13,
+                      color: color.onSurface,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.fastfood_outlined,
-                    size: Spacing.iconXs,
-                    color: color.onSurfaceVariant,
+                  const SizedBox(height: 2),
+                  Text(
+                    issue.customerName,
+                    style: getMediumStyle(
+                      fontSize: FontSize.size12,
+                      color: color.onSurface,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(width: Spacing.xs),
+                  const SizedBox(height: 2),
                   Text(
                     issue.mealsCountText,
                     style: getRegularStyle(
                       fontSize: FontSize.size11,
-                      color: color.onSurfaceVariant,
+                      color: color.onSurfaceVariant.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
-        ],
+            ),
+            // Middle Vertical Divider
+            Container(
+              width: 1,
+              margin: const EdgeInsets.symmetric(horizontal: Spacing.md),
+              color: color.outlineVariant.withValues(alpha: 0.45),
+            ),
+            // Left Section (in RTL): Box code, Area, Status
+            Expanded(
+              flex: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.inventory_2_rounded,
+                        size: Spacing.iconSm,
+                        color: color.primary,
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Text(
+                        issue.boxCode,
+                        style: getBoldStyle(
+                          fontSize: FontSize.size14,
+                          color: color.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Spacing.xs),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.location_on_rounded,
+                        size: Spacing.iconSm,
+                        color: color.primary,
+                      ),
+                      const SizedBox(width: Spacing.xs),
+                      Flexible(
+                        child: Text(
+                          issue.area,
+                          style: getMediumStyle(
+                            fontSize: FontSize.size12,
+                            color: color.onSurface,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Spacing.xs),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'الحالي: ',
+                        style: getRegularStyle(
+                          fontSize: FontSize.size12,
+                          color: color.onSurfaceVariant,
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          issue.status,
+                          style: getBoldStyle(
+                            fontSize: FontSize.size12,
+                            color: const Color(0xFF00B074),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

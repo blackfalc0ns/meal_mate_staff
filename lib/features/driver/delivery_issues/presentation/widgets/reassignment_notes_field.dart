@@ -30,10 +30,10 @@ class ReassignmentNotesField extends StatelessWidget {
         return DecoratedBox(
           decoration: BoxDecoration(
             color: color.surfaceContainerLowest,
-            borderRadius: BorderRadius.circular(Spacing.radiusMd),
+            borderRadius: BorderRadius.circular(Spacing.radiusLg),
             border: Border.all(
-              color: color.outlineVariant.withValues(alpha: 0.6),
-              width: Spacing.border,
+              color: color.outlineVariant.withValues(alpha: 0.7),
+              width: 1.0,
             ),
           ),
           child: Column(
@@ -45,14 +45,14 @@ class ReassignmentNotesField extends StatelessWidget {
                 minLines: 3,
                 onChanged: onChanged,
                 style: getRegularStyle(
-                  fontSize: FontSize.size13,
+                  fontSize: FontSize.size14,
                   color: color.onSurface,
                 ),
                 decoration: InputDecoration(
                   hintText: locale.reassignRequestNotesHint,
                   hintStyle: getRegularStyle(
-                    fontSize: FontSize.size13,
-                    color: color.onSurfaceVariant.withValues(alpha: 0.6),
+                    fontSize: FontSize.size14,
+                    color: color.onSurfaceVariant.withValues(alpha: 0.55),
                   ),
                   counterText: '',
                   border: InputBorder.none,
