@@ -6785,25 +6785,25 @@ abstract class AppLocalizations {
   /// No description provided for @reassignSubmittedTitle.
   ///
   /// In en, this message translates to:
-  /// **'Reassignment Request Submitted'**
+  /// **'Reassignment Request\nSubmitted'**
   String get reassignSubmittedTitle;
 
   /// No description provided for @reassignSubmittedSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Your request was submitted successfully. You will be notified when accepted by another driver'**
+  /// **'Your request was submitted successfully\nYou will be notified when accepted\nby another driver'**
   String get reassignSubmittedSubtitle;
 
   /// No description provided for @issueSubmittedTitle.
   ///
   /// In en, this message translates to:
-  /// **'Issue Submitted Successfully'**
+  /// **'Report Submitted Successfully'**
   String get issueSubmittedTitle;
 
   /// No description provided for @issueSubmittedSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Thank you for your cooperation. We will review and take required action'**
+  /// **'Thank you for your cooperation\nWe will review the report\nand take required action'**
   String get issueSubmittedSubtitle;
 
   /// No description provided for @issueReturnToHome.

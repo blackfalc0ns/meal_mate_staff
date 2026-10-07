@@ -26,15 +26,15 @@ class IssueReturnHomeButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: color.primary,
           foregroundColor: color.onPrimary,
-          elevation: Spacing.cardElevation,
+          elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Spacing.radiusLg),
+            borderRadius: BorderRadius.circular(Spacing.buttonRadius),
           ),
         ),
         child: Text(
           locale.issueReturnToHome,
           style: getBoldStyle(
-            fontSize: FontSize.size14,
+            fontSize: FontSize.size15,
             color: color.onPrimary,
           ),
         ),

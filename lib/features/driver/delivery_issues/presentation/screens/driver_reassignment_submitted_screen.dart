@@ -40,20 +40,21 @@ class DriverReassignmentSubmittedScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: color.surface,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             horizontal: Spacing.screenH,
             vertical: Spacing.screenV,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Spacer(),
+              const SizedBox(height: Spacing.xxl),
               const ReassignmentSubmittedCard(),
-              const Spacer(),
+              const SizedBox(height: Spacing.xxl),
               IssueReturnHomeButton(
                 onPressed: () => _handleReturnHome(context),
               ),
-              const SizedBox(height: Spacing.sm),
+              const SizedBox(height: Spacing.xl),
             ],
           ),
         ),

@@ -19,6 +19,10 @@ class AppAssets {
       '$_driverImages/driver_start_work_illustration.png';
   static const String driverNoAssignedBoxesIllustration =
       '$_driverImages/driver_no_assigned_boxes.png';
+  static const String reassignmentSubmittedIllustration =
+      '$_driverImages/reassignment_submitted_illustration.png';
+  static const String issueSubmittedIllustration =
+      '$_driverImages/issue_submitted_illustration.png';
 
   static const String logo = '$_svg/logo.svg';
   static const String logoWhite = '$_svg/logo_white.svg';

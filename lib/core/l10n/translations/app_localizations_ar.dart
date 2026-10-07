@@ -3535,18 +3535,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reassignRequestCancel => 'إلغاء';
 
   @override
-  String get reassignSubmittedTitle => 'تم إرسال طلب إعادة الإسناد';
+  String get reassignSubmittedTitle => 'تم إرسال طلب\nإعادة الإسناد';
 
   @override
   String get reassignSubmittedSubtitle =>
-      'تم إرسال طلبك بنجاح. سيتم إشعارك عند قبول الطلب من سائق آخر';
+      'تم إرسال طلبك بنجاح\nسيتم إشعارك عند قبول الطلب\nمن سائق آخر';
 
   @override
   String get issueSubmittedTitle => 'تم إرسال البلاغ بنجاح';
 
   @override
   String get issueSubmittedSubtitle =>
-      'شكراً لتعاونك معنا. سنقوم بمراجعة البلاغ واتخاذ الإجراء اللازم';
+      'شكراً لتعاونك معنا\nسنقوم بمراجعة البلاغ\nواتخاذ الإجراء اللازم';
 
   @override
   String get issueReturnToHome => 'العودة للرئيسية';

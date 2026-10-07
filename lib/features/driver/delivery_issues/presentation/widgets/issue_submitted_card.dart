@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
+import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
 
 class IssueSubmittedCard extends StatelessWidget {
@@ -14,70 +15,34 @@ class IssueSubmittedCard extends StatelessWidget {
     final locale = context.localization;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: 140,
-              height: 140,
-              decoration: BoxDecoration(
-                color: color.primary.withValues(alpha: 0.08),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.assignment_turned_in_rounded,
-                  size: 64,
-                  color: color.primary,
-                ),
-              ),
-            ),
-            PositionedDirectional(
-              bottom: 4,
-              end: 4,
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: color.tertiary,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: color.surface,
-                    width: 3,
-                  ),
-                ),
-                child: Icon(
-                  Icons.check_rounded,
-                  size: 20,
-                  color: color.onTertiary,
-                ),
-              ),
-            ),
-          ],
+        Image.asset(
+          AppAssets.issueSubmittedIllustration,
+          width: 250,
+          height: 190,
+          fit: BoxFit.contain,
         ),
         const SizedBox(height: Spacing.xl),
         Text(
           locale.issueSubmittedTitle,
           style: getBoldStyle(
-            fontSize: FontSize.size20,
+            fontSize: FontSize.size22,
             color: color.onSurface,
+            height: 1.35,
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: Spacing.sm),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Spacing.lg),
-          child: Text(
-            locale.issueSubmittedSubtitle,
-            style: getRegularStyle(
-              fontSize: FontSize.size14,
-              color: color.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
+        const SizedBox(height: Spacing.md),
+        Text(
+          locale.issueSubmittedSubtitle,
+          style: getRegularStyle(
+            fontSize: FontSize.size14,
+            color: color.onSurfaceVariant.withValues(alpha: 0.85),
+            height: 1.6,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

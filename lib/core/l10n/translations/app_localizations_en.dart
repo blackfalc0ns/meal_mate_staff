@@ -3552,18 +3552,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reassignRequestCancel => 'Cancel';
 
   @override
-  String get reassignSubmittedTitle => 'Reassignment Request Submitted';
+  String get reassignSubmittedTitle => 'Reassignment Request\nSubmitted';
 
   @override
   String get reassignSubmittedSubtitle =>
-      'Your request was submitted successfully. You will be notified when accepted by another driver';
+      'Your request was submitted successfully\nYou will be notified when accepted\nby another driver';
 
   @override
-  String get issueSubmittedTitle => 'Issue Submitted Successfully';
+  String get issueSubmittedTitle => 'Report Submitted Successfully';
 
   @override
   String get issueSubmittedSubtitle =>
-      'Thank you for your cooperation. We will review and take required action';
+      'Thank you for your cooperation\nWe will review the report\nand take required action';
 
   @override
   String get issueReturnToHome => 'Return to Home';

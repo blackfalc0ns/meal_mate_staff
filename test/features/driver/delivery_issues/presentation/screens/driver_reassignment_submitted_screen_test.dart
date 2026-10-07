@@ -33,10 +33,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('تم إرسال طلب إعادة الإسناد'), findsOneWidget);
+      expect(find.text('تم إرسال طلب\nإعادة الإسناد'), findsOneWidget);
       expect(
         find.text(
-          'تم إرسال طلبك بنجاح. سيتم إشعارك عند قبول الطلب من سائق آخر',
+          'تم إرسال طلبك بنجاح\nسيتم إشعارك عند قبول الطلب\nمن سائق آخر',
         ),
         findsOneWidget,
       );
