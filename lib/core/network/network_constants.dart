@@ -133,4 +133,11 @@ abstract class EndPoints {
 
   // Driver map (Screen 03.01)
   static const String driverMapRoute = '/api/v1/driver/map/route';
+
+  // Driver active delivery & arrival endpoints (Screen 07.01, 07.02)
+  static const String driverArriveCustomer =
+      '/api/v1/driver/orders/{boxId}/arrive-customer';
+  static const String driverDeliverOrder =
+      '/api/v1/driver/orders/{boxId}/deliver';
+  static const String driverDeliveryProofUpload = '/api/v1/uploads';
 }

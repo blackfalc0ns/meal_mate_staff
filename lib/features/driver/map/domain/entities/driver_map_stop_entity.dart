@@ -4,6 +4,10 @@ import '../../../orders/domain/entities/driver_delivery_status.dart';
 class DriverMapStopEntity {
   const DriverMapStopEntity({
     required this.id,
+    String? boxId,
+    this.tripId,
+    this.customerNote,
+    this.arrivedAtUtc,
     required this.boxCode,
     this.sequenceNumber = 1,
     this.totalStops = 1,
@@ -22,9 +26,13 @@ class DriverMapStopEntity {
     this.latitude,
     this.longitude,
     this.imageAsset = AppAssets.driverKpiBox,
-  });
+  }) : boxId = boxId ?? id;
 
   final String id;
+  final String boxId;
+  final String? tripId;
+  final String? customerNote;
+  final DateTime? arrivedAtUtc;
   final String boxCode;
   final int sequenceNumber;
   final int totalStops;
@@ -52,6 +60,13 @@ class DriverMapStopEntity {
 
   DriverMapStopEntity copyWith({
     String? id,
+    String? boxId,
+    String? tripId,
+    bool clearTripId = false,
+    String? customerNote,
+    bool clearCustomerNote = false,
+    DateTime? arrivedAtUtc,
+    bool clearArrivedAtUtc = false,
     String? boxCode,
     int? sequenceNumber,
     int? totalStops,
@@ -74,6 +89,10 @@ class DriverMapStopEntity {
   }) {
     return DriverMapStopEntity(
       id: id ?? this.id,
+      boxId: boxId ?? this.boxId,
+      tripId: clearTripId ? null : (tripId ?? this.tripId),
+      customerNote: clearCustomerNote ? null : (customerNote ?? this.customerNote),
+      arrivedAtUtc: clearArrivedAtUtc ? null : (arrivedAtUtc ?? this.arrivedAtUtc),
       boxCode: boxCode ?? this.boxCode,
       sequenceNumber: sequenceNumber ?? this.sequenceNumber,
       totalStops: totalStops ?? this.totalStops,

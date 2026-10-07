@@ -72,6 +72,7 @@ import '../../features/driver/active_delivery/presentation/screens/driver_delive
 import '../../features/driver/active_delivery/presentation/screens/driver_failed_delivery_screen.dart';
 import '../../features/driver/active_delivery/presentation/screens/driver_return_box_to_restaurant_screen.dart';
 import '../../features/driver/active_delivery/presentation/screens/driver_delivery_success_screen.dart';
+import '../../features/driver/active_delivery/presentation/screens/driver_delivery_arrival_confirmation_screen.dart';
 import '../../features/driver/home/presentation/screens/driver_home_screen.dart';
 import '../../features/driver/map/presentation/screens/driver_map_screen.dart';
 import '../../features/driver/calling/domain/entities/driver_active_call_entity.dart';
@@ -86,6 +87,7 @@ import '../../features/register/presentation/screens/register_screen.dart';
 import 'app_routes.dart';
 import 'arguments/driver_confirm_receipt_route_arguments.dart';
 import 'arguments/driver_pickup_summary_route_arguments.dart';
+import 'arguments/driver_active_delivery_route_arguments.dart';
 
 class RouteGenerator {
   const RouteGenerator._();
@@ -613,21 +615,35 @@ class RouteGenerator {
         );
 
       case AppRoutes.driverStartDeliveryRoute:
-        final trip = settings.arguments is ActiveDeliveryTripEntity
-            ? settings.arguments! as ActiveDeliveryTripEntity
-            : null;
+        ActiveDeliveryTripEntity? trip;
+        DriverActiveDeliveryRouteArguments? routeArgs;
+        if (settings.arguments is DriverActiveDeliveryRouteArguments) {
+          routeArgs = settings.arguments as DriverActiveDeliveryRouteArguments;
+        } else if (settings.arguments is ActiveDeliveryTripEntity) {
+          trip = settings.arguments as ActiveDeliveryTripEntity;
+        }
         return _buildRoute(
           settings: settings,
-          page: DriverStartDeliveryRouteScreen(trip: trip),
+          page: DriverStartDeliveryRouteScreen(
+            trip: trip,
+            arguments: routeArgs,
+          ),
         );
 
       case AppRoutes.driverActiveDeliveryTracking:
-        final trip = settings.arguments is ActiveDeliveryTripEntity
-            ? settings.arguments! as ActiveDeliveryTripEntity
-            : null;
+        ActiveDeliveryTripEntity? trip;
+        DriverActiveDeliveryRouteArguments? routeArgs;
+        if (settings.arguments is DriverActiveDeliveryRouteArguments) {
+          routeArgs = settings.arguments as DriverActiveDeliveryRouteArguments;
+        } else if (settings.arguments is ActiveDeliveryTripEntity) {
+          trip = settings.arguments as ActiveDeliveryTripEntity;
+        }
         return _buildRoute(
           settings: settings,
-          page: DriverActiveDeliveryTrackingScreen(trip: trip),
+          page: DriverActiveDeliveryTrackingScreen(
+            trip: trip,
+            arguments: routeArgs,
+          ),
         );
 
       case AppRoutes.driverDeliveryDelay:
@@ -663,13 +679,31 @@ class RouteGenerator {
           ),
         );
 
-      case AppRoutes.driverDeliverySuccess:
-        final trip = settings.arguments is ActiveDeliveryTripEntity
-            ? settings.arguments! as ActiveDeliveryTripEntity
+      case AppRoutes.driverDeliveryArrivalConfirmation:
+        final routeArgs = settings.arguments is DriverActiveDeliveryRouteArguments
+            ? settings.arguments as DriverActiveDeliveryRouteArguments
             : null;
         return _buildRoute(
           settings: settings,
-          page: DriverDeliverySuccessScreen(trip: trip),
+          page: DriverDeliveryArrivalConfirmationScreen(
+            arguments: routeArgs,
+          ),
+        );
+
+      case AppRoutes.driverDeliverySuccess:
+        ActiveDeliveryTripEntity? trip;
+        DriverActiveDeliveryRouteArguments? routeArgs;
+        if (settings.arguments is DriverActiveDeliveryRouteArguments) {
+          routeArgs = settings.arguments as DriverActiveDeliveryRouteArguments;
+        } else if (settings.arguments is ActiveDeliveryTripEntity) {
+          trip = settings.arguments as ActiveDeliveryTripEntity;
+        }
+        return _buildRoute(
+          settings: settings,
+          page: DriverDeliverySuccessScreen(
+            trip: trip,
+            arguments: routeArgs,
+          ),
         );
 
       case AppRoutes.driverStartWork:

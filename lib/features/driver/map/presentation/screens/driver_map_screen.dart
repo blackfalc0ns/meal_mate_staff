@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:meal_mate_delivery/config/routing/app_route_observer.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/app_shell/widgets/app_bottom_nav_bar.dart';
 import 'package:meal_mate_delivery/core/di/di.dart';
@@ -51,7 +52,7 @@ class DriverMapScreen extends StatefulWidget {
 }
 
 class _DriverMapScreenState extends State<DriverMapScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, RouteAware {
   late final DriverMapViewModel _viewModel;
   late final bool _isOwnedViewModel;
   late final PageController _pageController;
@@ -62,6 +63,9 @@ class _DriverMapScreenState extends State<DriverMapScreen>
   GoogleMapController? _mapController;
   String? _lastFittedPolyline;
   String? _lastFittedDestinationId;
+  ModalRoute<dynamic>? _observedRoute;
+  bool _routeVisible = true;
+  bool _appForeground = true;
 
   @override
   void initState() {
@@ -87,21 +91,47 @@ class _DriverMapScreenState extends State<DriverMapScreen>
       viewportFraction: 0.45,
       initialPage: initialPage,
     );
+  }
 
-    if (widget.isActive) {
-      unawaited(_viewModel.doIntent(const DriverMapActivated()));
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route != _observedRoute) {
+      appRouteObserver.unsubscribe(this);
+      _observedRoute = route;
+      _routeVisible = route?.isCurrent ?? true;
+      if (route != null) appRouteObserver.subscribe(this, route);
+      _syncVisibility();
     }
+  }
+
+  void _syncVisibility() {
+    final visible = widget.isActive && _routeVisible && _appForeground;
+    unawaited(
+      _viewModel.doIntent(
+        visible ? const DriverMapActivated() : const DriverMapDeactivated(),
+      ),
+    );
+  }
+
+  @override
+  void didPushNext() {
+    _routeVisible = false;
+    _syncVisibility();
+  }
+
+  @override
+  void didPopNext() {
+    _routeVisible = true;
+    _syncVisibility();
   }
 
   @override
   void didUpdateWidget(covariant DriverMapScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.isActive != oldWidget.isActive) {
-      if (widget.isActive) {
-        unawaited(_viewModel.doIntent(const DriverMapActivated()));
-      } else {
-        unawaited(_viewModel.doIntent(const DriverMapDeactivated()));
-      }
+      _syncVisibility();
     }
   }
 
@@ -110,13 +140,14 @@ class _DriverMapScreenState extends State<DriverMapScreen>
     super.didChangeAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.resumed:
-        if (widget.isActive) {
-          unawaited(_viewModel.doIntent(const DriverMapAppResumed()));
-        }
+        _appForeground = true;
+        unawaited(_viewModel.doIntent(const DriverMapAppResumed()));
+        _syncVisibility();
         break;
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
       case AppLifecycleState.hidden:
+        _appForeground = false;
         unawaited(_viewModel.doIntent(const DriverMapAppPaused()));
         break;
       case AppLifecycleState.detached:
@@ -126,6 +157,7 @@ class _DriverMapScreenState extends State<DriverMapScreen>
 
   @override
   void dispose() {
+    appRouteObserver.unsubscribe(this);
     WidgetsBinding.instance.removeObserver(this);
     _pageController.dispose();
     _mapController = null;

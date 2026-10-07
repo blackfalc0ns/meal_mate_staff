@@ -22,6 +22,10 @@ class DriverMapStopResponseDto {
     this.isCurrent,
     this.latitude,
     this.longitude,
+    this.boxId,
+    this.tripId,
+    this.customerNote,
+    this.arrivedAtUtc,
   });
 
   factory DriverMapStopResponseDto.fromJson(Map<String, dynamic> json) =>
@@ -46,4 +50,8 @@ class DriverMapStopResponseDto {
   final bool? isCurrent;
   final double? latitude;
   final double? longitude;
+  final String? boxId;
+  final String? tripId;
+  final String? customerNote;
+  final String? arrivedAtUtc;
 }

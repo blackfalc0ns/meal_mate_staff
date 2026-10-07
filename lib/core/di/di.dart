@@ -57,6 +57,14 @@ import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup
 import '../../features/driver/confirm_receipt/presentation/manager/driver_pickup_summary_view_model.dart';
 import '../../features/driver/active_delivery/data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../features/driver/active_delivery/domain/repositories/active_delivery_repository.dart';
+import '../../features/driver/active_delivery/data/data_source/driver_delivery_remote_data_source.dart';
+import '../../features/driver/active_delivery/data/data_source/driver_delivery_remote_data_source_impl.dart';
+import '../../features/driver/active_delivery/data/repo/driver_delivery_repository_impl.dart';
+import '../../features/driver/active_delivery/domain/repo/driver_delivery_repository.dart';
+import '../../features/driver/active_delivery/domain/usecase/arrive_at_driver_customer_usecase.dart';
+import '../../features/driver/active_delivery/domain/usecase/upload_driver_delivery_proof_usecase.dart';
+import '../../features/driver/active_delivery/domain/usecase/deliver_driver_order_usecase.dart';
+import '../../features/driver/active_delivery/presentation/manager/active_delivery_view_model.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source_impl.dart';
 import '../../features/driver/driver_profile/data/repo/driver_profile_repository_impl.dart';
@@ -924,6 +932,32 @@ Future<void> configureDependencies() async {
     () => DriverMapViewModel(
       getDriverMapRouteUseCase: getIt<GetDriverMapRouteUseCase>(),
       liveLocationCoordinator: getIt<DriverLiveLocationCoordinator>(),
+    ),
+  );
+
+  // Driver Active Delivery feature dependencies
+  getIt.registerLazySingleton<DriverDeliveryRemoteDataSource>(
+    () => DriverDeliveryRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverDeliveryRepository>(
+    () => DriverDeliveryRepositoryImpl(getIt<DriverDeliveryRemoteDataSource>()),
+  );
+  getIt.registerFactory<ArriveAtDriverCustomerUseCase>(
+    () => ArriveAtDriverCustomerUseCase(getIt<DriverDeliveryRepository>()),
+  );
+  getIt.registerFactory<UploadDriverDeliveryProofUseCase>(
+    () => UploadDriverDeliveryProofUseCase(getIt<DriverDeliveryRepository>()),
+  );
+  getIt.registerFactory<DeliverDriverOrderUseCase>(
+    () => DeliverDriverOrderUseCase(getIt<DriverDeliveryRepository>()),
+  );
+  getIt.registerFactory<ActiveDeliveryViewModel>(
+    () => ActiveDeliveryViewModel(
+      getDriverMapRouteUseCase: getIt<GetDriverMapRouteUseCase>(),
+      arriveAtDriverCustomerUseCase: getIt<ArriveAtDriverCustomerUseCase>(),
+      uploadDriverDeliveryProofUseCase:
+          getIt<UploadDriverDeliveryProofUseCase>(),
+      deliverDriverOrderUseCase: getIt<DeliverDriverOrderUseCase>(),
     ),
   );
 

@@ -19,10 +19,14 @@ extension DriverMapRouteResponseDtoMapper on DriverMapRouteResponseDto {
             .toList() ??
         const [];
 
+    final cleanTripId = tripId?.trim();
+    final validTripId = (cleanTripId != null && cleanTripId.isNotEmpty) ? cleanTripId : null;
+
     DriverMapStopEntity resolvedFocusedStop;
     if (focusedStop != null && focusedStop!.stopId != null && focusedStop!.stopId!.isNotEmpty) {
       resolvedFocusedStop = focusedStop!.toEntity(
         totalStopsCount: totalStopsCount ?? mappedStops.length,
+        fallbackTripId: validTripId,
       );
     } else if (mappedStops.isNotEmpty) {
       resolvedFocusedStop = mappedStops.firstWhere(
@@ -55,7 +59,10 @@ extension DriverMapRouteResponseDtoMapper on DriverMapRouteResponseDto {
 }
 
 extension DriverMapStopResponseDtoMapper on DriverMapStopResponseDto {
-  DriverMapStopEntity toEntity({int totalStopsCount = 1}) {
+  DriverMapStopEntity toEntity({
+    int totalStopsCount = 1,
+    String? fallbackTripId,
+  }) {
     final cleanShortAddress = addressShort?.trim() ?? '';
     final cleanFullAddress = fullAddress?.trim() ?? '';
     final address = cleanFullAddress.isNotEmpty ? cleanFullAddress : cleanShortAddress;
@@ -64,8 +71,29 @@ extension DriverMapStopResponseDtoMapper on DriverMapStopResponseDto {
         ? cleanShortAddress
         : (cleanFullAddress.isNotEmpty ? cleanFullAddress.split(',').first.trim() : '');
 
+    final cleanStopId = stopId?.trim() ?? '';
+    final cleanBoxId = boxId?.trim();
+    final resolvedBoxId = (cleanBoxId != null && cleanBoxId.isNotEmpty) ? cleanBoxId : cleanStopId;
+
+    final cleanTripId = tripId?.trim();
+    final resolvedTripId = (cleanTripId != null && cleanTripId.isNotEmpty)
+        ? cleanTripId
+        : fallbackTripId;
+
+    final cleanNote = customerNote?.trim();
+    final resolvedCustomerNote = (cleanNote != null && cleanNote.isNotEmpty) ? cleanNote : null;
+
+    DateTime? parsedArrivedAtUtc;
+    if (arrivedAtUtc != null && arrivedAtUtc!.trim().isNotEmpty) {
+      parsedArrivedAtUtc = DateTime.tryParse(arrivedAtUtc!.trim())?.toUtc();
+    }
+
     return DriverMapStopEntity(
-      id: stopId?.trim() ?? '',
+      id: cleanStopId,
+      boxId: resolvedBoxId,
+      tripId: resolvedTripId,
+      customerNote: resolvedCustomerNote,
+      arrivedAtUtc: parsedArrivedAtUtc,
       boxCode: boxCode ?? '',
       sequenceNumber: sequenceNumber ?? 1,
       totalStops: totalStopsCount > 0 ? totalStopsCount : 1,

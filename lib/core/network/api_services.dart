@@ -82,6 +82,11 @@ import '../../features/driver/driver_notifications/data/models/driver_notificati
 import '../../features/driver/driver_profile/data/models/response/driver_profile_response_dto.dart';
 import '../../features/driver/home/data/models/response/driver_home_response_dto.dart';
 import '../../features/driver/map/data/models/response/driver_map_route_response_dto.dart';
+import '../../features/driver/active_delivery/data/models/request/driver_arrival_request_dto.dart';
+import '../../features/driver/active_delivery/data/models/request/driver_deliver_request_dto.dart';
+import '../../features/driver/active_delivery/data/models/response/driver_arrival_response_dto.dart';
+import '../../features/driver/active_delivery/data/models/response/driver_deliver_response_dto.dart';
+import '../../features/driver/active_delivery/data/models/response/driver_delivery_proof_upload_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -440,5 +445,23 @@ abstract class ApiServices {
   @GET(EndPoints.driverMapRoute)
   Future<DriverMapRouteResponseDto> getDriverMapRoute(
     @Query('focusedStopId') String? focusedStopId,
+  );
+
+  @POST(EndPoints.driverArriveCustomer)
+  Future<DriverArrivalResponseDto> arriveAtDriverCustomer(
+    @Path('boxId') String boxId,
+    @Body() DriverArrivalRequestDto request,
+  );
+
+  @POST(EndPoints.driverDeliverOrder)
+  Future<DriverDeliverResponseDto> deliverDriverOrder(
+    @Path('boxId') String boxId,
+    @Body() DriverDeliverRequestDto request,
+  );
+
+  @MultiPart()
+  @POST(EndPoints.driverDeliveryProofUpload)
+  Future<DriverDeliveryProofUploadResponseDto> uploadDriverDeliveryProof(
+    @Part(name: 'file') File file,
   );
 }

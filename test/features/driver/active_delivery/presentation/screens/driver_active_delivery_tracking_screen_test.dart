@@ -45,8 +45,6 @@ void main() {
         addTearDown(tester.view.resetPhysicalSize);
 
         bool arrivalCalled = false;
-        bool delayCalled = false;
-        bool failedCalled = false;
 
         final repository = ActiveDeliveryFakeRepositoryImpl(
           locationTickInterval: const Duration(seconds: 10),
@@ -59,8 +57,6 @@ void main() {
               trip: DriverActiveDeliveryFakeData.defaultTrip,
               repository: repository,
               onConfirmArrival: () => arrivalCalled = true,
-              onReportDelay: () => delayCalled = true,
-              onReportFailed: () => failedCalled = true,
             ),
           ),
         );

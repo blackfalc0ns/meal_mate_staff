@@ -56,6 +56,8 @@ class AppRoutes {
   static const String driverStartDeliveryRoute = '/driver-start-delivery-route';
   static const String driverActiveDeliveryTracking =
       '/driver-active-delivery-tracking';
+  static const String driverDeliveryArrivalConfirmation =
+      '/driver-delivery-arrival-confirmation';
   static const String driverDeliveryDelay = '/driver-delivery-delay';
   static const String driverFailedDelivery = '/driver-failed-delivery';
   static const String driverReturnBoxToRestaurant =

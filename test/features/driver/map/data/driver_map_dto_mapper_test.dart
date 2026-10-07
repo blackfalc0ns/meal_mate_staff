@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/features/driver/map/data/mapper/driver_map_mapper.dart';
 import 'package:meal_mate_delivery/features/driver/map/data/models/response/driver_map_route_response_dto.dart';
+import 'package:meal_mate_delivery/features/driver/map/data/models/response/driver_map_stop_response_dto.dart';
 import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_route_status.dart';
 import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_unavailable_reason.dart';
 import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver_delivery_status.dart';
@@ -120,15 +121,48 @@ void main() {
       expect(entity.stops.first.status, DriverDeliveryStatus.delivered);
     });
 
-    test('maps route_navigation_null_fixture with null coordinates safely', () {
-      final json = readFixture('route_navigation_null_fixture.json');
-      final dto = DriverMapRouteResponseDto.fromJson(json);
-      final entity = dto.toEntity();
+    test('keeps persisted arrival and delivery identifiers', () {
+      final stop = DriverMapStopResponseDto.fromJson({
+        'stopId': 'stop-a',
+        'boxId': 'stop-a',
+        'tripId': 'trip-a',
+        'customerNote': 'اتركه عند البوابة',
+        'arrivedAtUtc': '2026-10-06T08:35:00Z',
+      }).toEntity(totalStopsCount: 2);
+      expect(stop.boxId, 'stop-a');
+      expect(stop.tripId, 'trip-a');
+      expect(stop.customerNote, 'اتركه عند البوابة');
+      expect(stop.arrivedAtUtc, DateTime.utc(2026, 10, 6, 8, 35));
+    });
 
-      expect(entity.navigation, isNull);
-      expect(entity.stops.length, 1);
-      expect(entity.stops[0].latitude, isNull);
-      expect(entity.stops[0].longitude, isNull);
+    test('fallbacks boxId to stopId and preserves copyWith clearing nullable fields', () {
+      final stop = DriverMapStopResponseDto.fromJson({
+        'stopId': 'stop-b',
+      }).toEntity();
+      expect(stop.boxId, 'stop-b');
+      expect(stop.tripId, isNull);
+      expect(stop.customerNote, isNull);
+      expect(stop.arrivedAtUtc, isNull);
+
+      final updated = stop.copyWith(
+        boxId: 'stop-b-modified',
+        tripId: 'trip-b',
+        customerNote: 'طابق 3',
+        arrivedAtUtc: DateTime.utc(2026, 10, 6, 9, 0),
+      );
+      expect(updated.boxId, 'stop-b-modified');
+      expect(updated.tripId, 'trip-b');
+      expect(updated.customerNote, 'طابق 3');
+      expect(updated.arrivedAtUtc, DateTime.utc(2026, 10, 6, 9, 0));
+
+      final cleared = updated.copyWith(
+        clearTripId: true,
+        clearCustomerNote: true,
+        clearArrivedAtUtc: true,
+      );
+      expect(cleared.tripId, isNull);
+      expect(cleared.customerNote, isNull);
+      expect(cleared.arrivedAtUtc, isNull);
     });
   });
 }

@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'config/routing/app_routes.dart';
+import 'config/routing/app_route_observer.dart';
 import 'config/routing/routing_generator.dart';
 import 'config/theme/app_theme.dart';
 import 'core/di/di.dart';
@@ -88,6 +89,7 @@ class MyApp extends StatelessWidget {
       builder: (context, locale, _) {
         return MaterialApp(
           navigatorKey: AppNavigatorService.navigatorKey,
+          navigatorObservers: [appRouteObserver],
           debugShowCheckedModeBanner: false,
           locale: locale,
           supportedLocales: AppLocalizations.supportedLocales,

@@ -10,15 +10,21 @@ import '../../domain/entities/active_delivery_location_entity.dart';
 class StartRouteMapPreview extends StatelessWidget {
   const StartRouteMapPreview({
     super.key,
-    required this.driverLocation,
-    required this.customerLocation,
-    required this.routePoints,
+    this.driverLocation,
+    this.customerLocation,
+    this.routePoints = const [],
+    this.originLatLng,
+    this.destinationLatLng,
+    this.polylinePoints = const [],
     this.height,
   });
 
-  final ActiveDeliveryLocationEntity driverLocation;
-  final ActiveDeliveryLocationEntity customerLocation;
+  final ActiveDeliveryLocationEntity? driverLocation;
+  final ActiveDeliveryLocationEntity? customerLocation;
   final List<ActiveDeliveryLocationEntity> routePoints;
+  final LatLng? originLatLng;
+  final LatLng? destinationLatLng;
+  final List<LatLng> polylinePoints;
   final double? height;
 
   @override
@@ -26,32 +32,61 @@ class StartRouteMapPreview extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
+    final origin = originLatLng ?? driverLocation?.toLatLng;
+    final destination = destinationLatLng ?? customerLocation?.toLatLng;
+    final points = polylinePoints.isNotEmpty
+        ? polylinePoints
+        : routePoints.map((p) => p.toLatLng).toList();
+
     final markers = <Marker>{
-      Marker(
-        markerId: const MarkerId('driver'),
-        position: driverLocation.toLatLng,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-      ),
-      Marker(
-        markerId: const MarkerId('customer'),
-        position: customerLocation.toLatLng,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-      ),
+      if (origin != null)
+        Marker(
+          markerId: const MarkerId('driver'),
+          position: origin,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        ),
+      if (destination != null)
+        Marker(
+          markerId: const MarkerId('customer'),
+          position: destination,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        ),
     };
 
     final polylines = <Polyline>{
-      Polyline(
-        polylineId: const PolylineId('route_preview'),
-        points: routePoints.map((p) => p.toLatLng).toList(),
-        color: color.primary,
-        width: 4,
-        patterns: [PatternItem.dash(16), PatternItem.gap(8)],
-      ),
+      if (points.isNotEmpty)
+        Polyline(
+          polylineId: const PolylineId('route_preview'),
+          points: points,
+          color: color.primary,
+          width: 4,
+          patterns: [PatternItem.dash(16), PatternItem.gap(8)],
+        )
+      else if (origin != null && destination != null)
+        Polyline(
+          polylineId: const PolylineId('route_preview'),
+          points: [origin, destination],
+          color: color.primary,
+          width: 4,
+          patterns: [PatternItem.dash(16), PatternItem.gap(8)],
+        ),
     };
 
-    final centerLat = (driverLocation.latitude + customerLocation.latitude) / 2;
-    final centerLng =
-        (driverLocation.longitude + customerLocation.longitude) / 2;
+    final double centerLat;
+    final double centerLng;
+    if (origin != null && destination != null) {
+      centerLat = (origin.latitude + destination.latitude) / 2;
+      centerLng = (origin.longitude + destination.longitude) / 2;
+    } else if (origin != null) {
+      centerLat = origin.latitude;
+      centerLng = origin.longitude;
+    } else if (destination != null) {
+      centerLat = destination.latitude;
+      centerLng = destination.longitude;
+    } else {
+      centerLat = 24.7136;
+      centerLng = 46.6753;
+    }
 
     return Container(
       height: height,

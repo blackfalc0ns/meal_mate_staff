@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/routing/app_routes.dart';
+import '../../../../../config/routing/arguments/driver_active_delivery_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/errors/error_widgets/api_error_widget.dart';
@@ -97,6 +98,9 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 AppRoutes.driverStartDeliveryRoute,
                 (route) => false,
+                arguments: DriverActiveDeliveryRouteArguments(
+                  tripId: state.startTripResult?.tripId,
+                ),
               ),
             );
           }

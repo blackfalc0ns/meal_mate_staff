@@ -20,6 +20,7 @@ class DriverTrackingMapView extends StatefulWidget {
     this.height = 320,
     this.onCallCustomer,
     this.onMessageCustomer,
+    this.onLocationUpdate,
   });
 
   final ActiveDeliveryLocationEntity initialDriverLocation;
@@ -29,6 +30,7 @@ class DriverTrackingMapView extends StatefulWidget {
   final double height;
   final VoidCallback? onCallCustomer;
   final VoidCallback? onMessageCustomer;
+  final ValueChanged<ActiveDeliveryLocationEntity>? onLocationUpdate;
 
   @override
   State<DriverTrackingMapView> createState() => _DriverTrackingMapViewState();
@@ -51,6 +53,7 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
     setState(() {
       _driverLocation = newLocation;
     });
+    widget.onLocationUpdate?.call(newLocation);
     final controller = _mapController;
     if (controller != null) {
       unawaited(

@@ -9,20 +9,25 @@ import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../map/domain/entities/driver_map_stop_entity.dart';
 import '../../domain/entities/active_delivery_order_entity.dart';
 
 class StartRouteCustomerCard extends StatelessWidget {
   const StartRouteCustomerCard({
     super.key,
-    required this.order,
-    this.estimatedMinutes = 15,
-    this.distanceKm = 4.2,
+    this.order,
+    this.stop,
+    this.estimatedMinutes,
+    this.distanceKm,
+    this.deliveryTimeSlot,
     this.onCallCustomer,
   });
 
-  final ActiveDeliveryOrderEntity order;
-  final int estimatedMinutes;
-  final double distanceKm;
+  final ActiveDeliveryOrderEntity? order;
+  final DriverMapStopEntity? stop;
+  final int? estimatedMinutes;
+  final double? distanceKm;
+  final String? deliveryTimeSlot;
   final VoidCallback? onCallCustomer;
 
   void _handleCall(BuildContext context) {
@@ -37,6 +42,15 @@ class StartRouteCustomerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = context.colorScheme;
     final locale = context.localization;
+
+    final customerName = stop?.customerName ?? order?.customerName ?? '';
+    final address = stop?.formattedAddress ?? order?.address ?? '';
+    final orderId = stop?.boxCode ?? order?.orderId ?? '';
+    final mealsCount = stop?.mealsCount ?? order?.mealsCount ?? 0;
+    final customerNote = stop?.customerNote ?? order?.customerNote ?? '';
+    final timeSlot = deliveryTimeSlot ?? stop?.deliveryTimeSlot ?? locale.driverStartRouteExpectedDeliveryWindow;
+    final phone = stop?.customerPhone.isNotEmpty == true ? stop!.customerPhone : (order?.customerPhone ?? '');
+    final showCallButton = phone.trim().isNotEmpty;
 
     return Container(
       padding: const EdgeInsets.all(Spacing.md),
@@ -85,7 +99,7 @@ class StartRouteCustomerCard extends StatelessWidget {
                     ),
                     const SizedBox(height: Spacing.border),
                     Text(
-                      order.customerName,
+                      customerName,
                       style: getBoldStyle(
                         fontSize: FontSize.size14,
                         color: color.onSurface,
@@ -93,7 +107,7 @@ class StartRouteCustomerCard extends StatelessWidget {
                     ),
                     const SizedBox(height: Spacing.border),
                     Text(
-                      order.address,
+                      address,
                       style: getRegularStyle(
                         fontSize: FontSize.size10,
                         color: color.onSurfaceVariant,
@@ -104,32 +118,34 @@ class StartRouteCustomerCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: Spacing.sm),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => _handleCall(context),
-                  borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: color.primaryContainer.withValues(alpha: 0.4),
-                      borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                    ),
-                    alignment: Alignment.center,
-                    child: SvgPicture.asset(
-                      AppAssets.driverActionCall,
-                      width: 18,
-                      height: 18,
-                      colorFilter: ColorFilter.mode(
-                        color.primary,
-                        BlendMode.srcIn,
+              if (showCallButton) ...[
+                const SizedBox(width: Spacing.sm),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => _handleCall(context),
+                    borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: color.primaryContainer.withValues(alpha: 0.4),
+                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                      ),
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        AppAssets.driverActionCall,
+                        width: 18,
+                        height: 18,
+                        colorFilter: ColorFilter.mode(
+                          color.primary,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ],
           ),
           const SizedBox(height: Spacing.md),
@@ -148,7 +164,7 @@ class StartRouteCustomerCard extends StatelessWidget {
                     ),
                     const SizedBox(height: Spacing.xs),
                     Text(
-                      order.orderId,
+                      orderId,
                       style: getSemiBoldStyle(
                         fontSize: FontSize.size12,
                         color: color.onSurface,
@@ -176,7 +192,7 @@ class StartRouteCustomerCard extends StatelessWidget {
                     ),
                     const SizedBox(height: Spacing.xs),
                     Text(
-                      locale.driverStartRouteBoxesCountValue(order.mealsCount),
+                      locale.driverStartRouteBoxesCountValue(mealsCount),
                       style: getSemiBoldStyle(
                         fontSize: FontSize.size12,
                         color: color.onSurface,
@@ -204,7 +220,7 @@ class StartRouteCustomerCard extends StatelessWidget {
                     ),
                     const SizedBox(height: Spacing.xs),
                     Text(
-                      locale.driverStartRouteExpectedDeliveryWindow,
+                      timeSlot,
                       style: getSemiBoldStyle(
                         fontSize: FontSize.size12,
                         color: color.onSurface,
@@ -258,8 +274,8 @@ class StartRouteCustomerCard extends StatelessWidget {
                       ),
                       const SizedBox(height: Spacing.border),
                       Text(
-                        order.customerNote.isNotEmpty
-                            ? order.customerNote
+                        customerNote.isNotEmpty
+                            ? customerNote
                             : locale.driverCustomerNotesLabel,
                         style: getRegularStyle(
                           fontSize: FontSize.size10,

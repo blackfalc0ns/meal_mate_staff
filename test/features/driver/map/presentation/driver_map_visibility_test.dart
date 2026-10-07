@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_mate_delivery/config/routing/app_route_observer.dart';
 import 'package:meal_mate_delivery/core/l10n/translations/app_localizations.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_location_entity.dart';
@@ -98,13 +99,14 @@ void main() {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      navigatorObservers: [appRouteObserver],
       home: child,
     );
   }
 
-  testWidgets(
-      'isActive: false does not fetch route, toggling to true triggers activation',
-      (tester) async {
+  testWidgets('covered map stops polling and refreshes once on return', (
+    tester,
+  ) async {
     final useCase = MockRouteUseCase();
     final coordinator = MockLiveLocationCoordinator();
     final vm = DriverMapViewModel(
@@ -113,80 +115,125 @@ void main() {
       bootstrapWaitLimit: Duration.zero,
       pollingInterval: const Duration(seconds: 30),
     );
-
-    // Mount with isActive = false
-    await tester.pumpWidget(
-      buildApp(DriverMapScreen(viewModel: vm, isActive: false)),
-    );
+    await tester.pumpWidget(buildApp(DriverMapScreen(viewModel: vm)));
     await tester.pump();
-
-    expect(useCase.callCount, equals(0));
+    expect(useCase.callCount, 1);
+    final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+    unawaited(
+      navigator.push(
+        MaterialPageRoute<void>(
+          builder: (_) => const Scaffold(body: Text('Delivery start')),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 65));
+    expect(useCase.callCount, 1);
     expect(vm.state.isActive, isFalse);
-
-    // Toggle to isActive = true
-    await tester.pumpWidget(
-      buildApp(DriverMapScreen(viewModel: vm, isActive: true)),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 50));
-
-    expect(useCase.callCount, equals(1));
-    expect(vm.state.isActive, isTrue);
-
-    // Toggle back to isActive = false
-    await tester.pumpWidget(
-      buildApp(DriverMapScreen(viewModel: vm, isActive: false)),
-    );
-    await tester.pump();
-
-    expect(vm.state.isActive, isFalse);
-
-    await tester.pumpWidget(const SizedBox());
-    await vm.close();
-    coordinator.close();
-  });
-
-  testWidgets(
-      'lifecycle paused pauses polling, resumed while active triggers refresh',
-      (tester) async {
-    final useCase = MockRouteUseCase();
-    final coordinator = MockLiveLocationCoordinator();
-    final vm = DriverMapViewModel(
-      getDriverMapRouteUseCase: useCase,
-      liveLocationCoordinator: coordinator,
-      bootstrapWaitLimit: Duration.zero,
-      pollingInterval: const Duration(seconds: 30),
-    );
-
-    await tester.pumpWidget(
-      buildApp(DriverMapScreen(viewModel: vm, isActive: true)),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 50));
-
-    expect(useCase.callCount, equals(1));
-
-    // Simulate App entering background
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-    await tester.pump();
-
-    expect(vm.state.isForeground, isFalse);
-
-    // Simulate App resuming while active
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 50));
-
-    expect(vm.state.isForeground, isTrue);
-    expect(useCase.callCount, equals(2));
-
+    expect(useCase.callCount, 1);
+    navigator.pop();
+    await tester.pumpAndSettle();
+    expect(useCase.callCount, 2);
+    expect(vm.state.isActive, isTrue);
+    await tester.pump(const Duration(seconds: 30));
+    await tester.pump();
+    expect(useCase.callCount, 3);
     await tester.pumpWidget(const SizedBox());
     await vm.close();
     coordinator.close();
   });
 
-  testWidgets('lifecycle resumed while inactive does NOT trigger refresh',
-      (tester) async {
+  testWidgets(
+    'isActive: false does not fetch route, toggling to true triggers activation',
+    (tester) async {
+      final useCase = MockRouteUseCase();
+      final coordinator = MockLiveLocationCoordinator();
+      final vm = DriverMapViewModel(
+        getDriverMapRouteUseCase: useCase,
+        liveLocationCoordinator: coordinator,
+        bootstrapWaitLimit: Duration.zero,
+        pollingInterval: const Duration(seconds: 30),
+      );
+
+      // Mount with isActive = false
+      await tester.pumpWidget(
+        buildApp(DriverMapScreen(viewModel: vm, isActive: false)),
+      );
+      await tester.pump();
+
+      expect(useCase.callCount, equals(0));
+      expect(vm.state.isActive, isFalse);
+
+      // Toggle to isActive = true
+      await tester.pumpWidget(
+        buildApp(DriverMapScreen(viewModel: vm, isActive: true)),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+
+      expect(useCase.callCount, equals(1));
+      expect(vm.state.isActive, isTrue);
+
+      // Toggle back to isActive = false
+      await tester.pumpWidget(
+        buildApp(DriverMapScreen(viewModel: vm, isActive: false)),
+      );
+      await tester.pump();
+
+      expect(vm.state.isActive, isFalse);
+
+      await tester.pumpWidget(const SizedBox());
+      await vm.close();
+      coordinator.close();
+    },
+  );
+
+  testWidgets(
+    'lifecycle paused pauses polling, resumed while active triggers refresh',
+    (tester) async {
+      final useCase = MockRouteUseCase();
+      final coordinator = MockLiveLocationCoordinator();
+      final vm = DriverMapViewModel(
+        getDriverMapRouteUseCase: useCase,
+        liveLocationCoordinator: coordinator,
+        bootstrapWaitLimit: Duration.zero,
+        pollingInterval: const Duration(seconds: 30),
+      );
+
+      await tester.pumpWidget(
+        buildApp(DriverMapScreen(viewModel: vm, isActive: true)),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+
+      expect(useCase.callCount, equals(1));
+
+      // Simulate App entering background
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      await tester.pump();
+
+      expect(vm.state.isForeground, isFalse);
+
+      // Simulate App resuming while active
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+
+      expect(vm.state.isForeground, isTrue);
+      expect(useCase.callCount, equals(2));
+
+      await tester.pumpWidget(const SizedBox());
+      await vm.close();
+      coordinator.close();
+    },
+  );
+
+  testWidgets('lifecycle resumed while inactive does NOT trigger refresh', (
+    tester,
+  ) async {
     final useCase = MockRouteUseCase();
     final coordinator = MockLiveLocationCoordinator();
     final vm = DriverMapViewModel(
