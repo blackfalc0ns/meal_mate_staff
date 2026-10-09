@@ -7,6 +7,7 @@ import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/widget/map_markers/map_markers.dart';
 import '../../domain/entities/active_delivery_location_entity.dart';
 import 'map_floating_action_button.dart';
 
@@ -18,6 +19,7 @@ class DriverTrackingMapView extends StatefulWidget {
     required this.routePoints,
     required this.locationStream,
     this.height = 320,
+    this.boxCode,
     this.onCallCustomer,
     this.onMessageCustomer,
     this.onLocationUpdate,
@@ -28,6 +30,7 @@ class DriverTrackingMapView extends StatefulWidget {
   final List<ActiveDeliveryLocationEntity> routePoints;
   final Stream<ActiveDeliveryLocationEntity> locationStream;
   final double height;
+  final String? boxCode;
   final VoidCallback? onCallCustomer;
   final VoidCallback? onMessageCustomer;
   final ValueChanged<ActiveDeliveryLocationEntity>? onLocationUpdate;
@@ -40,12 +43,55 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
   GoogleMapController? _mapController;
   StreamSubscription<ActiveDeliveryLocationEntity>? _subscription;
   late ActiveDeliveryLocationEntity _driverLocation;
+  BitmapDescriptor? _driverDescriptor;
+  BitmapDescriptor? _customerDescriptor;
 
   @override
   void initState() {
     super.initState();
     _driverLocation = widget.initialDriverLocation;
     _subscription = widget.locationStream.listen(_onLocationUpdate);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        unawaited(_resolveMarkers());
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant DriverTrackingMapView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.boxCode != widget.boxCode ||
+        _driverDescriptor == null ||
+        _customerDescriptor == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          unawaited(_resolveMarkers());
+        }
+      });
+    }
+  }
+
+  Future<void> _resolveMarkers() async {
+    final driverDescriptor =
+        await AppMapMarkerBitmapFactory.createDriverMarker(context);
+    if (!mounted) return;
+    final customerDescriptor =
+        await AppMapMarkerBitmapFactory.createStopMarker(
+      context,
+      boxCode: widget.boxCode ?? '',
+      isSelected: true,
+    );
+
+    if (!mounted) return;
+
+    if (_driverDescriptor != driverDescriptor ||
+        _customerDescriptor != customerDescriptor) {
+      setState(() {
+        _driverDescriptor = driverDescriptor;
+        _customerDescriptor = customerDescriptor;
+      });
+    }
   }
 
   void _onLocationUpdate(ActiveDeliveryLocationEntity newLocation) {
@@ -90,12 +136,16 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
         markerId: const MarkerId('driver'),
         position: _driverLocation.toLatLng,
         rotation: _driverLocation.heading,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        anchor: const Offset(0.5, 0.95),
+        icon: _driverDescriptor ??
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       ),
       Marker(
         markerId: const MarkerId('customer'),
         position: widget.customerLocation.toLatLng,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        anchor: const Offset(0.5, 1.0),
+        icon: _customerDescriptor ??
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       ),
     };
 

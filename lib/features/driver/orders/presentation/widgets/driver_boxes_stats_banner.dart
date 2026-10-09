@@ -18,112 +18,137 @@ class DriverBoxesStatsBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colorScheme;
     final locale = context.localization;
 
     return Container(
-      height: 101,
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.md,
-        vertical: Spacing.sm,
-      ),
+      height: 104,
       decoration: BoxDecoration(
-        color: color.inverseSurface,
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF261D52),
+            Color(0xFF151033),
+          ],
+        ),
         borderRadius: BorderRadius.circular(Spacing.cardRadius),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                // Total Meals Column
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        locale.driverTotalMeals,
-                        style: getRegularStyle(
-                          color: color.onPrimary.withValues(alpha: 0.8),
-                          fontSize: FontSize.size9,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        '$totalMeals',
-                        style: getBoldStyle(
-                          color: color.onPrimary,
-                          fontSize: FontSize.size22,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        locale.driverMealsUnit,
-                        style: getRegularStyle(
-                          color: color.onPrimary.withValues(alpha: 0.8),
-                          fontSize: FontSize.size9,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Subtle Divider
-                Container(
-                  width: Spacing.border,
-                  height: Spacing.buttonHeight,
-                  color: color.onPrimary.withValues(alpha: 0.2),
-                ),
-                // Total Boxes Column
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        locale.driverTotalBoxesToday,
-                        style: getRegularStyle(
-                          color: color.onPrimary.withValues(alpha: 0.8),
-                          fontSize: FontSize.size9,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        '$totalBoxes',
-                        style: getBoldStyle(
-                          color: color.onPrimary,
-                          fontSize: FontSize.size22,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.xs),
-                      Text(
-                        locale.driverBoxesUnit,
-                        style: getRegularStyle(
-                          color: color.onPrimary.withValues(alpha: 0.8),
-                          fontSize: FontSize.size9,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: Spacing.sm),
-          // Illustration on logical end (left in RTL)
-          Image.asset(
-            AppAssets.driverAssignedBoxesBanner,
-            width: 80,
-            height: 76,
-            fit: BoxFit.contain,
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.10),
+          width: 1.0,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF603BC1).withValues(alpha: 0.22),
+            blurRadius: 18,
+            offset: const Offset(0, 6),
           ),
         ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        child: Stack(
+          children: [
+            // Ambient glow behind illustration
+            PositionedDirectional(
+              end: -10,
+              bottom: -10,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF603BC1).withValues(alpha: 0.35),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF603BC1).withValues(alpha: 0.45),
+                      blurRadius: 36,
+                      spreadRadius: 10,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Content
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Spacing.base,
+                vertical: Spacing.md,
+              ),
+              child: Row(
+                children: [
+                  // Text stats column
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Eyebrow label with active indicator dot
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 7,
+                              height: 7,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFF1BC74E),
+                              ),
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Flexible(
+                              child: Text(
+                                locale.driverTotalBoxesToday,
+                                style: getMediumStyle(
+                                  color: Colors.white.withValues(alpha: 0.85),
+                                  fontSize: FontSize.size12,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: Spacing.xs),
+                        // Number and unit
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              '$totalBoxes',
+                              style: getBoldStyle(
+                                color: Colors.white,
+                                fontSize: FontSize.size28,
+                                height: 1.1,
+                              ),
+                            ),
+                            const SizedBox(width: Spacing.xs),
+                            Text(
+                              locale.driverBoxesUnit,
+                              style: getMediumStyle(
+                                color: Colors.white.withValues(alpha: 0.8),
+                                fontSize: FontSize.size13,
+                                height: 1.1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.md),
+                  // 3D Box Illustration
+                  Image.asset(
+                    AppAssets.driverAssignedBoxesBanner,
+                    width: 78,
+                    height: 74,
+                    fit: BoxFit.contain,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

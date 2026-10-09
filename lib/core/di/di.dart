@@ -64,7 +64,14 @@ import '../../features/driver/active_delivery/domain/repo/driver_delivery_reposi
 import '../../features/driver/active_delivery/domain/usecase/arrive_at_driver_customer_usecase.dart';
 import '../../features/driver/active_delivery/domain/usecase/upload_driver_delivery_proof_usecase.dart';
 import '../../features/driver/active_delivery/domain/usecase/deliver_driver_order_usecase.dart';
+import '../../features/driver/active_delivery/domain/usecase/start_driver_delivery_usecase.dart';
 import '../../features/driver/active_delivery/presentation/manager/active_delivery_view_model.dart';
+import '../../features/driver/delivery_issues/data/data_source/driver_reassignment_remote_data_source.dart';
+import '../../features/driver/delivery_issues/data/data_source/driver_reassignment_remote_data_source_impl.dart';
+import '../../features/driver/delivery_issues/data/repo/driver_reassignment_repository_impl.dart';
+import '../../features/driver/delivery_issues/domain/repo/driver_reassignment_repository.dart';
+import '../../features/driver/delivery_issues/domain/usecase/submit_driver_reassignment_usecase.dart';
+import '../../features/driver/delivery_issues/presentation/manager/driver_reassignment_view_model.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source_impl.dart';
 import '../../features/driver/driver_profile/data/repo/driver_profile_repository_impl.dart';
@@ -951,13 +958,36 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<DeliverDriverOrderUseCase>(
     () => DeliverDriverOrderUseCase(getIt<DriverDeliveryRepository>()),
   );
+  getIt.registerFactory<StartDriverDeliveryUseCase>(
+    () => StartDriverDeliveryUseCase(getIt<DriverDeliveryRepository>()),
+  );
   getIt.registerFactory<ActiveDeliveryViewModel>(
     () => ActiveDeliveryViewModel(
+      startDriverDeliveryUseCase: getIt<StartDriverDeliveryUseCase>(),
       getDriverMapRouteUseCase: getIt<GetDriverMapRouteUseCase>(),
       arriveAtDriverCustomerUseCase: getIt<ArriveAtDriverCustomerUseCase>(),
       uploadDriverDeliveryProofUseCase:
           getIt<UploadDriverDeliveryProofUseCase>(),
       deliverDriverOrderUseCase: getIt<DeliverDriverOrderUseCase>(),
+    ),
+  );
+
+  // Driver Reassignment Request feature dependencies
+  getIt.registerLazySingleton<DriverReassignmentRemoteDataSource>(
+    () => DriverReassignmentRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverReassignmentRepository>(
+    () => DriverReassignmentRepositoryImpl(
+      getIt<DriverReassignmentRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<SubmitDriverReassignmentUseCase>(
+    () =>
+        SubmitDriverReassignmentUseCase(getIt<DriverReassignmentRepository>()),
+  );
+  getIt.registerFactory<DriverReassignmentViewModel>(
+    () => DriverReassignmentViewModel(
+      submitUseCase: getIt<SubmitDriverReassignmentUseCase>(),
     ),
   );
 

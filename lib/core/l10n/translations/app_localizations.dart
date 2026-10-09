@@ -6764,6 +6764,36 @@ abstract class AppLocalizations {
   /// **'Sudden health issue'**
   String get reassignRequestReasonHealthIssue;
 
+  /// No description provided for @reassignRequestReasonVehicleBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle breakdown'**
+  String get reassignRequestReasonVehicleBreakdown;
+
+  /// No description provided for @reassignRequestReasonTrafficAccident.
+  ///
+  /// In en, this message translates to:
+  /// **'Traffic accident'**
+  String get reassignRequestReasonTrafficAccident;
+
+  /// No description provided for @reassignRequestReasonMedicalOrPersonalEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical or personal emergency'**
+  String get reassignRequestReasonMedicalOrPersonalEmergency;
+
+  /// No description provided for @reassignRequestReasonDeviceFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Device failure'**
+  String get reassignRequestReasonDeviceFailure;
+
+  /// No description provided for @reassignRequestReasonOtherOperationalReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Other operational reason'**
+  String get reassignRequestReasonOtherOperationalReason;
+
   /// No description provided for @reassignRequestNotesHint.
   ///
   /// In en, this message translates to:
@@ -6775,6 +6805,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Submit Request'**
   String get reassignRequestSubmit;
+
+  /// No description provided for @reassignSubmitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting reassignment request...'**
+  String get reassignSubmitting;
 
   /// No description provided for @reassignRequestCancel.
   ///
@@ -6791,8 +6827,32 @@ abstract class AppLocalizations {
   /// No description provided for @reassignSubmittedSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Your request was submitted successfully\nYou will be notified when accepted\nby another driver'**
+  /// **'Your reassignment request has been submitted to support for review.'**
   String get reassignSubmittedSubtitle;
+
+  /// No description provided for @reassignUnavailableContext.
+  ///
+  /// In en, this message translates to:
+  /// **'No active delivery stop found for reassignment.'**
+  String get reassignUnavailableContext;
+
+  /// No description provided for @reassignRequestAlreadyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'A reassignment request is already active for this order.'**
+  String get reassignRequestAlreadyActive;
+
+  /// No description provided for @reassignStopStateNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reassignment cannot be requested for this delivery status.'**
+  String get reassignStopStateNotAllowed;
+
+  /// No description provided for @reassignTimeoutUncertain.
+  ///
+  /// In en, this message translates to:
+  /// **'The request timed out. It may have been received by support. Please verify before retrying.'**
+  String get reassignTimeoutUncertain;
 
   /// No description provided for @issueSubmittedTitle.
   ///

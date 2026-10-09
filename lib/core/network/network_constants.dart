@@ -5,6 +5,8 @@ abstract class NetworkConstants {
 }
 
 abstract class EndPoints {
+  static const String driverStartDelivery =
+      '/api/v1/driver/orders/{boxId}/start-delivery';
   static const String refresh = '/api/v1/auth/refresh';
 
   // Shared staff auth endpoints
@@ -140,4 +142,8 @@ abstract class EndPoints {
   static const String driverDeliverOrder =
       '/api/v1/driver/orders/{boxId}/deliver';
   static const String driverDeliveryProofUpload = '/api/v1/uploads';
+
+  // Driver reassignment request endpoint (Screen 08.02)
+  static const String driverRequestReassignment =
+      '/api/v1/driver/orders/{boxId}/request-reassignment';
 }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:meal_mate_delivery/features/driver/active_delivery/data/models/response/driver_start_delivery_response_dto.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,6 +21,11 @@ class FakeDriverDeliveryRemoteDataSource
   DriverDeliverResponseDto? deliverResponse;
   DriverDeliveryProofUploadResponseDto? uploadResponse;
   Exception? throwError;
+
+  @override
+  Future<DriverStartDeliveryResponseDto> startDelivery({
+    required String boxId,
+  }) async => DriverStartDeliveryResponseDto(boxId: boxId, status: 'InTransit');
 
   @override
   Future<DriverArrivalResponseDto> arriveAtCustomer({
@@ -58,23 +64,26 @@ void main() {
       repository = DriverDeliveryRepositoryImpl(fakeDataSource);
     });
 
-    test('arriveAtCustomer returns ApiSuccessResult on remote success', () async {
-      fakeDataSource.arrivalResponse = const DriverArrivalResponseDto(
-        boxId: 'box-1',
-        arrivedAtUtc: '2026-10-06T08:35:00Z',
-        isFirstArrival: true,
-      );
+    test(
+      'arriveAtCustomer returns ApiSuccessResult on remote success',
+      () async {
+        fakeDataSource.arrivalResponse = const DriverArrivalResponseDto(
+          boxId: 'box-1',
+          arrivedAtUtc: '2026-10-06T08:35:00Z',
+          isFirstArrival: true,
+        );
 
-      final result = await repository.arriveAtCustomer(
-        boxId: 'box-1',
-        request: const DriverArrivalRequestEntity(),
-      );
+        final result = await repository.arriveAtCustomer(
+          boxId: 'box-1',
+          request: const DriverArrivalRequestEntity(),
+        );
 
-      expect(result, isA<ApiSuccessResult>());
-      final success = result as ApiSuccessResult;
-      expect(success.data.boxId, 'box-1');
-      expect(success.data.isFirstArrival, isTrue);
-    });
+        expect(result, isA<ApiSuccessResult>());
+        final success = result as ApiSuccessResult;
+        expect(success.data.boxId, 'box-1');
+        expect(success.data.isFirstArrival, isTrue);
+      },
+    );
 
     test('arriveAtCustomer returns ApiErrorResult on DioException', () async {
       fakeDataSource.throwError = DioException(
@@ -122,9 +131,8 @@ void main() {
     });
 
     test('uploadProof returns ApiErrorResult if storageKey is empty', () async {
-      fakeDataSource.uploadResponse = const DriverDeliveryProofUploadResponseDto(
-        storageKey: '',
-      );
+      fakeDataSource.uploadResponse =
+          const DriverDeliveryProofUploadResponseDto(storageKey: '');
 
       final result = await repository.uploadProof(localPath: 'test_photo.jpg');
 
@@ -132,10 +140,11 @@ void main() {
     });
 
     test('uploadProof returns ApiSuccessResult when key is present', () async {
-      fakeDataSource.uploadResponse = const DriverDeliveryProofUploadResponseDto(
-        storageKey: 'uploads/drivers/delivery/proof.jpg',
-        uploadedAtUtc: '2026-10-06T08:40:00Z',
-      );
+      fakeDataSource.uploadResponse =
+          const DriverDeliveryProofUploadResponseDto(
+            storageKey: 'uploads/drivers/delivery/proof.jpg',
+            uploadedAtUtc: '2026-10-06T08:40:00Z',
+          );
 
       final result = await repository.uploadProof(localPath: 'test_photo.jpg');
 

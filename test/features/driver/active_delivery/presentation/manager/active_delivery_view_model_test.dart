@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:meal_mate_delivery/features/driver/active_delivery/domain/entities/driver_start_delivery_result_entity.dart';
+import 'package:meal_mate_delivery/features/driver/active_delivery/domain/usecase/start_driver_delivery_usecase.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
@@ -25,13 +27,37 @@ class MockDriverMapRepository implements DriverMapRepository {
   Failure? routeFailure;
 
   @override
-  Future<ApiResult<DriverMapRouteEntity>> getDriverMapRoute({String? focusedStopId}) async {
+  Future<ApiResult<DriverMapRouteEntity>> getDriverMapRoute({
+    String? focusedStopId,
+  }) async {
     if (routeFailure != null) return ApiErrorResult(failure: routeFailure!);
     return ApiSuccessResult(data: routeResult!);
   }
 }
 
 class MockDriverDeliveryRepository implements DriverDeliveryRepository {
+  Completer<ApiResult<DriverStartDeliveryResultEntity>>? startCompleter;
+  int startCallCount = 0;
+  String? startedBoxId;
+
+  @override
+  Future<ApiResult<DriverStartDeliveryResultEntity>> startDelivery({
+    required String boxId,
+  }) async {
+    startCallCount++;
+    startedBoxId = boxId;
+    return startCompleter?.future ??
+        Future.value(
+          ApiSuccessResult(
+            data: DriverStartDeliveryResultEntity(
+              boxId: boxId,
+              status: 'InTransit',
+              tripId: 'trip-1',
+            ),
+          ),
+        );
+  }
+
   Completer<ApiResult<DriverArrivalResultEntity>>? arrivalCompleter;
   int arrivalCallCount = 0;
 
@@ -120,9 +146,14 @@ void main() {
       mapRepo = MockDriverMapRepository()..routeResult = testRoute;
       deliveryRepo = MockDriverDeliveryRepository();
       viewModel = ActiveDeliveryViewModel(
+        startDriverDeliveryUseCase: StartDriverDeliveryUseCase(deliveryRepo),
         getDriverMapRouteUseCase: GetDriverMapRouteUseCase(mapRepo),
-        arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(deliveryRepo),
-        uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(deliveryRepo),
+        arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(
+          deliveryRepo,
+        ),
+        uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(
+          deliveryRepo,
+        ),
         deliverDriverOrderUseCase: DeliverDriverOrderUseCase(deliveryRepo),
       );
     });
@@ -136,6 +167,108 @@ void main() {
       expect(viewModel.state.isInitialLoading, isFalse);
       expect(viewModel.state.isEmpty, isFalse);
     });
+
+    test(
+      'starting calls the selected box once and waits for success before navigation',
+      () async {
+        viewModel.doIntent(const LoadActiveDeliveryEvent(stopId: 'stop-1'));
+        await Future<void>.delayed(Duration.zero);
+        deliveryRepo.startCompleter = Completer();
+        viewModel.doIntent(const StartActiveDeliveryRouteEvent());
+        viewModel.doIntent(const StartActiveDeliveryRouteEvent());
+        expect(deliveryRepo.startCallCount, 1);
+        expect(deliveryRepo.startedBoxId, 'box-1');
+        expect(viewModel.state.isStarting, isTrue);
+        expect(viewModel.state.navigationRevision, 0);
+        deliveryRepo.startCompleter!.complete(
+          const ApiSuccessResult(
+            data: DriverStartDeliveryResultEntity(
+              boxId: 'box-1',
+              tripId: 'trip-1',
+              status: 'InTransit',
+              customerName: 'Backend customer',
+              customerAddress: 'Backend address',
+              orderCode: 'MM-987654',
+              boxCount: 3,
+            ),
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.isStarting, isFalse);
+        expect(viewModel.state.selectedStop?.customerName, 'Backend customer');
+        expect(viewModel.state.selectedStop?.mealsCount, 2);
+        expect(viewModel.state.startResult?.boxCount, 3);
+        expect(viewModel.state.navigationRevision, 1);
+        viewModel.doIntent(const StartActiveDeliveryRouteEvent());
+        expect(deliveryRepo.startCallCount, 1);
+      },
+    );
+
+    test(
+      'start failure retains route, presents failure and permits explicit retry',
+      () async {
+        viewModel.doIntent(const LoadActiveDeliveryEvent());
+        await Future<void>.delayed(Duration.zero);
+        deliveryRepo.startCompleter = Completer();
+        viewModel.doIntent(const StartActiveDeliveryRouteEvent());
+        deliveryRepo.startCompleter!.complete(
+          ApiErrorResult(failure: Failure(errorMessage: 'Start failed')),
+        );
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.startFailure?.errorMessage, 'Start failed');
+        expect(viewModel.state.route, same(testRoute));
+        expect(viewModel.state.navigationRevision, 0);
+        deliveryRepo.startCompleter = null;
+        viewModel.doIntent(const StartActiveDeliveryRouteEvent());
+        await Future<void>.delayed(Duration.zero);
+        expect(deliveryRepo.startCallCount, 2);
+        expect(viewModel.state.startFailure, isNull);
+        expect(viewModel.state.navigationRevision, 1);
+      },
+    );
+
+    test('closing during start ignores late success', () async {
+      viewModel.doIntent(const LoadActiveDeliveryEvent());
+      await Future<void>.delayed(Duration.zero);
+      deliveryRepo.startCompleter = Completer();
+      viewModel.doIntent(const StartActiveDeliveryRouteEvent());
+      await viewModel.close();
+      deliveryRepo.startCompleter!.complete(
+        const ApiSuccessResult(
+          data: DriverStartDeliveryResultEntity(
+            boxId: 'box-1',
+            status: 'InTransit',
+          ),
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(viewModel.state.navigationRevision, 0);
+    });
+
+    test(
+      'tracking retains the started route without replacing it with a stale fetch',
+      () async {
+        mapRepo.routeFailure = Failure(errorMessage: 'Stale route');
+        const result = DriverStartDeliveryResultEntity(
+          boxId: 'box-1',
+          status: 'InTransit',
+        );
+        viewModel.doIntent(
+          const LoadActiveDeliveryEvent(
+            stopId: 'stop-1',
+            startedRoute: testRoute,
+            startResult: result,
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+        expect(viewModel.state.route, same(testRoute));
+        expect(viewModel.state.startResult, same(result));
+        expect(viewModel.state.selectedStop?.id, 'stop-1');
+        expect(viewModel.state.loadFailure, isNull);
+        viewModel.doIntent(const StartActiveDeliveryRouteEvent());
+        expect(deliveryRepo.startCallCount, 0);
+      },
+    );
 
     test('loads route and updates state', () async {
       viewModel.doIntent(const LoadActiveDeliveryEvent(stopId: 'stop-1'));
@@ -189,53 +322,68 @@ void main() {
       await Future<void>.delayed(Duration.zero);
 
       viewModel.doIntent(const ConfirmCustomerDeliveryEvent());
-      expect(deliveryRepo.deliverCallCount, 0); // Still 0 because proof not uploaded
+      expect(
+        deliveryRepo.deliverCallCount,
+        0,
+      ); // Still 0 because proof not uploaded
     });
 
-    test('selecting new photo invalidates previous proof key and revision', () async {
-      viewModel.doIntent(const LoadActiveDeliveryEvent(stopId: 'stop-1'));
-      await Future<void>.delayed(Duration.zero);
+    test(
+      'selecting new photo invalidates previous proof key and revision',
+      () async {
+        viewModel.doIntent(const LoadActiveDeliveryEvent(stopId: 'stop-1'));
+        await Future<void>.delayed(Duration.zero);
 
-      viewModel.doIntent(const DeliveryProofSelectedEvent('photo1.jpg'));
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(const DeliveryProofSelectedEvent('photo1.jpg'));
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.proofStorageKey, 'key-photo1.jpg');
-      expect(viewModel.state.isProofUploaded, isTrue);
+        expect(viewModel.state.proofStorageKey, 'key-photo1.jpg');
+        expect(viewModel.state.isProofUploaded, isTrue);
 
-      // Select new photo
-      deliveryRepo.uploadCompleter = Completer();
-      viewModel.doIntent(const DeliveryProofSelectedEvent('photo2.jpg'));
+        // Select new photo
+        deliveryRepo.uploadCompleter = Completer();
+        viewModel.doIntent(const DeliveryProofSelectedEvent('photo2.jpg'));
 
-      expect(viewModel.state.proofStorageKey, isNull);
-      expect(viewModel.state.isProofUploaded, isFalse);
-      expect(viewModel.state.isUploading, isTrue);
-    });
+        expect(viewModel.state.proofStorageKey, isNull);
+        expect(viewModel.state.isProofUploaded, isFalse);
+        expect(viewModel.state.isUploading, isTrue);
+      },
+    );
 
-    test('successful delivery with arrival and proof triggers deliver call', () async {
-      viewModel.doIntent(const LoadActiveDeliveryEvent(stopId: 'stop-1'));
-      await Future<void>.delayed(Duration.zero);
+    test(
+      'successful delivery with arrival and proof triggers deliver call',
+      () async {
+        viewModel.doIntent(const LoadActiveDeliveryEvent(stopId: 'stop-1'));
+        await Future<void>.delayed(Duration.zero);
 
-      viewModel.doIntent(const ConfirmCustomerArrivalEvent());
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(const ConfirmCustomerArrivalEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      viewModel.doIntent(const DeliveryProofSelectedEvent('proof.jpg'));
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(const DeliveryProofSelectedEvent('proof.jpg'));
+        await Future<void>.delayed(Duration.zero);
 
-      expect(viewModel.state.canDeliver, isTrue);
+        expect(viewModel.state.canDeliver, isTrue);
 
-      viewModel.doIntent(const ConfirmCustomerDeliveryEvent());
-      await Future<void>.delayed(Duration.zero);
+        viewModel.doIntent(const ConfirmCustomerDeliveryEvent());
+        await Future<void>.delayed(Duration.zero);
 
-      expect(deliveryRepo.deliverCallCount, 1);
-      expect(viewModel.state.deliveryResult, isNotNull);
-    });
+        expect(deliveryRepo.deliverCallCount, 1);
+        expect(viewModel.state.deliveryResult, isNotNull);
+      },
+    );
 
-    test('OTP input converts Arabic numerals and allows delivery even if empty or partial', () async {
-      viewModel.doIntent(const OptionalDeliveryOtpChangedEvent('١٢٣٤'));
-      expect(viewModel.state.otpInput, '1234');
+    test(
+      'OTP input converts Arabic numerals and allows delivery even if empty or partial',
+      () async {
+        viewModel.doIntent(const OptionalDeliveryOtpChangedEvent('١٢٣٤'));
+        expect(viewModel.state.otpInput, '1234');
 
-      viewModel.doIntent(const OptionalDeliveryOtpChangedEvent('١٢'));
-      expect(viewModel.state.otpInput, '12'); // Incomplete OTP stored in state but does not block delivery
-    });
+        viewModel.doIntent(const OptionalDeliveryOtpChangedEvent('١٢'));
+        expect(
+          viewModel.state.otpInput,
+          '12',
+        ); // Incomplete OTP stored in state but does not block delivery
+      },
+    );
   });
 }

@@ -8,9 +8,14 @@ import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/routing/arguments/driver_active_delivery_route_arguments.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/di/di.dart';
+import '../../../../../core/errors/error_widgets/api_error_widget.dart';
+import '../../../../../core/errors/error_widgets/inline_api_error_widget.dart';
+import '../../../../../core/network/failures.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/custom_app_bar.dart';
 import '../../../map/presentation/widgets/driver_map_polyline_decoder.dart';
+import '../../../tracking/data/services/driver_location_service.dart';
+import '../../../tracking/presentation/manager/driver_live_location_coordinator.dart';
 import '../../domain/entities/active_delivery_trip_entity.dart';
 import '../../domain/fake_data/driver_active_delivery_fake_data.dart';
 import '../manager/active_delivery_event.dart';
@@ -44,16 +49,20 @@ class DriverStartDeliveryRouteScreen extends StatefulWidget {
 class _DriverStartDeliveryRouteScreenState
     extends State<DriverStartDeliveryRouteScreen> {
   ActiveDeliveryViewModel? _viewModel;
+  bool _ownsViewModel = false;
   int _lastHandledNavRevision = 0;
+  LatLng? _deviceDriverLatLng;
 
   @override
   void initState() {
     super.initState();
+    _fetchDeviceDriverLocation();
     if (widget.trip == null) {
       if (widget.viewModel != null) {
         _viewModel = widget.viewModel;
       } else if (getIt.isRegistered<ActiveDeliveryViewModel>()) {
         _viewModel = getIt<ActiveDeliveryViewModel>();
+        _ownsViewModel = true;
       }
       if (_viewModel != null) {
         _lastHandledNavRevision = _viewModel!.state.navigationRevision;
@@ -64,8 +73,32 @@ class _DriverStartDeliveryRouteScreenState
     }
   }
 
+  void _fetchDeviceDriverLocation() {
+    if (getIt.isRegistered<DriverLiveLocationCoordinator>()) {
+      final sample = getIt<DriverLiveLocationCoordinator>().latestLocation;
+      if (sample != null) {
+        _deviceDriverLatLng = LatLng(sample.latitude, sample.longitude);
+      }
+    }
+
+    if (getIt.isRegistered<DriverLocationService>()) {
+      unawaited(() async {
+        try {
+          final position =
+              await getIt<DriverLocationService>().getCurrentPosition();
+          if (position != null && mounted) {
+            setState(() {
+              _deviceDriverLatLng =
+                  LatLng(position.latitude, position.longitude);
+            });
+          }
+        } catch (_) {}
+      }());
+    }
+  }
+
   void _handleStartRoute(BuildContext context) {
-    if (widget.onStartRoute != null) {
+    if (widget.trip != null && widget.onStartRoute != null) {
       widget.onStartRoute!();
       return;
     }
@@ -74,16 +107,12 @@ class _DriverStartDeliveryRouteScreenState
       _viewModel!.doIntent(const StartActiveDeliveryRouteEvent());
       return;
     }
+  }
 
-    unawaited(
-      context.pushReplacementNamed(
-        AppRoutes.driverActiveDeliveryTracking,
-        arguments: widget.arguments ??
-            (widget.trip != null
-                ? null
-                : const DriverActiveDeliveryRouteArguments()),
-      ),
-    );
+  @override
+  void dispose() {
+    if (_ownsViewModel) unawaited(_viewModel!.close());
+    super.dispose();
   }
 
   void _navigateToTracking(BuildContext context, ActiveDeliveryState state) {
@@ -95,6 +124,8 @@ class _DriverStartDeliveryRouteScreenState
         arguments: DriverActiveDeliveryRouteArguments(
           stopId: stop?.id ?? widget.arguments?.stopId,
           tripId: tripId,
+          startResult: state.startResult,
+          startedRoute: state.route,
         ),
       ),
     );
@@ -103,16 +134,25 @@ class _DriverStartDeliveryRouteScreenState
   @override
   Widget build(BuildContext context) {
     if (widget.trip != null || _viewModel == null) {
-      final currentTrip = widget.trip ?? DriverActiveDeliveryFakeData.defaultTrip;
+      final currentTrip =
+          widget.trip ?? DriverActiveDeliveryFakeData.defaultTrip;
       return _buildTripView(context, currentTrip);
     }
 
     return BlocProvider.value(
       value: _viewModel!,
       child: BlocConsumer<ActiveDeliveryViewModel, ActiveDeliveryState>(
+        listenWhen: (previous, current) =>
+            previous.startResult != current.startResult &&
+            current.startResult != null,
+        buildWhen: (previous, current) =>
+            previous.route != current.route ||
+            previous.isInitialLoading != current.isInitialLoading ||
+            previous.isEmpty != current.isEmpty ||
+            previous.loadFailure != current.loadFailure,
         listener: (context, state) {
           if (state.navigationRevision > _lastHandledNavRevision &&
-              state.isEligibleToStart) {
+              state.startResult != null) {
             _lastHandledNavRevision = state.navigationRevision;
             _navigateToTracking(context, state);
           }
@@ -134,28 +174,11 @@ class _DriverStartDeliveryRouteScreenState
               body: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(Spacing.base),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.error_outline_rounded,
-                        size: 48,
-                        color: context.colorScheme.error,
-                      ),
-                      const SizedBox(height: Spacing.sm),
-                      Text(
-                        state.loadFailure?.errorMessage ?? '',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: context.colorScheme.onSurface),
-                      ),
-                      const SizedBox(height: Spacing.base),
-                      ElevatedButton(
-                        onPressed: () => _viewModel?.doIntent(
-                          const RefreshActiveDeliveryEvent(),
-                        ),
-                        child: Text(context.localization.driverRetryDelivery),
-                      ),
-                    ],
+                  child: ApiErrorWidget.fromTypedFailure(
+                    failure: state.loadFailure!,
+                    onRetry: () => _viewModel?.doIntent(
+                      const RefreshActiveDeliveryEvent(),
+                    ),
                   ),
                 ),
               ),
@@ -201,12 +224,12 @@ class _DriverStartDeliveryRouteScreenState
           final nav = state.route?.navigation;
           final originLatLng = nav?.origin != null
               ? LatLng(nav!.origin!.latitude, nav.origin!.longitude)
-              : null;
+              : _deviceDriverLatLng;
           final destLatLng = nav?.destination != null
               ? LatLng(nav!.destination!.latitude, nav.destination!.longitude)
               : (stop.latitude != null && stop.longitude != null
-                  ? LatLng(stop.latitude!, stop.longitude!)
-                  : null);
+                    ? LatLng(stop.latitude!, stop.longitude!)
+                    : null);
           final polylinePoints = nav?.encodedPolyline != null
               ? DriverMapPolylineDecoder.decodePolyline(nav!.encodedPolyline)
               : const <LatLng>[];
@@ -228,9 +251,30 @@ class _DriverStartDeliveryRouteScreenState
                   Spacing.base,
                   Spacing.md,
                 ),
-                child: StartRouteActionButton(
-                  onPressed: () => _handleStartRoute(context),
-                ),
+                child:
+                    BlocSelector<
+                      ActiveDeliveryViewModel,
+                      ActiveDeliveryState,
+                      ({bool busy, Failure? failure})
+                    >(
+                      selector: (state) =>
+                          (busy: state.isStarting, failure: state.startFailure),
+                      builder: (context, action) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (action.failure != null) ...[
+                            InlineApiErrorWidget(failure: action.failure!),
+                            const SizedBox(height: Spacing.sm),
+                          ],
+                          StartRouteActionButton(
+                            isLoading: action.busy,
+                            onPressed: action.busy
+                                ? null
+                                : () => _handleStartRoute(context),
+                          ),
+                        ],
+                      ),
+                    ),
               ),
             ),
             body: SafeArea(
@@ -251,6 +295,7 @@ class _DriverStartDeliveryRouteScreenState
                       destinationLatLng: destLatLng,
                       polylinePoints: polylinePoints,
                       height: mapHeight,
+                      boxCode: stop.boxCode,
                     ),
                     const SizedBox(height: Spacing.md),
                     StartRouteCustomerCard(
@@ -269,7 +314,10 @@ class _DriverStartDeliveryRouteScreenState
     );
   }
 
-  Widget _buildTripView(BuildContext context, ActiveDeliveryTripEntity currentTrip) {
+  Widget _buildTripView(
+    BuildContext context,
+    ActiveDeliveryTripEntity currentTrip,
+  ) {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final mapHeight = (screenHeight - 460).clamp(280.0, 440.0);
 
@@ -285,7 +333,9 @@ class _DriverStartDeliveryRouteScreenState
             Spacing.md,
           ),
           child: StartRouteActionButton(
-            onPressed: () => _handleStartRoute(context),
+            onPressed: widget.trip != null && widget.onStartRoute != null
+                ? () => _handleStartRoute(context)
+                : null,
           ),
         ),
       ),
@@ -306,7 +356,9 @@ class _DriverStartDeliveryRouteScreenState
                 driverLocation: currentTrip.driverLocation,
                 customerLocation: currentTrip.customerLocation,
                 routePoints: currentTrip.routePoints,
+                originLatLng: _deviceDriverLatLng,
                 height: mapHeight,
+                boxCode: currentTrip.order.boxCode,
               ),
               const SizedBox(height: Spacing.md),
               StartRouteCustomerCard(

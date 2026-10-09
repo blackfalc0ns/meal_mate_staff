@@ -25,6 +25,6 @@ class DeliveryIssuesFakeData {
 
   static const ReassignmentRequestEntity defaultReassignment =
       ReassignmentRequestEntity(
-    reason: ReassignmentReason.vehicleFailure,
+    reason: ReassignmentReason.vehicleBreakdown,
   );
 }

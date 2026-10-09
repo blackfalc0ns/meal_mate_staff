@@ -88,6 +88,9 @@ import 'app_routes.dart';
 import 'arguments/driver_confirm_receipt_route_arguments.dart';
 import 'arguments/driver_pickup_summary_route_arguments.dart';
 import 'arguments/driver_active_delivery_route_arguments.dart';
+import 'arguments/driver_reassignment_route_arguments.dart';
+import '../../features/driver/delivery_issues/domain/entities/reassignment_result_entity.dart';
+import '../../features/driver/delivery_issues/domain/entities/reassignment_delivery_context_entity.dart';
 
 class RouteGenerator {
   const RouteGenerator._();
@@ -750,21 +753,39 @@ class RouteGenerator {
         );
 
       case AppRoutes.driverReassignmentRequest:
-        final request = settings.arguments is ReassignmentRequestEntity
-            ? settings.arguments! as ReassignmentRequestEntity
-            : null;
+        DriverReassignmentRouteArguments? args;
+        if (settings.arguments is DriverReassignmentRouteArguments) {
+          args = settings.arguments as DriverReassignmentRouteArguments;
+        } else if (settings.arguments is DeliveryIssueEntity) {
+          final issue = settings.arguments as DeliveryIssueEntity;
+          if (issue.deliveryContext != null) {
+            args = DriverReassignmentRouteArguments(
+              delivery: issue.deliveryContext!,
+            );
+          }
+        } else if (settings.arguments is ReassignmentDeliveryContextEntity) {
+          args = DriverReassignmentRouteArguments(
+            delivery: settings.arguments as ReassignmentDeliveryContextEntity,
+          );
+        }
         return _buildRoute(
           settings: settings,
-          page: DriverReassignmentRequestScreen(initialRequest: request),
+          page: DriverReassignmentRequestScreen(
+            routeArguments: args,
+            initialRequest: args?.initialRequest ??
+                (settings.arguments is ReassignmentRequestEntity
+                    ? settings.arguments as ReassignmentRequestEntity
+                    : null),
+          ),
         );
 
       case AppRoutes.driverReassignmentSubmitted:
-        final request = settings.arguments is ReassignmentRequestEntity
-            ? settings.arguments! as ReassignmentRequestEntity
+        final result = settings.arguments is ReassignmentResultEntity
+            ? settings.arguments as ReassignmentResultEntity
             : null;
         return _buildRoute(
           settings: settings,
-          page: DriverReassignmentSubmittedScreen(request: request),
+          page: DriverReassignmentSubmittedScreen(result: result),
         );
 
       case AppRoutes.driverIssueSubmitted:

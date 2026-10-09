@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import '../../features/driver/active_delivery/data/models/response/driver_start_delivery_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../features/account_status/data/models/response/driver_registration_status_response_dto.dart';
@@ -87,6 +88,8 @@ import '../../features/driver/active_delivery/data/models/request/driver_deliver
 import '../../features/driver/active_delivery/data/models/response/driver_arrival_response_dto.dart';
 import '../../features/driver/active_delivery/data/models/response/driver_deliver_response_dto.dart';
 import '../../features/driver/active_delivery/data/models/response/driver_delivery_proof_upload_response_dto.dart';
+import '../../features/driver/delivery_issues/data/models/request/driver_reassignment_request_dto.dart';
+import '../../features/driver/delivery_issues/data/models/response/driver_reassignment_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -418,6 +421,11 @@ abstract class ApiServices {
     @Path('tripId') String tripId,
   );
 
+  @POST(EndPoints.driverStartDelivery)
+  Future<DriverStartDeliveryResponseDto> startDriverDelivery(
+    @Path('boxId') String boxId,
+  );
+
   @POST(EndPoints.driverTripStart)
   Future<DriverTripStartResponseDto> startDriverTrip(
     @Path('tripId') String tripId,
@@ -463,5 +471,11 @@ abstract class ApiServices {
   @POST(EndPoints.driverDeliveryProofUpload)
   Future<DriverDeliveryProofUploadResponseDto> uploadDriverDeliveryProof(
     @Part(name: 'file') File file,
+  );
+
+  @POST(EndPoints.driverRequestReassignment)
+  Future<DriverReassignmentResponseDto> requestDriverReassignment(
+    @Path('boxId') String boxId,
+    @Body() DriverReassignmentRequestDto request,
   );
 }

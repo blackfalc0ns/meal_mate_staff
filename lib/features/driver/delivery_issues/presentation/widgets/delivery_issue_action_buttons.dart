@@ -9,13 +9,13 @@ class DeliveryIssueActionButtons extends StatelessWidget {
   const DeliveryIssueActionButtons({
     super.key,
     required this.onSubmit,
-    required this.onRequestReassign,
+    this.onRequestReassign,
     required this.onCallSupervisor,
     this.isLoading = false,
   });
 
   final VoidCallback onSubmit;
-  final VoidCallback onRequestReassign;
+  final VoidCallback? onRequestReassign;
   final VoidCallback onCallSupervisor;
   final bool isLoading;
 

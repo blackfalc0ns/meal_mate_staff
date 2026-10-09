@@ -1,4 +1,5 @@
 import 'delivery_issue_reason.dart';
+import 'reassignment_delivery_context_entity.dart';
 
 class DeliveryIssueEntity {
   const DeliveryIssueEntity({
@@ -11,6 +12,7 @@ class DeliveryIssueEntity {
     required this.selectedReason,
     this.notes = '',
     this.attachedPhotos = const [],
+    this.deliveryContext,
   });
 
   final String boxCode;
@@ -22,6 +24,7 @@ class DeliveryIssueEntity {
   final DeliveryIssueReason selectedReason;
   final String notes;
   final List<String> attachedPhotos;
+  final ReassignmentDeliveryContextEntity? deliveryContext;
 
   DeliveryIssueEntity copyWith({
     String? boxCode,
@@ -33,6 +36,8 @@ class DeliveryIssueEntity {
     DeliveryIssueReason? selectedReason,
     String? notes,
     List<String>? attachedPhotos,
+    ReassignmentDeliveryContextEntity? deliveryContext,
+    bool clearDeliveryContext = false,
   }) {
     return DeliveryIssueEntity(
       boxCode: boxCode ?? this.boxCode,
@@ -44,6 +49,9 @@ class DeliveryIssueEntity {
       selectedReason: selectedReason ?? this.selectedReason,
       notes: notes ?? this.notes,
       attachedPhotos: attachedPhotos ?? this.attachedPhotos,
+      deliveryContext: clearDeliveryContext
+          ? null
+          : (deliveryContext ?? this.deliveryContext),
     );
   }
 }

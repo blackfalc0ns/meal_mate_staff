@@ -1,11 +1,21 @@
+import '../../domain/entities/driver_start_delivery_result_entity.dart';
+import '../../../map/domain/entities/driver_map_route_entity.dart';
+
 sealed class ActiveDeliveryEvent {
   const ActiveDeliveryEvent();
 }
 
 class LoadActiveDeliveryEvent extends ActiveDeliveryEvent {
-  const LoadActiveDeliveryEvent({this.stopId, this.tripId});
+  const LoadActiveDeliveryEvent({
+    this.stopId,
+    this.tripId,
+    this.startedRoute,
+    this.startResult,
+  });
   final String? stopId;
   final String? tripId;
+  final DriverMapRouteEntity? startedRoute;
+  final DriverStartDeliveryResultEntity? startResult;
 }
 
 class RefreshActiveDeliveryEvent extends ActiveDeliveryEvent {

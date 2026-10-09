@@ -1,3 +1,5 @@
+import 'package:meal_mate_delivery/features/driver/active_delivery/domain/entities/driver_start_delivery_result_entity.dart';
+import 'package:meal_mate_delivery/features/driver/active_delivery/domain/usecase/start_driver_delivery_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -31,16 +33,22 @@ class TestDriverMapRepository implements DriverMapRepository {
   final DriverMapRouteEntity route;
 
   @override
-  Future<ApiResult<DriverMapRouteEntity>> getDriverMapRoute({String? focusedStopId}) async {
+  Future<ApiResult<DriverMapRouteEntity>> getDriverMapRoute({
+    String? focusedStopId,
+  }) async {
     return ApiSuccessResult(data: route);
   }
 }
 
 class TestDriverDeliveryRepository implements DriverDeliveryRepository {
-  TestDriverDeliveryRepository({
-    this.uploadResult,
-    this.deliverResult,
-  });
+  @override
+  Future<ApiResult<DriverStartDeliveryResultEntity>> startDelivery({
+    required String boxId,
+  }) async => ApiSuccessResult(
+    data: DriverStartDeliveryResultEntity(boxId: boxId, status: 'InTransit'),
+  );
+
+  TestDriverDeliveryRepository({this.uploadResult, this.deliverResult});
 
   DriverDeliveryProofUploadEntity? uploadResult;
   DriverDeliverResultEntity? deliverResult;
@@ -68,7 +76,8 @@ class TestDriverDeliveryRepository implements DriverDeliveryRepository {
   }) async {
     uploadCallCount++;
     return ApiSuccessResult(
-      data: uploadResult ??
+      data:
+          uploadResult ??
           DriverDeliveryProofUploadEntity(
             storageKey: 'proofs/test_key.jpg',
             uploadedAtUtc: DateTime.utc(2026, 10, 6, 12, 1),
@@ -83,7 +92,8 @@ class TestDriverDeliveryRepository implements DriverDeliveryRepository {
   }) async {
     deliverCallCount++;
     return ApiSuccessResult(
-      data: deliverResult ??
+      data:
+          deliverResult ??
           DriverDeliverResultEntity(
             boxId: boxId,
             deliveredAtUtc: DateTime.utc(2026, 10, 6, 12, 2),
@@ -158,9 +168,14 @@ void main() {
       final mapRepo = TestDriverMapRepository(_createTestRoute());
       final deliveryRepo = TestDriverDeliveryRepository();
       final viewModel = ActiveDeliveryViewModel(
+        startDriverDeliveryUseCase: StartDriverDeliveryUseCase(deliveryRepo),
         getDriverMapRouteUseCase: GetDriverMapRouteUseCase(mapRepo),
-        arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(deliveryRepo),
-        uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(deliveryRepo),
+        arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(
+          deliveryRepo,
+        ),
+        uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(
+          deliveryRepo,
+        ),
         deliverDriverOrderUseCase: DeliverDriverOrderUseCase(deliveryRepo),
       );
       addTearDown(viewModel.close);
@@ -182,61 +197,73 @@ void main() {
       expect(find.byType(DriverDeliveryProofPhotoSection), findsOneWidget);
       expect(find.byType(DriverDeliveryOptionalOtpSection), findsOneWidget);
 
-      final submitButton = find.byKey(const ValueKey('confirm_delivery_submit_button'));
+      final submitButton = find.byKey(
+        const ValueKey('confirm_delivery_submit_button'),
+      );
       expect(submitButton, findsOneWidget);
       final elevatedButton = tester.widget<ElevatedButton>(submitButton);
       expect(elevatedButton.onPressed, isNull); // disabled until photo uploaded
     });
 
-    testWidgets('picking proof photo uploads and enables delivery confirmation button', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(390 * 2, 844 * 2);
-      tester.view.devicePixelRatio = 2;
-      addTearDown(tester.view.resetPhysicalSize);
+    testWidgets(
+      'picking proof photo uploads and enables delivery confirmation button',
+      (tester) async {
+        tester.view.physicalSize = const Size(390 * 2, 844 * 2);
+        tester.view.devicePixelRatio = 2;
+        addTearDown(tester.view.resetPhysicalSize);
 
-      final mapRepo = TestDriverMapRepository(_createTestRoute());
-      final deliveryRepo = TestDriverDeliveryRepository();
-      final viewModel = ActiveDeliveryViewModel(
-        getDriverMapRouteUseCase: GetDriverMapRouteUseCase(mapRepo),
-        arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(deliveryRepo),
-        uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(deliveryRepo),
-        deliverDriverOrderUseCase: DeliverDriverOrderUseCase(deliveryRepo),
-      );
-      addTearDown(viewModel.close);
-
-      bool deliveryConfirmedCalled = false;
-
-      await tester.pumpWidget(
-        _buildTestApp(
-          child: DriverDeliveryArrivalConfirmationScreen(
-            viewModel: viewModel,
-            cameraService: FakeCameraService(path: 'dummy_photo.jpg'),
-            onDeliveryConfirmed: () => deliveryConfirmedCalled = true,
+        final mapRepo = TestDriverMapRepository(_createTestRoute());
+        final deliveryRepo = TestDriverDeliveryRepository();
+        final viewModel = ActiveDeliveryViewModel(
+          startDriverDeliveryUseCase: StartDriverDeliveryUseCase(deliveryRepo),
+          getDriverMapRouteUseCase: GetDriverMapRouteUseCase(mapRepo),
+          arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(
+            deliveryRepo,
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+          uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(
+            deliveryRepo,
+          ),
+          deliverDriverOrderUseCase: DeliverDriverOrderUseCase(deliveryRepo),
+        );
+        addTearDown(viewModel.close);
 
-      await tester.ensureVisible(find.byType(DriverDeliveryProofPhotoSection));
-      await tester.tap(find.text('اضغط لالتقاط صورة'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+        bool deliveryConfirmedCalled = false;
 
-      expect(deliveryRepo.uploadCallCount, equals(1));
-      expect(viewModel.state.isProofUploaded, isTrue);
+        await tester.pumpWidget(
+          _buildTestApp(
+            child: DriverDeliveryArrivalConfirmationScreen(
+              viewModel: viewModel,
+              cameraService: FakeCameraService(path: 'dummy_photo.jpg'),
+              onDeliveryConfirmed: () => deliveryConfirmedCalled = true,
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      final submitButton = find.byKey(const ValueKey('confirm_delivery_submit_button'));
-      final elevatedButton = tester.widget<ElevatedButton>(submitButton);
-      expect(elevatedButton.onPressed, isNotNull);
+        await tester.ensureVisible(
+          find.byType(DriverDeliveryProofPhotoSection),
+        );
+        await tester.tap(find.text('اضغط لالتقاط صورة'));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
-      await tester.tap(submitButton);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+        expect(deliveryRepo.uploadCallCount, equals(1));
+        expect(viewModel.state.isProofUploaded, isTrue);
 
-      expect(deliveryRepo.deliverCallCount, equals(1));
-      expect(deliveryConfirmedCalled, isTrue);
-    });
+        final submitButton = find.byKey(
+          const ValueKey('confirm_delivery_submit_button'),
+        );
+        final elevatedButton = tester.widget<ElevatedButton>(submitButton);
+        expect(elevatedButton.onPressed, isNotNull);
+
+        await tester.tap(submitButton);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
+
+        expect(deliveryRepo.deliverCallCount, equals(1));
+        expect(deliveryConfirmedCalled, isTrue);
+      },
+    );
 
     testWidgets('renders in English LTR locale without issues', (tester) async {
       tester.view.physicalSize = const Size(390 * 2, 844 * 2);
@@ -246,9 +273,14 @@ void main() {
       final mapRepo = TestDriverMapRepository(_createTestRoute());
       final deliveryRepo = TestDriverDeliveryRepository();
       final viewModel = ActiveDeliveryViewModel(
+        startDriverDeliveryUseCase: StartDriverDeliveryUseCase(deliveryRepo),
         getDriverMapRouteUseCase: GetDriverMapRouteUseCase(mapRepo),
-        arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(deliveryRepo),
-        uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(deliveryRepo),
+        arriveAtDriverCustomerUseCase: ArriveAtDriverCustomerUseCase(
+          deliveryRepo,
+        ),
+        uploadDriverDeliveryProofUseCase: UploadDriverDeliveryProofUseCase(
+          deliveryRepo,
+        ),
         deliverDriverOrderUseCase: DeliverDriverOrderUseCase(deliveryRepo),
       );
       addTearDown(viewModel.close);

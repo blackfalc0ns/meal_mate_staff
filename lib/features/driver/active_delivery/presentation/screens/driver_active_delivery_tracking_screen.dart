@@ -12,8 +12,10 @@ import '../../../calling/domain/entities/driver_call_attempt_entity.dart';
 import '../../../calling/presentation/widgets/customer_call_attempts_sheet.dart';
 import '../../../delivery_issues/domain/entities/delivery_issue_entity.dart';
 import '../../../delivery_issues/domain/entities/delivery_issue_reason.dart';
+import '../../../delivery_issues/domain/entities/reassignment_delivery_context_entity.dart';
 import '../../../map/domain/entities/driver_map_route_entity.dart';
 import '../../../map/domain/entities/driver_map_stop_entity.dart';
+import '../../../orders/domain/entities/driver_delivery_status.dart';
 import '../../../map/presentation/widgets/driver_map_polyline_decoder.dart';
 import '../../data/repositories/active_delivery_fake_repository_impl.dart';
 import '../../domain/entities/active_delivery_location_entity.dart';
@@ -90,7 +92,11 @@ class _DriverActiveDeliveryTrackingScreenState
     if (_viewModel != null) {
       _lastHandledNavRevision = _viewModel!.state.navigationRevision;
       _viewModel!.doIntent(
-        LoadActiveDeliveryEvent(stopId: widget.arguments?.stopId),
+        LoadActiveDeliveryEvent(
+          stopId: widget.arguments?.stopId,
+          startedRoute: widget.arguments?.startedRoute,
+          startResult: widget.arguments?.startResult,
+        ),
       );
     }
 
@@ -159,9 +165,7 @@ class _DriverActiveDeliveryTrackingScreenState
     unawaited(
       context.pushReplacementNamed(
         AppRoutes.driverDeliveryArrivalConfirmation,
-        arguments: DriverActiveDeliveryRouteArguments(
-          tripId: _trip.tripId,
-        ),
+        arguments: DriverActiveDeliveryRouteArguments(tripId: _trip.tripId),
       ),
     );
   }
@@ -209,19 +213,21 @@ class _DriverActiveDeliveryTrackingScreenState
     final cLng = stop.longitude ?? nav?.destination?.longitude ?? 46.6753;
     final polyPoints = nav?.encodedPolyline != null
         ? DriverMapPolylineDecoder.decodePolyline(nav!.encodedPolyline)
-            .map(
-              (p) => ActiveDeliveryLocationEntity(
-                latitude: p.latitude,
-                longitude: p.longitude,
-              ),
-            )
-            .toList()
+              .map(
+                (p) => ActiveDeliveryLocationEntity(
+                  latitude: p.latitude,
+                  longitude: p.longitude,
+                ),
+              )
+              .toList()
         : <ActiveDeliveryLocationEntity>[];
 
     return ActiveDeliveryTripEntity(
       tripId: route.tripId,
       order: ActiveDeliveryOrderEntity(
-        orderId: stop.boxCode,
+        orderId: _viewModel?.state.startResult?.boxId == stop.boxId
+            ? (_viewModel?.state.startResult?.orderCode ?? stop.boxCode)
+            : stop.boxCode,
         boxCode: stop.boxCode,
         customerName: stop.customerName,
         customerPhone: stop.customerPhone,
@@ -301,7 +307,12 @@ class _DriverActiveDeliveryTrackingScreenState
               ? _tripFromState(route, stop)
               : _trip;
 
-          return _buildScaffold(context, currentTrip, isArriving: state.isArriving);
+          return _buildScaffold(
+            context,
+            currentTrip,
+            isArriving: state.isArriving,
+            selectedStop: stop,
+          );
         },
       ),
     );
@@ -311,6 +322,7 @@ class _DriverActiveDeliveryTrackingScreenState
     BuildContext context,
     ActiveDeliveryTripEntity trip, {
     bool isArriving = false,
+    DriverMapStopEntity? selectedStop,
   }) {
     final color = context.colorScheme;
 
@@ -358,6 +370,7 @@ class _DriverActiveDeliveryTrackingScreenState
                       customerLocation: trip.customerLocation,
                       routePoints: trip.routePoints,
                       locationStream: _stream,
+                      boxCode: trip.order.boxCode,
                       onLocationUpdate: (loc) => _driverLocation = loc,
                       onCallCustomer: _handleCallCustomer,
                       onMessageCustomer: () {},
@@ -391,11 +404,57 @@ class _DriverActiveDeliveryTrackingScreenState
                 padding: const EdgeInsets.symmetric(horizontal: Spacing.base),
                 child: DriverTrackingHelpCard(
                   onTap: () {
+                    final targetBoxId = (selectedStop?.boxId.isNotEmpty == true)
+                        ? selectedStop!.boxId
+                        : (trip.order.orderId.isNotEmpty
+                              ? trip.order.orderId
+                              : '');
+                    final targetBoxCode =
+                        (selectedStop?.boxCode.isNotEmpty == true)
+                        ? selectedStop!.boxCode
+                        : trip.order.boxCode;
+                    final targetTripId = selectedStop?.tripId ?? trip.tripId;
+                    final isPickedUp = selectedStop != null
+                        ? (selectedStop.status ==
+                                  DriverDeliveryStatus.inProgress ||
+                              selectedStop.status ==
+                                  DriverDeliveryStatus.arrivedAtCustomer)
+                        : (trip.status == DeliveryTripStatus.enRoute ||
+                              trip.status == DeliveryTripStatus.arrived);
+
+                    final double? driverLat =
+                        (_driverLocation.latitude.isFinite &&
+                            _driverLocation.latitude >= -90 &&
+                            _driverLocation.latitude <= 90 &&
+                            _driverLocation.latitude != 0.0)
+                        ? _driverLocation.latitude
+                        : null;
+                    final double? driverLng =
+                        (_driverLocation.longitude.isFinite &&
+                            _driverLocation.longitude >= -180 &&
+                            _driverLocation.longitude <= 180 &&
+                            _driverLocation.longitude != 0.0)
+                        ? _driverLocation.longitude
+                        : null;
+                    final hasCoordinates =
+                        driverLat != null && driverLng != null;
+
+                    final deliveryContext = targetBoxId.isNotEmpty
+                        ? ReassignmentDeliveryContextEntity(
+                            boxId: targetBoxId,
+                            boxCode: targetBoxCode,
+                            tripId: targetTripId,
+                            isPickedUp: isPickedUp,
+                            driverLatitude: hasCoordinates ? driverLat : null,
+                            driverLongitude: hasCoordinates ? driverLng : null,
+                          )
+                        : null;
+
                     unawaited(
                       context.pushNamed(
                         AppRoutes.driverReportIssue,
                         arguments: DeliveryIssueEntity(
-                          boxCode: trip.order.boxCode,
+                          boxCode: targetBoxCode,
                           customerName: trip.order.customerName,
                           restaurantName: trip.order.restaurantName,
                           area: trip.order.address,
@@ -403,6 +462,7 @@ class _DriverActiveDeliveryTrackingScreenState
                           mealsCountText:
                               '${trip.order.mealsCount} من ${trip.order.mealsCount} وجبة',
                           selectedReason: DeliveryIssueReason.customerNoAnswer,
+                          deliveryContext: deliveryContext,
                         ),
                       ),
                     );

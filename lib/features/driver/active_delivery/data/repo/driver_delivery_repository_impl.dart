@@ -1,4 +1,6 @@
 import 'dart:io';
+import '../../domain/entities/driver_start_delivery_result_entity.dart';
+import '../mapper/driver_start_delivery_mapper.dart';
 
 import 'package:injectable/injectable.dart';
 
@@ -17,6 +19,14 @@ class DriverDeliveryRepositoryImpl implements DriverDeliveryRepository {
   const DriverDeliveryRepositoryImpl(this._remoteDataSource);
 
   final DriverDeliveryRemoteDataSource _remoteDataSource;
+
+  @override
+  Future<ApiResult<DriverStartDeliveryResultEntity>> startDelivery({
+    required String boxId,
+  }) => safeApiCall(() async {
+    final dto = await _remoteDataSource.startDelivery(boxId: boxId);
+    return dto.toEntity(expectedBoxId: boxId);
+  });
 
   @override
   Future<ApiResult<DriverArrivalResultEntity>> arriveAtCustomer({

@@ -3543,10 +3543,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reassignRequestReasonHealthIssue => 'Sudden health issue';
 
   @override
+  String get reassignRequestReasonVehicleBreakdown => 'Vehicle breakdown';
+
+  @override
+  String get reassignRequestReasonTrafficAccident => 'Traffic accident';
+
+  @override
+  String get reassignRequestReasonMedicalOrPersonalEmergency =>
+      'Medical or personal emergency';
+
+  @override
+  String get reassignRequestReasonDeviceFailure => 'Device failure';
+
+  @override
+  String get reassignRequestReasonOtherOperationalReason =>
+      'Other operational reason';
+
+  @override
   String get reassignRequestNotesHint => 'Write additional details (optional)';
 
   @override
   String get reassignRequestSubmit => 'Submit Request';
+
+  @override
+  String get reassignSubmitting => 'Submitting reassignment request...';
 
   @override
   String get reassignRequestCancel => 'Cancel';
@@ -3556,7 +3576,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reassignSubmittedSubtitle =>
-      'Your request was submitted successfully\nYou will be notified when accepted\nby another driver';
+      'Your reassignment request has been submitted to support for review.';
+
+  @override
+  String get reassignUnavailableContext =>
+      'No active delivery stop found for reassignment.';
+
+  @override
+  String get reassignRequestAlreadyActive =>
+      'A reassignment request is already active for this order.';
+
+  @override
+  String get reassignStopStateNotAllowed =>
+      'Reassignment cannot be requested for this delivery status.';
+
+  @override
+  String get reassignTimeoutUncertain =>
+      'The request timed out. It may have been received by support. Please verify before retrying.';
 
   @override
   String get issueSubmittedTitle => 'Report Submitted Successfully';

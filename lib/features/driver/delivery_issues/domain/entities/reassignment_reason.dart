@@ -1,6 +1,7 @@
 enum ReassignmentReason {
-  vehicleFailure,
-  accident,
-  emergency,
-  healthIssue,
+  vehicleBreakdown,
+  trafficAccident,
+  medicalOrPersonalEmergency,
+  deviceFailure,
+  otherOperationalReason,
 }

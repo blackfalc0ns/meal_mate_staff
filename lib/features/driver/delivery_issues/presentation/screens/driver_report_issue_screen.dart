@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../../../../config/routing/arguments/driver_reassignment_route_arguments.dart';
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../core/extensions/extensions.dart';
@@ -86,10 +87,17 @@ class _DriverReportIssueScreenState extends State<DriverReportIssueScreen> {
       return;
     }
 
+    final contextEntity = _issue.deliveryContext;
+    if (contextEntity == null || !contextEntity.isPickedUp) {
+      return;
+    }
+
     unawaited(
       context.pushNamed(
         AppRoutes.driverReassignmentRequest,
-        arguments: _issue,
+        arguments: DriverReassignmentRouteArguments(
+          delivery: contextEntity,
+        ),
       ),
     );
   }
@@ -174,7 +182,11 @@ class _DriverReportIssueScreenState extends State<DriverReportIssueScreen> {
               const SizedBox(height: Spacing.lg),
               DeliveryIssueActionButtons(
                 onSubmit: _handleSubmit,
-                onRequestReassign: _handleRequestReassign,
+                onRequestReassign: widget.onRequestReassign ??
+                    ((_issue.deliveryContext != null &&
+                            _issue.deliveryContext!.isPickedUp)
+                        ? _handleRequestReassign
+                        : null),
                 onCallSupervisor: _handleCallSupervisor,
               ),
               const SizedBox(height: Spacing.md),

@@ -5,9 +5,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate_delivery/config/theme/spacing.dart';
 import 'package:meal_mate_delivery/core/extensions/extensions.dart';
 
+import 'package:meal_mate_delivery/core/widget/map_markers/map_markers.dart';
+
 import '../../domain/entities/driver_map_stop_entity.dart';
 import 'driver_map_camera_controller.dart';
-import 'driver_map_marker_bitmap_factory.dart';
 
 class DriverMapBackground extends StatefulWidget {
   const DriverMapBackground({
@@ -66,7 +67,7 @@ class _DriverMapBackgroundState extends State<DriverMapBackground> {
 
   Future<void> _resolveMarkers() async {
     final driverDescriptor =
-        await DriverMapMarkerBitmapFactory.createDriverMarker(context);
+        await AppMapMarkerBitmapFactory.createDriverMarker(context);
 
     if (!mounted) return;
 
@@ -80,7 +81,7 @@ class _DriverMapBackgroundState extends State<DriverMapBackground> {
       if (!mounted) return;
       final stop = widget.stops[i];
       final isSelected = i == widget.selectedStopIndex;
-      final descriptor = await DriverMapMarkerBitmapFactory.createStopMarker(
+      final descriptor = await AppMapMarkerBitmapFactory.createStopMarker(
         context,
         stopId: stop.id,
         boxCode: stop.boxCode,
@@ -89,7 +90,7 @@ class _DriverMapBackgroundState extends State<DriverMapBackground> {
 
       if (!mounted) return;
 
-      final key = DriverMapMarkerBitmapFactory.stopCacheKey(
+      final key = AppMapMarkerBitmapFactory.stopCacheKey(
         stop.id,
         stop.boxCode,
         isSelected: isSelected,
@@ -147,7 +148,7 @@ class _DriverMapBackgroundState extends State<DriverMapBackground> {
       final stop = widget.stops[i];
       if (stop.latitude != null && stop.longitude != null) {
         final isSelected = i == widget.selectedStopIndex;
-        final stopKey = DriverMapMarkerBitmapFactory.stopCacheKey(
+        final stopKey = AppMapMarkerBitmapFactory.stopCacheKey(
           stop.id,
           stop.boxCode,
           isSelected: isSelected,

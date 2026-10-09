@@ -21,8 +21,12 @@ class CustomSnackbar {
   }) {
     final text = mapFailureMessage(context, message);
     CherryToast.success(
+      textDirection: Directionality.of(context),
+      horizontalAlignment: CrossAxisAlignment.stretch,
       title: Text(
         text,
+        textAlign: TextAlign.start,
+        textDirection: Directionality.of(context),
         style: getMediumStyle(
           color: AppColors.textPrimary,
           fontSize: FontSize.size13,
@@ -50,8 +54,12 @@ class CustomSnackbar {
   }) {
     final text = mapFailureMessage(context, message);
     CherryToast.error(
+      textDirection: Directionality.of(context),
+      horizontalAlignment: CrossAxisAlignment.stretch,
       title: Text(
         text,
+        textAlign: TextAlign.start,
+        textDirection: Directionality.of(context),
         style: getMediumStyle(
           color: AppColors.textPrimary,
           fontSize: FontSize.size13,
@@ -79,8 +87,12 @@ class CustomSnackbar {
   }) {
     final text = mapFailureMessage(context, message);
     CherryToast.warning(
+      textDirection: Directionality.of(context),
+      horizontalAlignment: CrossAxisAlignment.stretch,
       title: Text(
         text,
+        textAlign: TextAlign.start,
+        textDirection: Directionality.of(context),
         style: getMediumStyle(
           color: AppColors.textPrimary,
           fontSize: FontSize.size13,
@@ -108,8 +120,12 @@ class CustomSnackbar {
   }) {
     final text = mapFailureMessage(context, message);
     CherryToast.info(
+      textDirection: Directionality.of(context),
+      horizontalAlignment: CrossAxisAlignment.stretch,
       title: Text(
         text,
+        textAlign: TextAlign.start,
+        textDirection: Directionality.of(context),
         style: getMediumStyle(
           color: AppColors.textPrimary,
           fontSize: FontSize.size13,

@@ -3526,10 +3526,29 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reassignRequestReasonHealthIssue => 'وعكة صحية مفاجئة';
 
   @override
+  String get reassignRequestReasonVehicleBreakdown => 'عطل في المركبة';
+
+  @override
+  String get reassignRequestReasonTrafficAccident => 'حادث سير';
+
+  @override
+  String get reassignRequestReasonMedicalOrPersonalEmergency =>
+      'حالة طارئة صحية أو شخصية';
+
+  @override
+  String get reassignRequestReasonDeviceFailure => 'عطل في الجهاز';
+
+  @override
+  String get reassignRequestReasonOtherOperationalReason => 'سبب تشغيلي آخر';
+
+  @override
   String get reassignRequestNotesHint => 'اكتب تفاصيل إضافية (اختياري)';
 
   @override
   String get reassignRequestSubmit => 'إرسال الطلب';
+
+  @override
+  String get reassignSubmitting => 'جاري إرسال طلب إعادة الإسناد...';
 
   @override
   String get reassignRequestCancel => 'إلغاء';
@@ -3539,7 +3558,23 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reassignSubmittedSubtitle =>
-      'تم إرسال طلبك بنجاح\nسيتم إشعارك عند قبول الطلب\nمن سائق آخر';
+      'تم إرسال طلب إعادة الإسناد للدعم للمراجعة.';
+
+  @override
+  String get reassignUnavailableContext =>
+      'لا توجد شحنة نشطة متاحة لإعادة الإسناد.';
+
+  @override
+  String get reassignRequestAlreadyActive =>
+      'يوجد طلب إعادة إسناد نشط بالفعل لهذا الطلب.';
+
+  @override
+  String get reassignStopStateNotAllowed =>
+      'لا يمكن طلب إعادة الإسناد لهذه الشحنة في حالتها الحالية.';
+
+  @override
+  String get reassignTimeoutUncertain =>
+      'انتهت مهلة الطلب. قد يكون وصل للدعم، يرجى التحقق قبل إعادة المحاولة.';
 
   @override
   String get issueSubmittedTitle => 'تم إرسال البلاغ بنجاح';

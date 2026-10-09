@@ -31,7 +31,7 @@ void main() {
   group('ReassignmentReasonDropdown', () {
     testWidgets('renders dropdown with label and selected value',
         (tester) async {
-      ReassignmentReason? selected = ReassignmentReason.vehicleFailure;
+      ReassignmentReason? selected = ReassignmentReason.vehicleBreakdown;
 
       await tester.pumpWidget(
         _buildTestWidget(

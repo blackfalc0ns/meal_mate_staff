@@ -1,4 +1,5 @@
 import 'package:meal_mate_delivery/core/network/failures.dart';
+import '../../domain/entities/driver_start_delivery_result_entity.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/domain/entities/driver_arrival_result_entity.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/domain/entities/driver_deliver_result_entity.dart';
 import 'package:meal_mate_delivery/features/driver/map/domain/entities/driver_map_route_entity.dart';
@@ -8,6 +9,9 @@ import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver
 class ActiveDeliveryState {
   const ActiveDeliveryState({
     this.route,
+    this.startResult,
+    this.isStarting = false,
+    this.startFailure,
     this.selectedStopId,
     this.arrivalResult,
     this.deliveryResult,
@@ -31,6 +35,9 @@ class ActiveDeliveryState {
   });
 
   final DriverMapRouteEntity? route;
+  final DriverStartDeliveryResultEntity? startResult;
+  final bool isStarting;
+  final Failure? startFailure;
   final String? selectedStopId;
   final DriverArrivalResultEntity? arrivalResult;
   final DriverDeliverResultEntity? deliveryResult;
@@ -55,7 +62,9 @@ class ActiveDeliveryState {
   DriverMapStopEntity? get selectedStop {
     if (route == null) return null;
     if (selectedStopId != null && selectedStopId!.isNotEmpty) {
-      final match = route!.stops.where((s) => s.id == selectedStopId || s.boxId == selectedStopId);
+      final match = route!.stops.where(
+        (s) => s.id == selectedStopId || s.boxId == selectedStopId,
+      );
       if (match.isNotEmpty) return match.first;
     }
     return route!.focusedStop.id.isNotEmpty
@@ -89,6 +98,11 @@ class ActiveDeliveryState {
   }
 
   ActiveDeliveryState copyWith({
+    DriverStartDeliveryResultEntity? startResult,
+    bool clearStartResult = false,
+    bool? isStarting,
+    Failure? startFailure,
+    bool clearStartFailure = false,
     DriverMapRouteEntity? route,
     bool clearRoute = false,
     String? selectedStopId,
@@ -123,14 +137,31 @@ class ActiveDeliveryState {
     bool? isEligibleToStart,
   }) {
     return ActiveDeliveryState(
+      startResult: clearStartResult ? null : (startResult ?? this.startResult),
+      isStarting: isStarting ?? this.isStarting,
+      startFailure: clearStartFailure
+          ? null
+          : (startFailure ?? this.startFailure),
       route: clearRoute ? null : (route ?? this.route),
-      selectedStopId: clearSelectedStopId ? null : (selectedStopId ?? this.selectedStopId),
-      arrivalResult: clearArrivalResult ? null : (arrivalResult ?? this.arrivalResult),
-      deliveryResult: clearDeliveryResult ? null : (deliveryResult ?? this.deliveryResult),
-      localPhotoPath: clearLocalPhotoPath ? null : (localPhotoPath ?? this.localPhotoPath),
+      selectedStopId: clearSelectedStopId
+          ? null
+          : (selectedStopId ?? this.selectedStopId),
+      arrivalResult: clearArrivalResult
+          ? null
+          : (arrivalResult ?? this.arrivalResult),
+      deliveryResult: clearDeliveryResult
+          ? null
+          : (deliveryResult ?? this.deliveryResult),
+      localPhotoPath: clearLocalPhotoPath
+          ? null
+          : (localPhotoPath ?? this.localPhotoPath),
       photoRevision: photoRevision ?? this.photoRevision,
-      uploadedPhotoRevision: clearUploadedPhotoRevision ? null : (uploadedPhotoRevision ?? this.uploadedPhotoRevision),
-      proofStorageKey: clearProofStorageKey ? null : (proofStorageKey ?? this.proofStorageKey),
+      uploadedPhotoRevision: clearUploadedPhotoRevision
+          ? null
+          : (uploadedPhotoRevision ?? this.uploadedPhotoRevision),
+      proofStorageKey: clearProofStorageKey
+          ? null
+          : (proofStorageKey ?? this.proofStorageKey),
       otpInput: otpInput ?? this.otpInput,
       isInitialLoading: isInitialLoading ?? this.isInitialLoading,
       isRefreshing: isRefreshing ?? this.isRefreshing,
@@ -138,9 +169,15 @@ class ActiveDeliveryState {
       isUploading: isUploading ?? this.isUploading,
       isDelivering: isDelivering ?? this.isDelivering,
       loadFailure: clearLoadFailure ? null : (loadFailure ?? this.loadFailure),
-      arrivalFailure: clearArrivalFailure ? null : (arrivalFailure ?? this.arrivalFailure),
-      uploadFailure: clearUploadFailure ? null : (uploadFailure ?? this.uploadFailure),
-      deliveryFailure: clearDeliveryFailure ? null : (deliveryFailure ?? this.deliveryFailure),
+      arrivalFailure: clearArrivalFailure
+          ? null
+          : (arrivalFailure ?? this.arrivalFailure),
+      uploadFailure: clearUploadFailure
+          ? null
+          : (uploadFailure ?? this.uploadFailure),
+      deliveryFailure: clearDeliveryFailure
+          ? null
+          : (deliveryFailure ?? this.deliveryFailure),
       isEmpty: isEmpty ?? this.isEmpty,
       navigationRevision: navigationRevision ?? this.navigationRevision,
       isEligibleToStart: isEligibleToStart ?? this.isEligibleToStart,

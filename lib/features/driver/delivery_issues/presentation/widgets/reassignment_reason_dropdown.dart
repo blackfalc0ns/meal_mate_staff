@@ -19,11 +19,16 @@ class ReassignmentReasonDropdown extends StatelessWidget {
   String _getReasonTitle(BuildContext context, ReassignmentReason reason) {
     final locale = context.localization;
     return switch (reason) {
-      ReassignmentReason.vehicleFailure =>
-        locale.reassignRequestReasonVehicleFailure,
-      ReassignmentReason.accident => locale.reassignRequestReasonAccident,
-      ReassignmentReason.emergency => locale.reassignRequestReasonEmergency,
-      ReassignmentReason.healthIssue => locale.reassignRequestReasonHealthIssue,
+      ReassignmentReason.vehicleBreakdown =>
+        locale.reassignRequestReasonVehicleBreakdown,
+      ReassignmentReason.trafficAccident =>
+        locale.reassignRequestReasonTrafficAccident,
+      ReassignmentReason.medicalOrPersonalEmergency =>
+        locale.reassignRequestReasonMedicalOrPersonalEmergency,
+      ReassignmentReason.deviceFailure =>
+        locale.reassignRequestReasonDeviceFailure,
+      ReassignmentReason.otherOperationalReason =>
+        locale.reassignRequestReasonOtherOperationalReason,
     };
   }
 

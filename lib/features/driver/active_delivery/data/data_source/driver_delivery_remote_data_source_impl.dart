@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../models/response/driver_start_delivery_response_dto.dart';
 
 import 'package:injectable/injectable.dart';
 
@@ -16,6 +17,11 @@ class DriverDeliveryRemoteDataSourceImpl
   const DriverDeliveryRemoteDataSourceImpl(this._apiServices);
 
   final ApiServices _apiServices;
+
+  @override
+  Future<DriverStartDeliveryResponseDto> startDelivery({
+    required String boxId,
+  }) => _apiServices.startDriverDelivery(boxId);
 
   @override
   Future<DriverArrivalResponseDto> arriveAtCustomer({
