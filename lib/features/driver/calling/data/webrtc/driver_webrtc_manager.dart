@@ -31,6 +31,7 @@ class DriverWebRtcManager {
   String? _currentCallId;
   String? get currentCallId => _currentCallId;
   int _currentGeneration = 0;
+  int _lifecycleToken = 0;
 
   final List<RTCIceCandidate> _queuedRemoteCandidates = [];
   bool _hasRemoteDescription = false;
@@ -66,6 +67,7 @@ class DriverWebRtcManager {
     int generation = 0,
   }) async {
     await cleanup();
+    final lifecycleToken = _lifecycleToken;
     _currentCallId = callId;
     _currentGeneration = generation;
     _hasRemoteDescription = false;
@@ -95,6 +97,11 @@ class DriverWebRtcManager {
 
     // 2. Create Peer Connection
     final pc = await _peerConnectionFactory(configuration);
+    if (!_isCurrentSession(callId, generation, lifecycleToken)) {
+      await pc.close();
+      await pc.dispose();
+      return;
+    }
     _peerConnection = pc;
 
     // 3. Create audio track and add it before creating the offer
@@ -108,6 +115,13 @@ class DriverWebRtcManager {
     };
 
     final localStream = await _userMediaFactory(mediaConstraints);
+    if (!_isCurrentSession(callId, generation, lifecycleToken)) {
+      for (final track in localStream.getTracks()) { track.stop(); }
+      await localStream.dispose();
+      await pc.close();
+      await pc.dispose();
+      return;
+    }
     _localStream = localStream;
     final audioTracks = localStream.getAudioTracks();
     if (audioTracks.isEmpty) {
@@ -117,6 +131,13 @@ class DriverWebRtcManager {
 
     for (final track in audioTracks) {
       await pc.addTrack(track, localStream);
+      if (!_isCurrentSession(callId, generation, lifecycleToken)) {
+        for (final staleTrack in localStream.getTracks()) { staleTrack.stop(); }
+        await localStream.dispose();
+        await pc.close();
+        await pc.dispose();
+        return;
+      }
       _diag('Session', 'Added local audio track: id=${track.id}, enabled=${track.enabled}', callId: callId, gen: generation);
     }
 
@@ -186,7 +207,9 @@ class DriverWebRtcManager {
     };
 
     final description = await pc.createOffer(offerConstraints);
+    if (!_isCurrentSession(callId, generation, lifecycleToken)) return;
     await pc.setLocalDescription(description);
+    if (!_isCurrentSession(callId, generation, lifecycleToken)) return;
 
     final msgId = _generateUuidV4();
     _diag('SendOffer', 'Local description set, sending offer (sdpLen: ${description.sdp?.length})', callId: sessionCallId, gen: sessionGeneration);
@@ -311,6 +334,7 @@ class DriverWebRtcManager {
   }
 
   Future<void> cleanup() async {
+    _lifecycleToken++;
     try {
       unawaited(_answerSub?.cancel());
       _answerSub = null;
@@ -338,6 +362,13 @@ class DriverWebRtcManager {
     } catch (e) {
       _diag('Cleanup', 'Error cleaning up WebRTC: $e');
     }
+  }
+
+  bool _isCurrentSession(String callId, int generation, int token) {
+    return !_isDisposed &&
+        _lifecycleToken == token &&
+        _currentCallId == callId &&
+        _currentGeneration == generation;
   }
 
   Future<void> dispose() async {

@@ -33,6 +33,8 @@ import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
 import '../services/token_interceptor.dart';
 import '../services/token_service.dart';
+import '../services/server_clock.dart';
+import '../services/server_clock_interceptor.dart';
 import '../../features/driver/orders/data/realtime/driver_orders_realtime_client.dart';
 import '../../features/driver/orders/data/realtime/driver_orders_signalr_client.dart';
 import '../../features/driver/tracking/data/datasources/driver_location_remote_datasource.dart';
@@ -1045,6 +1047,7 @@ Future<void> configureDependencies() async {
   getIt<DriverLiveLocationCoordinator>();
 
   // Voice Calls V2 Feature
+  getIt.registerLazySingleton<ServerClock>(ServerClock.new);
   getIt.registerLazySingleton<VoiceDeviceSessionStorage>(
     () => VoiceDeviceSessionStorage(
       secureStorage: getIt<FlutterSecureStorage>(),
@@ -1078,6 +1081,7 @@ Future<void> configureDependencies() async {
       webrtcManager: getIt<DriverWebRtcManager>(),
       callKitCoordinator: getIt<DriverCallKitCoordinator>(),
       sessionStorage: getIt<VoiceDeviceSessionStorage>(),
+      serverClock: getIt<ServerClock>(),
     ),
   );
 
@@ -1146,6 +1150,7 @@ Future<void> configureDependencies() async {
       revealCustomerPhoneUseCase: getIt<RevealCustomerPhoneUseCase>(),
       getVoiceCallDisplayUseCase: getIt<GetVoiceCallDisplayUseCase>(),
       repository: getIt<DriverCallingRepository>(),
+      serverClock: getIt<ServerClock>(),
       locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
     ),
   );
@@ -1168,6 +1173,7 @@ Dio _buildDio() {
   final tokenInterceptor = getIt<TokenInterceptor>();
   dio.interceptors.add(getIt<LanguageInterceptor>());
   dio.interceptors.add(tokenInterceptor);
+  dio.interceptors.add(ServerClockInterceptor(getIt<ServerClock>()));
   dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true));
 
   tokenInterceptor.attachRefreshService(

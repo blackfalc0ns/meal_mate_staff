@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/network/api_results.dart';
 import '../../../../../core/services/voice_device_session_storage.dart';
+import '../../../../../core/services/server_clock.dart';
 import '../../domain/entities/delivery_contact_case_entity.dart';
 import '../../domain/entities/ice_server_config_entity.dart';
 import '../../domain/entities/phone_grant_entity.dart';
@@ -37,8 +38,10 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     required this.webrtcManager,
     required this.callKitCoordinator,
     required this.sessionStorage,
+    ServerClock? serverClock,
     HeartbeatTimerFactory? heartbeatTimerFactory,
-  }) : _heartbeatTimerFactory = heartbeatTimerFactory ?? Timer.periodic {
+  }) : _heartbeatTimerFactory = heartbeatTimerFactory ?? Timer.periodic,
+       _serverClock = serverClock ?? ServerClock() {
     _initListeners();
   }
 
@@ -48,6 +51,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   final DriverCallKitCoordinator callKitCoordinator;
   final VoiceDeviceSessionStorage sessionStorage;
   final HeartbeatTimerFactory _heartbeatTimerFactory;
+  final ServerClock _serverClock;
 
   final _snapshotController =
       StreamController<VoiceCallSnapshotEntity>.broadcast();
@@ -55,6 +59,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
   String? _activeCallId;
   int _currentGeneration = 0;
+  int _sessionToken = 0;
   VoiceCallSnapshotEntity? _currentSnapshot;
   Future<void>? _deviceRegistrationInFlight;
 
@@ -132,7 +137,9 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     });
 
     // Native CallKit actions (user ends call natively or timeout)
-    callKitCoordinator.onCallKitAction.listen((action) {
+    callKitCoordinator.onCallKitAction.listen((event) {
+      if (event.callId == null || event.callId != _activeCallId) return;
+      final action = event.action;
       if (action == 'end' && _activeCallId != null) {
         final status = _currentSnapshot?.status;
         _diag('CallKit', 'CallKit user end action received for status $status', callId: _activeCallId);
@@ -353,7 +360,9 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   }
 
   Future<void> _triggerWebRtcOffer(String callId) async {
-    final key = '$callId:$_currentGeneration';
+    final generation = _currentGeneration;
+    final sessionToken = _sessionToken;
+    final key = '$callId:$generation';
     if (_startedWebRtcOfferKeys.contains(key)) {
       _diag('Media', 'WebRTC offer already started for key $key, ignoring duplicate trigger', callId: callId, gen: _currentGeneration);
       return;
@@ -367,6 +376,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     try {
       // Require a successful per-call ice-servers response
       final iceResult = await getIceServers(callId);
+      if (!_isCurrentSession(callId, generation, sessionToken)) return;
       if (iceResult is! ApiSuccessResult<List<IceServerConfigEntity>> ||
           iceResult.data.isEmpty) {
         _diag('Media', 'Failed to retrieve valid ICE servers for call $callId, aborting WebRTC offer', callId: callId, gen: _currentGeneration);
@@ -377,14 +387,15 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       final servers = iceResult.data;
 
       // Report connecting when genuinely entering connection setup
-      await _sendConnectingReport(callId, _currentGeneration);
+      await _sendConnectingReport(callId, generation);
+      if (!_isCurrentSession(callId, generation, sessionToken)) return;
 
       _startedWebRtcOfferKeys.add(key);
 
       await webrtcManager.startOfferSession(
         callId: callId,
         iceServers: servers,
-        generation: _currentGeneration,
+        generation: generation,
       );
     } catch (e) {
       _diag('Media', 'Error starting WebRTC offer session: $e', callId: callId, gen: _currentGeneration);
@@ -465,6 +476,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       final response = await remoteDataSource.initiateCall(request);
       final snapshot = CallingDtoMapper.toSnapshotEntity(response);
 
+      _sessionToken++;
       _activeCallId = snapshot.callId;
       _currentGeneration = 0;
       _currentSnapshot = snapshot;
@@ -476,7 +488,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       _reportedConnected.clear();
 
       // Compute ringTimeout from deadline
-      final nowUtc = DateTime.now().toUtc();
+      final nowUtc = _serverClock.nowUtcOrLocal;
       Duration ringTimeout;
       if (snapshot.deadlineAtUtc != null) {
         ringTimeout = snapshot.deadlineAtUtc!.difference(nowUtc);
@@ -710,6 +722,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   @override
   Future<void> cleanupCall() async {
     _diag('Cleanup', 'Performing idempotent call cleanup', callId: _activeCallId);
+    _sessionToken++;
     _stopHeartbeat();
     await callKitCoordinator.endCall(_activeCallId);
     await webrtcManager.cleanup();
@@ -721,6 +734,15 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     _reportedConnecting.clear();
     _connectedInFlight.clear();
     _reportedConnected.clear();
+  }
+
+  bool _isCurrentSession(String callId, int generation, int token) {
+    final snapshot = _currentSnapshot;
+    return _sessionToken == token &&
+        _activeCallId == callId &&
+        _currentGeneration == generation &&
+        snapshot != null &&
+        !snapshot.isTerminal;
   }
 
   void _diag(String action, String details, {String? callId, int? seq, int? gen}) {

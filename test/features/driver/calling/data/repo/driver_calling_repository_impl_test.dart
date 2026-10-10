@@ -41,6 +41,8 @@ class FakeTimer implements Timer {
 class FakeRemoteDataSource implements DriverCallingRemoteDataSource {
   final List<String> heartbeatCalls = [];
   Completer<void>? heartbeatCompleter;
+  Completer<void>? iceCompleter;
+  Completer<void>? connectingCompleter;
 
   @override
   Future<void> sendHeartbeat(String callId) async {
@@ -84,6 +86,7 @@ class FakeRemoteDataSource implements DriverCallingRemoteDataSource {
 
   @override
   Future<IceServersResponseDto> getIceServers(String callId) async {
+    if (iceCompleter != null) await iceCompleter!.future;
     return const IceServersResponseDto(
       iceServers: [
         IceServerDto(urls: ['stun:stun.l.google.com:19302']),
@@ -94,6 +97,7 @@ class FakeRemoteDataSource implements DriverCallingRemoteDataSource {
   @override
   Future<void> reportConnecting(String callId) async {
     reportConnectingCalls++;
+    if (connectingCompleter != null) await connectingCompleter!.future;
     if (failNextConnecting) {
       failNextConnecting = false;
       throw Exception('Network error');
@@ -168,17 +172,19 @@ class FakeWebRtcManager implements DriverWebRtcManager {
 }
 
 class FakeCallKitCoordinator implements DriverCallKitCoordinator {
-  final _actionController = StreamController<String>.broadcast();
+  final _actionController = StreamController<DriverCallKitAction>.broadcast();
   final List<Map<String, dynamic>> startedCalls = [];
   final List<String?> endedCalls = [];
   final List<String> connectedCalls = [];
 
   @override
-  Stream<String> get onCallKitAction => _actionController.stream;
+  Stream<DriverCallKitAction> get onCallKitAction => _actionController.stream;
 
-  void triggerAction(String action) {
-    _actionController.add(action);
+  void triggerAction(String action, {String? callId}) {
+    _actionController.add(DriverCallKitAction(action: action, callId: callId ?? _activeCallId));
   }
+
+  String? _activeCallId;
 
   @override
   void initialize() {}
@@ -190,6 +196,7 @@ class FakeCallKitCoordinator implements DriverCallKitCoordinator {
     required Duration ringTimeout,
     String? handle,
   }) async {
+    _activeCallId = callId;
     startedCalls.add({
       'callId': callId,
       'customerName': customerName,
@@ -432,7 +439,7 @@ void main() {
       );
 
       // CallKit fires timeout
-      fakeCallKit.triggerAction('timeout');
+      fakeCallKit.triggerAction('timeout', callId: 'call-200');
       await Future.delayed(Duration.zero);
 
       expect(fakeRemote.cancelledCalls, isEmpty);
@@ -466,7 +473,7 @@ void main() {
       );
 
       // CallKit fires timeout
-      fakeCallKit.triggerAction('timeout');
+      fakeCallKit.triggerAction('timeout', callId: 'call-201');
       await Future.delayed(Duration.zero);
 
       expect(fakeRemote.cancelledCalls, ['call-201']);
@@ -494,7 +501,7 @@ void main() {
       // Active snapshot also triggers CallKit setCallConnected
       expect(fakeCallKit.connectedCalls, ['call-202']);
 
-      fakeCallKit.triggerAction('end');
+      fakeCallKit.triggerAction('end', callId: 'call-202');
       await Future.delayed(Duration.zero);
 
       expect(fakeRemote.endedCalls, ['call-202']);
@@ -502,6 +509,41 @@ void main() {
   });
 
   group('DriverCallingRepositoryImpl WebRTC Guards & Reporting Retries', () {
+    test('ending during ICE fetch cannot start an offer or block a new call', () async {
+      fakeRemote.iceCompleter = Completer<void>();
+      fakeSignalR.emitEnvelope(const VoiceCallEnvelopeDto(
+        protocolVersion: 2, occurredAtUtc: '2026-10-10T07:30:00Z',
+        eventId: 'old', callId: 'old', sequence: 1, eventType: 'StatusChanged',
+        payload: {'callId': 'old', 'status': 'Accepted', 'sequence': 1},
+      ));
+      await Future.delayed(Duration.zero);
+      await repository.cleanupCall();
+      fakeRemote.iceCompleter!.complete();
+      await Future.delayed(Duration.zero);
+      expect(fakeWebRtc.startedCallIds, isEmpty);
+      fakeRemote.iceCompleter = null;
+      fakeSignalR.emitEnvelope(const VoiceCallEnvelopeDto(
+        protocolVersion: 2, occurredAtUtc: '2026-10-10T07:30:01Z',
+        eventId: 'new', callId: 'new', sequence: 1, eventType: 'StatusChanged',
+        payload: {'callId': 'new', 'status': 'Accepted', 'sequence': 1},
+      ));
+      await Future.delayed(Duration.zero);
+      expect(fakeWebRtc.startedCallIds, ['new']);
+    });
+
+    test('ending during connecting report cannot start an offer', () async {
+      fakeRemote.connectingCompleter = Completer<void>();
+      fakeSignalR.emitEnvelope(const VoiceCallEnvelopeDto(
+        protocolVersion: 2, occurredAtUtc: '2026-10-10T07:30:00Z',
+        eventId: 'old', callId: 'old', sequence: 1, eventType: 'StatusChanged',
+        payload: {'callId': 'old', 'status': 'Accepted', 'sequence': 1},
+      ));
+      await Future.delayed(Duration.zero);
+      await repository.cleanupCall();
+      fakeRemote.connectingCompleter!.complete();
+      await Future.delayed(Duration.zero);
+      expect(fakeWebRtc.startedCallIds, isEmpty);
+    });
     test('duplicate Accepted snapshot does not start second offer session', () async {
       fakeSignalR.emitEnvelope(
         const VoiceCallEnvelopeDto(

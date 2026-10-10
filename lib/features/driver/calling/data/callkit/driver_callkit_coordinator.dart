@@ -12,8 +12,8 @@ class DriverCallKitCoordinator {
   }) : _providedEventStream = eventStream;
 
   final Stream<CallEvent?>? _providedEventStream;
-  final _actionController = StreamController<String>.broadcast();
-  Stream<String> get onCallKitAction => _actionController.stream;
+  final _actionController = StreamController<DriverCallKitAction>.broadcast();
+  Stream<DriverCallKitAction> get onCallKitAction => _actionController.stream;
 
   StreamSubscription<CallEvent?>? _eventSubscription;
   String? _activeCallId;
@@ -26,7 +26,7 @@ class DriverCallKitCoordinator {
       if (event == null) return;
       _log('CallKit event received: ${event.eventName}');
 
-      final eventCallId = _extractCallId(event) ?? _activeCallId;
+      final eventCallId = _extractCallId(event);
       if (eventCallId != null && _suppressedCallIds.contains(eventCallId)) {
         _log('Ignoring CallKit action for programmatically closed callId: $eventCallId');
         return;
@@ -35,11 +35,11 @@ class DriverCallKitCoordinator {
       switch (event) {
         case CallEventActionCallDecline() ||
              CallEventActionCallEnded():
-          _actionController.add('end');
+          _actionController.add(DriverCallKitAction(action: 'end', callId: eventCallId));
         case CallEventActionCallTimeout():
-          _actionController.add('timeout');
+          _actionController.add(DriverCallKitAction(action: 'timeout', callId: eventCallId));
         case CallEventActionCallToggleMute():
-          _actionController.add('mute');
+          _actionController.add(DriverCallKitAction(action: 'mute', callId: eventCallId));
         default:
           break;
       }
@@ -47,6 +47,15 @@ class DriverCallKitCoordinator {
   }
 
   String? _extractCallId(CallEvent event) {
+    switch (event) {
+      case CallEventActionCallTimeout(:final id):
+        return id;
+      case CallEventActionCallDecline(:final callKitParams) ||
+           CallEventActionCallEnded(:final callKitParams):
+        return callKitParams.id;
+      default:
+        break;
+    }
     try {
       final dynamic dyn = event;
       final callKitParams = dyn.callKitParams;
@@ -162,4 +171,11 @@ class DriverCallKitCoordinator {
   void _log(String message) {
     developer.log('[DriverCallKit] $message');
   }
+}
+
+class DriverCallKitAction {
+  const DriverCallKitAction({required this.action, required this.callId});
+
+  final String action;
+  final String? callId;
 }

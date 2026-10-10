@@ -22,8 +22,8 @@ void main() {
 
   group('DriverCallKitCoordinator Event & Suppression Tests', () {
     test('emits "end" on user decline or ended event', () async {
-      final actions = <String>[];
-      final sub = coordinator.onCallKitAction.listen(actions.add);
+      final actions = <DriverCallKitAction>[];
+      final sub = coordinator.onCallKitAction.listen((event) => actions.add(event));
 
       eventController.add(
         const CallEventActionCallEnded(
@@ -32,14 +32,15 @@ void main() {
       );
 
       await Future.delayed(Duration.zero);
-      expect(actions, ['end']);
+      expect(actions.single.action, 'end');
+      expect(actions.single.callId, 'call-1');
 
       await sub.cancel();
     });
 
     test('emits "timeout" on CallTimeout event', () async {
-      final actions = <String>[];
-      final sub = coordinator.onCallKitAction.listen(actions.add);
+      final actions = <DriverCallKitAction>[];
+      final sub = coordinator.onCallKitAction.listen((event) => actions.add(event));
 
       eventController.add(
         const CallEventActionCallTimeout(
@@ -48,14 +49,15 @@ void main() {
       );
 
       await Future.delayed(Duration.zero);
-      expect(actions, ['timeout']);
+      expect(actions.single.action, 'timeout');
+      expect(actions.single.callId, 'call-1');
 
       await sub.cancel();
     });
 
     test('suppresses action for callId closed programmatically', () async {
-      final actions = <String>[];
-      final sub = coordinator.onCallKitAction.listen(actions.add);
+      final actions = <DriverCallKitAction>[];
+      final sub = coordinator.onCallKitAction.listen((event) => actions.add(event));
 
       // Start outgoing call
       await coordinator.startOutgoingCall(
@@ -81,3 +83,4 @@ void main() {
     });
   });
 }
+

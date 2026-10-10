@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/network/api_results.dart';
+import '../../../../../core/services/server_clock.dart';
 import '../../domain/entities/delivery_contact_case_entity.dart';
 import '../../domain/entities/driver_active_call_entity.dart';
 import '../../domain/entities/voice_call_snapshot_entity.dart';
@@ -42,8 +43,9 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
     required this.revealCustomerPhoneUseCase,
     required this.getVoiceCallDisplayUseCase,
     required this.repository,
+    ServerClock? serverClock,
     this.locationCoordinator,
-  }) : super(const DriverCallingState()) {
+  }) : _serverClock = serverClock ?? ServerClock(), super(const DriverCallingState()) {
     _initSubscriptions();
   }
 
@@ -59,6 +61,7 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
   final RevealCustomerPhoneUseCase revealCustomerPhoneUseCase;
   final GetVoiceCallDisplayUseCase getVoiceCallDisplayUseCase;
   final DriverCallingRepository repository;
+  final ServerClock _serverClock;
   final DriverLiveLocationCoordinator? locationCoordinator;
 
   StreamSubscription? _snapshotSub;
@@ -132,7 +135,7 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
     }
 
     if (snapshot.status == VoiceCallStatus.active && snapshot.connectedAtUtc != null) {
-      final nowUtc = DateTime.now().toUtc();
+      final nowUtc = _serverClock.nowUtcOrLocal;
       final elapsed = nowUtc.difference(snapshot.connectedAtUtc!).inSeconds;
       final initialDuration = max(0, max(snapshot.durationSeconds ?? 0, elapsed));
       emit(state.copyWith(
@@ -170,7 +173,7 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
     _deadlineTimer?.cancel();
     final deadline = snapshot.deadlineAtUtc;
     if (deadline == null) return;
-    final delay = deadline.difference(DateTime.now().toUtc());
+    final delay = deadline.difference(_serverClock.nowUtcOrLocal);
     if (delay.isNegative) {
       unawaited(_reconcileDeadline(snapshot.callId));
     } else {
