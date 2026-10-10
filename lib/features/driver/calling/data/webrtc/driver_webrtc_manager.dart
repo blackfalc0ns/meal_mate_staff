@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+import 'dart:math';
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-
 import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/ice_server_config_entity.dart';
@@ -32,6 +32,10 @@ class DriverWebRtcManager {
   final _mediaStateController = StreamController<VoiceCallStatus>.broadcast();
   Stream<VoiceCallStatus> get onMediaStateChanged =>
       _mediaStateController.stream;
+
+  final _localMediaConnectedController = StreamController<bool>.broadcast();
+  Stream<bool> get onLocalMediaConnected =>
+      _localMediaConnectedController.stream;
 
   StreamSubscription<VoiceCallRtcOfferAnswerDto>? _answerSub;
   StreamSubscription<VoiceCallRtcCandidateDto>? _iceSub;
@@ -63,7 +67,26 @@ class DriverWebRtcManager {
 
     _mediaStateController.add(VoiceCallStatus.connecting);
 
-    // 1. Get user audio media
+    // 1. Require a successful per-call ice-servers response
+    if (iceServers.isEmpty) {
+      _diag('Session', 'Failed to start WebRTC: ICE servers list is empty', callId: callId, gen: generation);
+      throw StateError('Cannot start WebRTC session: No ICE servers provided for call $callId');
+    }
+
+    final rtcIceServers = iceServers.map((s) => s.toMap()).toList();
+    _diag('Session', 'Configured ${rtcIceServers.length} ICE server(s)', callId: callId, gen: generation);
+
+    final configuration = {
+      'iceServers': rtcIceServers,
+      'sdpSemantics': 'unified-plan',
+      'bundlePolicy': 'max-bundle',
+      'rtcpMuxPolicy': 'require',
+    };
+
+    // 2. Create Peer Connection
+    _peerConnection = await createPeerConnection(configuration);
+
+    // 3. Create audio track and add it before creating the offer
     final mediaConstraints = {
       'audio': {
         'echoCancellation': true,
@@ -74,36 +97,29 @@ class DriverWebRtcManager {
     };
 
     _localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-
-    // 2. Configure ICE servers
-    final rtcIceServers = iceServers.map((s) => s.toMap()).toList();
-    if (rtcIceServers.isEmpty) {
-      rtcIceServers.add({
-        'urls': ['stun:stun.l.google.com:19302'],
-      });
+    final audioTracks = _localStream?.getAudioTracks() ?? [];
+    if (audioTracks.isEmpty) {
+      _diag('Session', 'No local audio track acquired', callId: callId, gen: generation);
+      throw StateError('No local audio tracks available for call $callId');
     }
 
-    final configuration = {
-      'iceServers': rtcIceServers,
-      'sdpSemantics': 'unified-plan',
-      'bundlePolicy': 'max-bundle',
-      'rtcpMuxPolicy': 'require',
-    };
-
-    // 3. Create Peer Connection
-    _peerConnection = await createPeerConnection(configuration);
-
-    // 4. Add audio tracks to Peer Connection
-    for (final track in _localStream!.getAudioTracks()) {
+    for (final track in audioTracks) {
       await _peerConnection!.addTrack(track, _localStream!);
+      _diag('Session', 'Added local audio track: id=${track.id}, enabled=${track.enabled}', callId: callId, gen: generation);
     }
+
+    // 4. Record remote audio-track arrival
+    _peerConnection!.onTrack = (RTCTrackEvent event) {
+      _diag('Track', 'Remote track arrived: kind=${event.track.kind}, id=${event.track.id}, enabled=${event.track.enabled}', callId: _currentCallId, gen: _currentGeneration);
+    };
 
     // 5. Handle ICE candidates generated locally
     _peerConnection!.onIceCandidate = (RTCIceCandidate candidate) {
       if (candidate.candidate == null || candidate.candidate!.trim().isEmpty) {
         return;
       }
-      final msgId = _generateUuid();
+      final msgId = _generateUuidV4();
+      _diag('SendIce', 'Sending local candidate (len: ${candidate.candidate!.length})', callId: callId, gen: _currentGeneration);
       unawaited(signalRClient.sendIceCandidate(
         callId: callId,
         candidate: candidate.candidate!,
@@ -114,23 +130,24 @@ class DriverWebRtcManager {
       ));
     };
 
-    // 6. Handle connection state changes
+    // 6. Handle connection state changes (Do not mark server Active from local ICE alone)
     _peerConnection!.onConnectionState = (RTCPeerConnectionState state) {
-      _log('WebRTC Connection state: $state');
+      _diag('ConnectionState', 'WebRTC peer connection state: $state', callId: _currentCallId, gen: _currentGeneration);
       if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
-        _mediaStateController.add(VoiceCallStatus.active);
+        _localMediaConnectedController.add(true);
+        unawaited(logRtpStats());
       } else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed ||
-          state ==
-              RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
-        _log('WebRTC connection failed or disconnected');
+          state == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
+        _diag('ConnectionState', 'WebRTC peer connection failed or disconnected', callId: _currentCallId, gen: _currentGeneration);
       }
     };
 
     _peerConnection!.onIceConnectionState = (RTCIceConnectionState state) {
-      _log('WebRTC ICE Connection state: $state');
+      _diag('IceState', 'WebRTC ICE connection state: $state', callId: _currentCallId, gen: _currentGeneration);
       if (state == RTCIceConnectionState.RTCIceConnectionStateConnected ||
           state == RTCIceConnectionState.RTCIceConnectionStateCompleted) {
-        _mediaStateController.add(VoiceCallStatus.active);
+        _localMediaConnectedController.add(true);
+        unawaited(logRtpStats());
       }
     };
 
@@ -146,7 +163,8 @@ class DriverWebRtcManager {
     final description = await _peerConnection!.createOffer(offerConstraints);
     await _peerConnection!.setLocalDescription(description);
 
-    final msgId = _generateUuid();
+    final msgId = _generateUuidV4();
+    _diag('SendOffer', 'Local description set, sending offer (sdpLen: ${description.sdp?.length})', callId: callId, gen: _currentGeneration);
     await signalRClient.sendOffer(
       callId: callId,
       sdp: description.sdp ?? '',
@@ -159,29 +177,51 @@ class DriverWebRtcManager {
     final pc = _peerConnection;
     if (pc == null) return;
 
+    if (answerDto.callId != null &&
+        answerDto.callId!.isNotEmpty &&
+        answerDto.callId != _currentCallId) {
+      _diag('RtcAnswer', 'Ignoring answer for foreign callId: ${answerDto.callId} != $_currentCallId', callId: _currentCallId, gen: _currentGeneration);
+      return;
+    }
+
+    if (answerDto.generation < _currentGeneration) {
+      _diag('RtcAnswer', 'Ignoring stale answer generation: ${answerDto.generation} < $_currentGeneration', callId: _currentCallId, gen: _currentGeneration);
+      return;
+    }
+
     try {
-      _log('Setting remote description from answer');
+      _diag('RtcAnswer', 'Setting remote description from answer (sdpLen: ${answerDto.sdp.length})', callId: _currentCallId, gen: _currentGeneration);
       final description = RTCSessionDescription(answerDto.sdp, answerDto.type);
       await pc.setRemoteDescription(description);
       _hasRemoteDescription = true;
 
-      // Drain queued ICE candidates
+      // Drain queued early ICE candidates
       for (final candidate in _queuedRemoteCandidates) {
         try {
           await pc.addCandidate(candidate);
         } catch (e) {
-          _log('Error adding queued candidate: $e');
+          _diag('RtcIce', 'Error applying queued candidate: $e', callId: _currentCallId, gen: _currentGeneration);
         }
       }
       _queuedRemoteCandidates.clear();
     } catch (e) {
-      _log('Error setting remote answer: $e');
+      _diag('RtcAnswer', 'Error setting remote answer description: $e', callId: _currentCallId, gen: _currentGeneration);
     }
   }
 
   Future<void> _handleRemoteCandidate(VoiceCallRtcCandidateDto iceDto) async {
     final pc = _peerConnection;
     if (pc == null) return;
+
+    if (iceDto.callId != null &&
+        iceDto.callId!.isNotEmpty &&
+        iceDto.callId != _currentCallId) {
+      return;
+    }
+
+    if (iceDto.generation < _currentGeneration) {
+      return;
+    }
 
     final candidate = RTCIceCandidate(
       iceDto.candidate,
@@ -190,7 +230,7 @@ class DriverWebRtcManager {
     );
 
     if (!_hasRemoteDescription) {
-      _log('Queuing early remote ICE candidate');
+      _diag('RtcIce', 'Queuing early remote ICE candidate', callId: _currentCallId, gen: _currentGeneration);
       _queuedRemoteCandidates.add(candidate);
       return;
     }
@@ -198,8 +238,21 @@ class DriverWebRtcManager {
     try {
       await pc.addCandidate(candidate);
     } catch (e) {
-      _log('Error adding remote candidate: $e');
+      _diag('RtcIce', 'Error adding remote ICE candidate: $e', callId: _currentCallId, gen: _currentGeneration);
     }
+  }
+
+  Future<void> logRtpStats() async {
+    final pc = _peerConnection;
+    if (pc == null) return;
+    try {
+      final stats = await pc.getStats();
+      for (final report in stats) {
+        if (report.type == 'inbound-rtp' || report.type == 'outbound-rtp') {
+          _diag('RTP', '${report.type}: bytesSent=${report.values['bytesSent']}, bytesReceived=${report.values['bytesReceived']}, packetsSent=${report.values['packetsSent']}, packetsReceived=${report.values['packetsReceived']}', callId: _currentCallId, gen: _currentGeneration);
+        }
+      }
+    } catch (_) {}
   }
 
   Future<void> toggleMute(bool muted) async {
@@ -213,12 +266,17 @@ class DriverWebRtcManager {
     try {
       await Helper.setSpeakerphoneOn(enabled);
     } catch (e) {
-      _log('Failed to toggle speakerphone: $e');
+      _diag('AudioRoute', 'Failed to toggle speakerphone: $e', callId: _currentCallId, gen: _currentGeneration);
     }
   }
 
-  String _generateUuid() {
-    return DateTime.now().microsecondsSinceEpoch.toString();
+  String _generateUuidV4() {
+    final rand = Random.secure();
+    final bytes = List<int>.generate(16, (_) => rand.nextInt(256));
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    final hex = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    return '${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-${hex.substring(16, 20)}-${hex.substring(20)}';
   }
 
   Future<void> cleanup() async {
@@ -244,7 +302,7 @@ class DriverWebRtcManager {
       _queuedRemoteCandidates.clear();
       _currentCallId = null;
     } catch (e) {
-      _log('Error cleaning up WebRTC: $e');
+      _diag('Cleanup', 'Error cleaning up WebRTC: $e');
     }
   }
 
@@ -252,9 +310,12 @@ class DriverWebRtcManager {
     _isDisposed = true;
     await cleanup();
     await _mediaStateController.close();
+    await _localMediaConnectedController.close();
   }
 
-  void _log(String message) {
-    developer.log('[DriverWebRTC] $message');
+  void _diag(String action, String details, {String? callId, int? gen}) {
+    final c = callId != null && callId.isNotEmpty ? '[$callId]' : '[no-call]';
+    final g = gen != null ? '[gen:$gen]' : '';
+    developer.log('[VoiceDiag]$c$g $action: $details');
   }
 }

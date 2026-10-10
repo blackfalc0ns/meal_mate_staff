@@ -132,10 +132,10 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
     try {
       final vm = context.read<DriverCallingViewModel>();
       vm.doIntent(const EndCallEvent());
-    } catch (_) {}
-
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
+    } catch (_) {
+      ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+        const SnackBar(content: Text('Cannot end call: ViewModel not available')),
+      );
     }
   }
 
@@ -162,8 +162,15 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
 
     if (blocVm != null) {
       return BlocConsumer<DriverCallingViewModel, DriverCallingState>(
-        listenWhen: (prev, curr) => prev.status != curr.status,
+        listenWhen: (prev, curr) =>
+            prev.status != curr.status || prev.errorMessage != curr.errorMessage,
         listener: (context, state) {
+          if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage!)),
+            );
+            context.read<DriverCallingViewModel>().doIntent(const ClearFeedbackEvent());
+          }
           if (state.status.isTerminal || state.status == VoiceCallStatus.ended) {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();

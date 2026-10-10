@@ -61,6 +61,7 @@ class DriverVoiceCallSignalRClient {
   bool get isConnected =>
       _hubConnection?.state == HubConnectionState.Connected;
   bool get isBound => _isBound;
+  String? get boundSessionId => _boundSessionId;
 
   Future<void> connect() async {
     if (_isDisposed) return;

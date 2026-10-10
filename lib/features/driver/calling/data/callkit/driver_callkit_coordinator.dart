@@ -14,6 +14,7 @@ class DriverCallKitCoordinator {
 
   StreamSubscription<CallEvent?>? _eventSubscription;
   String? _activeCallId;
+  bool _isProgrammaticClose = false;
 
   void initialize() {
     unawaited(_eventSubscription?.cancel());
@@ -24,6 +25,10 @@ class DriverCallKitCoordinator {
         case CallEventActionCallDecline() ||
              CallEventActionCallEnded() ||
              CallEventActionCallTimeout():
+          if (_isProgrammaticClose) {
+            _log('Ignoring CallKit end action caused by programmatic close');
+            return;
+          }
           _actionController.add('end');
         case CallEventActionCallToggleMute():
           _actionController.add('mute');
@@ -93,6 +98,7 @@ class DriverCallKitCoordinator {
   }
 
   Future<void> endCall(String? callId) async {
+    _isProgrammaticClose = true;
     final targetId = callId ?? _activeCallId;
     if (targetId != null) {
       try {
@@ -105,6 +111,10 @@ class DriverCallKitCoordinator {
       await FlutterCallkitIncoming.endAllCalls();
     } catch (_) {}
     _activeCallId = null;
+    // Reset after CallKit event pipeline has processed the close
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      _isProgrammaticClose = false;
+    });
   }
 
   Future<void> dispose() async {
