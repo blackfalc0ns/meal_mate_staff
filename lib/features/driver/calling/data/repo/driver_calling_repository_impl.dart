@@ -27,6 +27,8 @@ import '../models/response/voice_call_snapshot_response_dto.dart';
 import '../realtime/driver_voice_call_signalr_client.dart';
 import '../webrtc/driver_webrtc_manager.dart';
 
+typedef HeartbeatTimerFactory = Timer Function(Duration duration, void Function(Timer timer) callback);
+
 @Injectable(as: DriverCallingRepository)
 class DriverCallingRepositoryImpl implements DriverCallingRepository {
   DriverCallingRepositoryImpl({
@@ -35,7 +37,8 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     required this.webrtcManager,
     required this.callKitCoordinator,
     required this.sessionStorage,
-  }) {
+    HeartbeatTimerFactory? heartbeatTimerFactory,
+  }) : _heartbeatTimerFactory = heartbeatTimerFactory ?? Timer.periodic {
     _initListeners();
   }
 
@@ -44,6 +47,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   final DriverWebRtcManager webrtcManager;
   final DriverCallKitCoordinator callKitCoordinator;
   final VoiceDeviceSessionStorage sessionStorage;
+  final HeartbeatTimerFactory _heartbeatTimerFactory;
 
   final _snapshotController =
       StreamController<VoiceCallSnapshotEntity>.broadcast();
@@ -54,8 +58,17 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   VoiceCallSnapshotEntity? _currentSnapshot;
   Future<void>? _deviceRegistrationInFlight;
 
-  final Set<String> _reportedConnectingKeys = {};
-  final Set<String> _reportedConnectedKeys = {};
+  Timer? _heartbeatTimer;
+  String? _heartbeatCallId;
+  bool _heartbeatRequestInFlight = false;
+
+  final Set<String> _connectingInFlight = {};
+  final Set<String> _reportedConnecting = {};
+  final Set<String> _connectedInFlight = {};
+  final Set<String> _reportedConnected = {};
+
+  String? _webRtcOfferInFlightKey;
+  final Set<String> _startedWebRtcOfferKeys = {};
 
   Future<void> _ensureVoiceDeviceSession() {
     if (sessionStorage.isSessionValid()) return Future.value();
@@ -111,16 +124,18 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     webrtcManager.onLocalMediaConnected.listen((connected) {
       if (connected && _activeCallId != null) {
         _diag('WebRTC', 'Local media connected for call $_activeCallId, sending /reports/connected', callId: _activeCallId, gen: _currentGeneration);
-        unawaited(callKitCoordinator.setCallConnected(_activeCallId!));
+        if (_currentSnapshot?.status == VoiceCallStatus.active) {
+          unawaited(callKitCoordinator.setCallConnected(_activeCallId!));
+        }
         unawaited(_sendConnectedReport(_activeCallId!, _currentGeneration));
       }
     });
 
-    // Native CallKit actions (user ends call natively)
+    // Native CallKit actions (user ends call natively or timeout)
     callKitCoordinator.onCallKitAction.listen((action) {
       if (action == 'end' && _activeCallId != null) {
         final status = _currentSnapshot?.status;
-        _diag('CallKit', 'CallKit end action received for status $status', callId: _activeCallId);
+        _diag('CallKit', 'CallKit user end action received for status $status', callId: _activeCallId);
         if (status == VoiceCallStatus.created || status == VoiceCallStatus.ringing) {
           unawaited(cancelCall(_activeCallId!));
         } else if (status == VoiceCallStatus.accepted ||
@@ -130,33 +145,78 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
         } else {
           unawaited(cleanupCall());
         }
+      } else if (action == 'timeout' && _activeCallId != null) {
+        _diag('CallKit', 'CallKit timeout action received for call $_activeCallId', callId: _activeCallId);
+        unawaited(_handleCallKitTimeout(_activeCallId!));
       } else if (action == 'mute') {
         unawaited(toggleMute(true));
       }
     });
   }
 
-  Future<void> _sendConnectingReport(String callId, int generation) async {
+  Future<void> _sendConnectingReport(String callId, int generation, {int retryCount = 0}) async {
     final key = '$callId:$generation';
-    if (_reportedConnectingKeys.contains(key)) return;
-    _reportedConnectingKeys.add(key);
+    if (_reportedConnecting.contains(key)) return;
+    if (_connectingInFlight.contains(key)) return;
 
-    _diag('Report', 'Reporting /reports/connecting', callId: callId, gen: generation);
-    final result = await reportConnecting(callId);
-    if (result case ApiErrorResult(:final failure)) {
-      _diag('Report', 'Failed /reports/connecting: ${failure.errorMessage}', callId: callId, gen: generation);
+    _connectingInFlight.add(key);
+    _diag('Report', 'Reporting /reports/connecting (attempt ${retryCount + 1})', callId: callId, gen: generation);
+
+    try {
+      final result = await reportConnecting(callId);
+      if (result is ApiSuccessResult) {
+        _reportedConnecting.add(key);
+        _diag('Report', 'Successfully reported /reports/connecting', callId: callId, gen: generation);
+      } else if (result case ApiErrorResult(:final failure)) {
+        _diag('Report', 'Failed /reports/connecting: ${failure.errorMessage}', callId: callId, gen: generation);
+        if (retryCount < 2 &&
+            _activeCallId == callId &&
+            _currentGeneration == generation &&
+            (_currentSnapshot == null || !_currentSnapshot!.isTerminal)) {
+          unawaited(Future.delayed(const Duration(seconds: 2), () {
+            if (_activeCallId == callId &&
+                _currentGeneration == generation &&
+                !_reportedConnecting.contains(key)) {
+              unawaited(_sendConnectingReport(callId, generation, retryCount: retryCount + 1));
+            }
+          }));
+        }
+      }
+    } finally {
+      _connectingInFlight.remove(key);
     }
   }
 
-  Future<void> _sendConnectedReport(String callId, int generation) async {
+  Future<void> _sendConnectedReport(String callId, int generation, {int retryCount = 0}) async {
     final key = '$callId:$generation';
-    if (_reportedConnectedKeys.contains(key)) return;
-    _reportedConnectedKeys.add(key);
+    if (_reportedConnected.contains(key)) return;
+    if (_connectedInFlight.contains(key)) return;
 
-    _diag('Report', 'Reporting /reports/connected', callId: callId, gen: generation);
-    final result = await reportConnected(callId);
-    if (result case ApiErrorResult(:final failure)) {
-      _diag('Report', 'Failed /reports/connected: ${failure.errorMessage}', callId: callId, gen: generation);
+    _connectedInFlight.add(key);
+    _diag('Report', 'Reporting /reports/connected (attempt ${retryCount + 1})', callId: callId, gen: generation);
+
+    try {
+      final result = await reportConnected(callId);
+      if (result is ApiSuccessResult) {
+        _reportedConnected.add(key);
+        _diag('Report', 'Successfully reported /reports/connected', callId: callId, gen: generation);
+      } else if (result case ApiErrorResult(:final failure)) {
+        _diag('Report', 'Failed /reports/connected: ${failure.errorMessage}', callId: callId, gen: generation);
+        if (retryCount < 2 &&
+            _activeCallId == callId &&
+            _currentGeneration == generation &&
+            (_currentSnapshot == null || !_currentSnapshot!.isTerminal)) {
+          unawaited(Future.delayed(const Duration(seconds: 2), () {
+            if (_activeCallId == callId &&
+                _currentGeneration == generation &&
+                !_reportedConnected.contains(key)) {
+              unawaited(_sendConnectedReport(callId, generation, retryCount: retryCount + 1));
+            }
+          }));
+        }
+      }
+    } finally {
+      _connectedInFlight.remove(key);
     }
   }
 
@@ -197,15 +257,27 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       return;
     }
 
+    if (_activeCallId == null && !snapshot.isTerminal) {
+      _activeCallId = snapshot.callId;
+    }
+
     _currentSnapshot = snapshot;
     _snapshotController.add(snapshot);
     _statusController.add(snapshot.status);
 
     _diag('Snapshot', 'Applied snapshot: status=${snapshot.status}, connectedAtUtc=${snapshot.connectedAtUtc}', callId: snapshot.callId, seq: snapshot.sequence);
 
+    // Heartbeat lifecycle management
+    _startHeartbeatForSnapshot(snapshot);
+
     // When customer answers (Accepted), driver initiates WebRTC offer!
     if (snapshot.status == VoiceCallStatus.accepted) {
       unawaited(_triggerWebRtcOffer(snapshot.callId));
+    }
+
+    // Set CallKit call connected only after authoritative Active state
+    if (snapshot.status == VoiceCallStatus.active && _activeCallId != null) {
+      unawaited(callKitCoordinator.setCallConnected(_activeCallId!));
     }
 
     // Terminal cleanup
@@ -214,13 +286,91 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     }
   }
 
+  void _startHeartbeatForSnapshot(VoiceCallSnapshotEntity snapshot) {
+    final status = snapshot.status;
+    final isHeartbeatEligible = status == VoiceCallStatus.accepted ||
+        status == VoiceCallStatus.connecting ||
+        status == VoiceCallStatus.active;
+
+    if (!isHeartbeatEligible) {
+      if (status.isTerminal) {
+        _stopHeartbeat();
+      }
+      return;
+    }
+
+    if (_heartbeatTimer != null && _heartbeatCallId == snapshot.callId) {
+      return;
+    }
+
+    _stopHeartbeat();
+    _heartbeatCallId = snapshot.callId;
+    _heartbeatTimer = _heartbeatTimerFactory(
+      const Duration(seconds: 10),
+      (timer) {
+        unawaited(_heartbeatTick(snapshot.callId));
+      },
+    );
+    _diag('Heartbeat', 'Started 10s heartbeat timer for call ${snapshot.callId}', callId: snapshot.callId);
+  }
+
+  void _stopHeartbeat() {
+    if (_heartbeatTimer != null) {
+      _heartbeatTimer?.cancel();
+      _heartbeatTimer = null;
+      _diag('Heartbeat', 'Stopped heartbeat timer', callId: _heartbeatCallId);
+    }
+    _heartbeatCallId = null;
+    _heartbeatRequestInFlight = false;
+  }
+
+  Future<void> _heartbeatTick(String callId) async {
+    if (callId != _activeCallId ||
+        _currentSnapshot == null ||
+        _currentSnapshot!.isTerminal) {
+      _diag('Heartbeat', 'Dropping heartbeat tick: call $callId is not active or is terminal', callId: callId);
+      _stopHeartbeat();
+      return;
+    }
+
+    if (_heartbeatRequestInFlight) {
+      _diag('Heartbeat', 'Skipping heartbeat tick: previous request still in flight', callId: callId);
+      return;
+    }
+
+    _heartbeatRequestInFlight = true;
+    try {
+      _diag('Heartbeat', 'Sending heartbeat tick for call $callId', callId: callId);
+      final result = await sendHeartbeat(callId);
+      if (result case ApiErrorResult(:final failure)) {
+        _diag('Heartbeat', 'Heartbeat failed: ${failure.errorMessage}', callId: callId);
+      }
+    } catch (e) {
+      _diag('Heartbeat', 'Heartbeat error: $e', callId: callId);
+    } finally {
+      _heartbeatRequestInFlight = false;
+    }
+  }
+
   Future<void> _triggerWebRtcOffer(String callId) async {
+    final key = '$callId:$_currentGeneration';
+    if (_startedWebRtcOfferKeys.contains(key)) {
+      _diag('Media', 'WebRTC offer already started for key $key, ignoring duplicate trigger', callId: callId, gen: _currentGeneration);
+      return;
+    }
+    if (_webRtcOfferInFlightKey == key) {
+      _diag('Media', 'WebRTC offer already in flight for key $key, ignoring duplicate trigger', callId: callId, gen: _currentGeneration);
+      return;
+    }
+
+    _webRtcOfferInFlightKey = key;
     try {
       // Require a successful per-call ice-servers response
       final iceResult = await getIceServers(callId);
       if (iceResult is! ApiSuccessResult<List<IceServerConfigEntity>> ||
           iceResult.data.isEmpty) {
         _diag('Media', 'Failed to retrieve valid ICE servers for call $callId, aborting WebRTC offer', callId: callId, gen: _currentGeneration);
+        _webRtcOfferInFlightKey = null;
         return;
       }
 
@@ -229,6 +379,8 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       // Report connecting when genuinely entering connection setup
       await _sendConnectingReport(callId, _currentGeneration);
 
+      _startedWebRtcOfferKeys.add(key);
+
       await webrtcManager.startOfferSession(
         callId: callId,
         iceServers: servers,
@@ -236,6 +388,11 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       );
     } catch (e) {
       _diag('Media', 'Error starting WebRTC offer session: $e', callId: callId, gen: _currentGeneration);
+      _startedWebRtcOfferKeys.remove(key);
+    } finally {
+      if (_webRtcOfferInFlightKey == key) {
+        _webRtcOfferInFlightKey = null;
+      }
     }
   }
 
@@ -268,6 +425,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   @override
   Future<ApiResult<void>> revokeVoiceDevice() async {
     return safeApiCall(() async {
+      _stopHeartbeat();
       final sessionId = sessionStorage.getDeviceSessionId();
       if (sessionId != null) {
         try {
@@ -310,20 +468,62 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       _activeCallId = snapshot.callId;
       _currentGeneration = 0;
       _currentSnapshot = snapshot;
-      _reportedConnectingKeys.clear();
-      _reportedConnectedKeys.clear();
+      _webRtcOfferInFlightKey = null;
+      _startedWebRtcOfferKeys.clear();
+      _connectingInFlight.clear();
+      _reportedConnecting.clear();
+      _connectedInFlight.clear();
+      _reportedConnected.clear();
 
-      // Start CallKit outgoing call UI
-      await callKitCoordinator.startOutgoingCall(
-        callId: snapshot.callId,
-        customerName: 'Customer',
-      );
+      // Compute ringTimeout from deadline
+      final nowUtc = DateTime.now().toUtc();
+      Duration ringTimeout;
+      if (snapshot.deadlineAtUtc != null) {
+        ringTimeout = snapshot.deadlineAtUtc!.difference(nowUtc);
+      } else {
+        ringTimeout = const Duration(seconds: 30);
+      }
+
+      if (ringTimeout <= Duration.zero) {
+        _diag('Initiate', 'Call initiated with expired deadline, handling as timeout', callId: snapshot.callId);
+        unawaited(_handleCallKitTimeout(snapshot.callId));
+      } else {
+        // Start CallKit outgoing call UI with derived duration
+        await callKitCoordinator.startOutgoingCall(
+          callId: snapshot.callId,
+          customerName: 'Customer',
+          ringTimeout: ringTimeout,
+        );
+      }
 
       _snapshotController.add(snapshot);
       _statusController.add(snapshot.status);
 
       return snapshot;
     });
+  }
+
+  Future<void> _handleCallKitTimeout(String callId) async {
+    _diag('CallKit', 'Handling CallKit timeout for call $callId', callId: callId);
+    final snapshotResult = await getCallSnapshot(callId);
+    final status = switch (snapshotResult) {
+      ApiSuccessResult(:final data) => data.status,
+      _ => _currentSnapshot?.status,
+    };
+
+    if (status == VoiceCallStatus.accepted ||
+        status == VoiceCallStatus.connecting ||
+        status == VoiceCallStatus.active) {
+      _diag('CallKit', 'Ignoring CallKit timeout: call is in active state ($status)', callId: callId);
+      return;
+    }
+
+    if (status == VoiceCallStatus.created || status == VoiceCallStatus.ringing) {
+      _diag('CallKit', 'Call timed out while ringing/created, cancelling call', callId: callId);
+      await cancelCall(callId);
+    } else {
+      await cleanupCall();
+    }
   }
 
   @override
@@ -510,12 +710,17 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   @override
   Future<void> cleanupCall() async {
     _diag('Cleanup', 'Performing idempotent call cleanup', callId: _activeCallId);
+    _stopHeartbeat();
     await callKitCoordinator.endCall(_activeCallId);
     await webrtcManager.cleanup();
     signalRClient.resetSequenceAndDedupe();
     _activeCallId = null;
-    _reportedConnectingKeys.clear();
-    _reportedConnectedKeys.clear();
+    _webRtcOfferInFlightKey = null;
+    _startedWebRtcOfferKeys.clear();
+    _connectingInFlight.clear();
+    _reportedConnecting.clear();
+    _connectedInFlight.clear();
+    _reportedConnected.clear();
   }
 
   void _diag(String action, String details, {String? callId, int? seq, int? gen}) {

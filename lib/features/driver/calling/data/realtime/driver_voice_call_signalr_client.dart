@@ -224,112 +224,130 @@ class DriverVoiceCallSignalRClient {
     }
   }
 
+  ({String callId, String messageId, int generation, Map<String, dynamic> payload})?
+      _decodeRtcEnvelope(List<Object?>? args) {
+    if (args == null || args.isEmpty) return null;
+
+    String callId = '';
+    String messageId = '';
+    int generation = 0;
+    Map<String, dynamic> payload = {};
+
+    if (args.length >= 4) {
+      callId = args[0]?.toString() ?? '';
+      payload = _extractMap(args[1]);
+      messageId = args[2]?.toString() ?? '';
+      generation = (args[3] as num?)?.toInt() ?? 0;
+    } else if (args.length == 1) {
+      final envelope = _extractMap(args.first);
+      if (envelope.isEmpty) {
+        _diag('RtcEnvelope', 'Empty envelope received');
+        return null;
+      }
+      callId = envelope['callId']?.toString() ?? '';
+      messageId = envelope['messageId']?.toString() ?? '';
+      final genNum = (envelope['negotiationGeneration'] ?? envelope['generation']) as num?;
+      generation = genNum?.toInt() ?? 0;
+
+      final rawPayload = envelope['payload'];
+      payload = _extractMap(rawPayload);
+    } else {
+      _diag('RtcEnvelope', 'Unexpected arguments count: ${args.length}');
+      return null;
+    }
+
+    if (callId.trim().isEmpty || messageId.trim().isEmpty || payload.isEmpty) {
+      _diag('RtcEnvelope', 'Dropping invalid envelope: missing callId, messageId, or payload', callId: callId, gen: generation);
+      return null;
+    }
+
+    return (
+      callId: callId,
+      messageId: messageId,
+      generation: generation,
+      payload: payload,
+    );
+  }
+
   void _handleRtcOffer(List<Object?>? args) {
-    if (args == null || args.isEmpty) return;
     try {
-      String callId = '';
-      Map<String, dynamic> payload = {};
-      String messageId = '';
-      int generation = 0;
+      final decoded = _decodeRtcEnvelope(args);
+      if (decoded == null) return;
 
-      if (args.length >= 4) {
-        callId = args[0]?.toString() ?? '';
-        payload = _extractMap(args[1]);
-        messageId = args[2]?.toString() ?? '';
-        generation = (args[3] as num?)?.toInt() ?? 0;
-      } else {
-        payload = _extractMap(args.first);
-        callId = payload['callId']?.toString() ?? '';
-        messageId = payload['messageId']?.toString() ?? '';
-        generation = (payload['generation'] as num?)?.toInt() ?? 0;
+      final sdp = decoded.payload['sdp']?.toString().trim() ?? '';
+      final type = decoded.payload['type']?.toString().trim() ?? 'offer';
+      if (sdp.isEmpty) {
+        _diag('RtcOffer', 'Rejected offer with empty SDP', callId: decoded.callId, gen: decoded.generation);
+        return;
       }
 
-      final sdp = payload['sdp']?.toString() ?? '';
-      final type = payload['type']?.toString() ?? 'offer';
-      if (sdp.isNotEmpty) {
-        final dto = VoiceCallRtcOfferAnswerDto(
-          type: type,
-          sdp: sdp,
-          callId: callId,
-          messageId: messageId,
-          generation: generation,
-        );
-        _diag('RtcOffer', 'Received offer (type: $type, sdpLen: ${sdp.length})', callId: callId, gen: generation);
-        _offerController.add(dto);
-      }
+      final dto = VoiceCallRtcOfferAnswerDto(
+        type: type,
+        sdp: decoded.payload['sdp']?.toString() ?? '',
+        callId: decoded.callId,
+        messageId: decoded.messageId,
+        generation: decoded.generation,
+      );
+      _diag('RtcOffer', 'Received offer (type: $type, sdpLen: ${dto.sdp.length})', callId: decoded.callId, gen: decoded.generation);
+      _offerController.add(dto);
     } catch (e) {
       _diag('RtcOffer', 'Error parsing rtc:offer: $e');
     }
   }
 
   void _handleRtcAnswer(List<Object?>? args) {
-    if (args == null || args.isEmpty) return;
     try {
-      String callId = '';
-      Map<String, dynamic> payload = {};
-      String messageId = '';
-      int generation = 0;
+      final decoded = _decodeRtcEnvelope(args);
+      if (decoded == null) return;
 
-      if (args.length >= 4) {
-        callId = args[0]?.toString() ?? '';
-        payload = _extractMap(args[1]);
-        messageId = args[2]?.toString() ?? '';
-        generation = (args[3] as num?)?.toInt() ?? 0;
-      } else {
-        payload = _extractMap(args.first);
-        callId = payload['callId']?.toString() ?? '';
-        messageId = payload['messageId']?.toString() ?? '';
-        generation = (payload['generation'] as num?)?.toInt() ?? 0;
+      final sdp = decoded.payload['sdp']?.toString().trim() ?? '';
+      final type = decoded.payload['type']?.toString().trim() ?? 'answer';
+      if (sdp.isEmpty) {
+        _diag('RtcAnswer', 'Rejected answer with empty SDP', callId: decoded.callId, gen: decoded.generation);
+        return;
       }
 
-      final sdp = payload['sdp']?.toString() ?? '';
-      final type = payload['type']?.toString() ?? 'answer';
-      if (sdp.isNotEmpty) {
-        final dto = VoiceCallRtcOfferAnswerDto(
-          type: type,
-          sdp: sdp,
-          callId: callId,
-          messageId: messageId,
-          generation: generation,
-        );
-        _diag('RtcAnswer', 'Received answer (type: $type, sdpLen: ${sdp.length})', callId: callId, gen: generation);
-        _answerController.add(dto);
-      }
+      final dto = VoiceCallRtcOfferAnswerDto(
+        type: type,
+        sdp: decoded.payload['sdp']?.toString() ?? '',
+        callId: decoded.callId,
+        messageId: decoded.messageId,
+        generation: decoded.generation,
+      );
+      _diag('RtcAnswer', 'Received answer (type: $type, sdpLen: ${dto.sdp.length})', callId: decoded.callId, gen: decoded.generation);
+      _answerController.add(dto);
     } catch (e) {
       _diag('RtcAnswer', 'Error parsing rtc:answer: $e');
     }
   }
 
   void _handleRtcIce(List<Object?>? args) {
-    if (args == null || args.isEmpty) return;
     try {
-      String callId = '';
-      Map<String, dynamic> payload = {};
-      String messageId = '';
-      int generation = 0;
+      final decoded = _decodeRtcEnvelope(args);
+      if (decoded == null) return;
 
-      if (args.length >= 4) {
-        callId = args[0]?.toString() ?? '';
-        payload = _extractMap(args[1]);
-        messageId = args[2]?.toString() ?? '';
-        generation = (args[3] as num?)?.toInt() ?? 0;
-      } else {
-        payload = _extractMap(args.first);
-        callId = payload['callId']?.toString() ?? '';
-        messageId = payload['messageId']?.toString() ?? '';
-        generation = (payload['generation'] as num?)?.toInt() ?? 0;
+      final candidateStr = decoded.payload['candidate']?.toString().trim() ?? '';
+      if (candidateStr.isEmpty) {
+        _diag('RtcIce', 'Rejected candidate with empty candidate string', callId: decoded.callId, gen: decoded.generation);
+        return;
       }
 
-      final candidate = VoiceCallRtcCandidateDto.fromJson(
-        payload,
-        callId: callId.isNotEmpty ? callId : null,
-        messageId: messageId.isNotEmpty ? messageId : null,
-        generation: generation,
+      final sdpMid = decoded.payload['sdpMid']?.toString();
+      final sdpMLineIndex = (decoded.payload['sdpMLineIndex'] as num?)?.toInt();
+      final usernameFragment = decoded.payload['usernameFragment']?.toString();
+
+      final candidate = VoiceCallRtcCandidateDto(
+        candidate: candidateStr,
+        sdpMid: sdpMid,
+        sdpMLineIndex: sdpMLineIndex,
+        usernameFragment: usernameFragment,
+        callId: decoded.callId,
+        messageId: decoded.messageId,
+        generation: decoded.generation,
       );
-      if (candidate.candidate.isNotEmpty) {
-        _diag('RtcIce', 'Received candidate (len: ${candidate.candidate.length})', callId: callId, gen: generation);
-        _iceController.add(candidate);
-      }
+
+      _diag('RtcIce', 'Received candidate (len: ${candidate.candidate.length})', callId: decoded.callId, gen: decoded.generation);
+      _iceController.add(candidate);
     } catch (e) {
       _diag('RtcIce', 'Error parsing rtc:ice-candidate: $e');
     }

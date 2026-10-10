@@ -19,12 +19,13 @@ class VoiceCallRtcOfferAnswerDto {
     String? messageId,
     int generation = 0,
   }) {
+    final gen = (json['negotiationGeneration'] ?? json['generation']) as num?;
     return VoiceCallRtcOfferAnswerDto(
       type: json['type']?.toString() ?? '',
       sdp: json['sdp']?.toString() ?? '',
       callId: callId ?? json['callId']?.toString(),
       messageId: messageId ?? json['messageId']?.toString(),
-      generation: (json['generation'] as num?)?.toInt() ?? generation,
+      generation: gen?.toInt() ?? generation,
     );
   }
 
@@ -62,6 +63,7 @@ class VoiceCallRtcCandidateDto {
     String? messageId,
     int generation = 0,
   }) {
+    final gen = (json['negotiationGeneration'] ?? json['generation']) as num?;
     return VoiceCallRtcCandidateDto(
       candidate: json['candidate']?.toString() ?? '',
       sdpMid: json['sdpMid']?.toString(),
@@ -69,7 +71,7 @@ class VoiceCallRtcCandidateDto {
       usernameFragment: json['usernameFragment']?.toString(),
       callId: callId ?? json['callId']?.toString(),
       messageId: messageId ?? json['messageId']?.toString(),
-      generation: (json['generation'] as num?)?.toInt() ?? generation,
+      generation: gen?.toInt() ?? generation,
     );
   }
 

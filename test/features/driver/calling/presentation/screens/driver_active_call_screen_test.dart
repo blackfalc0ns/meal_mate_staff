@@ -37,9 +37,7 @@ void main() {
   }
 
   group('DriverActiveCallScreen', () {
-    setUp(() {
-      TestWidgetsFlutterBinding.ensureInitialized();
-    });
+    setUp(TestWidgetsFlutterBinding.ensureInitialized);
 
     testWidgets('renders all call components in RTL Arabic with default fake data', (
       tester,

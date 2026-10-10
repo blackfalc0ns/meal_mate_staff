@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 import 'package:meal_mate_delivery/core/services/token_service.dart';
@@ -90,11 +89,9 @@ class FakeTokenService implements TokenService {
   @override
   Future<String?> getToken() async => 'fake-jwt-token';
   @override
-  Future<void> saveToken(String token) async {}
+  Future<void> saveAccessToken(String token) async {}
   @override
   Future<void> deleteToken() async {}
-  @override
-  Future<bool> hasToken() async => true;
   @override
   Future<String?> getRefreshToken() async => 'fake-refresh-token';
   @override
@@ -224,6 +221,159 @@ void main() {
       await sub.cancel();
     });
 
+    test('rtc:answer unpacks v2 nested envelope Map', () async {
+      await client.connect();
+
+      VoiceCallRtcOfferAnswerDto? received;
+      final sub = client.onAnswerReceived.listen((ans) => received = ans);
+
+      fakeHub.triggerEvent('rtc:answer', [
+        {
+          'messageId': 'msg-v2-ans',
+          'callId': 'call-v2-1',
+          'negotiationGeneration': 3,
+          'senderDeviceSessionId': 'session-xyz',
+          'sentAtUtc': '2026-10-10T07:30:00Z',
+          'payload': {
+            'type': 'answer',
+            'sdp': 'v=0\r\no=nested-v2-ans\r\n',
+          },
+        }
+      ]);
+
+      await Future.delayed(Duration.zero);
+      expect(received, isNotNull);
+      expect(received?.callId, 'call-v2-1');
+      expect(received?.messageId, 'msg-v2-ans');
+      expect(received?.generation, 3);
+      expect(received?.type, 'answer');
+      expect(received?.sdp, 'v=0\r\no=nested-v2-ans\r\n');
+
+      await sub.cancel();
+    });
+
+    test('rtc:offer unpacks v2 nested envelope as JSON string', () async {
+      await client.connect();
+
+      VoiceCallRtcOfferAnswerDto? received;
+      final sub = client.onOfferReceived.listen((off) => received = off);
+
+      const jsonStringEnvelope = '''
+      {
+        "messageId": "msg-v2-off",
+        "callId": "call-v2-2",
+        "negotiationGeneration": 2,
+        "payload": {
+          "type": "offer",
+          "sdp": "v=0\\r\\no=nested-v2-offer\\r\\n"
+        }
+      }
+      ''';
+
+      fakeHub.triggerEvent('rtc:offer', [jsonStringEnvelope]);
+
+      await Future.delayed(Duration.zero);
+      expect(received, isNotNull);
+      expect(received?.callId, 'call-v2-2');
+      expect(received?.messageId, 'msg-v2-off');
+      expect(received?.generation, 2);
+      expect(received?.type, 'offer');
+      expect(received?.sdp, 'v=0\r\no=nested-v2-offer\r\n');
+
+      await sub.cancel();
+    });
+
+    test('rtc:ice-candidate unpacks v2 nested envelope with all candidate fields', () async {
+      await client.connect();
+
+      VoiceCallRtcCandidateDto? received;
+      final sub = client.onIceCandidateReceived.listen((cand) => received = cand);
+
+      fakeHub.triggerEvent('rtc:ice-candidate', [
+        {
+          'messageId': 'msg-v2-ice',
+          'callId': 'call-v2-3',
+          'negotiationGeneration': 4,
+          'payload': {
+            'candidate': 'candidate:v2 1 UDP 2122252543 10.0.0.1 5000 typ host',
+            'sdpMid': 'audio',
+            'sdpMLineIndex': 1,
+            'usernameFragment': 'ufrag123',
+          },
+        }
+      ]);
+
+      await Future.delayed(Duration.zero);
+      expect(received, isNotNull);
+      expect(received?.callId, 'call-v2-3');
+      expect(received?.messageId, 'msg-v2-ice');
+      expect(received?.generation, 4);
+      expect(received?.candidate, contains('candidate:v2'));
+      expect(received?.sdpMid, 'audio');
+      expect(received?.sdpMLineIndex, 1);
+      expect(received?.usernameFragment, 'ufrag123');
+
+      await sub.cancel();
+    });
+
+    test('drops envelope missing callId, messageId, or payload without crashing', () async {
+      await client.connect();
+
+      VoiceCallRtcOfferAnswerDto? answerReceived;
+      VoiceCallRtcCandidateDto? iceReceived;
+      final sub1 = client.onAnswerReceived.listen((a) => answerReceived = a);
+      final sub2 = client.onIceCandidateReceived.listen((i) => iceReceived = i);
+
+      // Missing callId
+      fakeHub.triggerEvent('rtc:answer', [
+        {
+          'messageId': 'msg-1',
+          'payload': {'type': 'answer', 'sdp': 'v=0'},
+        }
+      ]);
+
+      // Missing messageId
+      fakeHub.triggerEvent('rtc:answer', [
+        {
+          'callId': 'call-1',
+          'payload': {'type': 'answer', 'sdp': 'v=0'},
+        }
+      ]);
+
+      // Missing payload
+      fakeHub.triggerEvent('rtc:answer', [
+        {
+          'callId': 'call-1',
+          'messageId': 'msg-1',
+        }
+      ]);
+
+      // Empty payload SDP
+      fakeHub.triggerEvent('rtc:answer', [
+        {
+          'callId': 'call-1',
+          'messageId': 'msg-1',
+          'payload': {'type': 'answer', 'sdp': ''},
+        }
+      ]);
+
+      // Empty candidate in ICE
+      fakeHub.triggerEvent('rtc:ice-candidate', [
+        {
+          'callId': 'call-1',
+          'messageId': 'msg-1',
+          'payload': {'candidate': '   '},
+        }
+      ]);
+
+      await Future.delayed(Duration.zero);
+      expect(answerReceived, isNull);
+      expect(iceReceived, isNull);
+
+      await sub1.cancel();
+      await sub2.cancel();
+    });
+
     test('rtc:ice-candidate unpacks positional 4 arguments and emits VoiceCallRtcCandidateDto', () async {
       await client.connect();
 
@@ -276,7 +426,7 @@ void main() {
       await client.connect();
 
       final receivedEvents = [];
-      final sub = client.onEnvelopeReceived.listen((e) => receivedEvents.add(e));
+      final sub = client.onEnvelopeReceived.listen(receivedEvents.add);
 
       // Event 1 (sequence 1)
       fakeHub.triggerEvent('call:event', [

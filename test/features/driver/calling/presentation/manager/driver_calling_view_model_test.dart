@@ -1,18 +1,11 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/errors/api_error_type.dart';
 import 'package:meal_mate_delivery/core/errors/api_exception.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
-import 'package:meal_mate_delivery/features/driver/calling/domain/entities/delivery_contact_case_entity.dart';
-import 'package:meal_mate_delivery/features/driver/calling/domain/entities/ice_server_config_entity.dart';
-import 'package:meal_mate_delivery/features/driver/calling/domain/entities/phone_grant_entity.dart';
-import 'package:meal_mate_delivery/features/driver/calling/domain/entities/voice_call_display_entity.dart';
-import 'package:meal_mate_delivery/features/driver/calling/domain/entities/voice_call_eligibility_entity.dart';
 import 'package:meal_mate_delivery/features/driver/calling/domain/entities/voice_call_snapshot_entity.dart';
 import 'package:meal_mate_delivery/features/driver/calling/domain/entities/voice_call_status.dart';
-import 'package:meal_mate_delivery/features/driver/calling/domain/entities/voice_device_session_entity.dart';
 import 'package:meal_mate_delivery/features/driver/calling/domain/repo/driver_calling_repository.dart';
 import 'package:meal_mate_delivery/features/driver/calling/domain/usecase/cancel_voice_call_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/calling/domain/usecase/check_call_eligibility_usecase.dart';
@@ -105,8 +98,8 @@ void main() {
     );
   });
 
-  tearDown(() {
-    viewModel.close();
+  tearDown(() async {
+    await viewModel.close();
   });
 
   group('DriverCallingViewModel Duration & Hangup routing', () {
@@ -144,7 +137,7 @@ void main() {
     });
 
     test('hangup routes Created/Ringing to /cancel', () async {
-      final ringingSnapshot = VoiceCallSnapshotEntity(
+      const ringingSnapshot = VoiceCallSnapshotEntity(
         callId: 'call-1',
         tripStopId: 'stop-1',
         protocolVersion: 2,

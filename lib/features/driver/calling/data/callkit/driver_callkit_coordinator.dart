@@ -7,29 +7,37 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class DriverCallKitCoordinator {
-  DriverCallKitCoordinator();
+  DriverCallKitCoordinator({
+    Stream<CallEvent?>? eventStream,
+  }) : _providedEventStream = eventStream;
 
+  final Stream<CallEvent?>? _providedEventStream;
   final _actionController = StreamController<String>.broadcast();
   Stream<String> get onCallKitAction => _actionController.stream;
 
   StreamSubscription<CallEvent?>? _eventSubscription;
   String? _activeCallId;
-  bool _isProgrammaticClose = false;
+  final Set<String> _suppressedCallIds = <String>{};
 
   void initialize() {
     unawaited(_eventSubscription?.cancel());
-    _eventSubscription = FlutterCallkitIncoming.onEvent.listen((event) {
+    final stream = _providedEventStream ?? FlutterCallkitIncoming.onEvent;
+    _eventSubscription = stream.listen((event) {
       if (event == null) return;
       _log('CallKit event received: ${event.eventName}');
+
+      final eventCallId = _extractCallId(event) ?? _activeCallId;
+      if (eventCallId != null && _suppressedCallIds.contains(eventCallId)) {
+        _log('Ignoring CallKit action for programmatically closed callId: $eventCallId');
+        return;
+      }
+
       switch (event) {
         case CallEventActionCallDecline() ||
-             CallEventActionCallEnded() ||
-             CallEventActionCallTimeout():
-          if (_isProgrammaticClose) {
-            _log('Ignoring CallKit end action caused by programmatic close');
-            return;
-          }
+             CallEventActionCallEnded():
           _actionController.add('end');
+        case CallEventActionCallTimeout():
+          _actionController.add('timeout');
         case CallEventActionCallToggleMute():
           _actionController.add('mute');
         default:
@@ -38,12 +46,40 @@ class DriverCallKitCoordinator {
     });
   }
 
+  String? _extractCallId(CallEvent event) {
+    try {
+      final dynamic dyn = event;
+      final callKitParams = dyn.callKitParams;
+      if (callKitParams != null) {
+        if (callKitParams is CallKitParams) return callKitParams.id;
+        if (callKitParams is Map) return (callKitParams['id'] ?? callKitParams['callId'])?.toString();
+      }
+      final params = dyn.params;
+      if (params != null) {
+        if (params is CallKitParams) return params.id;
+        if (params is Map) return (params['id'] ?? params['callId'])?.toString();
+      }
+      final id = dyn.id ?? dyn.callId;
+      if (id != null) return id.toString();
+      final body = dyn.body;
+      if (body != null) {
+        if (body is Map) return (body['id'] ?? body['callId'])?.toString();
+        if (body is String) return body;
+      }
+    } catch (_) {}
+    return null;
+  }
+
   Future<void> startOutgoingCall({
     required String callId,
     required String customerName,
+    required Duration ringTimeout,
     String? handle,
   }) async {
     _activeCallId = callId;
+    _suppressedCallIds.remove(callId);
+
+    final durationMs = ringTimeout.inMilliseconds > 0 ? ringTimeout.inMilliseconds : 30000;
     final params = CallKitParams(
       id: callId,
       nameCaller: customerName,
@@ -51,7 +87,7 @@ class DriverCallKitCoordinator {
       avatar: 'assets/images/driver/avatar.png',
       handle: handle ?? customerName,
       type: 0, // audio call
-      duration: 30000,
+      duration: durationMs,
       extra: <String, dynamic>{'callId': callId},
       headers: <String, dynamic>{'apiKey': 'mealmate'},
       android: const AndroidParams(
@@ -98,9 +134,9 @@ class DriverCallKitCoordinator {
   }
 
   Future<void> endCall(String? callId) async {
-    _isProgrammaticClose = true;
     final targetId = callId ?? _activeCallId;
     if (targetId != null) {
+      _suppressedCallIds.add(targetId);
       try {
         await FlutterCallkitIncoming.endCall(targetId);
       } catch (e) {
@@ -111,9 +147,10 @@ class DriverCallKitCoordinator {
       await FlutterCallkitIncoming.endAllCalls();
     } catch (_) {}
     _activeCallId = null;
-    // Reset after CallKit event pipeline has processed the close
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      _isProgrammaticClose = false;
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (targetId != null) {
+        _suppressedCallIds.remove(targetId);
+      }
     });
   }
 
