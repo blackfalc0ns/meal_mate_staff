@@ -4,12 +4,19 @@ import '../../domain/entities/driver_start_delivery_result_entity.dart';
 import '../models/response/driver_start_delivery_response_dto.dart';
 
 extension DriverStartDeliveryResponseMapper on DriverStartDeliveryResponseDto {
-  DriverStartDeliveryResultEntity toEntity({required String expectedBoxId}) {
+  DriverStartDeliveryResultEntity toEntity({
+    required String expectedBoxId,
+    required String expectedTripId,
+  }) {
     final returnedBoxId = boxId?.trim();
     final returnedStatus = status?.trim();
-    if (returnedBoxId == null ||
-        returnedBoxId.toLowerCase() != expectedBoxId.toLowerCase() ||
-        returnedStatus != 'InTransit') {
+    final returnedTripId = tripId?.trim();
+    if ((returnedBoxId != null &&
+            returnedBoxId.toLowerCase() != expectedBoxId.toLowerCase()) ||
+        returnedTripId == null ||
+        returnedTripId.toLowerCase() != expectedTripId.toLowerCase() ||
+        returnedStatus != 'InTransit' &&
+        returnedStatus != 'InProgress') {
       throw const ApiException(
         errorType: ApiErrorType.other,
         message: 'Something went wrong',
@@ -37,7 +44,7 @@ extension DriverStartDeliveryResponseMapper on DriverStartDeliveryResponseDto {
     return DriverStartDeliveryResultEntity(
       boxId: expectedBoxId,
       status: returnedStatus!,
-      tripId: tripId,
+      tripId: returnedTripId,
       startedAtUtc: startedAtUtc == null
           ? null
           : DateTime.tryParse(startedAtUtc!)?.toUtc(),

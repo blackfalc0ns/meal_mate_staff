@@ -35,6 +35,7 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
   bool _handlersRegistered = false;
   bool _isConnected = false;
   String? _builtWithToken;
+  String? _tripId;
 
   final _eventController =
       StreamController<DriverOrdersRealtimeEvent>.broadcast();
@@ -100,7 +101,26 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     return uri.replace(path: normalizedPath).toString();
   }
 
-  String get _resolvedHubUrl => _customHubUrl ?? buildHubUrl();
+  String get _resolvedHubUrl {
+    final base = _customHubUrl ?? buildHubUrl();
+    if (_tripId == null) return base;
+    final uri = Uri.parse(base);
+    return uri.replace(queryParameters: {...uri.queryParameters, 'tripId': _tripId!}).toString();
+  }
+
+  Future<void> setTripId(String? tripId) async {
+    final normalized = tripId?.trim();
+    if (_tripId == normalized) return;
+    _tripId = normalized == null || normalized.isEmpty ? null : normalized;
+    if (isConnected) {
+      _removeHandlers();
+      await _hubConnection?.stop();
+      _hubConnection = null;
+      _builtWithToken = null;
+      _emitConnectionStatus(false);
+      await start();
+    }
+  }
 
   void _log(String message, {Object? error}) {
     developer.log(message, name: 'DriverOrdersSignalR', error: error);
@@ -322,10 +342,14 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     required double longitude,
     double? heading,
     double? speedKmh,
+    double? accuracyMeters,
+    DateTime? capturedAtUtc,
+    String? tripId,
   }) async {
     if (_isDisposed) {
       throw StateError('SignalR client is disposed');
     }
+    if (tripId != null) await setTripId(tripId);
 
     // Client-side validation: coordinates must be valid and not 0,0
     if (latitude == 0 && longitude == 0) {
@@ -344,10 +368,12 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
       final args = <Object>[
         latitude,
         longitude,
+        accuracyMeters ?? 0.0,
+        (capturedAtUtc ?? DateTime.now().toUtc()).toUtc().toIso8601String(),
         heading ?? 0.0,
         speedKmh ?? 0.0,
       ];
-      final result = await _hubConnection!.invoke('UpdateLocation', args: args);
+      final result = await _hubConnection!.invoke('UpdateLocationV2', args: args);
 
       if (result is Map) {
         final ack = Map<String, dynamic>.from(result);

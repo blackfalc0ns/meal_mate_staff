@@ -73,31 +73,39 @@ void main() {
   });
   tearDown(() => dio.close());
 
+  test('starts a trip using its ID rather than a box ID', () async {
+    await ApiServices(dio).startDriverDelivery(tripId);
+    expect(adapter.requests.single.method, 'POST');
+    expect(adapter.requests.single.path, '/api/v1/driver/trips/$tripId/start');
+    expect(adapter.requests.single.data, anyOf(isNull, isEmpty));
+  });
+
   test(
     'starts the selected box with a bodyless POST and maps nested response',
     () async {
-      final result = await repository.startDelivery(boxId: targetBox);
+      final result = await repository.startDelivery(
+        boxId: targetBox,
+        tripId: tripId,
+        latitude: 30,
+        longitude: 31,
+        idempotencyKey: 'test-key',
+      );
       expect(adapter.requests.single.method, 'POST');
       expect(
         adapter.requests.single.path,
-        '/api/v1/driver/orders/$targetBox/start-delivery',
+        '/api/v1/driver/trips/$tripId/start',
       );
-      expect(adapter.requests.single.data, anyOf(isNull, isEmpty));
+      expect(adapter.requests.single.data, {
+        'latitude': 30.0,
+        'longitude': 31.0,
+      });
       expect(result, isA<ApiSuccessResult>());
       final data = (result as ApiSuccessResult).data;
       expect(data.boxId, targetBox);
       expect(data.tripId, tripId);
       expect(data.status, 'InTransit');
       expect(data.startedAtUtc, DateTime.utc(2026, 10, 7, 9));
-      expect(data.customerName, 'عبدالله العتيبي');
-      expect(data.customerLatitude, 29.3337);
-      expect(data.customerNotes, 'يرجى الاتصال قبل الوصول');
-      expect(data.orderCode, 'MM-987654');
-      expect(data.boxCount, 3);
-      expect(
-        data.navigationUrl,
-        startsWith('https://www.google.com/maps/dir/'),
-      );
+      expect(data.customerName, isNull);
     },
   );
 
@@ -107,7 +115,13 @@ void main() {
       'code': 'Orders.StopStateNotAllowed',
       'detail': 'Cannot start this box',
     };
-    final result = await repository.startDelivery(boxId: targetBox);
+    final result = await repository.startDelivery(
+      boxId: targetBox,
+      tripId: tripId,
+      latitude: 30,
+      longitude: 31,
+      idempotencyKey: 'test-key',
+    );
     expect(result, isA<ApiErrorResult>());
     expect(
       (result as ApiErrorResult).failure.code,
@@ -119,13 +133,19 @@ void main() {
     'rejects wrong target or missing transit state instead of confirming start',
     () async {
       for (final response in [
-        {...responseFixture, 'boxId': tripId},
+        {...responseFixture, 'tripId': targetBox},
         {...responseFixture, 'status': null},
         <String, Object?>{},
       ]) {
         adapter.response = response;
         expect(
-          await repository.startDelivery(boxId: targetBox),
+          await repository.startDelivery(
+            boxId: targetBox,
+            tripId: tripId,
+            latitude: 30,
+            longitude: 31,
+            idempotencyKey: 'test-key',
+          ),
           isA<ApiErrorResult>(),
         );
       }
@@ -136,11 +156,17 @@ void main() {
     'optional nested fields remain absent and markdown is not a navigation URL',
     () async {
       adapter.response = {
-        'boxId': targetBox,
+        'tripId': tripId,
         'status': 'InTransit',
         'navigation': {'url': '[maps](https://www.google.com/maps/dir/)'},
       };
-      final result = await repository.startDelivery(boxId: targetBox);
+      final result = await repository.startDelivery(
+        boxId: targetBox,
+        tripId: tripId,
+        latitude: 30,
+        longitude: 31,
+        idempotencyKey: 'test-key',
+      );
       final data = (result as ApiSuccessResult).data;
       expect(data.customerLatitude, isNull);
       expect(data.startedAtUtc, isNull);

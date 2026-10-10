@@ -189,87 +189,87 @@ class _DriverTrackingMapViewState extends State<DriverTrackingMapView> {
               iconColor: color.primary,
             ),
           ),
-          PositionedDirectional(
-            top: 130,
-            end: 85,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm + 2,
-                vertical: Spacing.xs + 2,
-              ),
-              decoration: BoxDecoration(
-                color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.home_rounded,
-                    size: Spacing.iconXs,
-                    color: color.primary,
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    locale.driverStartRouteCustomerLocation,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size10,
-                      color: color.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            top: 175,
-            start: Spacing.base,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm + 2,
-                vertical: Spacing.xs + 2,
-              ),
-              decoration: BoxDecoration(
-                color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: color.primary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    locale.driverStartRouteCurrentLocation,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size10,
-                      color: color.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // PositionedDirectional(
+          //   top: 130,
+          //   end: 85,
+          //   child: Container(
+          //     padding: const EdgeInsets.symmetric(
+          //       horizontal: Spacing.sm + 2,
+          //       vertical: Spacing.xs + 2,
+          //     ),
+          //     decoration: BoxDecoration(
+          //       color: color.surface,
+          //       borderRadius: BorderRadius.circular(Spacing.radiusPill),
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Colors.black.withValues(alpha: 0.08),
+          //           blurRadius: 6,
+          //           offset: const Offset(0, 2),
+          //         ),
+          //       ],
+          //     ),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         Icon(
+          //           Icons.home_rounded,
+          //           size: Spacing.iconXs,
+          //           color: color.primary,
+          //         ),
+          //         const SizedBox(width: Spacing.xs),
+          //         Text(
+          //           locale.driverStartRouteCustomerLocation,
+          //           style: getMediumStyle(
+          //             fontSize: FontSize.size10,
+          //             color: color.onSurface,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // PositionedDirectional(
+          //   top: 175,
+          //   start: Spacing.base,
+          //   child: Container(
+          //     padding: const EdgeInsets.symmetric(
+          //       horizontal: Spacing.sm + 2,
+          //       vertical: Spacing.xs + 2,
+          //     ),
+          //     decoration: BoxDecoration(
+          //       color: color.surface,
+          //       borderRadius: BorderRadius.circular(Spacing.radiusPill),
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Colors.black.withValues(alpha: 0.08),
+          //           blurRadius: 6,
+          //           offset: const Offset(0, 2),
+          //         ),
+          //       ],
+          //     ),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         Container(
+          //           width: 8,
+          //           height: 8,
+          //           decoration: BoxDecoration(
+          //             color: color.primary,
+          //             shape: BoxShape.circle,
+          //           ),
+          //         ),
+          //         const SizedBox(width: Spacing.xs),
+          //         Text(
+          //           locale.driverStartRouteCurrentLocation,
+          //           style: getMediumStyle(
+          //             fontSize: FontSize.size10,
+          //             color: color.onSurface,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

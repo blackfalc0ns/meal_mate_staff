@@ -16,6 +16,27 @@ class DriverLocationRemoteDataSourceImpl
 
   final Dio _dio;
 
+  Future<Map<String, dynamic>?> sendMeasuredLocation({
+    required double latitude,
+    required double longitude,
+    required double accuracyMeters,
+    required DateTime capturedAtUtc,
+    required String tripId,
+    double? heading,
+    double? speedKmh,
+  }) async {
+    final response = await _dio.post(EndPoints.driverLocation, data: {
+      'tripId': tripId,
+      'latitude': latitude,
+      'longitude': longitude,
+      'accuracyMeters': accuracyMeters,
+      'capturedAtUtc': capturedAtUtc.toUtc().toIso8601String(),
+      if (heading != null) 'heading': heading,
+      if (speedKmh != null) 'speedKmh': speedKmh,
+    });
+    return response.data is Map ? Map<String, dynamic>.from(response.data as Map) : null;
+  }
+
   @override
   Future<Map<String, dynamic>?> sendLocation({
     required double latitude,

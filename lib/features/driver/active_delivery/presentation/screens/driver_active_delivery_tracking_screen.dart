@@ -190,13 +190,31 @@ class _DriverActiveDeliveryTrackingScreenState
     );
   }
 
-  void _handleCallCustomer() {
+  void _handleCallCustomer([DriverMapStopEntity? stop]) {
+    final effectiveStop = stop ?? _viewModel?.state.selectedStop;
+    final tripStopId =
+        effectiveStop?.id ?? widget.arguments?.stopId ?? _trip.order.orderId;
+    final customerName = (effectiveStop?.customerName.isNotEmpty == true)
+        ? effectiveStop!.customerName
+        : _trip.order.customerName;
+    final customerPhone = (effectiveStop?.customerPhone.isNotEmpty == true)
+        ? effectiveStop!.customerPhone
+        : _trip.order.customerPhone;
+
+    // Voice-call location updates must be associated with the active trip.
+    // The realtime box event is not guaranteed to arrive after navigation.
+    if (getIt.isRegistered<DriverLiveLocationCoordinator>()) {
+      final coordinator = getIt<DriverLiveLocationCoordinator>();
+      unawaited(coordinator.setTripId(effectiveStop?.tripId ?? _trip.tripId));
+    }
+
     unawaited(
       CustomerCallAttemptsSheet.show(
         context,
+        tripStopId: tripStopId.isNotEmpty ? tripStopId : null,
         initialAttempt: DriverCallAttemptEntity(
-          customerName: _trip.order.customerName,
-          customerPhone: _trip.order.customerPhone,
+          customerName: customerName.isNotEmpty ? customerName : 'Customer',
+          customerPhone: customerPhone,
         ),
       ),
     );
@@ -372,7 +390,7 @@ class _DriverActiveDeliveryTrackingScreenState
                       locationStream: _stream,
                       boxCode: trip.order.boxCode,
                       onLocationUpdate: (loc) => _driverLocation = loc,
-                      onCallCustomer: _handleCallCustomer,
+                      onCallCustomer: () => _handleCallCustomer(selectedStop),
                       onMessageCustomer: () {},
                     ),
                   ),
@@ -382,7 +400,7 @@ class _DriverActiveDeliveryTrackingScreenState
                     right: Spacing.base,
                     child: DriverTrackingSummaryCard(
                       order: trip.order,
-                      onCallPressed: _handleCallCustomer,
+                      onCallPressed: () => _handleCallCustomer(selectedStop),
                       onNavigatePressed: () {},
                     ),
                   ),

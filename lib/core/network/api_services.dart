@@ -30,6 +30,19 @@ import '../../features/auth/data/models/response/staff_role_response_dto.dart';
 import '../../features/auth/data/models/response/verify_first_time_otp_response_dto.dart';
 import '../../features/device_token/data/models/request/driver_device_token_request_dto.dart';
 import '../../features/device_token/data/models/request/restaurant_device_token_request_dto.dart';
+import '../../features/device_token/data/models/response/driver_device_token_response_dto.dart';
+import '../../features/driver/calling/data/models/request/delivery_contact_hold_request_dto.dart';
+import '../../features/driver/calling/data/models/request/delivery_contact_resume_request_dto.dart';
+import '../../features/driver/calling/data/models/request/delivery_contact_reveal_phone_request_dto.dart';
+import '../../features/driver/calling/data/models/request/voice_call_initiate_request_dto.dart';
+import '../../features/driver/calling/data/models/request/voice_device_register_request_dto.dart';
+import '../../features/driver/calling/data/models/response/delivery_contact_case_response_dto.dart';
+import '../../features/driver/calling/data/models/response/ice_servers_response_dto.dart';
+import '../../features/driver/calling/data/models/response/phone_grant_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_call_display_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_call_eligibility_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_call_snapshot_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_device_register_response_dto.dart';
 import '../../features/register/data/models/request/driver_registration_request_dto.dart';
 import '../../features/register/data/models/request/driver_resubmit_request_dto.dart';
 import '../../features/register/data/models/response/driver_file_upload_response_dto.dart';
@@ -220,7 +233,7 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.driverDeviceToken)
-  Future<void> upsertDriverDeviceToken(
+  Future<DriverDeviceTokenResponseDto?> upsertDriverDeviceToken(
     @Body() DriverDeviceTokenRequestDto request,
   );
 
@@ -423,7 +436,7 @@ abstract class ApiServices {
 
   @POST(EndPoints.driverStartDelivery)
   Future<DriverStartDeliveryResponseDto> startDriverDelivery(
-    @Path('boxId') String boxId,
+    @Path('tripId') String tripId,
   );
 
   @POST(EndPoints.driverTripStart)
@@ -477,5 +490,126 @@ abstract class ApiServices {
   Future<DriverReassignmentResponseDto> requestDriverReassignment(
     @Path('boxId') String boxId,
     @Body() DriverReassignmentRequestDto request,
+  );
+
+  // Voice Calls V2 endpoints
+  @POST(EndPoints.voiceCallsV2Register)
+  Future<VoiceDeviceRegisterResponseDto> registerVoiceDevice(
+    @Body() VoiceDeviceRegisterRequestDto request,
+  );
+
+  @POST(EndPoints.voiceCallsV2Revoke)
+  Future<void> revokeVoiceDevice(
+    @Path('deviceSessionId') String deviceSessionId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Eligibility)
+  Future<VoiceCallEligibilityResponseDto> checkVoiceCallEligibility(
+    @Path('tripStopId') String tripStopId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2Initiate)
+  Future<VoiceCallSnapshotResponseDto> initiateVoiceCall(
+    @Body() VoiceCallInitiateRequestDto request,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2Cancel)
+  Future<void> cancelVoiceCall(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2End)
+  Future<void> endVoiceCall(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Active)
+  Future<VoiceCallSnapshotResponseDto?> getActiveVoiceCall(
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Call)
+  Future<VoiceCallSnapshotResponseDto> getVoiceCallSnapshot(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2IceServers)
+  Future<IceServersResponseDto> getVoiceIceServers(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2ReportConnecting)
+  Future<void> reportVoiceConnecting(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2ReportConnected)
+  Future<void> reportVoiceConnected(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2Heartbeat)
+  Future<void> sendVoiceHeartbeat(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Display)
+  Future<VoiceCallDisplayResponseDto> getVoiceCallDisplay(
+    @Path('callId') String callId,
+    @Header('Accept-Language') String? language,
+  );
+
+  // Delivery Contact Case endpoints
+  @GET(EndPoints.deliveryContactCase)
+  Future<DeliveryContactCaseResponseDto> getDeliveryContactCase(
+    @Path('tripStopId') String tripStopId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.deliveryContactHold)
+  Future<DeliveryContactCaseResponseDto> holdDeliveryContactCase(
+    @Path('tripStopId') String tripStopId,
+    @Body() DeliveryContactHoldRequestDto request,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.deliveryContactResume)
+  Future<DeliveryContactCaseResponseDto> resumeDeliveryContactCase(
+    @Path('tripStopId') String tripStopId,
+    @Body() DeliveryContactResumeRequestDto request,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.deliveryContactRevealPhone)
+  Future<PhoneGrantResponseDto> revealDeliveryCustomerPhone(
+    @Path('tripStopId') String tripStopId,
+    @Body() DeliveryContactRevealPhoneRequestDto request,
+    @Header('Cache-Control') String cacheControl,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
   );
 }

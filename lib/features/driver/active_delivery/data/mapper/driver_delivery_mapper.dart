@@ -13,7 +13,8 @@ extension DriverArrivalRequestEntityMapper on DriverArrivalRequestEntity {
   DriverArrivalRequestDto toDto() {
     final lat = latitude;
     final lng = longitude;
-    final isValidPair = lat != null &&
+    final isValidPair =
+        lat != null &&
         lng != null &&
         lat.isFinite &&
         lng.isFinite &&
@@ -33,7 +34,8 @@ extension DriverDeliverRequestEntityMapper on DriverDeliverRequestEntity {
   DriverDeliverRequestDto toDto() {
     final lat = latitude;
     final lng = longitude;
-    final isValidPair = lat != null &&
+    final isValidPair =
+        lat != null &&
         lng != null &&
         lat.isFinite &&
         lng.isFinite &&
@@ -43,7 +45,9 @@ extension DriverDeliverRequestEntityMapper on DriverDeliverRequestEntity {
         lng <= 180.0;
 
     final trimmedOtp = deliveryOtp?.trim();
-    final validOtp = (trimmedOtp != null && trimmedOtp.length == 4) ? trimmedOtp : null;
+    final validOtp = (trimmedOtp != null && trimmedOtp.length == 4)
+        ? trimmedOtp
+        : null;
 
     return DriverDeliverRequestDto(
       proofPhotoStorageKey: proofPhotoStorageKey.trim(),

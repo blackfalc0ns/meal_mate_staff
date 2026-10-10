@@ -4,10 +4,7 @@ part 'driver_arrival_request_dto.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class DriverArrivalRequestDto {
-  const DriverArrivalRequestDto({
-    this.latitude,
-    this.longitude,
-  });
+  const DriverArrivalRequestDto({this.latitude, this.longitude});
 
   factory DriverArrivalRequestDto.fromJson(Map<String, dynamic> json) =>
       _$DriverArrivalRequestDtoFromJson(json);

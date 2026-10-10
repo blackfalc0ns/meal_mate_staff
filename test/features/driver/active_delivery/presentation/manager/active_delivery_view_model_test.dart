@@ -39,11 +39,17 @@ class MockDriverDeliveryRepository implements DriverDeliveryRepository {
   Completer<ApiResult<DriverStartDeliveryResultEntity>>? startCompleter;
   int startCallCount = 0;
   String? startedBoxId;
+  String? startedTripId;
 
   @override
   Future<ApiResult<DriverStartDeliveryResultEntity>> startDelivery({
     required String boxId,
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
   }) async {
+    startedTripId = tripId;
     startCallCount++;
     startedBoxId = boxId;
     return startCompleter?.future ??
@@ -178,6 +184,7 @@ void main() {
         viewModel.doIntent(const StartActiveDeliveryRouteEvent());
         expect(deliveryRepo.startCallCount, 1);
         expect(deliveryRepo.startedBoxId, 'box-1');
+        expect(deliveryRepo.startedTripId, 'trip-1');
         expect(viewModel.state.isStarting, isTrue);
         expect(viewModel.state.navigationRevision, 0);
         deliveryRepo.startCompleter!.complete(

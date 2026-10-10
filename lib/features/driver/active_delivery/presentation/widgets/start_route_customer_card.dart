@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/constants/assets.dart';
 import '../../../../../core/extensions/extensions.dart';
+import '../../../calling/domain/entities/driver_call_attempt_entity.dart';
+import '../../../calling/presentation/widgets/customer_call_attempts_sheet.dart';
 import '../../../map/domain/entities/driver_map_stop_entity.dart';
 import '../../domain/entities/active_delivery_order_entity.dart';
 
@@ -35,7 +36,23 @@ class StartRouteCustomerCard extends StatelessWidget {
       onCallCustomer!();
       return;
     }
-    unawaited(context.pushNamed(AppRoutes.driverActiveCall));
+
+    final tripStopId = stop?.id ?? order?.orderId;
+    final customerName = stop?.customerName ?? order?.customerName ?? '';
+    final customerPhone = stop?.customerPhone.isNotEmpty == true
+        ? stop!.customerPhone
+        : (order?.customerPhone ?? '');
+
+    unawaited(
+      CustomerCallAttemptsSheet.show(
+        context,
+        tripStopId: tripStopId,
+        initialAttempt: DriverCallAttemptEntity(
+          customerName: customerName,
+          customerPhone: customerPhone,
+        ),
+      ),
+    );
   }
 
   @override

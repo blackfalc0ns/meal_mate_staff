@@ -11,5 +11,15 @@ class StartDriverDeliveryUseCase {
 
   Future<ApiResult<DriverStartDeliveryResultEntity>> call({
     required String boxId,
-  }) => _repository.startDelivery(boxId: boxId);
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
+  }) => _repository.startDelivery(
+    boxId: boxId,
+    tripId: tripId,
+    latitude: latitude,
+    longitude: longitude,
+    idempotencyKey: idempotencyKey,
+  );
 }

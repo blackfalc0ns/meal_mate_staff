@@ -14,7 +14,8 @@ class DriverDeliveryProofUploadResponseDto {
   factory DriverDeliveryProofUploadResponseDto.fromJson(
     Map<String, dynamic> json,
   ) {
-    final rawKey = json['storageKey'] ??
+    final rawKey =
+        json['storageKey'] ??
         json['key'] ??
         json['url'] ??
         json['fileUrl'] ??
@@ -28,7 +29,8 @@ class DriverDeliveryProofUploadResponseDto {
     );
   }
 
-  Map<String, dynamic> toJson() => _$DriverDeliveryProofUploadResponseDtoToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$DriverDeliveryProofUploadResponseDtoToJson(this);
 
   final String? storageKey;
   final String? uploadedAtUtc;

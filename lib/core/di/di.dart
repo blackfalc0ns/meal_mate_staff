@@ -232,6 +232,32 @@ import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/relea
 import '../../features/dispatcher/dispatcher_driver_details/presentation/manager/driver_details_view_model.dart';
 import '../../features/dispatcher/dispatcher_driver_details/presentation/services/driver_contact_launcher.dart';
 
+import '../services/voice_device_session_storage.dart';
+import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source.dart';
+import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source_impl.dart';
+import '../../features/driver/calling/data/realtime/driver_voice_call_signalr_client.dart';
+import '../../features/driver/calling/data/webrtc/driver_webrtc_manager.dart';
+import '../../features/driver/calling/data/callkit/driver_callkit_coordinator.dart';
+import '../../features/driver/calling/data/repo/driver_calling_repository_impl.dart';
+import '../../features/driver/calling/domain/repo/driver_calling_repository.dart';
+import '../../features/driver/calling/domain/usecase/check_call_eligibility_usecase.dart';
+import '../../features/driver/calling/domain/usecase/initiate_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/cancel_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/end_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_active_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_voice_call_snapshot_usecase.dart';
+import '../../features/driver/calling/domain/usecase/register_voice_device_usecase.dart';
+import '../../features/driver/calling/domain/usecase/revoke_voice_device_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_delivery_contact_case_usecase.dart';
+import '../../features/driver/calling/domain/usecase/hold_delivery_contact_case_usecase.dart';
+import '../../features/driver/calling/domain/usecase/resume_delivery_contact_case_usecase.dart';
+import '../../features/driver/calling/domain/usecase/reveal_customer_phone_usecase.dart';
+import '../../features/driver/calling/domain/usecase/send_voice_heartbeat_usecase.dart';
+import '../../features/driver/calling/domain/usecase/report_voice_connecting_usecase.dart';
+import '../../features/driver/calling/domain/usecase/report_voice_connected_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_voice_call_display_usecase.dart';
+import '../../features/driver/calling/presentation/manager/driver_calling_view_model.dart';
+
 final GetIt getIt = GetIt.instance;
 
 Future<void> configureDependencies() async {
@@ -321,6 +347,7 @@ Future<void> configureDependencies() async {
       router: getIt<NotificationRouter>(),
       sharedPreferences: getIt<SharedPreferences>(),
       secureStorage: getIt<FlutterSecureStorage>(),
+      voiceDeviceSessionStorage: getIt<VoiceDeviceSessionStorage>(),
     ),
   );
 
@@ -1016,6 +1043,112 @@ Future<void> configureDependencies() async {
 
   // Eagerly resolve coordinator so realtime event listeners are active immediately
   getIt<DriverLiveLocationCoordinator>();
+
+  // Voice Calls V2 Feature
+  getIt.registerLazySingleton<VoiceDeviceSessionStorage>(
+    () => VoiceDeviceSessionStorage(
+      secureStorage: getIt<FlutterSecureStorage>(),
+      sharedPreferences: getIt<SharedPreferences>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverCallingRemoteDataSource>(
+    () => DriverCallingRemoteDataSourceImpl(
+      getIt<ApiServices>(),
+      getIt<VoiceDeviceSessionStorage>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverVoiceCallSignalRClient>(
+    () => DriverVoiceCallSignalRClient(
+      tokenService: getIt<TokenService>(),
+      sessionStorage: getIt<VoiceDeviceSessionStorage>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverWebRtcManager>(
+    () => DriverWebRtcManager(
+      signalRClient: getIt<DriverVoiceCallSignalRClient>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverCallKitCoordinator>(
+    DriverCallKitCoordinator.new,
+  );
+  getIt.registerLazySingleton<DriverCallingRepository>(
+    () => DriverCallingRepositoryImpl(
+      remoteDataSource: getIt<DriverCallingRemoteDataSource>(),
+      signalRClient: getIt<DriverVoiceCallSignalRClient>(),
+      webrtcManager: getIt<DriverWebRtcManager>(),
+      callKitCoordinator: getIt<DriverCallKitCoordinator>(),
+      sessionStorage: getIt<VoiceDeviceSessionStorage>(),
+    ),
+  );
+
+  // Calling Use Cases
+  getIt.registerFactory<CheckCallEligibilityUseCase>(
+    () => CheckCallEligibilityUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<InitiateVoiceCallUseCase>(
+    () => InitiateVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<CancelVoiceCallUseCase>(
+    () => CancelVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<EndVoiceCallUseCase>(
+    () => EndVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetActiveVoiceCallUseCase>(
+    () => GetActiveVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetVoiceCallSnapshotUseCase>(
+    () => GetVoiceCallSnapshotUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<RegisterVoiceDeviceUseCase>(
+    () => RegisterVoiceDeviceUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<RevokeVoiceDeviceUseCase>(
+    () => RevokeVoiceDeviceUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetDeliveryContactCaseUseCase>(
+    () => GetDeliveryContactCaseUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<HoldDeliveryContactCaseUseCase>(
+    () => HoldDeliveryContactCaseUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<ResumeDeliveryContactCaseUseCase>(
+    () => ResumeDeliveryContactCaseUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<RevealCustomerPhoneUseCase>(
+    () => RevealCustomerPhoneUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<SendVoiceHeartbeatUseCase>(
+    () => SendVoiceHeartbeatUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<ReportVoiceConnectingUseCase>(
+    () => ReportVoiceConnectingUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<ReportVoiceConnectedUseCase>(
+    () => ReportVoiceConnectedUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetVoiceCallDisplayUseCase>(
+    () => GetVoiceCallDisplayUseCase(getIt<DriverCallingRepository>()),
+  );
+
+  // Calling ViewModel
+  getIt.registerFactory<DriverCallingViewModel>(
+    () => DriverCallingViewModel(
+      checkCallEligibilityUseCase: getIt<CheckCallEligibilityUseCase>(),
+      initiateVoiceCallUseCase: getIt<InitiateVoiceCallUseCase>(),
+      cancelVoiceCallUseCase: getIt<CancelVoiceCallUseCase>(),
+      endVoiceCallUseCase: getIt<EndVoiceCallUseCase>(),
+      getActiveVoiceCallUseCase: getIt<GetActiveVoiceCallUseCase>(),
+      getVoiceCallSnapshotUseCase: getIt<GetVoiceCallSnapshotUseCase>(),
+      getDeliveryContactCaseUseCase: getIt<GetDeliveryContactCaseUseCase>(),
+      holdDeliveryContactCaseUseCase: getIt<HoldDeliveryContactCaseUseCase>(),
+      resumeDeliveryContactCaseUseCase: getIt<ResumeDeliveryContactCaseUseCase>(),
+      revealCustomerPhoneUseCase: getIt<RevealCustomerPhoneUseCase>(),
+      getVoiceCallDisplayUseCase: getIt<GetVoiceCallDisplayUseCase>(),
+      repository: getIt<DriverCallingRepository>(),
+      locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
+    ),
+  );
 }
 
 Dio _buildDio() {

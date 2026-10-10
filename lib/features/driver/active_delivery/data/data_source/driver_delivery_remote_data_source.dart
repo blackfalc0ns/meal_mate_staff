@@ -8,7 +8,12 @@ import '../models/response/driver_deliver_response_dto.dart';
 import '../models/response/driver_delivery_proof_upload_response_dto.dart';
 
 abstract interface class DriverDeliveryRemoteDataSource {
-  Future<DriverStartDeliveryResponseDto> startDelivery({required String boxId});
+  Future<DriverStartDeliveryResponseDto> startDelivery({
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
+  });
 
   Future<DriverArrivalResponseDto> arriveAtCustomer({
     required String boxId,

@@ -36,20 +36,31 @@ class DriverLiveLocationCoordinator {
   DriverLiveLocationSample? _latestLocationSample;
   DriverLiveLocationSample? _lastSuccessfullySentLocation;
   int _activeBoxCount = 0;
+  String? _tripId;
   bool _isStreaming = false;
   bool _isDisposed = false;
   bool _isSending = false;
   Future<bool>? _inFlightSendFuture;
 
   final _streamingStatusController = StreamController<bool>.broadcast();
-  final _positionsController = StreamController<DriverLiveLocationSample>.broadcast();
+  final _positionsController =
+      StreamController<DriverLiveLocationSample>.broadcast();
 
   bool get isStreaming => _isStreaming;
   int get activeBoxCount => _activeBoxCount;
   Stream<bool> get streamingStatusStream => _streamingStatusController.stream;
   Stream<DriverLiveLocationSample> get positions => _positionsController.stream;
   DriverLiveLocationSample? get latestLocation => _latestLocationSample;
-  DriverLiveLocationSample? get lastSuccessfullySentLocation => _lastSuccessfullySentLocation;
+  DriverLiveLocationSample? get lastSuccessfullySentLocation =>
+      _lastSuccessfullySentLocation;
+
+  Future<void> setTripId(String? tripId) async {
+    _tripId = tripId?.trim().isEmpty == true ? null : tripId?.trim();
+    final setter = realtimeClient;
+    try {
+      await (setter as dynamic).setTripId(_tripId);
+    } catch (_) {}
+  }
 
   void _log(String message, {Object? error}) {
     developer.log(message, name: 'DriverLiveTracking', error: error);
@@ -61,11 +72,16 @@ class DriverLiveLocationCoordinator {
       if (_isDisposed) return;
 
       if (event is DriverBoxAssignedEvent) {
-        _log('📦 Box assigned received (boxId: ${event.boxId}, reassigned: ${event.isReassigned})');
+        unawaited(setTripId(event.tripId));
+        _log(
+          '📦 Box assigned received (boxId: ${event.boxId}, reassigned: ${event.isReassigned})',
+        );
         _activeBoxCount = math.max(1, _activeBoxCount + 1);
         unawaited(startTracking());
       } else if (event is DriverDeliveryCompletedEvent) {
-        _log('🏁 Delivery completed received (boxId: ${event.boxId}, remaining: ${event.remainingBoxesCount})');
+        _log(
+          '🏁 Delivery completed received (boxId: ${event.boxId}, remaining: ${event.remainingBoxesCount})',
+        );
         if (event.remainingBoxesCount != null) {
           _activeBoxCount = event.remainingBoxesCount!;
         } else {
@@ -82,7 +98,9 @@ class DriverLiveLocationCoordinator {
           stopTracking(reason: 'all_deliveries_completed');
         }
       } else if (event is DriverTrackingNotRequiredEvent) {
-        _log('🛑 Server reported dispatcher.tracking_not_required. Immediate halt!');
+        _log(
+          '🛑 Server reported dispatcher.tracking_not_required. Immediate halt!',
+        );
         _activeBoxCount = 0;
         stopTracking(reason: 'server_tracking_not_required');
       }
@@ -100,7 +118,9 @@ class DriverLiveLocationCoordinator {
       _log('Status: STOPPING stream | Active boxes: 0');
       stopTracking(reason: 'zero_active_boxes');
     } else {
-      _log('Status: ${_isStreaming ? "STREAMING" : "IDLE"} | Active boxes: $_activeBoxCount');
+      _log(
+        'Status: ${_isStreaming ? "STREAMING" : "IDLE"} | Active boxes: $_activeBoxCount',
+      );
     }
   }
 
@@ -110,19 +130,25 @@ class DriverLiveLocationCoordinator {
     if (_isStreaming) return;
 
     if (_activeBoxCount <= 0) {
-      _log('Status: IDLE | Cannot start streaming: No active deliveries assigned (_activeBoxCount: 0)');
+      _log(
+        'Status: IDLE | Cannot start streaming: No active deliveries assigned (_activeBoxCount: 0)',
+      );
       return;
     }
 
     final hasPermission = await locationService.checkAndRequestPermission();
     if (!hasPermission) {
-      _log('Status: BLOCKED | Cannot start streaming: Location permission not granted');
+      _log(
+        'Status: BLOCKED | Cannot start streaming: Location permission not granted',
+      );
       return;
     }
 
     _isStreaming = true;
     _streamingStatusController.add(true);
-    _log('Status: STREAMING ACTIVE | Interval: ${streamingInterval.inSeconds}s | Active boxes: $_activeBoxCount');
+    _log(
+      'Status: STREAMING ACTIVE | Interval: ${streamingInterval.inSeconds}s | Active boxes: $_activeBoxCount',
+    );
 
     // Ensure SignalR connection is started
     try {
@@ -136,24 +162,26 @@ class DriverLiveLocationCoordinator {
     _positionSubscription = locationService
         .getPositionStream(intervalSeconds: streamingInterval.inSeconds)
         .listen(
-      (pos) {
-        _latestPosition = pos;
-        final sample = DriverLiveLocationSample(
-          latitude: pos.latitude,
-          longitude: pos.longitude,
-          recordedAtUtc: pos.timestamp.toUtc(),
-          heading: pos.heading >= 0 && pos.heading <= 360 ? pos.heading : null,
-          speedKmh: pos.speed >= 0 ? pos.speed * 3.6 : null,
+          (pos) {
+            _latestPosition = pos;
+            final sample = DriverLiveLocationSample(
+              latitude: pos.latitude,
+              longitude: pos.longitude,
+              recordedAtUtc: pos.timestamp.toUtc(),
+              heading: pos.heading >= 0 && pos.heading <= 360
+                  ? pos.heading
+                  : null,
+              speedKmh: pos.speed >= 0 ? pos.speed * 3.6 : null,
+            );
+            _latestLocationSample = sample;
+            if (!_positionsController.isClosed) {
+              _positionsController.add(sample);
+            }
+          },
+          onError: (err) {
+            _log('GPS Stream error: $err', error: err);
+          },
         );
-        _latestLocationSample = sample;
-        if (!_positionsController.isClosed) {
-          _positionsController.add(sample);
-        }
-      },
-      onError: (err) {
-        _log('GPS Stream error: $err', error: err);
-      },
-    );
 
     // Immediate first tick
     await _sendTick();
@@ -182,7 +210,8 @@ class DriverLiveLocationCoordinator {
           await startTracking();
           success = _lastSuccessfullySentLocation != null;
         } else {
-          final hasPermission = await locationService.checkAndRequestPermission();
+          final hasPermission = await locationService
+              .checkAndRequestPermission();
           if (hasPermission) {
             success = await _sendTick();
           }
@@ -215,13 +244,34 @@ class DriverLiveLocationCoordinator {
             latitude: position.latitude,
             longitude: position.longitude,
             recordedAtUtc: position.timestamp.toUtc(),
-            heading: position.heading >= 0 && position.heading <= 360 ? position.heading : null,
+            heading: position.heading >= 0 && position.heading <= 360
+                ? position.heading
+                : null,
             speedKmh: position.speed >= 0 ? position.speed * 3.6 : null,
           );
           if (!_positionsController.isClosed) {
             _positionsController.add(_latestLocationSample!);
           }
         }
+      }
+
+      // Never upload a cached fix. The backend uses capturedAtUtc when it
+      // evaluates voice-call eligibility, so replaying an old Position keeps
+      // the contact location stale even when the transport accepts the packet.
+      const maxLocationAge = Duration(seconds: 60);
+      if (position != null &&
+          DateTime.now().toUtc().difference(position.timestamp.toUtc()) >
+              maxLocationAge) {
+        _log('GPS fix is stale; requesting a fresh reading before upload');
+        final freshPosition = await locationService.getCurrentPosition();
+        if (freshPosition == null ||
+            DateTime.now().toUtc().difference(freshPosition.timestamp.toUtc()) >
+                maxLocationAge) {
+          _log('No fresh GPS fix available; skipping location upload');
+          return false;
+        }
+        position = freshPosition;
+        _latestPosition = freshPosition;
       }
 
       if (position == null) {
@@ -231,6 +281,16 @@ class DriverLiveLocationCoordinator {
 
       final lat = position.latitude;
       final lng = position.longitude;
+
+      // Diagnostics for voice-call eligibility failures caused by stale GPS.
+      final nowUtc = DateTime.now().toUtc();
+      final capturedAtUtc = position.timestamp.toUtc();
+      final gpsAge = nowUtc.difference(capturedAtUtc);
+      _log(
+        'GPS diagnostic | capturedAtUtc: $capturedAtUtc | nowUtc: $nowUtc | '
+        'age: ${gpsAge.inMilliseconds}ms | tripId: ${_tripId ?? "<null>"} | '
+        'lat: $lat | lng: $lng | accuracy: ${position.accuracy}m',
+      );
 
       if (!DriverLocationServiceImpl.isValidCoordinate(lat, lng)) {
         _log('⚠️ Skipping invalid coordinates ($lat, $lng)');
@@ -246,14 +306,28 @@ class DriverLiveLocationCoordinator {
       // 1. Primary path: SignalR Hub
       if (realtimeClient.isConnected) {
         try {
-          await realtimeClient.updateLocation(
-            latitude: lat,
-            longitude: lng,
-            heading: heading,
-            speedKmh: speedKmh,
-          );
+          try {
+            await (realtimeClient as dynamic).updateLocation(
+              latitude: lat,
+              longitude: lng,
+              heading: heading,
+              speedKmh: speedKmh,
+              accuracyMeters: position.accuracy,
+              capturedAtUtc: position.timestamp.toUtc(),
+              tripId: _tripId,
+            );
+          } on NoSuchMethodError {
+            await realtimeClient.updateLocation(
+              latitude: lat,
+              longitude: lng,
+              heading: heading,
+              speedKmh: speedKmh,
+            );
+          }
           sentSuccessfully = true;
-          _log('Sent [SignalR] -> Lat: $lat, Lng: $lng | Speed: ${speedKmh?.toStringAsFixed(1) ?? "0.0"} km/h | Heading: ${heading?.toStringAsFixed(1) ?? "0.0"}°');
+          _log(
+            'Sent [SignalR] -> Lat: $lat, Lng: $lng | Speed: ${speedKmh?.toStringAsFixed(1) ?? "0.0"} km/h | Heading: ${heading?.toStringAsFixed(1) ?? "0.0"}°',
+          );
         } catch (hubErr) {
           final errStr = hubErr.toString().toLowerCase();
           if (errStr.contains('dispatcher.tracking_not_required') ||
@@ -262,25 +336,43 @@ class DriverLiveLocationCoordinator {
             stopTracking(reason: 'dispatcher.tracking_not_required');
             return false;
           }
-          _log('SignalR updateLocation failed: $hubErr. Falling back to REST...');
+          _log(
+            'SignalR updateLocation failed: $hubErr. Falling back to REST...',
+          );
         }
       }
 
       // 2. Fallback path: REST API if SignalR failed or disconnected
       if (!sentSuccessfully) {
         try {
-          await fallbackDataSource.sendLocation(
-            latitude: lat,
-            longitude: lng,
-            heading: heading,
-            speedKmh: speedKmh,
-          );
+          try {
+            await (fallbackDataSource as dynamic).sendMeasuredLocation(
+              latitude: lat,
+              longitude: lng,
+              heading: heading,
+              speedKmh: speedKmh,
+              accuracyMeters: position.accuracy,
+              capturedAtUtc: position.timestamp.toUtc(),
+              tripId: _tripId ?? '',
+            );
+          } on NoSuchMethodError {
+            await fallbackDataSource.sendLocation(
+              latitude: lat,
+              longitude: lng,
+              heading: heading,
+              speedKmh: speedKmh,
+            );
+          }
           sentSuccessfully = true;
-          _log('Sent [REST API] -> Lat: $lat, Lng: $lng | Speed: ${speedKmh?.toStringAsFixed(1) ?? "0.0"} km/h | Heading: ${heading?.toStringAsFixed(1) ?? "0.0"}°');
+          _log(
+            'Sent [REST API] -> Lat: $lat, Lng: $lng | Speed: ${speedKmh?.toStringAsFixed(1) ?? "0.0"} km/h | Heading: ${heading?.toStringAsFixed(1) ?? "0.0"}°',
+          );
         } on DioException catch (dioErr) {
           final statusCode = dioErr.response?.statusCode;
-          final responseBody = dioErr.response?.data?.toString().toLowerCase() ?? '';
-          if (statusCode == 409 || responseBody.contains('tracking_not_required')) {
+          final responseBody =
+              dioErr.response?.data?.toString().toLowerCase() ?? '';
+          if (statusCode == 409 ||
+              responseBody.contains('tracking_not_required')) {
             _log('REST 409 tracking_not_required. Halting stream.');
             _activeBoxCount = 0;
             stopTracking(reason: 'dispatcher.tracking_not_required');
@@ -293,6 +385,11 @@ class DriverLiveLocationCoordinator {
       }
 
       if (sentSuccessfully) {
+        _log(
+          'Location accepted by transport | capturedAtUtc: $capturedAtUtc | '
+          'ageAtSend: ${DateTime.now().toUtc().difference(capturedAtUtc).inMilliseconds}ms | '
+          'tripId: ${_tripId ?? "<null>"}',
+        );
         _lastSuccessfullySentLocation = DriverLiveLocationSample(
           latitude: lat,
           longitude: lng,

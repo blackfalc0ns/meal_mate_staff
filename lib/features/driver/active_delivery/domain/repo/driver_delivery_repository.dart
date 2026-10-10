@@ -9,6 +9,10 @@ import '../entities/driver_delivery_proof_upload_entity.dart';
 abstract interface class DriverDeliveryRepository {
   Future<ApiResult<DriverStartDeliveryResultEntity>> startDelivery({
     required String boxId,
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
   });
 
   Future<ApiResult<DriverArrivalResultEntity>> arriveAtCustomer({

@@ -1,7 +1,7 @@
 import '../../../../core/network/api_results.dart';
 
 abstract class DeviceTokenRepository {
-  Future<ApiResult<void>> upsertDriverToken({
+  Future<ApiResult<String?>> upsertDriverToken({
     required String token,
     required String platform,
     required String deviceId,

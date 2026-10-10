@@ -2,11 +2,13 @@ abstract class NetworkConstants {
   static const String baseUrl = 'https://maelmate.runasp.net';
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer';
+  static const String xVoiceDeviceSession = 'X-Voice-Device-Session';
+  static const String xVoiceDeviceProof = 'X-Voice-Device-Proof';
 }
 
 abstract class EndPoints {
   static const String driverStartDelivery =
-      '/api/v1/driver/orders/{boxId}/start-delivery';
+      '/api/v1/driver/trips/{tripId}/start';
   static const String refresh = '/api/v1/auth/refresh';
 
   // Shared staff auth endpoints
@@ -143,7 +145,43 @@ abstract class EndPoints {
       '/api/v1/driver/orders/{boxId}/deliver';
   static const String driverDeliveryProofUpload = '/api/v1/uploads';
 
-  // Driver reassignment request endpoint (Screen 08.02)
   static const String driverRequestReassignment =
       '/api/v1/driver/orders/{boxId}/request-reassignment';
+
+  // Voice Calls V2 endpoints
+  static const String voiceCallsV2Register =
+      '/api/v2/voice-calls/devices/register';
+  static const String voiceCallsV2Revoke =
+      '/api/v2/voice-calls/devices/{deviceSessionId}/revoke';
+  static const String voiceCallsV2Eligibility =
+      '/api/v2/voice-calls/eligibility/{tripStopId}';
+  static const String voiceCallsV2Initiate = '/api/v2/voice-calls/initiate';
+  static const String voiceCallsV2Cancel =
+      '/api/v2/voice-calls/{callId}/cancel';
+  static const String voiceCallsV2End = '/api/v2/voice-calls/{callId}/end';
+  static const String voiceCallsV2Active = '/api/v2/voice-calls/active';
+  static const String voiceCallsV2Call = '/api/v2/voice-calls/{callId}';
+  static const String voiceCallsV2Display =
+      '/api/v2/voice-calls/{callId}/display';
+  static const String voiceCallsV2Events =
+      '/api/v2/voice-calls/{callId}/events';
+  static const String voiceCallsV2IceServers =
+      '/api/v2/voice-calls/{callId}/ice-servers';
+  static const String voiceCallsV2ReportConnecting =
+      '/api/v2/voice-calls/{callId}/reports/connecting';
+  static const String voiceCallsV2ReportConnected =
+      '/api/v2/voice-calls/{callId}/reports/connected';
+  static const String voiceCallsV2Heartbeat =
+      '/api/v2/voice-calls/{callId}/heartbeat';
+  static const String voiceCallsV2Hub = '/hubs/voice-call-v2';
+
+  // Delivery Contact Case endpoints
+  static const String deliveryContactCase =
+      '/api/v2/delivery-contact/{tripStopId}/case';
+  static const String deliveryContactHold =
+      '/api/v2/delivery-contact/{tripStopId}/hold';
+  static const String deliveryContactResume =
+      '/api/v2/delivery-contact/{tripStopId}/resume';
+  static const String deliveryContactRevealPhone =
+      '/api/v2/delivery-contact/{tripStopId}/reveal-phone';
 }

@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
-import '../../../../../config/theme/styles_manager.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/widget/map_markers/map_markers.dart';
 import '../../domain/entities/active_delivery_location_entity.dart';
@@ -195,87 +193,7 @@ class _StartRouteMapPreviewState extends State<StartRouteMapPreview> {
               mapToolbarEnabled: false,
             ),
           ),
-          PositionedDirectional(
-            top: Spacing.md,
-            start: Spacing.md,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm + 2,
-                vertical: Spacing.xs + 2,
-              ),
-              decoration: BoxDecoration(
-                color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: color.primary,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    locale.driverStartRouteCurrentLocation,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size10,
-                      color: color.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            top: Spacing.md,
-            end: Spacing.md,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Spacing.sm + 2,
-                vertical: Spacing.xs + 2,
-              ),
-              decoration: BoxDecoration(
-                color: color.surface,
-                borderRadius: BorderRadius.circular(Spacing.radiusPill),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.home_rounded,
-                    size: Spacing.iconXs,
-                    color: color.primary,
-                  ),
-                  const SizedBox(width: Spacing.xs),
-                  Text(
-                    locale.driverStartRouteCustomerLocation,
-                    style: getMediumStyle(
-                      fontSize: FontSize.size10,
-                      color: color.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+
         ],
       ),
     );

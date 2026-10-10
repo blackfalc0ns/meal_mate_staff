@@ -1,11 +1,17 @@
 import 'dart:async';
+
 import '../../domain/usecase/start_driver_delivery_usecase.dart';
 import '../../domain/entities/driver_start_delivery_result_entity.dart';
 import '../../../map/domain/entities/driver_map_route_entity.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:math';
+import 'package:geolocator/geolocator.dart' as geolocator;
+import '../../../../../core/di/di.dart';
+import '../../../../../features/driver/tracking/data/services/driver_location_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
+import 'package:meal_mate_delivery/core/network/failures.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/domain/entities/driver_arrival_request_entity.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/domain/entities/driver_deliver_request_entity.dart';
 import 'package:meal_mate_delivery/features/driver/active_delivery/domain/usecase/arrive_at_driver_customer_usecase.dart';
@@ -186,9 +192,48 @@ class ActiveDeliveryViewModel extends Cubit<ActiveDeliveryState> {
     }
     if (stop.status == DriverDeliveryStatus.delivered) return;
     if (state.startResult?.boxId == stop.boxId) return;
+    final targetTripId = state.route?.tripId.trim();
+    if (targetTripId == null || targetTripId.isEmpty) return;
     final targetBoxId = stop.boxId;
     emit(state.copyWith(isStarting: true, clearStartFailure: true));
-    final result = await startDriverDeliveryUseCase(boxId: targetBoxId);
+    var latitude = 0.0;
+    var longitude = 0.0;
+    if (getIt.isRegistered<DriverLocationService>()) {
+      geolocator.Position? position;
+      try {
+        position = await getIt<DriverLocationService>()
+            .getCurrentPosition()
+            .timeout(const Duration(seconds: 10));
+      } catch (_) {
+        emit(
+          state.copyWith(
+            isStarting: false,
+            startFailure: Failure(errorMessage: 'Unable to get your location'),
+          ),
+        );
+        return;
+      }
+      latitude = position?.latitude ?? 0;
+      longitude = position?.longitude ?? 0;
+    }
+    ApiResult<DriverStartDeliveryResultEntity> result;
+    try {
+      result = await startDriverDeliveryUseCase(
+        boxId: targetBoxId,
+        tripId: targetTripId,
+        latitude: latitude,
+        longitude: longitude,
+        idempotencyKey: _newIdempotencyKey(),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          isStarting: false,
+          startFailure: Failure(errorMessage: 'Unable to start delivery'),
+        ),
+      );
+      return;
+    }
     if (isClosed) return;
     if (state.selectedStop?.boxId != targetBoxId) {
       emit(state.copyWith(isStarting: false));
@@ -207,8 +252,51 @@ class ActiveDeliveryViewModel extends Cubit<ActiveDeliveryState> {
           ),
         );
       case ApiErrorResult(:final failure):
+        if (failure.code == 'TRIP_ALREADY_STARTED') {
+          final routeResult = await getDriverMapRouteUseCase(
+            focusedStopId: targetBoxId,
+          );
+          if (isClosed) return;
+          switch (routeResult) {
+            case ApiSuccessResult(:final data):
+              final focusedStop = data.focusedStop;
+              final alreadyStartedResult = DriverStartDeliveryResultEntity(
+                boxId: focusedStop.boxId,
+                tripId: data.tripId,
+                status: 'InTransit',
+                customerName: focusedStop.customerName,
+                customerAddress: focusedStop.formattedAddress,
+                customerLatitude: focusedStop.latitude,
+                customerLongitude: focusedStop.longitude,
+                customerNotes: focusedStop.customerNote,
+                deliveryTimeSlot: focusedStop.deliveryTimeSlot,
+              );
+              emit(
+                state.copyWith(
+                  isStarting: false,
+                  startResult: alreadyStartedResult,
+                  route: data,
+                  clearStartFailure: true,
+                  isEligibleToStart: true,
+                  navigationRevision: state.navigationRevision + 1,
+                ),
+              );
+            case ApiErrorResult(:final failure):
+              emit(state.copyWith(isStarting: false, startFailure: failure));
+          }
+          return;
+        }
         emit(state.copyWith(isStarting: false, startFailure: failure));
     }
+  }
+
+  String _newIdempotencyKey() {
+    final random = Random.secure();
+    String hex(int count) => List.generate(
+      count,
+      (_) => random.nextInt(16).toRadixString(16),
+    ).join();
+    return '${hex(8)}-${hex(4)}-4${hex(3)}-${(8 + random.nextInt(4)).toRadixString(16)}${hex(3)}-${hex(12)}';
   }
 
   DriverMapRouteEntity? _applyStartedDelivery(

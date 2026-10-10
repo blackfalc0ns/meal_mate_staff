@@ -18,6 +18,7 @@ import 'local_notification_service.dart';
 import 'notification_payload_parser.dart';
 import 'notification_router.dart';
 import 'push_messaging_gateway.dart';
+import 'voice_device_session_storage.dart';
 
 class PushNotificationCoordinator {
   PushNotificationCoordinator({
@@ -32,6 +33,7 @@ class PushNotificationCoordinator {
     required this.router,
     required this.sharedPreferences,
     required this.secureStorage,
+    this.voiceDeviceSessionStorage,
   });
 
   static const String _prefPendingContextType = 'fcm_pending_context_type';
@@ -51,6 +53,7 @@ class PushNotificationCoordinator {
   final NotificationRouter router;
   final SharedPreferences sharedPreferences;
   final FlutterSecureStorage secureStorage;
+  final VoiceDeviceSessionStorage? voiceDeviceSessionStorage;
 
   bool _isInitialized = false;
   DeviceTokenSyncContext? _currentContext;
@@ -148,7 +151,7 @@ class PushNotificationCoordinator {
       final deviceId = await deviceIdService.getOrCreateDeviceId();
       final platform = _resolvePlatform();
 
-      ApiResult<void> result;
+      ApiResult<dynamic> result;
       switch (context) {
         case DriverPreLoginSyncContext(:final registrationId):
           result = await upsertDriverTokenUseCase(
@@ -174,8 +177,11 @@ class PushNotificationCoordinator {
       }
 
       switch (result) {
-        case ApiSuccessResult():
+        case ApiSuccessResult(:final data):
           await _clearPendingSync();
+          if (data is String && data.isNotEmpty) {
+            await voiceDeviceSessionStorage?.saveFcmDeviceTokenId(data);
+          }
 
         case ApiErrorResult(:final failure):
           if (_isTerminalError(failure)) {

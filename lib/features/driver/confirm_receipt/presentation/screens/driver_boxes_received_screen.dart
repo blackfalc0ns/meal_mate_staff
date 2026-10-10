@@ -47,6 +47,7 @@ class DriverBoxesReceivedScreen extends StatefulWidget {
 class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
   late final DriverPickupSummaryViewModel _viewModel;
   late final bool _isInternalViewModel;
+  bool _didNavigateAfterStart = false;
 
   @override
   void initState() {
@@ -90,19 +91,25 @@ class _DriverBoxesReceivedScreenState extends State<DriverBoxesReceivedScreen> {
           prev.startTripResult != curr.startTripResult &&
           curr.startTripResult != null,
       listener: (context, state) {
-        if (state.startTripResult != null) {
+        final result = state.startTripResult;
+        if (!_didNavigateAfterStart &&
+            result != null &&
+            result.tripId.trim().isNotEmpty &&
+            result.status.trim().toLowerCase() == 'inprogress') {
+          _didNavigateAfterStart = true;
           if (widget.onStartDelivery != null) {
             widget.onStartDelivery!();
           } else {
-            unawaited(
-              Navigator.of(context).pushNamedAndRemoveUntil(
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              unawaited(Navigator.of(context).pushNamedAndRemoveUntil(
                 AppRoutes.driverStartDeliveryRoute,
                 (route) => false,
                 arguments: DriverActiveDeliveryRouteArguments(
-                  tripId: state.startTripResult?.tripId,
+                  tripId: result.tripId,
                 ),
-              ),
-            );
+              ));
+            });
           }
         }
       },

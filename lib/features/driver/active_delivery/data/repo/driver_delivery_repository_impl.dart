@@ -23,9 +23,18 @@ class DriverDeliveryRepositoryImpl implements DriverDeliveryRepository {
   @override
   Future<ApiResult<DriverStartDeliveryResultEntity>> startDelivery({
     required String boxId,
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
   }) => safeApiCall(() async {
-    final dto = await _remoteDataSource.startDelivery(boxId: boxId);
-    return dto.toEntity(expectedBoxId: boxId);
+    final dto = await _remoteDataSource.startDelivery(
+      tripId: tripId,
+      latitude: latitude,
+      longitude: longitude,
+      idempotencyKey: idempotencyKey,
+    );
+    return dto.toEntity(expectedBoxId: boxId, expectedTripId: tripId);
   });
 
   @override
