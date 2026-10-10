@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meal_mate_delivery/core/errors/api_error_type.dart';
+import 'package:meal_mate_delivery/core/errors/api_exception.dart';
 import 'package:meal_mate_delivery/core/network/api_results.dart';
 import 'package:meal_mate_delivery/core/network/failures.dart';
 import 'package:meal_mate_delivery/features/driver/calling/domain/entities/delivery_contact_case_entity.dart';
@@ -192,14 +194,22 @@ void main() {
       repo.emitSnapshot(activeSnapshot);
       await Future.delayed(Duration.zero);
 
+      repo.getSnapshotResult = const ApiSuccessResult(
+        data: VoiceCallSnapshotEntity(
+          callId: 'call-1',
+          tripStopId: 'stop-1',
+          protocolVersion: 2,
+          sequence: 3,
+          status: VoiceCallStatus.ended,
+        ),
+      );
+
       repo.endCallResult = ApiErrorResult(
         failure: Failure.fromException(
-          DioException(
-            requestOptions: RequestOptions(path: '/api/v2/voice-calls/call-1/end'),
-            response: Response(
-              statusCode: 409,
-              requestOptions: RequestOptions(path: '/api/v2/voice-calls/call-1/end'),
-            ),
+          const ApiException(
+            errorType: ApiErrorType.conflict,
+            message: 'Conflict',
+            statusCode: 409,
           ),
         ),
       );

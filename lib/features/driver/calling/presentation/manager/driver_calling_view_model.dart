@@ -122,22 +122,85 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
     }
   }
 
-  void _onSnapshotUpdated(dynamic snapshot) {
-    emit(state.copyWith(snapshot: snapshot, status: snapshot.status));
-    if (snapshot.status == VoiceCallStatus.active) {
+  Timer? _deadlineTimer;
+
+  void _onSnapshotUpdated(VoiceCallSnapshotEntity snapshot) {
+    if (state.snapshot != null &&
+        state.snapshot!.callId == snapshot.callId &&
+        snapshot.sequence < state.snapshot!.sequence) {
+      return;
+    }
+
+    if (snapshot.status == VoiceCallStatus.active && snapshot.connectedAtUtc != null) {
+      final nowUtc = DateTime.now().toUtc();
+      final elapsed = nowUtc.difference(snapshot.connectedAtUtc!).inSeconds;
+      final initialDuration = max(0, max(snapshot.durationSeconds ?? 0, elapsed));
+      emit(state.copyWith(
+        snapshot: snapshot,
+        status: VoiceCallStatus.active,
+        durationSeconds: initialDuration,
+      ));
       _startDurationTimer();
+      _cancelRingingDeadlineTimer();
     } else if (snapshot.status.isTerminal) {
       _stopDurationTimer();
+      _cancelRingingDeadlineTimer();
+      emit(state.copyWith(
+        snapshot: snapshot,
+        status: snapshot.status,
+      ));
+    } else if (snapshot.status == VoiceCallStatus.ringing || snapshot.status == VoiceCallStatus.created) {
+      _stopDurationTimer();
+      emit(state.copyWith(
+        snapshot: snapshot,
+        status: snapshot.status,
+        durationSeconds: 0,
+      ));
+      _scheduleRingingDeadlineReconciliation(snapshot);
+    } else {
+      _stopDurationTimer();
+      emit(state.copyWith(
+        snapshot: snapshot,
+        status: snapshot.status,
+      ));
+    }
+  }
+
+  void _scheduleRingingDeadlineReconciliation(VoiceCallSnapshotEntity snapshot) {
+    _deadlineTimer?.cancel();
+    final deadline = snapshot.deadlineAtUtc;
+    if (deadline == null) return;
+    final delay = deadline.difference(DateTime.now().toUtc());
+    if (delay.isNegative) {
+      unawaited(_reconcileDeadline(snapshot.callId));
+    } else {
+      _deadlineTimer = Timer(delay, () {
+        unawaited(_reconcileDeadline(snapshot.callId));
+      });
+    }
+  }
+
+  void _cancelRingingDeadlineTimer() {
+    _deadlineTimer?.cancel();
+    _deadlineTimer = null;
+  }
+
+  Future<void> _reconcileDeadline(String callId) async {
+    if (state.status != VoiceCallStatus.ringing && state.status != VoiceCallStatus.created) {
+      return;
+    }
+    final res = await getVoiceCallSnapshotUseCase(callId);
+    if (res is ApiSuccessResult<VoiceCallSnapshotEntity>) {
+      _onSnapshotUpdated(res.data);
     }
   }
 
   void _onStatusChanged(VoiceCallStatus status) {
-    emit(state.copyWith(status: status));
-    if (status == VoiceCallStatus.active) {
-      _startDurationTimer();
-    } else if (status.isTerminal) {
+    if (status.isTerminal) {
       _stopDurationTimer();
+      _cancelRingingDeadlineTimer();
     }
+    emit(state.copyWith(status: status));
   }
 
   void _onTickDuration() {
@@ -255,21 +318,62 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
   }
 
   Future<void> _onCancelCall(String? callId) async {
-    final targetId = callId ?? state.snapshot?.callId;
-    if (targetId == null) return;
-
-    await cancelVoiceCallUseCase(targetId);
-    _stopDurationTimer();
-    emit(state.copyWith(status: VoiceCallStatus.cancelled));
+    await _handleHangup(callId: callId, forceCancel: true);
   }
 
   Future<void> _onEndCall(String? callId) async {
+    await _handleHangup(callId: callId, forceCancel: false);
+  }
+
+  Future<void> _handleHangup({String? callId, bool forceCancel = false}) async {
     final targetId = callId ?? state.snapshot?.callId;
     if (targetId == null) return;
 
-    await endVoiceCallUseCase(targetId);
-    _stopDurationTimer();
-    emit(state.copyWith(status: VoiceCallStatus.ended));
+    final currentStatus = state.status;
+    if (currentStatus.isTerminal) {
+      _stopDurationTimer();
+      _cancelRingingDeadlineTimer();
+      await repository.cleanupCall();
+      return;
+    }
+
+    final isCancel = forceCancel ||
+        currentStatus == VoiceCallStatus.created ||
+        currentStatus == VoiceCallStatus.ringing;
+
+    final result = isCancel
+        ? await cancelVoiceCallUseCase(targetId)
+        : await endVoiceCallUseCase(targetId);
+
+    switch (result) {
+      case ApiSuccessResult():
+        _stopDurationTimer();
+        _cancelRingingDeadlineTimer();
+        emit(state.copyWith(
+          status: isCancel ? VoiceCallStatus.cancelled : VoiceCallStatus.ended,
+        ));
+      case ApiErrorResult(:final failure):
+        final statusCode = failure.exception.statusCode;
+        if (statusCode == 409) {
+          // 409 Conflict: State changed on server, reconcile with authoritative snapshot
+          final res = await getVoiceCallSnapshotUseCase(targetId);
+          if (res is ApiSuccessResult<VoiceCallSnapshotEntity>) {
+            _onSnapshotUpdated(res.data);
+            return;
+          }
+          final activeRes = await getActiveVoiceCallUseCase();
+          if (activeRes is ApiSuccessResult<VoiceCallSnapshotEntity?> && activeRes.data != null) {
+            _onSnapshotUpdated(activeRes.data!);
+            return;
+          }
+          _stopDurationTimer();
+          _cancelRingingDeadlineTimer();
+          emit(state.copyWith(status: VoiceCallStatus.ended));
+        } else {
+          // Surface recoverable failure; do not pretend call ended
+          emit(state.copyWith(errorMessage: failure.errorMessage));
+        }
+    }
   }
 
   Future<void> _onToggleMute() async {
@@ -421,6 +525,7 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
   @override
   Future<void> close() async {
     _durationTimer?.cancel();
+    _deadlineTimer?.cancel();
     await _snapshotSub?.cancel();
     await _statusSub?.cancel();
     return super.close();
