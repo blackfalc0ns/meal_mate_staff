@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -139,9 +140,9 @@ class _CustomerCallAttemptsSheetViewState
     if (widget.tripStopId != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         try {
-          context
-              .read<DriverCallingViewModel>()
-              .doIntent(CheckEligibilityEvent(widget.tripStopId!));
+          context.read<DriverCallingViewModel>().doIntent(
+            CheckEligibilityEvent(widget.tripStopId!),
+          );
         } catch (_) {}
       });
     }
@@ -164,10 +165,12 @@ class _CustomerCallAttemptsSheetViewState
         final vm = context.read<DriverCallingViewModel>();
         if (vm.state.isInitiating) return; // prevent double taps
         final attempt = _attemptNotifier.value;
-        vm.doIntent(InitiateCallEvent(
-          tripStopId: widget.tripStopId!,
-          customerName: attempt.customerName,
-        ));
+        vm.doIntent(
+          InitiateCallEvent(
+            tripStopId: widget.tripStopId!,
+            customerName: attempt.customerName,
+          ),
+        );
       } catch (_) {}
     }
 
@@ -192,9 +195,11 @@ class _CustomerCallAttemptsSheetViewState
       final vm = context.read<DriverCallingViewModel>();
       if (vm.state.contactCase?.canRevealPhone == true ||
           vm.state.eligibility?.canRevealPhone == true) {
-        vm.doIntent(const RevealPhoneEvent(
-          reason: 'Customer unreachable after missed call attempts',
-        ));
+        vm.doIntent(
+          const RevealPhoneEvent(
+            reason: 'Customer unreachable after missed call attempts',
+          ),
+        );
         return;
       }
     } catch (_) {}
@@ -212,9 +217,9 @@ class _CustomerCallAttemptsSheetViewState
       final vm = context.read<DriverCallingViewModel>();
       if (vm.state.contactCase?.canHold == true ||
           vm.state.eligibility?.canHold == true) {
-        vm.doIntent(const HoldCallEvent(
-          notes: 'Customer unreachable after attempts',
-        ));
+        vm.doIntent(
+          const HoldCallEvent(notes: 'Customer unreachable after attempts'),
+        );
       }
     } catch (_) {}
 
@@ -240,16 +245,24 @@ class _CustomerCallAttemptsSheetViewState
         final caseData = blocVm?.state.contactCase;
         final eligibility = blocVm?.state.eligibility;
 
+        final canInitiate = eligibility?.canInitiate ?? true;
+        final isInitiating = blocVm?.state.isInitiating ?? false;
+
+        final effectiveAttemptNumber =
+            (caseData != null && (caseData.attemptCount > 0))
+            ? math.max(attempt.attemptNumber, caseData.attemptCount + 1)
+            : attempt.attemptNumber;
+
         final isPhoneUnlocked =
             caseData?.canRevealPhone == true ||
             eligibility?.canRevealPhone == true ||
-            attempt.attemptNumber >= 3;
+            effectiveAttemptNumber >= 3;
 
         final isAttempt3 =
-            attempt.attemptNumber >= 3 || caseData?.canHold == true;
-
-        final canInitiate = eligibility?.canInitiate ?? true;
-        final isInitiating = blocVm?.state.isInitiating ?? false;
+            effectiveAttemptNumber >= 3 ||
+            (!canInitiate &&
+                (caseData?.canRevealPhone == true ||
+                    eligibility?.canRevealPhone == true));
 
         return SafeArea(
           top: false,
@@ -273,7 +286,7 @@ class _CustomerCallAttemptsSheetViewState
                     ),
                   ),
                 ),
-                CallAttemptAlertBanner(attemptNumber: attempt.attemptNumber),
+                CallAttemptAlertBanner(attemptNumber: effectiveAttemptNumber),
                 Center(
                   child: Container(
                     width: Spacing.xxxl,
@@ -361,7 +374,7 @@ class _CustomerCallAttemptsSheetViewState
                         unawaited(Navigator.of(context).maybePop()),
                   ),
                 const SizedBox(height: Spacing.base),
-                CallAttemptIndicator(currentAttempt: attempt.attemptNumber),
+                CallAttemptIndicator(currentAttempt: effectiveAttemptNumber),
                 const SizedBox(height: Spacing.sm),
               ],
             ),

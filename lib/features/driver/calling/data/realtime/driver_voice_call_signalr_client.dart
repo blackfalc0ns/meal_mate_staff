@@ -30,8 +30,9 @@ class DriverVoiceCallSignalRClient {
   bool _isBound = false;
   String? _boundSessionId;
 
-  final _processedEventIds = <String>{};
-  int _lastCommittedSequence = -1;
+  final _processedEventIds = <String, Set<String>>{};
+  final _callSequences = <String, int>{};
+  final _terminalCallIds = <String>{};
 
   final _envelopeController =
       StreamController<VoiceCallEnvelopeDto>.broadcast();
@@ -39,8 +40,7 @@ class DriverVoiceCallSignalRClient {
       StreamController<VoiceCallRtcOfferAnswerDto>.broadcast();
   final _answerController =
       StreamController<VoiceCallRtcOfferAnswerDto>.broadcast();
-  final _iceController =
-      StreamController<VoiceCallRtcCandidateDto>.broadcast();
+  final _iceController = StreamController<VoiceCallRtcCandidateDto>.broadcast();
   final _connectionStatusController = StreamController<bool>.broadcast();
   final _boundController = StreamController<bool>.broadcast();
 
@@ -58,14 +58,18 @@ class DriverVoiceCallSignalRClient {
 
   VoidCallback? onReconnected;
 
-  bool get isConnected =>
-      _hubConnection?.state == HubConnectionState.Connected;
-  bool get isBound => _isBound;
+  bool get isConnected => _hubConnection?.state == HubConnectionState.Connected;
+  bool get isBound =>
+      _isBound &&
+      _boundSessionId != null &&
+      _boundSessionId == sessionStorage.getDeviceSessionId();
   String? get boundSessionId => _boundSessionId;
 
   Future<void> connect() async {
     if (_isDisposed) return;
-    if (isConnected && _isBound) return;
+    final currentSessionId = sessionStorage.getDeviceSessionId();
+    final sessionChanged = _boundSessionId != currentSessionId;
+    if (isConnected && _isBound && !sessionChanged) return;
     if (_isConnecting) return;
     _isConnecting = true;
 
@@ -79,10 +83,13 @@ class DriverVoiceCallSignalRClient {
       await _initHub(token);
       if (_hubConnection?.state == HubConnectionState.Disconnected) {
         await _hubConnection?.start();
-        _diag('Connect', 'Voice Hub connection started successfully (state: ${_hubConnection?.state})');
+        _diag(
+          'Connect',
+          'Voice Hub connection started successfully (state: ${_hubConnection?.state})',
+        );
         _connectionStatusController.add(true);
         await bindDeviceSession();
-      } else if (isConnected && !_isBound) {
+      } else if (isConnected && (!_isBound || sessionChanged)) {
         await bindDeviceSession();
       }
     } catch (e) {
@@ -110,7 +117,7 @@ class DriverVoiceCallSignalRClient {
     } else {
       const fullUrl = '${NetworkConstants.baseUrl}${EndPoints.voiceCallsV2Hub}';
       final httpOptions = HttpConnectionOptions(
-        accessTokenFactory: () async => token,
+        accessTokenFactory: () async => await tokenService.getToken() ?? '',
       );
 
       _hubConnection = HubConnectionBuilder()
@@ -131,6 +138,7 @@ class DriverVoiceCallSignalRClient {
       if (_isDisposed) return;
       _diag('Lifecycle', 'Voice Hub onclose: $error');
       _isBound = false;
+      _boundSessionId = null;
       _boundController.add(false);
       _connectionStatusController.add(false);
     });
@@ -139,15 +147,20 @@ class DriverVoiceCallSignalRClient {
       if (_isDisposed) return;
       _diag('Lifecycle', 'Voice Hub onreconnecting: $error');
       _isBound = false;
+      _boundSessionId = null;
       _boundController.add(false);
       _connectionStatusController.add(false);
     });
 
     hub.onreconnected(({String? connectionId}) async {
       if (_isDisposed) return;
-      _diag('Lifecycle', 'Voice Hub onreconnected (connectionId: $connectionId)');
+      _diag(
+        'Lifecycle',
+        'Voice Hub onreconnected (connectionId: $connectionId)',
+      );
       _connectionStatusController.add(true);
       _isBound = false;
+      _boundSessionId = null;
       _boundController.add(false);
       await bindDeviceSession();
       onReconnected?.call();
@@ -179,7 +192,12 @@ class DriverVoiceCallSignalRClient {
       hub.on(name, _handleRtcAnswer);
     }
 
-    final iceNames = ['rtc:ice-candidate', 'OnIceCandidate', 'IceCandidate', 'rtc:ice'];
+    final iceNames = [
+      'rtc:ice-candidate',
+      'OnIceCandidate',
+      'IceCandidate',
+      'rtc:ice',
+    ];
     for (final name in iceNames) {
       hub.on(name, _handleRtcIce);
     }
@@ -193,30 +211,81 @@ class DriverVoiceCallSignalRClient {
       if (map.isEmpty) return;
 
       final envelope = VoiceCallEnvelopeDto.fromJson(map);
+      final callId = envelope.callId;
 
-      // Event deduplication by eventId
+      // Event deduplication by eventId per call
       if (envelope.eventId.isNotEmpty) {
-        if (_processedEventIds.contains(envelope.eventId)) {
-          _diag('CallEvent', 'Dropping duplicate voice event: ${envelope.eventId}', callId: envelope.callId);
+        final eventSet = _processedEventIds.putIfAbsent(
+          callId,
+          () => <String>{},
+        );
+        if (eventSet.contains(envelope.eventId)) {
+          _diag(
+            'CallEvent',
+            'Dropping duplicate voice event: ${envelope.eventId}',
+            callId: callId,
+          );
           return;
         }
-        _processedEventIds.add(envelope.eventId);
-        if (_processedEventIds.length > 500) {
-          _processedEventIds.clear();
+        eventSet.add(envelope.eventId);
+        if (eventSet.length > 200) {
+          eventSet.clear();
         }
       }
 
-      // Check sequence monotonicity if provided
-      if (envelope.sequence > 0 && envelope.sequence <= _lastCommittedSequence) {
-        _diag('CallEvent', 'Ignoring out-of-order sequence: ${envelope.sequence} <= $_lastCommittedSequence', callId: envelope.callId, seq: envelope.sequence);
+      // Drop non-terminal events for already terminal call
+      if (_terminalCallIds.contains(callId)) {
+        final incomingStatus = envelope.payload?['status']
+            ?.toString()
+            .toLowerCase();
+        final isIncomingTerminal =
+            incomingStatus == 'cancelled' ||
+            incomingStatus == 'ended' ||
+            incomingStatus == 'rejected' ||
+            incomingStatus == 'missed' ||
+            incomingStatus == 'failed' ||
+            incomingStatus == 'busy';
+        if (!isIncomingTerminal) {
+          _diag(
+            'CallEvent',
+            'Dropping non-terminal event for already terminal call',
+            callId: callId,
+          );
+          return;
+        }
+      }
+
+      // Check per-call sequence monotonicity
+      final lastSeq = _callSequences[callId] ?? -1;
+      if (envelope.sequence > 0 && envelope.sequence <= lastSeq) {
+        _diag(
+          'CallEvent',
+          'Ignoring out-of-order sequence: ${envelope.sequence} <= $lastSeq',
+          callId: callId,
+          seq: envelope.sequence,
+        );
         return;
       }
       if (envelope.sequence > 0) {
-        _lastCommittedSequence = envelope.sequence;
+        _callSequences[callId] = envelope.sequence;
       }
 
       final payloadStatus = envelope.payload?['status']?.toString();
-      _diag('CallEvent', 'Processed event type: ${envelope.eventType}, payload status: $payloadStatus', callId: envelope.callId, seq: envelope.sequence);
+      final statusLower = payloadStatus?.toLowerCase();
+      if (statusLower == 'cancelled' ||
+          statusLower == 'ended' ||
+          statusLower == 'rejected' ||
+          statusLower == 'missed' ||
+          statusLower == 'failed' ||
+          statusLower == 'busy') {
+        _terminalCallIds.add(callId);
+      }
+      _diag(
+        'CallEvent',
+        'Processed event type: ${envelope.eventType}, payload status: $payloadStatus',
+        callId: callId,
+        seq: envelope.sequence,
+      );
 
       _envelopeController.add(envelope);
     } catch (e) {
@@ -224,8 +293,13 @@ class DriverVoiceCallSignalRClient {
     }
   }
 
-  ({String callId, String messageId, int generation, Map<String, dynamic> payload})?
-      _decodeRtcEnvelope(List<Object?>? args) {
+  ({
+    String callId,
+    String messageId,
+    int generation,
+    Map<String, dynamic> payload,
+  })?
+  _decodeRtcEnvelope(List<Object?>? args) {
     if (args == null || args.isEmpty) return null;
 
     String callId = '';
@@ -246,7 +320,8 @@ class DriverVoiceCallSignalRClient {
       }
       callId = envelope['callId']?.toString() ?? '';
       messageId = envelope['messageId']?.toString() ?? '';
-      final genNum = (envelope['negotiationGeneration'] ?? envelope['generation']) as num?;
+      final genNum =
+          (envelope['negotiationGeneration'] ?? envelope['generation']) as num?;
       generation = genNum?.toInt() ?? 0;
 
       final rawPayload = envelope['payload'];
@@ -257,7 +332,12 @@ class DriverVoiceCallSignalRClient {
     }
 
     if (callId.trim().isEmpty || messageId.trim().isEmpty || payload.isEmpty) {
-      _diag('RtcEnvelope', 'Dropping invalid envelope: missing callId, messageId, or payload', callId: callId, gen: generation);
+      _diag(
+        'RtcEnvelope',
+        'Dropping invalid envelope: missing callId, messageId, or payload',
+        callId: callId,
+        gen: generation,
+      );
       return null;
     }
 
@@ -277,7 +357,12 @@ class DriverVoiceCallSignalRClient {
       final sdp = decoded.payload['sdp']?.toString().trim() ?? '';
       final type = decoded.payload['type']?.toString().trim() ?? 'offer';
       if (sdp.isEmpty) {
-        _diag('RtcOffer', 'Rejected offer with empty SDP', callId: decoded.callId, gen: decoded.generation);
+        _diag(
+          'RtcOffer',
+          'Rejected offer with empty SDP',
+          callId: decoded.callId,
+          gen: decoded.generation,
+        );
         return;
       }
 
@@ -288,7 +373,12 @@ class DriverVoiceCallSignalRClient {
         messageId: decoded.messageId,
         generation: decoded.generation,
       );
-      _diag('RtcOffer', 'Received offer (type: $type, sdpLen: ${dto.sdp.length})', callId: decoded.callId, gen: decoded.generation);
+      _diag(
+        'RtcOffer',
+        'Received offer (type: $type, sdpLen: ${dto.sdp.length})',
+        callId: decoded.callId,
+        gen: decoded.generation,
+      );
       _offerController.add(dto);
     } catch (e) {
       _diag('RtcOffer', 'Error parsing rtc:offer: $e');
@@ -303,7 +393,12 @@ class DriverVoiceCallSignalRClient {
       final sdp = decoded.payload['sdp']?.toString().trim() ?? '';
       final type = decoded.payload['type']?.toString().trim() ?? 'answer';
       if (sdp.isEmpty) {
-        _diag('RtcAnswer', 'Rejected answer with empty SDP', callId: decoded.callId, gen: decoded.generation);
+        _diag(
+          'RtcAnswer',
+          'Rejected answer with empty SDP',
+          callId: decoded.callId,
+          gen: decoded.generation,
+        );
         return;
       }
 
@@ -314,7 +409,12 @@ class DriverVoiceCallSignalRClient {
         messageId: decoded.messageId,
         generation: decoded.generation,
       );
-      _diag('RtcAnswer', 'Received answer (type: $type, sdpLen: ${dto.sdp.length})', callId: decoded.callId, gen: decoded.generation);
+      _diag(
+        'RtcAnswer',
+        'Received answer (type: $type, sdpLen: ${dto.sdp.length})',
+        callId: decoded.callId,
+        gen: decoded.generation,
+      );
       _answerController.add(dto);
     } catch (e) {
       _diag('RtcAnswer', 'Error parsing rtc:answer: $e');
@@ -326,9 +426,15 @@ class DriverVoiceCallSignalRClient {
       final decoded = _decodeRtcEnvelope(args);
       if (decoded == null) return;
 
-      final candidateStr = decoded.payload['candidate']?.toString().trim() ?? '';
+      final candidateStr =
+          decoded.payload['candidate']?.toString().trim() ?? '';
       if (candidateStr.isEmpty) {
-        _diag('RtcIce', 'Rejected candidate with empty candidate string', callId: decoded.callId, gen: decoded.generation);
+        _diag(
+          'RtcIce',
+          'Rejected candidate with empty candidate string',
+          callId: decoded.callId,
+          gen: decoded.generation,
+        );
         return;
       }
 
@@ -346,7 +452,12 @@ class DriverVoiceCallSignalRClient {
         generation: decoded.generation,
       );
 
-      _diag('RtcIce', 'Received candidate (len: ${candidate.candidate.length})', callId: decoded.callId, gen: decoded.generation);
+      _diag(
+        'RtcIce',
+        'Received candidate (len: ${candidate.candidate.length})',
+        callId: decoded.callId,
+        gen: decoded.generation,
+      );
       _iceController.add(candidate);
     } catch (e) {
       _diag('RtcIce', 'Error parsing rtc:ice-candidate: $e');
@@ -405,10 +516,12 @@ class DriverVoiceCallSignalRClient {
   }
 
   Future<void> ensureConnectedAndBound() async {
+    final currentSessionId = sessionStorage.getDeviceSessionId();
+    final sessionChanged = _boundSessionId != currentSessionId;
     if (!isConnected) {
       await connect();
     }
-    if (isConnected && !_isBound) {
+    if (isConnected && (!_isBound || sessionChanged)) {
       await bindDeviceSession();
     }
   }
@@ -426,15 +539,22 @@ class DriverVoiceCallSignalRClient {
 
     final sdpBytes = utf8.encode(sdp).length;
     if (sdpBytes > 65536) {
-      _diag('SendOffer', 'SDP offer exceeds 65536 bytes limit ($sdpBytes bytes)', callId: callId, gen: generation);
+      _diag(
+        'SendOffer',
+        'SDP offer exceeds 65536 bytes limit ($sdpBytes bytes)',
+        callId: callId,
+        gen: generation,
+      );
       throw ArgumentError('SDP offer exceeds 65536 bytes limit');
     }
 
-    final payload = {
-      'type': 'offer',
-      'sdp': sdp,
-    };
-    _diag('SendOffer', 'Invoking SendOffer (sdpBytes: $sdpBytes)', callId: callId, gen: generation);
+    final payload = {'type': 'offer', 'sdp': sdp};
+    _diag(
+      'SendOffer',
+      'Invoking SendOffer (sdpBytes: $sdpBytes)',
+      callId: callId,
+      gen: generation,
+    );
     await _hubConnection?.invoke(
       'SendOffer',
       args: [callId, payload, messageId, generation],
@@ -454,15 +574,22 @@ class DriverVoiceCallSignalRClient {
 
     final sdpBytes = utf8.encode(sdp).length;
     if (sdpBytes > 65536) {
-      _diag('SendAnswer', 'SDP answer exceeds 65536 bytes limit ($sdpBytes bytes)', callId: callId, gen: generation);
+      _diag(
+        'SendAnswer',
+        'SDP answer exceeds 65536 bytes limit ($sdpBytes bytes)',
+        callId: callId,
+        gen: generation,
+      );
       throw ArgumentError('SDP answer exceeds 65536 bytes limit');
     }
 
-    final payload = {
-      'type': 'answer',
-      'sdp': sdp,
-    };
-    _diag('SendAnswer', 'Invoking SendAnswer (sdpBytes: $sdpBytes)', callId: callId, gen: generation);
+    final payload = {'type': 'answer', 'sdp': sdp};
+    _diag(
+      'SendAnswer',
+      'Invoking SendAnswer (sdpBytes: $sdpBytes)',
+      callId: callId,
+      gen: generation,
+    );
     await _hubConnection?.invoke(
       'SendAnswer',
       args: [callId, payload, messageId, generation],
@@ -480,14 +607,24 @@ class DriverVoiceCallSignalRClient {
   }) async {
     await ensureConnectedAndBound();
     if (!isConnected || !_isBound) {
-      _diag('SendIceCandidate', 'Dropped candidate: hub not connected or bound', callId: callId, gen: generation);
+      _diag(
+        'SendIceCandidate',
+        'Dropped candidate: hub not connected or bound',
+        callId: callId,
+        gen: generation,
+      );
       return;
     }
     if (candidate.trim().isEmpty) return;
 
     final candidateBytes = utf8.encode(candidate).length;
     if (candidateBytes > 4096) {
-      _diag('SendIceCandidate', 'ICE candidate exceeds 4096 bytes limit ($candidateBytes bytes)', callId: callId, gen: generation);
+      _diag(
+        'SendIceCandidate',
+        'ICE candidate exceeds 4096 bytes limit ($candidateBytes bytes)',
+        callId: callId,
+        gen: generation,
+      );
       return;
     }
 
@@ -499,19 +636,36 @@ class DriverVoiceCallSignalRClient {
     };
 
     try {
-      _diag('SendIceCandidate', 'Invoking SendIceCandidate (bytes: $candidateBytes)', callId: callId, gen: generation);
+      _diag(
+        'SendIceCandidate',
+        'Invoking SendIceCandidate (bytes: $candidateBytes)',
+        callId: callId,
+        gen: generation,
+      );
       await _hubConnection?.invoke(
         'SendIceCandidate',
         args: [callId, payload, messageId, generation],
       );
     } catch (e) {
-      _diag('SendIceCandidate', 'Failed to send ICE candidate: $e', callId: callId, gen: generation);
+      _diag(
+        'SendIceCandidate',
+        'Failed to send ICE candidate: $e',
+        callId: callId,
+        gen: generation,
+      );
     }
   }
 
-  void resetSequenceAndDedupe() {
-    _lastCommittedSequence = -1;
-    _processedEventIds.clear();
+  void resetSequenceAndDedupe([String? callId]) {
+    if (callId != null) {
+      _callSequences.remove(callId);
+      _processedEventIds.remove(callId);
+      _terminalCallIds.remove(callId);
+    } else {
+      _callSequences.clear();
+      _processedEventIds.clear();
+      _terminalCallIds.clear();
+    }
   }
 
   Future<void> disconnect() async {
@@ -537,7 +691,13 @@ class DriverVoiceCallSignalRClient {
     await _boundController.close();
   }
 
-  void _diag(String action, String details, {String? callId, int? seq, int? gen}) {
+  void _diag(
+    String action,
+    String details, {
+    String? callId,
+    int? seq,
+    int? gen,
+  }) {
     final c = callId != null && callId.isNotEmpty ? '[$callId]' : '[no-call]';
     final g = gen != null ? '[gen:$gen]' : '';
     final s = seq != null ? '[seq:$seq]' : '';

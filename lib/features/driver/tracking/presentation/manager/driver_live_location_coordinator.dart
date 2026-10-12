@@ -11,12 +11,14 @@ import 'package:meal_mate_delivery/features/driver/orders/domain/entities/driver
 import 'package:meal_mate_delivery/features/driver/tracking/data/datasources/driver_location_remote_datasource.dart';
 import 'package:meal_mate_delivery/features/driver/tracking/data/services/driver_location_service.dart';
 import 'package:meal_mate_delivery/features/driver/tracking/domain/entities/driver_live_location_sample.dart';
+import 'package:meal_mate_delivery/core/services/server_clock.dart';
 
 class DriverLiveLocationCoordinator {
   DriverLiveLocationCoordinator({
     required this.locationService,
     required this.realtimeClient,
     required this.fallbackDataSource,
+    this.serverClock,
     this.streamingInterval = const Duration(seconds: 4),
   }) {
     _initRealtimeListeners();
@@ -26,6 +28,7 @@ class DriverLiveLocationCoordinator {
   final DriverLocationService locationService;
   final DriverOrdersRealtimeClient realtimeClient;
   final DriverLocationRemoteDataSource fallbackDataSource;
+  final ServerClock? serverClock;
   final Duration streamingInterval;
 
   Timer? _streamingTimer;
@@ -235,6 +238,17 @@ class DriverLiveLocationCoordinator {
     bool sentSuccessfully = false;
 
     try {
+      final tripId = _tripId;
+      if (tripId == null || !_isValidTripId(tripId)) {
+        _log('Skipping location upload: missing or invalid tripId');
+        return false;
+      }
+      try {
+        await (realtimeClient as dynamic).setTripId(tripId);
+      } on NoSuchMethodError {
+        // Older test/custom clients do not expose trip scoping.
+      }
+
       Position? position = _latestPosition;
       if (position == null) {
         position = await locationService.getCurrentPosition();
@@ -286,11 +300,17 @@ class DriverLiveLocationCoordinator {
       final nowUtc = DateTime.now().toUtc();
       final capturedAtUtc = position.timestamp.toUtc();
       final gpsAge = nowUtc.difference(capturedAtUtc);
-      _log(
-        'GPS diagnostic | capturedAtUtc: $capturedAtUtc | nowUtc: $nowUtc | '
-        'age: ${gpsAge.inMilliseconds}ms | tripId: ${_tripId ?? "<null>"} | '
-        'lat: $lat | lng: $lng | accuracy: ${position.accuracy}m',
-      );
+      if (kDebugMode) {
+        _log('GPS clock diagnostic | deviceUtc: $nowUtc | '
+            'capturedAtUtc: $capturedAtUtc | '
+            'gpsAgeMs: ${gpsAge.inMilliseconds} | '
+            'serverUtc: ${serverClock?.nowUtc ?? "unavailable"}');
+      }
+      final referenceUtc = serverClock?.nowUtc ?? nowUtc;
+      if (capturedAtUtc.isAfter(referenceUtc.add(const Duration(minutes: 2)))) {
+        _log('Skipping location upload: GPS capture time is over two minutes ahead of reference clock');
+        return false;
+      }
 
       if (!DriverLocationServiceImpl.isValidCoordinate(lat, lng)) {
         _log('⚠️ Skipping invalid coordinates ($lat, $lng)');
@@ -313,8 +333,8 @@ class DriverLiveLocationCoordinator {
               heading: heading,
               speedKmh: speedKmh,
               accuracyMeters: position.accuracy,
-              capturedAtUtc: position.timestamp.toUtc(),
-              tripId: _tripId,
+              capturedAtUtc: capturedAtUtc,
+              tripId: tripId,
             );
           } on NoSuchMethodError {
             await realtimeClient.updateLocation(
@@ -352,8 +372,8 @@ class DriverLiveLocationCoordinator {
               heading: heading,
               speedKmh: speedKmh,
               accuracyMeters: position.accuracy,
-              capturedAtUtc: position.timestamp.toUtc(),
-              tripId: _tripId ?? '',
+              capturedAtUtc: capturedAtUtc,
+              tripId: tripId,
             );
           } on NoSuchMethodError {
             await fallbackDataSource.sendLocation(
@@ -402,6 +422,13 @@ class DriverLiveLocationCoordinator {
     } finally {
       _isSending = false;
     }
+  }
+
+  bool _isValidTripId(String value) {
+    final normalized = value.trim();
+    return RegExp(
+      r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+    ).hasMatch(normalized);
   }
 
   /// Stops streaming and releases GPS listeners.

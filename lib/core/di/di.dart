@@ -291,6 +291,8 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<TokenInterceptor>(
     () => TokenInterceptor(getIt<TokenService>()),
   );
+  // Register dependencies used by Dio before its lazy factory is first resolved.
+  getIt.registerLazySingleton<ServerClock>(ServerClock.new);
   getIt.registerLazySingleton<Dio>(_buildDio);
   getIt.registerLazySingleton<AuthRefreshService>(
     () => AuthRefreshService(
@@ -1040,6 +1042,7 @@ Future<void> configureDependencies() async {
       locationService: getIt<DriverLocationService>(),
       realtimeClient: getIt<DriverOrdersRealtimeClient>(),
       fallbackDataSource: getIt<DriverLocationRemoteDataSource>(),
+      serverClock: getIt<ServerClock>(),
     ),
   );
 
@@ -1047,7 +1050,6 @@ Future<void> configureDependencies() async {
   getIt<DriverLiveLocationCoordinator>();
 
   // Voice Calls V2 Feature
-  getIt.registerLazySingleton<ServerClock>(ServerClock.new);
   getIt.registerLazySingleton<VoiceDeviceSessionStorage>(
     () => VoiceDeviceSessionStorage(
       secureStorage: getIt<FlutterSecureStorage>(),
@@ -1146,7 +1148,8 @@ Future<void> configureDependencies() async {
       getVoiceCallSnapshotUseCase: getIt<GetVoiceCallSnapshotUseCase>(),
       getDeliveryContactCaseUseCase: getIt<GetDeliveryContactCaseUseCase>(),
       holdDeliveryContactCaseUseCase: getIt<HoldDeliveryContactCaseUseCase>(),
-      resumeDeliveryContactCaseUseCase: getIt<ResumeDeliveryContactCaseUseCase>(),
+      resumeDeliveryContactCaseUseCase:
+          getIt<ResumeDeliveryContactCaseUseCase>(),
       revealCustomerPhoneUseCase: getIt<RevealCustomerPhoneUseCase>(),
       getVoiceCallDisplayUseCase: getIt<GetVoiceCallDisplayUseCase>(),
       repository: getIt<DriverCallingRepository>(),

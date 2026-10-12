@@ -18,8 +18,25 @@ class DeliveryContactCaseResponseDto {
     this.customerPhoneMasked,
   });
 
-  factory DeliveryContactCaseResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$DeliveryContactCaseResponseDtoFromJson(json);
+  factory DeliveryContactCaseResponseDto.fromJson(Map<String, dynamic> json) {
+    return DeliveryContactCaseResponseDto(
+      contactCaseId: json['contactCaseId'] as String?,
+      tripStopId: json['tripStopId'] as String?,
+      status: (json['status'] ?? json['state']) as String?,
+      attemptCount:
+          ((json['attemptCount'] ?? json['qualifiedMissedCount']) as num?)
+              ?.toInt(),
+      firstAttemptCallId: json['firstAttemptCallId'] as String?,
+      lastAttemptCallId:
+          (json['lastAttemptCallId'] ?? json['lastCallId']) as String?,
+      canHold: json['canHold'] as bool?,
+      canResume: (json['canResume'] ?? json['holdResumed']) as bool?,
+      canRevealPhone: json['canRevealPhone'] as bool?,
+      resumeCooldownRemainingSeconds:
+          (json['resumeCooldownRemainingSeconds'] as num?)?.toInt(),
+      customerPhoneMasked: json['customerPhoneMasked'] as String?,
+    );
+  }
 
   final String? contactCaseId;
   final String? tripStopId;
@@ -33,6 +50,5 @@ class DeliveryContactCaseResponseDto {
   final int? resumeCooldownRemainingSeconds;
   final String? customerPhoneMasked;
 
-  Map<String, dynamic> toJson() =>
-      _$DeliveryContactCaseResponseDtoToJson(this);
+  Map<String, dynamic> toJson() => _$DeliveryContactCaseResponseDtoToJson(this);
 }

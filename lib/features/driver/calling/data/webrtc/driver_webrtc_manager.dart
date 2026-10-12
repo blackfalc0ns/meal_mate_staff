@@ -10,8 +10,10 @@ import '../../domain/entities/voice_call_status.dart';
 import '../models/realtime/voice_call_rtc_payload_dto.dart';
 import '../realtime/driver_voice_call_signalr_client.dart';
 
-typedef PeerConnectionFactory = Future<RTCPeerConnection> Function(Map<String, dynamic> configuration);
-typedef UserMediaFactory = Future<MediaStream> Function(Map<String, dynamic> mediaConstraints);
+typedef PeerConnectionFactory =
+    Future<RTCPeerConnection> Function(Map<String, dynamic> configuration);
+typedef UserMediaFactory =
+    Future<MediaStream> Function(Map<String, dynamic> mediaConstraints);
 
 @lazySingleton
 class DriverWebRtcManager {
@@ -19,8 +21,10 @@ class DriverWebRtcManager {
     required this.signalRClient,
     PeerConnectionFactory? peerConnectionFactory,
     UserMediaFactory? userMediaFactory,
-  })  : _peerConnectionFactory = peerConnectionFactory ?? createPeerConnection,
-        _userMediaFactory = userMediaFactory ?? ((constraints) => navigator.mediaDevices.getUserMedia(constraints));
+  }) : _peerConnectionFactory = peerConnectionFactory ?? createPeerConnection,
+       _userMediaFactory =
+           userMediaFactory ??
+           ((constraints) => navigator.mediaDevices.getUserMedia(constraints));
 
   final DriverVoiceCallSignalRClient signalRClient;
   final PeerConnectionFactory _peerConnectionFactory;
@@ -78,12 +82,24 @@ class DriverWebRtcManager {
 
     // 1. Require a successful per-call ice-servers response
     if (iceServers.isEmpty) {
-      _diag('Session', 'Failed to start WebRTC: ICE servers list is empty', callId: callId, gen: generation);
-      throw StateError('Cannot start WebRTC session: No ICE servers provided for call $callId');
+      _diag(
+        'Session',
+        'Failed to start WebRTC: ICE servers list is empty',
+        callId: callId,
+        gen: generation,
+      );
+      throw StateError(
+        'Cannot start WebRTC session: No ICE servers provided for call $callId',
+      );
     }
 
     final rtcIceServers = iceServers.map((s) => s.toMap()).toList();
-    _diag('Session', 'Configured ${rtcIceServers.length} ICE server(s)', callId: callId, gen: generation);
+    _diag(
+      'Session',
+      'Configured ${rtcIceServers.length} ICE server(s)',
+      callId: callId,
+      gen: generation,
+    );
 
     final configuration = {
       'iceServers': rtcIceServers,
@@ -116,7 +132,9 @@ class DriverWebRtcManager {
 
     final localStream = await _userMediaFactory(mediaConstraints);
     if (!_isCurrentSession(callId, generation, lifecycleToken)) {
-      for (final track in localStream.getTracks()) { track.stop(); }
+      for (final track in localStream.getTracks()) {
+        track.stop();
+      }
       await localStream.dispose();
       await pc.close();
       await pc.dispose();
@@ -125,28 +143,47 @@ class DriverWebRtcManager {
     _localStream = localStream;
     final audioTracks = localStream.getAudioTracks();
     if (audioTracks.isEmpty) {
-      _diag('Session', 'No local audio track acquired', callId: callId, gen: generation);
+      _diag(
+        'Session',
+        'No local audio track acquired',
+        callId: callId,
+        gen: generation,
+      );
       throw StateError('No local audio tracks available for call $callId');
     }
 
     for (final track in audioTracks) {
       await pc.addTrack(track, localStream);
       if (!_isCurrentSession(callId, generation, lifecycleToken)) {
-        for (final staleTrack in localStream.getTracks()) { staleTrack.stop(); }
+        for (final staleTrack in localStream.getTracks()) {
+          staleTrack.stop();
+        }
         await localStream.dispose();
         await pc.close();
         await pc.dispose();
         return;
       }
-      _diag('Session', 'Added local audio track: id=${track.id}, enabled=${track.enabled}', callId: callId, gen: generation);
+      _diag(
+        'Session',
+        'Added local audio track: id=${track.id}, enabled=${track.enabled}',
+        callId: callId,
+        gen: generation,
+      );
     }
 
     // 4. Record remote audio-track arrival
     pc.onTrack = (RTCTrackEvent event) {
-      if (_currentCallId != sessionCallId || _currentGeneration != sessionGeneration || _peerConnection != pc) {
+      if (_currentCallId != sessionCallId ||
+          _currentGeneration != sessionGeneration ||
+          _peerConnection != pc) {
         return;
       }
-      _diag('Track', 'Remote track arrived: kind=${event.track.kind}, id=${event.track.id}, enabled=${event.track.enabled}', callId: sessionCallId, gen: sessionGeneration);
+      _diag(
+        'Track',
+        'Remote track arrived: kind=${event.track.kind}, id=${event.track.id}, enabled=${event.track.enabled}',
+        callId: sessionCallId,
+        gen: sessionGeneration,
+      );
     };
 
     // 5. Handle ICE candidates generated locally
@@ -154,42 +191,75 @@ class DriverWebRtcManager {
       if (candidate.candidate == null || candidate.candidate!.trim().isEmpty) {
         return;
       }
-      if (_currentCallId != sessionCallId || _currentGeneration != sessionGeneration || _peerConnection != pc) {
-        _diag('SendIce', 'Dropping stale ICE candidate: session changed', callId: sessionCallId, gen: sessionGeneration);
+      if (_currentCallId != sessionCallId ||
+          _currentGeneration != sessionGeneration ||
+          _peerConnection != pc) {
+        _diag(
+          'SendIce',
+          'Dropping stale ICE candidate: session changed',
+          callId: sessionCallId,
+          gen: sessionGeneration,
+        );
         return;
       }
       final msgId = _generateUuidV4();
-      _diag('SendIce', 'Sending local candidate (len: ${candidate.candidate!.length})', callId: sessionCallId, gen: sessionGeneration);
-      unawaited(signalRClient.sendIceCandidate(
+      _diag(
+        'SendIce',
+        'Sending local candidate (len: ${candidate.candidate!.length})',
         callId: sessionCallId,
-        candidate: candidate.candidate!,
-        sdpMid: candidate.sdpMid,
-        sdpMLineIndex: candidate.sdpMLineIndex,
-        messageId: msgId,
-        generation: sessionGeneration,
-      ));
+        gen: sessionGeneration,
+      );
+      unawaited(
+        signalRClient.sendIceCandidate(
+          callId: sessionCallId,
+          candidate: candidate.candidate!,
+          sdpMid: candidate.sdpMid,
+          sdpMLineIndex: candidate.sdpMLineIndex,
+          messageId: msgId,
+          generation: sessionGeneration,
+        ),
+      );
     };
 
     // 6. Handle connection state changes (Do not mark server Active from local ICE alone)
     pc.onConnectionState = (RTCPeerConnectionState state) {
-      if (_currentCallId != sessionCallId || _currentGeneration != sessionGeneration || _peerConnection != pc) {
+      if (_currentCallId != sessionCallId ||
+          _currentGeneration != sessionGeneration ||
+          _peerConnection != pc) {
         return;
       }
-      _diag('ConnectionState', 'WebRTC peer connection state: $state', callId: sessionCallId, gen: sessionGeneration);
+      _diag(
+        'ConnectionState',
+        'WebRTC peer connection state: $state',
+        callId: sessionCallId,
+        gen: sessionGeneration,
+      );
       if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
         _localMediaConnectedController.add(true);
         unawaited(logRtpStats());
       } else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed ||
           state == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
-        _diag('ConnectionState', 'WebRTC peer connection failed or disconnected', callId: sessionCallId, gen: sessionGeneration);
+        _diag(
+          'ConnectionState',
+          'WebRTC peer connection failed or disconnected',
+          callId: sessionCallId,
+          gen: sessionGeneration,
+        );
       }
     };
 
     pc.onIceConnectionState = (RTCIceConnectionState state) {
-      if (_currentCallId != sessionCallId || _currentGeneration != sessionGeneration || _peerConnection != pc) {
+      if (_currentCallId != sessionCallId ||
+          _currentGeneration != sessionGeneration ||
+          _peerConnection != pc) {
         return;
       }
-      _diag('IceState', 'WebRTC ICE connection state: $state', callId: sessionCallId, gen: sessionGeneration);
+      _diag(
+        'IceState',
+        'WebRTC ICE connection state: $state',
+        callId: sessionCallId,
+        gen: sessionGeneration,
+      );
       if (state == RTCIceConnectionState.RTCIceConnectionStateConnected ||
           state == RTCIceConnectionState.RTCIceConnectionStateCompleted) {
         _localMediaConnectedController.add(true);
@@ -199,10 +269,7 @@ class DriverWebRtcManager {
 
     // 7. Create Offer
     final offerConstraints = {
-      'mandatory': {
-        'OfferToReceiveAudio': true,
-        'OfferToReceiveVideo': false,
-      },
+      'mandatory': {'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false},
       'optional': [],
     };
 
@@ -212,7 +279,12 @@ class DriverWebRtcManager {
     if (!_isCurrentSession(callId, generation, lifecycleToken)) return;
 
     final msgId = _generateUuidV4();
-    _diag('SendOffer', 'Local description set, sending offer (sdpLen: ${description.sdp?.length})', callId: sessionCallId, gen: sessionGeneration);
+    _diag(
+      'SendOffer',
+      'Local description set, sending offer (sdpLen: ${description.sdp?.length})',
+      callId: sessionCallId,
+      gen: sessionGeneration,
+    );
     await signalRClient.sendOffer(
       callId: sessionCallId,
       sdp: description.sdp ?? '',
@@ -229,17 +301,32 @@ class DriverWebRtcManager {
         (answerDto.callId != null &&
             answerDto.callId!.isNotEmpty &&
             answerDto.callId != _currentCallId)) {
-      _diag('RtcAnswer', 'Ignoring answer for foreign callId: ${answerDto.callId} != $_currentCallId', callId: _currentCallId, gen: _currentGeneration);
+      _diag(
+        'RtcAnswer',
+        'Ignoring answer for foreign callId: ${answerDto.callId} != $_currentCallId',
+        callId: _currentCallId,
+        gen: _currentGeneration,
+      );
       return;
     }
 
     if (answerDto.generation != _currentGeneration) {
-      _diag('RtcAnswer', 'Ignoring stale or mismatched answer generation: ${answerDto.generation} != $_currentGeneration', callId: _currentCallId, gen: _currentGeneration);
+      _diag(
+        'RtcAnswer',
+        'Ignoring stale or mismatched answer generation: ${answerDto.generation} != $_currentGeneration',
+        callId: _currentCallId,
+        gen: _currentGeneration,
+      );
       return;
     }
 
     try {
-      _diag('RtcAnswer', 'Setting remote description from answer (sdpLen: ${answerDto.sdp.length})', callId: _currentCallId, gen: _currentGeneration);
+      _diag(
+        'RtcAnswer',
+        'Setting remote description from answer (sdpLen: ${answerDto.sdp.length})',
+        callId: _currentCallId,
+        gen: _currentGeneration,
+      );
       final description = RTCSessionDescription(answerDto.sdp, answerDto.type);
       await pc.setRemoteDescription(description);
       _hasRemoteDescription = true;
@@ -249,12 +336,22 @@ class DriverWebRtcManager {
         try {
           await pc.addCandidate(candidate);
         } catch (e) {
-          _diag('RtcIce', 'Error applying queued candidate: $e', callId: _currentCallId, gen: _currentGeneration);
+          _diag(
+            'RtcIce',
+            'Error applying queued candidate: $e',
+            callId: _currentCallId,
+            gen: _currentGeneration,
+          );
         }
       }
       _queuedRemoteCandidates.clear();
     } catch (e) {
-      _diag('RtcAnswer', 'Error setting remote answer description: $e', callId: _currentCallId, gen: _currentGeneration);
+      _diag(
+        'RtcAnswer',
+        'Error setting remote answer description: $e',
+        callId: _currentCallId,
+        gen: _currentGeneration,
+      );
     }
   }
 
@@ -284,7 +381,12 @@ class DriverWebRtcManager {
     );
 
     if (!_hasRemoteDescription) {
-      _diag('RtcIce', 'Queuing early remote ICE candidate', callId: _currentCallId, gen: _currentGeneration);
+      _diag(
+        'RtcIce',
+        'Queuing early remote ICE candidate',
+        callId: _currentCallId,
+        gen: _currentGeneration,
+      );
       _queuedRemoteCandidates.add(candidate);
       return;
     }
@@ -292,7 +394,12 @@ class DriverWebRtcManager {
     try {
       await pc.addCandidate(candidate);
     } catch (e) {
-      _diag('RtcIce', 'Error adding remote ICE candidate: $e', callId: _currentCallId, gen: _currentGeneration);
+      _diag(
+        'RtcIce',
+        'Error adding remote ICE candidate: $e',
+        callId: _currentCallId,
+        gen: _currentGeneration,
+      );
     }
   }
 
@@ -303,7 +410,12 @@ class DriverWebRtcManager {
       final stats = await pc.getStats();
       for (final report in stats) {
         if (report.type == 'inbound-rtp' || report.type == 'outbound-rtp') {
-          _diag('RTP', '${report.type}: bytesSent=${report.values['bytesSent']}, bytesReceived=${report.values['bytesReceived']}, packetsSent=${report.values['packetsSent']}, packetsReceived=${report.values['packetsReceived']}', callId: _currentCallId, gen: _currentGeneration);
+          _diag(
+            'RTP',
+            '${report.type}: bytesSent=${report.values['bytesSent']}, bytesReceived=${report.values['bytesReceived']}, packetsSent=${report.values['packetsSent']}, packetsReceived=${report.values['packetsReceived']}',
+            callId: _currentCallId,
+            gen: _currentGeneration,
+          );
         }
       }
     } catch (_) {}
@@ -320,7 +432,12 @@ class DriverWebRtcManager {
     try {
       await Helper.setSpeakerphoneOn(enabled);
     } catch (e) {
-      _diag('AudioRoute', 'Failed to toggle speakerphone: $e', callId: _currentCallId, gen: _currentGeneration);
+      _diag(
+        'AudioRoute',
+        'Failed to toggle speakerphone: $e',
+        callId: _currentCallId,
+        gen: _currentGeneration,
+      );
     }
   }
 
@@ -333,32 +450,53 @@ class DriverWebRtcManager {
     return '${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-${hex.substring(16, 20)}-${hex.substring(20)}';
   }
 
-  Future<void> cleanup() async {
-    _lifecycleToken++;
-    try {
-      unawaited(_answerSub?.cancel());
-      _answerSub = null;
-      unawaited(_iceSub?.cancel());
-      _iceSub = null;
+  Future<void> cleanup([String? targetCallId, int? targetGeneration]) async {
+    if (targetCallId != null &&
+        _currentCallId != null &&
+        _currentCallId != targetCallId) {
+      _diag(
+        'Cleanup',
+        'Ignoring cleanup for mismatched callId: $targetCallId != $_currentCallId',
+      );
+      return;
+    }
+    if (targetGeneration != null && _currentGeneration != targetGeneration) {
+      _diag(
+        'Cleanup',
+        'Ignoring cleanup for mismatched generation: $targetGeneration != $_currentGeneration',
+      );
+      return;
+    }
 
-      if (_localStream != null) {
-        for (final track in _localStream!.getTracks()) {
+    _lifecycleToken++;
+
+    // Capture references to resources being cleaned
+    final localStreamToClose = _localStream;
+    final pcToClose = _peerConnection;
+    _localStream = null;
+    _peerConnection = null;
+    _hasRemoteDescription = false;
+    _queuedRemoteCandidates.clear();
+    _currentCallId = null;
+    _currentGeneration = 0;
+
+    unawaited(_answerSub?.cancel());
+    _answerSub = null;
+    unawaited(_iceSub?.cancel());
+    _iceSub = null;
+
+    try {
+      if (localStreamToClose != null) {
+        for (final track in localStreamToClose.getTracks()) {
           track.stop();
         }
-        await _localStream?.dispose();
-        _localStream = null;
+        await localStreamToClose.dispose();
       }
 
-      if (_peerConnection != null) {
-        await _peerConnection?.close();
-        await _peerConnection?.dispose();
-        _peerConnection = null;
+      if (pcToClose != null) {
+        await pcToClose.close();
+        await pcToClose.dispose();
       }
-
-      _hasRemoteDescription = false;
-      _queuedRemoteCandidates.clear();
-      _currentCallId = null;
-      _currentGeneration = 0;
     } catch (e) {
       _diag('Cleanup', 'Error cleaning up WebRTC: $e');
     }

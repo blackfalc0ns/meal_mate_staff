@@ -97,8 +97,9 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
   void initState() {
     super.initState();
     _activeCall = widget.callData ?? DriverCallingFakeData.activeCall;
-    _fallbackSecondsNotifier =
-        ValueNotifier<int>(_activeCall.initialDurationSeconds);
+    _fallbackSecondsNotifier = ValueNotifier<int>(
+      _activeCall.initialDurationSeconds,
+    );
     _fallbackSpeakerNotifier = ValueNotifier<bool>(false);
     _fallbackMutedNotifier = ValueNotifier<bool>(false);
 
@@ -131,10 +132,24 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
 
     try {
       final vm = context.read<DriverCallingViewModel>();
-      vm.doIntent(const EndCallEvent());
+      final isCancel =
+          vm.state.status == VoiceCallStatus.created ||
+          vm.state.status == VoiceCallStatus.ringing;
+      if (isCancel) {
+        vm.doIntent(const CancelCallEvent());
+      } else {
+        vm.doIntent(const EndCallEvent());
+      }
     } catch (_) {
+      final isAr = Localizations.localeOf(context).languageCode == 'ar';
       ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-        const SnackBar(content: Text('Cannot end call: ViewModel not available')),
+        SnackBar(
+          content: Text(
+            isAr
+                ? 'تعذر إنهاء المكالمة: نموذج العرض غير متاح'
+                : 'Cannot end call: ViewModel not available',
+          ),
+        ),
       );
     }
   }
@@ -163,15 +178,19 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
     if (blocVm != null) {
       return BlocConsumer<DriverCallingViewModel, DriverCallingState>(
         listenWhen: (prev, curr) =>
-            prev.status != curr.status || prev.errorMessage != curr.errorMessage,
+            prev.status != curr.status ||
+            prev.errorMessage != curr.errorMessage,
         listener: (context, state) {
           if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage!)),
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+            context.read<DriverCallingViewModel>().doIntent(
+              const ClearFeedbackEvent(),
             );
-            context.read<DriverCallingViewModel>().doIntent(const ClearFeedbackEvent());
           }
-          if (state.status.isTerminal || state.status == VoiceCallStatus.ended) {
+          if (state.status.isTerminal ||
+              state.status == VoiceCallStatus.ended) {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
             }
@@ -181,19 +200,20 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
           final displayCall = state.activeCallData ?? _activeCall;
           final effectiveAddress =
               (state.displayData?.deliveryAddress?.isNotEmpty ?? false)
-                  ? state.displayData!.deliveryAddress!
-                  : displayCall.addressLine;
+              ? state.displayData!.deliveryAddress!
+              : displayCall.addressLine;
           final effectiveArea =
               (state.displayData?.deliveryZone?.isNotEmpty ?? false)
-                  ? state.displayData!.deliveryZone!
-                  : displayCall.area;
+              ? state.displayData!.deliveryZone!
+              : displayCall.area;
+          final isAr = Localizations.localeOf(context).languageCode == 'ar';
           final durationText = state.status == VoiceCallStatus.active
               ? _formatDuration(state.durationSeconds)
               : switch (state.status) {
-                  VoiceCallStatus.ringing => 'Ringing...',
-                  VoiceCallStatus.connecting ||
-                  VoiceCallStatus.accepted =>
-                    'Connecting...',
+                  VoiceCallStatus.ringing =>
+                    isAr ? 'جارٍ الرنين...' : 'Ringing...',
+                  VoiceCallStatus.connecting || VoiceCallStatus.accepted =>
+                    isAr ? 'جارٍ الاتصال...' : 'Connecting...',
                   _ => _formatDuration(state.durationSeconds),
                 };
 
@@ -204,14 +224,13 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
                 builder: (context, constraints) {
                   return SingleChildScrollView(
                     child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints(minHeight: constraints.maxHeight),
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
                       child: IntrinsicHeight(
                         child: Column(
                           children: [
-                            DriverCallTopBar(
-                              onDismiss: widget.onDismiss,
-                            ),
+                            DriverCallTopBar(onDismiss: widget.onDismiss),
                             const SizedBox(height: Spacing.sm),
                             DriverCallHeader(
                               customerName: displayCall.customerName,
@@ -229,14 +248,14 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
                               isSpeakerOn: state.isSpeakerOn,
                               isMuted: state.isMuted,
                               onToggleSpeaker: () {
-                                context
-                                    .read<DriverCallingViewModel>()
-                                    .doIntent(const ToggleSpeakerEvent());
+                                context.read<DriverCallingViewModel>().doIntent(
+                                  const ToggleSpeakerEvent(),
+                                );
                               },
                               onToggleMute: () {
-                                context
-                                    .read<DriverCallingViewModel>()
-                                    .doIntent(const ToggleMuteEvent());
+                                context.read<DriverCallingViewModel>().doIntent(
+                                  const ToggleMuteEvent(),
+                                );
                               },
                               onEndCall: () => _handleEndCall(context),
                             ),
@@ -266,9 +285,7 @@ class _DriverActiveCallViewState extends State<_DriverActiveCallView> {
                 child: IntrinsicHeight(
                   child: Column(
                     children: [
-                      DriverCallTopBar(
-                        onDismiss: widget.onDismiss,
-                      ),
+                      DriverCallTopBar(onDismiss: widget.onDismiss),
                       const SizedBox(height: Spacing.sm),
                       ValueListenableBuilder<int>(
                         valueListenable: _fallbackSecondsNotifier,

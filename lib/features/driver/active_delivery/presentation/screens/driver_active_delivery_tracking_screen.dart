@@ -81,6 +81,10 @@ class _DriverActiveDeliveryTrackingScreenState
     _trip = widget.trip ?? DriverActiveDeliveryFakeData.defaultTrip;
     _driverLocation = _trip.driverLocation;
 
+    if (getIt.isRegistered<DriverLiveLocationCoordinator>()) {
+      unawaited(getIt<DriverLiveLocationCoordinator>().setTripId(_trip.tripId));
+    }
+
     if (widget.viewModel != null) {
       _viewModel = widget.viewModel;
     } else if (widget.trip == null &&

@@ -82,7 +82,8 @@ class FakeRemoteDataSource implements DriverCallingRemoteDataSource {
   }
 
   @override
-  Future<VoiceCallSnapshotResponseDto?> getActiveCall() async => snapshotToReturn;
+  Future<VoiceCallSnapshotResponseDto?> getActiveCall() async =>
+      snapshotToReturn;
 
   @override
   Future<IceServersResponseDto> getIceServers(String callId) async {
@@ -109,15 +110,35 @@ class FakeRemoteDataSource implements DriverCallingRemoteDataSource {
     reportConnectedCalls++;
   }
 
+  Completer<VoiceCallSnapshotResponseDto>? initiateCompleter;
+  VoiceCallSnapshotResponseDto? initiateToReturn;
+
+  @override
+  Future<VoiceCallSnapshotResponseDto> initiateCall(dynamic request) async {
+    if (initiateCompleter != null) {
+      return await initiateCompleter!.future;
+    }
+    return initiateToReturn ??
+        const VoiceCallSnapshotResponseDto(
+          callId: 'call-init-1',
+          tripStopId: 'trip-1',
+          protocolVersion: 2,
+          sequence: 1,
+          status: 'Created',
+        );
+  }
+
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class FakeSignalRClient implements DriverVoiceCallSignalRClient {
-  final _envelopeController = StreamController<VoiceCallEnvelopeDto>.broadcast();
+  final _envelopeController =
+      StreamController<VoiceCallEnvelopeDto>.broadcast();
 
   @override
-  Stream<VoiceCallEnvelopeDto> get onEnvelopeReceived => _envelopeController.stream;
+  Stream<VoiceCallEnvelopeDto> get onEnvelopeReceived =>
+      _envelopeController.stream;
 
   @override
   VoidCallback? onReconnected;
@@ -127,7 +148,10 @@ class FakeSignalRClient implements DriverVoiceCallSignalRClient {
   }
 
   @override
-  void resetSequenceAndDedupe() {}
+  void resetSequenceAndDedupe([String? callId]) {}
+
+  @override
+  Future<void> connect() async {}
 
   @override
   Future<void> disconnect() async {}
@@ -145,7 +169,8 @@ class FakeWebRtcManager implements DriverWebRtcManager {
   final List<String> startedCallIds = [];
 
   @override
-  Stream<VoiceCallStatus> get onMediaStateChanged => _mediaStateController.stream;
+  Stream<VoiceCallStatus> get onMediaStateChanged =>
+      _mediaStateController.stream;
 
   @override
   Stream<bool> get onLocalMediaConnected => _localMediaController.stream;
@@ -165,7 +190,7 @@ class FakeWebRtcManager implements DriverWebRtcManager {
   }
 
   @override
-  Future<void> cleanup() async {}
+  Future<void> cleanup([String? targetCallId, int? targetGeneration]) async {}
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -181,7 +206,9 @@ class FakeCallKitCoordinator implements DriverCallKitCoordinator {
   Stream<DriverCallKitAction> get onCallKitAction => _actionController.stream;
 
   void triggerAction(String action, {String? callId}) {
-    _actionController.add(DriverCallKitAction(action: action, callId: callId ?? _activeCallId));
+    _actionController.add(
+      DriverCallKitAction(action: action, callId: callId ?? _activeCallId),
+    );
   }
 
   String? _activeCallId;
@@ -268,11 +295,7 @@ void main() {
           callId: 'call-100',
           sequence: 1,
           eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-100',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
+          payload: {'callId': 'call-100', 'status': 'Accepted', 'sequence': 1},
         ),
       );
 
@@ -295,11 +318,7 @@ void main() {
           callId: 'call-100',
           sequence: 1,
           eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-100',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
+          payload: {'callId': 'call-100', 'status': 'Accepted', 'sequence': 1},
         ),
       );
       await Future.delayed(Duration.zero);
@@ -312,11 +331,7 @@ void main() {
           callId: 'call-100',
           sequence: 2,
           eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-100',
-            'status': 'Accepted',
-            'sequence': 2,
-          },
+          payload: {'callId': 'call-100', 'status': 'Accepted', 'sequence': 2},
         ),
       );
       await Future.delayed(Duration.zero);
@@ -324,41 +339,44 @@ void main() {
       expect(createdTimers.length, 1);
     });
 
-    test('skips tick when previous heartbeat request is still in flight', () async {
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
-          protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-1',
-          callId: 'call-100',
-          sequence: 1,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-100',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
+    test(
+      'skips tick when previous heartbeat request is still in flight',
+      () async {
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-1',
+            callId: 'call-100',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-100',
+              'status': 'Accepted',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
 
-      fakeRemote.heartbeatCompleter = Completer<void>();
-      createdTimers.first.fire(); // Start request 1 (in-flight)
+        fakeRemote.heartbeatCompleter = Completer<void>();
+        createdTimers.first.fire(); // Start request 1 (in-flight)
 
-      // Fire second tick while request 1 is still in flight
-      createdTimers.first.fire();
-      expect(fakeRemote.heartbeatCalls.length, 1);
+        // Fire second tick while request 1 is still in flight
+        createdTimers.first.fire();
+        expect(fakeRemote.heartbeatCalls.length, 1);
 
-      // Finish request 1
-      fakeRemote.heartbeatCompleter!.complete();
-      await Future.delayed(Duration.zero);
+        // Finish request 1
+        fakeRemote.heartbeatCompleter!.complete();
+        await Future.delayed(Duration.zero);
 
-      // Fire third tick after request 1 finished
-      fakeRemote.heartbeatCompleter = null;
-      createdTimers.first.fire();
-      await Future.delayed(Duration.zero);
-      expect(fakeRemote.heartbeatCalls.length, 2);
-    });
+        // Fire third tick after request 1 finished
+        fakeRemote.heartbeatCompleter = null;
+        createdTimers.first.fire();
+        await Future.delayed(Duration.zero);
+        expect(fakeRemote.heartbeatCalls.length, 2);
+      },
+    );
 
     test('cleanupCall stops heartbeat timer', () async {
       fakeSignalR.emitEnvelope(
@@ -369,11 +387,7 @@ void main() {
           callId: 'call-100',
           sequence: 1,
           eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-100',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
+          payload: {'callId': 'call-100', 'status': 'Accepted', 'sequence': 1},
         ),
       );
       await Future.delayed(Duration.zero);
@@ -392,11 +406,7 @@ void main() {
           callId: 'call-100',
           sequence: 1,
           eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-100',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
+          payload: {'callId': 'call-100', 'status': 'Accepted', 'sequence': 1},
         ),
       );
       await Future.delayed(Duration.zero);
@@ -412,39 +422,42 @@ void main() {
   });
 
   group('DriverCallingRepositoryImpl CallKit & Deadline Tests', () {
-    test('timeout arriving after Accepted status does NOT cancel or end call', () async {
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
-          protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-1',
+    test(
+      'timeout arriving after Accepted status does NOT cancel or end call',
+      () async {
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-1',
+            callId: 'call-200',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-200',
+              'status': 'Accepted',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
+
+        fakeRemote.snapshotToReturn = const VoiceCallSnapshotResponseDto(
           callId: 'call-200',
+          tripStopId: 'trip-1',
+          protocolVersion: 2,
           sequence: 1,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-200',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
+          status: 'Accepted',
+        );
 
-      fakeRemote.snapshotToReturn = const VoiceCallSnapshotResponseDto(
-        callId: 'call-200',
-        tripStopId: 'trip-1',
-        protocolVersion: 2,
-        sequence: 1,
-        status: 'Accepted',
-      );
+        // CallKit fires timeout
+        fakeCallKit.triggerAction('timeout', callId: 'call-200');
+        await Future.delayed(Duration.zero);
 
-      // CallKit fires timeout
-      fakeCallKit.triggerAction('timeout', callId: 'call-200');
-      await Future.delayed(Duration.zero);
-
-      expect(fakeRemote.cancelledCalls, isEmpty);
-      expect(fakeRemote.endedCalls, isEmpty);
-    });
+        expect(fakeRemote.cancelledCalls, isEmpty);
+        expect(fakeRemote.endedCalls, isEmpty);
+      },
+    );
 
     test('timeout arriving while status is Ringing cancels call', () async {
       fakeSignalR.emitEnvelope(
@@ -455,11 +468,7 @@ void main() {
           callId: 'call-201',
           sequence: 1,
           eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-201',
-            'status': 'Ringing',
-            'sequence': 1,
-          },
+          payload: {'callId': 'call-201', 'status': 'Ringing', 'sequence': 1},
         ),
       );
       await Future.delayed(Duration.zero);
@@ -509,180 +518,326 @@ void main() {
   });
 
   group('DriverCallingRepositoryImpl WebRTC Guards & Reporting Retries', () {
-    test('ending during ICE fetch cannot start an offer or block a new call', () async {
-      fakeRemote.iceCompleter = Completer<void>();
-      fakeSignalR.emitEnvelope(const VoiceCallEnvelopeDto(
-        protocolVersion: 2, occurredAtUtc: '2026-10-10T07:30:00Z',
-        eventId: 'old', callId: 'old', sequence: 1, eventType: 'StatusChanged',
-        payload: {'callId': 'old', 'status': 'Accepted', 'sequence': 1},
-      ));
-      await Future.delayed(Duration.zero);
-      await repository.cleanupCall();
-      fakeRemote.iceCompleter!.complete();
-      await Future.delayed(Duration.zero);
-      expect(fakeWebRtc.startedCallIds, isEmpty);
-      fakeRemote.iceCompleter = null;
-      fakeSignalR.emitEnvelope(const VoiceCallEnvelopeDto(
-        protocolVersion: 2, occurredAtUtc: '2026-10-10T07:30:01Z',
-        eventId: 'new', callId: 'new', sequence: 1, eventType: 'StatusChanged',
-        payload: {'callId': 'new', 'status': 'Accepted', 'sequence': 1},
-      ));
-      await Future.delayed(Duration.zero);
-      expect(fakeWebRtc.startedCallIds, ['new']);
-    });
+    test(
+      'ending during ICE fetch cannot start an offer or block a new call',
+      () async {
+        fakeRemote.iceCompleter = Completer<void>();
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'old',
+            callId: 'old',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {'callId': 'old', 'status': 'Accepted', 'sequence': 1},
+          ),
+        );
+        await Future.delayed(Duration.zero);
+        await repository.cleanupCall();
+        fakeRemote.iceCompleter!.complete();
+        await Future.delayed(Duration.zero);
+        expect(fakeWebRtc.startedCallIds, isEmpty);
+        fakeRemote.iceCompleter = null;
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:01Z',
+            eventId: 'new',
+            callId: 'new',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {'callId': 'new', 'status': 'Accepted', 'sequence': 1},
+          ),
+        );
+        await Future.delayed(Duration.zero);
+        expect(fakeWebRtc.startedCallIds, ['new']);
+      },
+    );
 
     test('ending during connecting report cannot start an offer', () async {
       fakeRemote.connectingCompleter = Completer<void>();
-      fakeSignalR.emitEnvelope(const VoiceCallEnvelopeDto(
-        protocolVersion: 2, occurredAtUtc: '2026-10-10T07:30:00Z',
-        eventId: 'old', callId: 'old', sequence: 1, eventType: 'StatusChanged',
-        payload: {'callId': 'old', 'status': 'Accepted', 'sequence': 1},
-      ));
+      fakeSignalR.emitEnvelope(
+        const VoiceCallEnvelopeDto(
+          protocolVersion: 2,
+          occurredAtUtc: '2026-10-10T07:30:00Z',
+          eventId: 'old',
+          callId: 'old',
+          sequence: 1,
+          eventType: 'StatusChanged',
+          payload: {'callId': 'old', 'status': 'Accepted', 'sequence': 1},
+        ),
+      );
       await Future.delayed(Duration.zero);
       await repository.cleanupCall();
       fakeRemote.connectingCompleter!.complete();
       await Future.delayed(Duration.zero);
       expect(fakeWebRtc.startedCallIds, isEmpty);
     });
-    test('duplicate Accepted snapshot does not start second offer session', () async {
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
-          protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-1',
-          callId: 'call-301',
-          sequence: 1,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-301',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
-      expect(fakeWebRtc.startOfferSessionCount, 1);
+    test(
+      'duplicate Accepted snapshot does not start second offer session',
+      () async {
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-1',
+            callId: 'call-301',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-301',
+              'status': 'Accepted',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
+        expect(fakeWebRtc.startOfferSessionCount, 1);
 
-      // Duplicate Accepted snapshot
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
-          protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-2',
-          callId: 'call-301',
-          sequence: 2,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-301',
-            'status': 'Accepted',
-            'sequence': 2,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
+        // Duplicate Accepted snapshot
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-2',
+            callId: 'call-301',
+            sequence: 2,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-301',
+              'status': 'Accepted',
+              'sequence': 2,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
 
-      expect(fakeWebRtc.startOfferSessionCount, 1);
-    });
+        expect(fakeWebRtc.startOfferSessionCount, 1);
+      },
+    );
 
-    test('reconnect does not start parallel offer session when offer already started', () async {
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
-          protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-1',
+    test(
+      'reconnect does not start parallel offer session when offer already started',
+      () async {
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-1',
+            callId: 'call-302',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-302',
+              'status': 'Accepted',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
+        expect(fakeWebRtc.startOfferSessionCount, 1);
+
+        fakeRemote.snapshotToReturn = const VoiceCallSnapshotResponseDto(
           callId: 'call-302',
-          sequence: 1,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-302',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
-      expect(fakeWebRtc.startOfferSessionCount, 1);
-
-      fakeRemote.snapshotToReturn = const VoiceCallSnapshotResponseDto(
-        callId: 'call-302',
-        tripStopId: 'trip-1',
-        protocolVersion: 2,
-        sequence: 2,
-        status: 'Accepted',
-      );
-
-      // Reconnect triggers reconcile
-      fakeSignalR.onReconnected?.call();
-      await Future.delayed(Duration.zero);
-
-      expect(fakeWebRtc.startOfferSessionCount, 1);
-    });
-
-    test('multiple local media connected events do not report connected twice', () async {
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
+          tripStopId: 'trip-1',
           protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-1',
-          callId: 'call-303',
-          sequence: 1,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-303',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
+          sequence: 2,
+          status: 'Accepted',
+        );
 
-      fakeWebRtc.triggerLocalMediaConnected(true);
-      await Future.delayed(Duration.zero);
+        // Reconnect triggers reconcile
+        fakeSignalR.onReconnected?.call();
+        await Future.delayed(Duration.zero);
 
-      fakeWebRtc.triggerLocalMediaConnected(true);
-      await Future.delayed(Duration.zero);
+        expect(fakeWebRtc.startOfferSessionCount, 1);
+      },
+    );
 
-      expect(fakeRemote.reportConnectedCalls, 1);
-    });
+    test(
+      'multiple local media connected events do not report connected twice',
+      () async {
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-1',
+            callId: 'call-303',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-303',
+              'status': 'Accepted',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
 
-    test('cleanupCall allows a new clean call to start offer session', () async {
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
-          protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-1',
-          callId: 'call-304',
-          sequence: 1,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-304',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
-      expect(fakeWebRtc.startOfferSessionCount, 1);
+        fakeWebRtc.triggerLocalMediaConnected(true);
+        await Future.delayed(Duration.zero);
 
-      await repository.cleanupCall();
+        fakeWebRtc.triggerLocalMediaConnected(true);
+        await Future.delayed(Duration.zero);
 
-      fakeSignalR.emitEnvelope(
-        const VoiceCallEnvelopeDto(
-          protocolVersion: 2,
-          occurredAtUtc: '2026-10-10T07:30:00Z',
-          eventId: 'ev-2',
-          callId: 'call-305',
-          sequence: 1,
-          eventType: 'StatusChanged',
-          payload: {
-            'callId': 'call-305',
-            'status': 'Accepted',
-            'sequence': 1,
-          },
-        ),
-      );
-      await Future.delayed(Duration.zero);
-      expect(fakeWebRtc.startOfferSessionCount, 2);
-    });
+        expect(fakeRemote.reportConnectedCalls, 1);
+      },
+    );
+
+    test(
+      'cleanupCall allows a new clean call to start offer session',
+      () async {
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-1',
+            callId: 'call-304',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-304',
+              'status': 'Accepted',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
+        expect(fakeWebRtc.startOfferSessionCount, 1);
+
+        await repository.cleanupCall();
+
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-2',
+            callId: 'call-305',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-305',
+              'status': 'Accepted',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
+        expect(fakeWebRtc.startOfferSessionCount, 2);
+      },
+    );
+  });
+
+  group('DriverCallingRepositoryImpl Initiate Race Tests', () {
+    test(
+      'REST initiate pending while SignalR Accepted arrives, then Ringing arrives: state stays Accepted, single offer, late REST cannot revert',
+      () async {
+        fakeRemote.initiateCompleter =
+            Completer<VoiceCallSnapshotResponseDto>();
+
+        // Start initiateCall in background
+        final initiateFuture = repository.initiateCall(
+          tripStopId: 'ts-race-1',
+          clientRequestId: 'req-race-1',
+        );
+
+        // Allow microtasks to run up to remoteDataSource.initiateCall
+        await Future.delayed(Duration.zero);
+
+        // SignalR delivers Accepted (sequence 2) while REST initiate is pending
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-accepted',
+            callId: 'call-race-1',
+            sequence: 2,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-race-1',
+              'status': 'Accepted',
+              'sequence': 2,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
+
+        expect(fakeWebRtc.startOfferSessionCount, 1);
+
+        // Late SignalR Ringing (sequence 1) arrives
+        fakeSignalR.emitEnvelope(
+          const VoiceCallEnvelopeDto(
+            protocolVersion: 2,
+            occurredAtUtc: '2026-10-10T07:30:00Z',
+            eventId: 'ev-ringing',
+            callId: 'call-race-1',
+            sequence: 1,
+            eventType: 'StatusChanged',
+            payload: {
+              'callId': 'call-race-1',
+              'status': 'Ringing',
+              'sequence': 1,
+            },
+          ),
+        );
+        await Future.delayed(Duration.zero);
+
+        // Offer session should still be exactly 1, not restarted
+        expect(fakeWebRtc.startOfferSessionCount, 1);
+
+        // Late REST response returns (sequence 1, Ringing)
+        fakeRemote.initiateCompleter!.complete(
+          const VoiceCallSnapshotResponseDto(
+            callId: 'call-race-1',
+            tripStopId: 'ts-race-1',
+            protocolVersion: 2,
+            sequence: 1,
+            status: 'Ringing',
+          ),
+        );
+
+        await initiateFuture;
+        await Future.delayed(Duration.zero);
+
+        // State must remain Accepted, offer session count must remain 1
+        expect(fakeWebRtc.startOfferSessionCount, 1);
+        // CallKit must not be started again for Ringing
+        expect(fakeCallKit.startedCalls.length, 0);
+      },
+    );
+
+    test(
+      'End/cancel during pending REST: completion cannot resurrect the call',
+      () async {
+        fakeRemote.initiateCompleter =
+            Completer<VoiceCallSnapshotResponseDto>();
+
+        final initiateFuture = repository.initiateCall(
+          tripStopId: 'ts-race-2',
+          clientRequestId: 'req-race-2',
+        );
+        await Future.delayed(Duration.zero);
+
+        // User cancels/ends while REST initiate is pending
+        await repository.cleanupCall();
+
+        // Late REST completes
+        fakeRemote.initiateCompleter!.complete(
+          const VoiceCallSnapshotResponseDto(
+            callId: 'call-race-2',
+            tripStopId: 'ts-race-2',
+            protocolVersion: 2,
+            sequence: 1,
+            status: 'Created',
+          ),
+        );
+
+        await initiateFuture;
+        await Future.delayed(Duration.zero);
+
+        // CallKit outgoing call must NOT be started, call remains cancelled/cleaned up
+        expect(fakeCallKit.startedCalls.length, 0);
+      },
+    );
   });
 }

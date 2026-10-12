@@ -87,5 +87,5 @@ abstract class DriverCallingRepository {
 
   Future<void> toggleSpeaker(bool enabled);
 
-  Future<void> cleanupCall();
+  Future<void> cleanupCall([String? targetCallId]);
 }

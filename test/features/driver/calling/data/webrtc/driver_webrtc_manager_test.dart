@@ -37,12 +37,17 @@ class FakePeerConnection implements RTCPeerConnection {
   }
 
   @override
-  Future<RTCRtpSender> addTrack(MediaStreamTrack track, [MediaStream? stream]) async {
+  Future<RTCRtpSender> addTrack(
+    MediaStreamTrack track, [
+    MediaStream? stream,
+  ]) async {
     return FakeRTCRtpSender();
   }
 
   @override
-  Future<RTCSessionDescription> createOffer([Map<String, dynamic>? constraints]) async {
+  Future<RTCSessionDescription> createOffer([
+    Map<String, dynamic>? constraints,
+  ]) async {
     return RTCSessionDescription('v=0\r\no=local-offer\r\n', 'offer');
   }
 
@@ -107,16 +112,19 @@ class FakeRTCRtpSender implements RTCRtpSender {
 }
 
 class FakeSignalRClient implements DriverVoiceCallSignalRClient {
-  final _answerController = StreamController<VoiceCallRtcOfferAnswerDto>.broadcast();
+  final _answerController =
+      StreamController<VoiceCallRtcOfferAnswerDto>.broadcast();
   final _iceController = StreamController<VoiceCallRtcCandidateDto>.broadcast();
   final List<Map<String, dynamic>> sentOffers = [];
   final List<Map<String, dynamic>> sentCandidates = [];
 
   @override
-  Stream<VoiceCallRtcOfferAnswerDto> get onAnswerReceived => _answerController.stream;
+  Stream<VoiceCallRtcOfferAnswerDto> get onAnswerReceived =>
+      _answerController.stream;
 
   @override
-  Stream<VoiceCallRtcCandidateDto> get onIceCandidateReceived => _iceController.stream;
+  Stream<VoiceCallRtcCandidateDto> get onIceCandidateReceived =>
+      _iceController.stream;
 
   void emitAnswer(VoiceCallRtcOfferAnswerDto dto) {
     _answerController.add(dto);
@@ -198,30 +206,33 @@ void main() {
   });
 
   group('DriverWebRtcManager Lifecycle and Filtering', () {
-    test('startOfferSession cleans up previous session and sets new callId and generation', () async {
-      await manager.startOfferSession(
-        callId: 'call-1',
-        iceServers: iceServers,
-        generation: 1,
-      );
-      expect(manager.currentCallId, 'call-1');
+    test(
+      'startOfferSession cleans up previous session and sets new callId and generation',
+      () async {
+        await manager.startOfferSession(
+          callId: 'call-1',
+          iceServers: iceServers,
+          generation: 1,
+        );
+        expect(manager.currentCallId, 'call-1');
 
-      // Start a second session on a fresh manager
-      final fakePc2 = FakePeerConnection();
-      final manager2 = DriverWebRtcManager(
-        signalRClient: fakeSignalR,
-        peerConnectionFactory: (config) async => fakePc2,
-        userMediaFactory: (constraints) async => fakeStream,
-      );
+        // Start a second session on a fresh manager
+        final fakePc2 = FakePeerConnection();
+        final manager2 = DriverWebRtcManager(
+          signalRClient: fakeSignalR,
+          peerConnectionFactory: (config) async => fakePc2,
+          userMediaFactory: (constraints) async => fakeStream,
+        );
 
-      await manager2.startOfferSession(
-        callId: 'call-2',
-        iceServers: iceServers,
-        generation: 2,
-      );
+        await manager2.startOfferSession(
+          callId: 'call-2',
+          iceServers: iceServers,
+          generation: 2,
+        );
 
-      expect(manager2.currentCallId, 'call-2');
-    });
+        expect(manager2.currentCallId, 'call-2');
+      },
+    );
 
     test('ignores remote answer for foreign callId', () async {
       await manager.startOfferSession(
@@ -284,40 +295,47 @@ void main() {
       expect(fakePc.remoteDescriptionsSet.first.sdp, 'v=0\r\no=valid-ans\r\n');
     });
 
-    test('queues early remote candidate and applies it after answer description arrives', () async {
-      await manager.startOfferSession(
-        callId: 'call-1',
-        iceServers: iceServers,
-        generation: 1,
-      );
-
-      // Early candidate before answer
-      fakeSignalR.emitIceCandidate(
-        const VoiceCallRtcCandidateDto(
-          candidate: 'candidate:early 1 UDP 2122252543 192.168.1.1 5000 typ host',
+    test(
+      'queues early remote candidate and applies it after answer description arrives',
+      () async {
+        await manager.startOfferSession(
           callId: 'call-1',
+          iceServers: iceServers,
           generation: 1,
-        ),
-      );
+        );
 
-      await Future.delayed(Duration.zero);
-      expect(fakePc.candidatesAdded, isEmpty);
+        // Early candidate before answer
+        fakeSignalR.emitIceCandidate(
+          const VoiceCallRtcCandidateDto(
+            candidate:
+                'candidate:early 1 UDP 2122252543 192.168.1.1 5000 typ host',
+            callId: 'call-1',
+            generation: 1,
+          ),
+        );
 
-      // Now answer arrives
-      fakeSignalR.emitAnswer(
-        const VoiceCallRtcOfferAnswerDto(
-          type: 'answer',
-          sdp: 'v=0\r\no=valid-ans\r\n',
-          callId: 'call-1',
-          generation: 1,
-        ),
-      );
+        await Future.delayed(Duration.zero);
+        expect(fakePc.candidatesAdded, isEmpty);
 
-      await Future.delayed(Duration.zero);
-      expect(fakePc.remoteDescriptionsSet.length, 1);
-      expect(fakePc.candidatesAdded.length, 1);
-      expect(fakePc.candidatesAdded.first.candidate, contains('candidate:early'));
-    });
+        // Now answer arrives
+        fakeSignalR.emitAnswer(
+          const VoiceCallRtcOfferAnswerDto(
+            type: 'answer',
+            sdp: 'v=0\r\no=valid-ans\r\n',
+            callId: 'call-1',
+            generation: 1,
+          ),
+        );
+
+        await Future.delayed(Duration.zero);
+        expect(fakePc.remoteDescriptionsSet.length, 1);
+        expect(fakePc.candidatesAdded.length, 1);
+        expect(
+          fakePc.candidatesAdded.first.candidate,
+          contains('candidate:early'),
+        );
+      },
+    );
 
     test('ignores candidate with mismatched generation', () async {
       await manager.startOfferSession(
@@ -328,7 +346,8 @@ void main() {
 
       fakeSignalR.emitIceCandidate(
         const VoiceCallRtcCandidateDto(
-          candidate: 'candidate:stale 1 UDP 2122252543 192.168.1.1 5000 typ host',
+          candidate:
+              'candidate:stale 1 UDP 2122252543 192.168.1.1 5000 typ host',
           callId: 'call-1',
           generation: 1,
         ),
@@ -337,5 +356,52 @@ void main() {
       await Future.delayed(Duration.zero);
       expect(fakePc.candidatesAdded, isEmpty);
     });
+
+    test(
+      'cleanup with targetCallId for call A after call B has started does not close call B peer connection',
+      () async {
+        late FakePeerConnection pcA;
+        late FakePeerConnection pcB;
+        int pcCount = 0;
+
+        final testManager = DriverWebRtcManager(
+          signalRClient: fakeSignalR,
+          peerConnectionFactory: (config) async {
+            pcCount++;
+            if (pcCount == 1) {
+              pcA = FakePeerConnection();
+              return pcA;
+            } else {
+              pcB = FakePeerConnection();
+              return pcB;
+            }
+          },
+          userMediaFactory: (constraints) async => FakeMediaStream(),
+        );
+
+        // Start call A
+        await testManager.startOfferSession(
+          callId: 'call-A',
+          iceServers: iceServers,
+        );
+        expect(testManager.currentCallId, 'call-A');
+        expect(pcA.isClosed, isFalse);
+
+        // Start call B
+        await testManager.startOfferSession(
+          callId: 'call-B',
+          iceServers: iceServers,
+        );
+        expect(testManager.currentCallId, 'call-B');
+        expect(pcB.isClosed, isFalse);
+
+        // Late cleanup for call A arrives
+        await testManager.cleanup('call-A');
+
+        // Call B must still be active and its peer must not be closed!
+        expect(testManager.currentCallId, 'call-B');
+        expect(pcB.isClosed, isFalse);
+      },
+    );
   });
 }

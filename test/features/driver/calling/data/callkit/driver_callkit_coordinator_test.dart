@@ -23,7 +23,7 @@ void main() {
   group('DriverCallKitCoordinator Event & Suppression Tests', () {
     test('emits "end" on user decline or ended event', () async {
       final actions = <DriverCallKitAction>[];
-      final sub = coordinator.onCallKitAction.listen((event) => actions.add(event));
+      final sub = coordinator.onCallKitAction.listen(actions.add);
 
       eventController.add(
         const CallEventActionCallEnded(
@@ -40,7 +40,7 @@ void main() {
 
     test('emits "timeout" on CallTimeout event', () async {
       final actions = <DriverCallKitAction>[];
-      final sub = coordinator.onCallKitAction.listen((event) => actions.add(event));
+      final sub = coordinator.onCallKitAction.listen(actions.add);
 
       eventController.add(
         const CallEventActionCallTimeout(
@@ -57,7 +57,7 @@ void main() {
 
     test('suppresses action for callId closed programmatically', () async {
       final actions = <DriverCallKitAction>[];
-      final sub = coordinator.onCallKitAction.listen((event) => actions.add(event));
+      final sub = coordinator.onCallKitAction.listen(actions.add);
 
       // Start outgoing call
       await coordinator.startOutgoingCall(

@@ -168,11 +168,7 @@ class _DriverMapShimmerState extends State<DriverMapShimmer>
               const PositionedDirectional(
                 end: Spacing.screenH,
                 top: 168,
-                child: ShimmerWidget(
-                  width: 44,
-                  height: 44,
-                  borderRadius: 22,
-                ),
+                child: ShimmerWidget(width: 44, height: 44, borderRadius: 22),
               ),
               PositionedDirectional(
                 start: Spacing.zero,
@@ -186,120 +182,126 @@ class _DriverMapShimmerState extends State<DriverMapShimmer>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Opacity(
-                            opacity: 0.5,
+                          Expanded(
+                            flex: 4,
+                            child: Opacity(
+                              opacity: 0.5,
+                              child: Container(
+                                height: 145,
+                                padding: const EdgeInsets.all(Spacing.sm),
+                                decoration: BoxDecoration(
+                                  color: color.surface,
+                                  borderRadius: BorderRadius.circular(
+                                    Spacing.radiusXl,
+                                  ),
+                                ),
+                                child: const Column(
+                                  children: [
+                                    ShimmerWidget(
+                                      width: 36,
+                                      height: 36,
+                                      borderRadius: 18,
+                                    ),
+                                    SizedBox(height: 8),
+                                    ShimmerWidget(
+                                      width: 80,
+                                      height: 12,
+                                      borderRadius: 4,
+                                    ),
+                                    SizedBox(height: 6),
+                                    ShimmerWidget(
+                                      width: 60,
+                                      height: 10,
+                                      borderRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: Spacing.md),
+                          Expanded(
+                            flex: 5,
                             child: Container(
-                              width: 140,
-                              height: 145,
+                              height: 165,
                               padding: const EdgeInsets.all(Spacing.sm),
                               decoration: BoxDecoration(
                                 color: color.surface,
                                 borderRadius: BorderRadius.circular(
                                   Spacing.radiusXl,
                                 ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: color.shadow.withValues(alpha: 0.08),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
                               ),
                               child: const Column(
                                 children: [
                                   ShimmerWidget(
-                                    width: 36,
-                                    height: 36,
-                                    borderRadius: 18,
+                                    width: 42,
+                                    height: 42,
+                                    borderRadius: 21,
                                   ),
                                   SizedBox(height: 8),
                                   ShimmerWidget(
-                                    width: 80,
-                                    height: 12,
+                                    width: 100,
+                                    height: 14,
                                     borderRadius: 4,
                                   ),
                                   SizedBox(height: 6),
                                   ShimmerWidget(
-                                    width: 60,
-                                    height: 10,
+                                    width: 70,
+                                    height: 12,
                                     borderRadius: 4,
+                                  ),
+                                  SizedBox(height: 8),
+                                  ShimmerWidget(
+                                    width: 90,
+                                    height: 18,
+                                    borderRadius: 9,
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           const SizedBox(width: Spacing.md),
-                          Container(
-                            width: 175,
-                            height: 165,
-                            padding: const EdgeInsets.all(Spacing.sm),
-                            decoration: BoxDecoration(
-                              color: color.surface,
-                              borderRadius: BorderRadius.circular(
-                                Spacing.radiusXl,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: color.shadow.withValues(alpha: 0.08),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: const Column(
-                              children: [
-                                ShimmerWidget(
-                                  width: 42,
-                                  height: 42,
-                                  borderRadius: 21,
-                                ),
-                                SizedBox(height: 8),
-                                ShimmerWidget(
-                                  width: 100,
-                                  height: 14,
-                                  borderRadius: 4,
-                                ),
-                                SizedBox(height: 6),
-                                ShimmerWidget(
-                                  width: 70,
-                                  height: 12,
-                                  borderRadius: 4,
-                                ),
-                                SizedBox(height: 8),
-                                ShimmerWidget(
-                                  width: 90,
-                                  height: 18,
-                                  borderRadius: 9,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: Spacing.md),
-                          Opacity(
-                            opacity: 0.5,
-                            child: Container(
-                              width: 140,
-                              height: 145,
-                              padding: const EdgeInsets.all(Spacing.sm),
-                              decoration: BoxDecoration(
-                                color: color.surface,
-                                borderRadius: BorderRadius.circular(
-                                  Spacing.radiusXl,
-                                ),
-                              ),
-                              child: const Column(
-                                children: [
-                                  ShimmerWidget(
-                                    width: 36,
-                                    height: 36,
-                                    borderRadius: 18,
+                          Expanded(
+                            flex: 4,
+                            child: Opacity(
+                              opacity: 0.5,
+                              child: Container(
+                                height: 145,
+                                padding: const EdgeInsets.all(Spacing.sm),
+                                decoration: BoxDecoration(
+                                  color: color.surface,
+                                  borderRadius: BorderRadius.circular(
+                                    Spacing.radiusXl,
                                   ),
-                                  SizedBox(height: 8),
-                                  ShimmerWidget(
-                                    width: 80,
-                                    height: 12,
-                                    borderRadius: 4,
-                                  ),
-                                  SizedBox(height: 6),
-                                  ShimmerWidget(
-                                    width: 60,
-                                    height: 10,
-                                    borderRadius: 4,
-                                  ),
-                                ],
+                                ),
+                                child: const Column(
+                                  children: [
+                                    ShimmerWidget(
+                                      width: 36,
+                                      height: 36,
+                                      borderRadius: 18,
+                                    ),
+                                    SizedBox(height: 8),
+                                    ShimmerWidget(
+                                      width: 80,
+                                      height: 12,
+                                      borderRadius: 4,
+                                    ),
+                                    SizedBox(height: 6),
+                                    ShimmerWidget(
+                                      width: 60,
+                                      height: 10,
+                                      borderRadius: 4,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

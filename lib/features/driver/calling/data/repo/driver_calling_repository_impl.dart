@@ -28,7 +28,8 @@ import '../models/response/voice_call_snapshot_response_dto.dart';
 import '../realtime/driver_voice_call_signalr_client.dart';
 import '../webrtc/driver_webrtc_manager.dart';
 
-typedef HeartbeatTimerFactory = Timer Function(Duration duration, void Function(Timer timer) callback);
+typedef HeartbeatTimerFactory =
+    Timer Function(Duration duration, void Function(Timer timer) callback);
 
 @Injectable(as: DriverCallingRepository)
 class DriverCallingRepositoryImpl implements DriverCallingRepository {
@@ -61,6 +62,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   int _currentGeneration = 0;
   int _sessionToken = 0;
   VoiceCallSnapshotEntity? _currentSnapshot;
+  String? _callKitStartedCallId;
   Future<void>? _deviceRegistrationInFlight;
 
   Timer? _heartbeatTimer;
@@ -114,7 +116,12 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
     // SignalR lifecycle envelope events
     signalRClient.onEnvelopeReceived.listen((envelope) {
-      _handleEnvelope(envelope.payload);
+      final payload = envelope.payload != null
+          ? Map<String, dynamic>.from(envelope.payload!)
+          : <String, dynamic>{};
+      payload['callId'] ??= envelope.callId;
+      payload['sequence'] ??= envelope.sequence;
+      _handleEnvelope(payload);
     });
 
     // Reconnected callback from SignalR
@@ -128,7 +135,12 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     // Local WebRTC media connection
     webrtcManager.onLocalMediaConnected.listen((connected) {
       if (connected && _activeCallId != null) {
-        _diag('WebRTC', 'Local media connected for call $_activeCallId, sending /reports/connected', callId: _activeCallId, gen: _currentGeneration);
+        _diag(
+          'WebRTC',
+          'Local media connected for call $_activeCallId, sending /reports/connected',
+          callId: _activeCallId,
+          gen: _currentGeneration,
+        );
         if (_currentSnapshot?.status == VoiceCallStatus.active) {
           unawaited(callKitCoordinator.setCallConnected(_activeCallId!));
         }
@@ -142,8 +154,13 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       final action = event.action;
       if (action == 'end' && _activeCallId != null) {
         final status = _currentSnapshot?.status;
-        _diag('CallKit', 'CallKit user end action received for status $status', callId: _activeCallId);
-        if (status == VoiceCallStatus.created || status == VoiceCallStatus.ringing) {
+        _diag(
+          'CallKit',
+          'CallKit user end action received for status $status',
+          callId: _activeCallId,
+        );
+        if (status == VoiceCallStatus.created ||
+            status == VoiceCallStatus.ringing) {
           unawaited(cancelCall(_activeCallId!));
         } else if (status == VoiceCallStatus.accepted ||
             status == VoiceCallStatus.connecting ||
@@ -153,7 +170,11 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
           unawaited(cleanupCall());
         }
       } else if (action == 'timeout' && _activeCallId != null) {
-        _diag('CallKit', 'CallKit timeout action received for call $_activeCallId', callId: _activeCallId);
+        _diag(
+          'CallKit',
+          'CallKit timeout action received for call $_activeCallId',
+          callId: _activeCallId,
+        );
         unawaited(_handleCallKitTimeout(_activeCallId!));
       } else if (action == 'mute') {
         unawaited(toggleMute(true));
@@ -161,32 +182,59 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     });
   }
 
-  Future<void> _sendConnectingReport(String callId, int generation, {int retryCount = 0}) async {
+  Future<void> _sendConnectingReport(
+    String callId,
+    int generation, {
+    int retryCount = 0,
+  }) async {
     final key = '$callId:$generation';
     if (_reportedConnecting.contains(key)) return;
     if (_connectingInFlight.contains(key)) return;
 
     _connectingInFlight.add(key);
-    _diag('Report', 'Reporting /reports/connecting (attempt ${retryCount + 1})', callId: callId, gen: generation);
+    _diag(
+      'Report',
+      'Reporting /reports/connecting (attempt ${retryCount + 1})',
+      callId: callId,
+      gen: generation,
+    );
 
     try {
       final result = await reportConnecting(callId);
       if (result is ApiSuccessResult) {
         _reportedConnecting.add(key);
-        _diag('Report', 'Successfully reported /reports/connecting', callId: callId, gen: generation);
+        _diag(
+          'Report',
+          'Successfully reported /reports/connecting',
+          callId: callId,
+          gen: generation,
+        );
       } else if (result case ApiErrorResult(:final failure)) {
-        _diag('Report', 'Failed /reports/connecting: ${failure.errorMessage}', callId: callId, gen: generation);
+        _diag(
+          'Report',
+          'Failed /reports/connecting: ${failure.errorMessage}',
+          callId: callId,
+          gen: generation,
+        );
         if (retryCount < 2 &&
             _activeCallId == callId &&
             _currentGeneration == generation &&
             (_currentSnapshot == null || !_currentSnapshot!.isTerminal)) {
-          unawaited(Future.delayed(const Duration(seconds: 2), () {
-            if (_activeCallId == callId &&
-                _currentGeneration == generation &&
-                !_reportedConnecting.contains(key)) {
-              unawaited(_sendConnectingReport(callId, generation, retryCount: retryCount + 1));
-            }
-          }));
+          unawaited(
+            Future.delayed(const Duration(seconds: 2), () {
+              if (_activeCallId == callId &&
+                  _currentGeneration == generation &&
+                  !_reportedConnecting.contains(key)) {
+                unawaited(
+                  _sendConnectingReport(
+                    callId,
+                    generation,
+                    retryCount: retryCount + 1,
+                  ),
+                );
+              }
+            }),
+          );
         }
       }
     } finally {
@@ -194,32 +242,59 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     }
   }
 
-  Future<void> _sendConnectedReport(String callId, int generation, {int retryCount = 0}) async {
+  Future<void> _sendConnectedReport(
+    String callId,
+    int generation, {
+    int retryCount = 0,
+  }) async {
     final key = '$callId:$generation';
     if (_reportedConnected.contains(key)) return;
     if (_connectedInFlight.contains(key)) return;
 
     _connectedInFlight.add(key);
-    _diag('Report', 'Reporting /reports/connected (attempt ${retryCount + 1})', callId: callId, gen: generation);
+    _diag(
+      'Report',
+      'Reporting /reports/connected (attempt ${retryCount + 1})',
+      callId: callId,
+      gen: generation,
+    );
 
     try {
       final result = await reportConnected(callId);
       if (result is ApiSuccessResult) {
         _reportedConnected.add(key);
-        _diag('Report', 'Successfully reported /reports/connected', callId: callId, gen: generation);
+        _diag(
+          'Report',
+          'Successfully reported /reports/connected',
+          callId: callId,
+          gen: generation,
+        );
       } else if (result case ApiErrorResult(:final failure)) {
-        _diag('Report', 'Failed /reports/connected: ${failure.errorMessage}', callId: callId, gen: generation);
+        _diag(
+          'Report',
+          'Failed /reports/connected: ${failure.errorMessage}',
+          callId: callId,
+          gen: generation,
+        );
         if (retryCount < 2 &&
             _activeCallId == callId &&
             _currentGeneration == generation &&
             (_currentSnapshot == null || !_currentSnapshot!.isTerminal)) {
-          unawaited(Future.delayed(const Duration(seconds: 2), () {
-            if (_activeCallId == callId &&
-                _currentGeneration == generation &&
-                !_reportedConnected.contains(key)) {
-              unawaited(_sendConnectedReport(callId, generation, retryCount: retryCount + 1));
-            }
-          }));
+          unawaited(
+            Future.delayed(const Duration(seconds: 2), () {
+              if (_activeCallId == callId &&
+                  _currentGeneration == generation &&
+                  !_reportedConnected.contains(key)) {
+                unawaited(
+                  _sendConnectedReport(
+                    callId,
+                    generation,
+                    retryCount: retryCount + 1,
+                  ),
+                );
+              }
+            }),
+          );
         }
       }
     } finally {
@@ -233,13 +308,19 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     switch (activeResult) {
       case ApiSuccessResult(:final data):
         if (data == null || data.isTerminal) {
-          _diag('Reconnect', 'No active call or terminal call found on server. Cleaning up UI.');
+          _diag(
+            'Reconnect',
+            'No active call or terminal call found on server. Cleaning up UI.',
+          );
           await cleanupCall();
         } else {
           _handleSnapshot(data);
         }
       case ApiErrorResult(:final failure):
-        _diag('Reconnect', 'Failed to retrieve active call on reconnect: ${failure.errorMessage}');
+        _diag(
+          'Reconnect',
+          'Failed to retrieve active call on reconnect: ${failure.errorMessage}',
+        );
     }
   }
 
@@ -256,12 +337,61 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   }
 
   void _handleSnapshot(VoiceCallSnapshotEntity snapshot) {
-    // Monotonic sequence verification
+    // Foreign call check: if there is an active non-terminal call and snapshot.callId doesn't match
+    if (_activeCallId != null && _activeCallId != snapshot.callId) {
+      if (_currentSnapshot != null && !_currentSnapshot!.isTerminal) {
+        _diag(
+          'Snapshot',
+          'Rejecting foreign call event: active=$_activeCallId incoming=${snapshot.callId}',
+          callId: snapshot.callId,
+        );
+        return;
+      }
+    }
+
+    // Monotonic sequence and state regression checks for the same call
     if (_currentSnapshot != null &&
-        _currentSnapshot!.callId == snapshot.callId &&
-        snapshot.sequence < _currentSnapshot!.sequence) {
-      _diag('Snapshot', 'Ignoring older sequence: ${snapshot.sequence} < ${_currentSnapshot!.sequence}', callId: snapshot.callId, seq: snapshot.sequence);
-      return;
+        _currentSnapshot!.callId == snapshot.callId) {
+      // Never let a non-terminal snapshot reopen an already terminal call
+      if (_currentSnapshot!.isTerminal && !snapshot.isTerminal) {
+        _diag(
+          'Snapshot',
+          'Rejecting non-terminal snapshot for already terminal call',
+          callId: snapshot.callId,
+        );
+        return;
+      }
+
+      // Reject lower or equal committed sequence
+      if (snapshot.sequence <= _currentSnapshot!.sequence) {
+        _diag(
+          'Snapshot',
+          'Ignoring older or equal sequence: ${snapshot.sequence} <= ${_currentSnapshot!.sequence}',
+          callId: snapshot.callId,
+          seq: snapshot.sequence,
+        );
+        return;
+      }
+
+      // Never revert progressed state (accepted/connecting/active) back to created/ringing
+      final currentStatus = _currentSnapshot!.status;
+      final incomingStatus = snapshot.status;
+      final isCurrentlyProgressed =
+          currentStatus == VoiceCallStatus.accepted ||
+          currentStatus == VoiceCallStatus.connecting ||
+          currentStatus == VoiceCallStatus.active;
+      final isIncomingEarly =
+          incomingStatus == VoiceCallStatus.created ||
+          incomingStatus == VoiceCallStatus.ringing;
+      if (isCurrentlyProgressed && isIncomingEarly) {
+        _diag(
+          'Snapshot',
+          'Rejecting regression from $currentStatus to $incomingStatus',
+          callId: snapshot.callId,
+          seq: snapshot.sequence,
+        );
+        return;
+      }
     }
 
     if (_activeCallId == null && !snapshot.isTerminal) {
@@ -272,7 +402,12 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     _snapshotController.add(snapshot);
     _statusController.add(snapshot.status);
 
-    _diag('Snapshot', 'Applied snapshot: status=${snapshot.status}, connectedAtUtc=${snapshot.connectedAtUtc}', callId: snapshot.callId, seq: snapshot.sequence);
+    _diag(
+      'Snapshot',
+      'Applied snapshot: status=${snapshot.status}, connectedAtUtc=${snapshot.connectedAtUtc}',
+      callId: snapshot.callId,
+      seq: snapshot.sequence,
+    );
 
     // Heartbeat lifecycle management
     _startHeartbeatForSnapshot(snapshot);
@@ -289,13 +424,14 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
     // Terminal cleanup
     if (snapshot.status.isTerminal) {
-      unawaited(cleanupCall());
+      unawaited(cleanupCall(snapshot.callId));
     }
   }
 
   void _startHeartbeatForSnapshot(VoiceCallSnapshotEntity snapshot) {
     final status = snapshot.status;
-    final isHeartbeatEligible = status == VoiceCallStatus.accepted ||
+    final isHeartbeatEligible =
+        status == VoiceCallStatus.accepted ||
         status == VoiceCallStatus.connecting ||
         status == VoiceCallStatus.active;
 
@@ -312,13 +448,16 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
     _stopHeartbeat();
     _heartbeatCallId = snapshot.callId;
-    _heartbeatTimer = _heartbeatTimerFactory(
-      const Duration(seconds: 10),
-      (timer) {
-        unawaited(_heartbeatTick(snapshot.callId));
-      },
+    _heartbeatTimer = _heartbeatTimerFactory(const Duration(seconds: 10), (
+      timer,
+    ) {
+      unawaited(_heartbeatTick(snapshot.callId));
+    });
+    _diag(
+      'Heartbeat',
+      'Started 10s heartbeat timer for call ${snapshot.callId}',
+      callId: snapshot.callId,
     );
-    _diag('Heartbeat', 'Started 10s heartbeat timer for call ${snapshot.callId}', callId: snapshot.callId);
   }
 
   void _stopHeartbeat() {
@@ -335,22 +474,38 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     if (callId != _activeCallId ||
         _currentSnapshot == null ||
         _currentSnapshot!.isTerminal) {
-      _diag('Heartbeat', 'Dropping heartbeat tick: call $callId is not active or is terminal', callId: callId);
+      _diag(
+        'Heartbeat',
+        'Dropping heartbeat tick: call $callId is not active or is terminal',
+        callId: callId,
+      );
       _stopHeartbeat();
       return;
     }
 
     if (_heartbeatRequestInFlight) {
-      _diag('Heartbeat', 'Skipping heartbeat tick: previous request still in flight', callId: callId);
+      _diag(
+        'Heartbeat',
+        'Skipping heartbeat tick: previous request still in flight',
+        callId: callId,
+      );
       return;
     }
 
     _heartbeatRequestInFlight = true;
     try {
-      _diag('Heartbeat', 'Sending heartbeat tick for call $callId', callId: callId);
+      _diag(
+        'Heartbeat',
+        'Sending heartbeat tick for call $callId',
+        callId: callId,
+      );
       final result = await sendHeartbeat(callId);
       if (result case ApiErrorResult(:final failure)) {
-        _diag('Heartbeat', 'Heartbeat failed: ${failure.errorMessage}', callId: callId);
+        _diag(
+          'Heartbeat',
+          'Heartbeat failed: ${failure.errorMessage}',
+          callId: callId,
+        );
       }
     } catch (e) {
       _diag('Heartbeat', 'Heartbeat error: $e', callId: callId);
@@ -364,11 +519,21 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     final sessionToken = _sessionToken;
     final key = '$callId:$generation';
     if (_startedWebRtcOfferKeys.contains(key)) {
-      _diag('Media', 'WebRTC offer already started for key $key, ignoring duplicate trigger', callId: callId, gen: _currentGeneration);
+      _diag(
+        'Media',
+        'WebRTC offer already started for key $key, ignoring duplicate trigger',
+        callId: callId,
+        gen: _currentGeneration,
+      );
       return;
     }
     if (_webRtcOfferInFlightKey == key) {
-      _diag('Media', 'WebRTC offer already in flight for key $key, ignoring duplicate trigger', callId: callId, gen: _currentGeneration);
+      _diag(
+        'Media',
+        'WebRTC offer already in flight for key $key, ignoring duplicate trigger',
+        callId: callId,
+        gen: _currentGeneration,
+      );
       return;
     }
 
@@ -379,7 +544,12 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       if (!_isCurrentSession(callId, generation, sessionToken)) return;
       if (iceResult is! ApiSuccessResult<List<IceServerConfigEntity>> ||
           iceResult.data.isEmpty) {
-        _diag('Media', 'Failed to retrieve valid ICE servers for call $callId, aborting WebRTC offer', callId: callId, gen: _currentGeneration);
+        _diag(
+          'Media',
+          'Failed to retrieve valid ICE servers for call $callId, aborting WebRTC offer',
+          callId: callId,
+          gen: _currentGeneration,
+        );
         _webRtcOfferInFlightKey = null;
         return;
       }
@@ -398,7 +568,12 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
         generation: generation,
       );
     } catch (e) {
-      _diag('Media', 'Error starting WebRTC offer session: $e', callId: callId, gen: _currentGeneration);
+      _diag(
+        'Media',
+        'Error starting WebRTC offer session: $e',
+        callId: callId,
+        gen: _currentGeneration,
+      );
       _startedWebRtcOfferKeys.remove(key);
     } finally {
       if (_webRtcOfferInFlightKey == key) {
@@ -422,7 +597,10 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
         fcmDeviceTokenId: fcmDeviceTokenId,
         capabilityVersion: capabilityVersion,
       );
-      _diag('Register', 'Registering voice device (capabilityVersion: $capabilityVersion)');
+      _diag(
+        'Register',
+        'Registering voice device (capabilityVersion: $capabilityVersion)',
+      );
       final response = await remoteDataSource.registerDevice(request);
       await sessionStorage.saveSession(
         deviceSessionId: response.deviceSessionId,
@@ -464,22 +642,10 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     required String clientRequestId,
   }) async {
     return safeApiCall(() async {
-      await _ensureVoiceDeviceSession();
-      // Connect and bind SignalR hub
-      await connectSignalR();
-
-      final request = VoiceCallInitiateRequestDto(
-        tripStopId: tripStopId,
-        clientRequestId: clientRequestId,
-      );
-      _diag('Initiate', 'Initiating call with clientRequestId: $clientRequestId');
-      final response = await remoteDataSource.initiateCall(request);
-      final snapshot = CallingDtoMapper.toSnapshotEntity(response);
-
       _sessionToken++;
-      _activeCallId = snapshot.callId;
+      final operationToken = _sessionToken;
       _currentGeneration = 0;
-      _currentSnapshot = snapshot;
+      _callKitStartedCallId = null;
       _webRtcOfferInFlightKey = null;
       _startedWebRtcOfferKeys.clear();
       _connectingInFlight.clear();
@@ -487,36 +653,96 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
       _connectedInFlight.clear();
       _reportedConnected.clear();
 
-      // Compute ringTimeout from deadline
-      final nowUtc = _serverClock.nowUtcOrLocal;
-      Duration ringTimeout;
-      if (snapshot.deadlineAtUtc != null) {
-        ringTimeout = snapshot.deadlineAtUtc!.difference(nowUtc);
-      } else {
-        ringTimeout = const Duration(seconds: 30);
-      }
-
-      if (ringTimeout <= Duration.zero) {
-        _diag('Initiate', 'Call initiated with expired deadline, handling as timeout', callId: snapshot.callId);
-        unawaited(_handleCallKitTimeout(snapshot.callId));
-      } else {
-        // Start CallKit outgoing call UI with derived duration
-        await callKitCoordinator.startOutgoingCall(
-          callId: snapshot.callId,
-          customerName: 'Customer',
-          ringTimeout: ringTimeout,
+      await _ensureVoiceDeviceSession();
+      if (_sessionToken != operationToken) {
+        _diag(
+          'Initiate',
+          'Session token changed during device session ensure, aborting initiate',
         );
+        throw StateError('Call operation cancelled or superseded');
       }
 
-      _snapshotController.add(snapshot);
-      _statusController.add(snapshot.status);
+      // Connect and bind SignalR hub
+      await connectSignalR();
+      if (_sessionToken != operationToken) {
+        _diag(
+          'Initiate',
+          'Session token changed during connectSignalR, aborting initiate',
+        );
+        throw StateError('Call operation cancelled or superseded');
+      }
 
-      return snapshot;
+      final request = VoiceCallInitiateRequestDto(
+        tripStopId: tripStopId,
+        clientRequestId: clientRequestId,
+      );
+      _diag(
+        'Initiate',
+        'Initiating call with clientRequestId: $clientRequestId',
+      );
+      final response = await remoteDataSource.initiateCall(request);
+      final snapshot = CallingDtoMapper.toSnapshotEntity(response);
+
+      // Verify operation identity after initiateCall await
+      if (_sessionToken != operationToken) {
+        _diag(
+          'Initiate',
+          'Session token changed while waiting for initiateCall response, ignoring late REST response',
+          callId: snapshot.callId,
+        );
+        if (_currentSnapshot != null &&
+            _currentSnapshot!.callId == snapshot.callId) {
+          return _currentSnapshot!;
+        }
+        return snapshot;
+      }
+
+      _activeCallId = snapshot.callId;
+      _handleSnapshot(snapshot);
+
+      // Start CallKit outgoing call UI only if still ringing/created, not terminal, and not yet started
+      final current = _currentSnapshot ?? snapshot;
+      if (!current.isTerminal &&
+          current.status != VoiceCallStatus.accepted &&
+          current.status != VoiceCallStatus.connecting &&
+          current.status != VoiceCallStatus.active &&
+          _callKitStartedCallId != snapshot.callId) {
+        _callKitStartedCallId = snapshot.callId;
+        final nowUtc = _serverClock.nowUtcOrLocal;
+        Duration ringTimeout;
+        if (current.deadlineAtUtc != null) {
+          ringTimeout = current.deadlineAtUtc!.difference(nowUtc);
+        } else {
+          ringTimeout = const Duration(seconds: 30);
+        }
+
+        if (ringTimeout <= Duration.zero) {
+          _diag(
+            'Initiate',
+            'Call initiated with expired deadline, handling as timeout',
+            callId: snapshot.callId,
+          );
+          unawaited(_handleCallKitTimeout(snapshot.callId));
+        } else {
+          // Start CallKit outgoing call UI with derived duration
+          await callKitCoordinator.startOutgoingCall(
+            callId: snapshot.callId,
+            customerName: 'Customer',
+            ringTimeout: ringTimeout,
+          );
+        }
+      }
+
+      return _currentSnapshot ?? snapshot;
     });
   }
 
   Future<void> _handleCallKitTimeout(String callId) async {
-    _diag('CallKit', 'Handling CallKit timeout for call $callId', callId: callId);
+    _diag(
+      'CallKit',
+      'Handling CallKit timeout for call $callId',
+      callId: callId,
+    );
     final snapshotResult = await getCallSnapshot(callId);
     final status = switch (snapshotResult) {
       ApiSuccessResult(:final data) => data.status,
@@ -526,15 +752,24 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     if (status == VoiceCallStatus.accepted ||
         status == VoiceCallStatus.connecting ||
         status == VoiceCallStatus.active) {
-      _diag('CallKit', 'Ignoring CallKit timeout: call is in active state ($status)', callId: callId);
+      _diag(
+        'CallKit',
+        'Ignoring CallKit timeout: call is in active state ($status)',
+        callId: callId,
+      );
       return;
     }
 
-    if (status == VoiceCallStatus.created || status == VoiceCallStatus.ringing) {
-      _diag('CallKit', 'Call timed out while ringing/created, cancelling call', callId: callId);
+    if (status == VoiceCallStatus.created ||
+        status == VoiceCallStatus.ringing) {
+      _diag(
+        'CallKit',
+        'Call timed out while ringing/created, cancelling call',
+        callId: callId,
+      );
       await cancelCall(callId);
     } else {
-      await cleanupCall();
+      await cleanupCall(callId);
     }
   }
 
@@ -543,7 +778,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     return safeApiCall(() async {
       _diag('Cancel', 'Cancelling call $callId', callId: callId);
       await remoteDataSource.cancelCall(callId);
-      await cleanupCall();
+      await cleanupCall(callId);
     });
   }
 
@@ -552,7 +787,7 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     return safeApiCall(() async {
       _diag('End', 'Ending call $callId', callId: callId);
       await remoteDataSource.endCall(callId);
-      await cleanupCall();
+      await cleanupCall(callId);
     });
   }
 
@@ -585,7 +820,11 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     String callId,
   ) async {
     return safeApiCall(() async {
-      _diag('IceServers', 'Fetching ICE servers for call $callId', callId: callId);
+      _diag(
+        'IceServers',
+        'Fetching ICE servers for call $callId',
+        callId: callId,
+      );
       final response = await remoteDataSource.getIceServers(callId);
       final servers = (response.iceServers ?? const [])
           .map(CallingDtoMapper.toIceServerEntity)
@@ -720,14 +959,29 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   }
 
   @override
-  Future<void> cleanupCall() async {
-    _diag('Cleanup', 'Performing idempotent call cleanup', callId: _activeCallId);
+  Future<void> cleanupCall([String? targetCallId]) async {
+    if (targetCallId != null &&
+        _activeCallId != null &&
+        _activeCallId != targetCallId) {
+      _diag(
+        'Cleanup',
+        'Ignoring cleanup for mismatched callId: $targetCallId != $_activeCallId',
+      );
+      return;
+    }
+    final callIdToClean = _activeCallId ?? targetCallId;
+    _diag(
+      'Cleanup',
+      'Performing idempotent call cleanup',
+      callId: callIdToClean,
+    );
     _sessionToken++;
     _stopHeartbeat();
-    await callKitCoordinator.endCall(_activeCallId);
-    await webrtcManager.cleanup();
-    signalRClient.resetSequenceAndDedupe();
+    await callKitCoordinator.endCall(callIdToClean);
+    await webrtcManager.cleanup(callIdToClean);
+    signalRClient.resetSequenceAndDedupe(callIdToClean);
     _activeCallId = null;
+    _callKitStartedCallId = null;
     _webRtcOfferInFlightKey = null;
     _startedWebRtcOfferKeys.clear();
     _connectingInFlight.clear();
@@ -745,7 +999,13 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
         !snapshot.isTerminal;
   }
 
-  void _diag(String action, String details, {String? callId, int? seq, int? gen}) {
+  void _diag(
+    String action,
+    String details, {
+    String? callId,
+    int? seq,
+    int? gen,
+  }) {
     final c = callId != null && callId.isNotEmpty ? '[$callId]' : '[no-call]';
     final g = gen != null ? '[gen:$gen]' : '';
     final s = seq != null ? '[seq:$seq]' : '';

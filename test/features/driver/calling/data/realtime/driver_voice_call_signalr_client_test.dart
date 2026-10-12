@@ -40,19 +40,13 @@ class FakeHubConnection implements HubConnection {
 
   @override
   Future<Object?> invoke(String methodName, {List<Object?>? args}) async {
-    invokedMethods.add({
-      'method': methodName,
-      'args': args,
-    });
+    invokedMethods.add({'method': methodName, 'args': args});
     return null;
   }
 
   @override
   Future<void> send(String methodName, {List<Object?>? args}) async {
-    invokedMethods.add({
-      'method': methodName,
-      'args': args,
-    });
+    invokedMethods.add({'method': methodName, 'args': args});
   }
 
   @override
@@ -164,62 +158,72 @@ void main() {
       await client.connect();
       await client.bindDeviceSession();
 
-      final bindCalls = fakeHub.invokedMethods.where(
-        (m) => m['method'] == 'BindDeviceSession',
-      ).toList();
+      final bindCalls = fakeHub.invokedMethods
+          .where((m) => m['method'] == 'BindDeviceSession')
+          .toList();
 
       expect(bindCalls, isNotEmpty);
       final args = bindCalls.last['args'] as List<Object?>;
-      expect(args.length, 2, reason: 'BindDeviceSession must take exactly [sessionId, controlProof]');
+      expect(
+        args.length,
+        2,
+        reason: 'BindDeviceSession must take exactly [sessionId, controlProof]',
+      );
       expect(args[0], 'session-abc-123');
       expect(args[1], 'proof-secret-xyz');
       expect(client.isBound, isTrue);
     });
 
-    test('SendOffer awaits connection and bind, sending exact 4-argument format', () async {
-      await client.sendOffer(
-        callId: 'call-99',
-        sdp: 'v=0\r\no=mock\r\n',
-        messageId: 'msg-uuid-1',
-        generation: 0,
-      );
+    test(
+      'SendOffer awaits connection and bind, sending exact 4-argument format',
+      () async {
+        await client.sendOffer(
+          callId: 'call-99',
+          sdp: 'v=0\r\no=mock\r\n',
+          messageId: 'msg-uuid-1',
+          generation: 0,
+        );
 
-      final offerCalls = fakeHub.invokedMethods.where(
-        (m) => m['method'] == 'SendOffer',
-      ).toList();
+        final offerCalls = fakeHub.invokedMethods
+            .where((m) => m['method'] == 'SendOffer')
+            .toList();
 
-      expect(offerCalls, isNotEmpty);
-      final args = offerCalls.last['args'] as List<Object?>;
-      expect(args.length, 4);
-      expect(args[0], 'call-99');
-      expect(args[1], {'type': 'offer', 'sdp': 'v=0\r\no=mock\r\n'});
-      expect(args[2], 'msg-uuid-1');
-      expect(args[3], 0);
-    });
+        expect(offerCalls, isNotEmpty);
+        final args = offerCalls.last['args'] as List<Object?>;
+        expect(args.length, 4);
+        expect(args[0], 'call-99');
+        expect(args[1], {'type': 'offer', 'sdp': 'v=0\r\no=mock\r\n'});
+        expect(args[2], 'msg-uuid-1');
+        expect(args[3], 0);
+      },
+    );
 
-    test('rtc:answer unpacks positional 4 arguments and emits VoiceCallRtcOfferAnswerDto', () async {
-      await client.connect();
+    test(
+      'rtc:answer unpacks positional 4 arguments and emits VoiceCallRtcOfferAnswerDto',
+      () async {
+        await client.connect();
 
-      VoiceCallRtcOfferAnswerDto? received;
-      final sub = client.onAnswerReceived.listen((ans) => received = ans);
+        VoiceCallRtcOfferAnswerDto? received;
+        final sub = client.onAnswerReceived.listen((ans) => received = ans);
 
-      fakeHub.triggerEvent('rtc:answer', [
-        'call-99',
-        {'type': 'answer', 'sdp': 'v=0\r\no=answer\r\n'},
-        'msg-ans-1',
-        1,
-      ]);
+        fakeHub.triggerEvent('rtc:answer', [
+          'call-99',
+          {'type': 'answer', 'sdp': 'v=0\r\no=answer\r\n'},
+          'msg-ans-1',
+          1,
+        ]);
 
-      await Future.delayed(Duration.zero);
-      expect(received, isNotNull);
-      expect(received?.type, 'answer');
-      expect(received?.sdp, 'v=0\r\no=answer\r\n');
-      expect(received?.callId, 'call-99');
-      expect(received?.messageId, 'msg-ans-1');
-      expect(received?.generation, 1);
+        await Future.delayed(Duration.zero);
+        expect(received, isNotNull);
+        expect(received?.type, 'answer');
+        expect(received?.sdp, 'v=0\r\no=answer\r\n');
+        expect(received?.callId, 'call-99');
+        expect(received?.messageId, 'msg-ans-1');
+        expect(received?.generation, 1);
 
-      await sub.cancel();
-    });
+        await sub.cancel();
+      },
+    );
 
     test('rtc:answer unpacks v2 nested envelope Map', () async {
       await client.connect();
@@ -234,11 +238,8 @@ void main() {
           'negotiationGeneration': 3,
           'senderDeviceSessionId': 'session-xyz',
           'sentAtUtc': '2026-10-10T07:30:00Z',
-          'payload': {
-            'type': 'answer',
-            'sdp': 'v=0\r\no=nested-v2-ans\r\n',
-          },
-        }
+          'payload': {'type': 'answer', 'sdp': 'v=0\r\no=nested-v2-ans\r\n'},
+        },
       ]);
 
       await Future.delayed(Duration.zero);
@@ -283,201 +284,315 @@ void main() {
       await sub.cancel();
     });
 
-    test('rtc:ice-candidate unpacks v2 nested envelope with all candidate fields', () async {
-      await client.connect();
+    test(
+      'rtc:ice-candidate unpacks v2 nested envelope with all candidate fields',
+      () async {
+        await client.connect();
 
-      VoiceCallRtcCandidateDto? received;
-      final sub = client.onIceCandidateReceived.listen((cand) => received = cand);
+        VoiceCallRtcCandidateDto? received;
+        final sub = client.onIceCandidateReceived.listen(
+          (cand) => received = cand,
+        );
 
-      fakeHub.triggerEvent('rtc:ice-candidate', [
-        {
-          'messageId': 'msg-v2-ice',
-          'callId': 'call-v2-3',
-          'negotiationGeneration': 4,
-          'payload': {
-            'candidate': 'candidate:v2 1 UDP 2122252543 10.0.0.1 5000 typ host',
-            'sdpMid': 'audio',
-            'sdpMLineIndex': 1,
-            'usernameFragment': 'ufrag123',
+        fakeHub.triggerEvent('rtc:ice-candidate', [
+          {
+            'messageId': 'msg-v2-ice',
+            'callId': 'call-v2-3',
+            'negotiationGeneration': 4,
+            'payload': {
+              'candidate':
+                  'candidate:v2 1 UDP 2122252543 10.0.0.1 5000 typ host',
+              'sdpMid': 'audio',
+              'sdpMLineIndex': 1,
+              'usernameFragment': 'ufrag123',
+            },
           },
-        }
-      ]);
+        ]);
 
-      await Future.delayed(Duration.zero);
-      expect(received, isNotNull);
-      expect(received?.callId, 'call-v2-3');
-      expect(received?.messageId, 'msg-v2-ice');
-      expect(received?.generation, 4);
-      expect(received?.candidate, contains('candidate:v2'));
-      expect(received?.sdpMid, 'audio');
-      expect(received?.sdpMLineIndex, 1);
-      expect(received?.usernameFragment, 'ufrag123');
+        await Future.delayed(Duration.zero);
+        expect(received, isNotNull);
+        expect(received?.callId, 'call-v2-3');
+        expect(received?.messageId, 'msg-v2-ice');
+        expect(received?.generation, 4);
+        expect(received?.candidate, contains('candidate:v2'));
+        expect(received?.sdpMid, 'audio');
+        expect(received?.sdpMLineIndex, 1);
+        expect(received?.usernameFragment, 'ufrag123');
 
-      await sub.cancel();
-    });
+        await sub.cancel();
+      },
+    );
 
-    test('drops envelope missing callId, messageId, or payload without crashing', () async {
-      await client.connect();
+    test(
+      'drops envelope missing callId, messageId, or payload without crashing',
+      () async {
+        await client.connect();
 
-      VoiceCallRtcOfferAnswerDto? answerReceived;
-      VoiceCallRtcCandidateDto? iceReceived;
-      final sub1 = client.onAnswerReceived.listen((a) => answerReceived = a);
-      final sub2 = client.onIceCandidateReceived.listen((i) => iceReceived = i);
+        VoiceCallRtcOfferAnswerDto? answerReceived;
+        VoiceCallRtcCandidateDto? iceReceived;
+        final sub1 = client.onAnswerReceived.listen((a) => answerReceived = a);
+        final sub2 = client.onIceCandidateReceived.listen(
+          (i) => iceReceived = i,
+        );
 
-      // Missing callId
-      fakeHub.triggerEvent('rtc:answer', [
-        {
-          'messageId': 'msg-1',
-          'payload': {'type': 'answer', 'sdp': 'v=0'},
-        }
-      ]);
+        // Missing callId
+        fakeHub.triggerEvent('rtc:answer', [
+          {
+            'messageId': 'msg-1',
+            'payload': {'type': 'answer', 'sdp': 'v=0'},
+          },
+        ]);
 
-      // Missing messageId
-      fakeHub.triggerEvent('rtc:answer', [
-        {
-          'callId': 'call-1',
-          'payload': {'type': 'answer', 'sdp': 'v=0'},
-        }
-      ]);
+        // Missing messageId
+        fakeHub.triggerEvent('rtc:answer', [
+          {
+            'callId': 'call-1',
+            'payload': {'type': 'answer', 'sdp': 'v=0'},
+          },
+        ]);
 
-      // Missing payload
-      fakeHub.triggerEvent('rtc:answer', [
-        {
-          'callId': 'call-1',
-          'messageId': 'msg-1',
-        }
-      ]);
+        // Missing payload
+        fakeHub.triggerEvent('rtc:answer', [
+          {'callId': 'call-1', 'messageId': 'msg-1'},
+        ]);
 
-      // Empty payload SDP
-      fakeHub.triggerEvent('rtc:answer', [
-        {
-          'callId': 'call-1',
-          'messageId': 'msg-1',
-          'payload': {'type': 'answer', 'sdp': ''},
-        }
-      ]);
+        // Empty payload SDP
+        fakeHub.triggerEvent('rtc:answer', [
+          {
+            'callId': 'call-1',
+            'messageId': 'msg-1',
+            'payload': {'type': 'answer', 'sdp': ''},
+          },
+        ]);
 
-      // Empty candidate in ICE
-      fakeHub.triggerEvent('rtc:ice-candidate', [
-        {
-          'callId': 'call-1',
-          'messageId': 'msg-1',
-          'payload': {'candidate': '   '},
-        }
-      ]);
+        // Empty candidate in ICE
+        fakeHub.triggerEvent('rtc:ice-candidate', [
+          {
+            'callId': 'call-1',
+            'messageId': 'msg-1',
+            'payload': {'candidate': '   '},
+          },
+        ]);
 
-      await Future.delayed(Duration.zero);
-      expect(answerReceived, isNull);
-      expect(iceReceived, isNull);
+        await Future.delayed(Duration.zero);
+        expect(answerReceived, isNull);
+        expect(iceReceived, isNull);
 
-      await sub1.cancel();
-      await sub2.cancel();
-    });
+        await sub1.cancel();
+        await sub2.cancel();
+      },
+    );
 
-    test('rtc:ice-candidate unpacks positional 4 arguments and emits VoiceCallRtcCandidateDto', () async {
-      await client.connect();
+    test(
+      'rtc:ice-candidate unpacks positional 4 arguments and emits VoiceCallRtcCandidateDto',
+      () async {
+        await client.connect();
 
-      VoiceCallRtcCandidateDto? received;
-      final sub = client.onIceCandidateReceived.listen((cand) => received = cand);
+        VoiceCallRtcCandidateDto? received;
+        final sub = client.onIceCandidateReceived.listen(
+          (cand) => received = cand,
+        );
 
-      fakeHub.triggerEvent('rtc:ice-candidate', [
-        'call-99',
-        {
-          'candidate': 'candidate:1 1 UDP 2122252543 192.168.1.1 5000 typ host',
-          'sdpMid': '0',
-          'sdpMLineIndex': 0,
-        },
-        'msg-ice-1',
-        1,
-      ]);
+        fakeHub.triggerEvent('rtc:ice-candidate', [
+          'call-99',
+          {
+            'candidate':
+                'candidate:1 1 UDP 2122252543 192.168.1.1 5000 typ host',
+            'sdpMid': '0',
+            'sdpMLineIndex': 0,
+          },
+          'msg-ice-1',
+          1,
+        ]);
 
-      await Future.delayed(Duration.zero);
-      expect(received, isNotNull);
-      expect(received?.candidate, contains('candidate:1'));
-      expect(received?.sdpMid, '0');
-      expect(received?.sdpMLineIndex, 0);
-      expect(received?.callId, 'call-99');
-      expect(received?.messageId, 'msg-ice-1');
-      expect(received?.generation, 1);
+        await Future.delayed(Duration.zero);
+        expect(received, isNotNull);
+        expect(received?.candidate, contains('candidate:1'));
+        expect(received?.sdpMid, '0');
+        expect(received?.sdpMLineIndex, 0);
+        expect(received?.callId, 'call-99');
+        expect(received?.messageId, 'msg-ice-1');
+        expect(received?.generation, 1);
 
-      await sub.cancel();
-    });
+        await sub.cancel();
+      },
+    );
 
-    test('reconnect triggers rebind with session and proof and calls onReconnected', () async {
-      await client.connect();
-      fakeHub.invokedMethods.clear();
+    test(
+      'reconnect triggers rebind with session and proof and calls onReconnected',
+      () async {
+        await client.connect();
+        fakeHub.invokedMethods.clear();
 
-      bool reconnectedCalled = false;
-      client.onReconnected = () => reconnectedCalled = true;
+        bool reconnectedCalled = false;
+        client.onReconnected = () => reconnectedCalled = true;
 
-      fakeHub.triggerReconnected('new-conn-id');
-      await Future.delayed(Duration.zero);
+        fakeHub.triggerReconnected('new-conn-id');
+        await Future.delayed(Duration.zero);
 
-      final bindCalls = fakeHub.invokedMethods.where(
-        (m) => m['method'] == 'BindDeviceSession',
-      ).toList();
+        final bindCalls = fakeHub.invokedMethods
+            .where((m) => m['method'] == 'BindDeviceSession')
+            .toList();
 
-      expect(bindCalls, isNotEmpty);
-      expect(bindCalls.last['args'], ['session-abc-123', 'proof-secret-xyz']);
-      expect(reconnectedCalled, isTrue);
-    });
+        expect(bindCalls, isNotEmpty);
+        expect(bindCalls.last['args'], ['session-abc-123', 'proof-secret-xyz']);
+        expect(reconnectedCalled, isTrue);
+      },
+    );
 
-    test('call:event deduplicates duplicate eventId and drops out-of-order sequence', () async {
-      await client.connect();
+    test(
+      'call:event deduplicates duplicate eventId and drops out-of-order sequence',
+      () async {
+        await client.connect();
 
-      final receivedEvents = [];
-      final sub = client.onEnvelopeReceived.listen(receivedEvents.add);
+        final receivedEvents = [];
+        final sub = client.onEnvelopeReceived.listen(receivedEvents.add);
 
-      // Event 1 (sequence 1)
-      fakeHub.triggerEvent('call:event', [
-        {
-          'eventId': 'ev-1',
-          'callId': 'call-99',
-          'sequence': 1,
-          'eventType': 'StatusChanged',
-          'payload': {'status': 'Ringing'},
-        }
-      ]);
+        // Event 1 (sequence 1)
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-1',
+            'callId': 'call-99',
+            'sequence': 1,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Ringing'},
+          },
+        ]);
 
-      // Duplicate Event 1
-      fakeHub.triggerEvent('call:event', [
-        {
-          'eventId': 'ev-1',
-          'callId': 'call-99',
-          'sequence': 1,
-          'eventType': 'StatusChanged',
-          'payload': {'status': 'Ringing'},
-        }
-      ]);
+        // Duplicate Event 1
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-1',
+            'callId': 'call-99',
+            'sequence': 1,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Ringing'},
+          },
+        ]);
 
-      // Out of order Event (sequence 0 <= 1)
-      fakeHub.triggerEvent('call:event', [
-        {
-          'eventId': 'ev-2',
-          'callId': 'call-99',
-          'sequence': 1,
-          'eventType': 'StatusChanged',
-          'payload': {'status': 'Created'},
-        }
-      ]);
+        // Out of order Event (sequence 0 <= 1)
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-2',
+            'callId': 'call-99',
+            'sequence': 1,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Created'},
+          },
+        ]);
 
-      // Next monotonic Event (sequence 2)
-      fakeHub.triggerEvent('call:event', [
-        {
-          'eventId': 'ev-3',
-          'callId': 'call-99',
-          'sequence': 2,
-          'eventType': 'StatusChanged',
-          'payload': {'status': 'Accepted'},
-        }
-      ]);
+        // Next monotonic Event (sequence 2)
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-3',
+            'callId': 'call-99',
+            'sequence': 2,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Accepted'},
+          },
+        ]);
 
-      await Future.delayed(Duration.zero);
-      expect(receivedEvents.length, 2);
-      expect(receivedEvents[0].eventId, 'ev-1');
-      expect(receivedEvents[1].eventId, 'ev-3');
+        await Future.delayed(Duration.zero);
+        expect(receivedEvents.length, 2);
+        expect(receivedEvents[0].eventId, 'ev-1');
+        expect(receivedEvents[1].eventId, 'ev-3');
 
-      await sub.cancel();
-    });
+        await sub.cancel();
+      },
+    );
+
+    test(
+      'per-call sequence: A seq 8 then B seq 1 and seq 2 are both accepted, replay of A is deduplicated',
+      () async {
+        await client.connect();
+
+        final receivedEvents = [];
+        final sub = client.onEnvelopeReceived.listen(receivedEvents.add);
+
+        // Deliver Call A seq 8
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-a-8',
+            'callId': 'call-A',
+            'sequence': 8,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Active'},
+          },
+        ]);
+
+        // Deliver Call B seq 1
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-b-1',
+            'callId': 'call-B',
+            'sequence': 1,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Ringing'},
+          },
+        ]);
+
+        // Deliver Call B seq 2
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-b-2',
+            'callId': 'call-B',
+            'sequence': 2,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Accepted'},
+          },
+        ]);
+
+        // Replay of Call A seq 8 (or earlier seq)
+        fakeHub.triggerEvent('call:event', [
+          {
+            'eventId': 'ev-a-8',
+            'callId': 'call-A',
+            'sequence': 8,
+            'eventType': 'StatusChanged',
+            'payload': {'status': 'Active'},
+          },
+        ]);
+
+        await Future.delayed(Duration.zero);
+
+        // Should have received: Call A seq 8, Call B seq 1, Call B seq 2. Replay of A is dropped.
+        expect(receivedEvents.length, 3);
+        expect(receivedEvents[0].callId, 'call-A');
+        expect(receivedEvents[0].sequence, 8);
+        expect(receivedEvents[1].callId, 'call-B');
+        expect(receivedEvents[1].sequence, 1);
+        expect(receivedEvents[2].callId, 'call-B');
+        expect(receivedEvents[2].sequence, 2);
+
+        await sub.cancel();
+      },
+    );
+
+    test(
+      'when storage session changes, isBound becomes false and ensureConnectedAndBound rebinds with new session and proof',
+      () async {
+        await client.connect();
+        expect(client.isBound, isTrue);
+        expect(client.boundSessionId, 'session-abc-123');
+
+        // Change session in storage
+        fakeSessionStorage.sessionId = 'new-session-456';
+        fakeSessionStorage.controlProof = 'new-proof-789';
+
+        expect(client.isBound, isFalse);
+
+        fakeHub.invokedMethods.clear();
+        await client.ensureConnectedAndBound();
+
+        expect(client.isBound, isTrue);
+        expect(client.boundSessionId, 'new-session-456');
+
+        final bindCalls = fakeHub.invokedMethods
+            .where((m) => m['method'] == 'BindDeviceSession')
+            .toList();
+        expect(bindCalls, isNotEmpty);
+        expect(bindCalls.last['args'], ['new-session-456', 'new-proof-789']);
+      },
+    );
   });
 }

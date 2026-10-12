@@ -70,6 +70,7 @@ class DriverCallingState {
     String? lastClientRequestId,
     int? durationSeconds,
     bool clearError = false,
+    bool clearClientRequestId = false,
   }) {
     return DriverCallingState(
       status: status ?? this.status,
@@ -89,7 +90,9 @@ class DriverCallingState {
       isRevealingPhone: isRevealingPhone ?? this.isRevealingPhone,
       isLoadingDisplay: isLoadingDisplay ?? this.isLoadingDisplay,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
-      lastClientRequestId: lastClientRequestId ?? this.lastClientRequestId,
+      lastClientRequestId: clearClientRequestId
+          ? null
+          : (lastClientRequestId ?? this.lastClientRequestId),
       durationSeconds: durationSeconds ?? this.durationSeconds,
     );
   }
