@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/network/api_results.dart';
+import '../../domain/entities/driver_reassignment_details_entity.dart';
 import '../../domain/entities/reassignment_request_entity.dart';
 import '../../domain/entities/reassignment_result_entity.dart';
 import '../../domain/repo/driver_reassignment_repository.dart';
@@ -34,6 +35,36 @@ class DriverReassignmentRepositoryImpl implements DriverReassignmentRepository {
       );
 
       return dto.toEntity(targetBoxId: cleanBoxId);
+    });
+  }
+
+  @override
+  Future<ApiResult<List<DriverReassignmentDetailsEntity>>> getRequests({
+    String? boxId,
+    int page = 1,
+    int pageSize = 20,
+  }) {
+    return safeApiCall(() async {
+      final dtos = await _remoteDataSource.getRequests(
+        boxId: boxId?.trim().isNotEmpty == true ? boxId!.trim() : null,
+        page: page,
+        pageSize: pageSize.clamp(1, 100),
+      );
+      return dtos.map((dto) => dto.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<ApiResult<DriverReassignmentDetailsEntity>> getRequestDetails(
+    String requestId,
+  ) {
+    return safeApiCall(() async {
+      final cleanId = requestId.trim();
+      if (cleanId.isEmpty) {
+        throw const FormatException('requestId cannot be empty.');
+      }
+      final dto = await _remoteDataSource.getRequestDetails(cleanId);
+      return dto.toEntity();
     });
   }
 }

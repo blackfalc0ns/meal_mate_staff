@@ -37,3 +37,35 @@ class ResetDriverReassignmentStatusEvent extends DriverReassignmentEvent {
   @override
   int get hashCode => runtimeType.hashCode;
 }
+
+class LoadDriverReassignmentRequestEvent extends DriverReassignmentEvent {
+  const LoadDriverReassignmentRequestEvent({required this.boxId});
+
+  final String boxId;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LoadDriverReassignmentRequestEvent &&
+          runtimeType == other.runtimeType &&
+          boxId == other.boxId;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, boxId);
+}
+
+class RefreshDriverReassignmentRequestEvent extends DriverReassignmentEvent {
+  const RefreshDriverReassignmentRequestEvent({required this.requestId});
+
+  final String requestId;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RefreshDriverReassignmentRequestEvent &&
+          runtimeType == other.runtimeType &&
+          requestId == other.requestId;
+
+  @override
+  int get hashCode => Object.hash(runtimeType, requestId);
+}

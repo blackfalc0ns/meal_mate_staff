@@ -3466,6 +3466,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportIssueReasonRefusedDelivery => 'رفض الاستلام';
 
   @override
+  String get reportIssueReasonRoadIssue => 'مشكلة في الطريق';
+
+  @override
+  String get reportIssueReasonVehicleBreakdown => 'عطل في المركبة';
+
+  @override
+  String get reportIssueReasonTrafficAccident => 'حادث مروري';
+
+  @override
+  String get reportIssueReasonSevereWeather => 'ظروف جوية سيئة';
+
+  @override
+  String get reportIssueReasonOther => 'أخرى';
+
+  @override
   String get reportIssueNotesTitle => 'تفاصيل إضافية (اختياري)';
 
   @override
@@ -3486,6 +3501,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reportIssuePhotosLimitNote => 'يمكنك إضافة حتى 4 صور';
+
+  @override
+  String get reportIssuePhotoUploading => 'جاري رفع الصورة...';
+
+  @override
+  String get reportIssuePhotoUploadFailed => 'فشل الرفع، اضغط لإعادة المحاولة';
+
+  @override
+  String get reportIssuePhotoRetry => 'إعادة المحاولة';
+
+  @override
+  String get reportIssuePhotoUploadWait => 'يرجى الانتظار حتى يكتمل رفع الصور';
+
+  @override
+  String get reportIssuePhotoNotFound =>
+      'مفتاح الصورة غير معتمد، يرجى إعادة رفع الصورة';
 
   @override
   String get reportIssueSendToSupervisor => 'إرسال للمشرف';

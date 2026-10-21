@@ -1,7 +1,9 @@
+import '../../domain/entities/driver_reassignment_details_entity.dart';
 import '../../domain/entities/reassignment_reason.dart';
 import '../../domain/entities/reassignment_request_entity.dart';
 import '../../domain/entities/reassignment_result_entity.dart';
 import '../models/request/driver_reassignment_request_dto.dart';
+import '../models/response/driver_reassignment_request_details_dto.dart';
 import '../models/response/driver_reassignment_response_dto.dart';
 
 extension ReassignmentReasonMapper on ReassignmentReason {
@@ -86,6 +88,41 @@ extension DriverReassignmentResponseDtoMapper on DriverReassignmentResponseDto {
       status: cleanStatus,
       message: message?.trim(),
       requestedAtUtc: parsedDate,
+    );
+  }
+}
+
+extension DriverReassignmentDetailsDtoMapper
+    on DriverReassignmentRequestDetailsDto {
+  DriverReassignmentDetailsEntity toEntity() {
+    DateTime? parsedRequestedAt;
+    if (requestedAtUtc != null && requestedAtUtc!.trim().isNotEmpty) {
+      parsedRequestedAt = DateTime.tryParse(requestedAtUtc!.trim())?.toUtc();
+    }
+    DateTime? parsedDecidedAt;
+    if (decidedAtUtc != null && decidedAtUtc!.trim().isNotEmpty) {
+      parsedDecidedAt = DateTime.tryParse(decidedAtUtc!.trim())?.toUtc();
+    }
+
+    return DriverReassignmentDetailsEntity(
+      requestId: requestId ?? '',
+      boxId: boxId,
+      boxCode: boxCode,
+      status: status ?? 'ReassignmentRequested',
+      reason: reason,
+      notes: notes,
+      requestedAtUtc: parsedRequestedAt,
+      decision: decision,
+      decisionNotes: decisionNotes,
+      decidedByUserId: decidedByUserId,
+      decidedAtUtc: parsedDecidedAt,
+      handoverId: handoverId,
+      handoverStatus: handoverStatus,
+      replacementDriverId: replacementDriverId,
+      replacementTripId: replacementTripId,
+      latitude: latitude,
+      longitude: longitude,
+      message: message,
     );
   }
 }

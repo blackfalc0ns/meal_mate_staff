@@ -1,5 +1,5 @@
 abstract class NetworkConstants {
-  static const String baseUrl = 'https://maelmate.runasp.net';
+  static const String baseUrl = 'https://api.trymealmate.com';
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer';
   static const String xVoiceDeviceSession = 'X-Voice-Device-Session';
@@ -147,6 +147,51 @@ abstract class EndPoints {
 
   static const String driverRequestReassignment =
       '/api/v1/driver/orders/{boxId}/request-reassignment';
+  static const String driverReportIssue =
+      '/api/v1/driver/orders/{boxId}/report-issue';
+  static const String driverReportDelay =
+      '/api/v1/driver/orders/{boxId}/report-delay';
+
+  // Driver reassignment requests
+  static const String driverReassignmentRequests =
+      '/api/v1/driver/reassignment-requests';
+  static const String driverReassignmentRequestById =
+      '/api/v1/driver/reassignment-requests/{requestId}';
+
+  // Dispatcher reassignment requests & decisions
+  static const String dispatcherReassignmentRequestById =
+      '/api/v1/dispatcher/reassignment-requests/{requestId}';
+  static const String dispatcherAcceptReassignment =
+      '/api/v1/dispatcher/reassignment-requests/{requestId}/accept';
+  static const String dispatcherRejectReassignment =
+      '/api/v1/dispatcher/reassignment-requests/{requestId}/reject';
+
+  // Dispatcher support handovers
+  static const String dispatcherAssignHandover =
+      '/api/v1/dispatcher/support-handovers/issues/{issueId}/assign';
+  static const String dispatcherSupportHandovers =
+      '/api/v1/dispatcher/support-handovers';
+  static const String dispatcherSupportHandoverById =
+      '/api/v1/dispatcher/support-handovers/{handoverId}';
+  static const String dispatcherCancelSupportHandover =
+      '/api/v1/dispatcher/support-handovers/{handoverId}/cancel';
+  static const String dispatcherHandoverReturnToKitchen =
+      '/api/v1/dispatcher/support-handovers/{handoverId}/boxes/{tripStopId}/follow-up/return-to-kitchen';
+
+  // Driver support handovers
+  static const String driverSupportHandovers =
+      '/api/v1/driver/support-handovers';
+  static const String driverSupportHandoverById =
+      '/api/v1/driver/support-handovers/{handoverId}';
+  static const String driverSupportHandoverArrival =
+      '/api/v1/driver/support-handovers/{handoverId}/arrival';
+  static const String driverSupportHandoverScan =
+      '/api/v1/driver/support-handovers/{handoverId}/boxes/scan';
+  static const String driverSupportHandoverComplete =
+      '/api/v1/driver/support-handovers/{handoverId}/complete';
+  static const String driverCancelSupportHandover =
+      '/api/v1/driver/support-handovers/{handoverId}/cancel';
+
 
   // Voice Calls V2 endpoints
   static const String voiceCallsV2Register =

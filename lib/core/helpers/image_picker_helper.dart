@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../features/register/presentation/widgets/register_source_sheet.dart';
+import '../widget/app_bottom_sheet.dart';
 
 /// Reusable helper for image picking operations across the app.
 class ImagePickerHelper {
@@ -15,13 +16,14 @@ class ImagePickerHelper {
     BuildContext context, {
     ImagePicker? picker,
     Widget? sourceSheet,
+    String? title,
     double? maxWidth = 1024,
     double? maxHeight = 1024,
     int? imageQuality = 70,
   }) async {
-    final source = await showModalBottomSheet<ImageSource>(
+    final source = await AppBottomSheet.show<ImageSource>(
       context: context,
-      builder: (_) => sourceSheet ?? const RegisterSourceSheet(),
+      builder: (_) => sourceSheet ?? RegisterSourceSheet(title: title),
     );
 
     if (source == null || !context.mounted) {

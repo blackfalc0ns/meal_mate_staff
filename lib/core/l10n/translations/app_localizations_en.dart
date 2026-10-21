@@ -3482,6 +3482,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportIssueReasonRefusedDelivery => 'Delivery refused';
 
   @override
+  String get reportIssueReasonRoadIssue => 'Road issue';
+
+  @override
+  String get reportIssueReasonVehicleBreakdown => 'Vehicle breakdown';
+
+  @override
+  String get reportIssueReasonTrafficAccident => 'Traffic accident';
+
+  @override
+  String get reportIssueReasonSevereWeather => 'Severe weather';
+
+  @override
+  String get reportIssueReasonOther => 'Other';
+
+  @override
   String get reportIssueNotesTitle => 'Additional details (optional)';
 
   @override
@@ -3503,6 +3518,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportIssuePhotosLimitNote => 'You can add up to 4 photos';
+
+  @override
+  String get reportIssuePhotoUploading => 'Uploading photo...';
+
+  @override
+  String get reportIssuePhotoUploadFailed => 'Upload failed, tap to retry';
+
+  @override
+  String get reportIssuePhotoRetry => 'Retry';
+
+  @override
+  String get reportIssuePhotoUploadWait =>
+      'Please wait until photos finish uploading';
+
+  @override
+  String get reportIssuePhotoNotFound =>
+      'Photo key is not recognized, please re-upload';
 
   @override
   String get reportIssueSendToSupervisor => 'Send to Supervisor';

@@ -21,19 +21,33 @@ class DeliveryIssueReasonTile extends StatelessWidget {
   String _getReasonTitle(BuildContext context) {
     final locale = context.localization;
     return switch (reason) {
-      DeliveryIssueReason.customerNoAnswer =>
+      DeliveryIssueReason.customerNoAnswer ||
+      DeliveryIssueReason.customerUnavailable =>
         locale.reportIssueReasonCustomerNoAnswer,
-      DeliveryIssueReason.addressUnclear =>
+      DeliveryIssueReason.addressUnclear ||
+      DeliveryIssueReason.addressIssue =>
         locale.reportIssueReasonAddressUnclear,
       DeliveryIssueReason.severeDelay => locale.reportIssueReasonSevereDelay,
-      DeliveryIssueReason.boxDamaged => locale.reportIssueReasonBoxDamaged,
-      DeliveryIssueReason.refusedDelivery =>
+      DeliveryIssueReason.boxDamaged ||
+      DeliveryIssueReason.damagedBox =>
+        locale.reportIssueReasonBoxDamaged,
+      DeliveryIssueReason.refusedDelivery ||
+      DeliveryIssueReason.customerRefusal =>
         locale.reportIssueReasonRefusedDelivery,
+      DeliveryIssueReason.roadIssue => locale.reportIssueReasonRoadIssue,
+      DeliveryIssueReason.vehicleBreakdown =>
+        locale.reportIssueReasonVehicleBreakdown,
+      DeliveryIssueReason.trafficAccident =>
+        locale.reportIssueReasonTrafficAccident,
+      DeliveryIssueReason.severeWeather =>
+        locale.reportIssueReasonSevereWeather,
+      DeliveryIssueReason.other => locale.reportIssueReasonOther,
     };
   }
 
   Widget _buildReasonIcon(ColorScheme color) {
-    if (reason == DeliveryIssueReason.refusedDelivery) {
+    if (reason == DeliveryIssueReason.refusedDelivery ||
+        reason == DeliveryIssueReason.customerRefusal) {
       return Container(
         width: 22,
         height: 22,
@@ -58,11 +72,24 @@ class DeliveryIssueReasonTile extends StatelessWidget {
     }
 
     final iconData = switch (reason) {
-      DeliveryIssueReason.customerNoAnswer => Icons.phone_disabled_rounded,
-      DeliveryIssueReason.addressUnclear => Icons.location_on_rounded,
+      DeliveryIssueReason.customerNoAnswer ||
+      DeliveryIssueReason.customerUnavailable =>
+        Icons.phone_disabled_rounded,
+      DeliveryIssueReason.addressUnclear ||
+      DeliveryIssueReason.addressIssue =>
+        Icons.location_on_rounded,
       DeliveryIssueReason.severeDelay => Icons.access_time_filled_rounded,
-      DeliveryIssueReason.boxDamaged => Icons.inventory_2_rounded,
-      DeliveryIssueReason.refusedDelivery => Icons.front_hand_rounded,
+      DeliveryIssueReason.boxDamaged ||
+      DeliveryIssueReason.damagedBox =>
+        Icons.inventory_2_rounded,
+      DeliveryIssueReason.refusedDelivery ||
+      DeliveryIssueReason.customerRefusal =>
+        Icons.front_hand_rounded,
+      DeliveryIssueReason.roadIssue => Icons.alt_route_rounded,
+      DeliveryIssueReason.vehicleBreakdown => Icons.car_repair_rounded,
+      DeliveryIssueReason.trafficAccident => Icons.car_crash_rounded,
+      DeliveryIssueReason.severeWeather => Icons.thunderstorm_rounded,
+      DeliveryIssueReason.other => Icons.help_outline_rounded,
     };
 
     return Icon(

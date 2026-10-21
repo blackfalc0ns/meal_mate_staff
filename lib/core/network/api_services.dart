@@ -103,6 +103,17 @@ import '../../features/driver/active_delivery/data/models/response/driver_delive
 import '../../features/driver/active_delivery/data/models/response/driver_delivery_proof_upload_response_dto.dart';
 import '../../features/driver/delivery_issues/data/models/request/driver_reassignment_request_dto.dart';
 import '../../features/driver/delivery_issues/data/models/response/driver_reassignment_response_dto.dart';
+import '../../features/driver/delivery_issues/data/models/request/driver_report_issue_request_dto.dart';
+import '../../features/driver/delivery_issues/data/models/request/driver_report_delay_request_dto.dart';
+import '../../features/driver/delivery_issues/data/models/response/driver_reassignment_request_details_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/dispatcher_reassignment_decision_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/dispatcher_assign_handover_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/handover_return_to_kitchen_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/response/dispatcher_support_handovers_paged_response_dto.dart';
+import '../../features/driver/support_handovers/data/models/response/support_handover_response_dto.dart';
+import '../../features/driver/support_handovers/data/models/request/driver_handover_arrival_request_dto.dart';
+import '../../features/driver/support_handovers/data/models/request/driver_handover_scan_request_dto.dart';
+import '../../features/driver/support_handovers/data/models/request/support_handover_cancel_request_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -491,6 +502,119 @@ abstract class ApiServices {
     @Path('boxId') String boxId,
     @Body() DriverReassignmentRequestDto request,
   );
+
+  @POST(EndPoints.driverReportIssue)
+  Future<String> reportDriverIssue(
+    @Path('boxId') String boxId,
+    @Body() DriverReportIssueRequestDto request,
+  );
+
+  @POST(EndPoints.driverReportDelay)
+  Future<bool> reportDriverDelay(
+    @Path('boxId') String boxId,
+    @Body() DriverReportDelayRequestDto request,
+  );
+
+  @MultiPart()
+  @POST(EndPoints.driverDeliveryProofUpload)
+  Future<DriverDeliveryProofUploadResponseDto> uploadDriverIssueEvidence(
+    @Part(name: 'file') File file,
+  );
+
+  @GET(EndPoints.driverReassignmentRequests)
+  Future<List<DriverReassignmentRequestDetailsDto>> getDriverReassignmentRequests({
+    @Query('boxId') String? boxId,
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 20,
+  });
+
+  @GET(EndPoints.driverReassignmentRequestById)
+  Future<DriverReassignmentRequestDetailsDto> getDriverReassignmentRequestById(
+    @Path('requestId') String requestId,
+  );
+
+  @GET(EndPoints.dispatcherReassignmentRequestById)
+  Future<DriverReassignmentRequestDetailsDto> getDispatcherReassignmentRequestById(
+    @Path('requestId') String requestId,
+  );
+
+  @POST(EndPoints.dispatcherAcceptReassignment)
+  Future<DriverReassignmentRequestDetailsDto> acceptDispatcherReassignment(
+    @Path('requestId') String requestId,
+    @Body() DispatcherReassignmentDecisionRequestDto request,
+  );
+
+  @POST(EndPoints.dispatcherRejectReassignment)
+  Future<DriverReassignmentRequestDetailsDto> rejectDispatcherReassignment(
+    @Path('requestId') String requestId,
+    @Body() DispatcherReassignmentDecisionRequestDto request,
+  );
+
+  @POST(EndPoints.dispatcherAssignHandover)
+  Future<SupportHandoverResponseDto> assignDispatcherSupportHandover(
+    @Path('issueId') String issueId,
+    @Body() DispatcherAssignHandoverRequestDto request,
+  );
+
+  @GET(EndPoints.dispatcherSupportHandovers)
+  Future<DispatcherSupportHandoversPagedResponseDto> getDispatcherSupportHandovers({
+    @Query('status') String? status,
+    @Query('restaurantId') String? restaurantId,
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 20,
+  });
+
+  @GET(EndPoints.dispatcherSupportHandoverById)
+  Future<SupportHandoverResponseDto> getDispatcherSupportHandoverById(
+    @Path('handoverId') String handoverId,
+  );
+
+  @POST(EndPoints.dispatcherCancelSupportHandover)
+  Future<SupportHandoverResponseDto> cancelDispatcherSupportHandover(
+    @Path('handoverId') String handoverId,
+    @Body() SupportHandoverCancelRequestDto request,
+  );
+
+  @POST(EndPoints.dispatcherHandoverReturnToKitchen)
+  Future<SupportHandoverResponseDto> returnHandoverBoxToKitchen(
+    @Path('handoverId') String handoverId,
+    @Path('tripStopId') String tripStopId,
+    @Body() HandoverReturnToKitchenRequestDto request,
+  );
+
+  @GET(EndPoints.driverSupportHandovers)
+  Future<List<SupportHandoverResponseDto>> getDriverSupportHandovers({
+    @Query('status') String status = 'active',
+  });
+
+  @GET(EndPoints.driverSupportHandoverById)
+  Future<SupportHandoverResponseDto> getDriverSupportHandoverById(
+    @Path('handoverId') String handoverId,
+  );
+
+  @POST(EndPoints.driverSupportHandoverArrival)
+  Future<SupportHandoverResponseDto> reportDriverHandoverArrival(
+    @Path('handoverId') String handoverId,
+    @Body() DriverHandoverArrivalRequestDto request,
+  );
+
+  @POST(EndPoints.driverSupportHandoverScan)
+  Future<SupportHandoverResponseDto> scanDriverHandoverBox(
+    @Path('handoverId') String handoverId,
+    @Body() DriverHandoverScanRequestDto request,
+  );
+
+  @POST(EndPoints.driverSupportHandoverComplete)
+  Future<SupportHandoverResponseDto> completeDriverSupportHandover(
+    @Path('handoverId') String handoverId,
+  );
+
+  @POST(EndPoints.driverCancelSupportHandover)
+  Future<SupportHandoverResponseDto> cancelDriverSupportHandover(
+    @Path('handoverId') String handoverId,
+    @Body() SupportHandoverCancelRequestDto request,
+  );
+
 
   // Voice Calls V2 endpoints
   @POST(EndPoints.voiceCallsV2Register)

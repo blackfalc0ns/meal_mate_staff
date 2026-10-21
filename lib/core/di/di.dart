@@ -73,7 +73,18 @@ import '../../features/driver/delivery_issues/data/data_source/driver_reassignme
 import '../../features/driver/delivery_issues/data/repo/driver_reassignment_repository_impl.dart';
 import '../../features/driver/delivery_issues/domain/repo/driver_reassignment_repository.dart';
 import '../../features/driver/delivery_issues/domain/usecase/submit_driver_reassignment_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/get_driver_reassignment_requests_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/get_driver_reassignment_request_details_usecase.dart';
+import '../../features/driver/delivery_issues/domain/entities/delivery_issue_entity.dart';
 import '../../features/driver/delivery_issues/presentation/manager/driver_reassignment_view_model.dart';
+import '../../features/driver/delivery_issues/data/data_source/driver_issue_remote_data_source.dart';
+import '../../features/driver/delivery_issues/data/data_source/driver_issue_remote_data_source_impl.dart';
+import '../../features/driver/delivery_issues/data/repo/driver_issue_repository_impl.dart';
+import '../../features/driver/delivery_issues/domain/repo/driver_issue_repository.dart';
+import '../../features/driver/delivery_issues/domain/usecase/report_driver_issue_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/report_driver_delay_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/upload_driver_issue_evidence_usecase.dart';
+import '../../features/driver/delivery_issues/presentation/manager/driver_issue_view_model.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source_impl.dart';
 import '../../features/driver/driver_profile/data/repo/driver_profile_repository_impl.dart';
@@ -1016,11 +1027,51 @@ Future<void> configureDependencies() async {
     () =>
         SubmitDriverReassignmentUseCase(getIt<DriverReassignmentRepository>()),
   );
+  getIt.registerFactory<GetDriverReassignmentRequestsUseCase>(
+    () => GetDriverReassignmentRequestsUseCase(
+      getIt<DriverReassignmentRepository>(),
+    ),
+  );
+  getIt.registerFactory<GetDriverReassignmentRequestDetailsUseCase>(
+    () => GetDriverReassignmentRequestDetailsUseCase(
+      getIt<DriverReassignmentRepository>(),
+    ),
+  );
   getIt.registerFactory<DriverReassignmentViewModel>(
     () => DriverReassignmentViewModel(
       submitUseCase: getIt<SubmitDriverReassignmentUseCase>(),
+      getRequestsUseCase: getIt<GetDriverReassignmentRequestsUseCase>(),
+      getRequestDetailsUseCase:
+          getIt<GetDriverReassignmentRequestDetailsUseCase>(),
     ),
   );
+
+  // Driver Issue & Delay feature dependencies
+  getIt.registerLazySingleton<DriverIssueRemoteDataSource>(
+    () => DriverIssueRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverIssueRepository>(
+    () => DriverIssueRepositoryImpl(getIt<DriverIssueRemoteDataSource>()),
+  );
+  getIt.registerFactory<ReportDriverIssueUseCase>(
+    () => ReportDriverIssueUseCase(getIt<DriverIssueRepository>()),
+  );
+  getIt.registerFactory<ReportDriverDelayUseCase>(
+    () => ReportDriverDelayUseCase(getIt<DriverIssueRepository>()),
+  );
+  getIt.registerFactory<UploadDriverIssueEvidenceUseCase>(
+    () => UploadDriverIssueEvidenceUseCase(getIt<DriverIssueRepository>()),
+  );
+  getIt.registerFactoryParam<DriverIssueViewModel, DeliveryIssueEntity?, void>(
+    (initialIssue, _) => DriverIssueViewModel(
+      reportDriverIssueUseCase: getIt<ReportDriverIssueUseCase>(),
+      reportDriverDelayUseCase: getIt<ReportDriverDelayUseCase>(),
+      uploadDriverIssueEvidenceUseCase:
+          getIt<UploadDriverIssueEvidenceUseCase>(),
+      initialIssue: initialIssue,
+    ),
+  );
+
 
   // Driver Live Location & Realtime Streaming
   getIt.registerLazySingleton<DriverLocationService>(
