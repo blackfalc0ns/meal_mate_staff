@@ -1095,6 +1095,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationsMarkAllAsRead => 'تحديد الكل كمقروءة';
 
   @override
+  String get notificationsEmpty => 'لا توجد إشعارات حالياً';
+
+  @override
+  String get notificationsEmptyDesc =>
+      'ستظهر هنا أحدث التنبيهات والإشعارات التشغيلية فور وصولها';
+
+  @override
+  String get notificationsLoadFailed => 'تعذر تحميل الإشعارات';
+
+  @override
+  String get notificationsRetry => 'إعادة المحاولة';
+
+  @override
   String get homeStoreName => 'مطعم MealMate الكويت';
 
   @override

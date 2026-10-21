@@ -4,9 +4,12 @@ import 'dart:developer' as developer;
 
 import 'package:signalr_netcore/signalr_client.dart';
 
+import '../../../../../core/di/di.dart';
 import '../../../../../core/network/network_constants.dart';
 import '../../../../../core/services/auth_refresh_service.dart';
 import '../../../../../core/services/token_service.dart';
+import '../../../dispatcher_notifications/presentation/manager/dispatcher_notifications_event.dart';
+import '../../../dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
 import '../../domain/entities/dispatcher_map_connection_status.dart';
 import '../models/realtime/dispatcher_box_assigned_event_dto.dart';
 import '../models/realtime/dispatcher_driver_issue_event_dto.dart';
@@ -185,6 +188,7 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
         '✅ [LIFECYCLE] onreconnected successfully! connectionId: $connectionId',
       );
       _emitStatus(DispatcherMapConnectionStatus.connected);
+      _tryRefreshNotifications();
     });
   }
 
@@ -250,6 +254,13 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
       } catch (e) {
         _log('⚠️ [REALTIME] Error parsing driver-issue-updated: $e', error: e);
       }
+      _tryRefreshNotifications();
+    });
+
+    hub.on('driver-support-handover-updated', (List<Object?>? args) {
+      if (_isDisposed || args == null || args.isEmpty) return;
+      _log('🤝 [REALTIME] driver-support-handover-updated received');
+      _tryRefreshNotifications();
     });
 
     hub.on('box-assigned', (List<Object?>? args) {
@@ -275,8 +286,19 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
     hub.off('driver-location-updated');
     hub.off('driver-status-updated');
     hub.off('driver-issue-updated');
+    hub.off('driver-support-handover-updated');
     hub.off('box-assigned');
     _handlersRegistered = false;
+  }
+
+  void _tryRefreshNotifications() {
+    try {
+      if (getIt.isRegistered<DispatcherNotificationsViewModel>()) {
+        getIt<DispatcherNotificationsViewModel>().add(
+          const LoadDispatcherNotificationsEvent(isRefresh: true),
+        );
+      }
+    } catch (_) {}
   }
 
   Map<String, dynamic> _toMap(dynamic raw) {

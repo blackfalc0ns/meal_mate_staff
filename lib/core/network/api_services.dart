@@ -31,6 +31,7 @@ import '../../features/auth/data/models/response/verify_first_time_otp_response_
 import '../../features/device_token/data/models/request/driver_device_token_request_dto.dart';
 import '../../features/device_token/data/models/request/restaurant_device_token_request_dto.dart';
 import '../../features/device_token/data/models/response/driver_device_token_response_dto.dart';
+import '../../features/dispatcher/dispatcher_notifications/data/models/response/delivery_manager_notification_response_dto.dart';
 import '../../features/driver/calling/data/models/request/delivery_contact_hold_request_dto.dart';
 import '../../features/driver/calling/data/models/request/delivery_contact_resume_request_dto.dart';
 import '../../features/driver/calling/data/models/request/delivery_contact_reveal_phone_request_dto.dart';
@@ -264,6 +265,25 @@ abstract class ApiServices {
 
   @DELETE(EndPoints.restaurantDeviceTokens)
   Future<void> deactivateRestaurantDeviceTokens(@Query('token') String token);
+
+  @GET(EndPoints.deliveryManagerNotifications)
+  Future<List<DeliveryManagerNotificationResponseDto>>
+  getDeliveryManagerNotifications();
+
+  @PUT(EndPoints.deliveryManagerNotificationRead)
+  Future<void> markDeliveryManagerNotificationAsRead(
+    @Path('notificationId') String notificationId,
+  );
+
+  @POST(EndPoints.deliveryManagerDeviceToken)
+  Future<void> registerDeliveryManagerDeviceToken(
+    @Body() RestaurantDeviceTokenRequestDto request,
+  );
+
+  @POST(EndPoints.deliveryManagerDeviceTokenDeactivate)
+  Future<void> deactivateDeliveryManagerDeviceToken(
+    @Body() Map<String, dynamic> body,
+  );
 
   @GET(EndPoints.dispatcherDashboardOverview)
   Future<DispatcherDashboardOverviewResponseDto>

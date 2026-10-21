@@ -255,5 +255,68 @@ void main() {
         expect(unknownEvent, isA<UnsupportedNotificationPayload>());
       },
     );
+
+    test('parses documented driver-support-issue push notification payload', () {
+      final rawData = {
+        'eventId': '33333333-3333-4333-8333-333333333333',
+        'notificationId': '11111111-1111-4111-8111-111111111111',
+        'restaurantId': '44444444-4444-4444-8444-444444444444',
+        'eventKey': 'driver-support-issue',
+        'type': 'driver-support-issue',
+        'section': 'support',
+        'subjectId': '22222222-2222-4222-8222-222222222222',
+        'deepLink':
+            '/dispatcher/support/issues/22222222-2222-4222-8222-222222222222',
+        'action':
+            '/dispatcher/support/issues/22222222-2222-4222-8222-222222222222',
+        'titleAr': 'تحديث بلاغ دعم السائق',
+        'titleEn': 'Driver support issue update',
+        'bodyAr': 'تم تسجيل بلاغ دعم جديد للسائق.',
+        'bodyEn': 'A driver support issue was recorded.',
+      };
+
+      final payload = parser.parse(rawData);
+
+      expect(payload, isA<DispatcherDriverSupportIssuePayload>());
+      final issuePayload = payload as DispatcherDriverSupportIssuePayload;
+      expect(issuePayload.issueId, '22222222-2222-4222-8222-222222222222');
+      expect(
+        issuePayload.notificationId,
+        '11111111-1111-4111-8111-111111111111',
+      );
+      expect(
+        issuePayload.deepLink,
+        '/dispatcher/support/issues/22222222-2222-4222-8222-222222222222',
+      );
+    });
+
+    test('parses driver-support-issue extracting issueId from deepLink', () {
+      final rawData = {
+        'eventKey': 'driver-support-issue',
+        'deepLink': '/dispatcher/support/issues/issue-from-link',
+      };
+
+      final payload = parser.parse(rawData);
+
+      expect(payload, isA<DispatcherDriverSupportIssuePayload>());
+      final issuePayload = payload as DispatcherDriverSupportIssuePayload;
+      expect(issuePayload.issueId, 'issue-from-link');
+    });
+
+    test('parses driver-support-handover correctly', () {
+      final rawData = {
+        'eventKey': 'driver-support-handover',
+        'subjectId': 'handover-999',
+        'notificationId': 'nid-handover',
+        'deepLink': '/dispatcher/support-handovers/handover-999',
+      };
+
+      final payload = parser.parse(rawData);
+
+      expect(payload, isA<DispatcherDriverSupportHandoverPayload>());
+      final handoverPayload = payload as DispatcherDriverSupportHandoverPayload;
+      expect(handoverPayload.handoverId, 'handover-999');
+      expect(handoverPayload.notificationId, 'nid-handover');
+    });
   });
 }

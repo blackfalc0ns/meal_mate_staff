@@ -2132,6 +2132,30 @@ abstract class AppLocalizations {
   /// **'Mark all as read'**
   String get notificationsMarkAllAsRead;
 
+  /// No description provided for @notificationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get notificationsEmpty;
+
+  /// No description provided for @notificationsEmptyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent operational alerts and updates will appear here when they arrive'**
+  String get notificationsEmptyDesc;
+
+  /// No description provided for @notificationsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load notifications'**
+  String get notificationsLoadFailed;
+
+  /// No description provided for @notificationsRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get notificationsRetry;
+
   /// No description provided for @homeStoreName.
   ///
   /// In en, this message translates to:

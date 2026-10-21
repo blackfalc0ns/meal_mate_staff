@@ -11,8 +11,11 @@ import '../../features/device_token/domain/usecase/deactivate_driver_device_toke
 import '../../features/device_token/domain/usecase/deactivate_restaurant_device_token_usecase.dart';
 import '../../features/device_token/domain/usecase/upsert_driver_device_token_usecase.dart';
 import '../../features/device_token/domain/usecase/upsert_restaurant_device_token_usecase.dart';
+import '../di/di.dart';
 import '../network/api_results.dart';
 import '../network/failures.dart';
+import '../../features/dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_event.dart';
+import '../../features/dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
 import 'device_id_service.dart';
 import 'local_notification_service.dart';
 import 'notification_payload_parser.dart';
@@ -205,6 +208,8 @@ class PushNotificationCoordinator {
   }
 
   Future<void> _handleForegroundMessage(PushNotificationMessage message) async {
+    _tryRefreshDispatcherNotifications();
+
     final title = message.title ?? 'MealMate';
     final body = message.body ?? '';
     final encodedData = jsonEncode(message.data);
@@ -218,6 +223,7 @@ class PushNotificationCoordinator {
   }
 
   Future<void> _handleMessageTap(PushNotificationMessage message) async {
+    _tryRefreshDispatcherNotifications();
     final payload = parser.parse(message.data);
     await router.route(payload, messageId: message.messageId);
   }
@@ -227,8 +233,19 @@ class PushNotificationCoordinator {
     try {
       final decoded = jsonDecode(rawJson);
       if (decoded is Map<String, dynamic>) {
+        _tryRefreshDispatcherNotifications();
         final payload = parser.parse(decoded);
         await router.route(payload);
+      }
+    } catch (_) {}
+  }
+
+  void _tryRefreshDispatcherNotifications() {
+    try {
+      if (getIt.isRegistered<DispatcherNotificationsViewModel>()) {
+        getIt<DispatcherNotificationsViewModel>().add(
+          const LoadDispatcherNotificationsEvent(isRefresh: true),
+        );
       }
     } catch (_) {}
   }

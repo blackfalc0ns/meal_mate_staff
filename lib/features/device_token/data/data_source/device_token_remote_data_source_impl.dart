@@ -26,9 +26,9 @@ class DeviceTokenRemoteDataSourceImpl implements DeviceTokenRemoteDataSource {
   Future<void> upsertRestaurantToken(
     RestaurantDeviceTokenRequestDto request,
   ) =>
-      _apiServices.upsertRestaurantDeviceTokens(request);
+      _apiServices.registerDeliveryManagerDeviceToken(request);
 
   @override
   Future<void> deactivateRestaurantToken(String token) =>
-      _apiServices.deactivateRestaurantDeviceTokens(token);
+      _apiServices.deactivateDeliveryManagerDeviceToken({'token': token});
 }

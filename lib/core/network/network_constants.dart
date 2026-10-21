@@ -67,6 +67,14 @@ abstract class EndPoints {
   static const String driverDeviceToken = '/api/v1/driver/device-token';
   static const String restaurantDeviceTokens =
       '/api/v1/restaurants/device-tokens';
+  static const String deliveryManagerNotifications =
+      '/api/v1/delivery-manager/notifications';
+  static const String deliveryManagerNotificationRead =
+      '/api/v1/delivery-manager/notifications/{notificationId}/read';
+  static const String deliveryManagerDeviceToken =
+      '/api/v1/delivery-manager/device-token';
+  static const String deliveryManagerDeviceTokenDeactivate =
+      '/api/v1/delivery-manager/device-token/deactivate';
 
   static const String dispatcherDashboardOverview =
       '/api/v1/dispatcher/dashboard/overview';

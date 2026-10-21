@@ -1096,6 +1096,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsMarkAllAsRead => 'Mark all as read';
 
   @override
+  String get notificationsEmpty => 'No notifications yet';
+
+  @override
+  String get notificationsEmptyDesc =>
+      'Recent operational alerts and updates will appear here when they arrive';
+
+  @override
+  String get notificationsLoadFailed => 'Failed to load notifications';
+
+  @override
+  String get notificationsRetry => 'Retry';
+
+  @override
   String get homeStoreName => 'MealMate Restaurant Kuwait';
 
   @override

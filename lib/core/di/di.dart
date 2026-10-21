@@ -245,6 +245,14 @@ import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/relea
 import '../../features/dispatcher/dispatcher_driver_details/presentation/manager/driver_details_view_model.dart';
 import '../../features/dispatcher/dispatcher_driver_details/presentation/services/driver_contact_launcher.dart';
 
+import '../../features/dispatcher/dispatcher_notifications/data/data_source/dispatcher_notifications_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_notifications/data/data_source/dispatcher_notifications_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_notifications/data/repo/dispatcher_notifications_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_notifications/domain/repo/dispatcher_notifications_repository.dart';
+import '../../features/dispatcher/dispatcher_notifications/domain/usecase/get_dispatcher_notifications_usecase.dart';
+import '../../features/dispatcher/dispatcher_notifications/domain/usecase/mark_dispatcher_notification_read_usecase.dart';
+import '../../features/dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
+
 import '../services/voice_device_session_storage.dart';
 import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source.dart';
 import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source_impl.dart';
@@ -838,6 +846,32 @@ Future<void> configureDependencies() async {
       getIt<ObserveDriverDetailsUpdatesUseCase>(),
       getIt<AcquireDriverDetailsRealtimeUseCase>(),
       getIt<ReleaseDriverDetailsRealtimeUseCase>(),
+    ),
+  );
+
+  // Dispatcher Notifications
+  getIt.registerLazySingleton<DispatcherNotificationsRemoteDataSource>(
+    () => DispatcherNotificationsRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DispatcherNotificationsRepository>(
+    () => DispatcherNotificationsRepositoryImpl(
+      getIt<DispatcherNotificationsRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDispatcherNotificationsUseCase>(
+    () => GetDispatcherNotificationsUseCase(
+      getIt<DispatcherNotificationsRepository>(),
+    ),
+  );
+  getIt.registerFactory<MarkDispatcherNotificationReadUseCase>(
+    () => MarkDispatcherNotificationReadUseCase(
+      getIt<DispatcherNotificationsRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<DispatcherNotificationsViewModel>(
+    () => DispatcherNotificationsViewModel(
+      getNotificationsUseCase: getIt<GetDispatcherNotificationsUseCase>(),
+      markReadUseCase: getIt<MarkDispatcherNotificationReadUseCase>(),
     ),
   );
 

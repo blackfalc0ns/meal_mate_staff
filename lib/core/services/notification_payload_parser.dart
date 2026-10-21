@@ -163,6 +163,58 @@ class NotificationPayloadParser {
         }
         return DispatcherBatchReadyPayload(batchId: id);
 
+      case 'driver-support-issue':
+      case 'driver_support_issue':
+      case 'driver-support-issue-resolved':
+      case 'driver_support_issue_resolved':
+        final issueId = _extractId(rawData, [
+          'subjectId',
+          'subject_id',
+          'issueId',
+          'issue_id',
+        ]) ?? _extractIssueIdFromLink(rawData);
+        if (issueId == null) {
+          return UnsupportedNotificationPayload(
+            rawData: rawData,
+            reason: 'Missing issueId for $normalizedEvent',
+          );
+        }
+        final notificationId = _extractId(rawData, [
+          'notificationId',
+          'notification_id',
+        ]);
+        final deepLink = _extractString(rawData, ['deepLink', 'action', 'link']);
+        return DispatcherDriverSupportIssuePayload(
+          issueId: issueId,
+          notificationId: notificationId,
+          deepLink: deepLink,
+        );
+
+      case 'driver-support-handover':
+      case 'driver_support_handover':
+        final handoverId = _extractId(rawData, [
+          'subjectId',
+          'subject_id',
+          'handoverId',
+          'handover_id',
+        ]) ?? _extractHandoverIdFromLink(rawData);
+        if (handoverId == null) {
+          return UnsupportedNotificationPayload(
+            rawData: rawData,
+            reason: 'Missing handoverId for $normalizedEvent',
+          );
+        }
+        final notificationId = _extractId(rawData, [
+          'notificationId',
+          'notification_id',
+        ]);
+        final deepLink = _extractString(rawData, ['deepLink', 'action', 'link']);
+        return DispatcherDriverSupportHandoverPayload(
+          handoverId: handoverId,
+          notificationId: notificationId,
+          deepLink: deepLink,
+        );
+
       case 'incoming_call':
       case 'incoming-call':
         return IncomingCallPayload(rawData: rawData);
@@ -176,7 +228,8 @@ class NotificationPayloadParser {
   }
 
   String? _extractEvent(Map<String, dynamic> data) {
-    final candidate = data['event'] ?? data['eventType'] ?? data['type'];
+    final candidate =
+        data['eventKey'] ?? data['event'] ?? data['eventType'] ?? data['type'];
     if (candidate is String && candidate.trim().isNotEmpty) {
       return candidate.trim();
     }
@@ -184,7 +237,10 @@ class NotificationPayloadParser {
     final nested = data['data'];
     if (nested is Map<String, dynamic>) {
       final nestedCandidate =
-          nested['event'] ?? nested['eventType'] ?? nested['type'];
+          nested['eventKey'] ??
+          nested['event'] ??
+          nested['eventType'] ??
+          nested['type'];
       if (nestedCandidate is String && nestedCandidate.trim().isNotEmpty) {
         return nestedCandidate.trim();
       }
@@ -197,6 +253,44 @@ class NotificationPayloadParser {
     }
 
     return null;
+  }
+
+  String? _extractString(Map<String, dynamic> data, List<String> keys) {
+    for (final key in keys) {
+      final value = data[key];
+      if (value != null) {
+        final str = value.toString().trim();
+        if (str.isNotEmpty) return str;
+      }
+    }
+
+    final nested = data['data'];
+    if (nested is Map<String, dynamic>) {
+      for (final key in keys) {
+        final value = nested[key];
+        if (value != null) {
+          final str = value.toString().trim();
+          if (str.isNotEmpty) return str;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  String? _extractIssueIdFromLink(Map<String, dynamic> data) {
+    final link = _extractString(data, ['deepLink', 'action', 'link', 'route']);
+    if (link == null) return null;
+    final match = RegExp(r'/dispatcher/support/issues/([^/?]+)').firstMatch(link);
+    return match?.group(1);
+  }
+
+  String? _extractHandoverIdFromLink(Map<String, dynamic> data) {
+    final link = _extractString(data, ['deepLink', 'action', 'link', 'route']);
+    if (link == null) return null;
+    final match =
+        RegExp(r'/dispatcher/support-handovers/([^/?]+)').firstMatch(link);
+    return match?.group(1);
   }
 
   String? _extractId(Map<String, dynamic> data, List<String> keys) {

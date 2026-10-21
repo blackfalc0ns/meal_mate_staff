@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import '../../config/routing/app_routes.dart';
 import '../../config/routing/arguments/auth_route_arguments.dart';
+import '../../config/routing/arguments/dispatcher_support_route_arguments.dart';
 import '../../features/account_status/domain/account_status_kind.dart';
 import 'app_navigator_service.dart';
 import 'notification_payload.dart';
@@ -138,6 +139,17 @@ class NotificationRouter {
         navigator.pushNamed(AppRoutes.dispatcherOrders);
         return true;
 
+      case DispatcherDriverSupportIssuePayload(:final issueId):
+        navigator.pushNamed(
+          AppRoutes.dispatcherSupportIssueDetails,
+          arguments: DispatcherSupportIssueDetailsRouteArgs(issueId: issueId),
+        );
+        return true;
+
+      case DispatcherDriverSupportHandoverPayload():
+        navigator.pushNamed(AppRoutes.dispatcherNotifications);
+        return true;
+
       case IncomingCallPayload():
       case UnsupportedNotificationPayload():
         return false;
@@ -172,6 +184,10 @@ class NotificationRouter {
       DriverTripAssignedPayload(:final tripId) => 'trip_assigned:$tripId',
       DriverTripKitchenReadyPayload(:final tripId) => 'kitchen_ready:$tripId',
       DispatcherBatchReadyPayload(:final batchId) => 'batch_ready:$batchId',
+      DispatcherDriverSupportIssuePayload(:final issueId, :final notificationId) =>
+        'driver_support_issue:${notificationId ?? issueId}',
+      DispatcherDriverSupportHandoverPayload(:final handoverId, :final notificationId) =>
+        'driver_support_handover:${notificationId ?? handoverId}',
       IncomingCallPayload() => 'incoming_call:${payload.hashCode}',
       UnsupportedNotificationPayload() => 'unsupported:${payload.hashCode}',
     };
