@@ -166,34 +166,39 @@ void main() {
       }
     });
 
-    test('on 401 with no refresh token clears tokens and triggers redirect', () async {
-      bool redirected = false;
-      final testDio = Dio(BaseOptions(baseUrl: NetworkConstants.baseUrl));
-      final interceptor = TokenInterceptor(
-        tokenService,
-        null,
-        () => redirected = true,
-      );
-      testDio.interceptors.add(interceptor);
-      testDio.httpClientAdapter = MockHttpClientAdapter((options) async {
-        return ResponseBody.fromString(
-          '{"error": "Unauthorized"}',
-          401,
-          headers: {
-            Headers.contentTypeHeader: [Headers.jsonContentType],
-          },
+    test(
+      'on 401 with no refresh token clears tokens and triggers redirect',
+      () async {
+        bool redirected = false;
+        final testDio = Dio(BaseOptions(baseUrl: NetworkConstants.baseUrl));
+        final interceptor = TokenInterceptor(
+          tokenService,
+          null,
+          () => redirected = true,
         );
-      });
+        interceptor.attachRefreshService(
+          AuthRefreshService(tokenService: tokenService, dio: testDio),
+        );
+        testDio.interceptors.add(interceptor);
+        testDio.httpClientAdapter = MockHttpClientAdapter((options) async {
+          return ResponseBody.fromString(
+            '{"error": "Unauthorized"}',
+            401,
+            headers: {
+              Headers.contentTypeHeader: [Headers.jsonContentType],
+            },
+          );
+        });
 
-      await tokenService.saveAccessToken('expired_token');
+        await tokenService.saveAccessToken('expired_token');
 
-      try {
-        await testDio.get('/protected');
-      } on DioException catch (_) {}
+        try {
+          await testDio.get('/protected');
+        } on DioException catch (_) {}
 
-      expect(redirected, isTrue);
-      expect(await tokenService.getToken(), isNull);
-    });
+        expect(redirected, isTrue);
+        expect(await tokenService.getToken(), isNull);
+      },
+    );
   });
 }
-

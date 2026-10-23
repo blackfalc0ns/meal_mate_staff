@@ -22,6 +22,7 @@ class TokenInterceptor extends Interceptor {
   AuthRefreshService? _refreshService;
   final void Function()? _onSessionExpired;
   bool _isRedirecting = false;
+  Dio? requestDio;
 
   void attachRefreshService(AuthRefreshService refreshService) {
     _refreshService = refreshService;
@@ -36,10 +37,7 @@ class TokenInterceptor extends Interceptor {
       final nav = AppNavigatorService.navigator;
       if (nav != null) {
         unawaited(
-          nav.pushNamedAndRemoveUntil(
-            AppRoutes.login,
-            (route) => false,
-          ),
+          nav.pushNamedAndRemoveUntil(AppRoutes.login, (route) => false),
         );
       }
     }
@@ -60,7 +58,20 @@ class TokenInterceptor extends Interceptor {
       return;
     }
 
-    final token = await _tokenService.getToken();
+    final token = _refreshService != null && options.extra[isRetryKey] != true
+        ? await _refreshService!.ensureFreshToken()
+        : await _tokenService.getToken();
+    if (token == null &&
+        await _tokenService.getToken() != null &&
+        _refreshService != null) {
+      handler.reject(
+        DioException(
+          requestOptions: options,
+          message: 'Session renewal temporarily unavailable',
+        ),
+      );
+      return;
+    }
     if (token != null && token.isNotEmpty) {
       options.headers[NetworkConstants.authorization] =
           '${NetworkConstants.bearer} $token';
@@ -73,46 +84,61 @@ class TokenInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    final isUnauthorized = err.response?.statusCode == 401;
-    final isRetry = err.requestOptions.extra[isRetryKey] == true;
-    final isRefreshEndpoint = err.requestOptions.path == EndPoints.refresh;
-    final isSkipAuth = err.requestOptions.extra[skipAuthKey] == true;
-
-    if (isUnauthorized &&
-        !isRetry &&
-        !isRefreshEndpoint &&
-        !isSkipAuth) {
-      if (_refreshService != null) {
-        final newToken = await _refreshService!.refreshToken();
-        if (newToken != null && newToken.isNotEmpty) {
-          final requestOptions = err.requestOptions;
-          requestOptions.extra[isRetryKey] = true;
-          requestOptions.headers[NetworkConstants.authorization] =
-              '${NetworkConstants.bearer} $newToken';
-
-          try {
-            final response = await _refreshService!.dio.fetch(requestOptions);
-            handler.resolve(response);
-            return;
-          } on DioException catch (retryError) {
-            if (retryError.response?.statusCode == 401) {
-              await _tokenService.clearTokens();
-              _redirectToLogin();
-            }
-            handler.next(retryError);
-            return;
-          } catch (_) {
-            handler.next(err);
-            return;
-          }
+    final data = err.response?.data;
+    final code = data is Map
+        ? (data['code'] ??
+              (data['extensions'] is Map ? data['extensions']['code'] : null))
+        : null;
+    final requiresRefresh =
+        err.response?.statusCode == 401 ||
+        (err.response?.statusCode == 409 &&
+            code == 'calls.auth_refresh_required' &&
+            err.requestOptions.uri.path.endsWith(
+              EndPoints.voiceCallsV2Initiate,
+            ));
+    final options = err.requestOptions;
+    if (requiresRefresh &&
+        options.extra[isRetryKey] != true &&
+        !options.uri.path.endsWith(EndPoints.refresh) &&
+        options.extra[skipAuthKey] != true &&
+        _refreshService != null) {
+      final authorization = options.headers[NetworkConstants.authorization]
+          ?.toString();
+      final rejected = authorization?.replaceFirst(
+        RegExp(r'^Bearer\s+', caseSensitive: false),
+        '',
+      );
+      final newToken = await _refreshService!.refreshToken(
+        rejectedAccessToken: rejected,
+      );
+      if (newToken != null) {
+        final retry = options.copyWith(
+          headers: {
+            ...options.headers,
+            NetworkConstants.authorization:
+                '${NetworkConstants.bearer} $newToken',
+          },
+          extra: {...options.extra, isRetryKey: true},
+          data: options.data is FormData
+              ? (options.data as FormData).clone()
+              : options.data,
+        );
+        try {
+          final response = await (requestDio ?? _refreshService!.dio)
+              .fetch<dynamic>(retry);
+          handler.resolve(response);
+        } on DioException catch (error) {
+          handler.next(error);
+        } catch (_) {
+          handler.next(err);
         }
+        return;
       }
-
-      await _tokenService.clearTokens();
-      _redirectToLogin();
+      if (_refreshService!.terminalCode != null &&
+          _refreshService!.onSessionRejected == null) {
+        _redirectToLogin();
+      }
     }
-
     handler.next(err);
   }
 }
-

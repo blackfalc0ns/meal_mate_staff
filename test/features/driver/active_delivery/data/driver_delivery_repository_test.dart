@@ -24,8 +24,12 @@ class FakeDriverDeliveryRemoteDataSource
 
   @override
   Future<DriverStartDeliveryResponseDto> startDelivery({
-    required String boxId,
-  }) async => DriverStartDeliveryResponseDto(boxId: boxId, status: 'InTransit');
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
+  }) async =>
+      DriverStartDeliveryResponseDto(tripId: tripId, status: 'InTransit');
 
   @override
   Future<DriverArrivalResponseDto> arriveAtCustomer({

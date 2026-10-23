@@ -85,15 +85,7 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
   String? _builtWithToken;
 
   void _ensureHubBuilt(String token) {
-    if (_hubConnection != null && _builtWithToken == token) return;
-
-    if (_hubConnection != null && _builtWithToken != token) {
-      _removeHandlers();
-      try {
-        _hubConnection?.stop();
-      } catch (_) {}
-      _hubConnection = null;
-    }
+    if (_hubConnection != null) return;
 
     _builtWithToken = token;
 
@@ -102,12 +94,18 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
     } else {
       final uri = Uri.parse(_resolvedHubUrl);
       final queryParams = Map<String, String>.from(uri.queryParameters);
-      queryParams['access_token'] = token;
+      queryParams.remove('access_token');
       final fullUrl = uri.replace(queryParameters: queryParams).toString();
 
       _log('🔧 [INIT] Building HubConnection with URL: $fullUrl');
       final httpOptions = HttpConnectionOptions(
-        accessTokenFactory: () async => token,
+        accessTokenFactory: () async {
+          final latest = refreshService != null
+              ? await refreshService!.ensureFreshToken()
+              : await _tokenService.getToken();
+          _builtWithToken = latest;
+          return latest ?? '';
+        },
       );
 
       _hubConnection = HubConnectionBuilder()
@@ -252,6 +250,11 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
       }
     });
 
+    hub.on('driver-support-handover-updated', (List<Object?>? args) {
+      if (_isDisposed || args == null || args.isEmpty) return;
+      _log('🤝 [REALTIME] driver-support-handover-updated received');
+    });
+
     hub.on('box-assigned', (List<Object?>? args) {
       if (_isDisposed || args == null || args.isEmpty) return;
       try {
@@ -275,6 +278,7 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
     hub.off('driver-location-updated');
     hub.off('driver-status-updated');
     hub.off('driver-issue-updated');
+    hub.off('driver-support-handover-updated');
     hub.off('box-assigned');
     _handlersRegistered = false;
   }
@@ -343,7 +347,9 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
   }
 
   Future<void> _doConnect() async {
-    final token = await _tokenService.getToken();
+    final token = refreshService != null
+        ? await refreshService!.ensureFreshToken()
+        : await _tokenService.getToken();
     if (token == null || token.isEmpty) {
       _log('⚠️ [AUTH] Cannot connect: Bearer token is missing or empty.');
       _emitStatus(DispatcherMapConnectionStatus.unauthorized);
@@ -375,7 +381,9 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
           _log(
             '🔄 [AUTH] Received 401/403. Attempting token refresh via AuthRefreshService...',
           );
-          final refreshedToken = await refreshService!.refreshToken();
+          final refreshedToken = await refreshService!.refreshToken(
+            rejectedAccessToken: _builtWithToken,
+          );
           if (refreshedToken != null && refreshedToken.isNotEmpty) {
             _log(
               '🔑 [AUTH] New token acquired. Retrying connection with fresh token...',
@@ -427,7 +435,7 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
         if (!_isDisposed &&
             _currentStatus != DispatcherMapConnectionStatus.connected) {
           _log('⏰ [RETRY] Executing reconnect attempt $_retryAttempt...');
-          connect();
+          unawaited(connect());
         }
       });
     } else {

@@ -65,203 +65,249 @@ class DispatcherDriversStatusCard extends StatelessWidget {
               horizontal: Spacing.md,
               vertical: Spacing.sm,
             ),
-            child: Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                DispatcherDriversStatusAvatar(avatarUrl: driver.avatarUrl),
-                const SizedBox(width: Spacing.sm),
-                // Driver Name & Code
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        driver.name,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size11,
-                          color: color.onSurface,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: Spacing.border),
-                      Text(
-                        driver.code,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size9,
-                          color: color.onSurfaceVariant,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: Spacing.xs),
-                // Rating Column
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+                // Top Row: Avatar, Name, Rating/Status, Chevron
+                Row(
                   children: [
-                    if (driver.rating != null) ...[
-                      Row(
+                    DispatcherDriversStatusAvatar(avatarUrl: driver.avatarUrl),
+                    const SizedBox(width: Spacing.sm),
+                    // Driver Name & Rating / Code
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            driver.rating!.toStringAsFixed(1),
+                            driver.name,
                             style: getBoldStyle(
                               fontFamily: FontConstant.alexandria,
-                              fontSize: FontSize.size10,
+                              fontSize: FontSize.size11,
                               color: color.onSurface,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(width: Spacing.border),
-                          Icon(
-                            Icons.star_rounded,
-                            size: Spacing.iconXs,
-                            color: color.homeStar,
+                          const SizedBox(height: Spacing.border),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  driver.code,
+                                  style: getRegularStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size9,
+                                    color: color.onSurfaceVariant,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: Spacing.xs),
+                              Text(
+                                '•',
+                                style: getRegularStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size9,
+                                  color: color.outlineVariant,
+                                ),
+                              ),
+                              const SizedBox(width: Spacing.xs),
+                              if (driver.rating != null) ...[
+                                Text(
+                                  driver.rating!.toStringAsFixed(1),
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size10,
+                                    color: color.onSurface,
+                                  ),
+                                ),
+                                const SizedBox(width: Spacing.border),
+                                Icon(
+                                  Icons.star_rounded,
+                                  size: Spacing.iconXs,
+                                  color: color.homeStar,
+                                ),
+                                if (driver.ratingsCount != null) ...[
+                                  const SizedBox(width: Spacing.border),
+                                  Text(
+                                    '(${driver.ratingsCount})',
+                                    style: getRegularStyle(
+                                      fontFamily: FontConstant.alexandria,
+                                      fontSize: FontSize.size9,
+                                      color: color.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ] else ...[
+                                Text(
+                                  locale.driversStatusNewRating,
+                                  style: getBoldStyle(
+                                    fontFamily: FontConstant.alexandria,
+                                    fontSize: FontSize.size10,
+                                    color: color.primary,
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ],
                       ),
-                      const SizedBox(height: Spacing.border),
-                      Text(
-                        driver.ratingsCount != null
-                            ? '(${driver.ratingsCount})'
-                            : locale.driversStatusRating,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size9,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                    ] else ...[
-                      Text(
-                        locale.driversStatusNewRating,
-                        style: getBoldStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size10,
-                          color: color.primary,
-                        ),
-                      ),
-                      const SizedBox(height: Spacing.border),
-                      Text(
-                        locale.driversStatusRating,
-                        style: getRegularStyle(
-                          fontFamily: FontConstant.alexandria,
-                          fontSize: FontSize.size9,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
+                    ),
+                    const SizedBox(width: Spacing.xs),
+                    // Status Badge
+                    DispatcherDriversStatusBadge(
+                      status: driver.operationalStatus,
+                    ),
+                    const SizedBox(width: Spacing.xs),
+                    // Chevron icon pointing logical forward
+                    Icon(
+                      Directionality.of(context) == TextDirection.rtl
+                          ? Icons.arrow_back_ios_new_rounded
+                          : Icons.arrow_forward_ios_rounded,
+                      size: Spacing.iconXs - 2,
+                      color: color.primary,
+                    ),
                   ],
                 ),
-                const SizedBox(width: Spacing.sm),
-                // Vehicle Column
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+                const SizedBox(height: Spacing.sm),
+                // Divider
+                Divider(
+                  height: 1,
+                  thickness: Spacing.hairline,
+                  color: color.outlineVariant.withValues(alpha: 0.3),
+                ),
+                const SizedBox(height: Spacing.xs),
+                // Bottom Row: Vehicle Details + Call Button + Availability Switch
+                Row(
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          driver.vehicleModel?.isNotEmpty == true
-                              ? driver.vehicleModel!
-                              : (driver.vehicleType?.isNotEmpty == true
-                                    ? driver.vehicleType!
-                                    : locale.driversStatusVehicleCar),
-                          style: getMediumStyle(
-                            fontFamily: FontConstant.alexandria,
-                            fontSize: FontSize.size10,
-                            color: color.onSurface,
+                    // Vehicle Info
+                    Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.directions_car_filled_outlined,
+                            size: Spacing.iconXs,
+                            color: color.onSurfaceVariant,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(width: Spacing.border),
-                        Icon(
-                          Icons.directions_car_filled_outlined,
-                          size: Spacing.iconXs,
-                          color: color.onSurfaceVariant,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Spacing.border),
-                    Text(
-                      driver.plateNumber,
-                      style: getRegularStyle(
-                        fontFamily: FontConstant.alexandria,
-                        fontSize: FontSize.size8,
-                        color: color.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: Spacing.sm),
-                // Call Action Button
-                GestureDetector(
-                  onTap: hasPhone ? _handleCall : null,
-                  behavior: HitTestBehavior.opaque,
-                  child: Tooltip(
-                    message: hasPhone
-                        ? locale.driversStatusCallAction
-                        : locale.driversStatusPhoneNotRegistered,
-                    child: Container(
-                      padding: const EdgeInsets.all(Spacing.xs),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: hasPhone
-                            ? color.primary.withValues(alpha: 0.1)
-                            : color.surfaceContainerHighest.withValues(alpha: 0.3),
-                      ),
-                      child: Icon(
-                        Icons.phone_rounded,
-                        size: Spacing.iconXs,
-                        color: hasPhone
-                            ? color.primary
-                            : color.onSurfaceVariant.withValues(alpha: 0.4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: Spacing.xs),
-                // Status Badge
-                DispatcherDriversStatusBadge(status: driver.operationalStatus),
-                const SizedBox(width: Spacing.xs),
-                // Switch / Inline Loader
-                GestureDetector(
-                  onTap: () {}, // prevent card tap
-                  child: isToggling
-                      ? const SizedBox(
-                          width: 32,
-                          height: 32,
-                          child: Center(
-                            child: SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                          const SizedBox(width: Spacing.xs),
+                          Flexible(
+                            child: Text(
+                              driver.vehicleModel?.isNotEmpty == true
+                                  ? driver.vehicleModel!
+                                  : (driver.vehicleType?.isNotEmpty == true
+                                        ? driver.vehicleType!
+                                        : locale.driversStatusVehicleCar),
+                              style: getMediumStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size10,
+                                color: color.onSurface,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        )
-                      : Transform.scale(
-                          scale: 0.75,
-                          child: Switch.adaptive(
-                            value: driver.isAvailable,
-                            activeTrackColor: color.primary,
-                            activeThumbColor: color.surface,
-                            onChanged: onToggle,
+                          if (driver.plateNumber.isNotEmpty) ...[
+                            const SizedBox(width: Spacing.xs),
+                            Text(
+                              driver.plateNumber,
+                              style: getRegularStyle(
+                                fontFamily: FontConstant.alexandria,
+                                fontSize: FontSize.size8,
+                                color: color.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: Spacing.xs),
+                    // Call Action Button
+                    GestureDetector(
+                      onTap: hasPhone ? _handleCall : null,
+                      behavior: HitTestBehavior.opaque,
+                      child: Tooltip(
+                        message: hasPhone
+                            ? locale.driversStatusCallAction
+                            : locale.driversStatusPhoneNotRegistered,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Spacing.sm,
+                            vertical: Spacing.xs / 2,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              Spacing.radiusPill,
+                            ),
+                            color: hasPhone
+                                ? color.primary.withValues(alpha: 0.1)
+                                : color.surfaceContainerHighest.withValues(
+                                    alpha: 0.3,
+                                  ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.phone_rounded,
+                                size: Spacing.iconXs - 2,
+                                color: hasPhone
+                                    ? color.primary
+                                    : color.onSurfaceVariant.withValues(
+                                        alpha: 0.4,
+                                      ),
+                              ),
+                              const SizedBox(width: Spacing.xs / 2),
+                              Text(
+                                locale.driversStatusCallAction,
+                                style: getMediumStyle(
+                                  fontFamily: FontConstant.alexandria,
+                                  fontSize: FontSize.size9,
+                                  color: hasPhone
+                                      ? color.primary
+                                      : color.onSurfaceVariant.withValues(
+                                          alpha: 0.4,
+                                        ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                ),
-                // Chevron icon pointing logical forward
-                Icon(
-                  Directionality.of(context) == TextDirection.rtl
-                      ? Icons.arrow_back_ios_new_rounded
-                      : Icons.arrow_forward_ios_rounded,
-                  size: Spacing.iconXs - 2,
-                  color: color.primary,
+                      ),
+                    ),
+                    const SizedBox(width: Spacing.xs),
+                    // Switch / Inline Loader
+                    GestureDetector(
+                      onTap: () {}, // prevent card tap
+                      child: isToggling
+                          ? const SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: Center(
+                                child: SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Transform.scale(
+                              scale: 0.75,
+                              child: Switch.adaptive(
+                                value: driver.isAvailable,
+                                activeTrackColor: color.primary,
+                                activeThumbColor: color.surface,
+                                onChanged: onToggle,
+                              ),
+                            ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:driver_voice_engine/driver_voice_engine.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/network/api_results.dart';
@@ -30,10 +31,15 @@ import '../models/request/driver_verify_otp_request_dto.dart';
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  const AuthRepositoryImpl(this._remoteDataSource, this._tokenService);
+  const AuthRepositoryImpl(
+    this._remoteDataSource,
+    this._tokenService, {
+    DriverVoiceEngine? driverVoiceEngine,
+  }) : _driverVoiceEngine = driverVoiceEngine;
 
   final AuthRemoteDataSource _remoteDataSource;
   final TokenService _tokenService;
+  final DriverVoiceEngine? _driverVoiceEngine;
 
   @override
   Future<ApiResult<PhoneLookupResultEntity>> lookupPhone(
@@ -284,6 +290,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<ApiResult<void>> logout() {
     return safeLocalCall(() async {
       await _tokenService.clearTokens();
+      try {
+        final engine = _driverVoiceEngine ?? DriverVoiceEngine.instance;
+        await engine.revokeAccountSession();
+      } catch (_) {}
     });
   }
 

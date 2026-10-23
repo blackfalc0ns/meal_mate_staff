@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,6 +27,7 @@ import '../helpers/shared_pref.dart';
 import '../network/api_services.dart';
 import '../network/network_constants.dart';
 import '../services/auth_refresh_service.dart';
+import '../services/auth_session_lifecycle.dart';
 import '../services/device_id_service.dart';
 import '../services/driver_pickup_location_provider.dart';
 import '../services/idempotency_key_factory.dart';
@@ -33,6 +35,8 @@ import '../services/language_interceptor.dart';
 import '../services/language_service.dart';
 import '../services/token_interceptor.dart';
 import '../services/token_service.dart';
+import '../services/server_clock.dart';
+import '../services/server_clock_interceptor.dart';
 import '../../features/driver/orders/data/realtime/driver_orders_realtime_client.dart';
 import '../../features/driver/orders/data/realtime/driver_orders_signalr_client.dart';
 import '../../features/driver/tracking/data/datasources/driver_location_remote_datasource.dart';
@@ -71,7 +75,18 @@ import '../../features/driver/delivery_issues/data/data_source/driver_reassignme
 import '../../features/driver/delivery_issues/data/repo/driver_reassignment_repository_impl.dart';
 import '../../features/driver/delivery_issues/domain/repo/driver_reassignment_repository.dart';
 import '../../features/driver/delivery_issues/domain/usecase/submit_driver_reassignment_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/get_driver_reassignment_requests_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/get_driver_reassignment_request_details_usecase.dart';
+import '../../features/driver/delivery_issues/domain/entities/delivery_issue_entity.dart';
 import '../../features/driver/delivery_issues/presentation/manager/driver_reassignment_view_model.dart';
+import '../../features/driver/delivery_issues/data/data_source/driver_issue_remote_data_source.dart';
+import '../../features/driver/delivery_issues/data/data_source/driver_issue_remote_data_source_impl.dart';
+import '../../features/driver/delivery_issues/data/repo/driver_issue_repository_impl.dart';
+import '../../features/driver/delivery_issues/domain/repo/driver_issue_repository.dart';
+import '../../features/driver/delivery_issues/domain/usecase/report_driver_issue_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/report_driver_delay_usecase.dart';
+import '../../features/driver/delivery_issues/domain/usecase/upload_driver_issue_evidence_usecase.dart';
+import '../../features/driver/delivery_issues/presentation/manager/driver_issue_view_model.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source.dart';
 import '../../features/driver/driver_profile/data/data_source/driver_profile_remote_data_source_impl.dart';
 import '../../features/driver/driver_profile/data/repo/driver_profile_repository_impl.dart';
@@ -232,6 +247,50 @@ import '../../features/dispatcher/dispatcher_driver_details/domain/usecase/relea
 import '../../features/dispatcher/dispatcher_driver_details/presentation/manager/driver_details_view_model.dart';
 import '../../features/dispatcher/dispatcher_driver_details/presentation/services/driver_contact_launcher.dart';
 
+import '../../features/dispatcher/dispatcher_notifications/data/data_source/dispatcher_notifications_remote_data_source.dart';
+import '../../features/dispatcher/dispatcher_notifications/data/data_source/dispatcher_notifications_remote_data_source_impl.dart';
+import '../../features/dispatcher/dispatcher_notifications/data/repo/dispatcher_notifications_repository_impl.dart';
+import '../../features/dispatcher/dispatcher_notifications/domain/repo/dispatcher_notifications_repository.dart';
+import '../../features/dispatcher/dispatcher_notifications/domain/usecase/get_dispatcher_notifications_usecase.dart';
+import '../../features/dispatcher/dispatcher_notifications/domain/usecase/mark_dispatcher_notification_read_usecase.dart';
+import '../../features/dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
+
+import 'package:driver_voice_engine/driver_voice_engine.dart';
+import '../services/voice_device_session_storage.dart';
+import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source.dart';
+import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source_impl.dart';
+import '../../features/driver/calling/data/realtime/driver_voice_call_signalr_client.dart';
+import '../../features/driver/calling/data/webrtc/driver_webrtc_manager.dart';
+import '../../features/driver/calling/data/callkit/driver_callkit_coordinator.dart';
+import '../../features/driver/calling/data/repo/driver_calling_repository_impl.dart';
+import '../../features/driver/calling/domain/repo/driver_calling_repository.dart';
+import '../../features/driver/calling/domain/usecase/check_call_eligibility_usecase.dart';
+import '../../features/driver/calling/domain/usecase/initiate_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/cancel_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/end_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_active_voice_call_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_voice_call_snapshot_usecase.dart';
+import '../../features/driver/calling/domain/usecase/register_voice_device_usecase.dart';
+import '../../features/driver/calling/domain/usecase/revoke_voice_device_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_delivery_contact_case_usecase.dart';
+import '../../features/driver/calling/domain/usecase/hold_delivery_contact_case_usecase.dart';
+import '../../features/driver/calling/domain/usecase/resume_delivery_contact_case_usecase.dart';
+import '../../features/driver/calling/domain/usecase/reveal_customer_phone_usecase.dart';
+import '../../features/driver/calling/domain/usecase/send_voice_heartbeat_usecase.dart';
+import '../../features/driver/calling/domain/usecase/report_voice_connecting_usecase.dart';
+import '../../features/driver/calling/domain/usecase/report_voice_connected_usecase.dart';
+import '../../features/driver/calling/domain/usecase/get_voice_call_display_usecase.dart';
+import '../../features/driver/calling/presentation/manager/driver_calling_view_model.dart';
+import '../../features/driver/driver_support_tickets/data/data_source/driver_support_remote_data_source.dart';
+import '../../features/driver/driver_support_tickets/data/data_source/driver_support_remote_data_source_impl.dart';
+import '../../features/driver/driver_support_tickets/data/repo/driver_support_repository_impl.dart';
+import '../../features/driver/driver_support_tickets/domain/repo/driver_support_repository.dart';
+import '../../features/driver/driver_support_tickets/domain/usecase/add_driver_support_issue_photos_usecase.dart';
+import '../../features/driver/driver_support_tickets/domain/usecase/get_driver_support_issue_details_usecase.dart';
+import '../../features/driver/driver_support_tickets/domain/usecase/get_driver_support_issues_usecase.dart';
+import '../../features/driver/driver_support_tickets/presentation/manager/driver_support_ticket_details_view_model.dart';
+import '../../features/driver/driver_support_tickets/presentation/manager/driver_support_tickets_view_model.dart';
+
 final GetIt getIt = GetIt.instance;
 
 Future<void> configureDependencies() async {
@@ -263,11 +322,38 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<TokenInterceptor>(
     () => TokenInterceptor(getIt<TokenService>()),
   );
+  // Register dependencies used by Dio before its lazy factory is first resolved.
+  getIt.registerLazySingleton<ServerClock>(ServerClock.new);
   getIt.registerLazySingleton<Dio>(_buildDio);
   getIt.registerLazySingleton<AuthRefreshService>(
     () => AuthRefreshService(
       tokenService: getIt<TokenService>(),
-      dio: getIt<Dio>(),
+      dio: Dio(
+        BaseOptions(
+          baseUrl: NetworkConstants.baseUrl,
+          connectTimeout: const Duration(seconds: 15),
+          receiveTimeout: const Duration(seconds: 15),
+          sendTimeout: const Duration(seconds: 15),
+        ),
+      ),
+    ),
+  );
+  getIt.registerLazySingleton<AuthSessionLifecycle>(
+    () => AuthSessionLifecycle(
+      refresh: getIt<AuthRefreshService>(),
+      tokens: getIt<TokenService>(),
+      cleanupLocalCall: () async {
+        final repository = getIt<DriverCallingRepository>();
+        if (repository is DriverCallingRepositoryImpl) {
+          await repository.terminateLocalAuthSession();
+        }
+      },
+      reconcileCall: () async {
+        final repository = getIt<DriverCallingRepository>();
+        if (repository is DriverCallingRepositoryImpl) {
+          await repository.reconcileAuthSession();
+        }
+      },
     ),
   );
   getIt.registerLazySingleton<ApiServices>(() => ApiServices(getIt<Dio>()));
@@ -321,6 +407,7 @@ Future<void> configureDependencies() async {
       router: getIt<NotificationRouter>(),
       sharedPreferences: getIt<SharedPreferences>(),
       secureStorage: getIt<FlutterSecureStorage>(),
+      voiceDeviceSessionStorage: getIt<VoiceDeviceSessionStorage>(),
     ),
   );
 
@@ -799,6 +886,32 @@ Future<void> configureDependencies() async {
     ),
   );
 
+  // Dispatcher Notifications
+  getIt.registerLazySingleton<DispatcherNotificationsRemoteDataSource>(
+    () => DispatcherNotificationsRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DispatcherNotificationsRepository>(
+    () => DispatcherNotificationsRepositoryImpl(
+      getIt<DispatcherNotificationsRemoteDataSource>(),
+    ),
+  );
+  getIt.registerFactory<GetDispatcherNotificationsUseCase>(
+    () => GetDispatcherNotificationsUseCase(
+      getIt<DispatcherNotificationsRepository>(),
+    ),
+  );
+  getIt.registerFactory<MarkDispatcherNotificationReadUseCase>(
+    () => MarkDispatcherNotificationReadUseCase(
+      getIt<DispatcherNotificationsRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<DispatcherNotificationsViewModel>(
+    () => DispatcherNotificationsViewModel(
+      getNotificationsUseCase: getIt<GetDispatcherNotificationsUseCase>(),
+      markReadUseCase: getIt<MarkDispatcherNotificationReadUseCase>(),
+    ),
+  );
+
   // Driver pickup flow
   getIt.registerLazySingleton<IdempotencyKeyFactory>(IdempotencyKeyFactory.new);
   getIt.registerLazySingleton<DriverPickupLocationProvider>(
@@ -985,9 +1098,48 @@ Future<void> configureDependencies() async {
     () =>
         SubmitDriverReassignmentUseCase(getIt<DriverReassignmentRepository>()),
   );
+  getIt.registerFactory<GetDriverReassignmentRequestsUseCase>(
+    () => GetDriverReassignmentRequestsUseCase(
+      getIt<DriverReassignmentRepository>(),
+    ),
+  );
+  getIt.registerFactory<GetDriverReassignmentRequestDetailsUseCase>(
+    () => GetDriverReassignmentRequestDetailsUseCase(
+      getIt<DriverReassignmentRepository>(),
+    ),
+  );
   getIt.registerFactory<DriverReassignmentViewModel>(
     () => DriverReassignmentViewModel(
       submitUseCase: getIt<SubmitDriverReassignmentUseCase>(),
+      getRequestsUseCase: getIt<GetDriverReassignmentRequestsUseCase>(),
+      getRequestDetailsUseCase:
+          getIt<GetDriverReassignmentRequestDetailsUseCase>(),
+    ),
+  );
+
+  // Driver Issue & Delay feature dependencies
+  getIt.registerLazySingleton<DriverIssueRemoteDataSource>(
+    () => DriverIssueRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverIssueRepository>(
+    () => DriverIssueRepositoryImpl(getIt<DriverIssueRemoteDataSource>()),
+  );
+  getIt.registerFactory<ReportDriverIssueUseCase>(
+    () => ReportDriverIssueUseCase(getIt<DriverIssueRepository>()),
+  );
+  getIt.registerFactory<ReportDriverDelayUseCase>(
+    () => ReportDriverDelayUseCase(getIt<DriverIssueRepository>()),
+  );
+  getIt.registerFactory<UploadDriverIssueEvidenceUseCase>(
+    () => UploadDriverIssueEvidenceUseCase(getIt<DriverIssueRepository>()),
+  );
+  getIt.registerFactoryParam<DriverIssueViewModel, DeliveryIssueEntity?, void>(
+    (initialIssue, _) => DriverIssueViewModel(
+      reportDriverIssueUseCase: getIt<ReportDriverIssueUseCase>(),
+      reportDriverDelayUseCase: getIt<ReportDriverDelayUseCase>(),
+      uploadDriverIssueEvidenceUseCase:
+          getIt<UploadDriverIssueEvidenceUseCase>(),
+      initialIssue: initialIssue,
     ),
   );
 
@@ -1011,11 +1163,172 @@ Future<void> configureDependencies() async {
       locationService: getIt<DriverLocationService>(),
       realtimeClient: getIt<DriverOrdersRealtimeClient>(),
       fallbackDataSource: getIt<DriverLocationRemoteDataSource>(),
+      serverClock: getIt<ServerClock>(),
+      resolveTripId: () async {
+        final route = await getIt<DriverMapRemoteDataSource>()
+            .getDriverMapRoute();
+        return route.tripId;
+      },
     ),
   );
 
   // Eagerly resolve coordinator so realtime event listeners are active immediately
   getIt<DriverLiveLocationCoordinator>();
+
+  // Voice Calls V2 Feature
+  getIt.registerLazySingleton<VoiceDeviceSessionStorage>(
+    () => VoiceDeviceSessionStorage(
+      secureStorage: getIt<FlutterSecureStorage>(),
+      sharedPreferences: getIt<SharedPreferences>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverCallingRemoteDataSource>(
+    () => DriverCallingRemoteDataSourceImpl(
+      getIt<ApiServices>(),
+      getIt<VoiceDeviceSessionStorage>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverVoiceCallSignalRClient>(
+    () => DriverVoiceCallSignalRClient(
+      refreshService: getIt<AuthRefreshService>(),
+      tokenService: getIt<TokenService>(),
+      sessionStorage: getIt<VoiceDeviceSessionStorage>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverWebRtcManager>(
+    () => DriverWebRtcManager(
+      signalRClient: getIt<DriverVoiceCallSignalRClient>(),
+    ),
+  );
+  getIt.registerLazySingleton<DriverCallKitCoordinator>(
+    DriverCallKitCoordinator.new,
+  );
+  getIt.registerLazySingleton<DriverVoiceEngine>(
+    () => DriverVoiceEngine.instance,
+  );
+  getIt.registerLazySingleton<DriverCallingRepository>(
+    () => DriverCallingRepositoryImpl(
+      remoteDataSource: getIt<DriverCallingRemoteDataSource>(),
+      signalRClient: getIt<DriverVoiceCallSignalRClient>(),
+      webrtcManager: getIt<DriverWebRtcManager>(),
+      callKitCoordinator: getIt<DriverCallKitCoordinator>(),
+      sessionStorage: getIt<VoiceDeviceSessionStorage>(),
+      tokenService: getIt<TokenService>(),
+      driverVoiceEngine: getIt<DriverVoiceEngine>(),
+      useNativeEngine: true,
+      serverClock: getIt<ServerClock>(),
+    ),
+  );
+
+  // Calling Use Cases
+  getIt.registerFactory<CheckCallEligibilityUseCase>(
+    () => CheckCallEligibilityUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<InitiateVoiceCallUseCase>(
+    () => InitiateVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<CancelVoiceCallUseCase>(
+    () => CancelVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<EndVoiceCallUseCase>(
+    () => EndVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetActiveVoiceCallUseCase>(
+    () => GetActiveVoiceCallUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetVoiceCallSnapshotUseCase>(
+    () => GetVoiceCallSnapshotUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<RegisterVoiceDeviceUseCase>(
+    () => RegisterVoiceDeviceUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<RevokeVoiceDeviceUseCase>(
+    () => RevokeVoiceDeviceUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetDeliveryContactCaseUseCase>(
+    () => GetDeliveryContactCaseUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<HoldDeliveryContactCaseUseCase>(
+    () => HoldDeliveryContactCaseUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<ResumeDeliveryContactCaseUseCase>(
+    () => ResumeDeliveryContactCaseUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<RevealCustomerPhoneUseCase>(
+    () => RevealCustomerPhoneUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<SendVoiceHeartbeatUseCase>(
+    () => SendVoiceHeartbeatUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<ReportVoiceConnectingUseCase>(
+    () => ReportVoiceConnectingUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<ReportVoiceConnectedUseCase>(
+    () => ReportVoiceConnectedUseCase(getIt<DriverCallingRepository>()),
+  );
+  getIt.registerFactory<GetVoiceCallDisplayUseCase>(
+    () => GetVoiceCallDisplayUseCase(getIt<DriverCallingRepository>()),
+  );
+
+  // Calling ViewModel
+  getIt.registerFactory<DriverCallingViewModel>(
+    () => DriverCallingViewModel(
+      checkCallEligibilityUseCase: getIt<CheckCallEligibilityUseCase>(),
+      initiateVoiceCallUseCase: getIt<InitiateVoiceCallUseCase>(),
+      cancelVoiceCallUseCase: getIt<CancelVoiceCallUseCase>(),
+      endVoiceCallUseCase: getIt<EndVoiceCallUseCase>(),
+      getActiveVoiceCallUseCase: getIt<GetActiveVoiceCallUseCase>(),
+      getVoiceCallSnapshotUseCase: getIt<GetVoiceCallSnapshotUseCase>(),
+      getDeliveryContactCaseUseCase: getIt<GetDeliveryContactCaseUseCase>(),
+      holdDeliveryContactCaseUseCase: getIt<HoldDeliveryContactCaseUseCase>(),
+      resumeDeliveryContactCaseUseCase:
+          getIt<ResumeDeliveryContactCaseUseCase>(),
+      revealCustomerPhoneUseCase: getIt<RevealCustomerPhoneUseCase>(),
+      getVoiceCallDisplayUseCase: getIt<GetVoiceCallDisplayUseCase>(),
+      repository: getIt<DriverCallingRepository>(),
+      serverClock: getIt<ServerClock>(),
+      locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
+    ),
+  );
+
+  // Driver Support Tickets Feature
+  getIt.registerLazySingleton<DriverSupportRemoteDataSource>(
+    () => DriverSupportRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverSupportRepository>(
+    () => DriverSupportRepositoryImpl(getIt<DriverSupportRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetDriverSupportIssuesUseCase>(
+    () => GetDriverSupportIssuesUseCase(getIt<DriverSupportRepository>()),
+  );
+  getIt.registerFactory<GetDriverSupportIssueDetailsUseCase>(
+    () => GetDriverSupportIssueDetailsUseCase(getIt<DriverSupportRepository>()),
+  );
+  getIt.registerFactory<AddDriverSupportIssuePhotosUseCase>(
+    () => AddDriverSupportIssuePhotosUseCase(getIt<DriverSupportRepository>()),
+  );
+  getIt.registerFactory<DriverSupportTicketsViewModel>(
+    () => DriverSupportTicketsViewModel(
+      getDriverSupportIssuesUseCase: getIt<GetDriverSupportIssuesUseCase>(),
+      ordersRealtimeClient: getIt.isRegistered<DriverOrdersRealtimeClient>()
+          ? getIt<DriverOrdersRealtimeClient>()
+          : null,
+    ),
+  );
+  getIt.registerFactory<DriverSupportTicketDetailsViewModel>(
+    () => DriverSupportTicketDetailsViewModel(
+      getDriverSupportIssueDetailsUseCase:
+          getIt<GetDriverSupportIssueDetailsUseCase>(),
+      addDriverSupportIssuePhotosUseCase:
+          getIt<AddDriverSupportIssuePhotosUseCase>(),
+      uploadDriverIssueEvidenceUseCase:
+          getIt<UploadDriverIssueEvidenceUseCase>(),
+      driverOrdersRealtimeClient:
+          getIt.isRegistered<DriverOrdersRealtimeClient>()
+          ? getIt<DriverOrdersRealtimeClient>()
+          : null,
+    ),
+  );
 }
 
 Dio _buildDio() {
@@ -1035,11 +1348,57 @@ Dio _buildDio() {
   final tokenInterceptor = getIt<TokenInterceptor>();
   dio.interceptors.add(getIt<LanguageInterceptor>());
   dio.interceptors.add(tokenInterceptor);
-  dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true));
-
-  tokenInterceptor.attachRefreshService(
-    AuthRefreshService(tokenService: getIt<TokenService>(), dio: dio),
+  dio.interceptors.add(ServerClockInterceptor(getIt<ServerClock>()));
+  if (kDebugMode) {
+    // Log only the upload method/status, never tokens, filenames or read URLs.
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (options.method == 'POST' &&
+              options.uri.path == '/api/v1/uploads') {
+            debugPrint(
+              '[IssueEvidence HTTP] POST /api/v1/uploads request_sent',
+            );
+          }
+          handler.next(options);
+        },
+        onResponse: (response, handler) {
+          if (response.requestOptions.method == 'POST' &&
+              response.requestOptions.uri.path == '/api/v1/uploads') {
+            debugPrint(
+              '[IssueEvidence HTTP] POST /api/v1/uploads status=${response.statusCode} data=${response.data}',
+            );
+          }
+          handler.next(response);
+        },
+        onError: (error, handler) {
+          if (error.requestOptions.method == 'POST' &&
+              error.requestOptions.uri.path == '/api/v1/uploads') {
+            debugPrint(
+              '[IssueEvidence HTTP] POST /api/v1/uploads failed status=${error.response?.statusCode} type=${error.type.name}',
+            );
+          }
+          handler.next(error);
+        },
+      ),
+    );
+  }
+  dio.interceptors.add(
+    PrettyDioLogger(
+      requestHeader: false,
+      requestBody: false,
+      responseBody: false,
+      // Evidence responses contain short-lived bearer-capability read URLs.
+      // Keep both their requests and responses out of the debug logger.
+      filter: (options, _) =>
+          !options.path.contains('/support/issues') &&
+          !options.path.contains('/uploads') &&
+          !options.uri.queryParameters.containsKey('readToken'),
+    ),
   );
+
+  tokenInterceptor.requestDio = dio;
+  tokenInterceptor.attachRefreshService(getIt<AuthRefreshService>());
 
   return dio;
 }

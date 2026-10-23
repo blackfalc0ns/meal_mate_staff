@@ -2132,6 +2132,30 @@ abstract class AppLocalizations {
   /// **'Mark all as read'**
   String get notificationsMarkAllAsRead;
 
+  /// No description provided for @notificationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get notificationsEmpty;
+
+  /// No description provided for @notificationsEmptyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent operational alerts and updates will appear here when they arrive'**
+  String get notificationsEmptyDesc;
+
+  /// No description provided for @notificationsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load notifications'**
+  String get notificationsLoadFailed;
+
+  /// No description provided for @notificationsRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get notificationsRetry;
+
   /// No description provided for @homeStoreName.
   ///
   /// In en, this message translates to:
@@ -6650,6 +6674,36 @@ abstract class AppLocalizations {
   /// **'Delivery refused'**
   String get reportIssueReasonRefusedDelivery;
 
+  /// No description provided for @reportIssueReasonRoadIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Road issue'**
+  String get reportIssueReasonRoadIssue;
+
+  /// No description provided for @reportIssueReasonVehicleBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle breakdown'**
+  String get reportIssueReasonVehicleBreakdown;
+
+  /// No description provided for @reportIssueReasonTrafficAccident.
+  ///
+  /// In en, this message translates to:
+  /// **'Traffic accident'**
+  String get reportIssueReasonTrafficAccident;
+
+  /// No description provided for @reportIssueReasonSevereWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Severe weather'**
+  String get reportIssueReasonSevereWeather;
+
+  /// No description provided for @reportIssueReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get reportIssueReasonOther;
+
   /// No description provided for @reportIssueNotesTitle.
   ///
   /// In en, this message translates to:
@@ -6691,6 +6745,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can add up to 4 photos'**
   String get reportIssuePhotosLimitNote;
+
+  /// No description provided for @reportIssuePhotoUploading.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading photo...'**
+  String get reportIssuePhotoUploading;
+
+  /// No description provided for @reportIssuePhotoUploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed, tap to retry'**
+  String get reportIssuePhotoUploadFailed;
+
+  /// No description provided for @reportIssuePhotoRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get reportIssuePhotoRetry;
+
+  /// No description provided for @reportIssuePhotoUploadWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait until photos finish uploading'**
+  String get reportIssuePhotoUploadWait;
+
+  /// No description provided for @reportIssuePhotoNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo key is not recognized, please re-upload'**
+  String get reportIssuePhotoNotFound;
 
   /// No description provided for @reportIssueSendToSupervisor.
   ///

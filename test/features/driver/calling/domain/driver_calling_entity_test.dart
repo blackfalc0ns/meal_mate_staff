@@ -23,7 +23,7 @@ void main() {
     });
 
     test('DriverCallingFakeData provides default activeCall matching Figma node 2090-5549', () {
-      final activeCall = DriverCallingFakeData.activeCall;
+      const activeCall = DriverCallingFakeData.activeCall;
 
       expect(activeCall.customerName, 'محمد علي');
       expect(activeCall.addressLine, 'شارع الخليج العربي ، قطعة 12 ، منزل 45');

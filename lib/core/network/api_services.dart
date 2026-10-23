@@ -1,3 +1,4 @@
+import '../../features/driver/delivery_issues/data/models/response/driver_issue_evidence_upload_response_dto.dart';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -30,6 +31,20 @@ import '../../features/auth/data/models/response/staff_role_response_dto.dart';
 import '../../features/auth/data/models/response/verify_first_time_otp_response_dto.dart';
 import '../../features/device_token/data/models/request/driver_device_token_request_dto.dart';
 import '../../features/device_token/data/models/request/restaurant_device_token_request_dto.dart';
+import '../../features/device_token/data/models/response/driver_device_token_response_dto.dart';
+import '../../features/dispatcher/dispatcher_notifications/data/models/response/delivery_manager_notification_response_dto.dart';
+import '../../features/driver/calling/data/models/request/delivery_contact_hold_request_dto.dart';
+import '../../features/driver/calling/data/models/request/delivery_contact_resume_request_dto.dart';
+import '../../features/driver/calling/data/models/request/delivery_contact_reveal_phone_request_dto.dart';
+import '../../features/driver/calling/data/models/request/voice_call_initiate_request_dto.dart';
+import '../../features/driver/calling/data/models/request/voice_device_register_request_dto.dart';
+import '../../features/driver/calling/data/models/response/delivery_contact_case_response_dto.dart';
+import '../../features/driver/calling/data/models/response/ice_servers_response_dto.dart';
+import '../../features/driver/calling/data/models/response/phone_grant_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_call_display_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_call_eligibility_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_call_snapshot_response_dto.dart';
+import '../../features/driver/calling/data/models/response/voice_device_register_response_dto.dart';
 import '../../features/register/data/models/request/driver_registration_request_dto.dart';
 import '../../features/register/data/models/request/driver_resubmit_request_dto.dart';
 import '../../features/register/data/models/response/driver_file_upload_response_dto.dart';
@@ -90,6 +105,21 @@ import '../../features/driver/active_delivery/data/models/response/driver_delive
 import '../../features/driver/active_delivery/data/models/response/driver_delivery_proof_upload_response_dto.dart';
 import '../../features/driver/delivery_issues/data/models/request/driver_reassignment_request_dto.dart';
 import '../../features/driver/delivery_issues/data/models/response/driver_reassignment_response_dto.dart';
+import '../../features/driver/delivery_issues/data/models/request/driver_report_issue_request_dto.dart';
+import '../../features/driver/delivery_issues/data/models/request/driver_report_delay_request_dto.dart';
+import '../../features/driver/delivery_issues/data/models/response/driver_reassignment_request_details_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/dispatcher_reassignment_decision_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/dispatcher_assign_handover_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/request/handover_return_to_kitchen_request_dto.dart';
+import '../../features/dispatcher/dispatcher_support/data/models/response/dispatcher_support_handovers_paged_response_dto.dart';
+import '../../features/driver/support_handovers/data/models/response/support_handover_response_dto.dart';
+import '../../features/driver/support_handovers/data/models/request/driver_handover_arrival_request_dto.dart';
+import '../../features/driver/support_handovers/data/models/request/driver_handover_scan_request_dto.dart';
+import '../../features/driver/support_handovers/data/models/request/support_handover_cancel_request_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/request/driver_support_add_photos_request_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/response/driver_support_add_photos_response_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/response/driver_support_issue_details_response_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/response/driver_support_issues_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -220,7 +250,7 @@ abstract class ApiServices {
   );
 
   @POST(EndPoints.driverDeviceToken)
-  Future<void> upsertDriverDeviceToken(
+  Future<DriverDeviceTokenResponseDto?> upsertDriverDeviceToken(
     @Body() DriverDeviceTokenRequestDto request,
   );
 
@@ -240,6 +270,25 @@ abstract class ApiServices {
 
   @DELETE(EndPoints.restaurantDeviceTokens)
   Future<void> deactivateRestaurantDeviceTokens(@Query('token') String token);
+
+  @GET(EndPoints.deliveryManagerNotifications)
+  Future<List<DeliveryManagerNotificationResponseDto>>
+  getDeliveryManagerNotifications();
+
+  @PUT(EndPoints.deliveryManagerNotificationRead)
+  Future<void> markDeliveryManagerNotificationAsRead(
+    @Path('notificationId') String notificationId,
+  );
+
+  @POST(EndPoints.deliveryManagerDeviceToken)
+  Future<void> registerDeliveryManagerDeviceToken(
+    @Body() RestaurantDeviceTokenRequestDto request,
+  );
+
+  @POST(EndPoints.deliveryManagerDeviceTokenDeactivate)
+  Future<void> deactivateDeliveryManagerDeviceToken(
+    @Body() Map<String, dynamic> body,
+  );
 
   @GET(EndPoints.dispatcherDashboardOverview)
   Future<DispatcherDashboardOverviewResponseDto>
@@ -423,7 +472,7 @@ abstract class ApiServices {
 
   @POST(EndPoints.driverStartDelivery)
   Future<DriverStartDeliveryResponseDto> startDriverDelivery(
-    @Path('boxId') String boxId,
+    @Path('tripId') String tripId,
   );
 
   @POST(EndPoints.driverTripStart)
@@ -477,5 +526,261 @@ abstract class ApiServices {
   Future<DriverReassignmentResponseDto> requestDriverReassignment(
     @Path('boxId') String boxId,
     @Body() DriverReassignmentRequestDto request,
+  );
+
+  @POST(EndPoints.driverReportIssue)
+  Future<String> reportDriverIssue(
+    @Path('boxId') String boxId,
+    @Body() DriverReportIssueRequestDto request,
+  );
+
+  @POST(EndPoints.driverReportDelay)
+  Future<bool> reportDriverDelay(
+    @Path('boxId') String boxId,
+    @Body() DriverReportDelayRequestDto request,
+  );
+
+  @MultiPart()
+  @POST(EndPoints.driverDeliveryProofUpload)
+  Future<DriverIssueEvidenceUploadResponseDto> uploadDriverIssueEvidence(
+    @Part(name: 'file') MultipartFile file,
+    @Part(name: 'scope') String scope,
+    @Part(name: 'folder') String folder,
+  );
+
+  @GET(EndPoints.driverReassignmentRequests)
+  Future<List<DriverReassignmentRequestDetailsDto>>
+  getDriverReassignmentRequests({
+    @Query('boxId') String? boxId,
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 20,
+  });
+
+  @GET(EndPoints.driverReassignmentRequestById)
+  Future<DriverReassignmentRequestDetailsDto> getDriverReassignmentRequestById(
+    @Path('requestId') String requestId,
+  );
+
+  @GET(EndPoints.dispatcherReassignmentRequestById)
+  Future<DriverReassignmentRequestDetailsDto>
+  getDispatcherReassignmentRequestById(@Path('requestId') String requestId);
+
+  @POST(EndPoints.dispatcherAcceptReassignment)
+  Future<DriverReassignmentRequestDetailsDto> acceptDispatcherReassignment(
+    @Path('requestId') String requestId,
+    @Body() DispatcherReassignmentDecisionRequestDto request,
+  );
+
+  @POST(EndPoints.dispatcherRejectReassignment)
+  Future<DriverReassignmentRequestDetailsDto> rejectDispatcherReassignment(
+    @Path('requestId') String requestId,
+    @Body() DispatcherReassignmentDecisionRequestDto request,
+  );
+
+  @POST(EndPoints.dispatcherAssignHandover)
+  Future<SupportHandoverResponseDto> assignDispatcherSupportHandover(
+    @Path('issueId') String issueId,
+    @Body() DispatcherAssignHandoverRequestDto request,
+  );
+
+  @GET(EndPoints.dispatcherSupportHandovers)
+  Future<DispatcherSupportHandoversPagedResponseDto>
+  getDispatcherSupportHandovers({
+    @Query('status') String? status,
+    @Query('restaurantId') String? restaurantId,
+    @Query('page') int page = 1,
+    @Query('pageSize') int pageSize = 20,
+  });
+
+  @GET(EndPoints.dispatcherSupportHandoverById)
+  Future<SupportHandoverResponseDto> getDispatcherSupportHandoverById(
+    @Path('handoverId') String handoverId,
+  );
+
+  @POST(EndPoints.dispatcherCancelSupportHandover)
+  Future<SupportHandoverResponseDto> cancelDispatcherSupportHandover(
+    @Path('handoverId') String handoverId,
+    @Body() SupportHandoverCancelRequestDto request,
+  );
+
+  @POST(EndPoints.dispatcherHandoverReturnToKitchen)
+  Future<SupportHandoverResponseDto> returnHandoverBoxToKitchen(
+    @Path('handoverId') String handoverId,
+    @Path('tripStopId') String tripStopId,
+    @Body() HandoverReturnToKitchenRequestDto request,
+  );
+
+  @GET(EndPoints.driverSupportHandovers)
+  Future<List<SupportHandoverResponseDto>> getDriverSupportHandovers({
+    @Query('status') String status = 'active',
+  });
+
+  @GET(EndPoints.driverSupportHandoverById)
+  Future<SupportHandoverResponseDto> getDriverSupportHandoverById(
+    @Path('handoverId') String handoverId,
+  );
+
+  @POST(EndPoints.driverSupportHandoverArrival)
+  Future<SupportHandoverResponseDto> reportDriverHandoverArrival(
+    @Path('handoverId') String handoverId,
+    @Body() DriverHandoverArrivalRequestDto request,
+  );
+
+  @POST(EndPoints.driverSupportHandoverScan)
+  Future<SupportHandoverResponseDto> scanDriverHandoverBox(
+    @Path('handoverId') String handoverId,
+    @Body() DriverHandoverScanRequestDto request,
+  );
+
+  @POST(EndPoints.driverSupportHandoverComplete)
+  Future<SupportHandoverResponseDto> completeDriverSupportHandover(
+    @Path('handoverId') String handoverId,
+  );
+
+  @POST(EndPoints.driverCancelSupportHandover)
+  Future<SupportHandoverResponseDto> cancelDriverSupportHandover(
+    @Path('handoverId') String handoverId,
+    @Body() SupportHandoverCancelRequestDto request,
+  );
+
+  // Driver Support Issues endpoints
+  @GET(EndPoints.driverSupportIssues)
+  Future<DriverSupportIssuesResponseDto> getDriverSupportIssues({
+    @Query('status') String? status,
+    @Query('search') String? search,
+    @Query('pageNumber') int? pageNumber,
+    @Query('pageSize') int? pageSize,
+  });
+
+  @GET(EndPoints.driverSupportIssueById)
+  Future<DriverSupportIssueDetailsResponseDto> getDriverSupportIssueDetails(
+    @Path('issueId') String issueId,
+  );
+
+  @POST(EndPoints.driverSupportIssuePhotos)
+  Future<DriverSupportAddPhotosResponseDto> addDriverSupportIssuePhotos(
+    @Path('issueId') String issueId,
+    @Body() DriverSupportAddPhotosRequestDto request,
+  );
+
+  // Voice Calls V2 endpoints
+  @POST(EndPoints.voiceCallsV2Register)
+  Future<VoiceDeviceRegisterResponseDto> registerVoiceDevice(
+    @Body() VoiceDeviceRegisterRequestDto request,
+  );
+
+  @POST(EndPoints.voiceCallsV2Revoke)
+  Future<void> revokeVoiceDevice(
+    @Path('deviceSessionId') String deviceSessionId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Eligibility)
+  Future<VoiceCallEligibilityResponseDto> checkVoiceCallEligibility(
+    @Path('tripStopId') String tripStopId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2Initiate)
+  Future<VoiceCallSnapshotResponseDto> initiateVoiceCall(
+    @Body() VoiceCallInitiateRequestDto request,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2Cancel)
+  Future<void> cancelVoiceCall(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2End)
+  Future<void> endVoiceCall(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Active)
+  Future<VoiceCallSnapshotResponseDto?> getActiveVoiceCall(
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Call)
+  Future<VoiceCallSnapshotResponseDto> getVoiceCallSnapshot(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2IceServers)
+  Future<IceServersResponseDto> getVoiceIceServers(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2ReportConnecting)
+  Future<void> reportVoiceConnecting(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2ReportConnected)
+  Future<void> reportVoiceConnected(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.voiceCallsV2Heartbeat)
+  Future<void> sendVoiceHeartbeat(
+    @Path('callId') String callId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @GET(EndPoints.voiceCallsV2Display)
+  Future<VoiceCallDisplayResponseDto> getVoiceCallDisplay(
+    @Path('callId') String callId,
+    @Header('Accept-Language') String? language,
+  );
+
+  // Delivery Contact Case endpoints
+  @GET(EndPoints.deliveryContactCase)
+  Future<DeliveryContactCaseResponseDto> getDeliveryContactCase(
+    @Path('tripStopId') String tripStopId,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.deliveryContactHold)
+  Future<DeliveryContactCaseResponseDto> holdDeliveryContactCase(
+    @Path('tripStopId') String tripStopId,
+    @Body() DeliveryContactHoldRequestDto request,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.deliveryContactResume)
+  Future<DeliveryContactCaseResponseDto> resumeDeliveryContactCase(
+    @Path('tripStopId') String tripStopId,
+    @Body() DeliveryContactResumeRequestDto request,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
+  );
+
+  @POST(EndPoints.deliveryContactRevealPhone)
+  Future<PhoneGrantResponseDto> revealDeliveryCustomerPhone(
+    @Path('tripStopId') String tripStopId,
+    @Body() DeliveryContactRevealPhoneRequestDto request,
+    @Header('Cache-Control') String cacheControl,
+    @Header(NetworkConstants.xVoiceDeviceSession) String? sessionId,
+    @Header(NetworkConstants.xVoiceDeviceProof) String? proof,
   );
 }

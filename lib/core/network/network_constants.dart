@@ -2,11 +2,13 @@ abstract class NetworkConstants {
   static const String baseUrl = 'https://api.trymealmate.com';
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer';
+  static const String xVoiceDeviceSession = 'X-Voice-Device-Session';
+  static const String xVoiceDeviceProof = 'X-Voice-Device-Proof';
 }
 
 abstract class EndPoints {
   static const String driverStartDelivery =
-      '/api/v1/driver/orders/{boxId}/start-delivery';
+      '/api/v1/driver/trips/{tripId}/start';
   static const String refresh = '/api/v1/auth/refresh';
 
   // Shared staff auth endpoints
@@ -65,6 +67,14 @@ abstract class EndPoints {
   static const String driverDeviceToken = '/api/v1/driver/device-token';
   static const String restaurantDeviceTokens =
       '/api/v1/restaurants/device-tokens';
+  static const String deliveryManagerNotifications =
+      '/api/v1/delivery-manager/notifications';
+  static const String deliveryManagerNotificationRead =
+      '/api/v1/delivery-manager/notifications/{notificationId}/read';
+  static const String deliveryManagerDeviceToken =
+      '/api/v1/delivery-manager/device-token';
+  static const String deliveryManagerDeviceTokenDeactivate =
+      '/api/v1/delivery-manager/device-token/deactivate';
 
   static const String dispatcherDashboardOverview =
       '/api/v1/dispatcher/dashboard/overview';
@@ -143,7 +153,95 @@ abstract class EndPoints {
       '/api/v1/driver/orders/{boxId}/deliver';
   static const String driverDeliveryProofUpload = '/api/v1/uploads';
 
-  // Driver reassignment request endpoint (Screen 08.02)
   static const String driverRequestReassignment =
       '/api/v1/driver/orders/{boxId}/request-reassignment';
+  static const String driverReportIssue =
+      '/api/v1/driver/orders/{boxId}/report-issue';
+  static const String driverReportDelay =
+      '/api/v1/driver/orders/{boxId}/report-delay';
+
+  // Driver reassignment requests
+  static const String driverReassignmentRequests =
+      '/api/v1/driver/reassignment-requests';
+  static const String driverReassignmentRequestById =
+      '/api/v1/driver/reassignment-requests/{requestId}';
+
+  // Dispatcher reassignment requests & decisions
+  static const String dispatcherReassignmentRequestById =
+      '/api/v1/dispatcher/reassignment-requests/{requestId}';
+  static const String dispatcherAcceptReassignment =
+      '/api/v1/dispatcher/reassignment-requests/{requestId}/accept';
+  static const String dispatcherRejectReassignment =
+      '/api/v1/dispatcher/reassignment-requests/{requestId}/reject';
+
+  // Dispatcher support handovers
+  static const String dispatcherAssignHandover =
+      '/api/v1/dispatcher/support-handovers/issues/{issueId}/assign';
+  static const String dispatcherSupportHandovers =
+      '/api/v1/dispatcher/support-handovers';
+  static const String dispatcherSupportHandoverById =
+      '/api/v1/dispatcher/support-handovers/{handoverId}';
+  static const String dispatcherCancelSupportHandover =
+      '/api/v1/dispatcher/support-handovers/{handoverId}/cancel';
+  static const String dispatcherHandoverReturnToKitchen =
+      '/api/v1/dispatcher/support-handovers/{handoverId}/boxes/{tripStopId}/follow-up/return-to-kitchen';
+
+  // Driver support handovers
+  static const String driverSupportHandovers =
+      '/api/v1/driver/support-handovers';
+  static const String driverSupportHandoverById =
+      '/api/v1/driver/support-handovers/{handoverId}';
+  static const String driverSupportHandoverArrival =
+      '/api/v1/driver/support-handovers/{handoverId}/arrival';
+  static const String driverSupportHandoverScan =
+      '/api/v1/driver/support-handovers/{handoverId}/boxes/scan';
+  static const String driverSupportHandoverComplete =
+      '/api/v1/driver/support-handovers/{handoverId}/complete';
+  static const String driverCancelSupportHandover =
+      '/api/v1/driver/support-handovers/{handoverId}/cancel';
+
+
+  // Voice Calls V2 endpoints
+  static const String voiceCallsV2Register =
+      '/api/v2/voice-calls/devices/register';
+  static const String voiceCallsV2Revoke =
+      '/api/v2/voice-calls/devices/{deviceSessionId}/revoke';
+  static const String voiceCallsV2Eligibility =
+      '/api/v2/voice-calls/eligibility/{tripStopId}';
+  static const String voiceCallsV2Initiate = '/api/v2/voice-calls/initiate';
+  static const String voiceCallsV2Cancel =
+      '/api/v2/voice-calls/{callId}/cancel';
+  static const String voiceCallsV2End = '/api/v2/voice-calls/{callId}/end';
+  static const String voiceCallsV2Active = '/api/v2/voice-calls/active';
+  static const String voiceCallsV2Call = '/api/v2/voice-calls/{callId}';
+  static const String voiceCallsV2Display =
+      '/api/v2/voice-calls/{callId}/display';
+  static const String voiceCallsV2Events =
+      '/api/v2/voice-calls/{callId}/events';
+  static const String voiceCallsV2IceServers =
+      '/api/v2/voice-calls/{callId}/ice-servers';
+  static const String voiceCallsV2ReportConnecting =
+      '/api/v2/voice-calls/{callId}/reports/connecting';
+  static const String voiceCallsV2ReportConnected =
+      '/api/v2/voice-calls/{callId}/reports/connected';
+  static const String voiceCallsV2Heartbeat =
+      '/api/v2/voice-calls/{callId}/heartbeat';
+  static const String voiceCallsV2Hub = '/hubs/voice-call-v2';
+
+  // Delivery Contact Case endpoints
+  static const String deliveryContactCase =
+      '/api/v2/delivery-contact/{tripStopId}/case';
+  static const String deliveryContactHold =
+      '/api/v2/delivery-contact/{tripStopId}/hold';
+  static const String deliveryContactResume =
+      '/api/v2/delivery-contact/{tripStopId}/resume';
+  static const String deliveryContactRevealPhone =
+      '/api/v2/delivery-contact/{tripStopId}/reveal-phone';
+
+  // Driver Support Issues endpoints
+  static const String driverSupportIssues = '/api/v1/driver/support/issues';
+  static const String driverSupportIssueById =
+      '/api/v1/driver/support/issues/{issueId}';
+  static const String driverSupportIssuePhotos =
+      '/api/v1/driver/support/issues/{issueId}/photos';
 }

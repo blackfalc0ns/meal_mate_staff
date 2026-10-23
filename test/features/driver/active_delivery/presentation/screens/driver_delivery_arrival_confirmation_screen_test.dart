@@ -44,6 +44,10 @@ class TestDriverDeliveryRepository implements DriverDeliveryRepository {
   @override
   Future<ApiResult<DriverStartDeliveryResultEntity>> startDelivery({
     required String boxId,
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
   }) async => ApiSuccessResult(
     data: DriverStartDeliveryResultEntity(boxId: boxId, status: 'InTransit'),
   );

@@ -258,6 +258,52 @@ class DispatcherBatchReadyPayload extends PushNotificationPayload {
   int get hashCode => batchId.hashCode;
 }
 
+class DispatcherDriverSupportIssuePayload extends PushNotificationPayload {
+  const DispatcherDriverSupportIssuePayload({
+    required this.issueId,
+    this.notificationId,
+    this.deepLink,
+  });
+
+  final String issueId;
+  final String? notificationId;
+  final String? deepLink;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DispatcherDriverSupportIssuePayload &&
+          runtimeType == other.runtimeType &&
+          issueId == other.issueId &&
+          notificationId == other.notificationId;
+
+  @override
+  int get hashCode => Object.hash(issueId, notificationId);
+}
+
+class DispatcherDriverSupportHandoverPayload extends PushNotificationPayload {
+  const DispatcherDriverSupportHandoverPayload({
+    required this.handoverId,
+    this.notificationId,
+    this.deepLink,
+  });
+
+  final String handoverId;
+  final String? notificationId;
+  final String? deepLink;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DispatcherDriverSupportHandoverPayload &&
+          runtimeType == other.runtimeType &&
+          handoverId == other.handoverId &&
+          notificationId == other.notificationId;
+
+  @override
+  int get hashCode => Object.hash(handoverId, notificationId);
+}
+
 class IncomingCallPayload extends PushNotificationPayload {
   const IncomingCallPayload({required this.rawData});
 

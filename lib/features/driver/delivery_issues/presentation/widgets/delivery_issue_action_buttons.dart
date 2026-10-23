@@ -8,13 +8,13 @@ import '../../../../../core/extensions/extensions.dart';
 class DeliveryIssueActionButtons extends StatelessWidget {
   const DeliveryIssueActionButtons({
     super.key,
-    required this.onSubmit,
+    this.onSubmit,
     this.onRequestReassign,
     required this.onCallSupervisor,
     this.isLoading = false,
   });
 
-  final VoidCallback onSubmit;
+  final VoidCallback? onSubmit;
   final VoidCallback? onRequestReassign;
   final VoidCallback onCallSupervisor;
   final bool isLoading;
@@ -31,7 +31,7 @@ class DeliveryIssueActionButtons extends StatelessWidget {
         SizedBox(
           height: Spacing.buttonHeight,
           child: ElevatedButton.icon(
-            onPressed: isLoading ? null : onSubmit,
+            onPressed: (isLoading || onSubmit == null) ? null : onSubmit,
             icon: isLoading
                 ? SizedBox(
                     width: 18,

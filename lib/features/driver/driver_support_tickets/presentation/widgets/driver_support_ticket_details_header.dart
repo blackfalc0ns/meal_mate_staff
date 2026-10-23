@@ -7,10 +7,7 @@ import '../../../../../core/widget/custom_app_bar.dart';
 
 class DriverSupportTicketDetailsHeader extends StatelessWidget
     implements PreferredSizeWidget {
-  const DriverSupportTicketDetailsHeader({
-    super.key,
-    this.onBackPressed,
-  });
+  const DriverSupportTicketDetailsHeader({super.key, this.onBackPressed});
 
   final VoidCallback? onBackPressed;
 

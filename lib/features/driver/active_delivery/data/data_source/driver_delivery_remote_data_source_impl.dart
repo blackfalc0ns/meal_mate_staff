@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../../../../../features/driver/confirm_receipt/data/models/request/start_driver_trip_request_dto.dart';
 import '../models/response/driver_start_delivery_response_dto.dart';
 
 import 'package:injectable/injectable.dart';
@@ -20,8 +21,22 @@ class DriverDeliveryRemoteDataSourceImpl
 
   @override
   Future<DriverStartDeliveryResponseDto> startDelivery({
-    required String boxId,
-  }) => _apiServices.startDriverDelivery(boxId);
+    required String tripId,
+    required double latitude,
+    required double longitude,
+    required String idempotencyKey,
+  }) async {
+    final response = await _apiServices.startDriverTrip(
+      tripId,
+      idempotencyKey,
+      StartDriverTripRequestDto(latitude: latitude, longitude: longitude),
+    );
+    return DriverStartDeliveryResponseDto(
+      tripId: response.tripId,
+      status: response.status,
+      startedAtUtc: response.startedAtUtc,
+    );
+  }
 
   @override
   Future<DriverArrivalResponseDto> arriveAtCustomer({

@@ -35,6 +35,7 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
   bool _handlersRegistered = false;
   bool _isConnected = false;
   String? _builtWithToken;
+  String? _tripId;
 
   final _eventController =
       StreamController<DriverOrdersRealtimeEvent>.broadcast();
@@ -72,6 +73,7 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     'driverStatusChanged',
     'driver-status-changed',
     'shift-status-changed',
+    'driver-support-issue-updated',
   ];
 
   @override
@@ -80,11 +82,31 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
   @override
   Stream<bool> get connectionStatus => _connectionStatusController.stream;
 
+  static const String _zeroGuid = '00000000-0000-0000-0000-000000000000';
+  static final RegExp _guidRegExp = RegExp(
+    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+  );
+
+  static bool isValidTripId(String? value) {
+    if (value == null) return false;
+    final normalized = value.trim();
+    if (normalized.isEmpty ||
+        normalized.toLowerCase() == 'null' ||
+        normalized == _zeroGuid) {
+      return false;
+    }
+    return _guidRegExp.hasMatch(normalized);
+  }
+
   @override
-  bool get isConnected =>
-      !_isDisposed &&
-      _isConnected &&
-      _hubConnection?.state == HubConnectionState.Connected;
+  bool get isConnected {
+    if (_isDisposed || !_isConnected || _hubConnection == null) return false;
+    try {
+      return _hubConnection!.state == HubConnectionState.Connected;
+    } catch (_) {
+      return _isConnected;
+    }
+  }
 
   static String buildHubUrl({String? base}) {
     final raw = base ?? NetworkConstants.baseUrl;
@@ -100,11 +122,45 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     return uri.replace(path: normalizedPath).toString();
   }
 
-  String get _resolvedHubUrl => _customHubUrl ?? buildHubUrl();
+  String get _resolvedHubUrl {
+    final base = _customHubUrl ?? buildHubUrl();
+    final uri = Uri.parse(base);
+    final queryParams = Map<String, String>.from(uri.queryParameters);
+    if (isValidTripId(_tripId)) {
+      queryParams['tripId'] = _tripId!.trim();
+    } else {
+      queryParams.remove('tripId');
+    }
+    return uri
+        .replace(queryParameters: queryParams.isEmpty ? null : queryParams)
+        .toString();
+  }
+
+  Future<void> setTripId(String? tripId) async {
+    final normalized = tripId?.trim();
+    final validTripId = isValidTripId(normalized) ? normalized : null;
+    if (_tripId == validTripId) return;
+    _tripId = validTripId;
+    if (isConnected || _hubConnection != null) {
+      _log(
+        'Trip ID changed to "$_tripId". Reconnecting SignalR hub with updated query parameter...',
+      );
+      _removeHandlers();
+      try {
+        await _hubConnection?.stop();
+      } catch (_) {}
+      _hubConnection = null;
+      _builtWithToken = null;
+      _emitConnectionStatus(false);
+      await start();
+    }
+  }
 
   void _log(String message, {Object? error}) {
     developer.log(message, name: 'DriverOrdersSignalR', error: error);
-    debugPrint('🛰️ [SignalR] $message${error != null ? ' | Error: $error' : ''}');
+    debugPrint(
+      '🛰️ [SignalR] $message${error != null ? ' | Error: $error' : ''}',
+    );
   }
 
   void _emitConnectionStatus(bool connected) {
@@ -116,15 +172,7 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
   }
 
   void _ensureHubBuilt(String token) {
-    if (_hubConnection != null && _builtWithToken == token) return;
-
-    if (_hubConnection != null && _builtWithToken != token) {
-      _removeHandlers();
-      try {
-        unawaited(_hubConnection?.stop());
-      } catch (_) {}
-      _hubConnection = null;
-    }
+    if (_hubConnection != null) return;
 
     _builtWithToken = token;
 
@@ -133,11 +181,17 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     } else {
       final uri = Uri.parse(_resolvedHubUrl);
       final queryParams = Map<String, String>.from(uri.queryParameters);
-      queryParams['access_token'] = token;
+      queryParams.remove('access_token');
       final fullUrl = uri.replace(queryParameters: queryParams).toString();
 
       final httpOptions = HttpConnectionOptions(
-        accessTokenFactory: () async => token,
+        accessTokenFactory: () async {
+          final latest = refreshService != null
+              ? await refreshService!.ensureFreshToken()
+              : await _tokenService.getToken();
+          _builtWithToken = latest;
+          return latest ?? '';
+        },
       );
 
       _hubConnection = HubConnectionBuilder()
@@ -213,7 +267,9 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
       }
 
       if (map == null) {
-        _log('⚠️ Cannot parse payload as Map for event "$eventName": $rawPayload');
+        _log(
+          '⚠️ Cannot parse payload as Map for event "$eventName": $rawPayload',
+        );
         return;
       }
 
@@ -238,7 +294,9 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
         map,
       );
 
-      _log('📢 Emitting domain event: ${domainEvent.runtimeType} (eventId: ${domainEvent.eventId})');
+      _log(
+        '📢 Emitting domain event: ${domainEvent.runtimeType} (eventId: ${domainEvent.eventId})',
+      );
       if (!_eventController.isClosed) {
         _eventController.add(domainEvent);
       }
@@ -277,7 +335,9 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
 
   Future<void> _doStart() async {
     try {
-      final token = await _tokenService.getToken();
+      final token = refreshService != null
+          ? await refreshService!.ensureFreshToken()
+          : await _tokenService.getToken();
       if (token == null || token.isEmpty) {
         _log('Cannot connect to SignalR: missing auth token');
         return;
@@ -287,7 +347,13 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
       _log('Connecting to SignalR hub at: $_resolvedHubUrl');
       await _hubConnection?.start();
       _emitConnectionStatus(true);
-      _log('🚀 SignalR Driver Hub connection started successfully (state: ${_hubConnection?.state})');
+      HubConnectionState? hubState;
+      try {
+        hubState = _hubConnection?.state;
+      } catch (_) {}
+      _log(
+        '🚀 SignalR Driver Hub connection started successfully (state: $hubState)',
+      );
     } catch (e) {
       _log('Failed to start SignalR connection: $e', error: e);
       _emitConnectionStatus(false);
@@ -302,7 +368,9 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     if (refreshService == null) return;
     try {
       _log('Refreshing expired token for Driver Hub...');
-      final newToken = await refreshService!.refreshToken();
+      final newToken = await refreshService!.refreshToken(
+        rejectedAccessToken: _builtWithToken,
+      );
       if (newToken != null && newToken.isNotEmpty) {
         _ensureHubBuilt(newToken);
         await _hubConnection?.start();
@@ -322,15 +390,26 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
     required double longitude,
     double? heading,
     double? speedKmh,
+    double? accuracyMeters,
+    DateTime? capturedAtUtc,
+    String? tripId,
   }) async {
     if (_isDisposed) {
       throw StateError('SignalR client is disposed');
     }
+    if (tripId != null) await setTripId(tripId);
 
     // Client-side validation: coordinates must be valid and not 0,0
     if (latitude == 0 && longitude == 0) {
       _log('⚠️ Coordinates (0,0) rejected by client validation');
       throw ArgumentError('Invalid zero coordinates');
+    }
+
+    if (!isValidTripId(_tripId)) {
+      _log(
+        '⚠️ Cannot invoke UpdateLocationV2: tripId is missing or invalid ($_tripId)',
+      );
+      throw StateError('validation.invalid_format: invalid tripId');
     }
 
     if (!isConnected) {
@@ -344,10 +423,15 @@ class DriverOrdersSignalRClient implements DriverOrdersRealtimeClient {
       final args = <Object>[
         latitude,
         longitude,
+        accuracyMeters ?? 0.0,
+        (capturedAtUtc ?? DateTime.now().toUtc()).toUtc().toIso8601String(),
         heading ?? 0.0,
         speedKmh ?? 0.0,
       ];
-      final result = await _hubConnection!.invoke('UpdateLocation', args: args);
+      final result = await _hubConnection!.invoke(
+        'UpdateLocationV2',
+        args: args,
+      );
 
       if (result is Map) {
         final ack = Map<String, dynamic>.from(result);

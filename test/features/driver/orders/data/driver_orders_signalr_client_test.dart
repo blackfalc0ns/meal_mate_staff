@@ -24,6 +24,9 @@ class _FakeHubConnection implements HubConnection {
   int stopCalls = 0;
 
   @override
+  HubConnectionState state = HubConnectionState.Disconnected;
+
+  @override
   void on(String methodName, void Function(List<Object?>?) newMethod) {
     handlers[methodName] = newMethod;
   }
@@ -51,11 +54,13 @@ class _FakeHubConnection implements HubConnection {
   @override
   Future<void> start() async {
     startCalls++;
+    state = HubConnectionState.Connected;
   }
 
   @override
   Future<void> stop() async {
     stopCalls++;
+    state = HubConnectionState.Disconnected;
     closeHandler?.call();
   }
 
@@ -83,11 +88,11 @@ void main() {
   });
 
   group('DriverOrdersSignalRClient URL & Lifecycle', () {
-    test('buildHubUrl constructs correct url with /hubs/driver', () {
+    test('buildHubUrl constructs correct url with /hubs/driver-hub', () {
       final url = DriverOrdersSignalRClient.buildHubUrl(
         base: 'http://maelmate.runasp.net',
       );
-      expect(url, 'http://maelmate.runasp.net/hubs/driver');
+      expect(url, 'http://maelmate.runasp.net/hubs/driver-hub');
     });
 
     test('start() registers 5 handlers and calls start once', () async {
@@ -169,6 +174,30 @@ void main() {
       await client.stop();
       expect(fakeHub.stopCalls, 1);
       expect(fakeHub.handlers.isEmpty, true);
+    });
+
+    test('isValidTripId validates GUID and rejects null, empty, literal null, and zero-GUID', () {
+      expect(DriverOrdersSignalRClient.isValidTripId(null), false);
+      expect(DriverOrdersSignalRClient.isValidTripId(''), false);
+      expect(DriverOrdersSignalRClient.isValidTripId('   '), false);
+      expect(DriverOrdersSignalRClient.isValidTripId('null'), false);
+      expect(DriverOrdersSignalRClient.isValidTripId('NULL'), false);
+      expect(DriverOrdersSignalRClient.isValidTripId('00000000-0000-0000-0000-000000000000'), false);
+      expect(DriverOrdersSignalRClient.isValidTripId('TRIP-12345'), false);
+      expect(DriverOrdersSignalRClient.isValidTripId('11111111-1111-4111-8111-111111111111'), true);
+      expect(DriverOrdersSignalRClient.isValidTripId('e3b0c442-98fc-1c14-9afb-4c72e04f9382'), true);
+    });
+
+    test('updateLocation throws StateError when tripId is not valid GUID', () async {
+      await client.start();
+      expect(
+        () => client.updateLocation(
+          latitude: 30.0444,
+          longitude: 31.2357,
+          tripId: 'invalid-id',
+        ),
+        throwsA(isA<StateError>()),
+      );
     });
   });
 }

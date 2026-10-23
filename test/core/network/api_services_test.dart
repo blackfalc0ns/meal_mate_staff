@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/core/network/api_services.dart';
@@ -18,6 +20,11 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/m
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/resolve_issue_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_drivers/data/models/request/assign_driver_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/data/models/request/report_box_issue_request_dto.dart';
+import 'package:meal_mate_delivery/features/driver/delivery_issues/data/models/request/driver_report_issue_request_dto.dart';
+import 'package:meal_mate_delivery/features/driver/delivery_issues/data/models/request/driver_report_delay_request_dto.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/dispatcher_reassignment_decision_request_dto.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/dispatcher_assign_handover_request_dto.dart';
+import 'package:meal_mate_delivery/features/driver/support_handovers/data/models/request/driver_handover_scan_request_dto.dart';
 
 void main() {
   late Dio dio;
@@ -32,8 +39,14 @@ void main() {
           capturedOptions = options;
           dynamic responseData = <String, dynamic>{};
           if (options.path == EndPoints.driverRestaurants ||
-              options.path == EndPoints.driverNationalities) {
+              options.path == EndPoints.driverNationalities ||
+              options.path == EndPoints.driverReassignmentRequests ||
+              options.path == EndPoints.driverSupportHandovers) {
             responseData = <dynamic>[];
+          } else if (options.path.endsWith('/report-issue')) {
+            responseData = 'd1c5c144-2d47-4773-8430-ce38b7b220af';
+          } else if (options.path.endsWith('/report-delay')) {
+            responseData = true;
           }
           handler.resolve(
             Response(
@@ -550,6 +563,154 @@ void main() {
       expect(capturedOptions.method, 'GET');
       expect(capturedOptions.path, '/api/v1/dispatcher/drivers/$driverId/current-location');
     });
+
+    test('reportDriverIssue hits POST driverReportIssue and returns bare JSON string UUID', () async {
+      const boxId = '4f8a3c21-9b12-42e7-90c1-872f2316e110';
+      final result = await apiServices.reportDriverIssue(
+        boxId,
+        const DriverReportIssueRequestDto(
+          issueType: 'VehicleBreakdown',
+          description: 'Flat tire on highway',
+          severity: 'High',
+          evidencePhotoStorageKeys: ['key-1', 'key-2'],
+        ),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/driver/orders/$boxId/report-issue');
+      expect(capturedOptions.data['issueType'], 'VehicleBreakdown');
+      expect(capturedOptions.data['description'], 'Flat tire on highway');
+      expect(capturedOptions.data['severity'], 'High');
+      expect(capturedOptions.data['evidencePhotoStorageKeys'], ['key-1', 'key-2']);
+      expect(result, 'd1c5c144-2d47-4773-8430-ce38b7b220af');
+    });
+
+    test('reportDriverDelay hits POST driverReportDelay and returns true', () async {
+      const boxId = '4f8a3c21-9b12-42e7-90c1-872f2316e110';
+      final result = await apiServices.reportDriverDelay(
+        boxId,
+        const DriverReportDelayRequestDto(
+          delayMinutes: 25,
+          reason: 'Severe traffic congestion',
+        ),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/driver/orders/$boxId/report-delay');
+      expect(capturedOptions.data['delayMinutes'], 25);
+      expect(capturedOptions.data['reason'], 'Severe traffic congestion');
+      expect(result, isTrue);
+    });
+
+    test('uploadDriverIssueEvidence hits POST /api/v1/uploads with multipart fields', () async {
+      final tempFile = File('${Directory.systemTemp.path}/test_evidence.png');
+      await tempFile.writeAsBytes([1, 2, 3]);
+
+      await apiServices.uploadDriverIssueEvidence(
+        await MultipartFile.fromFile(tempFile.path, contentType: DioMediaType.parse('image/png')),
+        'drivers',
+        'issue-evidence',
+      );
+
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/uploads');
+      final formData = capturedOptions.data as FormData;
+      expect(
+        formData.fields.any(
+          (f) => f.key == 'folder' && f.value == 'issue-evidence',
+        ),
+        isTrue,
+      );
+      expect(
+        formData.fields.any(
+          (f) => f.key == 'scope' && f.value == 'drivers',
+        ),
+        isTrue,
+      );
+      expect(formData.files.any((f) => f.key == 'file'), isTrue);
+
+      if (await tempFile.exists()) {
+        await tempFile.delete();
+      }
+    });
+
+    test('getDriverReassignmentRequests hits GET with query params and parses direct array', () async {
+      const boxId = '4f8a3c21-9b12-42e7-90c1-872f2316e110';
+      final result = await apiServices.getDriverReassignmentRequests(
+        boxId: boxId,
+        page: 1,
+        pageSize: 20,
+      );
+      expect(capturedOptions.method, 'GET');
+      expect(capturedOptions.path, '/api/v1/driver/reassignment-requests');
+      expect(capturedOptions.queryParameters['boxId'], boxId);
+      expect(capturedOptions.queryParameters['page'], 1);
+      expect(capturedOptions.queryParameters['pageSize'], 20);
+      expect(result, isA<List>());
+    });
+
+    test('acceptDispatcherReassignment hits POST with decision notes', () async {
+      const requestId = 'req-123';
+      await apiServices.acceptDispatcherReassignment(
+        requestId,
+        const DispatcherReassignmentDecisionRequestDto(notes: 'Approved reassignment'),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/dispatcher/reassignment-requests/$requestId/accept');
+      expect(capturedOptions.data['notes'], 'Approved reassignment');
+    });
+
+    test('rejectDispatcherReassignment hits POST with required decision notes', () async {
+      const requestId = 'req-123';
+      await apiServices.rejectDispatcherReassignment(
+        requestId,
+        const DispatcherReassignmentDecisionRequestDto(notes: 'Rejected because driver is close to destination'),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/dispatcher/reassignment-requests/$requestId/reject');
+      expect(capturedOptions.data['notes'], 'Rejected because driver is close to destination');
+    });
+
+    test('assignDispatcherSupportHandover hits POST with idempotencyKey in body', () async {
+      const issueId = 'iss-456';
+      await apiServices.assignDispatcherSupportHandover(
+        issueId,
+        const DispatcherAssignHandoverRequestDto(
+          replacementDriverId: 'driver-789',
+          idempotencyKey: 'idemp-key-abc-123',
+          notes: 'Emergency handover assignment',
+        ),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/dispatcher/support-handovers/issues/$issueId/assign');
+      expect(capturedOptions.data['replacementDriverId'], 'driver-789');
+      expect(capturedOptions.data['idempotencyKey'], 'idemp-key-abc-123');
+      expect(capturedOptions.data['notes'], 'Emergency handover assignment');
+    });
+
+    test('scanDriverHandoverBox hits POST with scan body', () async {
+      const handoverId = 'handover-123';
+      await apiServices.scanDriverHandoverBox(
+        handoverId,
+        const DriverHandoverScanRequestDto(
+          code: 'BX-998877',
+          status: 'Received',
+          method: 'Barcode',
+        ),
+      );
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/driver/support-handovers/$handoverId/boxes/scan');
+      expect(capturedOptions.data['code'], 'BX-998877');
+      expect(capturedOptions.data['status'], 'Received');
+      expect(capturedOptions.data['method'], 'Barcode');
+    });
+
+    test('completeDriverSupportHandover hits POST with no body', () async {
+      const handoverId = 'handover-123';
+      await apiServices.completeDriverSupportHandover(handoverId);
+      expect(capturedOptions.method, 'POST');
+      expect(capturedOptions.path, '/api/v1/driver/support-handovers/$handoverId/complete');
+      expect(capturedOptions.data, isNull);
+    });
   });
 }
+
 

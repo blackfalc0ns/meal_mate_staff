@@ -39,6 +39,10 @@ import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/d
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/get_box_tracking_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/domain/usecase/report_box_issue_usecase.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_box_tracking/presentation/manager/box_tracking_view_model.dart';
+import 'package:meal_mate_delivery/core/services/server_clock.dart';
+import 'package:meal_mate_delivery/core/services/server_clock_interceptor.dart';
+import 'package:meal_mate_delivery/features/driver/tracking/presentation/manager/driver_live_location_coordinator.dart';
+import 'package:meal_mate_delivery/features/driver/calling/domain/repo/driver_calling_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -197,29 +201,26 @@ void main() {
     },
   );
 
-  test(
-    'configureDependencies registers operations log dependencies',
-    () async {
-      await configureDependencies();
+  test('configureDependencies registers operations log dependencies', () async {
+    await configureDependencies();
 
-      expect(getIt.isRegistered<OperationsLogRemoteDataSource>(), isTrue);
-      expect(getIt.isRegistered<OperationsLogRepository>(), isTrue);
-      expect(getIt.isRegistered<GetOperationsLogUseCase>(), isTrue);
-      expect(getIt.isRegistered<OperationsViewModel>(), isTrue);
+    expect(getIt.isRegistered<OperationsLogRemoteDataSource>(), isTrue);
+    expect(getIt.isRegistered<OperationsLogRepository>(), isTrue);
+    expect(getIt.isRegistered<GetOperationsLogUseCase>(), isTrue);
+    expect(getIt.isRegistered<OperationsViewModel>(), isTrue);
 
-      final remoteDataSource = getIt<OperationsLogRemoteDataSource>();
-      final repository = getIt<OperationsLogRepository>();
-      final useCase = getIt<GetOperationsLogUseCase>();
-      final vm1 = getIt<OperationsViewModel>();
-      final vm2 = getIt<OperationsViewModel>();
+    final remoteDataSource = getIt<OperationsLogRemoteDataSource>();
+    final repository = getIt<OperationsLogRepository>();
+    final useCase = getIt<GetOperationsLogUseCase>();
+    final vm1 = getIt<OperationsViewModel>();
+    final vm2 = getIt<OperationsViewModel>();
 
-      expect(remoteDataSource, isNotNull);
-      expect(repository, isNotNull);
-      expect(useCase, isNotNull);
-      expect(vm1, isNotNull);
-      expect(identical(vm1, vm2), isFalse); // factory
-    },
-  );
+    expect(remoteDataSource, isNotNull);
+    expect(repository, isNotNull);
+    expect(useCase, isNotNull);
+    expect(vm1, isNotNull);
+    expect(identical(vm1, vm2), isFalse); // factory
+  });
 
   test('configureDependencies registers assign box dependencies', () async {
     await configureDependencies();
@@ -259,8 +260,12 @@ void main() {
     final repository = getIt<BoxTrackingRepository>();
     final trackingUseCase = getIt<GetBoxTrackingUseCase>();
     final issueUseCase = getIt<ReportBoxIssueUseCase>();
-    final vm1 = getIt<BoxTrackingViewModel>(param1: '4f8a3c21-9b12-42e7-90c1-872f2316e110');
-    final vm2 = getIt<BoxTrackingViewModel>(param1: '4f8a3c21-9b12-42e7-90c1-872f2316e110');
+    final vm1 = getIt<BoxTrackingViewModel>(
+      param1: '4f8a3c21-9b12-42e7-90c1-872f2316e110',
+    );
+    final vm2 = getIt<BoxTrackingViewModel>(
+      param1: '4f8a3c21-9b12-42e7-90c1-872f2316e110',
+    );
 
     expect(remoteDataSource, isNotNull);
     expect(repository, isNotNull);
@@ -270,4 +275,31 @@ void main() {
     expect(vm1.state.boxId, '4f8a3c21-9b12-42e7-90c1-872f2316e110');
     expect(identical(vm1, vm2), isFalse); // factory
   });
+
+  test(
+    'configureDependencies registers ServerClock before eager Dio/coordinator consumers',
+    () async {
+      await configureDependencies();
+
+      expect(getIt.isRegistered<ServerClock>(), isTrue);
+      expect(getIt.isRegistered<DriverLiveLocationCoordinator>(), isTrue);
+      expect(getIt.isRegistered<DriverCallingRepository>(), isTrue);
+
+      final clock = getIt<ServerClock>();
+      final coordinator = getIt<DriverLiveLocationCoordinator>();
+      final callingRepo = getIt<DriverCallingRepository>();
+      final dio = getIt<Dio>();
+
+      expect(clock, isNotNull);
+      expect(coordinator, isNotNull);
+      expect(callingRepo, isNotNull);
+
+      // Verify that Dio uses the exact same ServerClock singleton
+      final clockInterceptor = dio.interceptors
+          .whereType<ServerClockInterceptor>()
+          .firstOrNull;
+      expect(clockInterceptor, isNotNull);
+      expect(identical(clockInterceptor!.clock, clock), isTrue);
+    },
+  );
 }

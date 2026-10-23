@@ -1,30 +1,37 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/routing/app_routes.dart';
 import '../../../../../config/theme/font_manager.dart';
 import '../../../../../config/theme/spacing.dart';
 import '../../../../../config/theme/styles_manager.dart';
+import '../../../../../core/di/di.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../domain/entities/driver_call_attempt_entity.dart';
-import '../../domain/fake_data/driver_calling_fake_data.dart';
+import '../manager/driver_calling_event.dart';
+import '../manager/driver_calling_view_model.dart';
 import 'call_attempt_actions.dart';
 import 'call_attempt_alert_banner.dart';
 import 'call_attempt_indicator.dart';
 import 'call_failed_recovery_options.dart';
 import 'customer_call_info_card.dart';
 
-class CustomerCallAttemptsSheet extends StatefulWidget {
+class CustomerCallAttemptsSheet extends StatelessWidget {
   const CustomerCallAttemptsSheet({
     super.key,
     this.initialAttempt,
+    this.tripStopId,
+    this.viewModel,
     this.onStartCall,
     this.onDirectCall,
     this.onReportUnreachable,
   });
 
   final DriverCallAttemptEntity? initialAttempt;
+  final String? tripStopId;
+  final DriverCallingViewModel? viewModel;
   final VoidCallback? onStartCall;
   final VoidCallback? onDirectCall;
   final VoidCallback? onReportUnreachable;
@@ -32,6 +39,8 @@ class CustomerCallAttemptsSheet extends StatefulWidget {
   static Future<void> show(
     BuildContext context, {
     DriverCallAttemptEntity? initialAttempt,
+    String? tripStopId,
+    DriverCallingViewModel? viewModel,
     VoidCallback? onStartCall,
     VoidCallback? onDirectCall,
     VoidCallback? onReportUnreachable,
@@ -48,6 +57,8 @@ class CustomerCallAttemptsSheet extends StatefulWidget {
       ),
       builder: (sheetContext) => CustomerCallAttemptsSheet(
         initialAttempt: initialAttempt,
+        tripStopId: tripStopId,
+        viewModel: viewModel,
         onStartCall: onStartCall,
         onDirectCall: onDirectCall,
         onReportUnreachable: onReportUnreachable,
@@ -56,62 +67,151 @@ class CustomerCallAttemptsSheet extends StatefulWidget {
   }
 
   @override
-  State<CustomerCallAttemptsSheet> createState() =>
-      _CustomerCallAttemptsSheetState();
+  Widget build(BuildContext context) {
+    if (viewModel != null) {
+      return BlocProvider.value(
+        value: viewModel!,
+        child: _CustomerCallAttemptsSheetView(
+          initialAttempt: initialAttempt,
+          tripStopId: tripStopId,
+          onStartCall: onStartCall,
+          onDirectCall: onDirectCall,
+          onReportUnreachable: onReportUnreachable,
+        ),
+      );
+    }
+
+    if (getIt.isRegistered<DriverCallingViewModel>()) {
+      return BlocProvider.value(
+        value: getIt<DriverCallingViewModel>(),
+        child: _CustomerCallAttemptsSheetView(
+          initialAttempt: initialAttempt,
+          tripStopId: tripStopId,
+          onStartCall: onStartCall,
+          onDirectCall: onDirectCall,
+          onReportUnreachable: onReportUnreachable,
+        ),
+      );
+    }
+
+    return _CustomerCallAttemptsSheetView(
+      initialAttempt: initialAttempt,
+      tripStopId: tripStopId,
+      onStartCall: onStartCall,
+      onDirectCall: onDirectCall,
+      onReportUnreachable: onReportUnreachable,
+    );
+  }
 }
 
-class _CustomerCallAttemptsSheetState
-    extends State<CustomerCallAttemptsSheet> {
-  late final ValueNotifier<DriverCallAttemptEntity> _attemptNotifier;
+class _CustomerCallAttemptsSheetView extends StatefulWidget {
+  const _CustomerCallAttemptsSheetView({
+    this.initialAttempt,
+    this.tripStopId,
+    this.onStartCall,
+    this.onDirectCall,
+    this.onReportUnreachable,
+  });
+
+  final DriverCallAttemptEntity? initialAttempt;
+  final String? tripStopId;
+  final VoidCallback? onStartCall;
+  final VoidCallback? onDirectCall;
+  final VoidCallback? onReportUnreachable;
+
+  @override
+  State<_CustomerCallAttemptsSheetView> createState() =>
+      _CustomerCallAttemptsSheetViewState();
+}
+
+class _CustomerCallAttemptsSheetViewState
+    extends State<_CustomerCallAttemptsSheetView> {
+  late final DriverCallAttemptEntity _attempt;
 
   @override
   void initState() {
     super.initState();
-    _attemptNotifier = ValueNotifier<DriverCallAttemptEntity>(
-      widget.initialAttempt ?? DriverCallingFakeData.defaultAttempt,
-    );
+    if (widget.tripStopId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        try {
+          context.read<DriverCallingViewModel>().doIntent(
+            CheckEligibilityEvent(widget.tripStopId!),
+          );
+        } catch (_) {}
+      });
+    }
   }
 
-  @override
-  void dispose() {
-    _attemptNotifier.dispose();
-    super.dispose();
-  }
-
-  void _handleStartCall() {
+  Future<void> _handleStartCall(BuildContext context) async {
     if (widget.onStartCall != null) {
       widget.onStartCall!();
       return;
     }
 
-    unawaited(_launchInAppCall());
-  }
+    if (widget.tripStopId != null) {
+      try {
+        final vm = context.read<DriverCallingViewModel>();
+        if (vm.state.isInitiating) return; // prevent double taps
+        final attempt = _attempt;
+        vm.doIntent(
+          InitiateCallEvent(
+            tripStopId: widget.tripStopId!,
+            customerName: attempt.customerName,
+          ),
+        );
+      } catch (_) {}
+    }
 
-  Future<void> _launchInAppCall() async {
     await context.pushNamed(AppRoutes.driverActiveCall);
-    if (!mounted) return;
+    if (!context.mounted) return;
 
-    final current = _attemptNotifier.value;
-    if (current.attemptNumber < 3) {
-      _attemptNotifier.value = current.copyWith(
-        attemptNumber: current.attemptNumber + 1,
+    if (widget.tripStopId != null) {
+      context.read<DriverCallingViewModel>().doIntent(
+        CheckEligibilityEvent(widget.tripStopId!),
       );
     }
   }
 
-  void _handleDirectCall() {
+  void _handleDirectCall(BuildContext context) {
     if (widget.onDirectCall != null) {
       widget.onDirectCall!();
       return;
     }
+
+    try {
+      final vm = context.read<DriverCallingViewModel>();
+      if ((vm.state.contactCase?.canRevealPhone ??
+          vm.state.eligibility?.canRevealPhone ??
+          false)) {
+        vm.doIntent(
+          const RevealPhoneEvent(
+            reason: 'Customer unreachable after missed call attempts',
+          ),
+        );
+        return;
+      }
+    } catch (_) {}
+
     unawaited(Navigator.of(context).maybePop());
   }
 
-  void _handleReportUnreachable() {
+  void _handleReportUnreachable(BuildContext context) {
     if (widget.onReportUnreachable != null) {
       widget.onReportUnreachable!();
       return;
     }
+
+    try {
+      final vm = context.read<DriverCallingViewModel>();
+      if ((vm.state.contactCase?.canHold ??
+          vm.state.eligibility?.canHold ??
+          false)) {
+        vm.doIntent(
+          const HoldCallEvent(notes: 'Customer unreachable after attempts'),
+        );
+      }
+    } catch (_) {}
+
     Navigator.of(context).pop();
     unawaited(context.pushNamed(AppRoutes.driverReportIssue));
   }
@@ -121,10 +221,27 @@ class _CustomerCallAttemptsSheetState
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return ValueListenableBuilder<DriverCallAttemptEntity>(
-      valueListenable: _attemptNotifier,
-      builder: (context, attempt, _) {
-        final isAttempt3 = attempt.attemptNumber >= 3;
+    DriverCallingViewModel? blocVm;
+    try {
+      blocVm = context.watch<DriverCallingViewModel>();
+    } catch (_) {
+      blocVm = null;
+    }
+
+    final attempt = _attempt;
+    return Builder(
+      builder: (context) {
+        final caseData = blocVm?.state.contactCase;
+        final eligibility = blocVm?.state.eligibility;
+
+        final canInitiate = eligibility?.canInitiate ?? false;
+        final isInitiating = blocVm?.state.isInitiating ?? false;
+
+        final missedAttemptCount = caseData?.attemptCount ?? 0;
+        final isPhoneUnlocked =
+            caseData?.canRevealPhone ?? eligibility?.canRevealPhone ?? false;
+        final canHold = caseData?.canHold ?? eligibility?.canHold ?? false;
+        final showRecovery = isPhoneUnlocked || canHold;
 
         return SafeArea(
           top: false,
@@ -148,7 +265,11 @@ class _CustomerCallAttemptsSheetState
                     ),
                   ),
                 ),
-                CallAttemptAlertBanner(attemptNumber: attempt.attemptNumber),
+                CallAttemptAlertBanner(
+                  attemptNumber: missedAttemptCount,
+                  missedAttemptCount: missedAttemptCount,
+                  isUnreachable: showRecovery,
+                ),
                 Center(
                   child: Container(
                     width: Spacing.xxxl,
@@ -191,28 +312,57 @@ class _CustomerCallAttemptsSheetState
                     color: color.onSurfaceVariant,
                   ),
                 ),
+                if (!canInitiate && eligibility?.reasonCode != null) ...[
+                  const SizedBox(height: Spacing.sm),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.md,
+                      vertical: Spacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: color.errorContainer.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(Spacing.radiusSm),
+                    ),
+                    child: Text(
+                      eligibility!.reasonCode,
+                      textAlign: TextAlign.center,
+                      style: getRegularStyle(
+                        fontSize: FontSize.size12,
+                        color: color.error,
+                      ),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: Spacing.base),
                 CustomerCallInfoCard(
                   customerName: attempt.customerName,
                   customerPhone: attempt.customerPhone,
-                  isPhoneUnlocked: attempt.isPhoneUnlocked,
+                  isPhoneUnlocked: isPhoneUnlocked,
                 ),
                 const SizedBox(height: Spacing.lg),
-                if (!isAttempt3)
+                if (!showRecovery)
                   CallAttemptActions(
-                    onCallNowPressed: _handleStartCall,
+                    onCallNowPressed: (!canInitiate || isInitiating)
+                        ? null
+                        : () => _handleStartCall(context),
                     onCancelPressed: () =>
                         unawaited(Navigator.of(context).maybePop()),
                   )
                 else
                   CallFailedRecoveryOptions(
-                    onDirectCallPressed: _handleDirectCall,
-                    onReportUnreachablePressed: _handleReportUnreachable,
+                    showDirectCall: isPhoneUnlocked,
+                    showReportUnreachable: canHold,
+                    onDirectCallPressed: isPhoneUnlocked
+                        ? () => _handleDirectCall(context)
+                        : null,
+                    onReportUnreachablePressed: canHold
+                        ? () => _handleReportUnreachable(context)
+                        : null,
                     onCancelPressed: () =>
                         unawaited(Navigator.of(context).maybePop()),
                   ),
                 const SizedBox(height: Spacing.base),
-                CallAttemptIndicator(currentAttempt: attempt.attemptNumber),
+                CallAttemptIndicator(currentAttempt: missedAttemptCount),
                 const SizedBox(height: Spacing.sm),
               ],
             ),

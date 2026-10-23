@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meal_mate_delivery/config/routing/app_routes.dart';
 import 'package:meal_mate_delivery/config/routing/arguments/auth_route_arguments.dart';
+import 'package:meal_mate_delivery/config/routing/arguments/dispatcher_support_route_arguments.dart';
 import 'package:meal_mate_delivery/core/services/app_navigator_service.dart';
 import 'package:meal_mate_delivery/core/services/notification_payload.dart';
 import 'package:meal_mate_delivery/core/services/notification_router.dart';
@@ -317,6 +318,41 @@ void main() {
         messageId: 'msg-dup',
       );
       expect(second, isFalse);
+    });
+
+    testWidgets('routes DispatcherDriverSupportIssuePayload to issue details', (
+      tester,
+    ) async {
+      await tester.pumpWidget(appWithMockNavigation());
+
+      final routed = await router.route(
+        const DispatcherDriverSupportIssuePayload(
+          issueId: 'issue-abc',
+          notificationId: 'notif-123',
+        ),
+      );
+
+      expect(routed, isTrue);
+      expect(pushedRoute, AppRoutes.dispatcherSupportIssueDetails);
+      expect(pushedArguments, isA<DispatcherSupportIssueDetailsRouteArgs>());
+      final args = pushedArguments as DispatcherSupportIssueDetailsRouteArgs;
+      expect(args.issueId, 'issue-abc');
+    });
+
+    testWidgets('routes DispatcherDriverSupportHandoverPayload to notifications', (
+      tester,
+    ) async {
+      await tester.pumpWidget(appWithMockNavigation());
+
+      final routed = await router.route(
+        const DispatcherDriverSupportHandoverPayload(
+          handoverId: 'handover-xyz',
+          notificationId: 'notif-456',
+        ),
+      );
+
+      expect(routed, isTrue);
+      expect(pushedRoute, AppRoutes.dispatcherNotifications);
     });
   });
 }

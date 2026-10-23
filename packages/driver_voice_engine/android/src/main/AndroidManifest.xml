@@ -1,0 +1,28 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <application>
+        <service
+            android:name="com.mealmate.driver_voice_engine.VoiceCallService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone|phoneCall" />
+
+        <receiver
+            android:name="com.mealmate.driver_voice_engine.VoiceCallReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.mealmate.driver_voice_engine.ACTION_HANGUP" />
+                <action android:name="com.mealmate.driver_voice_engine.ACTION_TOGGLE_MUTE" />
+                <action android:name="com.mealmate.driver_voice_engine.ACTION_RETURN_TO_CALL" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

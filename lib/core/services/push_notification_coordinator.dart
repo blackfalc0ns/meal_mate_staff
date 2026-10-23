@@ -14,10 +14,12 @@ import '../../features/device_token/domain/usecase/upsert_restaurant_device_toke
 import '../network/api_results.dart';
 import '../network/failures.dart';
 import 'device_id_service.dart';
+import 'background_notification_content.dart';
 import 'local_notification_service.dart';
 import 'notification_payload_parser.dart';
 import 'notification_router.dart';
 import 'push_messaging_gateway.dart';
+import 'voice_device_session_storage.dart';
 
 class PushNotificationCoordinator {
   PushNotificationCoordinator({
@@ -32,6 +34,7 @@ class PushNotificationCoordinator {
     required this.router,
     required this.sharedPreferences,
     required this.secureStorage,
+    this.voiceDeviceSessionStorage,
   });
 
   static const String _prefPendingContextType = 'fcm_pending_context_type';
@@ -51,6 +54,7 @@ class PushNotificationCoordinator {
   final NotificationRouter router;
   final SharedPreferences sharedPreferences;
   final FlutterSecureStorage secureStorage;
+  final VoiceDeviceSessionStorage? voiceDeviceSessionStorage;
 
   bool _isInitialized = false;
   DeviceTokenSyncContext? _currentContext;
@@ -148,7 +152,7 @@ class PushNotificationCoordinator {
       final deviceId = await deviceIdService.getOrCreateDeviceId();
       final platform = _resolvePlatform();
 
-      ApiResult<void> result;
+      ApiResult<dynamic> result;
       switch (context) {
         case DriverPreLoginSyncContext(:final registrationId):
           result = await upsertDriverTokenUseCase(
@@ -174,8 +178,11 @@ class PushNotificationCoordinator {
       }
 
       switch (result) {
-        case ApiSuccessResult():
+        case ApiSuccessResult(:final data):
           await _clearPendingSync();
+          if (data is String && data.isNotEmpty) {
+            await voiceDeviceSessionStorage?.saveFcmDeviceTokenId(data);
+          }
 
         case ApiErrorResult(:final failure):
           if (_isTerminalError(failure)) {
@@ -199,14 +206,21 @@ class PushNotificationCoordinator {
   }
 
   Future<void> _handleForegroundMessage(PushNotificationMessage message) async {
-    final title = message.title ?? 'MealMate';
-    final body = message.body ?? '';
+    final content = resolveBackgroundNotificationContent(
+      hasSystemNotification: false,
+      data: {
+        ...message.data,
+        if (message.title != null) 'title': message.title,
+        if (message.body != null) 'body': message.body,
+      },
+    );
+    if (content == null) return;
     final encodedData = jsonEncode(message.data);
 
     await localNotificationService.showNotification(
       id: message.messageId?.hashCode ?? DateTime.now().millisecondsSinceEpoch,
-      title: title,
-      body: body,
+      title: content.title,
+      body: content.body,
       payload: encodedData,
     );
   }

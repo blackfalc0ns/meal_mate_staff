@@ -22,14 +22,56 @@ void main() {
       expect(content?.body, 'Data body');
     });
 
-    test('uses safe defaults for an empty data-only message', () {
+    test('does not display an empty data-only message', () {
       final content = resolveBackgroundNotificationContent(
         hasSystemNotification: false,
         data: const {},
       );
 
+      expect(content, isNull);
+    });
+    test('suppresses technical call envelope even with visible text', () {
+      expect(
+        resolveBackgroundNotificationContent(
+          hasSystemNotification: false,
+          data: {
+            'title': 'Call ended',
+            'envelope': '{"callId":"call-1","eventType":"Ended"}',
+          },
+        ),
+        isNull,
+      );
+    });
+
+    test('preserves incoming call content', () {
+      final content = resolveBackgroundNotificationContent(
+        hasSystemNotification: false,
+        data: {
+          'type': 'incoming',
+          'title': 'Incoming call',
+          'body': 'Customer',
+        },
+      );
+      expect(content?.title, 'Incoming call');
+    });
+
+    test('keeps body-only notifications and ignores malformed envelopes', () {
+      final content = resolveBackgroundNotificationContent(
+        hasSystemNotification: false,
+        data: {'body': 'New order', 'envelope': 'invalid json'},
+      );
       expect(content?.title, 'MealMate');
-      expect(content?.body, '');
+      expect(content?.body, 'New order');
+    });
+
+    test('ignores whitespace-only content', () {
+      expect(
+        resolveBackgroundNotificationContent(
+          hasSystemNotification: false,
+          data: {'title': '  ', 'body': '  '},
+        ),
+        isNull,
+      );
     });
   });
 }

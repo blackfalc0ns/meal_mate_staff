@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'core/services/auth_session_lifecycle.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -75,6 +76,7 @@ void main() async {
   } catch (_) {}
 
   runApp(const MyApp(initialRoute: AppRoutes.splash));
+  getIt<AuthSessionLifecycle>().start();
 }
 
 class MyApp extends StatelessWidget {

@@ -2,9 +2,12 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/di/di.dart';
 import '../../../../core/network/api_results.dart';
 import '../../../../core/services/push_notification_coordinator.dart';
 import '../../../device_token/domain/entities/device_token_sync_context.dart';
+import '../../../dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_event.dart';
+import '../../../dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/forgot_password_request_entity.dart';
 import '../../domain/entities/phone_lookup_request_entity.dart';
@@ -493,6 +496,13 @@ class AuthViewModel extends Cubit<AuthState> {
     } catch (_) {
       // Best-effort token deactivation; never block local logout
     }
+    try {
+      if (getIt.isRegistered<DispatcherNotificationsViewModel>()) {
+        getIt<DispatcherNotificationsViewModel>().add(
+          const ClearDispatcherNotificationsEvent(),
+        );
+      }
+    } catch (_) {}
     await logoutUseCase();
     emit(
       state.copyWith(

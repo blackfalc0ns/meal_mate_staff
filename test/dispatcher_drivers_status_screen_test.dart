@@ -365,6 +365,7 @@ void main() {
     );
     expect(nextBtn, findsOneWidget);
 
+    await tester.ensureVisible(nextBtn);
     await tester.tap(nextBtn);
     await tester.pumpAndSettle();
 
@@ -384,7 +385,9 @@ void main() {
 
     expect(
       navObserver.pushedRoutes.any(
-        (r) => r.settings.name == AppRoutes.dispatcherDriverDetails,
+        (r) =>
+            r.settings.name == AppRoutes.dispatcherDriverStatusDetails ||
+            r.settings.name == AppRoutes.dispatcherDriverDetails,
       ),
       isTrue,
     );

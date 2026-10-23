@@ -6,6 +6,10 @@ enum DispatcherNotificationType {
   performanceAlert,
   tripUpdate,
   delayedBox,
+  driverSupportIssue,
+  driverSupportIssueResolved,
+  driverSupportHandover,
+  other,
 }
 
 class DispatcherNotificationEntity {
@@ -18,6 +22,11 @@ class DispatcherNotificationEntity {
     required this.iconAsset,
     required this.isUnread,
     this.isArchived = false,
+    this.section,
+    this.subjectId,
+    this.deepLink,
+    this.sentAtUtc,
+    this.rawType,
   });
 
   final String id;
@@ -28,6 +37,13 @@ class DispatcherNotificationEntity {
   final String iconAsset;
   final bool isUnread;
   final bool isArchived;
+  final String? section;
+  final String? subjectId;
+  final String? deepLink;
+  final DateTime? sentAtUtc;
+  final String? rawType;
+
+  bool get isRead => !isUnread;
 
   DispatcherNotificationEntity copyWith({
     String? id,
@@ -38,6 +54,11 @@ class DispatcherNotificationEntity {
     String? iconAsset,
     bool? isUnread,
     bool? isArchived,
+    String? section,
+    String? subjectId,
+    String? deepLink,
+    DateTime? sentAtUtc,
+    String? rawType,
   }) {
     return DispatcherNotificationEntity(
       id: id ?? this.id,
@@ -48,6 +69,11 @@ class DispatcherNotificationEntity {
       iconAsset: iconAsset ?? this.iconAsset,
       isUnread: isUnread ?? this.isUnread,
       isArchived: isArchived ?? this.isArchived,
+      section: section ?? this.section,
+      subjectId: subjectId ?? this.subjectId,
+      deepLink: deepLink ?? this.deepLink,
+      sentAtUtc: sentAtUtc ?? this.sentAtUtc,
+      rawType: rawType ?? this.rawType,
     );
   }
 }

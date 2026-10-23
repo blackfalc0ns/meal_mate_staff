@@ -74,11 +74,14 @@
 	<string>Meal Mate requires access to your location to track deliveries in real time.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Meal Mate requires background location access to update delivery progress while driving.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Meal Mate requires microphone access for two-way voice calls with customers during delivery.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
 		<string>fetch</string>
 		<string>remote-notification</string>
+		<string>audio</string>
 	</array>
 </dict>
 </plist>

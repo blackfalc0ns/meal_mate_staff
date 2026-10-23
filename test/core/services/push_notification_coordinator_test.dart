@@ -20,6 +20,18 @@ import 'package:meal_mate_delivery/features/device_token/domain/usecase/deactiva
 import 'package:meal_mate_delivery/features/device_token/domain/usecase/upsert_driver_device_token_usecase.dart';
 import 'package:meal_mate_delivery/features/device_token/domain/usecase/upsert_restaurant_device_token_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meal_mate_delivery/core/di/di.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
+import 'package:meal_mate_delivery/features/dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_event.dart';
+
+class _RecordingDispatcherNotifications
+    implements DispatcherNotificationsViewModel {
+  int refreshes = 0;
+  @override
+  void add(DispatcherNotificationsEvent event) => refreshes++;
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 class FakePushMessagingGateway implements PushMessagingGateway {
   final StreamController<String> _tokenRefreshController =
@@ -113,7 +125,7 @@ class FakeDeviceTokenRepository implements DeviceTokenRepository {
   List<Map<String, dynamic>> upsertRestaurantCalls = [];
   List<String> deactivateRestaurantCalls = [];
 
-  ApiResult<void> upsertDriverResult = const ApiSuccessResult(data: null);
+  ApiResult<String?> upsertDriverResult = const ApiSuccessResult(data: null);
   ApiResult<void> deactivateDriverResult = const ApiSuccessResult(data: null);
   ApiResult<void> upsertRestaurantResult = const ApiSuccessResult(data: null);
   ApiResult<void> deactivateRestaurantResult = const ApiSuccessResult(
@@ -121,7 +133,7 @@ class FakeDeviceTokenRepository implements DeviceTokenRepository {
   );
 
   @override
-  Future<ApiResult<void>> upsertDriverToken({
+  Future<ApiResult<String?>> upsertDriverToken({
     required String token,
     required String platform,
     required String deviceId,
@@ -254,6 +266,28 @@ void main() {
   });
 
   group('PushNotificationCoordinator initialization and lifecycle', () {
+    test('push messages do not load manager notifications', () async {
+      final notifications = _RecordingDispatcherNotifications();
+      getIt.registerSingleton<DispatcherNotificationsViewModel>(notifications);
+      addTearDown(() => getIt.unregister<DispatcherNotificationsViewModel>());
+      await coordinator.initialize();
+      await coordinator.updateSyncContext(
+        const DeviceTokenSyncContext.driverAuthenticated(userId: 'driver'),
+      );
+      gateway.emitMessageReceived(const PushNotificationMessage(data: {}));
+      await Future<void>.delayed(Duration.zero);
+      expect(notifications.refreshes, 0);
+
+      await coordinator.updateSyncContext(
+        const DeviceTokenSyncContext.deliveryManagerAuthenticated(
+          userId: 'manager',
+        ),
+      );
+      gateway.emitMessageReceived(const PushNotificationMessage(data: {}));
+      await Future<void>.delayed(Duration.zero);
+      expect(notifications.refreshes, 0);
+    });
+
     test(
       'initialize requests permission and processes initial message',
       () async {
@@ -569,6 +603,32 @@ void main() {
         );
       },
     );
+
+    test('does not show an empty call lifecycle push', () async {
+      await coordinator.initialize();
+      gateway.emitMessageReceived(
+        const PushNotificationMessage(
+          messageId: 'empty-call',
+          data: {'type': 'ended', 'envelope': '{"callId":"call-1"}'},
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(localNotifications.shownNotifications, isEmpty);
+    });
+
+    test('does not show technical call pushes with text', () async {
+      await coordinator.initialize();
+      gateway.emitMessageReceived(
+        const PushNotificationMessage(
+          messageId: 'ended-call',
+          title: 'Ended',
+          body: 'Technical update',
+          data: {'type': 'ended', 'callId': 'call-1'},
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(localNotifications.shownNotifications, isEmpty);
+    });
 
     test('foreground message shows incoming_call event', () async {
       await coordinator.initialize();

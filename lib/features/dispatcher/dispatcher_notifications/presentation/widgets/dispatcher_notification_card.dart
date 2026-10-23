@@ -28,11 +28,16 @@ class DispatcherNotificationCard extends StatelessWidget {
         return color.notificationIconPurpleSurface;
       case DispatcherNotificationType.boxProblem:
       case DispatcherNotificationType.delayedBox:
+      case DispatcherNotificationType.driverSupportIssue:
         return color.notificationIconRedSurface;
       case DispatcherNotificationType.replacementBox:
+      case DispatcherNotificationType.driverSupportIssueResolved:
         return color.notificationIconGreenSurface;
       case DispatcherNotificationType.performanceAlert:
         return color.notificationIconOrangeSurface;
+      case DispatcherNotificationType.driverSupportHandover:
+      case DispatcherNotificationType.other:
+        return color.notificationIconPurpleSurface;
     }
   }
 
