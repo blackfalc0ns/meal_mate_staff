@@ -1,5 +1,5 @@
 abstract class NetworkConstants {
-  static const String baseUrl = 'https://maelmate.runasp.net';
+  static const String baseUrl = 'https://api.trymealmate.com';
   static const String authorization = 'Authorization';
   static const String bearer = 'Bearer';
 }
