@@ -7,6 +7,7 @@ import 'package:signalr_netcore/signalr_client.dart';
 
 import '../../../../../core/network/network_constants.dart';
 import '../../../../../core/services/token_service.dart';
+import '../../../../../core/services/auth_refresh_service.dart';
 import '../../../../../core/services/voice_device_session_storage.dart';
 import '../models/realtime/voice_call_envelope_dto.dart';
 import '../models/realtime/voice_call_rtc_payload_dto.dart';
@@ -16,15 +17,16 @@ class DriverVoiceCallSignalRClient {
   DriverVoiceCallSignalRClient({
     required this.tokenService,
     required this.sessionStorage,
+    this.refreshService,
     HubConnection? hubConnection,
   }) : _providedHubConnection = hubConnection;
 
   final TokenService tokenService;
+  final AuthRefreshService? refreshService;
   final VoiceDeviceSessionStorage sessionStorage;
   final HubConnection? _providedHubConnection;
 
   HubConnection? _hubConnection;
-  String? _builtWithToken;
   bool _isDisposed = false;
   bool _isConnecting = false;
   bool _isBound = false;
@@ -74,7 +76,9 @@ class DriverVoiceCallSignalRClient {
     _isConnecting = true;
 
     try {
-      final token = await tokenService.getToken();
+      final token = refreshService != null
+          ? await refreshService!.ensureFreshToken()
+          : await tokenService.getToken();
       if (token == null || token.trim().isEmpty) {
         _diag('Connect', 'No auth token available for voice SignalR hub');
         return;
@@ -101,23 +105,18 @@ class DriverVoiceCallSignalRClient {
   }
 
   Future<void> _initHub(String token) async {
-    if (_hubConnection != null && _builtWithToken == token) return;
-
-    if (_hubConnection != null && _builtWithToken != token) {
-      try {
-        await _hubConnection?.stop();
-      } catch (_) {}
-      _hubConnection = null;
-    }
-
-    _builtWithToken = token;
+    if (_hubConnection != null) return;
 
     if (_providedHubConnection != null) {
       _hubConnection = _providedHubConnection;
     } else {
       const fullUrl = '${NetworkConstants.baseUrl}${EndPoints.voiceCallsV2Hub}';
       final httpOptions = HttpConnectionOptions(
-        accessTokenFactory: () async => await tokenService.getToken() ?? '',
+        accessTokenFactory: () async =>
+            (refreshService != null
+                ? await refreshService!.ensureFreshToken()
+                : await tokenService.getToken()) ??
+            '',
       );
 
       _hubConnection = HubConnectionBuilder()

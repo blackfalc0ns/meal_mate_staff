@@ -159,7 +159,7 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
         state.copyWith(
           snapshot: snapshot,
           status: snapshot.status,
-          clearClientRequestId: true,
+          clearClientRequestId: snapshot.callId.isNotEmpty,
         ),
       );
     } else if (snapshot.status == VoiceCallStatus.accepted) {
@@ -231,7 +231,13 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
     if (status.isTerminal) {
       _stopDurationTimer();
       _cancelRingingDeadlineTimer();
-      emit(state.copyWith(status: status, clearClientRequestId: true));
+      final ambiguousStart =
+          state.isInitiating &&
+          status == VoiceCallStatus.failed &&
+          (state.snapshot?.callId.isEmpty ?? true);
+      emit(
+        state.copyWith(status: status, clearClientRequestId: !ambiguousStart),
+      );
     } else if (status == VoiceCallStatus.accepted) {
       _stopDurationTimer();
       _cancelRingingDeadlineTimer();
@@ -376,7 +382,7 @@ class DriverCallingViewModel extends Cubit<DriverCallingState> {
             isInitiating: false,
             errorMessage: failure.errorMessage,
             status: VoiceCallStatus.failed,
-            clearClientRequestId: true,
+            // Retain the operation key on ambiguous/network failure for reconciliation.
           ),
         );
     }

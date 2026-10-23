@@ -2408,23 +2408,19 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<DriverDeliveryProofUploadResponseDto> uploadDriverIssueEvidence(
-    File file,
+  Future<DriverIssueEvidenceUploadResponseDto> uploadDriverIssueEvidence(
+    MultipartFile file,
+    String scope,
+    String folder,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.files.add(
-      MapEntry(
-        'file',
-        MultipartFile.fromFileSync(
-          file.path,
-          filename: file.path.split(Platform.pathSeparator).last,
-        ),
-      ),
-    );
-    final _options = _setStreamType<DriverDeliveryProofUploadResponseDto>(
+    _data.files.add(MapEntry('file', file));
+    _data.fields.add(MapEntry('scope', scope));
+    _data.fields.add(MapEntry('folder', folder));
+    final _options = _setStreamType<DriverIssueEvidenceUploadResponseDto>(
       Options(
             method: 'POST',
             headers: _headers,
@@ -2440,9 +2436,9 @@ class _ApiServices implements ApiServices {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DriverDeliveryProofUploadResponseDto _value;
+    late DriverIssueEvidenceUploadResponseDto _value;
     try {
-      _value = DriverDeliveryProofUploadResponseDto.fromJson(_result.data!);
+      _value = DriverIssueEvidenceUploadResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -2954,6 +2950,104 @@ class _ApiServices implements ApiServices {
     late SupportHandoverResponseDto _value;
     try {
       _value = SupportHandoverResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<DriverSupportIssuesResponseDto> getDriverSupportIssues({
+    String? status,
+    String? search,
+    int? pageNumber,
+    int? pageSize,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'status': status,
+      r'search': search,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<DriverSupportIssuesResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/driver/support/issues',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DriverSupportIssuesResponseDto _value;
+    try {
+      _value = DriverSupportIssuesResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<DriverSupportIssueDetailsResponseDto> getDriverSupportIssueDetails(
+    String issueId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<DriverSupportIssueDetailsResponseDto>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/driver/support/issues/${issueId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DriverSupportIssueDetailsResponseDto _value;
+    try {
+      _value = DriverSupportIssueDetailsResponseDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<DriverSupportAddPhotosResponseDto> addDriverSupportIssuePhotos(
+    String issueId,
+    DriverSupportAddPhotosRequestDto request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<DriverSupportAddPhotosResponseDto>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/driver/support/issues/${issueId}/photos',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DriverSupportAddPhotosResponseDto _value;
+    try {
+      _value = DriverSupportAddPhotosResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

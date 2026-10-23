@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,20 +17,97 @@ class TokenService {
   final FlutterSecureStorage _secureStorage;
   final SharedPreferences _sharedPreferences;
 
+  static const tokenPairKey = 'auth_token_pair_v1';
+  int sessionGeneration = 0;
+
+  Future<Map<String, dynamic>?> _readPair() async {
+    final raw = await _secureStorage.read(key: tokenPairKey);
+    if (raw == null) return null;
+    return jsonDecode(raw) as Map<String, dynamic>;
+  }
+
+  Future<({String? accessToken, String? refreshToken})> getTokenPair() async {
+    final pair = await _readPair();
+    if (pair != null) {
+      return (
+        accessToken: pair['accessToken'] as String?,
+        refreshToken: pair['refreshToken'] as String?,
+      );
+    }
+    return (
+      accessToken: await getToken(),
+      refreshToken: await getRefreshToken(),
+    );
+  }
+
+  Future<void> saveTokenPair({
+    required String accessToken,
+    required String refreshToken,
+    String? accessTokenExpiresAtUtc,
+    String? refreshTokenExpiresAtUtc,
+  }) async {
+    if (accessToken.isEmpty || refreshToken.isEmpty) {
+      throw ArgumentError('Incomplete token pair');
+    }
+    // One secure-storage record is the commit point for both rotating tokens.
+    await _secureStorage.write(
+      key: tokenPairKey,
+      value: jsonEncode({
+        'accessToken': accessToken,
+        'refreshToken': refreshToken,
+        'accessTokenExpiresAtUtc': accessTokenExpiresAtUtc,
+        'refreshTokenExpiresAtUtc': refreshTokenExpiresAtUtc,
+      }),
+    );
+    await _sharedPreferences.setBool(CoreStorageKeys.isAccessTokenSaved, true);
+    await _sharedPreferences.setBool(CoreStorageKeys.isRefreshTokenSaved, true);
+  }
+
+  Future<DateTime?> getAccessTokenExpiry() async {
+    final pair = await _readPair();
+    final expiry = pair?['accessTokenExpiresAtUtc'] as String?;
+    if (expiry != null) return DateTime.tryParse(expiry)?.toUtc();
+    final token = await getToken();
+    if (token == null) return null;
+    try {
+      final payload =
+          jsonDecode(
+                utf8.decode(
+                  base64Url.decode(base64Url.normalize(token.split('.')[1])),
+                ),
+              )
+              as Map;
+      final exp = payload['exp'];
+      if (exp is num) {
+        return DateTime.fromMillisecondsSinceEpoch(
+          exp.toInt() * 1000,
+          isUtc: true,
+        );
+      }
+    } catch (_) {}
+    return null;
+  }
+
   bool get isAccessTokenSaved =>
       _sharedPreferences.getBool(CoreStorageKeys.isAccessTokenSaved) ?? false;
 
   Future<void> saveAccessToken(String token) async {
+    sessionGeneration++;
+    await _secureStorage.delete(key: tokenPairKey);
     await _sharedPreferences.setBool(CoreStorageKeys.isAccessTokenSaved, true);
     await _secureStorage.write(key: CoreStorageKeys.accessToken, value: token);
   }
 
-  Future<String?> getToken() {
-    if (!isAccessTokenSaved) return Future.value();
+  Future<String?> getToken() async {
+    final pair = await _readPair();
+    if (pair != null) return pair['accessToken'] as String?;
+    if (!isAccessTokenSaved) return null;
     return _secureStorage.read(key: CoreStorageKeys.accessToken);
   }
 
   Future<void> deleteToken() async {
+    sessionGeneration++;
+    await _secureStorage.delete(key: tokenPairKey);
     await _sharedPreferences.setBool(CoreStorageKeys.isAccessTokenSaved, false);
     await _secureStorage.delete(key: CoreStorageKeys.accessToken);
   }
@@ -42,12 +121,15 @@ class TokenService {
     await _secureStorage.write(key: CoreStorageKeys.refreshToken, value: token);
   }
 
-  Future<String?> getRefreshToken() {
-    if (!isRefreshTokenSaved) return Future.value();
+  Future<String?> getRefreshToken() async {
+    final pair = await _readPair();
+    if (pair != null) return pair['refreshToken'] as String?;
+    if (!isRefreshTokenSaved) return null;
     return _secureStorage.read(key: CoreStorageKeys.refreshToken);
   }
 
   Future<void> deleteRefreshToken() async {
+    await _secureStorage.delete(key: tokenPairKey);
     await _sharedPreferences.setBool(
       CoreStorageKeys.isRefreshTokenSaved,
       false,
@@ -89,8 +171,8 @@ class TokenService {
     String? restaurantId,
     String? accountStatus,
   }) async {
-    await saveAccessToken(accessToken);
-    await saveRefreshToken(refreshToken);
+    sessionGeneration++;
+    await saveTokenPair(accessToken: accessToken, refreshToken: refreshToken);
     await saveCurrentUserId(userId);
     await _sharedPreferences.setString(userRoleKey, role);
     if (phone != null && phone.isNotEmpty) {

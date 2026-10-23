@@ -726,12 +726,23 @@ class RouteGenerator {
         );
 
       case AppRoutes.driverSupportTicketDetails:
-        final ticket = settings.arguments is DriverSupportTicketEntity
-            ? settings.arguments! as DriverSupportTicketEntity
-            : null;
+        DriverSupportTicketEntity? ticket;
+        String? issueId;
+        final detailsArgs = settings.arguments;
+        if (detailsArgs is DriverSupportTicketEntity) {
+          ticket = detailsArgs;
+          issueId = detailsArgs.id;
+        } else if (detailsArgs is String) {
+          issueId = detailsArgs;
+        } else if (detailsArgs is Map) {
+          issueId = detailsArgs['issueId'] as String?;
+        }
         return _buildRoute(
           settings: settings,
-          page: DriverSupportTicketDetailsScreen(ticket: ticket),
+          page: DriverSupportTicketDetailsScreen(
+            ticket: ticket,
+            issueId: issueId,
+          ),
         );
 
       case AppRoutes.driverActiveCall:

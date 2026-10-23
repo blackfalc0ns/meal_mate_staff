@@ -66,6 +66,7 @@ class _FakeRealtimeClient implements DriverOrdersRealtimeClient {
   bool isConnectedValue = false;
   bool shouldFailUpdate = false;
   int updateLocationCallCount = 0;
+  String? uploadedTripId;
   DateTime? capturedAtUtc;
   Completer<void>? updateLocationCompleter;
 
@@ -95,6 +96,7 @@ class _FakeRealtimeClient implements DriverOrdersRealtimeClient {
     DateTime? capturedAtUtc,
     String? tripId,
   }) async {
+    uploadedTripId = tripId;
     this.capturedAtUtc = capturedAtUtc;
     updateLocationCallCount++;
     if (updateLocationCompleter != null) {
@@ -212,6 +214,61 @@ void main() {
   });
 
   group('DriverLiveLocationCoordinator monitoring interface', () {
+    test('restores the current trip before uploading after app startup', () async {
+      coordinator.dispose();
+      var resolutions = 0;
+      coordinator = DriverLiveLocationCoordinator(
+        locationService: locationService,
+        realtimeClient: realtimeClient,
+        fallbackDataSource: fallbackDataSource,
+        resolveTripId: () async {
+          resolutions++;
+          return 'f7e11836-daf5-41b5-ab67-ec8900d34c31';
+        },
+      );
+      await coordinator.setActiveBoxesCount(1);
+      expect(realtimeClient.updateLocationCallCount, 1);
+      expect(realtimeClient.uploadedTripId, 'f7e11836-daf5-41b5-ab67-ec8900d34c31');
+      expect(await coordinator.sendCurrentLocationNow(), isTrue);
+      expect(resolutions, 1);
+    });
+
+    test('throttles trip recovery when no valid trip is available', () async {
+      coordinator.dispose();
+      var resolutions = 0;
+      coordinator = DriverLiveLocationCoordinator(
+        locationService: locationService,
+        realtimeClient: realtimeClient,
+        fallbackDataSource: fallbackDataSource,
+        resolveTripId: () async {
+          resolutions++;
+          return 'invalid';
+        },
+      );
+      expect(await coordinator.sendCurrentLocationNow(), isFalse);
+      expect(await coordinator.sendCurrentLocationNow(), isFalse);
+      expect(resolutions, 1);
+      expect(fallbackDataSource.sendCallCount, 0);
+    });
+
+    test('an explicit trip skips recovery requests', () async {
+      coordinator.dispose();
+      var resolutions = 0;
+      coordinator = DriverLiveLocationCoordinator(
+        locationService: locationService,
+        realtimeClient: realtimeClient,
+        fallbackDataSource: fallbackDataSource,
+        resolveTripId: () async {
+          resolutions++;
+          throw StateError('must not fetch');
+        },
+      );
+      await coordinator.setTripId('f7e11836-daf5-41b5-ab67-ec8900d34c31');
+      expect(await coordinator.sendCurrentLocationNow(), isTrue);
+      expect(resolutions, 0);
+      expect(fallbackDataSource.sendCallCount, 1);
+    });
+
     test('does not upload a GPS timestamp over two minutes in the future', () async {
       locationService.currentPosition = Position(
         latitude: 29.3375, longitude: 48.0281,

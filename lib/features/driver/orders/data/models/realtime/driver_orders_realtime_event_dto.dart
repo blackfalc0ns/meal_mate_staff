@@ -184,6 +184,17 @@ class DriverOrdersRealtimeEventDto {
                     : null),
         );
 
+      case 'driver-support-issue-updated':
+        return DriverSupportIssueUpdatedEvent(
+          eventId: eventId,
+          occurredAtUtc: occurredAtUtc,
+          issueId: json['issueId']?.toString(),
+          restaurantId: json['restaurantId']?.toString(),
+          driverId: json['driverId']?.toString(),
+          category: json['category']?.toString(),
+          eventName: json['eventName']?.toString(),
+        );
+
       default:
         return DriverUnknownRealtimeEvent(
           eventId: eventId,

@@ -19,6 +19,7 @@ class DriverLiveLocationCoordinator {
     required this.realtimeClient,
     required this.fallbackDataSource,
     this.serverClock,
+    this.resolveTripId,
     this.streamingInterval = const Duration(seconds: 4),
   }) {
     _initRealtimeListeners();
@@ -29,6 +30,8 @@ class DriverLiveLocationCoordinator {
   final DriverOrdersRealtimeClient realtimeClient;
   final DriverLocationRemoteDataSource fallbackDataSource;
   final ServerClock? serverClock;
+  final Future<String?> Function()? resolveTripId;
+  DateTime? _lastTripResolutionAttempt;
   final Duration streamingInterval;
 
   Timer? _streamingTimer;
@@ -58,7 +61,10 @@ class DriverLiveLocationCoordinator {
       _lastSuccessfullySentLocation;
 
   Future<void> setTripId(String? tripId) async {
-    _tripId = tripId?.trim().isEmpty == true ? null : tripId?.trim();
+    final normalized = tripId?.trim();
+    final validTripId = _isValidTripId(normalized) ? normalized : null;
+    if (_tripId == validTripId) return;
+    _tripId = validTripId;
     final setter = realtimeClient;
     try {
       await (setter as dynamic).setTripId(_tripId);
@@ -238,6 +244,26 @@ class DriverLiveLocationCoordinator {
     bool sentSuccessfully = false;
 
     try {
+      if ((_tripId == null || !_isValidTripId(_tripId!)) &&
+          resolveTripId != null &&
+          (_lastTripResolutionAttempt == null ||
+              DateTime.now().difference(_lastTripResolutionAttempt!) >=
+                  const Duration(seconds: 30))) {
+        _lastTripResolutionAttempt = DateTime.now();
+        try {
+          final resolvedTripId = await resolveTripId!();
+          if (_isDisposed) return false;
+          // A realtime assignment may have supplied a newer trip while fetching.
+          if ((_tripId == null || !_isValidTripId(_tripId!)) &&
+              resolvedTripId != null &&
+              _isValidTripId(resolvedTripId)) {
+            await setTripId(resolvedTripId);
+          }
+        } catch (error) {
+          _log('Could not restore current trip for location upload', error: error);
+        }
+      }
+      if (_isDisposed) return false;
       final tripId = _tripId;
       if (tripId == null || !_isValidTripId(tripId)) {
         _log('Skipping location upload: missing or invalid tripId');
@@ -424,11 +450,20 @@ class DriverLiveLocationCoordinator {
     }
   }
 
-  bool _isValidTripId(String value) {
+  static const String _zeroGuid = '00000000-0000-0000-0000-000000000000';
+  static final RegExp _guidRegExp = RegExp(
+    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+  );
+
+  bool _isValidTripId(String? value) {
+    if (value == null) return false;
     final normalized = value.trim();
-    return RegExp(
-      r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
-    ).hasMatch(normalized);
+    if (normalized.isEmpty ||
+        normalized.toLowerCase() == 'null' ||
+        normalized == _zeroGuid) {
+      return false;
+    }
+    return _guidRegExp.hasMatch(normalized);
   }
 
   /// Stops streaming and releases GPS listeners.

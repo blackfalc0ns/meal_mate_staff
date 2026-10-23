@@ -1,3 +1,4 @@
+import '../../features/driver/delivery_issues/data/models/response/driver_issue_evidence_upload_response_dto.dart';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -115,6 +116,10 @@ import '../../features/driver/support_handovers/data/models/response/support_han
 import '../../features/driver/support_handovers/data/models/request/driver_handover_arrival_request_dto.dart';
 import '../../features/driver/support_handovers/data/models/request/driver_handover_scan_request_dto.dart';
 import '../../features/driver/support_handovers/data/models/request/support_handover_cancel_request_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/request/driver_support_add_photos_request_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/response/driver_support_add_photos_response_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/response/driver_support_issue_details_response_dto.dart';
+import '../../features/driver/driver_support_tickets/data/models/response/driver_support_issues_response_dto.dart';
 import 'network_constants.dart';
 
 part 'api_services.g.dart';
@@ -537,12 +542,15 @@ abstract class ApiServices {
 
   @MultiPart()
   @POST(EndPoints.driverDeliveryProofUpload)
-  Future<DriverDeliveryProofUploadResponseDto> uploadDriverIssueEvidence(
-    @Part(name: 'file') File file,
+  Future<DriverIssueEvidenceUploadResponseDto> uploadDriverIssueEvidence(
+    @Part(name: 'file') MultipartFile file,
+    @Part(name: 'scope') String scope,
+    @Part(name: 'folder') String folder,
   );
 
   @GET(EndPoints.driverReassignmentRequests)
-  Future<List<DriverReassignmentRequestDetailsDto>> getDriverReassignmentRequests({
+  Future<List<DriverReassignmentRequestDetailsDto>>
+  getDriverReassignmentRequests({
     @Query('boxId') String? boxId,
     @Query('page') int page = 1,
     @Query('pageSize') int pageSize = 20,
@@ -554,9 +562,8 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.dispatcherReassignmentRequestById)
-  Future<DriverReassignmentRequestDetailsDto> getDispatcherReassignmentRequestById(
-    @Path('requestId') String requestId,
-  );
+  Future<DriverReassignmentRequestDetailsDto>
+  getDispatcherReassignmentRequestById(@Path('requestId') String requestId);
 
   @POST(EndPoints.dispatcherAcceptReassignment)
   Future<DriverReassignmentRequestDetailsDto> acceptDispatcherReassignment(
@@ -577,7 +584,8 @@ abstract class ApiServices {
   );
 
   @GET(EndPoints.dispatcherSupportHandovers)
-  Future<DispatcherSupportHandoversPagedResponseDto> getDispatcherSupportHandovers({
+  Future<DispatcherSupportHandoversPagedResponseDto>
+  getDispatcherSupportHandovers({
     @Query('status') String? status,
     @Query('restaurantId') String? restaurantId,
     @Query('page') int page = 1,
@@ -635,6 +643,25 @@ abstract class ApiServices {
     @Body() SupportHandoverCancelRequestDto request,
   );
 
+  // Driver Support Issues endpoints
+  @GET(EndPoints.driverSupportIssues)
+  Future<DriverSupportIssuesResponseDto> getDriverSupportIssues({
+    @Query('status') String? status,
+    @Query('search') String? search,
+    @Query('pageNumber') int? pageNumber,
+    @Query('pageSize') int? pageSize,
+  });
+
+  @GET(EndPoints.driverSupportIssueById)
+  Future<DriverSupportIssueDetailsResponseDto> getDriverSupportIssueDetails(
+    @Path('issueId') String issueId,
+  );
+
+  @POST(EndPoints.driverSupportIssuePhotos)
+  Future<DriverSupportAddPhotosResponseDto> addDriverSupportIssuePhotos(
+    @Path('issueId') String issueId,
+    @Body() DriverSupportAddPhotosRequestDto request,
+  );
 
   // Voice Calls V2 endpoints
   @POST(EndPoints.voiceCallsV2Register)

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,6 +27,7 @@ import '../helpers/shared_pref.dart';
 import '../network/api_services.dart';
 import '../network/network_constants.dart';
 import '../services/auth_refresh_service.dart';
+import '../services/auth_session_lifecycle.dart';
 import '../services/device_id_service.dart';
 import '../services/driver_pickup_location_provider.dart';
 import '../services/idempotency_key_factory.dart';
@@ -253,6 +255,7 @@ import '../../features/dispatcher/dispatcher_notifications/domain/usecase/get_di
 import '../../features/dispatcher/dispatcher_notifications/domain/usecase/mark_dispatcher_notification_read_usecase.dart';
 import '../../features/dispatcher/dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
 
+import 'package:driver_voice_engine/driver_voice_engine.dart';
 import '../services/voice_device_session_storage.dart';
 import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source.dart';
 import '../../features/driver/calling/data/data_source/driver_calling_remote_data_source_impl.dart';
@@ -278,6 +281,15 @@ import '../../features/driver/calling/domain/usecase/report_voice_connecting_use
 import '../../features/driver/calling/domain/usecase/report_voice_connected_usecase.dart';
 import '../../features/driver/calling/domain/usecase/get_voice_call_display_usecase.dart';
 import '../../features/driver/calling/presentation/manager/driver_calling_view_model.dart';
+import '../../features/driver/driver_support_tickets/data/data_source/driver_support_remote_data_source.dart';
+import '../../features/driver/driver_support_tickets/data/data_source/driver_support_remote_data_source_impl.dart';
+import '../../features/driver/driver_support_tickets/data/repo/driver_support_repository_impl.dart';
+import '../../features/driver/driver_support_tickets/domain/repo/driver_support_repository.dart';
+import '../../features/driver/driver_support_tickets/domain/usecase/add_driver_support_issue_photos_usecase.dart';
+import '../../features/driver/driver_support_tickets/domain/usecase/get_driver_support_issue_details_usecase.dart';
+import '../../features/driver/driver_support_tickets/domain/usecase/get_driver_support_issues_usecase.dart';
+import '../../features/driver/driver_support_tickets/presentation/manager/driver_support_ticket_details_view_model.dart';
+import '../../features/driver/driver_support_tickets/presentation/manager/driver_support_tickets_view_model.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -316,7 +328,32 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<AuthRefreshService>(
     () => AuthRefreshService(
       tokenService: getIt<TokenService>(),
-      dio: getIt<Dio>(),
+      dio: Dio(
+        BaseOptions(
+          baseUrl: NetworkConstants.baseUrl,
+          connectTimeout: const Duration(seconds: 15),
+          receiveTimeout: const Duration(seconds: 15),
+          sendTimeout: const Duration(seconds: 15),
+        ),
+      ),
+    ),
+  );
+  getIt.registerLazySingleton<AuthSessionLifecycle>(
+    () => AuthSessionLifecycle(
+      refresh: getIt<AuthRefreshService>(),
+      tokens: getIt<TokenService>(),
+      cleanupLocalCall: () async {
+        final repository = getIt<DriverCallingRepository>();
+        if (repository is DriverCallingRepositoryImpl) {
+          await repository.terminateLocalAuthSession();
+        }
+      },
+      reconcileCall: () async {
+        final repository = getIt<DriverCallingRepository>();
+        if (repository is DriverCallingRepositoryImpl) {
+          await repository.reconcileAuthSession();
+        }
+      },
     ),
   );
   getIt.registerLazySingleton<ApiServices>(() => ApiServices(getIt<Dio>()));
@@ -1106,7 +1143,6 @@ Future<void> configureDependencies() async {
     ),
   );
 
-
   // Driver Live Location & Realtime Streaming
   getIt.registerLazySingleton<DriverLocationService>(
     DriverLocationServiceImpl.new,
@@ -1128,6 +1164,11 @@ Future<void> configureDependencies() async {
       realtimeClient: getIt<DriverOrdersRealtimeClient>(),
       fallbackDataSource: getIt<DriverLocationRemoteDataSource>(),
       serverClock: getIt<ServerClock>(),
+      resolveTripId: () async {
+        final route = await getIt<DriverMapRemoteDataSource>()
+            .getDriverMapRoute();
+        return route.tripId;
+      },
     ),
   );
 
@@ -1149,6 +1190,7 @@ Future<void> configureDependencies() async {
   );
   getIt.registerLazySingleton<DriverVoiceCallSignalRClient>(
     () => DriverVoiceCallSignalRClient(
+      refreshService: getIt<AuthRefreshService>(),
       tokenService: getIt<TokenService>(),
       sessionStorage: getIt<VoiceDeviceSessionStorage>(),
     ),
@@ -1161,6 +1203,9 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<DriverCallKitCoordinator>(
     DriverCallKitCoordinator.new,
   );
+  getIt.registerLazySingleton<DriverVoiceEngine>(
+    () => DriverVoiceEngine.instance,
+  );
   getIt.registerLazySingleton<DriverCallingRepository>(
     () => DriverCallingRepositoryImpl(
       remoteDataSource: getIt<DriverCallingRemoteDataSource>(),
@@ -1168,6 +1213,9 @@ Future<void> configureDependencies() async {
       webrtcManager: getIt<DriverWebRtcManager>(),
       callKitCoordinator: getIt<DriverCallKitCoordinator>(),
       sessionStorage: getIt<VoiceDeviceSessionStorage>(),
+      tokenService: getIt<TokenService>(),
+      driverVoiceEngine: getIt<DriverVoiceEngine>(),
+      useNativeEngine: true,
       serverClock: getIt<ServerClock>(),
     ),
   );
@@ -1242,6 +1290,45 @@ Future<void> configureDependencies() async {
       locationCoordinator: getIt<DriverLiveLocationCoordinator>(),
     ),
   );
+
+  // Driver Support Tickets Feature
+  getIt.registerLazySingleton<DriverSupportRemoteDataSource>(
+    () => DriverSupportRemoteDataSourceImpl(getIt<ApiServices>()),
+  );
+  getIt.registerLazySingleton<DriverSupportRepository>(
+    () => DriverSupportRepositoryImpl(getIt<DriverSupportRemoteDataSource>()),
+  );
+  getIt.registerFactory<GetDriverSupportIssuesUseCase>(
+    () => GetDriverSupportIssuesUseCase(getIt<DriverSupportRepository>()),
+  );
+  getIt.registerFactory<GetDriverSupportIssueDetailsUseCase>(
+    () => GetDriverSupportIssueDetailsUseCase(getIt<DriverSupportRepository>()),
+  );
+  getIt.registerFactory<AddDriverSupportIssuePhotosUseCase>(
+    () => AddDriverSupportIssuePhotosUseCase(getIt<DriverSupportRepository>()),
+  );
+  getIt.registerFactory<DriverSupportTicketsViewModel>(
+    () => DriverSupportTicketsViewModel(
+      getDriverSupportIssuesUseCase: getIt<GetDriverSupportIssuesUseCase>(),
+      ordersRealtimeClient: getIt.isRegistered<DriverOrdersRealtimeClient>()
+          ? getIt<DriverOrdersRealtimeClient>()
+          : null,
+    ),
+  );
+  getIt.registerFactory<DriverSupportTicketDetailsViewModel>(
+    () => DriverSupportTicketDetailsViewModel(
+      getDriverSupportIssueDetailsUseCase:
+          getIt<GetDriverSupportIssueDetailsUseCase>(),
+      addDriverSupportIssuePhotosUseCase:
+          getIt<AddDriverSupportIssuePhotosUseCase>(),
+      uploadDriverIssueEvidenceUseCase:
+          getIt<UploadDriverIssueEvidenceUseCase>(),
+      driverOrdersRealtimeClient:
+          getIt.isRegistered<DriverOrdersRealtimeClient>()
+          ? getIt<DriverOrdersRealtimeClient>()
+          : null,
+    ),
+  );
 }
 
 Dio _buildDio() {
@@ -1262,11 +1349,56 @@ Dio _buildDio() {
   dio.interceptors.add(getIt<LanguageInterceptor>());
   dio.interceptors.add(tokenInterceptor);
   dio.interceptors.add(ServerClockInterceptor(getIt<ServerClock>()));
-  dio.interceptors.add(PrettyDioLogger(requestHeader: true, requestBody: true));
-
-  tokenInterceptor.attachRefreshService(
-    AuthRefreshService(tokenService: getIt<TokenService>(), dio: dio),
+  if (kDebugMode) {
+    // Log only the upload method/status, never tokens, filenames or read URLs.
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (options.method == 'POST' &&
+              options.uri.path == '/api/v1/uploads') {
+            debugPrint(
+              '[IssueEvidence HTTP] POST /api/v1/uploads request_sent',
+            );
+          }
+          handler.next(options);
+        },
+        onResponse: (response, handler) {
+          if (response.requestOptions.method == 'POST' &&
+              response.requestOptions.uri.path == '/api/v1/uploads') {
+            debugPrint(
+              '[IssueEvidence HTTP] POST /api/v1/uploads status=${response.statusCode} data=${response.data}',
+            );
+          }
+          handler.next(response);
+        },
+        onError: (error, handler) {
+          if (error.requestOptions.method == 'POST' &&
+              error.requestOptions.uri.path == '/api/v1/uploads') {
+            debugPrint(
+              '[IssueEvidence HTTP] POST /api/v1/uploads failed status=${error.response?.statusCode} type=${error.type.name}',
+            );
+          }
+          handler.next(error);
+        },
+      ),
+    );
+  }
+  dio.interceptors.add(
+    PrettyDioLogger(
+      requestHeader: false,
+      requestBody: false,
+      responseBody: false,
+      // Evidence responses contain short-lived bearer-capability read URLs.
+      // Keep both their requests and responses out of the debug logger.
+      filter: (options, _) =>
+          !options.path.contains('/support/issues') &&
+          !options.path.contains('/uploads') &&
+          !options.uri.queryParameters.containsKey('readToken'),
+    ),
   );
+
+  tokenInterceptor.requestDio = dio;
+  tokenInterceptor.attachRefreshService(getIt<AuthRefreshService>());
 
   return dio;
 }

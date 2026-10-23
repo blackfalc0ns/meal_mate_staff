@@ -194,6 +194,24 @@ class DriverStatusUpdatedEvent extends DriverOrdersRealtimeEvent {
   final bool? isAvailable;
 }
 
+class DriverSupportIssueUpdatedEvent extends DriverOrdersRealtimeEvent {
+  const DriverSupportIssueUpdatedEvent({
+    required super.eventId,
+    required super.occurredAtUtc,
+    this.issueId,
+    this.restaurantId,
+    this.driverId,
+    this.category,
+    this.eventName,
+  });
+
+  final String? issueId;
+  final String? restaurantId;
+  final String? driverId;
+  final String? category;
+  final String? eventName;
+}
+
 class DriverUnknownRealtimeEvent extends DriverOrdersRealtimeEvent {
   const DriverUnknownRealtimeEvent({
     required super.eventId,
@@ -203,3 +221,4 @@ class DriverUnknownRealtimeEvent extends DriverOrdersRealtimeEvent {
 
   final String eventType;
 }
+

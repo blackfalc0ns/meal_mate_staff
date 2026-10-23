@@ -11,11 +11,15 @@ class CallFailedRecoveryOptions extends StatelessWidget {
     this.onDirectCallPressed,
     this.onReportUnreachablePressed,
     this.onCancelPressed,
+    this.showDirectCall = true,
+    this.showReportUnreachable = true,
   });
 
   final VoidCallback? onDirectCallPressed;
   final VoidCallback? onReportUnreachablePressed;
   final VoidCallback? onCancelPressed;
+  final bool showDirectCall;
+  final bool showReportUnreachable;
 
   @override
   Widget build(BuildContext context) {
@@ -26,60 +30,63 @@ class CallFailedRecoveryOptions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          height: Spacing.buttonHeight,
-          child: ElevatedButton.icon(
-            onPressed: onDirectCallPressed,
-            icon: Icon(
-              Icons.phone_in_talk_rounded,
-              size: Spacing.iconSm,
-              color: color.onPrimary,
-            ),
-            label: Text(
-              locale.driverCallExternalButton,
-              style: getBoldStyle(
-                fontSize: FontSize.size14,
+        if (showDirectCall)
+          SizedBox(
+            height: Spacing.buttonHeight,
+            child: ElevatedButton.icon(
+              onPressed: onDirectCallPressed,
+              icon: Icon(
+                Icons.phone_in_talk_rounded,
+                size: Spacing.iconSm,
                 color: color.onPrimary,
               ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color.primary,
-              foregroundColor: color.onPrimary,
-              elevation: Spacing.cardElevation,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Spacing.radiusLg),
+              label: Text(
+                locale.driverCallExternalButton,
+                style: getBoldStyle(
+                  fontSize: FontSize.size14,
+                  color: color.onPrimary,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: color.primary,
+                foregroundColor: color.onPrimary,
+                elevation: Spacing.cardElevation,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Spacing.radiusLg),
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: Spacing.sm),
-        SizedBox(
-          height: Spacing.buttonHeight,
-          child: OutlinedButton.icon(
-            onPressed: onReportUnreachablePressed,
-            icon: Icon(
-              Icons.warning_amber_rounded,
-              size: Spacing.iconSm,
-              color: color.tertiary,
-            ),
-            label: Text(
-              locale.driverCallReportUnreachableButton,
-              style: getBoldStyle(
-                fontSize: FontSize.size14,
+        if (showDirectCall && showReportUnreachable)
+          const SizedBox(height: Spacing.sm),
+        if (showReportUnreachable)
+          SizedBox(
+            height: Spacing.buttonHeight,
+            child: OutlinedButton.icon(
+              onPressed: onReportUnreachablePressed,
+              icon: Icon(
+                Icons.warning_amber_rounded,
+                size: Spacing.iconSm,
                 color: color.tertiary,
               ),
-            ),
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(
-                color: color.tertiary.withValues(alpha: 0.5),
-                width: Spacing.border,
+              label: Text(
+                locale.driverCallReportUnreachableButton,
+                style: getBoldStyle(
+                  fontSize: FontSize.size14,
+                  color: color.tertiary,
+                ),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Spacing.radiusLg),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: color.tertiary.withValues(alpha: 0.5),
+                  width: Spacing.border,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Spacing.radiusLg),
+                ),
               ),
             ),
           ),
-        ),
         const SizedBox(height: Spacing.xs),
         TextButton(
           onPressed: onCancelPressed,

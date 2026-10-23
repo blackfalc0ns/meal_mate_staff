@@ -24,6 +24,10 @@ import 'package:meal_mate_delivery/features/driver/calling/domain/usecase/resume
 import 'package:meal_mate_delivery/features/driver/calling/domain/usecase/reveal_customer_phone_usecase.dart';
 import 'package:meal_mate_delivery/features/driver/calling/presentation/manager/driver_calling_view_model.dart';
 import 'package:meal_mate_delivery/features/driver/calling/presentation/widgets/customer_call_attempts_sheet.dart';
+import 'package:meal_mate_delivery/features/driver/calling/presentation/widgets/call_attempt_actions.dart';
+import 'package:meal_mate_delivery/features/driver/calling/presentation/widgets/call_attempt_indicator.dart';
+import 'package:meal_mate_delivery/features/driver/calling/presentation/widgets/call_failed_recovery_options.dart';
+import 'package:meal_mate_delivery/features/driver/calling/presentation/widgets/customer_call_info_card.dart';
 
 class _FakeCallingRepo implements DriverCallingRepository {
   // ignore: close_sinks
@@ -97,144 +101,216 @@ Widget _buildTestWidget({
 }
 
 void main() {
-  group('CustomerCallAttemptsSheet', () {
-    testWidgets('renders Attempt 1 UI with Call Now and Cancel buttons', (
+  for (final count in [0, 2, 3]) {
+    testWidgets('server count $count does not unlock recovery locally', (
       tester,
     ) async {
+      final vm = _createViewModel(_FakeCallingRepo());
+      addTearDown(vm.close);
+      vm.emit(
+        vm.state.copyWith(
+          contactCase: DeliveryContactCaseEntity(
+            contactCaseId: 'case-1',
+            tripStopId: 'stop-1',
+            status: 'Open',
+            attemptCount: count,
+          ),
+          eligibility: const VoiceCallEligibilityEntity(
+            reasonCode: 'contact.eligible',
+            canInitiate: true,
+          ),
+        ),
+      );
       await tester.pumpWidget(
         _buildTestWidget(
+          viewModel: vm,
           attempt: const DriverCallAttemptEntity(
-            customerName: 'محمد علي',
-            customerPhone: '+966 50 123 4567',
-            attemptNumber: 1,
+            customerName: 'Customer',
+            customerPhone: '+965 12345678',
+            attemptNumber: 3,
           ),
         ),
       );
       await tester.pumpAndSettle();
-
-      expect(find.text('الاتصال بالعميل'), findsOneWidget);
       expect(
-        find.text('هل تريد الاتصال بالعميل محمد علي الآن؟'),
-        findsOneWidget,
+        tester
+            .widget<CustomerCallInfoCard>(find.byType(CustomerCallInfoCard))
+            .isPhoneUnlocked,
+        isFalse,
       );
-      expect(find.text('اتصل الآن'), findsOneWidget);
-      expect(find.text('إلغاء'), findsOneWidget);
-      expect(find.text('رقم الهاتف محمي'), findsOneWidget);
-    });
-
-    testWidgets('renders Attempt 2 UI with warning banner', (tester) async {
-      await tester.pumpWidget(
-        _buildTestWidget(
-          attempt: const DriverCallAttemptEntity(
-            customerName: 'محمد علي',
-            customerPhone: '+966 50 123 4567',
-            attemptNumber: 2,
-          ),
+      expect(find.byType(CallFailedRecoveryOptions), findsNothing);
+      expect(find.byType(CallAttemptActions), findsOneWidget);
+      expect(
+        tester
+            .widget<CallAttemptIndicator>(find.byType(CallAttemptIndicator))
+            .currentAttempt,
+        count,
+      );
+      expect(
+        find.text(
+          AppLocalizations.of(
+            tester.element(find.byType(CustomerCallAttemptsSheet)),
+          )!.driverCallUnreachableTitle,
         ),
+        findsNothing,
       );
-      await tester.pumpAndSettle();
-
-      expect(find.text('لم يتم الرد من العميل'), findsOneWidget);
-      expect(find.text('المحاولة 1 من 3'), findsOneWidget);
-      expect(find.text('اتصل الآن'), findsOneWidget);
-    });
-
-    testWidgets(
-      'renders Attempt 3 UI with recovery options and phone unlocked',
-      (tester) async {
-        var directCalled = false;
-        var reportCalled = false;
-
-        await tester.pumpWidget(
-          _buildTestWidget(
-            attempt: const DriverCallAttemptEntity(
-              customerName: 'محمد علي',
-              customerPhone: '+966 50 123 4567',
-              attemptNumber: 3,
-            ),
-            onDirectCall: () => directCalled = true,
-            onReportUnreachable: () => reportCalled = true,
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        expect(find.text('تعذر التواصل مع العميل'), findsOneWidget);
-        expect(find.text('تم إتاحة الاتصال الخارجي'), findsOneWidget);
-        expect(find.text('اتصل برقم الهاتف الخارجي'), findsOneWidget);
-        expect(find.text('إبلاغ عن تعذر التواصل'), findsOneWidget);
-
-        await tester.tap(find.text('اتصل برقم الهاتف الخارجي'));
-        await tester.pump();
-        expect(directCalled, isTrue);
-
-        await tester.tap(find.text('إبلاغ عن تعذر التواصل'));
-        await tester.pump();
-        expect(reportCalled, isTrue);
-      },
-    );
-
-    testWidgets('triggers onStartCall callback when tapping Call Now', (
-      tester,
-    ) async {
-      var callStarted = false;
-
-      await tester.pumpWidget(
-        _buildTestWidget(onStartCall: () => callStarted = true),
+      expect(
+        find.text(
+          AppLocalizations.of(
+            tester.element(find.byType(CustomerCallAttemptsSheet)),
+          )!.driverCallUnreachableSubtitle,
+        ),
+        findsNothing,
       );
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('اتصل الآن'));
-      await tester.pump();
-      expect(callStarted, isTrue);
     });
+  }
 
+  for (final permissions in [(true, false), (false, true), (true, true)]) {
     testWidgets(
-      'renders Call Now button when canHold is true but canInitiate is true and attempt < 3',
+      'server permissions $permissions control each recovery action',
       (tester) async {
-        final repo = _FakeCallingRepo();
-        final vm = _createViewModel(repo);
-
-        // State matching user's scenario: canHold is true, canInitiate is true, canRevealPhone is false
+        final vm = _createViewModel(_FakeCallingRepo());
+        addTearDown(vm.close);
         vm.emit(
           vm.state.copyWith(
-            contactCase: const DeliveryContactCaseEntity(
+            contactCase: DeliveryContactCaseEntity(
               contactCaseId: 'case-1',
               tripStopId: 'stop-1',
               status: 'Open',
               attemptCount: 1,
-              canHold: true,
-              canRevealPhone: false,
+              canRevealPhone: permissions.$1,
+              canHold: permissions.$2,
             ),
             eligibility: const VoiceCallEligibilityEntity(
-              canInitiate: true,
               reasonCode: 'contact.eligible',
-              canHold: false,
-              canRevealPhone: false,
+              canInitiate: false,
             ),
           ),
         );
-
+        var directCalls = 0;
+        var reports = 0;
         await tester.pumpWidget(
           _buildTestWidget(
             viewModel: vm,
-            attempt: const DriverCallAttemptEntity(
-              customerName: 'yyytttt',
-              customerPhone: '+966 50 123 4567',
-              attemptNumber: 1,
-            ),
+            onDirectCall: () => directCalls++,
+            onReportUnreachable: () => reports++,
           ),
         );
         await tester.pumpAndSettle();
-
-        // Must show Call Now button ("اتصل الآن") and Cancel ("إلغاء")
-        expect(find.text('اتصل الآن'), findsOneWidget);
-        expect(find.text('إلغاء'), findsOneWidget);
-        expect(find.text('رقم الهاتف محمي'), findsOneWidget);
-
-        // Must NOT show recovery options when canInitiate is true and attempt < 3
-        expect(find.text('اتصل برقم الهاتف الخارجي'), findsNothing);
-        expect(find.text('إبلاغ عن تعذر التواصل'), findsNothing);
+        expect(
+          tester
+              .widget<CustomerCallInfoCard>(find.byType(CustomerCallInfoCard))
+              .isPhoneUnlocked,
+          permissions.$1,
+        );
+        expect(
+          find.text(
+            AppLocalizations.of(
+              tester.element(find.byType(CustomerCallAttemptsSheet)),
+            )!.driverCallExternalButton,
+          ),
+          permissions.$1 ? findsOneWidget : findsNothing,
+        );
+        expect(
+          find.text(
+            AppLocalizations.of(
+              tester.element(find.byType(CustomerCallAttemptsSheet)),
+            )!.driverCallReportUnreachableButton,
+          ),
+          permissions.$2 ? findsOneWidget : findsNothing,
+        );
+        if (permissions.$1) {
+          await tester.tap(
+            find.text(
+              AppLocalizations.of(
+                tester.element(find.byType(CustomerCallAttemptsSheet)),
+              )!.driverCallExternalButton,
+            ),
+          );
+        }
+        if (permissions.$2) {
+          await tester.tap(
+            find.text(
+              AppLocalizations.of(
+                tester.element(find.byType(CustomerCallAttemptsSheet)),
+              )!.driverCallReportUnreachableButton,
+            ),
+          );
+        }
+        expect(directCalls, permissions.$1 ? 1 : 0);
+        expect(reports, permissions.$2 ? 1 : 0);
+        expect(
+          find.text(
+            AppLocalizations.of(
+              tester.element(find.byType(CustomerCallAttemptsSheet)),
+            )!.driverCallUnreachableSubtitle,
+          ),
+          findsNothing,
+        );
       },
     );
+  }
+
+  testWidgets('case false overrides earlier eligibility true', (tester) async {
+    final vm = _createViewModel(_FakeCallingRepo());
+    addTearDown(vm.close);
+    vm.emit(
+      vm.state.copyWith(
+        contactCase: const DeliveryContactCaseEntity(
+          contactCaseId: 'case-1',
+          tripStopId: 'stop-1',
+          status: 'Open',
+          attemptCount: 2,
+        ),
+        eligibility: const VoiceCallEligibilityEntity(
+          reasonCode: 'contact.eligible',
+          canInitiate: true,
+          canHold: true,
+          canRevealPhone: true,
+        ),
+      ),
+    );
+    await tester.pumpWidget(_buildTestWidget(viewModel: vm));
+    await tester.pumpAndSettle();
+    expect(find.byType(CallFailedRecoveryOptions), findsNothing);
+    expect(
+      tester
+          .widget<CustomerCallInfoCard>(find.byType(CustomerCallInfoCard))
+          .isPhoneUnlocked,
+      isFalse,
+    );
+  });
+
+  testWidgets('call starts only with server eligibility', (tester) async {
+    final vm = _createViewModel(_FakeCallingRepo());
+    addTearDown(vm.close);
+    var started = false;
+    await tester.pumpWidget(
+      _buildTestWidget(viewModel: vm, onStartCall: () => started = true),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<CallAttemptActions>(find.byType(CallAttemptActions))
+          .onCallNowPressed,
+      isNull,
+    );
+    vm.emit(
+      vm.state.copyWith(
+        eligibility: const VoiceCallEligibilityEntity(
+          reasonCode: 'contact.eligible',
+          canInitiate: true,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.text(
+        AppLocalizations.of(
+          tester.element(find.byType(CustomerCallAttemptsSheet)),
+        )!.driverCallNow,
+      ),
+    );
+    expect(started, isTrue);
   });
 }

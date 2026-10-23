@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -117,11 +118,21 @@ class _DriverReportIssueScreenState extends State<DriverReportIssueScreen> {
     }
 
     if (_viewModel != null) {
-      final boxId = _issue.deliveryContext?.boxId ??
+      final boxId =
+          _issue.deliveryContext?.boxId ??
           _issue.boxCode.replaceAll('#', '').trim();
-      _viewModel.add(UpdateDeliveryIssueNotesEvent(_notesController.text.trim()));
+      _viewModel.add(
+        UpdateDeliveryIssueNotesEvent(_notesController.text.trim()),
+      );
       _viewModel.add(SelectDeliveryIssueReasonEvent(_reasonNotifier.value));
-      _viewModel.add(SubmitDriverIssueEvent(boxId: boxId));
+      _viewModel.add(
+        SubmitDriverIssueEvent(
+          boxId: boxId,
+          selectedPhotoCount: _photosNotifier.value
+              .where((path) => !path.startsWith('assets/'))
+              .length,
+        ),
+      );
       return;
     }
 
@@ -147,9 +158,7 @@ class _DriverReportIssueScreenState extends State<DriverReportIssueScreen> {
     unawaited(
       context.pushNamed(
         AppRoutes.driverReassignmentRequest,
-        arguments: DriverReassignmentRouteArguments(
-          delivery: contextEntity,
-        ),
+        arguments: DriverReassignmentRouteArguments(delivery: contextEntity),
       ),
     );
   }
@@ -186,6 +195,11 @@ class _DriverReportIssueScreenState extends State<DriverReportIssueScreen> {
       return;
     }
 
+    if (kDebugMode) {
+      debugPrint(
+        '[IssueEvidence v2] selected hasViewModel=${_viewModel != null}',
+      );
+    }
     final updated = [..._photosNotifier.value, file.path];
     _photosNotifier.value = updated;
 
@@ -290,15 +304,14 @@ class _DriverReportIssueScreenState extends State<DriverReportIssueScreen> {
           ],
           const SizedBox(height: Spacing.lg),
           if (errorMessage != null && errorMessage.isNotEmpty) ...[
-            InlineApiErrorWidget(
-              failure: Failure(errorMessage: errorMessage),
-            ),
+            InlineApiErrorWidget(failure: Failure(errorMessage: errorMessage)),
             const SizedBox(height: Spacing.md),
           ],
           DeliveryIssueActionButtons(
             onSubmit: hasUploadingPhotos ? null : _handleSubmit,
             isLoading: isLoading,
-            onRequestReassign: widget.onRequestReassign ??
+            onRequestReassign:
+                widget.onRequestReassign ??
                 ((_issue.deliveryContext != null &&
                         _issue.deliveryContext!.isPickedUp)
                     ? _handleRequestReassign

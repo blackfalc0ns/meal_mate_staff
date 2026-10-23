@@ -60,9 +60,10 @@ class RemoveDeliveryIssuePhotoEvent extends DriverIssueEvent {
 }
 
 class SubmitDriverIssueEvent extends DriverIssueEvent {
-  const SubmitDriverIssueEvent({required this.boxId});
+  const SubmitDriverIssueEvent({required this.boxId, this.selectedPhotoCount});
 
   final String boxId;
+  final int? selectedPhotoCount;
 }
 
 class ReportDriverDelayEvent extends DriverIssueEvent {

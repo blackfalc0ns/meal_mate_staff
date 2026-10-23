@@ -9,20 +9,27 @@ class CallAttemptAlertBanner extends StatelessWidget {
   const CallAttemptAlertBanner({
     super.key,
     required this.attemptNumber,
+    this.missedAttemptCount,
+    this.isUnreachable,
   });
 
   final int attemptNumber;
+  final int? missedAttemptCount;
+  final bool? isUnreachable;
 
   @override
   Widget build(BuildContext context) {
-    if (attemptNumber <= 1) {
+    if ((missedAttemptCount != null
+            ? missedAttemptCount! == 0
+            : attemptNumber <= 1) &&
+        isUnreachable != true) {
       return const SizedBox.shrink();
     }
 
     final color = context.colorScheme;
     final locale = context.localization;
 
-    final isError = attemptNumber >= 3;
+    final isError = isUnreachable ?? attemptNumber >= 3;
     final bannerBg = isError
         ? color.errorContainer.withValues(alpha: 0.15)
         : color.tertiaryContainer.withValues(alpha: 0.25);
@@ -34,7 +41,9 @@ class CallAttemptAlertBanner extends StatelessWidget {
     final title = isError
         ? locale.driverCallUnreachableTitle
         : locale.driverCallNoAnswerTitle;
-    final subtitle = isError
+    final subtitle = missedAttemptCount != null
+        ? locale.driverCallAttemptCounter(missedAttemptCount!)
+        : isError
         ? locale.driverCallUnreachableSubtitle
         : locale.driverCallAttemptCounter(attemptNumber - 1);
 

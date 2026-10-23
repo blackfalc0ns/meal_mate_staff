@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -128,14 +127,12 @@ class _CustomerCallAttemptsSheetView extends StatefulWidget {
 
 class _CustomerCallAttemptsSheetViewState
     extends State<_CustomerCallAttemptsSheetView> {
-  late final ValueNotifier<DriverCallAttemptEntity> _attemptNotifier;
+  late final DriverCallAttemptEntity _attempt;
 
   @override
   void initState() {
     super.initState();
-    _attemptNotifier = ValueNotifier<DriverCallAttemptEntity>(
-      widget.initialAttempt ?? DriverCallingFakeData.defaultAttempt,
-    );
+    _attempt = widget.initialAttempt ?? DriverCallingFakeData.defaultAttempt;
 
     if (widget.tripStopId != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -148,12 +145,6 @@ class _CustomerCallAttemptsSheetViewState
     }
   }
 
-  @override
-  void dispose() {
-    _attemptNotifier.dispose();
-    super.dispose();
-  }
-
   Future<void> _handleStartCall(BuildContext context) async {
     if (widget.onStartCall != null) {
       widget.onStartCall!();
@@ -164,7 +155,7 @@ class _CustomerCallAttemptsSheetViewState
       try {
         final vm = context.read<DriverCallingViewModel>();
         if (vm.state.isInitiating) return; // prevent double taps
-        final attempt = _attemptNotifier.value;
+        final attempt = _attempt;
         vm.doIntent(
           InitiateCallEvent(
             tripStopId: widget.tripStopId!,
@@ -175,12 +166,11 @@ class _CustomerCallAttemptsSheetViewState
     }
 
     await context.pushNamed(AppRoutes.driverActiveCall);
-    if (!mounted) return;
+    if (!context.mounted) return;
 
-    final current = _attemptNotifier.value;
-    if (current.attemptNumber < 3) {
-      _attemptNotifier.value = current.copyWith(
-        attemptNumber: current.attemptNumber + 1,
+    if (widget.tripStopId != null) {
+      context.read<DriverCallingViewModel>().doIntent(
+        CheckEligibilityEvent(widget.tripStopId!),
       );
     }
   }
@@ -193,8 +183,9 @@ class _CustomerCallAttemptsSheetViewState
 
     try {
       final vm = context.read<DriverCallingViewModel>();
-      if (vm.state.contactCase?.canRevealPhone == true ||
-          vm.state.eligibility?.canRevealPhone == true) {
+      if ((vm.state.contactCase?.canRevealPhone ??
+          vm.state.eligibility?.canRevealPhone ??
+          false)) {
         vm.doIntent(
           const RevealPhoneEvent(
             reason: 'Customer unreachable after missed call attempts',
@@ -215,8 +206,9 @@ class _CustomerCallAttemptsSheetViewState
 
     try {
       final vm = context.read<DriverCallingViewModel>();
-      if (vm.state.contactCase?.canHold == true ||
-          vm.state.eligibility?.canHold == true) {
+      if ((vm.state.contactCase?.canHold ??
+          vm.state.eligibility?.canHold ??
+          false)) {
         vm.doIntent(
           const HoldCallEvent(notes: 'Customer unreachable after attempts'),
         );
@@ -239,30 +231,20 @@ class _CustomerCallAttemptsSheetViewState
       blocVm = null;
     }
 
-    return ValueListenableBuilder<DriverCallAttemptEntity>(
-      valueListenable: _attemptNotifier,
-      builder: (context, attempt, _) {
+    final attempt = _attempt;
+    return Builder(
+      builder: (context) {
         final caseData = blocVm?.state.contactCase;
         final eligibility = blocVm?.state.eligibility;
 
-        final canInitiate = eligibility?.canInitiate ?? true;
+        final canInitiate = eligibility?.canInitiate ?? false;
         final isInitiating = blocVm?.state.isInitiating ?? false;
 
-        final effectiveAttemptNumber =
-            (caseData != null && (caseData.attemptCount > 0))
-            ? math.max(attempt.attemptNumber, caseData.attemptCount + 1)
-            : attempt.attemptNumber;
-
+        final missedAttemptCount = caseData?.attemptCount ?? 0;
         final isPhoneUnlocked =
-            caseData?.canRevealPhone == true ||
-            eligibility?.canRevealPhone == true ||
-            effectiveAttemptNumber >= 3;
-
-        final isAttempt3 =
-            effectiveAttemptNumber >= 3 ||
-            (!canInitiate &&
-                (caseData?.canRevealPhone == true ||
-                    eligibility?.canRevealPhone == true));
+            caseData?.canRevealPhone ?? eligibility?.canRevealPhone ?? false;
+        final canHold = caseData?.canHold ?? eligibility?.canHold ?? false;
+        final showRecovery = isPhoneUnlocked || canHold;
 
         return SafeArea(
           top: false,
@@ -286,7 +268,11 @@ class _CustomerCallAttemptsSheetViewState
                     ),
                   ),
                 ),
-                CallAttemptAlertBanner(attemptNumber: effectiveAttemptNumber),
+                CallAttemptAlertBanner(
+                  attemptNumber: missedAttemptCount,
+                  missedAttemptCount: missedAttemptCount,
+                  isUnreachable: showRecovery,
+                ),
                 Center(
                   child: Container(
                     width: Spacing.xxxl,
@@ -357,7 +343,7 @@ class _CustomerCallAttemptsSheetViewState
                   isPhoneUnlocked: isPhoneUnlocked,
                 ),
                 const SizedBox(height: Spacing.lg),
-                if (!isAttempt3)
+                if (!showRecovery)
                   CallAttemptActions(
                     onCallNowPressed: (!canInitiate || isInitiating)
                         ? null
@@ -367,14 +353,19 @@ class _CustomerCallAttemptsSheetViewState
                   )
                 else
                   CallFailedRecoveryOptions(
-                    onDirectCallPressed: () => _handleDirectCall(context),
-                    onReportUnreachablePressed: () =>
-                        _handleReportUnreachable(context),
+                    showDirectCall: isPhoneUnlocked,
+                    showReportUnreachable: canHold,
+                    onDirectCallPressed: isPhoneUnlocked
+                        ? () => _handleDirectCall(context)
+                        : null,
+                    onReportUnreachablePressed: canHold
+                        ? () => _handleReportUnreachable(context)
+                        : null,
                     onCancelPressed: () =>
                         unawaited(Navigator.of(context).maybePop()),
                   ),
                 const SizedBox(height: Spacing.base),
-                CallAttemptIndicator(currentAttempt: effectiveAttemptNumber),
+                CallAttemptIndicator(currentAttempt: missedAttemptCount),
                 const SizedBox(height: Spacing.sm),
               ],
             ),

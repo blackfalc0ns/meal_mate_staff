@@ -7,7 +7,9 @@ import '../../../../../core/widget/custom_app_bar.dart';
 
 class DriverSupportTicketDetailsHeader extends StatelessWidget
     implements PreferredSizeWidget {
-  const DriverSupportTicketDetailsHeader({super.key});
+  const DriverSupportTicketDetailsHeader({super.key, this.onBackPressed});
+
+  final VoidCallback? onBackPressed;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + Spacing.md);
@@ -22,6 +24,7 @@ class DriverSupportTicketDetailsHeader extends StatelessWidget
       titleFontSize: FontSize.size18,
       centerTitle: true,
       showBackButton: true,
+      onBackPressed: onBackPressed,
     );
   }
 }

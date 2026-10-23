@@ -17,6 +17,12 @@ class DriverSupportTicketEntity {
     this.orderTime,
     this.deliveryAddress,
     this.timelineSteps,
+    this.category,
+    this.categoryLabel,
+    this.statusLabel,
+    this.rawStatus,
+    this.submittedAtUtc,
+    this.orderCode,
   });
 
   final String id;
@@ -33,4 +39,10 @@ class DriverSupportTicketEntity {
   final String? orderTime;
   final String? deliveryAddress;
   final List<DriverSupportTicketTimelineStep>? timelineSteps;
+  final String? category;
+  final String? categoryLabel;
+  final String? statusLabel;
+  final String? rawStatus;
+  final DateTime? submittedAtUtc;
+  final String? orderCode;
 }

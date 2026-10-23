@@ -48,9 +48,19 @@ class DriverIssueMapper {
           if (k.isEmpty) return false;
           final lower = k.toLowerCase();
           if (lower.startsWith('assets/')) return false;
-          if (lower.startsWith('http://') || lower.startsWith('https://')) return false;
-          if (lower.startsWith('/') || lower.startsWith('\\')) return false;
-          if (RegExp(r'^[a-zA-Z]:[\\/]').hasMatch(k)) return false;
+          if (lower.startsWith('file://')) return false;
+          if (lower.startsWith('/data/') ||
+              lower.startsWith('/storage/') ||
+              lower.startsWith('/var/') ||
+              lower.startsWith('/private/') ||
+              RegExp(r'^[a-zA-Z]:[\\/]').hasMatch(k)) {
+            return false;
+          }
+          final uri = Uri.tryParse(k);
+          if (uri == null) return false;
+          if (uri.hasScheme) {
+            return uri.scheme == 'http' || uri.scheme == 'https';
+          }
           return true;
         })
         .toSet()

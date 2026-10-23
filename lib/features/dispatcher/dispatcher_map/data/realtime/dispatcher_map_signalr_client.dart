@@ -4,12 +4,9 @@ import 'dart:developer' as developer;
 
 import 'package:signalr_netcore/signalr_client.dart';
 
-import '../../../../../core/di/di.dart';
 import '../../../../../core/network/network_constants.dart';
 import '../../../../../core/services/auth_refresh_service.dart';
 import '../../../../../core/services/token_service.dart';
-import '../../../dispatcher_notifications/presentation/manager/dispatcher_notifications_event.dart';
-import '../../../dispatcher_notifications/presentation/manager/dispatcher_notifications_view_model.dart';
 import '../../domain/entities/dispatcher_map_connection_status.dart';
 import '../models/realtime/dispatcher_box_assigned_event_dto.dart';
 import '../models/realtime/dispatcher_driver_issue_event_dto.dart';
@@ -88,15 +85,7 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
   String? _builtWithToken;
 
   void _ensureHubBuilt(String token) {
-    if (_hubConnection != null && _builtWithToken == token) return;
-
-    if (_hubConnection != null && _builtWithToken != token) {
-      _removeHandlers();
-      try {
-        _hubConnection?.stop();
-      } catch (_) {}
-      _hubConnection = null;
-    }
+    if (_hubConnection != null) return;
 
     _builtWithToken = token;
 
@@ -105,12 +94,18 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
     } else {
       final uri = Uri.parse(_resolvedHubUrl);
       final queryParams = Map<String, String>.from(uri.queryParameters);
-      queryParams['access_token'] = token;
+      queryParams.remove('access_token');
       final fullUrl = uri.replace(queryParameters: queryParams).toString();
 
       _log('🔧 [INIT] Building HubConnection with URL: $fullUrl');
       final httpOptions = HttpConnectionOptions(
-        accessTokenFactory: () async => token,
+        accessTokenFactory: () async {
+          final latest = refreshService != null
+              ? await refreshService!.ensureFreshToken()
+              : await _tokenService.getToken();
+          _builtWithToken = latest;
+          return latest ?? '';
+        },
       );
 
       _hubConnection = HubConnectionBuilder()
@@ -188,7 +183,6 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
         '✅ [LIFECYCLE] onreconnected successfully! connectionId: $connectionId',
       );
       _emitStatus(DispatcherMapConnectionStatus.connected);
-      _tryRefreshNotifications();
     });
   }
 
@@ -254,13 +248,11 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
       } catch (e) {
         _log('⚠️ [REALTIME] Error parsing driver-issue-updated: $e', error: e);
       }
-      _tryRefreshNotifications();
     });
 
     hub.on('driver-support-handover-updated', (List<Object?>? args) {
       if (_isDisposed || args == null || args.isEmpty) return;
       _log('🤝 [REALTIME] driver-support-handover-updated received');
-      _tryRefreshNotifications();
     });
 
     hub.on('box-assigned', (List<Object?>? args) {
@@ -289,16 +281,6 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
     hub.off('driver-support-handover-updated');
     hub.off('box-assigned');
     _handlersRegistered = false;
-  }
-
-  void _tryRefreshNotifications() {
-    try {
-      if (getIt.isRegistered<DispatcherNotificationsViewModel>()) {
-        getIt<DispatcherNotificationsViewModel>().add(
-          const LoadDispatcherNotificationsEvent(isRefresh: true),
-        );
-      }
-    } catch (_) {}
   }
 
   Map<String, dynamic> _toMap(dynamic raw) {
@@ -365,7 +347,9 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
   }
 
   Future<void> _doConnect() async {
-    final token = await _tokenService.getToken();
+    final token = refreshService != null
+        ? await refreshService!.ensureFreshToken()
+        : await _tokenService.getToken();
     if (token == null || token.isEmpty) {
       _log('⚠️ [AUTH] Cannot connect: Bearer token is missing or empty.');
       _emitStatus(DispatcherMapConnectionStatus.unauthorized);
@@ -397,7 +381,9 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
           _log(
             '🔄 [AUTH] Received 401/403. Attempting token refresh via AuthRefreshService...',
           );
-          final refreshedToken = await refreshService!.refreshToken();
+          final refreshedToken = await refreshService!.refreshToken(
+            rejectedAccessToken: _builtWithToken,
+          );
           if (refreshedToken != null && refreshedToken.isNotEmpty) {
             _log(
               '🔑 [AUTH] New token acquired. Retrying connection with fresh token...',
@@ -449,7 +435,7 @@ class DispatcherMapSignalRClient implements DispatcherMapRealtimeClient {
         if (!_isDisposed &&
             _currentStatus != DispatcherMapConnectionStatus.connected) {
           _log('⏰ [RETRY] Executing reconnect attempt $_retryAttempt...');
-          connect();
+          unawaited(connect());
         }
       });
     } else {

@@ -64,6 +64,8 @@ dependencies:
   geolocator: ^14.1.1
   flutter_webrtc: ^1.6.2
   flutter_callkit_incoming: ^3.1.6
+  driver_voice_engine:
+    path: packages/driver_voice_engine
 
 dev_dependencies:
   flutter_test:

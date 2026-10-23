@@ -126,6 +126,10 @@ class DriverWebRtcManager {
         'echoCancellation': true,
         'noiseSuppression': true,
         'autoGainControl': true,
+        'googEchoCancellation': true,
+        'googAutoGainControl': true,
+        'googNoiseSuppression': true,
+        'googHighpassFilter': true,
       },
       'video': false,
     };
@@ -275,21 +279,31 @@ class DriverWebRtcManager {
 
     final description = await pc.createOffer(offerConstraints);
     if (!_isCurrentSession(callId, generation, lifecycleToken)) return;
-    await pc.setLocalDescription(description);
+    final optimizedSdp = _optimizeOpusSdp(description.sdp ?? '');
+    final optimizedDesc = RTCSessionDescription(optimizedSdp, description.type);
+    await pc.setLocalDescription(optimizedDesc);
     if (!_isCurrentSession(callId, generation, lifecycleToken)) return;
 
     final msgId = _generateUuidV4();
     _diag(
       'SendOffer',
-      'Local description set, sending offer (sdpLen: ${description.sdp?.length})',
+      'Local description set, sending offer (sdpLen: ${optimizedDesc.sdp?.length})',
       callId: sessionCallId,
       gen: sessionGeneration,
     );
     await signalRClient.sendOffer(
       callId: sessionCallId,
-      sdp: description.sdp ?? '',
+      sdp: optimizedDesc.sdp ?? '',
       messageId: msgId,
       generation: sessionGeneration,
+    );
+  }
+
+  String _optimizeOpusSdp(String sdp) {
+    if (sdp.contains('minptime=10')) return sdp;
+    return sdp.replaceAllMapped(
+      RegExp(r'(a=fmtp:\d+ [^\r\n]+)'),
+      (match) => '${match.group(1)};minptime=10;useinbandfec=1;stereo=0;sprop-stereo=0;cbr=1',
     );
   }
 

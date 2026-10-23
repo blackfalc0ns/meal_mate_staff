@@ -237,4 +237,11 @@ abstract class EndPoints {
       '/api/v2/delivery-contact/{tripStopId}/resume';
   static const String deliveryContactRevealPhone =
       '/api/v2/delivery-contact/{tripStopId}/reveal-phone';
+
+  // Driver Support Issues endpoints
+  static const String driverSupportIssues = '/api/v1/driver/support/issues';
+  static const String driverSupportIssueById =
+      '/api/v1/driver/support/issues/{issueId}';
+  static const String driverSupportIssuePhotos =
+      '/api/v1/driver/support/issues/{issueId}/photos';
 }

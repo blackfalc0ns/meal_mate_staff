@@ -24,10 +24,7 @@ import 'package:meal_mate_delivery/features/driver/delivery_issues/data/models/r
 import 'package:meal_mate_delivery/features/driver/delivery_issues/data/models/request/driver_report_delay_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/dispatcher_reassignment_decision_request_dto.dart';
 import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/dispatcher_assign_handover_request_dto.dart';
-import 'package:meal_mate_delivery/features/dispatcher/dispatcher_support/data/models/request/handover_return_to_kitchen_request_dto.dart';
-import 'package:meal_mate_delivery/features/driver/support_handovers/data/models/request/driver_handover_arrival_request_dto.dart';
 import 'package:meal_mate_delivery/features/driver/support_handovers/data/models/request/driver_handover_scan_request_dto.dart';
-import 'package:meal_mate_delivery/features/driver/support_handovers/data/models/request/support_handover_cancel_request_dto.dart';
 
 void main() {
   late Dio dio;
@@ -608,9 +605,9 @@ void main() {
       await tempFile.writeAsBytes([1, 2, 3]);
 
       await apiServices.uploadDriverIssueEvidence(
-        tempFile,
-        'issue-evidence',
+        await MultipartFile.fromFile(tempFile.path, contentType: DioMediaType.parse('image/png')),
         'drivers',
+        'issue-evidence',
       );
 
       expect(capturedOptions.method, 'POST');

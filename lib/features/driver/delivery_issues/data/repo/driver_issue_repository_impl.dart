@@ -1,3 +1,6 @@
+import '../../../../../core/errors/api_exception.dart';
+import '../../../../../core/errors/api_error_type.dart';
+
 import 'dart:io';
 
 import 'package:meal_mate_delivery/core/network/api_results.dart';
@@ -12,6 +15,27 @@ class DriverIssueRepositoryImpl implements DriverIssueRepository {
 
   final DriverIssueRemoteDataSource _remoteDataSource;
 
+  static bool _isStorageKey(String key) {
+    final trimmed = key.trim();
+    if (trimmed.isEmpty) return false;
+    final lower = trimmed.toLowerCase();
+    if (lower.startsWith('assets/')) return false;
+    if (lower.startsWith('file://')) return false;
+    if (lower.startsWith('/data/') ||
+        lower.startsWith('/storage/') ||
+        lower.startsWith('/var/') ||
+        lower.startsWith('/private/') ||
+        RegExp(r'^[a-zA-Z]:[/\\]').hasMatch(trimmed)) {
+      return false;
+    }
+    final uri = Uri.tryParse(trimmed);
+    if (uri == null) return false;
+    if (uri.hasScheme) {
+      return uri.scheme == 'http' || uri.scheme == 'https';
+    }
+    return true;
+  }
+
   static const int maxFileSizeBytes = 25 * 1024 * 1024;
   static const Set<String> allowedExtensions = {'jpg', 'jpeg', 'png', 'webp'};
 
@@ -23,11 +47,29 @@ class DriverIssueRepositoryImpl implements DriverIssueRepository {
     String? severity,
     List<String> photoStorageKeys = const [],
   }) {
+    final keys = photoStorageKeys
+        .map((k) => k.trim())
+        .where((k) => k.isNotEmpty)
+        .toList();
+    if (keys.any((key) => !_isStorageKey(key)) || keys.toSet().length > 3) {
+      return Future.value(
+        ApiErrorResult<String>(
+          failure: Failure.fromException(
+            const ApiException(
+              errorType: ApiErrorType.validationError,
+              message:
+                  'مفتاح الصورة غير صالح. أعد رفع الصورة قبل إرسال البلاغ.',
+              backendErrorCode: 'ISSUE_UPLOAD_STORAGE_KEY_INVALID',
+            ),
+          ),
+        ),
+      );
+    }
     final dto = DriverIssueMapper.toReportDto(
       reason: reason,
       description: description,
       severity: severity,
-      photoStorageKeys: photoStorageKeys,
+      photoStorageKeys: keys,
     );
     return safeApiCall(() => _remoteDataSource.reportIssue(boxId, dto));
   }
@@ -76,9 +118,14 @@ class DriverIssueRepositoryImpl implements DriverIssueRepository {
 
     return safeApiCall(() async {
       final response = await _remoteDataSource.uploadEvidence(file);
-      final key = response.storageKey;
-      if (key == null || key.isEmpty) {
-        throw const FormatException('Upload succeeded but no storage key returned');
+      final key = response.storageKey?.trim();
+      if (key == null || !_isStorageKey(key)) {
+        throw const ApiException(
+          errorType: ApiErrorType.validationError,
+          message:
+              'رد رفع الصورة لا يحتوي storageKey صالحًا. يلزم مراجعة رد /api/v1/uploads مع الباك.',
+          backendErrorCode: 'ISSUE_UPLOAD_STORAGE_KEY_INVALID',
+        );
       }
       return key;
     });

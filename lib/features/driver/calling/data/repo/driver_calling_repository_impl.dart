@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:io' show Platform;
 
+import 'package:driver_voice_engine/driver_voice_engine.dart';
 import 'package:injectable/injectable.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../../core/network/api_results.dart';
-import '../../../../../core/services/voice_device_session_storage.dart';
+import '../../../../../core/network/network_constants.dart';
 import '../../../../../core/services/server_clock.dart';
+import '../../../../../core/services/token_service.dart';
+import '../../../../../core/services/voice_device_session_storage.dart';
 import '../../domain/entities/delivery_contact_case_entity.dart';
 import '../../domain/entities/ice_server_config_entity.dart';
 import '../../domain/entities/phone_grant_entity.dart';
@@ -39,10 +43,15 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     required this.webrtcManager,
     required this.callKitCoordinator,
     required this.sessionStorage,
+    this.tokenService,
+    DriverVoiceEngine? driverVoiceEngine,
+    bool useNativeEngine = true,
     ServerClock? serverClock,
     HeartbeatTimerFactory? heartbeatTimerFactory,
   }) : _heartbeatTimerFactory = heartbeatTimerFactory ?? Timer.periodic,
-       _serverClock = serverClock ?? ServerClock() {
+       _serverClock = serverClock ?? ServerClock(),
+       _driverVoiceEngine = driverVoiceEngine,
+       _useNativeEngine = useNativeEngine && driverVoiceEngine != null {
     _initListeners();
   }
 
@@ -51,6 +60,9 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   final DriverWebRtcManager webrtcManager;
   final DriverCallKitCoordinator callKitCoordinator;
   final VoiceDeviceSessionStorage sessionStorage;
+  final TokenService? tokenService;
+  final DriverVoiceEngine? _driverVoiceEngine;
+  final bool _useNativeEngine;
   final HeartbeatTimerFactory _heartbeatTimerFactory;
   final ServerClock _serverClock;
 
@@ -112,6 +124,14 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   Stream<VoiceCallStatus> get onStatusChanged => _statusController.stream;
 
   void _initListeners() {
+    if (_useNativeEngine) {
+      _driverVoiceEngine!.onSnapshotUpdated.listen((nativeSnapshot) {
+        final entity = _mapNativeSnapshot(nativeSnapshot);
+        _handleNativeSnapshot(entity);
+      });
+      return;
+    }
+
     callKitCoordinator.initialize();
 
     // SignalR lifecycle envelope events
@@ -428,6 +448,93 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     }
   }
 
+  void _handleNativeSnapshot(VoiceCallSnapshotEntity snapshot) {
+    if (_activeCallId != null && _activeCallId != snapshot.callId) {
+      if (_currentSnapshot != null && !_currentSnapshot!.isTerminal) {
+        _diag(
+          'NativeSnapshot',
+          'Rejecting foreign call event: active=$_activeCallId incoming=${snapshot.callId}',
+          callId: snapshot.callId,
+        );
+        return;
+      }
+    }
+
+    if (_currentSnapshot != null &&
+        _currentSnapshot!.callId == snapshot.callId) {
+      if (_currentSnapshot!.isTerminal && !snapshot.isTerminal) {
+        _diag(
+          'NativeSnapshot',
+          'Rejecting non-terminal snapshot for already terminal call',
+          callId: snapshot.callId,
+        );
+        return;
+      }
+      if (snapshot.sequence < _currentSnapshot!.sequence) {
+        _diag(
+          'NativeSnapshot',
+          'Ignoring older sequence: ${snapshot.sequence} < ${_currentSnapshot!.sequence}',
+          callId: snapshot.callId,
+          seq: snapshot.sequence,
+        );
+        return;
+      }
+    }
+
+    if (_activeCallId == null && !snapshot.isTerminal) {
+      _activeCallId = snapshot.callId;
+    }
+
+    _currentSnapshot = snapshot;
+    _snapshotController.add(snapshot);
+    _statusController.add(snapshot.status);
+
+    _diag(
+      'NativeSnapshot',
+      'Applied native snapshot: status=${snapshot.status}, connectedAtUtc=${snapshot.connectedAtUtc}',
+      callId: snapshot.callId,
+      seq: snapshot.sequence,
+    );
+
+    if (snapshot.status.isTerminal) {
+      _activeCallId = null;
+    }
+  }
+
+  VoiceCallSnapshotEntity _mapNativeSnapshot(DriverVoiceCallSnapshot s) {
+    final status = switch (s.serverStatus) {
+      DriverVoiceServerCallStatus.idle => VoiceCallStatus.created,
+      DriverVoiceServerCallStatus.created => VoiceCallStatus.created,
+      DriverVoiceServerCallStatus.ringing => VoiceCallStatus.ringing,
+      DriverVoiceServerCallStatus.accepted => VoiceCallStatus.accepted,
+      DriverVoiceServerCallStatus.connecting => VoiceCallStatus.connecting,
+      DriverVoiceServerCallStatus.active => VoiceCallStatus.active,
+      DriverVoiceServerCallStatus.rejected => VoiceCallStatus.rejected,
+      DriverVoiceServerCallStatus.cancelled => VoiceCallStatus.cancelled,
+      DriverVoiceServerCallStatus.missed => VoiceCallStatus.missed,
+      DriverVoiceServerCallStatus.failed => VoiceCallStatus.failed,
+      DriverVoiceServerCallStatus.ended => VoiceCallStatus.ended,
+      DriverVoiceServerCallStatus.busy => VoiceCallStatus.failed,
+      DriverVoiceServerCallStatus.unknown => VoiceCallStatus.created,
+    };
+
+    DateTime? parseIso(String? raw) {
+      if (raw == null || raw.isEmpty) return null;
+      return DateTime.tryParse(raw);
+    }
+
+    return VoiceCallSnapshotEntity(
+      callId: s.callId ?? '',
+      tripStopId: s.tripStopId,
+      protocolVersion: s.schemaVersion,
+      sequence: s.serverSequence,
+      status: status,
+      endReason: s.terminationReason.name,
+      connectedAtUtc: parseIso(s.connectedAtUtc),
+      deadlineAtUtc: parseIso(s.deadlineAtUtc),
+    );
+  }
+
   void _startHeartbeatForSnapshot(VoiceCallSnapshotEntity snapshot) {
     final status = snapshot.status;
     final isHeartbeatEligible =
@@ -614,6 +721,9 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   @override
   Future<ApiResult<void>> revokeVoiceDevice() async {
     return safeApiCall(() async {
+      if (_useNativeEngine) {
+        await _driverVoiceEngine!.revokeAccountSession();
+      }
       _stopHeartbeat();
       final sessionId = sessionStorage.getDeviceSessionId();
       if (sessionId != null) {
@@ -622,7 +732,9 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
         } catch (_) {}
       }
       await sessionStorage.clearSession();
-      await signalRClient.disconnect();
+      if (!_useNativeEngine) {
+        await signalRClient.disconnect();
+      }
     });
   }
 
@@ -641,6 +753,89 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     required String tripStopId,
     required String clientRequestId,
   }) async {
+    if (_useNativeEngine) {
+      return safeApiCall(() async {
+        _sessionToken++;
+        final operationToken = _sessionToken;
+        _currentGeneration = 0;
+
+        await _ensureVoiceDeviceSession();
+        if (_sessionToken != operationToken) {
+          throw StateError('Call operation cancelled or superseded');
+        }
+
+        final token = await tokenService?.getToken() ?? '';
+        final refreshToken = await tokenService?.getRefreshToken();
+        final fcmDeviceTokenId = sessionStorage.getFcmDeviceTokenId();
+        final installationId = sessionStorage.getOrCreateInstallationId(
+          'voice-device',
+        );
+
+        await _driverVoiceEngine!.syncAccountSession(
+          DriverVoiceAccountSession(
+            accessToken: token,
+            refreshToken: refreshToken,
+            userId: 'current-driver',
+            baseUrl: NetworkConstants.baseUrl,
+            hubUrl: '${NetworkConstants.baseUrl}${EndPoints.voiceCallsV2Hub}',
+            installationId: installationId,
+            fcmDeviceTokenId: fcmDeviceTokenId,
+            platform: Platform.isIOS ? 'ios' : 'android',
+          ),
+        );
+
+        if (Platform.isAndroid &&
+            identical(_driverVoiceEngine, DriverVoiceEngine.instance)) {
+          // Reuse the exact session registered by Dart; registering again revokes it.
+          await const MethodChannel(
+            'mealmate/auth_session',
+          ).invokeMethod<void>('syncVoiceDevice', {
+            'deviceSessionId': sessionStorage.getDeviceSessionId(),
+            'controlProof': await sessionStorage.getControlProof(),
+            'expiresAtUtc': sessionStorage
+                .getExpiresAtUtc()
+                ?.toUtc()
+                .toIso8601String(),
+          });
+        }
+
+        final res = await _driverVoiceEngine.startOutgoing(
+          tripStopId: tripStopId,
+          clientRequestId: clientRequestId,
+        );
+
+        if (res.status != DriverVoiceCommandStatus.success) {
+          throw StateError(
+            res.errorMessage ??
+                'Failed to start native call: ${res.status.name}',
+          );
+        }
+
+        final nativeSnapshot = await _driverVoiceEngine.getCurrentCall();
+        if (nativeSnapshot != null) {
+          final entity = _mapNativeSnapshot(nativeSnapshot);
+          _activeCallId = entity.callId;
+          _currentSnapshot = entity;
+          _snapshotController.add(entity);
+          _statusController.add(entity.status);
+          return entity;
+        }
+
+        final fallback = VoiceCallSnapshotEntity(
+          callId: res.operationId ?? '',
+          tripStopId: tripStopId,
+          protocolVersion: 2,
+          sequence: 1,
+          status: VoiceCallStatus.created,
+        );
+        _activeCallId = fallback.callId;
+        _currentSnapshot = fallback;
+        _snapshotController.add(fallback);
+        _statusController.add(fallback.status);
+        return fallback;
+      });
+    }
+
     return safeApiCall(() async {
       _sessionToken++;
       final operationToken = _sessionToken;
@@ -775,6 +970,18 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
   @override
   Future<ApiResult<void>> cancelCall(String callId) async {
+    if (_useNativeEngine) {
+      return safeApiCall(() async {
+        _diag('Cancel', 'Cancelling native call $callId', callId: callId);
+        final res = await _driverVoiceEngine!.hangUp('cancelled');
+        if (res.status != DriverVoiceCommandStatus.success) {
+          throw StateError(res.errorMessage ?? 'Failed to cancel call');
+        }
+        _activeCallId = null;
+        _currentSnapshot = null;
+      });
+    }
+
     return safeApiCall(() async {
       _diag('Cancel', 'Cancelling call $callId', callId: callId);
       await remoteDataSource.cancelCall(callId);
@@ -784,6 +991,18 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
   @override
   Future<ApiResult<void>> endCall(String callId) async {
+    if (_useNativeEngine) {
+      return safeApiCall(() async {
+        _diag('End', 'Ending native call $callId', callId: callId);
+        final res = await _driverVoiceEngine!.hangUp('ended');
+        if (res.status != DriverVoiceCommandStatus.success) {
+          throw StateError(res.errorMessage ?? 'Failed to end call');
+        }
+        _activeCallId = null;
+        _currentSnapshot = null;
+      });
+    }
+
     return safeApiCall(() async {
       _diag('End', 'Ending call $callId', callId: callId);
       await remoteDataSource.endCall(callId);
@@ -793,6 +1012,32 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
   @override
   Future<ApiResult<VoiceCallSnapshotEntity?>> getActiveCall() async {
+    if (_useNativeEngine) {
+      return safeApiCall(() async {
+        final nativeSnap = await _driverVoiceEngine!.getCurrentCall();
+        if (nativeSnap != null &&
+            nativeSnap.callId != null &&
+            nativeSnap.callId!.isNotEmpty &&
+            nativeSnap.serverStatus != DriverVoiceServerCallStatus.idle &&
+            nativeSnap.serverStatus != DriverVoiceServerCallStatus.ended &&
+            nativeSnap.serverStatus != DriverVoiceServerCallStatus.failed &&
+            nativeSnap.serverStatus != DriverVoiceServerCallStatus.cancelled &&
+            nativeSnap.serverStatus != DriverVoiceServerCallStatus.rejected &&
+            nativeSnap.serverStatus != DriverVoiceServerCallStatus.missed) {
+          final entity = _mapNativeSnapshot(nativeSnap);
+          _activeCallId = entity.callId;
+          _currentSnapshot = entity;
+          return entity;
+        }
+        final response = await remoteDataSource.getActiveCall();
+        if (response == null) return null;
+        final snapshot = CallingDtoMapper.toSnapshotEntity(response);
+        _activeCallId = snapshot.callId;
+        _currentSnapshot = snapshot;
+        return snapshot;
+      });
+    }
+
     return safeApiCall(() async {
       final response = await remoteDataSource.getActiveCall();
       if (response == null) return null;
@@ -807,6 +1052,21 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
   Future<ApiResult<VoiceCallSnapshotEntity>> getCallSnapshot(
     String callId,
   ) async {
+    if (_useNativeEngine) {
+      return safeApiCall(() async {
+        final current = await _driverVoiceEngine!.getCurrentCall();
+        if (current != null && current.callId == callId) {
+          final entity = _mapNativeSnapshot(current);
+          _currentSnapshot = entity;
+          return entity;
+        }
+        final response = await remoteDataSource.getCallSnapshot(callId);
+        final snapshot = CallingDtoMapper.toSnapshotEntity(response);
+        _currentSnapshot = snapshot;
+        return snapshot;
+      });
+    }
+
     return safeApiCall(() async {
       final response = await remoteDataSource.getCallSnapshot(callId);
       final snapshot = CallingDtoMapper.toSnapshotEntity(response);
@@ -932,11 +1192,13 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
 
   @override
   Future<void> connectSignalR() async {
+    if (_useNativeEngine) return;
     await signalRClient.connect();
   }
 
   @override
   Future<void> disconnectSignalR() async {
+    if (_useNativeEngine) return;
     await signalRClient.disconnect();
   }
 
@@ -945,21 +1207,41 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     required String callId,
     required List<IceServerConfigEntity> iceServers,
   }) async {
+    if (_useNativeEngine) return;
     await _triggerWebRtcOffer(callId);
   }
 
   @override
   Future<void> toggleMute(bool muted) async {
+    if (_useNativeEngine) {
+      await _driverVoiceEngine!.setMuted(muted);
+      return;
+    }
     await webrtcManager.toggleMute(muted);
   }
 
   @override
   Future<void> toggleSpeaker(bool enabled) async {
+    if (_useNativeEngine) {
+      await _driverVoiceEngine!.selectAudioRoute(
+        enabled
+            ? DriverVoiceAudioRoute.speaker
+            : DriverVoiceAudioRoute.earpiece,
+      );
+      return;
+    }
     await webrtcManager.toggleSpeaker(enabled);
   }
 
   @override
   Future<void> cleanupCall([String? targetCallId]) async {
+    if (_useNativeEngine) {
+      await _driverVoiceEngine!.hangUp('cleanup');
+      _activeCallId = null;
+      _currentSnapshot = null;
+      return;
+    }
+
     if (targetCallId != null &&
         _activeCallId != null &&
         _activeCallId != targetCallId) {
@@ -988,6 +1270,27 @@ class DriverCallingRepositoryImpl implements DriverCallingRepository {
     _reportedConnecting.clear();
     _connectedInFlight.clear();
     _reportedConnected.clear();
+  }
+
+  Future<void> terminateLocalAuthSession() async {
+    _sessionToken++;
+    _stopHeartbeat();
+    if (!_useNativeEngine) {
+      await callKitCoordinator.endCall(_activeCallId);
+      await webrtcManager.cleanup(_activeCallId);
+      await signalRClient.disconnect();
+    }
+    _activeCallId = null;
+    _currentSnapshot = null;
+    _statusController.add(VoiceCallStatus.failed);
+    await sessionStorage.clearSession();
+  }
+
+  Future<void> reconcileAuthSession() async {
+    if (!_useNativeEngine && _activeCallId != null) {
+      await signalRClient.connect();
+      await _reconcileAfterReconnect();
+    }
   }
 
   bool _isCurrentSession(String callId, int generation, int token) {
