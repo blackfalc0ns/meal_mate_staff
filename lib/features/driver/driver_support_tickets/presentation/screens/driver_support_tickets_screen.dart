@@ -10,7 +10,6 @@ import '../../domain/fake_data/driver_support_tickets_fake_data.dart';
 import '../widgets/driver_support_tickets_header.dart';
 import '../widgets/driver_support_tickets_kpi_row.dart';
 import '../widgets/driver_support_tickets_list.dart';
-import '../widgets/driver_support_tickets_report_button.dart';
 import '../widgets/driver_support_tickets_search_field.dart';
 
 class DriverSupportTicketsScreen extends StatefulWidget {
@@ -170,29 +169,9 @@ class _DriverSupportTicketsScreenState
                           },
                     ),
                   ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Spacing.screenH,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: Spacing.md),
-                          DriverSupportTicketsReportButton(
-                            onPressed: widget.onReportTap ??
-                                () {
-                                  unawaited(
-                                    Navigator.of(context).pushNamed(
-                                      AppRoutes.driverReportIssue,
-                                    ),
-                                  );
-                                },
-                          ),
-                          const SizedBox(
-                            height: Spacing.bottomNavHeight + Spacing.md,
-                          ),
-                        ],
-                      ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: Spacing.bottomNavHeight + Spacing.lg,
                     ),
                   ),
                 ],

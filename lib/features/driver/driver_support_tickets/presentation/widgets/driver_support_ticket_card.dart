@@ -18,29 +18,32 @@ class DriverSupportTicketCard extends StatelessWidget {
     final color = context.colorScheme;
     final locale = context.localization;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Spacing.cardRadius),
-      child: Ink(
-        padding: const EdgeInsets.all(Spacing.md),
-        decoration: BoxDecoration(
-          color: color.surface,
-          borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          border: Border.all(
-            color: color.outlineVariant.withValues(alpha: 0.5),
-            width: Spacing.border,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: color.shadow.withValues(alpha: 0.04),
-              offset: const Offset(0, 2),
-              blurRadius: 8,
-            ),
-          ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: color.surface,
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(
+          color: color.outlineVariant.withValues(alpha: 0.5),
+          width: Spacing.border,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.04),
+            offset: const Offset(0, 2),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(Spacing.cardRadius),
+          child: Padding(
+            padding: const EdgeInsets.all(Spacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -91,13 +94,7 @@ class DriverSupportTicketCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: Spacing.xs + 2),
-            Divider(
-              color: color.outlineVariant.withValues(alpha: 0.5),
-              height: 1,
-              thickness: Spacing.hairline,
-            ),
-            const SizedBox(height: Spacing.xs + 2),
+            const SizedBox(height: Spacing.sm),
             Row(
               children: [
                 Expanded(
@@ -136,8 +133,8 @@ class DriverSupportTicketCard extends StatelessWidget {
                     ),
                     const SizedBox(width: Spacing.xs),
                     Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: Spacing.iconXs - 2,
+                      Icons.arrow_back_ios_new_rounded,
+                      size: Spacing.iconXs - 4,
                       color: color.primary,
                     ),
                   ],
@@ -147,6 +144,8 @@ class DriverSupportTicketCard extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

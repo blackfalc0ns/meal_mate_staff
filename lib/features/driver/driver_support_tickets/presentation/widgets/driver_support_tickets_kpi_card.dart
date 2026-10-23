@@ -80,50 +80,55 @@ class DriverSupportTicketsKpiCard extends StatelessWidget {
     final bgColor = _getBackgroundColor();
     final borderColor = _getBorderColor();
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Spacing.cardRadius),
-      child: Ink(
-        padding: const EdgeInsets.symmetric(
-          vertical: Spacing.sm,
-          horizontal: Spacing.xs,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(Spacing.cardRadius),
+        border: Border.all(
+          color: borderColor,
+          width: isSelected ? 1.5 : Spacing.border,
         ),
-        decoration: BoxDecoration(
-          color: bgColor,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(Spacing.cardRadius),
-          border: Border.all(
-            color: borderColor,
-            width: isSelected ? 1.5 : Spacing.border,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: Spacing.sm,
+              horizontal: Spacing.xs,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: Spacing.iconSm,
+                  color: fgColor,
+                ),
+                const SizedBox(height: Spacing.xs),
+                Text(
+                  label,
+                  style: getBoldStyle(
+                    fontSize: FontSize.size11,
+                    color: fgColor,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: Spacing.xs),
+                Text(
+                  '$count',
+                  style: getBoldStyle(
+                    fontSize: FontSize.size16,
+                    color: const Color(0xFF17151C),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: Spacing.iconSm,
-              color: fgColor,
-            ),
-            const SizedBox(height: Spacing.xs),
-            Text(
-              label,
-              style: getBoldStyle(
-                fontSize: FontSize.size11,
-                color: fgColor,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: Spacing.xs),
-            Text(
-              '$count',
-              style: getBoldStyle(
-                fontSize: FontSize.size16,
-                color: const Color(0xFF17151C),
-              ),
-            ),
-          ],
         ),
       ),
     );

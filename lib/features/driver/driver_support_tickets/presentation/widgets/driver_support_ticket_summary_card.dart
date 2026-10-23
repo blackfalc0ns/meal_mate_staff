@@ -42,64 +42,6 @@ class DriverSupportTicketSummaryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              flex: 7,
-              child: Row(
-                children: [
-                  if (boxIconPath != null)
-                    Container(
-                      width: 52,
-                      height: 52,
-                      decoration: BoxDecoration(
-                        color: color.errorContainer.withValues(alpha: 0.4),
-                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
-                      ),
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        boxIconPath,
-                        width: Spacing.iconLg,
-                        height: Spacing.iconLg,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  const SizedBox(width: Spacing.sm),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DriverSupportTicketStatusBadge(status: ticket.status),
-                        const SizedBox(height: Spacing.xs),
-                        Text(
-                          ticket.boxNumber,
-                          style: getBoldStyle(
-                            fontSize: FontSize.size15,
-                            color: color.onSurface,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: Spacing.xs / 2),
-                        Text(
-                          ticket.title,
-                          style: getMediumStyle(
-                            fontSize: FontSize.size11,
-                            color: color.onSurfaceVariant,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            VerticalDivider(
-              color: color.outline.withValues(alpha: 0.4),
-              width: Spacing.lg,
-              thickness: Spacing.hairline,
-            ),
-            Expanded(
               flex: 5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,8 +58,8 @@ class DriverSupportTicketSummaryCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           ticket.location,
-                          style: getSemiBoldStyle(
-                            fontSize: FontSize.size11,
+                          style: getBoldStyle(
+                            fontSize: FontSize.size12,
                             color: color.onSurface,
                           ),
                           maxLines: 1,
@@ -157,6 +99,64 @@ class DriverSupportTicketSummaryCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                ],
+              ),
+            ),
+            VerticalDivider(
+              color: color.outline.withValues(alpha: 0.3),
+              width: Spacing.lg,
+              thickness: Spacing.hairline,
+            ),
+            Expanded(
+              flex: 6,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DriverSupportTicketStatusBadge(status: ticket.status),
+                        const SizedBox(height: Spacing.xs),
+                        Text(
+                          ticket.boxNumber,
+                          style: getBoldStyle(
+                            fontSize: FontSize.size16,
+                            color: color.onSurface,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: Spacing.xs / 2),
+                        Text(
+                          ticket.title,
+                          style: getMediumStyle(
+                            fontSize: FontSize.size11,
+                            color: color.onSurfaceVariant,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: Spacing.xs),
+                  if (boxIconPath != null)
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFCEBED),
+                        borderRadius: BorderRadius.circular(Spacing.radiusMd),
+                      ),
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        boxIconPath,
+                        width: Spacing.iconLg + 4,
+                        height: Spacing.iconLg + 4,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                 ],
               ),
             ),

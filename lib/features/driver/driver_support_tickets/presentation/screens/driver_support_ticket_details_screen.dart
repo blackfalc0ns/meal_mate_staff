@@ -49,7 +49,9 @@ class DriverSupportTicketDetailsScreen extends StatelessWidget {
         resolvedTicket.deliveryAddress ?? resolvedTicket.location;
 
     return Scaffold(
-      appBar: const DriverSupportTicketDetailsHeader(),
+      appBar: DriverSupportTicketDetailsHeader(
+        onBackPressed: onBackPressed,
+      ),
       body: SafeArea(
         top: false,
         child: SingleChildScrollView(
